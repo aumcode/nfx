@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Ruler Test</title>
+
+    <script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="wv.js"></script>
+    <script type="text/javascript" src="wv.gui.js"></script>
+
+    <style>
+      html, body {
+        margin: 0; padding: 0;
+      }
+
+      #dv1 {
+        background-color: #9999B0;
+        margin-left: 100px; margin-top: 100px;
+        width: 300px; height: 200px;
+        float: left;
+        cursor: none;
+      }
+
+      #dv2 {
+        background-color: #99B099;
+        margin-left: 100px; margin-top: 100px;
+        width: 300px; height: 200px;
+        float: left;
+        cursor: crosshair;
+      }
+
+      #svg1 {
+        background-color: #B09999;
+        margin-left: 100px; margin-top: 100px;
+        float: left;
+      }
+
+      #svg2 {
+        background-color: #999999;
+        margin-left: 100px; margin-top: 100px;
+        float: left;
+      }
+
+      .wvRulerHint {
+        background-color: #eeeecc;
+        pointer-events: none;
+        z-index: 10000;
+      }
+
+      .wvRulerHint-alt {
+        background-color: #eeccee;
+        pointer-events: none;
+      }
+
+      .wvRulerSight {
+        background-color: #111111;
+        pointer-events: none;
+        z-index: 9999;
+      }
+    </style>
+</head>
+<body>
+  <div id="dv1"></div>  
+
+  <div id="dv2"></div>  
+
+  <svg id="svg1" width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+
+  <svg id="svg2" width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+
+  <script type="text/javascript">
+    var dv1 = WAVE.id("dv1");
+    WAVE.GUI.attachRuler(dv1);
+
+    var dv2 = WAVE.id("dv2");
+    WAVE.GUI.attachRuler(dv2, {
+      hintCls: "wvRulerHint-alt",
+      getTxtFunc: function (e) {
+        return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
+      }
+    });
+
+    var svg1 = WAVE.id("svg1");
+    WAVE.GUI.attachRuler(svg1);
+
+    var svg2 = WAVE.id("svg2");
+    WAVE.GUI.attachRuler(svg2, {
+      hintCls: "wvRulerHint-alt",
+      getTxtFunc: function (e) {
+        return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
+      }
+    });
+  </script>
+
+</body>
+</html>

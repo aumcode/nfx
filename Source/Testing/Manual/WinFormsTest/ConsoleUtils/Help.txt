@@ -1,0 +1,47 @@
+﻿<push>
+<f color=magenta>
+ Usage:
+<f color=white>
+   gluec <f color=green>assembly <f color=darkCyan>[/h | /? | /help]
+              [/options | /o[<f color=darkRed>out<f color=darkCyan>= file_name]
+                            [<f color=darkRed>fpc<f color=darkCyan>= true|false]
+                            [<f color=darkRed>ns-suffix<f color=darkCyan>= namespace_suffix]
+                            [<f color=darkRed>cl-suffix<f color=darkCyan>= class-suffix]
+              ]
+              
+              [/f | /flt | /filter namespace_list]
+              [/c | /compiler  fully_qualified_type_name]
+                                                                               
+
+ <f color=green>assembly<f color=gray> - path to CLR assembly to scan for types marked with [Glued] attribute
+
+<f color=magenta>
+ Options:
+
+ <f color=darkCyan>/h | /help | /?<f color=gray> - displays help message 
+ <f color=darkCyan>/o | /options<f color=gray> - specifies compiler options.
+                 
+          <f color=darkRed>out<f color=gray> - output path, if omitted then assembly path is used
+          <f color=darkRed>fpc<f color=gray> - file-per-contract, when true puts each contract in a separate 
+            source code file   
+          <f color=darkRed>ns-suffix<f color=gray> - namespace suffix gets attached at the end of the 
+            original contract namespace name
+          <f color=darkRed>cl-suffix<f color=gray> - class suffix gets attached at the end of client
+            class name
+ 
+ <f color=darkCyan>/f | /flt | /filter<f color=gray> - a ';'=delimited list of namespaces to process contracts
+            from the assembly
+ <f color=darkCyan>/c | /compiler<f color=gray> - a fully qualified compiler type name, if omitted 
+            CSharpCompiler is used
+
+<f color=magenta>
+ Examples:
+
+<f color=yellow>
+  gluec "c:\bin\BusinessLogic.dll" 
+        /o out="c:\bin\contracts"
+           fpc=false
+           ns-suffix="Callers" <f color=gray>
+Compiles contracts from assembly into specified out path all in one source CSharp file. Namespaces are suffixed with "Callers"
+
+<pop>

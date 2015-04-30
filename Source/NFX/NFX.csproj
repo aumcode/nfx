@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E6BFA4D5-D2BE-4BE1-80FE-4536A22F5C45}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFX</RootNamespace>
+    <AssemblyName>NFX</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\Debug\NFX.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\Release\NFX.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="ApplicationModel\BaseSession.cs" />
+    <Compile Include="ApplicationModel\CommonApplicationLogic.cs" />
+    <Compile Include="ApplicationModel\ApplicationComponent.cs" />
+    <Compile Include="ApplicationModel\ExecutionContext.cs" />
+    <Compile Include="ApplicationModel\LifecycleIntfs.cs" />
+    <Compile Include="ApplicationModel\NOPSession.cs" />
+    <Compile Include="ApplicationModel\Pile\DefaultPile.cs" />
+    <Compile Include="ApplicationModel\Pile\Enums.cs" />
+    <Compile Include="ApplicationModel\Pile\Exceptions.cs" />
+    <Compile Include="ApplicationModel\Pile\Instrumentation\CacheGauges.cs" />
+    <Compile Include="ApplicationModel\Pile\Instrumentation\Gauges.cs" />
+    <Compile Include="ApplicationModel\Pile\IPile.cs" />
+    <Compile Include="ApplicationModel\Pile\ICache.cs" />
+    <Compile Include="ApplicationModel\Pile\LocalCache.cs" />
+    <Compile Include="ApplicationModel\Pile\LocalCacheTable.cs" />
+    <Compile Include="ApplicationModel\Pile\PilePointer.cs" />
+    <Compile Include="ApplicationModel\Pile\TableOptions.cs" />
+    <Compile Include="ApplicationModel\ServiceBaseApplication.cs" />
+    <Compile Include="ApplicationModel\IApplication.cs" />
+    <Compile Include="ApplicationModel\ISession.cs" />
+    <Compile Include="ApplicationModel\NOPApplication.cs" />
+    <Compile Include="ApplicationModel\TestApplication.cs" />
+    <Compile Include="ApplicationModel\Volatile\NOPObjectStoreProvider.cs" />
+    <Compile Include="ApplicationModel\Volatile\FileObjectStoreProvider.cs" />
+    <Compile Include="ApplicationModel\Volatile\Intfs.cs" />
+    <Compile Include="ApplicationModel\Volatile\NOPObjectStore.cs" />
+    <Compile Include="ApplicationModel\Volatile\ObjectStoreEntry.cs" />
+    <Compile Include="ApplicationModel\Volatile\ObjectStoreProvider.cs" />
+    <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
+    <Compile Include="CoreConsts.cs" />
+    <Compile Include="ExternalParameterAttribute.cs" />
+    <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
+    <Compile Include="CodeAnalysis\XML\XMLLanguage.cs" />
+    <Compile Include="Collections\BitList.cs" />
+    <Compile Include="Collections\BitMatrix2D.cs" />
+    <Compile Include="Collections\EventedCollectionBase.cs" />
+    <Compile Include="Collections\EventedDictionary.cs" />
+    <Compile Include="Collections\EventedList.cs" />
+    <Compile Include="Collections\Matrix2DBase.cs" />
+    <Compile Include="Collections\MatrixBase.cs" />
+    <Compile Include="Collections\Matrix2D.cs" />
+    <Compile Include="DataAccess\Cache\CacheRec.cs" />
+    <Compile Include="DataAccess\Cache\CacheStore.cs" />
+    <Compile Include="DataAccess\Cache\ComplexKeyHashingStrategy.cs" />
+    <Compile Include="DataAccess\Cache\Instrumentation\Gauges.cs" />
+    <Compile Include="DataAccess\Cache\Page.cs" />
+    <Compile Include="DataAccess\Cache\Table.cs" />
+    <Compile Include="CollectionUtils.cs" />
+    <Compile Include="DataAccess\Cache\TableOptions.cs" />
+    <Compile Include="DataAccess\CRUD\FormModel.cs" />
+    <Compile Include="DataAccess\Distributed\Attributes.cs" />
+    <Compile Include="DataAccess\Distributed\Command.cs" />
+    <Compile Include="DataAccess\Distributed\IShardingIDProvider.cs" />
+    <Compile Include="DataAccess\Distributed\Exceptions.cs" />
+    <Compile Include="DataAccess\Distributed\GDID.cs" />
+    <Compile Include="DataAccess\Distributed\StoreIntfs.cs" />
+    <Compile Include="DataAccess\Distributed\IReplicatable.cs" />
+    <Compile Include="DataAccess\Distributed\IParcelCachePolicy.cs" />
+    <Compile Include="DataAccess\Distributed\Parcel.cs" />
+    <Compile Include="DataAccess\Enums.cs" />
+    <Compile Include="DataAccess\IUniqueSequenceProvider.cs" />
+    <Compile Include="ELink.cs" />
+    <Compile Include="Erlang\Connect\ErlConnection.cs" />
+    <Compile Include="Erlang\Internal\ErlAcceptor.cs" />
+    <Compile Include="Erlang\Internal\ErlMonitors.cs" />
+    <Compile Include="Erlang\ErlApp.cs" />
+    <Compile Include="Erlang\Connect\ErlEpmd.cs" />
+    <Compile Include="Erlang\Connect\ErlLink.cs" />
+    <Compile Include="Erlang\Connect\ErlLocalNode.cs" />
+    <Compile Include="Erlang\Connect\ErlMbox.cs" />
+    <Compile Include="Erlang\Connect\ErlMsg.cs" />
+    <Compile Include="Erlang\Connect\ErlTransportTrace.cs" />
+    <Compile Include="Erlang\Connect\ErlAbstractConnection.cs" />
+    <Compile Include="Erlang\Connect\ErlAbstractNode.cs" />
+    <Compile Include="Erlang\Internal\ErlConstAtoms.cs" />
+    <Compile Include="Erlang\Internal\ErlParser.cs" />
+    <Compile Include="Erlang\ErlPatternMatcher.cs" />
+    <Compile Include="Erlang\Connect\ErlRemoteNode.cs" />
+    <Compile Include="Erlang\Internal\ErlBlockingQueue.cs" />
+    <Compile Include="Erlang\Internal\ErlIoServer.cs" />
+    <Compile Include="Erlang\Internal\ErlRpcServer.cs" />
+    <Compile Include="Erlang\Internal\MboxRegistry.cs" />
+    <Compile Include="Erlang\Types\ErlTrace.cs" />
+    <Compile Include="ExternalRandomGenerator.cs" />
+    <Compile Include="Financial\Amount.cs" />
+    <Compile Include="Financial\Exceptions.cs" />
+    <Compile Include="Geometry\GeometryExtensions.cs" />
+    <Compile Include="Geometry\LatLng.cs" />
+    <Compile Include="Glue\Native\MpxBinding.cs" />
+    <Compile Include="Glue\Native\MpxClientTransport.cs" />
+    <Compile Include="Glue\Native\MpxServerTransport.cs" />
+    <Compile Include="Glue\Native\MpxSockets.cs" />
+    <Compile Include="Glue\Native\MpxWinSockets.cs" />
+    <Compile Include="Glue\Native\WireData.cs" />
+    <Compile Include="Glue\Tools\GluecCompiler.cs" />
+    <Compile Include="Glue\Tools\CSharpGluecCompiler.cs" />
+    <Compile Include="IEndableInstance.cs" />
+    <Compile Include="Instrumentation\BaseGauges.cs" />
+    <Compile Include="Instrumentation\SelfInstruments.cs" />
+    <Compile Include="Instrumentation\NOPInstrumentationProvider.cs" />
+    <Compile Include="Instrumentation\Gauge.cs" />
+    <Compile Include="Instrumentation\Telemetry\ITelemetryReceiver.cs" />
+    <Compile Include="Instrumentation\Telemetry\TelemetryInstrumentationProvider.cs" />
+    <Compile Include="Instrumentation\Telemetry\TelemetryReceiverClient.cs" />
+    <Compile Include="IO\BufferSegmentReadingStream.cs" />
+    <Compile Include="IO\ErrorHandling\Adler32.cs" />
+    <Compile Include="IO\ErrorHandling\GaloisField.cs" />
+    <Compile Include="IO\ErrorHandling\GaloisPolynomial.cs" />
+    <Compile Include="IO\ErrorHandling\ReedSolomonEncoder.cs" />
+    <Compile Include="IO\FileSystem\FileSystemDirectory.cs" />
+    <Compile Include="IO\FileSystem\FileSystemFile.cs" />
+    <Compile Include="IO\FileSystem\FileSystemCapabilities.cs" />
+    <Compile Include="IO\FileSystem\FileSystemSessionItem.cs" />
+    <Compile Include="IO\FileSystem\FileSystem.cs" />
+    <Compile Include="IO\FileSystem\FileSystemSession.cs" />
+    <Compile Include="IO\FileSystem\FileSystemStream.cs" />
+    <Compile Include="IO\FileSystem\Intfs.cs" />
+    <Compile Include="IO\FileSystem\Local\LocalFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Local\LocalFileSystemCapabilities.cs" />
+    <Compile Include="IO\FileSystem\Local\LocalFileSystemStream.cs" />
+    <Compile Include="IO\FileSystem\Packaging\LocalInstallation.cs" />
+    <Compile Include="IO\FileSystem\Packaging\ManifestUtils.cs" />
+    <Compile Include="IO\Net\Gate\Exceptions.cs" />
+    <Compile Include="IO\Net\Gate\Intfs.cs" />
+    <Compile Include="IO\Net\Gate\NetGate.cs" />
+    <Compile Include="IO\Net\Gate\Group.cs" />
+    <Compile Include="IO\Net\Gate\NetSiteState.cs" />
+    <Compile Include="IO\Net\Gate\Traffic.cs" />
+    <Compile Include="IO\Net\Gate\Rule.cs" />
+    <Compile Include="IO\Net\Gate\VarDef.cs" />
+    <Compile Include="IO\NonClosingStreamWrap.cs" />
+    <Compile Include="Log\Instrumentation\Gauges.cs" />
+    <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />
+    <Compile Include="Media\TagCodes\QR\QRImageRenderer.cs" />
+    <Compile Include="Media\TagCodes\QR\QRMatrix.cs" />
+    <Compile Include="Media\TagCodes\QR\QRCorrectionLevel.cs" />
+    <Compile Include="Media\TagCodes\QR\QREncoderMatrix.cs" />
+    <Compile Include="Media\TagCodes\QR\QRMode.cs" />
+    <Compile Include="Media\TagCodes\QR\QRVersion.cs" />
+    <Compile Include="Log\Destinations\MemoryBufferDestination.cs" />
+    <Compile Include="ObjectValueConversion.cs" />
+    <Compile Include="DataAccess\CRUD\QueryResolver.cs" />
+    <Compile Include="DataAccess\CRUD\QuerySource.cs" />
+    <Compile Include="DataAccess\CRUD\RowChanges.cs" />
+    <Compile Include="DataAccess\CRUD\RowsetBase.cs" />
+    <Compile Include="DataAccess\CRUD\CRUDTransaction.cs" />
+    <Compile Include="DataAccess\CRUD\Intfs.cs" />
+    <Compile Include="DataAccess\CRUD\Query.cs" />
+    <Compile Include="DataAccess\CRUD\Rowset.cs" />
+    <Compile Include="Erlang\Internal\AtomTable.cs" />
+    <Compile Include="Erlang\Internal\ErlConsts.cs" />
+    <Compile Include="Erlang\ErlException.cs" />
+    <Compile Include="Erlang\ErlOutputStream.cs" />
+    <Compile Include="Erlang\Types\ErlTupleBase.cs" />
+    <Compile Include="Erlang\Types\ErlTuple.cs" />
+    <Compile Include="Erlang\Types\ErlList.cs" />
+    <Compile Include="Erlang\Types\ErlString.cs" />
+    <Compile Include="Erlang\Types\ErlRef.cs" />
+    <Compile Include="Erlang\Types\ErlPort.cs" />
+    <Compile Include="Erlang\Types\ErlPid.cs" />
+    <Compile Include="Erlang\Types\ErlBinary.cs" />
+    <Compile Include="Erlang\Types\ErlByte.cs" />
+    <Compile Include="Erlang\Types\ErlBoolean.cs" />
+    <Compile Include="Erlang\Types\Enums.cs" />
+    <Compile Include="Erlang\Types\ErlAtom.cs" />
+    <Compile Include="Erlang\Types\ErlDouble.cs" />
+    <Compile Include="Erlang\Types\ErlLong.cs" />
+    <Compile Include="Erlang\Types\ErlObject.cs" />
+    <Compile Include="Erlang\Types\ErlVar.cs" />
+    <Compile Include="Erlang\Types\ErlVarBind.cs" />
+    <Compile Include="DataAccess\CRUD\Attributes.cs" />
+    <Compile Include="DataAccess\CRUD\DynamicRow.cs" />
+    <Compile Include="DataAccess\CRUD\Exceptions.cs" />
+    <Compile Include="DataAccess\CRUD\Row.cs" />
+    <Compile Include="DataAccess\CRUD\Schema.cs" />
+    <Compile Include="DataAccess\CRUD\Table.cs" />
+    <Compile Include="DataAccess\CRUD\TypedRow.cs" />
+    <Compile Include="Erlang\ErlInputStream.cs" />
+    <Compile Include="OS\Computer.cs" />
+    <Compile Include="OS\Instrumentation\Gauges.cs" />
+    <Compile Include="OS\NetworkUtils.cs" />
+    <Compile Include="Parsing\NaturalTextGenerator.cs" />
+    <Compile Include="FID.cs" />
+    <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
+    <Compile Include="Security\GDIDCredentials.cs" />
+    <Compile Include="Security\PasswordUtils.cs" />
+    <Compile Include="Security\SocialNetTokenCredentials.cs" />
+    <Compile Include="Serialization\JSON\JSONExtensions.cs" />
+    <Compile Include="Serialization\JSON\JSONReadableWritableIntfs.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONPatternMatchAttribute.cs" />
+    <Compile Include="Serialization\JSON\JSONWriter.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigData.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigKeywords.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigLanguage.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigLexer.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigMsgCode.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigParser.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigToken.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigTokenType.cs" />
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigWriter.cs" />
+    <Compile Include="Environment\Behavior.cs" />
+    <Compile Include="CodeAnalysis\CommonCodeProcessor.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSLanguage.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSLexer.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSMsgCode.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSToken.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSTokenType.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSIdentifiers.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSKeywords.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSNumbers.cs" />
+    <Compile Include="CodeAnalysis\CSharp\CSStrings.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONParser.Impl.cs" />
+    <Compile Include="Serialization\JSON\JSONDataObjects.cs" />
+    <Compile Include="CodeAnalysis\ObjectResultAnalysisContext.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONIdentifiers.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONData.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONMsgCode.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONParser.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONKeywords.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONNumbers.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONStrings.cs" />
+    <Compile Include="CodeAnalysis\Parser.cs" />
+    <Compile Include="CodeAnalysis\PatternSearch.cs" />
+    <Compile Include="DataAccess\Intfs.cs" />
+    <Compile Include="DataAccess\NOPDataStore.cs" />
+    <Compile Include="Debugging.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Environment\Attributes.cs" />
+    <Compile Include="Environment\Exceptions.cs" />
+    <Compile Include="Environment\LaconicConfiguration.cs" />
+    <Compile Include="Environment\MacroRunner.cs" />
+    <Compile Include="Environment\EnvironmentVariableResolver.cs" />
+    <Compile Include="Environment\NodeOverrideRules.cs" />
+    <Compile Include="Environment\ScriptRunner.cs" />
+    <Compile Include="Glue\Attributes.cs" />
+    <Compile Include="Glue\ClientEndPoint.cs" />
+    <Compile Include="Glue\InspectorIntfs.cs" />
+    <Compile Include="Glue\Instrumentation\Gauges.cs" />
+    <Compile Include="Glue\Native\Consts.cs" />
+    <Compile Include="Glue\Native\InProcBinding.cs" />
+    <Compile Include="Glue\Native\InProcClientTransport.cs" />
+    <Compile Include="Glue\Native\InProcServerTransport.cs" />
+    <Compile Include="Glue\Protocol\AuthenticationHeader.cs" />
+    <Compile Include="Glue\ServerCallContext.cs" />
+    <Compile Include="Glue\ServerEndPoint.cs" />
+    <Compile Include="Glue\GlueComponentService.cs" />
+    <Compile Include="Glue\Implementation\Calls.cs" />
+    <Compile Include="Glue\Implementation\ServerHandler.cs" />
+    <Compile Include="Glue\Instrumentation\Events.cs" />
+    <Compile Include="Glue\Native\SyncBinding.cs" />
+    <Compile Include="Glue\Native\SyncClientTransport.cs" />
+    <Compile Include="Glue\Native\SyncServerTransport.cs" />
+    <Compile Include="Glue\Protocol\CallOptions.cs" />
+    <Compile Include="Glue\Protocol\Specifiers.cs" />
+    <Compile Include="Glue\CallReactor.cs" />
+    <Compile Include="Glue\EndPoint.cs" />
+    <Compile Include="Glue\Enums.cs" />
+    <Compile Include="Glue\Implementation\GlueService.cs" />
+    <Compile Include="Glue\Providers.cs" />
+    <Compile Include="Instrumentation\Classification.cs" />
+    <Compile Include="IOMiscUtils.cs" />
+    <Compile Include="CodeAnalysis\Exceptions.cs" />
+    <Compile Include="CodeAnalysis\Intfs.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONLexer.cs" />
+    <Compile Include="CodeAnalysis\Lexer.cs" />
+    <Compile Include="CodeAnalysis\IProjectItem.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONLanguage.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONToken.cs" />
+    <Compile Include="CodeAnalysis\JSON\JSONTokenType.cs" />
+    <Compile Include="CodeAnalysis\Language.cs" />
+    <Compile Include="CodeAnalysis\Messages.cs" />
+    <Compile Include="CodeAnalysis\Source\FileSource.cs" />
+    <Compile Include="CodeAnalysis\Source\SourceCodeRef.cs" />
+    <Compile Include="CodeAnalysis\Source\SourceIntf.cs" />
+    <Compile Include="CodeAnalysis\Source\SourcePosition.cs" />
+    <Compile Include="CodeAnalysis\Source\SourceVector.cs" />
+    <Compile Include="CodeAnalysis\Source\StringSource.cs" />
+    <Compile Include="CodeAnalysis\Token.cs" />
+    <Compile Include="Log\Destinations\DebugDestination.cs" />
+    <Compile Include="Log\Destinations\FileDestination.cs" />
+    <Compile Include="Log\Destinations\TextFileDestination.cs" />
+    <Compile Include="Log\LogServiceBase.cs" />
+    <Compile Include="NameRegistry.cs" />
+    <Compile Include="Glue\Protocol\Headers.cs" />
+    <Compile Include="Glue\Intfs.cs" />
+    <Compile Include="Glue\Protocol\Msg.cs" />
+    <Compile Include="Glue\Exceptions.cs" />
+    <Compile Include="Glue\Node.cs" />
+    <Compile Include="Glue\NOPGlue.cs" />
+    <Compile Include="Glue\Bindings.cs" />
+    <Compile Include="Glue\Protocol\RemoteExceptionData.cs" />
+    <Compile Include="Glue\Protocol\RequestMsg.cs" />
+    <Compile Include="Glue\CallSlot.cs" />
+    <Compile Include="Glue\Protocol\ResponseMsg.cs" />
+    <Compile Include="Glue\Transport.cs" />
+    <Compile Include="Health\BaseCheck.cs" />
+    <Compile Include="Health\CheckList.cs" />
+    <Compile Include="Health\CheckResult.cs" />
+    <Compile Include="Health\Exceptions.cs" />
+    <Compile Include="Health\HTMLReporter.cs" />
+    <Compile Include="Health\Reporter.cs" />
+    <Compile Include="Health\TextReporter.cs" />
+    <Compile Include="Health\XMLReporter.cs" />
+    <Compile Include="Instrumentation\Analytics\TimeHistogramHelper.cs" />
+    <Compile Include="Instrumentation\Analytics\TimeHistogramDimension.cs" />
+    <Compile Include="Instrumentation\Analytics\TimeHistogram3.cs" />
+    <Compile Include="Instrumentation\Analytics\TimeHistogram1.cs" />
+    <Compile Include="Instrumentation\Analytics\TimeHistogram2.cs" />
+    <Compile Include="Instrumentation\Analytics\Histogram3.cs" />
+    <Compile Include="Instrumentation\Analytics\Histogram2.cs" />
+    <Compile Include="Instrumentation\Analytics\Histogram1.cs" />
+    <Compile Include="Instrumentation\Analytics\Histogram.cs" />
+    <Compile Include="Instrumentation\Analytics\HistogramReporters.cs" />
+    <Compile Include="Instrumentation\Analytics\Dimension.cs" />
+    <Compile Include="Instrumentation\Analytics\ITimeHistogram.cs" />
+    <Compile Include="Instrumentation\Event.cs" />
+    <Compile Include="Instrumentation\Datum.cs" />
+    <Compile Include="Instrumentation\ExceptionEvent.cs" />
+    <Compile Include="Instrumentation\Intfs.cs" />
+    <Compile Include="Instrumentation\InstrumentationProvider.cs" />
+    <Compile Include="Instrumentation\InstrumentationService.cs" />
+    <Compile Include="Instrumentation\LogInstrumentationProvider.cs" />
+    <Compile Include="Instrumentation\NOPInstrumentation.cs" />
+    <Compile Include="Inventorization\BasicInventorization.cs" />
+    <Compile Include="Inventorization\InventorizationManager.cs" />
+    <Compile Include="Inventorization\InventorizationException.cs" />
+    <Compile Include="Inventorization\RecordModelInventorization.cs" />
+    <Compile Include="Inventorization\IInventorization.cs" />
+    <Compile Include="IO\WritingStreamer.cs" />
+    <Compile Include="IO\ReadingStreamer.cs" />
+    <Compile Include="IO\MetaHandle.cs" />
+    <Compile Include="IO\NFXIOException.cs" />
+    <Compile Include="IO\StreamerFormats.cs" />
+    <Compile Include="IO\Streamer.cs" />
+    <Compile Include="Log\Destinations\LogServiceDestination.cs" />
+    <Compile Include="Log\Intfs.cs" />
+    <Compile Include="Log\MessageFilterExpression.cs" />
+    <Compile Include="Parsing\CompilingExpressionEvaluator.cs" />
+    <Compile Include="Inventorization\InventoryAttribute.cs" />
+    <Compile Include="Log\Destinations\ConsoleDestination.cs" />
+    <Compile Include="Log\Destinations\CompositeDestination.cs" />
+    <Compile Include="Log\Destinations\FloodFilter.cs" />
+    <Compile Include="Log\Destinations\SMTPDestination.cs" />
+    <Compile Include="Log\Destinations\SyslogDestination.cs" />
+    <Compile Include="Log\Syslog\Enums.cs" />
+    <Compile Include="Log\Syslog\SyslogClient.cs" />
+    <Compile Include="Log\Syslog\SyslogMessage.cs" />
+    <Compile Include="Parsing\Enums.cs" />
+    <Compile Include="RecordModel\Attributes.cs" />
+    <Compile Include="ReferenceEqualityComparer.cs" />
+    <Compile Include="RelationalModel\Compiler.cs" />
+    <Compile Include="RelationalModel\MsSQLServerCompiler.cs" />
+    <Compile Include="RelationalModel\DataTypes\Domain.cs" />
+    <Compile Include="RelationalModel\DataTypes\RDBMSDomain.cs" />
+    <Compile Include="RelationalModel\DataTypes\TypicalRDBMSDomains.cs" />
+    <Compile Include="RelationalModel\Exceptions.cs" />
+    <Compile Include="RelationalModel\MySQLCompiler.cs" />
+    <Compile Include="RelationalModel\RDBMSCompiler.cs" />
+    <Compile Include="RelationalModel\Schema.cs" />
+    <Compile Include="ScopeExit.cs" />
+    <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="DisposableObject.cs" />
+    <Compile Include="Environment\BuildInformation.cs" />
+    <Compile Include="Environment\CommandArgsConfiguration.cs" />
+    <Compile Include="Environment\ConfigNode.cs" />
+    <Compile Include="Environment\Configuration.cs" />
+    <Compile Include="Environment\FactoryUtils.cs" />
+    <Compile Include="Environment\FileConfiguration.cs" />
+    <Compile Include="Environment\Interfaces.cs" />
+    <Compile Include="Environment\MemoryConfiguration.cs" />
+    <Compile Include="Environment\XMLConfiguration.cs" />
+    <Compile Include="Financial\TimeValue.cs" />
+    <Compile Include="Geometry\CartesianUtils.cs" />
+    <Compile Include="Geometry\PolarPoint.cs" />
+    <Compile Include="Geometry\VectorUtils.cs" />
+    <Compile Include="IO\ErrorHandling\CRC32.cs" />
+    <Compile Include="IO\ConsoleUtils.cs" />
+    <Compile Include="IParameters.cs" />
+    <Compile Include="Log\Destinations\CSVFileDestination.cs" />
+    <Compile Include="Log\Destinations\Destination.cs" />
+    <Compile Include="Log\Destinations\NullDestination.cs" />
+    <Compile Include="Log\Enums.cs" />
+    <Compile Include="Log\LogService.cs" />
+    <Compile Include="Log\Message.cs" />
+    <Compile Include="Log\NOPLog.cs" />
+    <Compile Include="MiscUtils.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="OS\ProcessRunner.cs" />
+    <Compile Include="Parsing\DataEntryUtils.cs" />
+    <Compile Include="Parsing\Evaluator.cs" />
+    <Compile Include="Parsing\JavaScriptStripper.cs" />
+    <Compile Include="Parsing\TokenParser.cs" />
+    <Compile Include="Parsing\Utils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordModel\BindingBase.cs" />
+    <Compile Include="RecordModel\BindingIntf.cs" />
+    <Compile Include="RecordModel\ContextIntf.cs" />
+    <Compile Include="DataAccess\DataStoreKeys.cs" />
+    <Compile Include="DataAccess\Exceptions.cs" />
+    <Compile Include="RecordModel\DataAccess\IModelDataStore.cs" />
+    <Compile Include="RecordModel\Enums.cs" />
+    <Compile Include="RecordModel\Events.cs" />
+    <Compile Include="RecordModel\Exceptions.cs" />
+    <Compile Include="RecordModel\Field.cs" />
+    <Compile Include="RecordModel\FieldBinding.cs" />
+    <Compile Include="RecordModel\FieldClasses.cs" />
+    <Compile Include="RecordModel\FieldIntf.cs" />
+    <Compile Include="RecordModel\FieldPropertyDescriptor.cs" />
+    <Compile Include="RecordModel\GUIDataParser.cs" />
+    <Compile Include="RecordModel\IControllableInteractions.cs" />
+    <Compile Include="RecordModel\ListField.cs" />
+    <Compile Include="RecordModel\LookupDictionary.cs" />
+    <Compile Include="RecordModel\ModelBase.cs" />
+    <Compile Include="RecordModel\Notifications.cs" />
+    <Compile Include="RecordModel\Record.cs" />
+    <Compile Include="RecordModel\RecordBinding.cs" />
+    <Compile Include="RecordModel\TypedField.cs" />
+    <Compile Include="Security\AccessLevel.cs" />
+    <Compile Include="Security\ConfigSecurityManager.cs" />
+    <Compile Include="Security\AuthenticationToken.cs" />
+    <Compile Include="Security\BlankCredentials.cs" />
+    <Compile Include="Security\Credentials.cs" />
+    <Compile Include="Security\Enums.cs" />
+    <Compile Include="Security\Exceptions.cs" />
+    <Compile Include="Security\IDPasswordCredentials.cs" />
+    <Compile Include="Security\ISecurityException.cs" />
+    <Compile Include="Security\ISecurityManager.cs" />
+    <Compile Include="Security\NOPSecurityManager.cs" />
+    <Compile Include="Security\Permissions.cs" />
+    <Compile Include="Security\Rights.cs" />
+    <Compile Include="Security\User.cs" />
+    <Compile Include="IO\SlimReader.cs" />
+    <Compile Include="Serialization\JSON\Exceptions.cs" />
+    <Compile Include="Serialization\JSON\JSONDynamicObject.cs" />
+    <Compile Include="Serialization\JSON\JSONReader.cs" />
+    <Compile Include="Serialization\JSON\JSONWritingOptions.cs" />
+    <Compile Include="Serialization\MSBinaryFormatter.cs" />
+    <Compile Include="Serialization\POD\CompositeCustomData.cs" />
+    <Compile Include="Serialization\POD\CompositeData.cs" />
+    <Compile Include="Serialization\POD\CompositeReflectedData.cs" />
+    <Compile Include="Serialization\POD\CompositeArrayData.cs" />
+    <Compile Include="Serialization\POD\Exceptions.cs" />
+    <Compile Include="Serialization\POD\ReadingStrategy.cs" />
+    <Compile Include="Serialization\POD\PortableObjectDocumentTransforms.cs" />
+    <Compile Include="Serialization\POD\MetaTypes.cs" />
+    <Compile Include="Serialization\POD\PortableObjectDocument.cs" />
+    <Compile Include="Serialization\SerializationUtils.cs" />
+    <Compile Include="Serialization\Slim\Arrays.cs" />
+    <Compile Include="Serialization\Slim\ISlimSerializer.cs" />
+    <Compile Include="Serialization\Slim\PODSlimSerializer.cs" />
+    <Compile Include="Serialization\Slim\SlimSerializer.cs" />
+    <Compile Include="IO\SlimWriter.cs" />
+    <Compile Include="Serialization\Slim\Exceptions.cs" />
+    <Compile Include="Serialization\Slim\TypeRegistry.cs" />
+    <Compile Include="Serialization\Slim\TypeSchema.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\NFXSerializationException.cs" />
+    <Compile Include="ServiceModel\CompositeServiceHost.cs" />
+    <Compile Include="ServiceModel\Enums.cs" />
+    <Compile Include="ServiceModel\Service.cs" />
+    <Compile Include="ServiceModel\WorkItem.cs" />
+    <Compile Include="ServiceModel\WorkItemAggregatorService.cs" />
+    <Compile Include="ServiceModel\WorkQueue.cs" />
+    <Compile Include="StringConsts.cs" />
+    <Compile Include="StringValueConversion.cs" />
+    <Compile Include="Templatization\Sources.cs" />
+    <Compile Include="Templatization\IRenderingTarget.cs" />
+    <Compile Include="Templatization\Exceptions.cs" />
+    <Compile Include="Templatization\TemplateCompiler.cs" />
+    <Compile Include="Templatization\StringRenderingTarget.cs" />
+    <Compile Include="Templatization\Template.cs" />
+    <Compile Include="Templatization\TextCSTemplateCompiler.cs" />
+    <Compile Include="Throttling\NOPThrottle.cs" />
+    <Compile Include="Throttling\Intfs.cs" />
+    <Compile Include="Throttling\NOPThrottling.cs" />
+    <Compile Include="Throttling\TimeSpacingThrottle.cs" />
+    <Compile Include="Throttling\Throttle.cs" />
+    <Compile Include="Throttling\SlidingWindowThrottle.cs" />
+    <Compile Include="Throttling\ThrottlingService.cs" />
+    <Compile Include="Time\DaysOfWeek.cs" />
+    <Compile Include="Time\DefaultTimeSource.cs" />
+    <Compile Include="Time\Event.cs" />
+    <Compile Include="Time\EventTimer.cs" />
+    <Compile Include="Time\Exceptions.cs" />
+    <Compile Include="Time\Instrumentation\Gauges.cs" />
+    <Compile Include="Time\Intfs.cs" />
+    <Compile Include="Time\NOPEventTimer.cs" />
+    <Compile Include="Time\TimeLocation.cs" />
+    <Compile Include="Time\WinApi.cs" />
+    <Compile Include="IntMath.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeAnalysis\Laconfig\LaconfigParser.Impl.cs" />
+    <None Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Compile Include="Media\TagCodes\QR\QRMatrix.Mask.cs" />
+    <None Include="Media\TagCodes\CHANGES" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Media\DocModel\" />
+    <Folder Include="Media\PDF\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BUILD_INFO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EMPTY_CLASS_TEMPLATE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Parsing\JackLondon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Media\TagCodes\NOTICE" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Parsing\ConanDoyle.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>echo BUILD_SEED=%25random%25  &gt;  "$(ProjectDir)BUILD_INFO.txt"
+echo COMPUTER=%25computername%25  &gt;&gt;  "$(ProjectDir)BUILD_INFO.txt"
+echo USER=%25username%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+echo OS=%25os%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+echo DATE=%25date%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+echo TIME=%25time%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+</PreBuildEvent>
+  </PropertyGroup>
+</Project>

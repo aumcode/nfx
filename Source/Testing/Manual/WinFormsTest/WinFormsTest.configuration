@@ -1,0 +1,237 @@
+﻿<!-- Comment-->
+<nfx
+       log-root="c:\nfx\"
+       log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+       log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+       application-name="Manual Win Forms Test App(WinFormsTest.exe)"
+       log-name="test-client"
+       trace-disable="true"
+>
+  <instrumentation
+    name="Instruments" 
+    interval-ms="5000"
+  >
+    <!--provider  name="Log Instrumentation Provider" type="NFX.Instrumentation.LogInstrumentationProvider" /-->
+
+    <provider  name="Telemetry Instrumentation Provider"
+               type="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider" 
+               use-log="false"
+               receiver-node="sync://127.0.0.1:8300"
+               />
+  </instrumentation>
+
+
+
+  <log name="Logger" default-failover="destFailures">
+
+      <destination  type="$(/$log-csv)"
+           name="$(/$log-name)"
+           filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+           create-dir="true"
+           
+        />
+
+      <destination  type="$(/$log-csv)"
+           name="$(/$log-name)-perf"
+           filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+           create-dir="true"
+           min-level="PerformanceInstrumentation"
+           max-level="PerformanceInstrumentation"
+        />
+
+      <destination type="$(/$log-debug)"
+           name="$(/$log-name)-debug"
+           filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
+           max-level="Trace"
+        />
+
+    <!--
+    <destination  type="NFX.Log.Destinations.LogServiceDestination, NFX" 
+                  name="subLog"
+                  min-level="Error">
+
+          <destination  type="$(/$log-csv)"
+                        name="WeekdaySubLogErrors"
+                        path="$(/$log-root)"
+                        name-time-format="yyyyMMdd-HH"
+                        days-of-week="Mon,Tue,Wed,Thu,Fri"
+                        start-date="3/1/2013"
+                        end-date="4/18/2099"
+                        start-time="19:40:00"
+                        end-time="23:32:00"
+                        />
+
+          <destination  type="$(/$log-csv)"
+                        name="WeekendSubLogErrors"
+                        path="$(/$log-root)"
+                        name-time-format="yyyyMMdd-HH"
+                        days-of-week="Sat,Sun"
+                        />
+
+    </destination>
+
+
+    <destination  type="NFX.Log.Destinations.CompositeDestination, NFX"
+     name="Errors Only"
+     min-level="Error"
+    >
+
+                       <destination  type="$(/$log-csv)"
+                         name="Hourly Errors"
+                         path="$(/$log-root)"
+                         name-time-format="yyyyMMdd-HH"
+                      />
+
+                        <destination  type="$(/$log-csv)"
+                          name="Daily Errors"
+                          path="$(/$log-root)"
+                          name-time-format="yyyyMMdd"
+                      />
+
+    </destination>
+
+    <destination  type="$(/$log-csv)"
+     name="WinFormsTest Log"
+     path="$(/$log-root)"
+     name-time-format="yyyyMMdd"
+     filter='arg.From.Contains("arbuz")'
+    />
+
+    <destination  type="$(/$log-csv)"
+      name="Warnings Log"
+      path="$(/$log-root)"
+      name-time-format="yyyyMMdd"
+      min-level="Warning"
+      max-level="Warning"
+    />
+
+    <destination type="NFX.Log.Destinations.FloodFilter, NFX"
+                 interval="0:0:10"
+                 max-count="10"
+                 max-text-length="128000"
+                 name="destFailures"
+                 only-failures="true"
+                 >
+
+                      <destination  type="$(/$log-csv)"
+                        name="Failures"
+                        path="$(/$log-root)"
+                        name-time-format="yyyyMMdd"
+                      />
+
+                      <destination  type="NFX.Log.Destinations.SMTPDestination, NFX"
+                        name="G-Mail"
+                        
+                        smtp-host="smtp.gmail.com"
+                        smtp-port="587"
+                        smtp-ssl="true"
+
+                        from-address="nfx.smtp@gmail.com"
+                        from-name="Anton Kutz (.NFX Team)"
+
+                        to-address="nfx.smtp@gmail.com, dmitriy@itadapter.com"
+
+                        credentials-id="nfx.smtp@gmail.com"
+                        credentials-password="smtp.nfx"
+
+                        subject="NFX Log"
+                        body="My friend, this came from NFX log:  "
+
+
+                      />
+
+
+
+    </destination>
+    
+    <destination  type="NFX.Log.Destinations.SyslogDestination, NFX"
+     name=".NIX SYSLOG"
+     host="unix_host_name"
+     port="514"
+    />
+        
+    -->
+    
+  </log>
+
+ <!--
+  <data-store type="NFX.RecordModel.DataAccess.MongoDB.MongoDBModelDataStore, NFX.MongoDB" 
+              connect-string="mongodb://localhost"
+              db-name="test"  
+  />
+
+  -->
+
+
+  <!--<data-store type="NFX.RecordModel.DataAccess.PostgreSQL.PostgreSQLModelDataStore, NFX.PostgreSQL"
+              connect-string="Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=thejake;"
+  />-->
+
+
+  <object-store name="Main Object Store"
+                guid="0134EE97-3A24-4ff7-BEB9-2968E3C46F2A"
+                object-life-span-ms="120000"
+                 >
+
+        <provider name="Disk Object Store Provider"
+                  type="NFX.ApplicationModel.Volatile.FileObjectStoreProvider"
+                  load-limit="0"
+                  root-path="c:\nfx\"
+       
+            />
+
+  </object-store>
+
+
+  <glue
+      client-log-level="Info"
+      server-log-level="Info"
+  >
+      <providers>
+          <!--provider name="zmq" type="NFX.ZeroMQ.ZeroMQProvider, NFX.ZeroMQ" max-sockets="2048"/-->
+      </providers>
+      
+      <bindings>
+          <binding name="sync" type="NFX.Glue.Native.SyncBinding"
+                XXXclient-dump="Message"
+                dump-path="$(@/$log-root)msg.dump"
+                
+                XXXmeasure-stat-times="true"
+          >
+              <client-transport
+                  
+                  max-count="0"
+                  
+                  XXXrcv-buf-size="131072"
+                  XXXsnd-buf-size="131072"
+                  
+                  rcv-buf-size="524288"
+                  snd-buf-size="524288"
+                  
+                  XXXinstrument-transport-stat="true" 
+
+                  XXXcount-wait-threshold="1"
+              />
+          </binding>
+        
+        <binding name="mpx" type="NFX.Glue.Native.MpxBinding"
+                XXXclient-dump="Message"
+                dump-path="$(@/$log-root)msg.dump"
+                 
+                XXXmeasure-stat-times="true" 
+        >
+          <client-transport
+                  max-count="0"
+                  XXXidle-timeout-ms="500000"
+                  XXXinstrument-transport-stat="true" 
+                  XXXcount-wait-threshold="1"
+              />
+
+        </binding>
+
+       <binding name="inproc" type="NFX.Glue.Native.InProcBinding, NFX"/>
+        
+    </bindings>
+  </glue>
+
+</nfx>

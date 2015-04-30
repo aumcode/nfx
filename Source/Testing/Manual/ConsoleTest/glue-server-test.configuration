@@ -1,0 +1,137 @@
+<!-- Comment-->
+<nfx
+       log-root="c:\nfx"
+       log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+       log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+       debug-default-action="LogAndThrow"
+       debug-conf-refresh="false"
+       trace-disable="true"
+       app-name="test-server"
+>
+    <!-- time-location utc-offset="4:47:22" description="Sibir Time" /-->
+
+    <log name="Logger">
+        <destination type="$(/$log-csv)"
+             name="$(/$app-name)"
+             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+             create-dir="true"
+             min-level="Info"
+        />
+
+        <destination  type="$(/$log-csv)"
+             name="$(/$app-name)-perf"
+             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+             create-dir="true"
+             min-level="PerformanceInstrumentation"
+             max-level="PerformanceInstrumentation"
+        />
+
+        <destination type="$(/$log-debug)"
+             name="$(/$app-name)-debug"
+             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
+             log-time-format="HH:mm:ss.fff"
+             Zmax-level="TraceZ"
+             levels="-TraceZ | Warning-"
+             Zfilter="arg.Type &lt; MessageType.TraceZ || arg.Type &gt; MessageType.Warning" 
+        />
+    </log>
+
+    <instrumentation name="Instruments" interval-ms="15000">
+        <provider name="Log Instrumentation Provider" type="NFX.Instrumentation.LogInstrumentationProvider" />
+    </instrumentation>
+
+    <glue
+      client-log-level="Info"
+      server-log-level="Info"
+    >
+
+        <providers>
+            <!--provider name="zmq" type="NFX.ZeroMQ.ZeroMQProvider, NFX.ZeroMQ" max-sockets="2048"/-->
+        </providers>
+
+        <bindings>
+            <binding name="sync" type="NFX.Glue.Native.SyncBinding"
+                server-dump="Wire" dump-wire-format="Decimal" dump-path="$(/$log-root)"
+            >
+                <server-transport
+                    rcv-buf-size="131072"
+                    snd-buf-size="8192"
+                    rcv-timeout="60000"
+                    snd-timeout="10000"
+                    instrument-transport-stat="true"
+                    dump-wire-filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$(/$app-name)-$(../$name)-s.dump.log"
+                />
+            </binding>
+            <binding name="async" type="NFX.Glue.Native.AsyncSlimBinding"
+                    max-async-io-ops="4096"
+                    Zio-buf-size="600"
+                    io-buf-size="8192"
+                    Zserver-dump="Wire" dump-wire-format="Decimal" dump-path="$(/$log-root)"
+                    idle-timeout="3600000"
+            >
+                <server-transport
+                    max-async-accept-ops="10"
+                    rcv-buf-size="131072"
+                    snd-buf-size="131072"
+                    no-delay="true"
+                    instrument-transport-stat="true"
+                    dump-wire-filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$(/$app-name)-$(../$name)-s.dump.log"
+                />
+            </binding>
+            <!--binding name="zmq-slim" type="NFX.ZeroMQ.ZmqSlimBinding, NFX.ZeroMQ" provider="zmq"
+                client-dump="Wire" server-dump="Wire" dump-path="$(@/$log-root)" dump-wire-format="Decimal">
+                <server-transport
+                    rcv-buf-size="131072"
+                    snd-buf-size="8192"
+                    rcv-timeout="60000"
+                    snd-timeout="10000"
+                    rcv-hwm="0"
+            </binding-->
+
+            <binding name="inproc" type="NFX.Glue.Native.InProcBinding, NFX"/>
+        </bindings>
+
+        <servers>
+            <server name="s1" node="sync://127.0.0.1:8000" contract-servers="ConsoleTest.JokeServer, ConsoleTest; ConsoleTest.JokeCalculatorServer, ConsoleTest"/>
+            <server name="s2" node="async://localhost:8002" contract-servers="ConsoleTest.JokeServer, ConsoleTest; ConsoleTest.JokeCalculatorServer, ConsoleTest"/>
+
+            <!--server name="s3" node="zmq-slim://0.0.0.0:9001" contract-servers="ConsoleTest.JokeServer, ConsoleTest; ConsoleTest.JokeCalculatorServer, ConsoleTest"/-->
+
+        </servers>
+
+
+    </glue>
+
+    <security>
+        <users>
+            <user name="Dima"
+                  description="D Kh"
+                  status="System"
+                  id="dima"
+                  password="0f5b25cd58319cde0e6e33715b66db4c">
+
+                <rights>
+                    <BusinessLogic>
+                        <Sultan level="12" />
+                    </BusinessLogic>
+                    <TestPermissions>
+                        <Space>
+                            <Flight>
+                                <Echo level="50"/>
+                            </Flight>
+                        </Space>
+                    </TestPermissions>
+                </rights>
+
+            </user>
+
+            <user name="Serge"
+                  description="S Al"
+                  status="System"
+                  id="serge"
+                  password="eb2b0f82d5d1235eb5d5b8524ac3956e">
+            </user>
+        </users>
+    </security>
+
+</nfx>

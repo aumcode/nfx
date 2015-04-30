@@ -1,0 +1,121 @@
+﻿/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+/* NFX by ITAdapter
+ * Originated: 2006.01
+ * Revision: NFX 1.0  2013.12.10
+ */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Diagnostics;
+
+using NFX;
+using NFX.Environment;
+
+namespace NFX.*
+{
+
+  Attention! follow these conventions:
+  ------------------------------------
+  Instance non-pub fields must begin with m_<PascalCase> i.e.  "m_BoxColor"
+  Static non-pub fields must begin with   s_<PascalCase> i.e.  "s_ServerInstance"
+  Thread-static non-pub fields must begin with ts_<PascalCase> i.e. "ts_LockList"
+
+  Pub fields: PascalCase and prefferably read-only	i.e. "BoxColor"
+  Pub properties: PascalCase						i.e. "BoxColor"
+  Pub Methods: PascalCase						    i.e. "GetPriority()"
+  Protected Methods: PascalCase, core virtual overrides Do<PascalCase> i.e. :  pub Open() calls protected virtual DoOpen()
+
+  Localizable stirng constants must be moved to StringConsts.cs
+  Non-localizable string constants must be delcared in CONSTS region:
+   Numeric Time span values must end with _MS, _SEC, _MIN specifier. NFX does not use TimeSpan type for storing intervals in props/configs
+   Configuration Section names: CONFIG_*_SECT, Configuration attr names: CONFIG_*_ATTR
+   Default values constants should start from DEFAULT_*
+   MIN/MAX value bounds should be prefixed with MIN_*/MAX_*
+
+
+  /// <summary>
+  /// PLEASE PROVIDE DESCRIPTION
+  /// </summary>
+  public class CLASS_NAME  
+  {
+    #region CONSTS
+
+      public const int DEFAULT_some_timeout_MS = 0;
+
+      public const int MIN_some_timeout_bound_MS = 1000;
+
+      public const string CONFIG_section_name_SECT = "section-name";
+	  
+	  public const string CONFIG_attr_name_ATTR = "attribute-name";
+    
+    #endregion
+
+                #region Inner Types
+
+
+
+                #endregion
+
+
+	  #region Static
+
+
+	  #endregion
+
+    #region .ctor
+
+      public CLASS_NAME() 
+      {
+      }
+
+    #endregion
+
+
+    #region Pvt/Prot/Int Fields
+
+      private int m_SomeField = DEFAULT_some_timeout_MS;
+
+    #endregion
+
+
+    #region Properties
+    //Note all string property getters must never return null and be protected with ?? string.Empty
+
+    #endregion
+
+
+    #region Public
+
+    #endregion
+
+
+    #region Protected
+
+    #endregion
+
+
+    #region .pvt. impl.
+
+    #endregion
+
+  }//class
+
+
+}

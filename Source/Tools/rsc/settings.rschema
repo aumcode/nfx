@@ -1,0 +1,11 @@
+﻿schema 
+{
+
+	table=setting
+	{
+		comment="Stores system-wide settings"
+		column=name {type=TVarchar(100) required=true primary-key{} }
+		column=value{type=TVarchar(500) required=true}
+	}
+
+}

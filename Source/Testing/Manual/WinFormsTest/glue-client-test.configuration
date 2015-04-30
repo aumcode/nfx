@@ -1,0 +1,82 @@
+﻿<!-- Comment-->
+<nfx
+       log-root="c:\nfx\"
+       log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+       log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+       debug-default-action="LogAndThrow"
+       debug-conf-refresh="false"
+       app-name="test-client"
+>
+
+    <log name="Logger" default-failover="destFailures">
+
+        <destination  type="$(/$log-csv)"
+             name="$(/$app-name)"
+             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+             create-dir="true"
+             min-level="Info"
+        />
+
+        <destination  type="$(/$log-csv)"
+             name="$(/$app-name)-perf"
+             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+             create-dir="true"
+             min-level="PerformanceInstrumentation"
+             max-level="PerformanceInstrumentation"
+        />
+
+        <destination type="$(/$log-debug)"
+             name="$(/$app-name)-debug"
+             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
+             min-level="Debug"
+             max-level="TraceZ"
+        />
+    </log>
+
+    <glue
+        client-log-level="Info"
+        server-log-level="Info"
+  >
+        <providers>
+            <!--provider name="zmq" type="NFX.ZeroMQ.ZeroMQProvider, NFX.ZeroMQ" max-sockets="2048"/-->
+        </providers>
+
+        <bindings>
+            <binding name="sync" type="NFX.Glue.Native.SyncBinding"
+                Zclient-dump="Wire" dump-format="Decimal" dump-path="$(/$log-root)"
+            >
+                <client-transport
+                    rcv-buf-size="131072"
+                    snd-buf-size="131072"
+                    dump-wire-filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$(/$app-name)-$(../$name)-c.dump.log"
+              />
+            </binding>
+            <binding name="async" type="NFX.Glue.Native.AsyncSlimBinding"
+                io-buf-size="16384"
+                max-async-io-ops="10000"
+                Zclient-dump="Wire,Message" dump-format="Decimal" dump-path="$(/$log-root)"
+                idle-timeout="3600000"
+            >
+                <client-transport
+                    rcv-buf-size="4096"
+                    snd-buf-size="4096"
+                    Zrcv-buf-size="131072"
+                    Zsnd-buf-size="131072"
+                    no-delay="false"
+                    dump-wire-filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$(/$app-name)-$(../$name)-c.dump.log"
+                />
+            </binding>
+            <REM-binding name="zmq-slim" type="NFX.ZeroMQ.ZmqSlimBinding, NFX.ZeroMQ" provider="zmq">
+                <client-transport
+                    rcv-buf-size="131072"
+                    snd-buf-size="131072"
+                    rcv-timeout="60000"
+                    snd-timeout="10000"
+                    snd-hwm="0"
+                />
+            </REM-binding>
+            <binding name="inproc" type="NFX.Glue.Native.InProcBinding, NFX"/>
+        </bindings>
+    </glue>
+
+</nfx>

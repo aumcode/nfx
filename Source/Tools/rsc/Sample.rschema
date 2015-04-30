@@ -1,0 +1,54 @@
+﻿schema
+{
+    
+	include="general.rschema"{}
+	include="settings.rschema"{}
+//	script-include="triggers.sql"{}
+
+    
+	table=doctor
+	{
+		short-name="doc"
+		comment="Holds information about licensed doctors"
+		column=$(/$PK_COLUMN) {type=TCounter  required=true primary-key{} }
+		column=NPI {type=TVarchar(24) required=true comment="National Provider Identifier for the licensed doctor"}
+		_call=/scripts/usperson{}
+
+		index=npi {	unique=true	column=NPI {} comment="Every doctor is uniquely identified by NPI"}
+	}
+
+	
+	//This comment does not go anywhere in SQL
+	table=patient
+	{
+		short-name="pat"
+		comment="Holds information about patients"
+		
+		script-comment="Note to ORACLE DBA: DO not use a,b,c functions" 
+		//script-text="-- this is a verbatim script block inserted as-is"{}
+		
+		column=$(/$PK_COLUMN){type=TCounter     required=true primary-key{} }
+		column=patient_id    {type=TVarchar(24) required=true comment="Patient ID in our primary system"} 
+		column=lomo_id       {type=TVarchar(12)  comment="Patient ID in LOMO system"} 
+		column=admission_status { type="TEnum(Char,ADM|DIS|NONE)" required=true}
+		column=census_status    { type="TEnum"
+		                               {
+  									      Type=Varchar
+										  Size=15
+										  values
+										  {
+											value{key="INH" descr="Inhouse"}
+											value{key="RSB" descr="Reserved bed"}
+										  }
+									   } 
+								  required=true}
+		_call=/scripts/usperson{}
+		column=attending_doc {type=TCounterRef  short-name="attdoc" required=true reference {table="doctor" column=$(/$PK_COLUMN)} comment="Attending doctor" }
+		column=alt_doctor    {type=TCounterRef  short-name="altdoc"               reference {table="doctor" column=$(/$PK_COLUMN)} comment="Alternate doctor" }
+		column=notes         {type=TNote }
+		
+        index=id {	unique=true column=patient_id {} } 		
+	}
+
+
+}	

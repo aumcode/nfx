@@ -1,0 +1,189 @@
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Drawing;
+using System.Drawing.Imaging;
+
+using NFX.DataAccess.CRUD;
+using NFX.Serialization.JSON;
+
+namespace NFX.Wave.MVC
+{
+  /// <summary>
+  /// Decorates entities that get returned by MVC actions and can get executed to generate some result action (command pattern)
+  /// </summary>
+  public interface IActionResult
+  {
+     void Execute(Controller controller, WorkContext work);
+  }
+  
+  /// <summary>
+  /// Represents MVC action result that downloads a local file
+  /// </summary>
+  public struct FileDownload : IActionResult
+  {
+    public FileDownload(string fileName, bool isAttachment = false, int bufferSize = Response.DEFAULT_DOWNLOAD_BUFFER_SIZE)
+    {
+      LocalFileName = fileName;
+      IsAttachment = isAttachment;
+      BufferSize = bufferSize;
+    }
+
+
+    /// <summary>
+    /// Local file name
+    /// </summary>
+    public readonly string LocalFileName;
+
+    /// <summary>
+    /// Download buffer size. Leave unchanged in most cases
+    /// </summary>
+    public readonly int    BufferSize;
+
+    /// <summary>
+    /// When true, asks user to save as attachment
+    /// </summary>
+    public readonly bool   IsAttachment;
+
+
+
+    public void Execute(Controller controller, WorkContext work)
+    {
+      work.Response.WriteFile(LocalFileName, BufferSize, IsAttachment);
+    }
+
+  }
+
+  /// <summary>
+  /// Represents MVC action result that redirects user to some URL
+  /// </summary>
+  public struct Redirect : IActionResult
+  {
+    public Redirect(string url)
+    {
+      URL = url;
+    }
+    /// <summary>
+    /// Where to redirect user
+    /// </summary>
+    public readonly string URL;
+
+    public void Execute(Controller controller, WorkContext work)
+    {
+      work.Response.Redirect(URL);
+    }
+  }
+
+  /// <summary>
+  /// Represents MVC action result that returns/downloads an image
+  /// </summary>
+  public struct Picture : IActionResult
+  {
+    public Picture(Image image, ImageFormat format, string attachmentFileName = null)
+    {
+      Image = image;
+      Format = format;
+      AttachmentFileName = attachmentFileName;
+    }
+
+
+    /// <summary>
+    /// Picture image
+    /// </summary>
+    public readonly Image Image;
+
+    /// <summary>
+    /// Download buffer size. Leave unchanged in most cases
+    /// </summary>
+    public readonly ImageFormat  Format;
+
+    /// <summary>
+    /// When non-null asks user to download picture as a named attached file
+    /// </summary>
+    public readonly string  AttachmentFileName;
+
+
+
+    public void Execute(Controller controller, WorkContext work)
+    {
+      if (AttachmentFileName.IsNotNullOrWhiteSpace())
+          work.Response.Headers.Add(SysConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(AttachmentFileName));
+
+      var fid = Format.Guid;
+      work.Response.ContentType = ImageCodecInfo.GetImageEncoders()
+                                                .FirstOrDefault(enc => fid==enc.FormatID)
+                                                .MimeType;
+      Image.Save(work.Response.GetDirectOutputStreamForWriting(), Format);
+    }
+
+  }
+
+
+  /// <summary>
+  /// Represents MVC action result that returns ROW as JSON object for WV.RecordModel(...) ctor init
+  /// </summary>
+  public struct ClientRecord : IActionResult
+  {
+    public ClientRecord(Row row, Exception validationError, string recID = null, string target = null)
+    {
+      RecID = recID;
+      Row = row;
+      ValidationError = validationError;
+      Target = target;
+    }
+    
+    public readonly string RecID;
+    public readonly Row Row;
+    public readonly Exception ValidationError;
+    public readonly string Target;
+
+
+    public void Execute(Controller controller, WorkContext work)
+    {
+      work.Response.WriteJSON( Client.RecordModelGenerator.RowToRecordInitJSON(Row, ValidationError, RecID, Target));
+    }
+  }
+
+
+  /// <summary>
+  /// Represents MVC action result that returns JSON object with options.
+  /// If JSON options are not needed then just return CLR object directly from controller action without this wrapper
+  /// </summary>
+  public struct JSONResult : IActionResult
+  {
+    public JSONResult(object data, JSONWritingOptions options)
+    {
+      Data = data;
+      Options = options;
+    }
+    
+    public readonly object Data;
+    public readonly JSONWritingOptions Options;
+
+
+    public void Execute(Controller controller, WorkContext work)
+    {
+      work.Response.WriteJSON( Data, Options);
+    }
+  }
+  
+
+
+}

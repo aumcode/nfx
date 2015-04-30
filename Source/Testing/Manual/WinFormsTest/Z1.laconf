@@ -1,0 +1,283 @@
+﻿nfx
+{
+       log-root=$"c:\nfx\"
+       log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+       debug-default-action="Log,Throw"
+	   
+  starters
+  {
+	//starter{ name="Erlang" type=NFX.Erlang.ErlApp method=StartMeNow params{ chukwa=89} }
+	//starter{ name="DNS" type="Absolute.Friends.DNSRezolver, FaceBookKGB" method="Start" params{} }
+  }
+
+  
+
+  behaviors
+  {
+   // behavior{ type=Extra.SpyBehavior order=1 cascade=true }
+   // behavior{ type=Extra.SecrecyBehavior order=2 cascade=false }
+  }
+  
+ /* erlang
+  {
+    short-name=true
+	cookie="default cookie"
+    trace-level="Off"
+	
+    node="muxa" {
+        accept=true
+        address="127.0.0.1:123"
+        cookie="gyuo76t87t0s87yt9sggs8gs98g98wg7wglgflgdsl"
+        no-delay=true
+        rcv-buf-size=4096
+        snd-buf-size=4096
+    }	
+    
+	node="pchela@23.44.56.12" {
+        cookie="sdfsadufy98syf08y"
+        no-delay=false
+        rcv-buf-size=100000
+        snd-buf-size=100000
+    }
+	 
+  }  */ 
+
+  log
+  { 
+    name="Logger"
+
+    destination
+    {  
+       type=$(/$log-csv)
+	   name="WinFormsTest Log"
+	   path=$(/$log-root) 
+       name-time-format='yyyyMMdd'
+       generate-failover-msg=false
+    }
+  }
+
+  
+  wave
+  {
+    server
+    {
+       // name="Main Test Server"
+       // parallel-works=2048
+        
+        prefix{ name="http://localhost:8080/" }
+        
+        default-error-handler
+        {
+            show-dump { match{name=all} }
+            //log {  match{name=all} }
+        }
+      
+        dispatcher
+        {
+           // type="NFX.Wave.MultithreadedDispatcher"
+            
+            filter
+            {
+              name="Errors" order=1 type="NFX.Wave.Filters.ErrorFilter, NFX.Wave"
+              show-dump
+              {
+                match{name="localhost" order=1 user-hosts="localhost:8080" }
+              }
+              // log
+              // {
+                // match{name="all" var{name="aaa" default="1223"} }
+              // }
+            }
+            
+            
+            
+            handler
+            {
+                name="Dumper"
+                order=1
+                type="NFX.Wave.Handlers.ContextDumpHandler, NFX.Wave"
+                                
+                match
+                {
+                    name="Dump Status"
+                    order=2
+                    path="dump"
+                }
+            }
+            
+            handler
+            {
+                
+                filter
+                {
+                 name="Stopper" order=1 type="NFX.Wave.Filters.StopFilter, NFX.Wave"   
+                 before
+                 {
+                    match
+                    {
+                      name="all" 
+                      var{query-name="who" match-contains="lenin" match-case-sensitive=false}                      
+                      var{name="error" default="Lenin was stopped!"}
+                    }
+                    
+                 }
+                }
+                
+                filter
+                {
+                 name="Logger" order=3 type="NFX.Wave.Filters.LoggingFilter, NFX.Wave"   
+                 before
+                 {
+                    match
+                    {
+                      var{name="type" default="Trace"}                      
+                      var{name="CODZ" default="10003"}                      
+                    }
+                    
+                 }
+                 after
+                 {
+                    match
+                    {
+                      var{name="type" default="Trace"} 
+                      var{name="CODZ" default="100018"}                      
+                    }
+                    
+                 }
+                }
+                
+                name="Downloader"
+                order=2
+                type="NFX.Wave.Handlers.FileDownloadHandler, NFX.Wave"
+                throw=true   
+                
+                root-path=$"c:\users\anton\desktop"
+                
+                //cache-max-age-sec="10"
+                
+                match
+                {
+                    name="Files"
+                    order=1
+                    path="download/{*filePath}"
+                    var{name="attachment" query-name="a" default="false" }
+                    var{name="chunked" query-name="c" default="true" }
+                }
+                
+                match
+                {
+                    name="Files2"
+                    order=2
+                    path="z/{*filePath}"
+                    var{name="attachment" query-name="a" default="false" }
+                    var{name="chunked" query-name="c" default="true" }
+                }
+            }//handler
+            
+            
+            
+        }//dispatcher
+    }//server
+  }//wave
+  
+  
+  
+ /*
+  data-store {type="NFX.RecordModel.DataAccess.MongoDB.MongoDBModelDataStore, NFX.MongoDB" 
+              connect-string="mongodb://localhost"
+              db-name="test"}  
+ */
+
+
+  data-store { type="NFX.RecordModel.DataAccess.PostgreSQL.PostgreSQLModelDataStore, NFX.PostgreSQL"
+               connect-string="Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=thejake;"}
+  
+
+
+  object-store { name="Main Object Store"
+                 guid="0134EE97-3A24-4ff7-BEB9-2968E3C46F2A"
+                 object-life-span-ms="180000"
+                 bucket-count="1024"
+                 
+
+    provider
+    { 
+              name="Disk Object Store Provider"
+              type="NFX.ApplicationModel.Volatile.FileObjectStoreProvider"
+              load-limit="0"
+              root-path=$"c:\nfx\"
+              Zformat="msbinary"
+
+                  known-types 
+                  {
+                    known{ type="BusinessLogic.PatientRecord, BusinessLogic" }
+                  }
+    }
+
+  }
+
+  instrumentation 
+  {
+      name="Instruments" interval-ms="15000"
+      provider { name="Log Instrumentation Provider" type="NFX.Instrumentation.LogInstrumentationProvider" }
+  }
+
+  glue 
+  {
+
+   /* providers
+    {
+      provider { name="zmq" type="NFX.ZeroMQ.ZeroMQProvider, NFX.ZeroMQ" max-sockets="2048" }
+    } */
+
+    bindings
+    {
+      binding 
+      {    
+               name="sync"
+               type="NFX.Glue.Native.SyncBinding" 
+               max-msg-size="65536"
+               Xclient-dump="Message, Wire"
+               dump-path=$"c:\nfx\msg.dump"
+               dump-format="Binary"
+               dump-wire-format="Decimal"
+
+          client-inspectors
+          {
+            inspector { type="BusinessLogic.TextInfoReporter, BusinessLogic" }
+          }
+          client-transport
+          {
+                 rcv-buf-size="1024"
+                 snd-buf-size="8192"
+                 rcv-timeout="10000"
+                 snd-timeout="10000"
+          }
+      }
+
+
+      binding { name="inproc" type="NFX.Glue.Native.InProcBinding, NFX" }
+    }
+
+    servers
+    {
+      server {name="local" node="inproc://local" contract-servers="ConsoleTest.JokeServer, ConsoleTest; ConsoleTest.JokeCalculatorServer, ConsoleTest"}
+    }
+
+
+    client-inspectors
+    {
+       /*inspector {name="C1" type="" order="1"} 
+       inspector {name="C2" type="" order="2"} */
+    }
+    
+    server-inspectors
+    {
+     // inspector { name="S1" type="" order="1"}
+     // inspector {name="S2" type="" order="2"} 
+    }
+
+ 
+  }//glue
+
+}//nfx

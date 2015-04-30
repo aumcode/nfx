@@ -1,0 +1,7 @@
+﻿<push><b color=black><f color=white>
+Glue Client Compiler<f color=gray>
+Copyright (c) 2013 D.Khmaladze / IT Adapter Inc.
+Version 1.1 / NFX as of Nov 30 2013
+              NFX as of Jun 21 2013
+
+<pop>

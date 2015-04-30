@@ -1,0 +1,629 @@
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Reflection;
+
+using NFX.Inventorization;
+
+
+namespace NFX.IO
+{
+    /// <summary>
+    /// Reads primitives and other supported types from Slim-format stream. Use factory method of SlimFormat intance to create a new instance of SlimReader class
+    /// </summary>
+    [Inventory(Concerns=SystemConcerns.Testing | SystemConcerns.MissionCriticality)]
+    public class SlimReader : ReadingStreamer 
+    {
+        #region .ctor
+        
+            protected internal SlimReader(Encoding encoding=null) : base(encoding)
+            {
+            }
+
+        #endregion
+
+        #region Fields
+
+           
+        #endregion
+
+
+        #region Properties
+
+            /// <summary>
+            /// Returns SlimFormat that this reader implements
+            /// </summary>
+            public override StreamerFormat Format
+            {
+                get { return SlimFormat.Instance; }
+            }
+
+
+        #endregion
+
+       
+        #region Public
+         
+          
+         
+         
+         
+          
+        
+          public override bool ReadBool()
+          {
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadBool(): eof");
+            
+            return b!=0;
+          }
+
+              public override bool? ReadNullableBool()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadBool();
+
+                return null;
+              }
+
+
+          public override byte ReadByte()
+          {
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadByte(): eof");
+
+            return (byte)b;
+          }
+
+              public override byte? ReadNullableByte()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadByte();
+
+                return null;
+              }
+        
+
+          public override byte[] ReadByteArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var len = this.ReadInt();
+            if (len>SlimFormat.MAX_BYTE_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_BYTE_BUF_MAX_SIZE_ERROR.Args(len, SlimFormat.MAX_BYTE_ARRAY_LEN));
+
+            var buf = new byte[len];
+
+            ReadFromStream(buf, len);
+
+            return buf;
+          }
+  
+          public override char ReadChar()
+          {
+            return (char)this.ReadShort();
+          }
+              public override char? ReadNullableChar()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadChar();
+
+                return null;
+              }
+
+
+  
+          public override char[] ReadCharArray()
+          {
+            byte[] buf = this.ReadByteArray();
+            if (buf==null) return null;
+
+            return m_Encoding.GetChars(buf);
+          }
+
+
+          public override string[] ReadStringArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+            var len = this.ReadInt();
+            
+            if (len>SlimFormat.MAX_STRING_ARRAY_CNT)
+              throw new NFXIOException(StringConsts.SLIM_READ_STRING_ARRAY_MAX_SIZE_ERROR.Args(len, SlimFormat.MAX_STRING_ARRAY_CNT));
+
+
+            var result = new string[len];
+
+            for(int i=0; i<len; i++)
+             result[i] = this.ReadString();
+
+            return result;
+          }
+          
+
+          public override decimal ReadDecimal()
+          {
+            var bits = new int[4];
+            bits[0] = this.ReadInt();
+            bits[1] = this.ReadInt();
+            bits[2] = this.ReadInt();
+            bits[3] = this.ReadInt();
+            return new Decimal(bits);
+          }
+              public override decimal? ReadNullableDecimal()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadDecimal();
+
+                return null;
+              }
+        
+
+          public unsafe override double ReadDouble()
+          {
+            ReadFromStream(m_Buff32, 8);
+          
+            uint seg1 = (uint)((int)m_Buff32[0] | 
+                               (int)m_Buff32[1] << 8 | 
+                               (int)m_Buff32[2] << 16 | 
+                               (int)m_Buff32[3] << 24);
+
+	          uint seg2 = (uint)((int)m_Buff32[4] | 
+                               (int)m_Buff32[5] << 8 |
+                               (int)m_Buff32[6] << 16 | 
+                               (int)m_Buff32[7] << 24);
+
+	          ulong core = (ulong)seg2 << 32 | (ulong)seg1;
+
+	          return *(double*)(&core);
+          }
+
+              public override double? ReadNullableDouble()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadDouble();
+
+                return null;
+              }
+
+
+          public unsafe override float ReadFloat()
+          {
+            ReadFromStream(m_Buff32, 4);
+
+            uint core = (uint)((int)m_Buff32[0] | 
+                               (int)m_Buff32[1] << 8 |
+                               (int)m_Buff32[2] << 16 |
+                               (int)m_Buff32[3] << 24);
+	          return *(float*)(&core);
+          }
+              public override float? ReadNullableFloat()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadFloat();
+
+                return null;
+              }
+        
+
+          public override int ReadInt()  
+          {
+            int result = 0;
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadInt(): eof");
+           
+            var neg = ((b & 1) != 0);
+             
+           
+            var has = (b & 0x80) > 0;
+            result |= ((b & 0x7f) >> 1);
+            var bitcnt = 6;
+            
+            while(has)
+            {
+               if (bitcnt>31)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadInt()");
+
+               b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadInt(): eof");
+               has = (b & 0x80) > 0;
+               result |= (b & 0x7f) << bitcnt;
+               bitcnt += 7;
+            }
+
+            return neg ? ~result : result;
+          }
+
+
+              public override int? ReadNullableInt()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadInt();
+
+                return null;
+              }
+
+          public override long ReadLong()
+          {
+            long result = 0;
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadLong(): eof");
+
+            var neg = ((b & 1) != 0);
+             
+           
+            var has = (b & 0x80) > 0;
+            result |= ((long)(b & 0x7f) >> 1);
+            var bitcnt = 6;
+            
+            while(has)
+            {
+               if (bitcnt>63)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadLong()");
+
+               b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadLong(): eof");
+               has = (b & 0x80) > 0;
+               result |= (long)(b & 0x7f) << bitcnt;
+               bitcnt += 7;
+            }
+
+            return neg ? ~result : result;
+          }
+
+
+              public override long? ReadNullableLong()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadLong();
+
+                return null;
+              }
+
+        
+          public override sbyte ReadSByte()
+          {
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadSByte(): eof");
+            return (sbyte)b;
+          }
+              public override sbyte? ReadNullableSByte()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadSByte();
+
+                return null;
+              }
+        
+
+          public override short ReadShort()
+          {
+            short result = 0;
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadShort(): eof");
+           
+            var neg = ((b & 1) != 0);
+             
+           
+            var has = (b & 0x80) > 0;
+            result |= (short)((b & 0x7f) >> 1);
+            var bitcnt = 6;
+            
+            while(has)
+            {
+               if (bitcnt>15)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadShort()");
+
+               b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadShort(): eof");
+               has = (b & 0x80) > 0;
+               result |= (short)((b & 0x7f) << bitcnt);
+               bitcnt += 7;
+            }
+
+            return (short)(neg ? ~result : result);
+          }
+              public override short? ReadNullableShort()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return ReadShort();
+
+                return null;
+              }
+        
+          
+          public override string ReadString()
+          {
+            var buf = this.ReadByteArray();
+            if (buf==null) return null;
+            
+            return m_Encoding.GetString(buf);
+          }
+
+         
+
+
+          public override uint ReadUInt()
+          {
+            uint result = 0;
+            var bitcnt = 0;
+            var has = true;
+            
+            while(has)
+            {
+               if (bitcnt>31)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadUInt()");
+
+               var b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadUInt(): eof");
+               has = (b & 0x80) != 0;
+               result |= (uint)(b & 0x7f) << bitcnt;
+               bitcnt += 7;
+            }
+
+            return result;
+          }
+
+              public override uint? ReadNullableUInt()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadUInt();
+
+                return null;
+              }
+
+
+        
+          public override ulong ReadULong()
+          {
+            ulong result = 0;
+            var bitcnt = 0;
+            var has = true;
+            
+            while(has)
+            {
+               if (bitcnt>63)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadULong()");
+
+               var b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadULong(): eof");
+               has = (b & 0x80) > 0;
+               result |= (ulong)(b & 0x7f) << bitcnt;
+               bitcnt += 7;
+            }
+
+            return result;
+          }
+
+              public override ulong? ReadNullableULong()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadULong();
+
+                return null;
+              }
+
+          public override ushort ReadUShort()
+          {
+            ushort result = 0;
+            var bitcnt = 0;
+            var has = true;
+            
+            while(has)
+            {
+               if (bitcnt>31)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadUShort()");
+
+               var b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadUShort(): eof");
+               has = (b & 0x80) > 0;
+               result |= (ushort)((b & 0x7f) << bitcnt);
+               bitcnt += 7;
+            }
+
+            return result;
+          }
+
+              public override ushort? ReadNullableUShort()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadUShort();
+
+                return null;
+              }
+          
+
+          public override MetaHandle ReadMetaHandle()
+          {
+            uint handle = 0;
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadMetaHandle(): eof");
+
+            var meta = ((b & 1) != 0);
+             
+           
+            var has = (b & 0x80) > 0;
+            handle |= ((uint)(b & 0x7f) >> 1);
+            var bitcnt = 6;
+            
+            while(has)
+            {
+               if (bitcnt>31)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadMetaHandle()");
+
+               b = m_Stream.ReadByte();
+               if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadMetaHandle(): eof");
+               has = (b & 0x80) > 0;
+               handle |= (uint)(b & 0x7f) << bitcnt;
+               bitcnt += 7;
+            }
+
+            return meta ? new MetaHandle(true, handle, this.ReadString()) : new MetaHandle(true, handle);
+          }
+            
+
+              public override MetaHandle? ReadNullableMetaHandle()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadMetaHandle();
+
+                return null;
+              }
+          
+
+
+          public override DateTime ReadDateTime()
+          {
+            var bin = this.ReadLong();
+            return DateTime.FromBinary(bin);
+          }
+
+              public override DateTime? ReadNullableDateTime()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadDateTime();
+
+                return null;
+              }
+
+
+          public override TimeSpan ReadTimeSpan()
+          {
+            var ticks = this.ReadLong();
+            return TimeSpan.FromTicks(ticks);
+          }
+
+              public override TimeSpan? ReadNullableTimeSpan()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadTimeSpan();
+
+                return null;
+              }
+
+
+          public override Guid ReadGuid()
+          {
+            var arr = this.ReadByteArray();
+            return new Guid(arr);
+          }
+
+              public override Guid? ReadNullableGuid()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadGuid();
+
+                return null;
+              }
+
+          public override NFX.DataAccess.Distributed.GDID ReadGDID()
+          {
+            var era = this.ReadUInt();
+            var id = this.ReadULong();
+            return new NFX.DataAccess.Distributed.GDID(era, id);
+          }
+
+              public override NFX.DataAccess.Distributed.GDID? ReadNullableGDID()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadGDID();
+
+                return null;
+              }
+
+
+         public override NFX.Glue.Protocol.TypeSpec ReadTypeSpec()
+         {
+            var result = new NFX.Glue.Protocol.TypeSpec();
+            result.m_Name = this.ReadString();
+            result.m_Hash = m_Stream.ReadBEUInt64();
+            return result;   
+         }
+
+         public override NFX.Glue.Protocol.MethodSpec ReadMethodSpec()
+         {
+            var result = new NFX.Glue.Protocol.MethodSpec();
+            result.m_MethodName = this.ReadString();
+            result.m_ReturnType = m_Stream.ReadBEUInt64();
+            result.m_Signature = this.ReadByteArray();
+            result.m_Hash = m_Stream.ReadBEUInt64();
+            return result;
+         }
+
+
+         public override FID ReadFID()
+          {
+            var id = m_Stream.ReadBEUInt64();
+            return new FID(id);
+          }
+
+              public override FID? ReadNullableFID()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadFID();
+
+                return null;
+              }
+
+         public override NFX.ApplicationModel.Pile.PilePointer ReadPilePointer()
+          {
+            var node = this.ReadInt();
+            var seg  = this.ReadInt();
+            var adr  = this.ReadInt();
+            return new NFX.ApplicationModel.Pile.PilePointer(node, seg, adr);
+          }
+
+              public override NFX.ApplicationModel.Pile.PilePointer? ReadNullablePilePointer()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadPilePointer();
+
+                return null;
+              }
+
+
+        #endregion
+
+
+
+    }
+}

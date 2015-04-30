@@ -1,0 +1,1 @@
+﻿//this script should validate whole record for NFX client technology

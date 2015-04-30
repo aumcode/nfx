@@ -1,0 +1,177 @@
+﻿nfx
+{
+       disk-root=$"c:\nfx\"
+       log-root=$(/$disk-root)
+       log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+       debug-default-action="Log,Throw"
+       trace-disable=true
+
+  log 
+  {
+    name="Logger"
+    destination
+    {  
+       type=$(/$log-csv)
+	   name="IntegrationTestServer.Log"
+	   path=$(/$log-root) 
+       name-time-format='yyyyMMdd'
+       generate-failover-msg=false
+    }
+  }
+
+
+  object-store { name="Main Object Store"
+                 guid="0134EE97-3A24-4ff7-BEB9-2968E3C46F2A"
+                 object-life-span-ms="180000"
+                 bucket-count="1024"
+                 
+
+    provider
+    { 
+              name="Disk Object Store Provider"
+              type="NFX.ApplicationModel.Volatile.FileObjectStoreProvider"
+              load-limit="0"
+              root-path=$(/$disk-root)
+              Zformat="msbinary"
+                  known-types 
+                  {
+                    known{ type="BusinessLogic.PatientRecord, BusinessLogic" }
+                  }
+    }
+
+  }
+
+  instrumentation 
+  {
+      name="Instruments" interval-ms="25000"
+      provider { name="Log Instrumentation Provider" type="NFX.Instrumentation.LogInstrumentationProvider" }
+    /*  
+      provider
+      { 
+        name="Telemetry Instrumentation Provider"
+        type="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider" 
+        use-log="false"
+        receiver-node="sync://127.0.0.1:8300"
+      }
+     */ 
+  }
+  
+  glue 
+  {
+  
+    server-log-level="Debug"
+    client-log-level="Debug"
+  
+
+    providers
+    {
+     // provider { name="zmq" type="NFX.ZeroMQ.ZeroMQProvider, NFX.ZeroMQ" max-sockets="2048" }
+    }
+
+    bindings
+    {
+      binding 
+      {    
+               name="sync"
+               type="NFX.Glue.Native.SyncBinding" 
+            //   max-msg-size="65536"
+            //    server-dump="Message"
+            //   dump-path=$(@/$disk-root)msg.dump
+              // dump-format="Hex"
+              // measure-stat-times="true"
+
+      /*    client-inspectors
+          {
+            inspector { type="BusinessLogic.TextInfoReporter, BusinessLogic" }
+          }
+      */      
+       /*  client-transport
+          {
+                 rcv-buf-size="8192"
+                 snd-buf-size="8192"
+                 rcv-timeout="10000"
+                 snd-timeout="10000"
+          }
+        */  
+          server-transport
+         {
+          //  instrument-transport-stat="true" 
+            rcv-buf-size="524288"
+            snd-buf-size="524288"
+         }
+      }
+
+      binding { name="inproc" type="NFX.Glue.Native.InProcBinding, NFX" }
+      
+      binding 
+      {
+         name="mpx" type="NFX.Glue.Native.MpxBinding, NFX" 
+         //server-dump="Message"
+         //dump-path=$(@/$disk-root)msg.dump
+        //  measure-stat-times="true"
+         
+         server-transport
+         {
+            idle-timeout-ms=120000
+           // instrument-transport-stat="true" 
+         }         
+      }
+    }
+
+    servers
+    {
+      server {name="local" node="inproc://localhost" contract-servers="TestServer.Glue.JokeServer, TestServer; TestServer.Glue.JokeCalculatorServer, TestServer"}
+	  server {name="sync"  node="sync://*:8000"   contract-servers="TestServer.Glue.JokeServer, TestServer; TestServer.Glue.JokeCalculatorServer, TestServer"}
+      server {name="mpx"   node="mpx://*:5701"  contract-servers="TestServer.Glue.JokeServer, TestServer; TestServer.Glue.JokeCalculatorServer, TestServer"}   
+    }
+
+
+    client-inspectors
+    {
+       /*inspector {name="C1" type="" order="1"} 
+       inspector {name="C2" type="" order="2"} */
+    }
+    
+    server-inspectors
+    {
+     // inspector { name="S1" type="" order="1"}
+     // inspector {name="S2" type="" order="2"} 
+    }
+
+ 
+  }//glue
+  
+  
+  security
+  {
+        users
+		{
+            user
+			{
+			     name="Dima"
+                 description="D Kh"
+                 status="System"
+                 id="dima"
+                 password="0f5b25cd58319cde0e6e33715b66db4c"
+
+                rights
+				{
+                    BusinessLogic{ Sultan{ level="12" }}
+                    TestPermissions{ Space{ Flight{     Echo{ level="50" }  }}}
+                }
+
+            }
+
+            user
+			{
+				name="Serge"
+                description="S Al"
+                status="System"
+                id="serge"
+                password="eb2b0f82d5d1235eb5d5b8524ac3956e"
+            }
+        }
+   }
+  
+
+}//nfx

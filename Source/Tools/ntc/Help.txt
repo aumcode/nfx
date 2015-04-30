@@ -1,0 +1,62 @@
+﻿<push>
+<f color=magenta>
+ Usage:
+<f color=white>
+   ntc <f color=green>source_path <f color=darkCyan>[/h | /? | /help]
+              [/options | /o[<f color=darkRed>asm-file<f color=darkCyan>= file_name]
+                            [<f color=darkRed>compile-code<f color=darkCyan>= true|false]
+                            [<f color=darkRed>base-type<f color=darkCyan>= base_type_name]
+                            [<f color=darkRed>namespace<f color=darkCyan>= namespace_name]
+                            [<f color=darkRed>ref<f color=darkCyan>= assembly_name0[;assembly_nameX...]]
+                            [<f color=darkRed>ref-path<f color=darkCyan>= path]
+              ]
+              
+              [/r | /recurse]
+              [/c | /compiler  fully_qualified_type_name]
+              [/src]   
+              [/ext file_extension]
+                                                                  
+
+ <f color=green>source_path<f color=gray> - path to template source files, may include wildcard
+
+<f color=magenta>
+ Options:
+
+ <f color=darkCyan>/h | /help | /?<f color=gray> - displays help message 
+ <f color=darkCyan>/o | /options<f color=gray> - specifies compiler options.
+                 
+          <f color=darkRed>asm-file<f color=gray> - creates an assembly file on disk
+          <f color=darkRed>compile-code<f color=gray> - performs code compilation   
+
+          <f color=darkRed>base-type<f color=gray> - specifies default base type name which has to
+            be fully qualified but without assembly
+          <f color=darkRed>namespace<f color=gray> - fully qualified namespace name
+          <f color=darkRed>ref<f color=gray> - adds assembly reference, may contain multiple names
+            separated by ";" character
+          <f color=darkRed>ref-path<f color=gray> - additional path used for referenced assemblies location
+         
+ <f color=darkCyan>/r | /recurse<f color=gray> - walk subdirectory structure as well
+ <f color=darkCyan>/c | /compiler<f color=gray> - uses specified compiler. If omitted then TextCSTemplateCompiler is used
+ <f color=darkCyan>/ext<f color=gray> - specifies file extension to use for source files.
+  When omitted, default language extension will be appended to source file name
+ <f color=darkCyan>/src<f color=gray> - writes compiled source files to disk
+
+
+<f color=magenta>
+ Examples:
+
+<f color=yellow>
+  ntc "c:\templates\*.tpl" -r -src <f color=gray>
+Compiles all files with "tpl" extension in specified folder and all subfolders
+using default TextCSTemplateCompiler generating C# source files o disk
+
+<f color=yellow>
+  ntc "c:\templates\*.tpl" -r -o compile-code=true ref-path="c:\mylibs" ref="System.Web.dll;NFX.Web.dll" asm-file="c:\mylibs\Templates.dll" <f color=gray>
+Compiles all files with "tpl" extension in specified folder and all subfolders
+using default TextCSTemplateCompiler generating assembly "Templates.dll" that
+contains compiled template types.
+Adds "System.Web" and "NFX.Web" referenced assemblies providing reference
+searchpath at "c:\mylibs"
+
+
+<pop>

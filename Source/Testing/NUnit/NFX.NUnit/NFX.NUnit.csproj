@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4559002E-3388-4D9B-9257-0F75A9A23860}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFX.NUnit</RootNamespace>
+    <AssemblyName>NFX.NUnit</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppModel\FinishNotifiablesTests.cs" />
+    <Compile Include="AppModel\Pile\CacheTest.cs" />
+    <Compile Include="AppModel\Pile\PileTest.cs" />
+    <Compile Include="AppModel\Pile\TRow.cs" />
+    <Compile Include="AppModel\StarterTests.cs" />
+    <Compile Include="Cache\StoreTests.cs" />
+    <Compile Include="CodeAnalysis\LaconfigLexer.cs" />
+    <Compile Include="CodeAnalysis\JSONLexer.cs" />
+    <Compile Include="CodeAnalysis\JSONParser.cs" />
+    <Compile Include="Collections\BitListTest.cs" />
+    <Compile Include="Collections\RegistryTests.cs" />
+    <Compile Include="Collections\EventedDictionaryTests.cs" />
+    <Compile Include="Collections\EventedListTests.cs" />
+    <Compile Include="Collections\MatrixTest.cs" />
+    <Compile Include="Config\ValueAccessors.cs" />
+    <Compile Include="Config\FactoryUtilsTests.cs" />
+    <Compile Include="Config\ProviderLoads.cs" />
+    <Compile Include="FIDTests.cs" />
+    <Compile Include="DataAccess\FieldAttrPrototyping.cs" />
+    <Compile Include="ExtRndGenTests.cs" />
+    <Compile Include="DataAccess\Distributed.cs" />
+    <Compile Include="ELinkTest.cs" />
+    <Compile Include="Erlang\ErlParserTest.cs" />
+    <Compile Include="Erlang\ErlPatternMatchTest.cs" />
+    <Compile Include="Financial\AmountTests.cs" />
+    <Compile Include="Geometry\CommonTests.cs" />
+    <Compile Include="Geometry\LatLngTests.cs" />
+    <Compile Include="Glue\MpxTests.cs" />
+    <Compile Include="Glue\HashUtilsAndProtoSpecifiersTests.cs" />
+    <Compile Include="Glue\TestLogic.cs" />
+    <Compile Include="Glue\TestObjects_B.cs" />
+    <Compile Include="Glue\SyncTests.cs" />
+    <Compile Include="Glue\InProcTests.cs" />
+    <Compile Include="Glue\NodeTests.cs" />
+    <Compile Include="Glue\TestObjects_A.cs" />
+    <Compile Include="IO\ChecksumsTests.cs" />
+    <Compile Include="IO\BufferSegRStreamTests.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\SeparateLocalPathTest.cs" />
+    <Compile Include="IO\LocalInstallationTests.cs" />
+    <Compile Include="IO\DeepCopyTests.cs" />
+    <Compile Include="IO\ManifestUtilsTests.cs" />
+    <Compile Include="IO\ErrorHandling\GaloisPolynomialTest.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4Sign\AuthorizationStringTest.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4Sign\Base.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4Sign\CanonicalRequest.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4Sign\S3V4URLHelpersTest.cs" />
+    <Compile Include="IO\LocalFileSystemTests.cs" />
+    <Compile Include="IO\NetworkGate\NetGateTests.cs" />
+    <Compile Include="Logging\VariousDestinations.cs" />
+    <Compile Include="Media\TagCodes\QR\QRCode.cs" />
+    <Compile Include="Media\TagCodes\QR\QREncoderTest.cs" />
+    <Compile Include="Media\TagCodes\QR\QRImageRendererTest.cs" />
+    <Compile Include="Media\TagCodes\QR\QRMatrixTest.cs" />
+    <Compile Include="OS\NetUtilsTest.cs" />
+    <Compile Include="Parsing\NatTxtGen.cs" />
+    <Compile Include="Security\PuzzleKeypadTests.cs" />
+    <Compile Include="Serialization\SlimBatchTypeMode.cs" />
+    <Compile Include="Serialization\JSONDynamism.cs" />
+    <Compile Include="Serialization\Slim2.cs" />
+    <Compile Include="Social\SocialSerialization.cs" />
+    <Compile Include="StringValueConversionTests.cs" />
+    <Compile Include="ObjectValueConversionTests.cs" />
+    <Compile Include="DataAccess\QuerySourceParsing.cs" />
+    <Compile Include="DataAccess\Serialization.cs" />
+    <Compile Include="DataAccess\Rowsets.cs" />
+    <Compile Include="DataAccess\Tables.cs" />
+    <Compile Include="DataAccess\DynamicRows.cs" />
+    <Compile Include="Erlang\ErlEncodingTest.cs" />
+    <Compile Include="Erlang\ErlTermTest.cs" />
+    <Compile Include="DataAccess\TypedRows.cs" />
+    <Compile Include="DataAccess\TestObjects.cs" />
+    <Compile Include="Parsing\Utils.cs" />
+    <Compile Include="Serialization\JSONWriter.cs" />
+    <Compile Include="Config\Attributes.cs" />
+    <Compile Include="Config\Behavior.cs" />
+    <Compile Include="Config\CommandArgsConfiguration.cs" />
+    <Compile Include="Config\Scripting.cs" />
+    <Compile Include="Config\Includes.cs" />
+    <Compile Include="Config\Laconic.cs" />
+    <Compile Include="Config\OverridesAndMerges.cs" />
+    <Compile Include="Config\VariableEvaluation.cs" />
+    <Compile Include="Config\XMLConfiguration.cs" />
+    <Compile Include="Glue\WireFrameTests.cs" />
+    <Compile Include="Instrumentation\HistogramTest.cs" />
+    <Compile Include="Instrumentation\TimeHistogramTest.cs" />
+    <Compile Include="IO\SlimFormatReadWrite.cs" />
+    <Compile Include="Logging\BasicLogServiceTests.cs" />
+    <Compile Include="IntMathTest.cs" />
+    <Compile Include="MiscUtilsTest.cs" />
+    <Compile Include="Parsing\CompilingExpressions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Parsing\Evaluator.cs" />
+    <Compile Include="RecordModel\SpeedRecord.cs" />
+    <Compile Include="RecordModel\RecordWithAttributes.cs" />
+    <Compile Include="RecordModel\PersonRecordWithAttributes.cs" />
+    <Compile Include="RecordModel\PersonRecord.cs" />
+    <Compile Include="RecordModel\Record.cs" />
+    <Compile Include="ScopeTest.cs" />
+    <Compile Include="Serialization\ArrayWalking.cs" />
+    <Compile Include="Serialization\POD.cs" />
+    <Compile Include="Serialization\ExampleRecord.cs" />
+    <Compile Include="Serialization\JSON.cs" />
+    <Compile Include="Serialization\PODSlim.cs" />
+    <Compile Include="Serialization\TestObjects.cs" />
+    <Compile Include="Serialization\Slim.cs" />
+    <Compile Include="Templatization\TextCSTemplateCompilerTests.cs" />
+    <Compile Include="Templatization\TeztTemplate.cs" />
+    <Compile Include="TestLog.cs" />
+    <Compile Include="Throttling\ThrottlingTest.cs" />
+    <Compile Include="Wave\URIPatternTests.cs" />
+    <Compile Include="Web\MultiPart\CopyToTest.cs" />
+    <Compile Include="Web\MultiPart\FindSplitTests.cs" />
+    <Compile Include="Web\MultiPart\FindTest.cs" />
+    <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />
+    <Compile Include="Web\MultiPart\SplitTest.cs" />
+    <Compile Include="Web\ParseQueryStringTest.cs" />
+    <Compile Include="Web\WebSettingsTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
+      <Project>{247f9980-3f58-42bd-b261-e23a75dfc3b5}</Project>
+      <Name>NFX.Wave</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NFX.Web\NFX.Web.csproj">
+      <Project>{5c5a10cb-9ca3-460f-b288-5e07bc6ceb0f}</Project>
+      <Name>NFX.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NFX\NFX.csproj">
+      <Project>{E6BFA4D5-D2BE-4BE1-80FE-4536A22F5C45}</Project>
+      <Name>NFX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BusinessLogic\BusinessLogic.csproj">
+      <Project>{8e86d57d-6c9f-491c-aaef-75b9e96840d4}</Project>
+      <Name>BusinessLogic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UTEZT-1.laconf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="NFX.NUnit.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_img.bmp.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_2_bmp_files.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_2_text_files_lf.txt.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_bmp_and_text.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_bmp_lf.txt.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_file.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_test_chinese.txt.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_test_russian.txt.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_2_text_files.txt.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RecordModel\PersonRecordWithAttributes.test-tech.js" />
+    <EmbeddedResource Include="RecordModel\PersonRecordWithAttributes.m_fldName.test-tech.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UTEZT_DATA\SubDir1\Bitmap1.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="UTEZT_DATA\SubDir1\Some Text File With Spaces.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="UTEZT_DATA\SubDir2\a\Icon1.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="UTEZT_DATA\TextFile1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="UTEZT_DATA\Gagarin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\MultiPart\Resources\upload.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UTEZT_DATA\SubDir2\b\About.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

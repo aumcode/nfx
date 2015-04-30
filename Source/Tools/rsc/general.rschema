@@ -1,0 +1,36 @@
+﻿/*
+	This file contains general scripts
+*/
+schema 
+{
+	PK_COLUMN="counter"
+		
+	
+	scripts
+	{
+		script-only=true
+		
+		names
+		{
+			column=first_name  {type=THumanName  required=true  comment="First name"}
+			column=middle_name {type=THumanName  required=false comment="Middle name (optional)"}
+			column=last_name   {type=THumanName  required=true  comment="Last name"}
+		}
+		
+		usaddress
+		{
+			column=addr_line1 {type=TAddrLine  required=true  comment="Address line 1"}
+			column=addr_line2 {type=TAddrLine  required=false comment="Address line 2 (optional)"}
+			column=addr_city  {type=TAddrCity  required=true  comment="Address city name"}
+			column=addr_state {type=TAddrUSState required=true  comment="Address US state"}
+			column=addr_zip   {type=TAddrUSZip   required=true  comment="Address US Zip"}
+		}
+		
+		usperson
+		{
+			_call=/scripts/names{}
+			_call=/scripts/usaddress{}
+		}
+	}
+
+}

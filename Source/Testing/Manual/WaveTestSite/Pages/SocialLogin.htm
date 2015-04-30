@@ -1,0 +1,51 @@
+﻿#<laconf>
+  compiler
+  {
+    using{ns="NFX.Wave.Templatization"}
+    using{ns="NFX.Web"}
+    base-class-name="NFX.Wave.Templatization.WaveTemplate"
+    namespace="WaveTestSite.Pages"
+    summary="Social Login"
+  }
+#</laconf>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Social Login</title>
+    <style type="text/css">
+      body {
+        background-color: black;
+        color: white;
+      }
+
+      a {
+        text-decoration: none;
+        color: #43aed0;
+      }
+
+      .loginWrapper {
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .socialWrapper {
+        background-color: #505050;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loginWrapper">
+      <h1>Login As</h1>
+      ?[DateTime.Now]
+      @[foreach(var provider in WebSettings.SocialNetworks) {]
+        <div class="socialWrapper">
+          <p>?[provider.Name]</p>
+          <p><a href="#">Obtain New Token</a></p>
+        </div>
+      @[}]
+      
+  </body>
+</html>

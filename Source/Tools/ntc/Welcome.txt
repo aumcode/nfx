@@ -1,0 +1,6 @@
+﻿<push><b color=black><f color=white>
+NFX Template Compiler<f color=gray>
+Copyright (c) 2007 - 2013 D.Khmaladze / IT Adapter Inc.
+Version 1.0 / NFX as of April 2nd 2013
+
+<pop>

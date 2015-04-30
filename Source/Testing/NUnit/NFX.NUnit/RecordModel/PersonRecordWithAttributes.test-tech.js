@@ -1,0 +1,1 @@
+﻿This is record validation script text for test technology

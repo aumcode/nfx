@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{37B81F10-4FFB-48FF-8D95-C599C667C87F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFX.WinForms</RootNamespace>
+    <AssemblyName>NFX.WinForms</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\Debug\NFX.WinForms.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Balloon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\GridKit\CellElement.cs" />
+    <Compile Include="Controls\GridKit\CellView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GridKit\Column.cs" />
+    <Compile Include="Controls\GridKit\ColumnResizeElement.cs" />
+    <Compile Include="Controls\GridKit\CommentElement.cs" />
+    <Compile Include="Controls\GridKit\Enums.cs" />
+    <Compile Include="Controls\GridKit\Events.cs" />
+    <Compile Include="Controls\GridKit\Grid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GridKit\RowMap.cs" />
+    <Compile Include="Controls\GridKit\Style.cs" />
+    <Compile Include="Elements\CheckableElement.cs" />
+    <Compile Include="Elements\CheckBoxElement.cs" />
+    <Compile Include="Elements\ComboBoxElement.cs" />
+    <Compile Include="Elements\ComboButtonElement.cs" />
+    <Compile Include="Elements\Element.cs" />
+    <Compile Include="Elements\ElementHostControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Elements\PressableElement.cs" />
+    <Compile Include="Elements\RadioButtonElement.cs" />
+    <Compile Include="Elements\RadioGroupElement.cs" />
+    <Compile Include="Elements\SymbolElement.cs" />
+    <Compile Include="Elements\TextBoxElement.cs" />
+    <Compile Include="Elements\TextElement.cs" />
+    <Compile Include="Elements\TextLabelElement.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Forms\DictionaryForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IFieldControlContext.cs" />
+    <Compile Include="BaseApplication.cs" />
+    <Compile Include="StringConsts.cs" />
+    <Compile Include="Themes\Default\DefaultPartRenderer.cs" />
+    <Compile Include="Themes\Default\DefaultTheme.cs" />
+    <Compile Include="Themes\ITheme.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Themes\IPartRenderer.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Views\ComboBoxLookupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Design\FieldContextDesignClasses.cs" />
+    <Compile Include="Views\Design\FieldViewDesignClasses.cs" />
+    <Compile Include="Views\Design\RecordContextDesignClasses.cs" />
+    <Compile Include="Views\Enums.cs" />
+    <Compile Include="Views\FieldContextControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\FieldView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\InternalTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\RecordContextForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RecordContextPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\GeneratedRecordView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApi\GDI.cs" />
+    <Compile Include="WinApi\Kernel.cs" />
+    <Compile Include="WinApi\Messages.cs" />
+    <Compile Include="WinApi\User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FieldView.bmp" />
+    <Content Include="Views\FieldContextControl.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NFX\NFX.csproj">
+      <Project>{E6BFA4D5-D2BE-4BE1-80FE-4536A22F5C45}</Project>
+      <Name>NFX</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

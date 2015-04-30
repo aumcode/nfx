@@ -1,0 +1,20 @@
+﻿ The NFX QR code generator is based on SOME PORTIONS of ZXing library hosted
+ on https://github.com/zxing/zxing distributed with Apache 2.0 license
+
+ Changes in NFX:
+
+ NFX libary does not represent a direct port of zXing into C#, rather it only uses some base
+  implementation/code patterns for QR code generation from zXing
+
+ Refactorings of duplicate types/concepts that are already present in NFX, such as bit-oriented
+ collections and error correction classes.
+
+ Mended code identifier calling conventions per NFX standard (exception, method, variable, field, property names).
+
+ Only the base idea of original zXing library was used in NFX.
+
+ Research topics used in NFX:
+
+  http://en.wikipedia.org/wiki/QR_code
+  http://en.wikipedia.org/wiki/Galois_theory
+  http://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction

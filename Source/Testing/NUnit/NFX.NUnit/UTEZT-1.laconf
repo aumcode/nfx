@@ -1,0 +1,10 @@
+﻿some-node
+{
+  a=189
+  file.b=2
+  file.c=3
+  sub-sect
+  {
+    name="another one"
+  }
+}

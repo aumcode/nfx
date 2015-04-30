@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA643D74-34D9-4984-9B35-90EF028D48FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFX.NUnit.Integration</RootNamespace>
+    <AssemblyName>NFX.NUnit.Integration</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Providers\NFX.MongoDB\MongoDBDriver\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Providers\NFX.MySQL\MySQLDriver\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppModel\Pile\PileTest.cs" />
+    <Compile Include="AppModel\Pile\TRow.cs" />
+    <Compile Include="CRUD\MySQLTests.cs" />
+    <Compile Include="CRUD\TestLogic.cs" />
+    <Compile Include="CRUD\TestObjects.cs" />
+    <Compile Include="Glue\JokeCalculator.cs" />
+    <Compile Include="Glue\JokeContracts.cs" />
+    <Compile Include="Glue\JokeHelper.cs" />
+    <Compile Include="Glue\JokeTestBase.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4FilesystemTests.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4Tests.cs" />
+    <Compile Include="IO\FileSystem\SVN\SVNFileSystemTest.cs" />
+    <Compile Include="IO\FileSystem\SVN\WebDAVTest.cs" />
+    <Compile Include="ExternalCfg.cs" />
+    <Compile Include="Logging\SQLServerLogging.cs" />
+    <Compile Include="MongoDB\ConversionTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\JSON.cs" />
+    <Compile Include="Serialization\TestObjects.cs" />
+    <Compile Include="Time\EventTimerTests.cs" />
+    <Compile Include="Wave\WaveTest.cs" />
+    <Compile Include="Wave\WaveTestBase.cs" />
+    <Compile Include="Wave\WebClientCookied.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\Pay\AutostarterTest.cs" />
+    <Compile Include="Web\Pay\FakePaySystemHost.cs" />
+    <Compile Include="Web\Pay\MockTest.cs" />
+    <Compile Include="Web\Pay\PayTestCommon.cs" />
+    <Compile Include="Web\Pay\StripeTest.cs" />
+    <Compile Include="Web\Social\AutostarterTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
+      <Project>{247f9980-3f58-42bd-b261-e23a75dfc3b5}</Project>
+      <Name>NFX.Wave</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NFX.Web\NFX.Web.csproj">
+      <Project>{5c5a10cb-9ca3-460f-b288-5e07bc6ceb0f}</Project>
+      <Name>NFX.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NFX\NFX.csproj">
+      <Project>{e6bfa4d5-d2be-4be1-80fe-4536a22f5c45}</Project>
+      <Name>NFX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Providers\NFX.MongoDB\NFX.MongoDB.csproj">
+      <Project>{a7a57929-f847-4e9d-8354-d2318d2e2617}</Project>
+      <Name>NFX.MongoDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Providers\NFX.MsSQL\NFX.MsSQL.csproj">
+      <Project>{eee0c836-89f7-468f-99c1-330278618a4f}</Project>
+      <Name>NFX.MsSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Providers\NFX.MySQL\NFX.MySQL.csproj">
+      <Project>{a78dc3ec-7539-425e-81b4-f3bab71c7e21}</Project>
+      <Name>NFX.MySQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BusinessLogic\BusinessLogic.csproj">
+      <Project>{8e86d57d-6c9f-491c-aaef-75b9e96840d4}</Project>
+      <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Manual\WaveTestSite\WaveTestSite.csproj">
+      <Project>{032e1188-78dd-48ec-8711-792500d7b9e8}</Project>
+      <Name>WaveTestSite</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CRUD\Patient.List.mys.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CRUD\Types.Load.mys.sql" />
+    <Content Include="CRUD\CreateTables.txt" />
+    <Content Include="IO\FileSystem\SVN\Esc Folder+\Escape.txt" />
+    <Content Include="IO\FileSystem\SVN\Esc Folder+\NestedFolder\Escape.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

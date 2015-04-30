@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{247F9980-3F58-42BD-B261-E23A75DFC3B5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFX.Wave</RootNamespace>
+    <AssemblyName>NFX.Wave</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\Debug\NFX.Wave.XML</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1591</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\Release\NFX.Wave.XML</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1591</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client\RecordModelGenerator.cs" />
+    <Compile Include="Filters\BeforeAfterFilterBase.cs" />
+    <Compile Include="Filters\SecurityFilter.cs" />
+    <Compile Include="Filters\GeoLookupFilter.cs" />
+    <Compile Include="Filters\SessionFilter.cs" />
+    <Compile Include="Filters\RedirectFilter.cs" />
+    <Compile Include="Filters\LoggingFilter.cs" />
+    <Compile Include="Filters\ErrorFilter.cs" />
+    <Compile Include="Filters\StopFilter.cs" />
+    <Compile Include="Handlers\CompositeHandler.cs" />
+    <Compile Include="Handlers\MVCHandler.cs" />
+    <Compile Include="Handlers\NOPHandler.cs" />
+    <Compile Include="Handlers\EmbeddedSiteHandler.cs" />
+    <Compile Include="Handlers\FileDownloadHandler.cs" />
+    <Compile Include="Handlers\TypeLookupHandler.cs" />
+    <Compile Include="Handlers\TypeLookupUtils.cs" />
+    <Compile Include="Handlers\TemplateHandler.cs" />
+    <Compile Include="Handlers\ContextDumpHandler.cs" />
+    <Compile Include="Instrumentation\Gauges.cs" />
+    <Compile Include="MVC\ActionResult.cs" />
+    <Compile Include="MVC\Attributes.cs" />
+    <Compile Include="MVC\Controller.cs" />
+    <Compile Include="MVC\Reflection.cs" />
+    <Compile Include="Response.cs" />
+    <Compile Include="SysConsts.cs" />
+    <Compile Include="Templatization\ResponseRenderingTarget.cs" />
+    <Compile Include="Handlers\StockContentSiteHandler.cs" />
+    <Compile Include="Templatization\StockContent\Error.htm.auto.cs">
+      <DependentUpon>Error.htm</DependentUpon>
+    </Compile>
+    <Compile Include="Templatization\StockContent\Master.htm.auto.cs">
+      <DependentUpon>Master.htm</DependentUpon>
+    </Compile>
+    <Compile Include="Templatization\WaveTemplate.cs" />
+    <Compile Include="URIPattern.cs" />
+    <Compile Include="WaveSession.cs" />
+    <Compile Include="WorkFilter.cs" />
+    <Compile Include="StringConsts.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="PlatformUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkDispatcher.cs" />
+    <Compile Include="WaveServer.cs" />
+    <Compile Include="WorkContext.cs" />
+    <Compile Include="WorkHandler.cs" />
+    <Compile Include="WorkMatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BUILD_INFO.txt" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.default.css" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.modern.css" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-1.11.0.min.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.ruler.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.tree.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.ideas.utest.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\ideas.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\signal.htm" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.chart.svg.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.chart.svg.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.forms.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.data.utest.htm" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.gui.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.utest.htm" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ad.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ae.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\af.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ag.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ai.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\al.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\am.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\an.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ao.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ar.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\as.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\at.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\au.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\aw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ax.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\az.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ba.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bb.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bd.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\be.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bh.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bi.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bj.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bo.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\br.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bs.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bv.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\by.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\bz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ca.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\catalonia.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cd.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ch.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ci.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ck.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cl.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\co.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cs.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cv.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cx.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cy.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\cz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\de.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\dj.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\dk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\dm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\do.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\dz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ec.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ee.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\eg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\eh.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\england.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\er.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\es.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\et.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\europeanunion.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fam.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fi.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fj.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fo.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\fr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ga.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gb.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gd.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ge.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gh.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gi.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gl.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gp.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gq.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gs.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\gy.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\hk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\hm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\hn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\hr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ht.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\hu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\id.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ie.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\il.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\in.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\io.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\iq.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ir.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\is.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\it.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\jm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\jo.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\jp.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ke.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kh.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ki.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\km.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kp.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ky.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\kz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\la.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lb.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\li.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ls.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\lv.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ly.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ma.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\md.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\me.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mh.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ml.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mo.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mp.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mq.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ms.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mv.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mx.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\my.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\mz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\na.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\nc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ne.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\nf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ng.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ni.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\nl.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\no.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\np.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\nr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\nu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\nz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\om.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pa.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pe.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ph.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pl.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ps.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\pw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\py.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\qa.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\re.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ro.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\rs.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ru.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\rw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sa.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sb.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\scotland.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sd.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\se.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sh.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\si.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sj.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sl.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\so.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\st.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sv.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sy.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\sz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\td.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\th.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tj.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tk.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tl.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\to.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tr.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tv.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tw.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\tz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ua.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ug.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\um.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\us.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\uy.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\uz.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\va.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\vc.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ve.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\vg.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\vi.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\vn.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\vu.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\wales.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\wf.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ws.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ye.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\yt.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\za.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\zm.png" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\zw.png" />
+    <None Include="Templatization\StockContent\Error.htm" />
+    <None Include="Templatization\StockContent\Master.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NFX.Web\NFX.Web.csproj">
+      <Project>{5c5a10cb-9ca3-460f-b288-5e07bc6ceb0f}</Project>
+      <Name>NFX.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NFX\NFX.csproj">
+      <Project>{e6bfa4d5-d2be-4be1-80fe-4536a22f5c45}</Project>
+      <Name>NFX</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>echo BUILD_SEED=%25random%25  &gt;  "$(ProjectDir)BUILD_INFO.txt"
+echo COMPUTER=%25computername%25  &gt;&gt;  "$(ProjectDir)BUILD_INFO.txt"
+echo USER=%25username%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+echo OS=%25os%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+echo DATE=%25date%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+echo TIME=%25time%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

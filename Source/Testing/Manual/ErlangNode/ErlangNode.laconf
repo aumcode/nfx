@@ -1,0 +1,52 @@
+﻿//format=laconic
+
+// For testing this config start an Erlang shell like this:
+//     werl -sname r@localhost -setcookie hahaha
+
+nfx
+{
+    log-root=$"c:\nfx\"
+    app-name="test-erl"
+    log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+    log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+    debug-default-action="LogAndThrow"
+	   
+    starters {
+        starter{ name="Erlang" type="NFX.Erlang.ErlApp" }
+    }
+  
+    erlang
+    {
+        short-name=true
+        cookie="hahaha"
+
+        node="me" {
+            trace="wire"
+            accept=true
+            address="localhost" // address="127.0.0.1:1234"
+            tcp-no-delay=true
+            tcp-rcv-buf-size=4096
+            tcp-snd-buf-size=4096
+        }	
+
+        node="r@localhost" {
+            tcp-no-delay=false
+            tcp-rcv-buf-size=100000
+            tcp-snd-buf-size=100000
+        }
+    }   
+
+    log
+    { 
+        name="Logger"
+
+        destination
+        {  
+            type="$(/$log-debug)"
+            name="$(/$app-name)-debug"
+            filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
+            log-time-format="HH:mm:ss.fff"
+            levels="-TraceZ | Warning-"
+        }
+    }
+}//nfx

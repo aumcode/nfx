@@ -1,0 +1,45 @@
+﻿nfx
+{
+    log-root=$(~AUM_DISK_ROOT)
+    application-name="telemetry-viewer"
+    log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
+    log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+    debug-default-action="LogAndThrow"
+  	trace-disable=true
+	                   
+    log
+    { 
+      name="Logger"
+
+		  destination
+		  {  
+		     type=$(/$log-csv)
+		     name="tlmtryv"    
+		     path=$(/$log-root) 
+		     name-time-format='yyyyMMdd'
+		     generate-failover-msg=false
+		  }
+    }
+
+  glue
+	{
+		  bindings
+		  {
+			  
+			  binding 
+			  {
+				  name="sync" type="NFX.Glue.Native.SyncBinding"
+				  
+			  }
+		  }
+
+		  servers
+		  {
+			 server {name="TelemetrySync" node="sync://*:8300" contract-servers="TelemetryViewer.Receiver, TelemetryViewer"}
+		  }
+
+
+	}
+
+
+}

@@ -1,0 +1,72 @@
+﻿<push><b color=black><f color=white>
+NFX Inventorization Utility<f color=gray>
+Copyright (c) 2007 - 2013 D.Khmaladze / IT Adapter Inc.
+Version 1.0 / NFX as of March 26th 2013
+
+<f color=magenta>
+ Usage:
+<f color=white>
+   inventory <f color=green>assembly_list <f color=darkCyan>[/h | /? | /help]
+              [/filter | /f [<f color=darkRed>attributed<f color=darkCyan>= true|false]
+                            [<f color=darkRed>tiers<f color=darkCyan>=value]
+                            [<f color=darkRed>concerns<f color=darkCyan>=value]
+                            [<f color=darkRed>technology<f color=darkCyan>=value]
+                            [<f color=darkRed>schema<f color=darkCyan>=value]
+                            [<f color=darkRed>tool<f color=darkCyan>=value]
+                            [<f color=darkRed>startdate<f color=darkCyan>=value]
+                            [<f color=darkRed>enddate<f color=darkCyan>=value] ] 
+              [{/s | /strat | /strategy  fully_qualified_type_name }]                                                       
+
+ <f color=green>assembly_list<f color=gray> - a list of assembly file names delimited by ";"
+
+<f color=magenta>
+ Options:
+
+ <f color=darkCyan>/h | /help | /?<f color=gray> - displays help message 
+ <f color=darkCyan>/f | /filter<f color=gray> - specifies filter.
+                 Multiple filters get combined using AND logical operator:
+          <f color=darkRed>tiers<f color=gray> - a comma-separated set of flags: 
+               <f color=darkYellow>{ GUI, AppServer, DBServer, SystemServer, NotificationBus, All}<f color=gray>
+
+          <f color=darkRed>concerns<f color=gray> - a comma-separated set of flags : 
+               <f color=darkYellow>{ Security, Development, Testing, Deployment, Release,
+                 Testability, Configuration, Performance, Maintainability,
+                 MissionCriticality, Licensing, Features, Requirements, Luck} <f color=gray>   
+
+          <f color=darkRed>technology<f color=gray> - tecnology name such as "Oracle" or "MongoDB"
+          <f color=darkRed>schema<f color=gray> - schema name, i.e. a name of database schema
+          <f color=darkRed>tool<f color=gray> - name of tool that inventory is performed for
+          <f color=darkRed>attributed<f color=gray> - specifies whether to include only types
+                       that are tagged with [Inventory] attribute 
+          <f color=darkRed>startdate<f color=gray> - datetime compared to inventory start date that
+                       has to be greater or equal than/to this value
+          <f color=darkRed>enddate<f color=gray> - datetime compared to inventory end date that 
+                      has to be less or equal than/to this value 
+ <f color=darkCyan>/s | /strat | /strategy<f color=gray> - injects inventorization strategy type, 
+             this switch may repeat for multiple types.
+             If omitted, then Basic,RecordModel strategies are used by default. 
+             fully_qualified_type_name - must be fully qualified
+
+
+<f color=magenta>
+ Examples:
+
+<f color=yellow>
+  inventory NFX.dll;Aum.dll -f attributed=false  <f color=gray>
+   Inventorizes all types, regardless of Inventory attribute NFX and Aum dlls
+   using default set of inventorization strategies 
+
+<f color=yellow>
+  inventory MyTypes.dll /f technology="Oracle" schema="products"  <f color=gray>
+   Inventorizes Inventory-attributed types in MyTypes.dll
+   that have particular technology and schema attribute fields specified
+
+<f color=yellow>
+  inventory MyTypes.dll 
+    /f technology="MongoDB" schema="products" tiers=DBServer
+    /s "NFX.Inventorization.RecordModelInventorization, NFX"<f color=gray>
+   Inventorizes Inventory-attributed types in MyTypes.dll, using only 
+   RecordModelInventorization strategy declared in NFX.dll,
+   that have particular technology and schema attribute fields specified
+
+<pop>

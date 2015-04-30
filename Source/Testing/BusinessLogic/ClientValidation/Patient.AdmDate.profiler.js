@@ -1,0 +1,1 @@
+﻿//this script should validate AdmissionDate field for Profiler client technology

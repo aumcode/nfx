@@ -1,0 +1,127 @@
+﻿<push>
+<f color=magenta>
+ Usage:
+<f color=white>
+   rsc <f color=green>schema_file <f color=darkCyan>[/h | /? | /help]
+              [/c | /compiler  fully_qualified_type_name]
+              [/options | /opt | /o
+                            [<f color=darkRed>out-path<f color=darkCyan>= path]
+                            [<f color=darkRed>out-name-prefix<f color=darkCyan>= prefix]
+                            [<f color=darkRed>case-sensitive-names<f color=darkCyan>= true|false]
+                            [<f color=darkRed>domain-search-paths<f color=darkCyan>= path[;pathX...]]
+                            [<f color=darkRed>separate-indexes<f color=darkCyan>= true|false]
+                            [<f color=darkRed>separate-fkeys<f color=darkCyan>= true|false]
+
+              ]
+                                                                              
+
+ <f color=green>schema-file<f color=gray> - relational schema file
+
+<f color=magenta>
+ Options:
+
+ <f color=darkCyan>/c | /compiler<f color=gray> - a fully qualified compiler type name, if omitted 
+            MySQLCompiler is used
+ <f color=darkCyan>/o | /options<f color=gray> - specifies compiler options.
+                 
+          <f color=darkRed>out-path<f color=gray> - output path, if omitted then input file's path is used
+          <f color=darkRed>out-name-prefix<f color=gray> - prefix gets appended to every out file name
+          <f color=darkRed>case-sensitive-names<f color=gray> - when true, indicates that object names are
+           case sensitive, so they must be kept kept as-is
+          <f color=darkRed>domain-search-paths<f color=gray> - RDBMS only option, a ";" delimited list of
+           namespaces paths that should be searched for domain type names
+          <f color=darkRed>separate-indexes<f color=gray> - RDBMS only option, write create index in a 
+           separate output
+          <f color=darkRed>separate-fkeys<f color=gray> - RDBMS only option, write all foreign keys in a
+           separate output using ALTER TABLE ADD CONSTRAINT...
+
+<f color=magenta>
+ Examples:
+
+<f color=yellow>
+  rsc "c:\db\Doctor.rschema" 
+      -options
+          out-name-prefix=MyProject 
+          domain-search-paths="MyProject.DataTypes;MyWeb.Domains" <f color=gray>
+Compiles "doctors" schema using MySQLCompiler and prepends all output file names with "MyProject". Also specifies namespaces used for domain type lookup
+
+<f color=magenta>
+ Relational Schema Language:
+<f color=gray>
+ The language is based on Laconic configuration format and abides by all configuration framework rules.
+ The configuration tree has the following general structure:
+<f color=DarkGray>
+ <push><f color=white>schema<pop>
+ {
+    <push><f color=darkRed>include="file-name"{}<pop>
+    <push><f color=darkRed>script-include="file-name"{}<pop>
+    <push><f color=darkRed>script-text="verbatim text to include in the output"{}<pop>
+    
+    <push><f color=white>table<pop>=TABLE_NAME
+    {
+        short-name=TABLE_SHORT_NAME
+        comment="Entity comment text"
+        script-comment="Comment text to be placed in script"
+        <push><f color=gray>column<pop>=COLUMN_NAME
+        {
+          short-name=COLUMN_SHORT_NAME
+          <push><f color=cyan>type<pop>=DOMAIN_NAME(.CTOR_PARAMS){DOMAIN_CONFIG_TREE} 
+          required=true|false
+          default=value
+          <push><f color=cyan>primary-key<pop>=NAME{OPTIONS}
+          <push><f color=cyan>reference<pop>=NAME{table=REF_TABLE_NAME column=REF_COLUMN_NAME} 
+        }
+
+        <push><f color=gray>index<pop>=INDEX_NAME
+        {
+            unique=true|false
+            <push><f color=cyan>column<pop>=COLUMN_NAME { order=asc|desc length=int}
+        }
+    }
+ }
+
+<f color=magenta>
+ Relational Schema Script Example:
+<f color=gray>
+schema 
+{
+    PK_COLUMN="counter"
+    scripts
+    {
+        script-only=true
+        names
+        {
+            column=first_name  {type=THumanName  required=true}
+            column=middle_name {type=THumanName }
+            column=last_name   {type=THumanName  required=true}
+        }
+    }
+}
+
+<f color=magenta>
+ Relational Schema Calling Script Example:
+<f color=gray>
+
+schema
+{
+    include="name-of-script-file"{}
+    
+    table=doctor
+    {
+       short-name="doc"
+       comment="Holds information about licensed doctors"
+       column=$(/$PK_COLUMN) {type=TCounter  required=true primary-key{} }
+       column=NPI {type=TVarchar(24) required=true }
+       _call=/scripts/names{}
+
+       index=npi
+       {
+         unique=true 
+         column=NPI {}
+         comment="Every doctor is uniquely identified by NPI"
+       }
+    }
+}
+
+
+<pop>

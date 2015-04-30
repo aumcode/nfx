@@ -1,0 +1,1 @@
+﻿This is field validation script text for test technology

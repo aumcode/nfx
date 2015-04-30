@@ -1,0 +1,182 @@
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using NFX.Environment;
+
+namespace NFX.Serialization.JSON
+{
+    
+    /// <summary>
+    /// Specifies the purpose of JSON serialization so the level of detail may be dynamically adjusted.
+    /// Depending on this parameter IJSONWritable implementors may include additional details
+    /// that are otherwise not needed
+    /// </summary>
+    public enum JSONSerializationPurpose 
+    {
+       Unspecified = 0,
+
+       /// <summary>
+       /// UI Interface feeding - include only the data needed to show to the user
+       /// </summary>
+       UIFeed,
+       
+       /// <summary>
+       /// Include as much data as possible for remote object reconstruction
+       /// </summary>
+       Marshalling
+    }
+    
+    
+    
+    /// <summary>
+    /// Specifies how JSON should be written as text. Use JSONWritingOptions.Compact or JSONWritingOptions.PrettyPrint
+    ///  static properties for typical options
+    /// </summary>
+    public class JSONWritingOptions : IConfigurable
+    {
+        private static JSONWritingOptions s_Compact =   new JSONWritingOptions();
+
+        private static JSONWritingOptions s_CompacRowsAsMap =  new JSONWritingOptions(){RowsAsMap = true};
+        
+        private static JSONWritingOptions s_CompactASCII = new JSONWritingOptions{ ASCIITarget = true };
+
+        private static JSONWritingOptions s_PrettyPrint =  new JSONWritingOptions{
+                                                                                   IndentWidth = 2,
+                                                                                   ObjectLineBreak = true,
+                                                                                   MemberLineBreak = true,
+                                                                                   SpaceSymbols = true,
+                                                                                   ASCIITarget = false
+                                                                                 };
+        private static JSONWritingOptions s_PrettyPrintRowsAsMap =  new JSONWritingOptions{
+                                                                                   IndentWidth = 2,
+                                                                                   ObjectLineBreak = true,
+                                                                                   MemberLineBreak = true,
+                                                                                   SpaceSymbols = true,
+                                                                                   ASCIITarget = false, 
+                                                                                   RowsAsMap = true
+                                                                                 };
+
+
+        /// <summary>
+        /// Writes JSON without line breaks between members and no indenting. Suitable for data transmission
+        /// </summary>
+        public static JSONWritingOptions Compact { get { return s_Compact;} }
+
+        /// <summary>
+        /// Writes JSON without line breaks between members and no indenting writing rows as maps(key:values) instead of arrays. Suitable for data transmission
+        /// </summary>
+        public static JSONWritingOptions CompactRowsAsMap { get { return s_CompacRowsAsMap;} }
+
+         /// <summary>
+        /// Writes JSON without line breaks between members and no indenting escaping any characters 
+        ///  with codes above 127 suitable for ASCII transmission
+        /// </summary>
+        public static JSONWritingOptions CompactASCII { get { return s_CompactASCII;} }
+
+        /// <summary>
+        /// Writes JSON suitable for printing/screen display
+        /// </summary>
+        public static JSONWritingOptions PrettyPrint { get { return s_PrettyPrint;} }
+
+        /// <summary>
+        /// Writes JSON suitable for printing/screen display writing rows as maps(key:values) instead of arrays
+        /// </summary>
+        public static JSONWritingOptions PrettyPrintRowsAsMap { get { return s_PrettyPrintRowsAsMap;} }
+
+        public JSONWritingOptions()
+        {
+        }
+
+
+        /// <summary>
+        /// Specifies character width of single indent level
+        /// </summary>
+        [Config]
+        public int IndentWidth;
+
+        /// <summary>
+        /// Indicates whether a space must be placed right after the symbol, such as coma in array declaration or colon in member declaration for
+        ///  better readability
+        /// </summary>
+        [Config]
+        public bool SpaceSymbols;
+        
+        /// <summary>
+        /// Specifies whether objects need to be separated by line brakes for better readability
+        /// </summary>
+        [Config]
+        public bool ObjectLineBreak;
+        
+        /// <summary>
+        /// Specifies whether every object member must be placed on a separate line for better readability
+        /// </summary>
+        [Config]
+        public bool MemberLineBreak;
+        
+        /// <summary>
+        /// Specifies whether the target of serialization only deals with ASCII characeters,
+        /// so any non-ASCII character with code above 127 must be escaped with unicode escape sequence
+        /// </summary>
+        [Config]
+        public bool ASCIITarget;
+
+        /// <summary>
+        /// Specifies whether DateTime must be encoded using ISO8601 format that look like "2011-03-18T14:25:00Z",
+        /// otherwise dates are encoded using "new Date(milliseconds_since_unix_epoch)" which is technically not a valid JSON, however
+        ///  most JSON parsers understand it very well
+        /// </summary>
+        [Config]
+        public bool ISODates = true;
+
+        /// <summary>
+        /// Sets a limit of object nesting, i.e. for recursive graph depth. Default is 0xff
+        /// </summary>
+        [Config]
+        public int MaxNestingLevel = 0xff;
+
+
+        /// <summary>
+        /// When true, writes every row as a map {FieldName: FieldValue,...} instead of array of values
+        /// </summary>
+        [Config]
+        public bool RowsAsMap;
+
+        /// <summary>
+        /// When true, writes rowset metadata (i.e. schema, intsnace id etc.)
+        /// </summary>
+        [Config]
+        public bool RowsetMetadata;
+
+        /// <summary>
+        /// Specifies the purpose of JSON serialization so the level of detail may be dynamically adjusted.
+        /// Depending on this parameter IJSONWritable implementors may include additional details
+        /// that are otherwise not needed
+        /// </summary>
+        [Config]
+        public JSONSerializationPurpose Purpose;
+
+        
+        public void Configure(IConfigSectionNode node)
+        {
+            ConfigAttribute.Apply(this, node);
+        }
+    }
+}
