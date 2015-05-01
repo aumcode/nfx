@@ -37,13 +37,13 @@ namespace NFX.*
   Static non-pub fields must begin with   s_<PascalCase> i.e.  "s_ServerInstance"
   Thread-static non-pub fields must begin with ts_<PascalCase> i.e. "ts_LockList"
 
-  Pub fields: PascalCase and prefferably read-only	i.e. "BoxColor"
+  Pub fields: PascalCase and preferably read-only	i.e. "BoxColor"
   Pub properties: PascalCase						i.e. "BoxColor"
   Pub Methods: PascalCase						    i.e. "GetPriority()"
   Protected Methods: PascalCase, core virtual overrides Do<PascalCase> i.e. :  pub Open() calls protected virtual DoOpen()
 
   Localizable stirng constants must be moved to StringConsts.cs
-  Non-localizable string constants must be delcared in CONSTS region:
+  Non-localizable string constants must be declared in CONSTS region:
    Numeric Time span values must end with _MS, _SEC, _MIN specifier. NFX does not use TimeSpan type for storing intervals in props/configs
    Configuration Section names: CONFIG_*_SECT, Configuration attr names: CONFIG_*_ATTR
    Default values constants should start from DEFAULT_*
@@ -83,6 +83,11 @@ namespace NFX.*
 
       public CLASS_NAME() 
       {
+      }
+      
+      override void Destructor()
+      {
+       //.dctor also goes here
       }
 
     #endregion

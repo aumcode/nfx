@@ -379,6 +379,45 @@ WAVE.GUI = (function(){
         rebuild();
     }//keypad
 
+    var RulerManager = function (cfg) {
+      var fScopes = {}; // {<SCOPE_NAME>: [element: DOMElement, ruler: Ruler]}
+      var DEFAULT_SCOPE_NAME = "";
+
+      this.set = function (element, scopeName, rulerCfg) {
+        if (!scopeName) scopeName = DEFAULT_SCOPE_NAME;
+        var scopeBucket = fScopes[scopeName];
+        if (!scopeBucket) scopeBucket = [];
+        fScopes[scopeName] = scopeBucket;
+      }
+
+      this.unset = function (element, scopeName) {
+        if (scopeName) {
+          var scopeBucket = fScopes[scopeName];
+          if (!scopeBucket) return;
+          var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
+          if (idx === -1) return;
+          scopeBucket.splice(idx, 1);
+        } else {
+          for (var key in fScopes) {
+            if (!fScopes.hasOwnProperty(key)) continue;
+
+            var scopeBucket = fScopes[key];
+            var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
+            if (idx === -1) continue;
+            scopeBucket.splice(idx, 1);
+          }
+        }
+
+        $(element).unbind("mouseenter", onMouseOver);
+        $(element).unbind("mouseleave", onMouseLeave);
+        $(element).unbind("mousemove", onMouseMove);
+      }
+
+    }//RulerManager
+
+    var ElementRuler = function(element) {
+    }
+
     var Ruler = function (cfg) {
       WAVE.extend(this, WAVE.EventManager);
 
@@ -595,26 +634,8 @@ WAVE.GUI = (function(){
         divSightBottom = createLineDiv(false);
         divSightBoxTop = createLineDiv(true);
         divSightBoxBottom = createLineDiv(true);
-
-        //divSightRight = document.createElement("div");
-        //divSightRight.style.height = "1px";
-        //divSightRight.style.position = "absolute";
-        //divSightRight.className = ei.cfg.sightCls || fRulerSightCls;
-        //document.body.appendChild(divSightRight);
-
-        //divSightTop = document.createElement("div");
-        //divSightTop.style.width = "1px";
-        //divSightTop.style.position = "absolute";
-        //divSightTop.className = ei.cfg.sightCls || fRulerSightCls;
-        //document.body.appendChild(divSightTop);
-
-        //divSightBottom = document.createElement("div");
-        //divSightBottom.style.width = "1px";
-        //divSightBottom.style.position = "absolute";
-        //divSightBottom.className = ei.cfg.sightCls || fRulerSightCls;
-        //document.body.appendChild(divSightBottom);
       }
-    }
+    }//Ruler
 
     var ruler = null;
 
@@ -628,6 +649,18 @@ WAVE.GUI = (function(){
       if (ruler === null) return;
 
       ruler.unbindElement(element);
+    }
+
+    published.RulerScope = function() {
+      var fElements = [], fElementWlk = WAVE.arrayWalkable(fElements);
+
+      this.addElement = function(el) {
+        if (WAVE.inArray(fElements, el)) return;
+      }
+
+      this.removeElement = function(el) {
+        WAVE.arrayDelete(fElements, el);
+      }
     }
 
     var fTreeNodeIDSeed = 0;
