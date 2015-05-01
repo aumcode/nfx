@@ -42,15 +42,15 @@ NFX uses very BCL:
 
 ##Code File Structure
 Try to organize code file structure per the spec below, in the particular order:
-1. License
-2. USINGS - System, NFX, then your namespaces(if any)
-3. Region "CONSTS"
-4. Region ".ctor" - constructors, and static factories/properties, Destructor() calls
-5. Region "Fields/.pvt .flds"
-6. Region "Properties" - public properties
-7. Region "Pub" - public methods
-8. Region "Protected" - protected methods/stubs
-9. Region ".pvt/.pvt.impl" - private implementations
+1.  License
+2.  USINGS - System, NFX, then your namespaces(if any)
+3.  Region "CONSTS"
+4.  Region ".ctor" - constructors, and static factories/properties, Destructor() calls
+5.  Region "Fields/.pvt .flds"
+6.  Region "Properties" - public properties
+7.  Region "Pub" - public methods
+8.  Region "Protected" - protected methods/stubs
+9.  Region ".pvt/.pvt.impl" - private implementations
 
 Please see EMPTY_CLASS_TEMPLATE.cs under '/Source'
 
