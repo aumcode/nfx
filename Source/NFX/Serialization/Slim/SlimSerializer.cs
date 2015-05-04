@@ -330,6 +330,7 @@ namespace NFX.Serialization.Slim
                  //Write root in pool if it is reference type
                  if (!isValType && root!=null)
                    pool.Add(root);
+               
                  m_Format.TypeSchema.Serialize(writer, registry, pool, root, scontext);
 
                  

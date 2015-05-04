@@ -1632,6 +1632,53 @@ namespace NFX.NUnit.Serialization
           }
         }
 
+                     private class binwrap
+                     {
+                       public byte[] bin;
+                     }
+
+        [TestCase]
+        public void RootByteArrayEfficiency()
+        {
+          using(var ms = new MemoryStream())
+          {           
+            var s = new SlimSerializer(SlimFormat.Instance);
+            
+            var ar1 = new byte[32000];
+
+            const int CNT = 1000;
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            for(var i=0; i<CNT;i++)
+            {
+               ms.Position = 0;
+              s.Serialize(ms, ar1);
+              ms.Position = 0;
+              var ar2 = s.Deserialize(ms) as byte[];
+              Assert.AreEqual(ar1.Length, ar2.Length);
+            }
+            var e1 = sw.ElapsedMilliseconds;
+
+            var wo1 = new binwrap{ bin = ar1 };
+
+            sw.Restart();
+            for(var i=0; i<CNT;i++)
+            {
+               ms.Position = 0;
+              s.Serialize(ms, wo1);
+              ms.Position = 0;
+              var wo2 = s.Deserialize(ms) as binwrap;
+              Assert.AreEqual(wo1.bin.Length, wo2.bin.Length);
+            }
+            var e2 = sw.ElapsedMilliseconds;
+            
+            Console.WriteLine("Did {0}  byte[] root: {1}ms ({2}ops/sec);  wrap obj: {3}ms({4} ops/sec)", CNT, e1, CNT / (e1/1000d), e2, CNT / (e2/1000d));
+
+            Assert.IsTrue( Math.Abs(1d - (e1 / (double)e2)) < 1.0d);
+                                          
+          }
+        }
+
 
 
 

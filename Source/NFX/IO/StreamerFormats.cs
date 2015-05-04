@@ -109,7 +109,7 @@ namespace NFX.IO
               {
                 var pt = mi.GetParameters()[0].ParameterType;
 
-                if (pt.IsValueType || pt==typeof(string))//string is treated like value type
+                if (pt.IsValueType || pt==typeof(string))//string is treated like a value type
                   m_WriteMethods.Add(pt, mi);
                 else
                   m_WriteMethodsRefT.Add(pt, mi); 
@@ -124,7 +124,7 @@ namespace NFX.IO
               {
                 var rt = mi.ReturnType;
                
-                if (rt.IsValueType || rt==typeof(string))//string is treated like value type
+                if (rt.IsValueType || rt==typeof(string))//string is treated like a value type
                   m_ReadMethods.Add(rt, mi);
                 else
                   m_ReadMethodsRefT.Add(rt, mi);

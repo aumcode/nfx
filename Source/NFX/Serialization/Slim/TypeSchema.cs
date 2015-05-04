@@ -663,7 +663,7 @@ namespace NFX.Serialization.Slim
           }
 
           //we get here if we have a boxed value of directly-handled type
-          var wa = Format.GetWriteActionForType(type);
+          var wa = Format.GetWriteActionForType(type) ?? Format.GetWriteActionForRefType(type);//20150503 DKh fixed root byte[] slow
           if (wa!=null)
           {
             wa(writer, instance);
@@ -742,7 +742,7 @@ namespace NFX.Serialization.Slim
          }
 
          //we get here if we have a boxed value of directly-handled type
-         var ra = Format.GetReadActionForType(type);
+         var ra = Format.GetReadActionForType(type) ?? Format.GetReadActionForRefType(type);//20150503 DKh fixed root byte[] slow
          if (ra!=null)
            return ra(reader);
 

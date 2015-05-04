@@ -19,6 +19,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -326,6 +328,79 @@ namespace NFX.NUnit.AppModel.Pile
           ////Console.WriteLine("OverheadBytes: {0}", ipile.OverheadBytes);
           ////Console.WriteLine("SegmentCount: {0}", ipile.SegmentCount);
         }  
+      }
+
+
+           private class dummy
+           {
+             public byte[] bin;
+           }
+
+      
+      [TestCase(false, 1000000, 0, 40)]
+      [TestCase(false,  100000, 0, 50000)]
+      [TestCase(false,   10000, 70000, 150000)]
+      [TestCase(false,   50000, 0, 150000)]
+
+      [TestCase(true, 1000000, 0, 40)]
+      [TestCase(true,  100000, 0, 50000)]
+      [TestCase(true,   10000, 70000, 150000)]
+      [TestCase(true,   50000, 0, 150000)]
+      public void VarSizes(bool isParallel, int cnt, int minSz, int maxSz)
+      {
+        using (var pile = new DefaultPile())
+        {
+          pile.Start();
+          pile.AllocMode = AllocationMode.FavorSpeed;
+          
+          var tasks = new List<Task>();
+          for(var t=0; t < (isParallel? (System.Environment.ProcessorCount - 1) : 1); t++)
+           tasks.Add(
+                  Task.Run( () =>
+                  {
+                     var dict = new Dictionary<PilePointer, dummy>();
+                     var priorOdd = PilePointer.Invalid;
+                     for(var i=0; i<cnt; i++)
+                     {
+                       var even = (i&0x01)==0;
+                       var data = new dummy{ bin = new byte[12 + NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(minSz, maxSz)]};
+                       data.bin.WriteBEInt32(0, ExternalRandomGenerator.Instance.NextRandomInteger);
+                       data.bin.WriteBEInt32(data.bin.Length-4, ExternalRandomGenerator.Instance.NextRandomInteger);
+                       var ptr = pile.Put(data);
+                       Assert.IsTrue( ptr.Valid );
+               
+                       if (even)
+                        dict.Add(ptr, data);
+                       else
+                       {
+                        if (priorOdd.Valid)
+                         Assert.IsTrue( pile.Delete(priorOdd) );
+                        priorOdd = ptr;
+                       }
+
+
+                       if (i%1000==0)
+                        Console.WriteLine("Thread{0} did {1}; allocated {2} bytes, utilized {3} bytes by {4} objects {5} bytes/obj. ",
+                                          Thread.CurrentThread.ManagedThreadId,
+                                           i,
+                                           pile.AllocatedMemoryBytes,
+                                           pile.UtilizedBytes,
+                                           pile.ObjectCount,
+                                           pile.UtilizedBytes / pile.ObjectCount);
+
+                     }
+                     Console.WriteLine("Thread {0} Population done, now checking the buffers... {1}",Thread.CurrentThread.ManagedThreadId, DateTime.Now);
+
+                     foreach(var entry in dict)
+                       Assert.IsTrue( NFX.IOMiscUtils.MemBufferEquals(entry.Value.bin, (pile.Get(entry.Key) as dummy).bin));
+
+                     Console.WriteLine("Thread {0} DONE. {1}", Thread.CurrentThread.ManagedThreadId, DateTime.Now);
+                  })
+            );//add
+            
+          Task.WaitAll( tasks.ToArray() );            
+        }
+
       }
 
     #endregion
