@@ -39,7 +39,7 @@ namespace WinFormsTest
 {
     public partial class SerializerForm2 : Form
     {
-       const int CNT = 25000;//100000;//10000;
+       const int CNT = 50000;//100000;//10000;
        
         public SerializerForm2()
         {
@@ -170,7 +170,7 @@ namespace WinFormsTest
         {
             var ms = new MemoryStream();
 
-            var dcs = new DataContractSerializer(typeof(Library));
+            var dcs = new DataContractSerializer(typeof(Library)); //Library
 
             var w = Stopwatch.StartNew();
             for(var i=0; i<CNT; i++)
@@ -226,7 +226,7 @@ namespace WinFormsTest
         {
            var ms = new MemoryStream();
 
-            var dcs = new DataContractSerializer(typeof(Library));
+            var dcs = new DataContractSerializer(typeof(Library));//Library
             
             dcs.WriteObject(ms, data);
             //XmlDictionaryWriter binaryDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(ms);

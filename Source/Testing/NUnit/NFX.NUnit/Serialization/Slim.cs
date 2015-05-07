@@ -1648,10 +1648,18 @@ namespace NFX.NUnit.Serialization
 
             const int CNT = 1000;
 
+            for(var i=0; i<250000; i++)
+            {
+              ms.Position = 0;
+              s.Serialize(ms, ar1);//warmup
+              ms.Position = 0;
+              s.Deserialize(ms);
+            }
+
             var sw = System.Diagnostics.Stopwatch.StartNew();
             for(var i=0; i<CNT;i++)
             {
-               ms.Position = 0;
+              ms.Position = 0;
               s.Serialize(ms, ar1);
               ms.Position = 0;
               var ar2 = s.Deserialize(ms) as byte[];
@@ -1660,6 +1668,9 @@ namespace NFX.NUnit.Serialization
             var e1 = sw.ElapsedMilliseconds;
 
             var wo1 = new binwrap{ bin = ar1 };
+
+            ms.Position = 0;
+            s.Serialize(ms, wo1);//warmup
 
             sw.Restart();
             for(var i=0; i<CNT;i++)
@@ -1673,8 +1684,12 @@ namespace NFX.NUnit.Serialization
             var e2 = sw.ElapsedMilliseconds;
             
             Console.WriteLine("Did {0}  byte[] root: {1}ms ({2}ops/sec);  wrap obj: {3}ms({4} ops/sec)", CNT, e1, CNT / (e1/1000d), e2, CNT / (e2/1000d));
-
-            Assert.IsTrue( Math.Abs(1d - (e1 / (double)e2)) < 1.0d);
+            
+            Assert.IsTrue( e1 < 60 );
+            Assert.IsTrue( e2 < 60 );
+               
+            var ratio = e1 / (double)e2;
+            Assert.IsTrue(  ratio > 0.33d && ratio < 3.0d);
                                           
           }
         }

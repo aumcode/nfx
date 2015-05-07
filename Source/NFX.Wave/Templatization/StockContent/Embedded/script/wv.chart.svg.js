@@ -1067,13 +1067,32 @@ WAVE.Chart.SVG = (function () {
       return fShowPointTitleLeg;
     }
 
-    var fShowRuler = cfg.showRuler == true;
-    this.showRuler = function (val) {
-      if (typeof (val) !== undefined && val !== fShowRuler) {
-        fShowRuler = val;
-        fireChanged();
+    this.showDefaultRuler = function (val) {
+      var showDefaultRuler = fRulerScopes.length > 0;
+      if (typeof (val) !== undefined && val !== showDefaultRuler) {
+        if (val) self.attachToRulerScope(""); else self.detachFromRulerScope("");
+        if (fRulerScopes.length)
+          fireChanged();
+        return val;
+      } else {
+        return showDefaultRuler;
       }
-      return fShowRuler;
+    }
+
+    var fRulerScopes = [];
+    this.rulerScopes = function() { return WAVE.arrayShallowCopy(fRulerScopes); }
+
+    this.attachToRulerScope = function(scopeName) {
+      if (fRulerScopes.indexOf(scopeName) !== -1) return;
+      fRulerScopes.push(scopeName);
+      fireChanged();
+    }
+
+    this.detachFromRulerScope = function(scopeName) {
+      var idx = fRulerScopes.indexOf(scopeName);
+      if (idx === -1) return;
+      fRulerScopes.splice(idx, 1);
+      fireChanged();
     }
 
     var fLastArea = null;
@@ -2012,32 +2031,102 @@ WAVE.Chart.SVG = (function () {
         zoneAreas.sZone.top() + clientRc.top,
         zoneAreas.sZone.width(), zoneAreas.sZone.height());
 
-      if (self.sZone().showRuler()) {
-        WAVE.GUI.attachRuler(fSvgEl, {
-          getTxtFunc: function (e) {
-            var xAxis = self.xAxis();
-            var yAxis = self.yAxis();
-            var sZone = self.sZone();
-            var lastArea = sZone.lastArea();
+      var rulerScopes = self.sZone().rulerScopes();
+      if (rulerScopes.length > 0) {
+        for(var irs in rulerScopes) {
+          var rulerScope = rulerScopes[irs];
 
-            if (sZoneClientRc.contains(e.clientPoint)) {
+          // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
+          WAVE.GUI.setRuler({element: fSvgEl, scope: rulerScope, elementCfg: { // {getTxt: , getMasterInfo: , getSlaveInfo: }
+            getTxt: function (e) { // {clientPoint: , elementPoint: , divHint: }
+              var xAxis = self.xAxis();
+              var yAxis = self.yAxis();
+              var sZone = self.sZone();
+              var lastArea = sZone.lastArea();
+
+              if (sZoneClientRc.contains(e.clientPoint)) {
+                var sZoneVX = e.elementPoint.x();
+                var sZoneVY = e.elementPoint.y();
+
+                var dataX = xAxis.v2d(sZoneVX);
+                var dataY = yAxis.v2d(sZoneVY);
+
+                e.divHint.style.visibility = "visible";
+                return xAxis.labelValToStr(dataX) + "; " + dataY;
+              } else {
+                e.divHint.style.visibility = "hidden";
+              }
+            },
+
+            getMasterInfo: function (e) { // {clientPoint: , elementPoint: }
+              var xAxis = self.xAxis();
+              var yAxis = self.yAxis();
+              var sZone = self.sZone();
+              var lastArea = sZone.lastArea();
+
+              //if (sZoneClientRc.contains(e.clientPoint)) {
               var sZoneVX = e.elementPoint.x();
               var sZoneVY = e.elementPoint.y();
 
               var dataX = xAxis.v2d(sZoneVX);
               var dataY = yAxis.v2d(sZoneVY);
 
-              e.divHint.style.visibility = "visible";
-              return xAxis.labelValToStr(dataX) + "; " + dataY;
-            } else {
-              e.divHint.style.visibility = "hidden";
-            }
-          },
-          parentRc: sZoneClientRc
-        });
+              return { dataPoint: new WAVE.Geometry.Point(dataX, dataY) };
+              //} else {
+              //  return { dataPoint: null };
+              //}
+              
+            },
+
+            // e is {masterRes: }, 
+            // returns {elementRcPoint: relative to parentRc}
+            getSlaveInfo: function (e) {
+              var xAxis = self.xAxis();
+              var yAxis = self.yAxis();
+
+              //if (e.masterRes.dataPoint) {
+              var dataX = e.masterRes.dataPoint.x(), dataY = e.masterRes.dataPoint.y();
+              var vX = xAxis.d2v(dataX), vY = yAxis.d2v(dataY);
+              return { elementRcPoint: new WAVE.Geometry.Point(vX, vY) };
+              //} else {
+              //  return { elementRcPoint: null };
+              //}
+            },
+
+            parentRc: sZoneClientRc
+          }});
+
+        }
       } else {
-        WAVE.GUI.detachRuler(fSvgEl);
+        WAVE.GUI.unsetRuler({element: fSvgEl});
       }
+
+      //if (self.sZone().showRuler()) {
+      //  WAVE.GUI.attachRuler(fSvgEl, {
+      //    getTxtFunc: function (e) {
+      //      var xAxis = self.xAxis();
+      //      var yAxis = self.yAxis();
+      //      var sZone = self.sZone();
+      //      var lastArea = sZone.lastArea();
+
+      //      if (sZoneClientRc.contains(e.clientPoint)) {
+      //        var sZoneVX = e.elementPoint.x();
+      //        var sZoneVY = e.elementPoint.y();
+
+      //        var dataX = xAxis.v2d(sZoneVX);
+      //        var dataY = yAxis.v2d(sZoneVY);
+
+      //        e.divHint.style.visibility = "visible";
+      //        return xAxis.labelValToStr(dataX) + "; " + dataY;
+      //      } else {
+      //        e.divHint.style.visibility = "hidden";
+      //      }
+      //    },
+      //    parentRc: sZoneClientRc
+      //  });
+      //} else {
+      //  WAVE.GUI.detachRuler(fSvgEl);
+      //}
     }
 
     function drawIfChanged() {

@@ -379,44 +379,560 @@ WAVE.GUI = (function(){
         rebuild();
     }//keypad
 
+    // Manages all ruler logic
     var RulerManager = function (cfg) {
-      var fScopes = {}; // {<SCOPE_NAME>: [element: DOMElement, ruler: Ruler]}
       var DEFAULT_SCOPE_NAME = "";
 
-      this.set = function (element, scopeName, rulerCfg) {
-        if (!scopeName) scopeName = DEFAULT_SCOPE_NAME;
-        var scopeBucket = fScopes[scopeName];
-        if (!scopeBucket) scopeBucket = [];
-        fScopes[scopeName] = scopeBucket;
+      var fScopeInfos = [], fScopeInfosWlk = WAVE.arrayWalkable(fScopeInfos); // [{name: , cfg: [{}], elementInfos: []}] 
+      var fElementInfos = [], // [{element: , ruler: , cfg: {getInfo: , scopeMouseEnter: , scopeMouseLeave: , scopeMouseMove: }}, scopeInfos: []]
+          fElementInfosWlk = WAVE.arrayWalkable(fElementInfos);
+
+      function getElementInfo(element) {
+       return fElementInfosWlk.wFirst(function(e) { return e.element === element; });
       }
 
-      this.unset = function (element, scopeName) {
-        if (scopeName) {
-          var scopeBucket = fScopes[scopeName];
-          if (!scopeBucket) return;
-          var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
-          if (idx === -1) return;
-          scopeBucket.splice(idx, 1);
-        } else {
-          for (var key in fScopes) {
-            if (!fScopes.hasOwnProperty(key)) continue;
+      function getScopeInfo(scopeName) {
+        return fScopeInfosWlk.wFirst(function(s) { return s.name === scopeName });
+      }
 
-            var scopeBucket = fScopes[key];
-            var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
-            if (idx === -1) continue;
-            scopeBucket.splice(idx, 1);
+      function ensureScopeInfo(scopeName, cfg) {
+        var scopeInfo = getScopeInfo(scopeName);
+        if (scopeInfo === null) {
+          scopeInfo = {name: scopeName, cfg: cfg || {syncHor: true, syncVer: true}, elementInfos: []};
+          fScopeInfos.push(scopeInfo);
+        } else {
+          if (cfg) scopeInfo.cfg = cfg;
+        }
+        return scopeInfo;
+      }
+
+      function ensureElementInfo(element, cfg) {
+        var elementInfo = getElementInfo(element);
+        if (elementInfo === null) {
+          elementInfo = {element: element, cfg: cfg || {}, scopeInfos: []};
+
+          var jElement = $(element);
+          jElement.bind("mouseenter", onMouseEnter);
+          jElement.bind("mouseleave", onMouseLeave);
+          jElement.bind("mousemove", onMouseMove);
+
+          var ruler = new ElementRuler(element, cfg);
+          elementInfo.ruler = ruler;
+
+          fElementInfos.push(elementInfo);
+        } else {
+          if (cfg) {
+            elementInfo.cfg = cfg;
+            elementInfo.ruler.cfg(cfg);
           }
         }
-
-        $(element).unbind("mouseenter", onMouseOver);
-        $(element).unbind("mouseleave", onMouseLeave);
-        $(element).unbind("mousemove", onMouseMove);
+        return elementInfo;
       }
 
+      function ensureElementInScope(element, elementCfg, scopeName, scopeCfg, cfg) {
+        var scopeInfo = ensureScopeInfo(scopeName, scopeCfg);
+        var elementInfo = ensureElementInfo(element, elementCfg);
+        if (scopeInfo.elementInfos.indexOf(elementInfo) === -1) scopeInfo.elementInfos.push(elementInfo);
+        if (elementInfo.scopeInfos.indexOf(scopeInfo) === -1) elementInfo.scopeInfos.push(scopeInfo);
+      }
+
+      this.set = function(e) { // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
+        var element = e.element;
+        var elementCfg = e.elementCfg; // {getTxt: , getMasterInfo: , getSlaveInfo: }
+        var scopeName = e.scopeName || DEFAULT_SCOPE_NAME;
+        var scopeCfg = e.scopeCfg;
+        var cfg = e.cfg;
+
+        ensureElementInScope(element, elementCfg, scopeName, scopeCfg, cfg);
+      }
+
+      this.unset = function (e) {
+        var element = e.element;
+        var scopeName = e.scopeName;
+
+        var elementInfo = getElementInfo(e.element);
+        if (elementInfo === null) return;
+        if(scopeName) {
+          var scopeInfo = getScopeInfo(scopeName);
+          if (scopeInfo !== null) WAVE.arrayDelete(scopeInfo.elements, elementInfo);
+          WAVE.arrayDelete(elementInfo.scopes, scopeInfo);
+        } else {
+          WAVE.arrayWalkable(elementInfo.scopeInfos).wEach(function(s) { WAVE.arrayDelete(s.elementInfos, elementInfo); });
+          elementInfo.scopeInfos.splice(0, elementInfo.scopeInfos.length);
+        }
+        
+        if (elementInfo.scopeInfos.length === 0) {
+          var jElement = $(element);
+          jElement.unbind("mouseenter", onMouseEnter);
+          jElement.unbind("mouseleave", onMouseLeave);
+          jElement.unbind("mousemove", onMouseMove);
+          WAVE.arrayDelete(fElementInfos, elementInfo);
+        }
+      }
+
+      this.setScope = function (scopeName, cfg) {
+        ensureScopeInfo(scopeName, cfg);
+      }
+
+      function onMouseEnter(e) {
+        var el = e.currentTarget;
+        var elementInfo = getElementInfo(el);
+        if (elementInfo === null) return;
+
+        elementInfo.ruler.onMouseEnter();
+
+        for (var iSi in elementInfo.scopeInfos) {
+          var si = elementInfo.scopeInfos[iSi];
+          for(var iEi in si.elementInfos) {
+            var ei = si.elementInfos[iEi];
+            if (el === ei.element) continue;
+            ei.ruler.onScopeMouseEnter(e, si);
+          }
+        }
+      }
+
+      function onMouseLeave(e) {
+        var el = e.currentTarget;
+        var elementInfo = getElementInfo(el);
+        if (elementInfo === null) return;
+
+        elementInfo.ruler.onMouseLeave(e);
+
+        for (var iSi in elementInfo.scopeInfos) {
+          var si = elementInfo.scopeInfos[iSi];
+          for (var iEi in si.elementInfos) {
+            var ei = si.elementInfos[iEi];
+            if (el === ei.element) continue;
+            ei.ruler.onScopeMouseLeave(e, si);
+          }
+        }
+      }
+
+      function onMouseMove(e) {
+        var el = e.currentTarget;
+        var elementInfo = getElementInfo(el);
+        if (elementInfo === null) return;
+
+        var masterRes = elementInfo.ruler.onMouseMove(e);
+
+        // {scope: scopeInfo, masterRes: masterRes, event: e}
+        var slaveEvt = { scope: null, masterRes: masterRes, event: e };
+        for (var iSi in elementInfo.scopeInfos) {
+          var si = elementInfo.scopeInfos[iSi];
+          slaveEvt.scope = si;
+          for (var iEi in si.elementInfos) {
+            var ei = si.elementInfos[iEi];
+            if (el === ei.element) {
+              continue;
+            }
+            ei.ruler.onScopeMouseMove(slaveEvt);
+          }
+        }
+      }
+
+      function ___comment() {
+        //var fScopes = [], fScopeWlk = WAVE.arrayWalkable(fScopes); // {name: , cfg: }
+        //var fElements = [], fScopeWlk = WAVE.arrayWalkable(fElements);
+        //var fElementInScope = [], fElementsInScopeWlk = WAVE.arrayWalkable(fElementInScope); // {scopeName, element}
+
+        //this.setScope = function(name, cfg) {
+        //  var existing = getScope(name);
+        //  if (existing === null) 
+        //    fScopes.push({name: name, cfg: cfg || {}});
+        //  else
+        //    existing.cfg = cfg || {};
+        //}
+
+        //function getScope(name) {
+        //  return fScopeWlk.wFirst(function(s) { return s.name === name; });
+        //}
+
+        //this.bindElement = function(element, scopeName) {
+        //  if (!WAVE.inArray(element)) {
+        //    fElements.push(element);
+
+        //    var jElement = $(element);
+        //    jElement.bind("mouseenter", onMouseOver);
+        //    jElement.bind("mouseleave", onMouseLeave);
+        //    jElement.bind("mousemove", onMouseMove);
+        //  }
+
+        //  if (!scopeName) scopeName = DEFAULT_SCOPE_NAME;
+
+        //  var existingScope = fScopeWlk.wFirstIdx(function() {});
+
+        //  fElementInScope.wFirst(function(es) { return es. });
+        //}
+
+        //this.unbindElement = function(element, scopeName) {
+        //  function elementEqual(es) { return es.scopeName === scopeName };
+
+        //  var elementsToDelete = fElementsInScopeWlk.wWhere(elementEqual);
+
+        //  if(scopeName) elementsToDelete = elementsToDelete.wWhere();
+
+        //  elementsToDelete = elementsToDelete.wToArray();
+
+        //  for(var i in elementsToDelete)
+        //    WAVE.arrayDelete(fElementInScope, elementsToDelete[i]);
+
+        //  if (!fElementsInScopeWlk.wAny(elementEqual))
+        //  {
+        //    var jElement = $(element);
+
+        //    jElement.unbind("mouseenter", onMouseOver);
+        //    jElement.unbind("mouseleave", onMouseLeave);
+        //    jElement.unbind("mousemove", onMouseMove);
+
+        //    WAVE.arrayDelete(fElements, element);
+        //  }
+        //}
+
+        //var fScopes = {}; // {<SCOPE_NAME>: [element: DOMElement, ruler: Ruler]}
+        //var DEFAULT_SCOPE_NAME = "";
+
+        //this.set = function (element, scopeName, rulerCfg) {
+        //  if (!scopeName) scopeName = DEFAULT_SCOPE_NAME;
+        //  var scopeBucket = fScopes[scopeName];
+        //  if (!scopeBucket) scopeBucket = [];
+        //  fScopes[scopeName] = scopeBucket;
+        //}
+
+        //this.unset = function (element, scopeName) {
+        //  if (scopeName) {
+        //    var scopeBucket = fScopes[scopeName];
+        //    if (!scopeBucket) return;
+        //    var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
+        //    if (idx === -1) return;
+        //    scopeBucket.splice(idx, 1);
+        //  } else {
+        //    for (var key in fScopes) {
+        //      if (!fScopes.hasOwnProperty(key)) continue;
+
+        //      var scopeBucket = fScopes[key];
+        //      var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
+        //      if (idx === -1) continue;
+        //      scopeBucket.splice(idx, 1);
+        //    }
+        //  }
+
+        //  $(element).unbind("mouseenter", onMouseOver);
+        //  $(element).unbind("mouseleave", onMouseLeave);
+        //  $(element).unbind("mousemove", onMouseMove);
+        //}
+      }
     }//RulerManager
 
-    var ElementRuler = function(element) {
+    var ElementRuler = function(element, cfg) {
+      var self = this;
+
+      var fElement = element;
+      var fCfg = cfg || {};
+      this.cfg = function (val) {
+        if (typeof(val) !== undefined && val !== cfg) {
+          fCfg = val;
+        }
+        return fCfg;
+      }
+
+      var fRulerHintCls = fCfg.hintCls || "wvRulerHint";
+      var fRulerSightCls = fCfg.sightCls || "wvRulerSight";
+
+      var fSigntSize = fCfg.sightSize || 8;
+
+      var fMasterElementsCreated = false, fSlaveElementsCreated = false;
+
+      var divHint = null, divSightLeft = null, divSightTop = null, divSightRight = null, divSightBottom = null, divSightCenter = null,
+          divSightBoxLeft = null, divSightBoxTop = null, divSightBoxRight = null, divSightBoxBottom = null, divSightBoxCenter = null,
+          divSlave = null;
+
+      this.onMouseEnter = function(e) {
+        ensureMasterElements();
+      }
+
+      this.onMouseLeave = function(e) {
+        ensureNoMasterElements();
+      }
+
+      this.onMouseMove = function (e) {
+        ensureNoSlaveElements();
+        ensureMasterElements();
+
+        var parentRc;
+        if (fCfg.parentRc) {
+          parentRc = fCfg.parentRc;
+        } else {
+          var parentRect = fElement.getBoundingClientRect();
+          parentRc = WAVE.Geometry.toRectWH(parentRect.left, parentRect.top, parentRect.width, parentRect.height);
+        }
+
+        ensureDivsVisibility(e.clientX, e.clientY, parentRc, true, true);
+
+        var elX = e.clientX - parentRc.left();
+        var elY = e.clientY - parentRc.top();
+
+        divHint.style.left = e.clientX + "px";
+        divHint.style.top = e.clientY + "px";
+
+        var txt = null;
+
+        if (fCfg.getTxt) {
+          txt = fCfg.getTxt({
+            clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY),
+            elementPoint: new WAVE.Geometry.Point(elX, elY),
+            divHint: divHint
+          });
+        } else {
+          txt = elX + ", " + elY;
+        }
+
+        divHint.innerHTML = txt;
+
+        var divHintRect = divHint.getBoundingClientRect();
+
+        var hintRc = WAVE.Geometry.toRectWH(divHintRect.left, divHintRect.top, divHintRect.width, divHintRect.height);
+        
+        var hintPos = getHintPos(e.clientX, e.clientY, hintRc, parentRc);
+
+        divHint.style.left = hintPos.x() + "px";
+        divHint.style.top = hintPos.y() + "px";
+
+        locateSight(e.clientX, e.clientY, parentRc);
+
+        return fCfg.getMasterInfo ?
+                  fCfg.getMasterInfo({clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY), elementPoint: new WAVE.Geometry.Point(elX, elY),
+                  }) :
+                  { elementRcPoint: new WAVE.Geometry.Point(elX, elY) };
+      }
+
+          function locateSight(clientX, clientY, parentRc) {
+            var left = clientX - fSigntSize;
+            if (left < parentRc.left()) left = parentRc.left();
+
+            var right = clientX + fSigntSize;
+            if (right > parentRc.right()) right = parentRc.right();
+
+            var top = clientY - fSigntSize;
+            if (top < parentRc.top()) top = parentRc.top();
+
+            var bottom = clientY + fSigntSize;
+            if (bottom > parentRc.bottom()) bottom = parentRc.bottom();
+
+            divSightLeft.style.left = parentRc.left() + "px";
+            divSightLeft.style.width = (left - parentRc.left()) + "px";
+            divSightLeft.style.top = clientY + "px";
+
+            divSightRight.style.left = right + "px";
+            divSightRight.style.width = (parentRc.right() - right) + "px";
+            divSightRight.style.top = clientY + "px";
+
+            divSightTop.style.top = parentRc.top() + "px";
+            divSightTop.style.height = (top - parentRc.top()) + "px";
+            divSightTop.style.left = clientX + "px";
+
+            divSightBottom.style.top = bottom + "px";
+            divSightBottom.style.height = (parentRc.bottom() - bottom) + "px";
+            divSightBottom.style.left = clientX + "px";
+
+            divSightBoxLeft.style.top = top + "px";
+            divSightBoxLeft.style.height = (bottom - top) + "px";
+            divSightBoxLeft.style.left = left + "px";
+
+            divSightBoxRight.style.top = top + "px";
+            divSightBoxRight.style.height = (bottom - top) + "px";
+            divSightBoxRight.style.left = right + "px";
+
+            divSightBoxTop.style.left = left + "px";
+            divSightBoxTop.style.width = (right - left) + "px";
+            divSightBoxTop.style.top = top + "px";
+
+            divSightBoxBottom.style.left = left + "px";
+            divSightBoxBottom.style.width = (right - left) + "px";
+            divSightBoxBottom.style.top = bottom + "px";
+          }
+
+          function ensureDivsVisibility(clientX, clientY, parentRc, syncHor, syncVer) {
+            var allDivsWlk = getAllDivsWlk();
+            //if (!parentRc.contains(new WAVE.Geometry.Point(clientX, clientY))) {
+            if (syncHor && (clientX < parentRc.left() || clientX > parentRc.right()) ||
+                syncVer && (clientY < parentRc.top() || clientY > parentRc.bottom()))
+            {
+              allDivsWlk.wEach(function (d) {
+                if (d !== null && d.style.visibility !== "hidden")
+                  d.style.visibility = "hidden";
+              });
+            } else {
+              allDivsWlk.wEach(function (d) {
+                if (d !== null && d.style.visibility === "hidden")
+                  d.style.visibility = "visible";
+              });
+            }
+          }
+
+          function getAllDivsWlk() {
+            return new WAVE.arrayWalkable([
+                divHint, divSightLeft, divSightTop, divSightRight, divSightBottom, divSightCenter,
+                divSightBoxLeft, divSightBoxTop, divSightBoxRight, divSightBoxBottom, divSightBoxCenter,
+                divSlave]);
+          }
+
+      this.onScopeMouseEnter = function (e, scope) {
+        ensureSlaveElements();
+      }
+
+      this.onScopeMouseLeave = function (e, scope) {
+        ensureNoSlaveElements();
+      }
+
+      this.onScopeMouseMove = function (e) { // {scope: scopeInfo, masterRes: masterRes, event: e}
+        ensureNoMasterElements();
+        ensureSlaveElements();
+
+        var slaveParentRc = self.getParentRc();
+
+        var clientX;
+        var clientY;
+
+        var elementRcPoint;
+        if (fCfg.getSlaveInfo) {
+          var slaveInfo = fCfg.getSlaveInfo({ masterRes: e.masterRes });
+          elementRcPoint = slaveInfo.elementRcPoint;
+        } else {
+          elementRcPoint = e.masterRes.elementRcPoint;
+        }
+
+        clientX = slaveParentRc.left() + elementRcPoint.x();
+        clientY = slaveParentRc.top() + elementRcPoint.y();
+
+        ensureDivsVisibility(clientX, clientY, slaveParentRc, e.scope.cfg.syncHor, e.scope.cfg.syncVer);
+
+        divSlave.style.top = slaveParentRc.top() + "px";
+        divSlave.style.height = slaveParentRc.height() + "px";
+        divSlave.style.left = clientX + "px";
+      }
+
+      this.getParentRc = function () {
+        var parentRc;
+
+        if (fCfg.parentRc) {
+          parentRc = fCfg.parentRc;
+        } else {
+          var parentRect = fElement.getBoundingClientRect();
+          parentRc = WAVE.Geometry.toRectWH(parentRect.left, parentRect.top, parentRect.width, parentRect.height);
+        }
+
+        return parentRc;
+      }
+
+      function ensureMasterElements() {
+        if (fMasterElementsCreated) return;
+
+        divHint = document.createElement("div");
+        divHint.id = "WAVE_GUI_Ruler";
+        divHint.innerHTML = "Hint DIV";
+        divHint.className = fRulerHintCls;
+        divHint.style.position = "absolute";
+        document.body.appendChild(divHint);
+
+        divSightRight = createLineDiv(true);
+        divSightLeft = createLineDiv(true);
+        divSightBoxRight = createLineDiv(false);
+        divSightBoxLeft = createLineDiv(false);
+
+        divSightTop = createLineDiv(false);
+        divSightBottom = createLineDiv(false);
+        divSightBoxTop = createLineDiv(true);
+        divSightBoxBottom = createLineDiv(true);
+
+        fMasterElementsCreated = true;
+      }
+
+      function ensureNoMasterElements() {
+        if (!fMasterElementsCreated) return;
+
+        removeDiv(divHint);           divHint = null;
+        removeDiv(divSightRight);     divSightRight = null;
+        removeDiv(divSightLeft);      divSightLeft = null;
+        removeDiv(divSightBoxRight);  divSightBoxRight = null;
+        removeDiv(divSightBoxLeft);   divSightBoxLeft = null;
+        removeDiv(divSightTop);       divSightTop = null;
+        removeDiv(divSightBottom);    divSightBottom = null;
+        removeDiv(divSightBoxTop);    divSightBoxTop = null;
+        removeDiv(divSightBoxBottom); divSightBoxBottom = null;
+
+        fMasterElementsCreated = false;
+      }
+
+      function ensureSlaveElements() {
+        if (fSlaveElementsCreated) return;
+        divSlave = createLineDiv(false);
+        fSlaveElementsCreated = true;
+      }
+
+      function ensureNoSlaveElements() {
+        if (!fSlaveElementsCreated) return;
+        removeDiv(divSlave); divSlave = null;
+        fSlaveElementsCreated = false;
+      }
+
+        function createLineDiv(horizontal) {
+          var div = document.createElement("div");
+          if (horizontal) div.style.height = "1px"; else div.style.width = "1px";
+          div.style.position = "absolute";
+          div.className = fRulerSightCls;
+          document.body.appendChild(div);
+          return div;
+        }
+
+        function removeDiv(div) {
+          if (div === null) return;
+          document.body.removeChild(div); 
+        }
+
+        function getHintPos(cx, cy, hintRc, parentElementRc) {
+          var resultRc = null;
+          var hintSquare = hintRc.square();
+
+          var minPenalty = Number.MAX_VALUE;
+          for (var rad = 0; rad < 2 * Math.PI; rad += Math.PI / 4) {
+            var rc = WAVE.Geometry.rotateRectAroundCircle(cx, cy, 20, hintRc.width(), hintRc.height(), rad);
+
+            var visibleSquare = WAVE.Geometry.overlapAreaRect(parentElementRc, rc);
+
+            var penalty = hintSquare - visibleSquare;
+
+            if (penalty == 0) {
+              resultRc = rc;
+              break;
+            }
+
+            if (penalty < minPenalty) {
+              minPenalty = penalty;
+              resultRc = rc;
+            }
+          }
+
+          return resultRc.topLeft();
+        }
+    }//ElementRuler
+
+    var fRulerManager = null;
+
+    published.setRuler = function (e) { // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
+      if (fRulerManager === null) fRulerManager = new RulerManager();
+      fRulerManager.set(e);
     }
+
+    published.unsetRuler = function(e) { // {element: , scope: }}
+      if (fRulerManager === null) return;
+      fRulerManager.unset(e);
+    }
+
+    published.setRulerScope = function (scopeName, cfg) { // cfg is {syncHor: , syncVer: }
+      if (fRulerManager === null) fRulerManager = new RulerManager();
+      fRulerManager.setScope(scopeName, cfg);
+    }
+
 
     var Ruler = function (cfg) {
       WAVE.extend(this, WAVE.EventManager);
@@ -479,14 +995,6 @@ WAVE.GUI = (function(){
         });
 
         curElementInfo = null;
-      }
-
-      function isNodeChildOf(child, parent) {
-        while (true) {
-          if (child === null) return false;
-          if (child.parentNode === parent) return true;
-          child = child.parentNode;
-        }
       }
 
       function onMouseMove(e) {

@@ -117,6 +117,13 @@
     .wvRulerHint {
       background-color: #eeeecc;
       pointer-events: none;
+      z-index: 10000;
+    }
+
+    .wvRulerSight {
+      background-color: #111111;
+      pointer-events: none;
+      z-index: 9999;
     }
   </style>
   <script src="jquery-1.11.0.min.js"></script>
@@ -128,7 +135,48 @@
 
     var lZoneLegendMargin;
 
-    $(function(){
+    WAVE.GUI.setRulerScope("", { syncHor: true, syncVer: false });
+
+    function initSvg2() {
+      svgEl = $("#svg2")[0];
+
+      var chart = new WAVE.Chart.SVG.Chart(svgEl);
+
+      var series0 = chart.addSeries({ title: "Series 0 common language runtime", pointClass: "series-point-0", showPointTitleLeg: false });
+
+      chart.beginUpdate();
+
+      chart.sZone().chartType(WAVE.Chart.SVG.ChartType.LINE);
+      chart.xAxis().dataType(WAVE.Chart.SVG.DataType.DATE);
+
+      chart.xAxis().isBottom(false);
+      chart.yAxis().isLeft(false);
+      chart.lZone().corner(WAVE.Chart.SVG.RectCorner.LEFTTOP);
+      chart.sZone().showPointTitle(true);
+
+      chart.yAxis().minWidth(50);
+
+      function pad(n) { return n < 10 ? '0' + n : n }
+      chart.xAxis().labelValToStr = function (dt) {
+        return (pad(dt.getHours())) + ":" + pad(dt.getMinutes()) + ":" + pad(dt.getSeconds());
+      };
+
+
+      series0.dataSet().addPoint(new Date("2014/09/23 12:00"), 0, "1st point");
+      series0.dataSet().addPoint(new Date("2014/09/23 12:20"), 30, "2nd point");
+      series0.dataSet().addPoint(new Date("2014/09/23 12:40"), 110, "3rd point");
+      series0.dataSet().addPoint(new Date("2014/09/23 13:00"), 150, "4th point");
+
+      chart.sZone().attachToRulerScope("");
+
+      chart.endUpdate();
+
+      return chart;
+    }
+
+    $(function () {
+      var chart2 = initSvg2();
+
       svgEl = $("#svg1")[0];
       
       var chart = new WAVE.Chart.SVG.Chart(svgEl);
@@ -223,6 +271,8 @@
         //series0.dataSet().addPoint(new Date("2014/09/23 16:00"), 500);
         //series0.dataSet().addPoint(new Date("2014/09/23 17:00"), 50);
 
+
+      chart.sZone().attachToRulerScope("");
       chart.endUpdate();
 
       function syncButtons() {
@@ -271,8 +321,19 @@
       $("#xAxisIsBottom").prop("checked", chart.xAxis().isBottom());
       $("#xAxisIsBottom").change(function () { chart.xAxis().isBottom(this.checked) });
 
-      $("#sZoneShowRuler").prop("checked", chart.sZone().showRuler());
-      $("#sZoneShowRuler").change(function () { chart.sZone().showRuler(this.checked) });
+      //$("#sZoneShowRuler").prop("checked", chart.sZone().showRuler());
+      //$("#sZoneShowRuler").change(function () { chart.sZone().showRuler(this.checked) });
+      $("#sZoneShowRuler").prop("checked", chart.sZone().rulerScopes().length > 0);
+      $("#sZoneShowRuler").change(function () {
+        chart.sZone().showDefaultRuler(this.checked);
+        chart2.sZone().showDefaultRuler(this.checked);
+        //if (chart.sZone().rulerScopes().length == 0) {
+        //  //chart.sZone().attachToRulerScope("");
+        //  //chart.sZone().showDefaultRuler();
+        //} else {
+        //  //chart.sZone().detachFromRulerScope("");
+        //}
+      });
 
       lZoneLegendMargin = $("#lZoneLegendMargin")[0];
       lZoneLegendMargin.value = chart.lZone().legendMargin();
@@ -329,37 +390,6 @@
 
       //drawChart();
 
-      //WAVE.GUI.attachRuler(chart.svgEl(), {
-      //  getTxtFunc: function (e) {
-      //    //{ clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY),
-      //    //  elementPoint: new WAVE.Geometry.Point(elX, elY),
-      //    //  elementInfo: curElementInfo }
-
-      //    var chart = e.elementInfo.cfg.chart;
-
-      //    var xAxis = chart.xAxis();
-      //    var yAxis = chart.yAxis();
-      //    var sZone = chart.sZone();
-      //    var lastArea = sZone.lastArea();
-
-      //    if (lastArea.contains(e.elementPoint)) {
-      //      var sZoneVX = e.elementPoint.x() - lastArea.left();
-      //      var sZoneVY = e.elementPoint.y() - lastArea.top();
-
-      //      var dataX = xAxis.v2d(sZoneVX);
-      //      var dataY = yAxis.v2d(sZoneVY);
-
-      //      e.divHint.style.visibility = "visible";
-      //      return e.elementPoint.x() + "; " + e.elementPoint.y() + "<br>" + xAxis.labelValToStr(dataX) + "; " + dataY;
-      //    } else {
-      //      e.divHint.style.visibility = "hidden";
-      //      return "doesn't contain";
-      //    }
-      //  },
-      //  chart: chart,
-      //});
-
-
     });
   </script>
 </head>
@@ -367,7 +397,7 @@
 
   <div class="chart">
 
-    <svg id="svg1" width="100%" height="300" <!--viewBox="0 0 400 300"--> xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg id="svg1" width="100%" height="250" <!--viewBox="0 0 400 300"--> xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
         <marker id="markerLegStart" markerWidth="8" markerHeight="8" refx="5" refy="5">
             <circle cx="5" cy="5" r="2" style="stroke: none; fill:#808090;"/>
@@ -378,6 +408,19 @@
         </marker>
       </defs>
     </svg>
+
+    <svg id="svg2" width="100%" height="250" <!--viewBox="0 0 400 300"--> xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <marker id="marker1" markerWidth="8" markerHeight="8" refx="5" refy="5">
+            <circle cx="5" cy="5" r="2" style="stroke: none; fill:#808090;"/>
+        </marker>
+
+        <marker id="marker2" markerWidth="8" markerHeight="8" refx="5" refy="5">
+            <circle cx="5" cy="5" r="3" style="stroke: none; fill:#808090;"/>
+        </marker>
+      </defs>
+    </svg>
+
   </div>
 
   <div class="manage">

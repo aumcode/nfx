@@ -69,27 +69,38 @@
   <svg id="svg2" width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
 
   <script type="text/javascript">
+
     var dv1 = WAVE.id("dv1");
-    WAVE.GUI.attachRuler(dv1);
-
+    WAVE.GUI.setRuler({ element: dv1 });
     var dv2 = WAVE.id("dv2");
-    WAVE.GUI.attachRuler(dv2, {
-      hintCls: "wvRulerHint-alt",
-      getTxtFunc: function (e) {
-        return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
-      }
-    });
-
+    WAVE.GUI.setRuler({ element: dv2 });
+    WAVE.GUI.setRuler({ element: dv2, scopeName: "svg" });
     var svg1 = WAVE.id("svg1");
-    WAVE.GUI.attachRuler(svg1);
-
+    WAVE.GUI.setRuler({ element: svg1, scopeName: "svg" });
     var svg2 = WAVE.id("svg2");
-    WAVE.GUI.attachRuler(svg2, {
-      hintCls: "wvRulerHint-alt",
-      getTxtFunc: function (e) {
-        return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
-      }
-    });
+    WAVE.GUI.setRuler({ element: svg2, scopeName: "svg" });
+
+    //var dv1 = WAVE.id("dv1");
+    //WAVE.GUI.attachRuler(dv1);
+
+    //var dv2 = WAVE.id("dv2");
+    //WAVE.GUI.attachRuler(dv2, {
+    //  hintCls: "wvRulerHint-alt",
+    //  getTxtFunc: function (e) {
+    //    return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
+    //  }
+    //});
+
+    //var svg1 = WAVE.id("svg1");
+    //WAVE.GUI.attachRuler(svg1);
+
+    //var svg2 = WAVE.id("svg2");
+    //WAVE.GUI.attachRuler(svg2, {
+    //  hintCls: "wvRulerHint-alt",
+    //  getTxtFunc: function (e) {
+    //    return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
+    //  }
+    //});
   </script>
 
 </body>
