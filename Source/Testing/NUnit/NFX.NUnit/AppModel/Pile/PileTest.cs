@@ -557,5 +557,109 @@ namespace NFX.NUnit.AppModel.Pile
         }
       }
 
+
+
+      [Test]
+      public void Configuration()
+      {
+        var conf = @"
+ app
+ {
+   memory-management
+   {
+     pile
+     {
+       alloc-mode=favorspeed
+       free-list-size=100000
+       max-segment-limit=79
+       segment-size=395313143 //will be rounded to 16 byte boundary: 395,313,152
+       max-memory-limit=123666333000
+
+       free-chunk-sizes='128, 256, 512, 1024, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 16000, 32000, 64000,  256000'
+     } 
+     
+     pile
+     {
+       name='specialNamed'
+       free-list-size=99000
+       max-segment-limit=73
+       segment-size=395313147 //will be rounded to 16 byte boundary: 395,313,152
+       max-memory-limit=127666333000
+
+       free-chunk-sizes='77, 124, 180, 190, 200, 210, 220, 230, 1000, 2000, 3000, 4000, 5000, 32000, 64000,  257000'
+     }   
+   }     
+ }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+        using(var app = new ServiceBaseApplication(null, conf))
+        {
+          using (var pile = new DefaultPile())
+          {
+            pile.Configure(null);
+          
+            Assert.AreEqual(AllocationMode.FavorSpeed, pile.AllocMode);
+            Assert.AreEqual(100000, pile.FreeListSize);
+            Assert.AreEqual(79, pile.MaxSegmentLimit);
+            Assert.AreEqual(395313152, pile.SegmentSize);
+            Assert.AreEqual(123666333000, pile.MaxMemoryLimit);
+            
+            Assert.AreEqual(128, pile.FreeChunkSizes[00]);
+            Assert.AreEqual(256, pile.FreeChunkSizes[01]);
+            Assert.AreEqual(512, pile.FreeChunkSizes[02]);
+            Assert.AreEqual(1024, pile.FreeChunkSizes[03]);
+            Assert.AreEqual(2000, pile.FreeChunkSizes[04]);
+            Assert.AreEqual(3000, pile.FreeChunkSizes[05]);
+            Assert.AreEqual(4000, pile.FreeChunkSizes[06]);
+            Assert.AreEqual(5000, pile.FreeChunkSizes[07]);
+            Assert.AreEqual(6000, pile.FreeChunkSizes[08]);
+            Assert.AreEqual(7000, pile.FreeChunkSizes[09]);
+            Assert.AreEqual(8000, pile.FreeChunkSizes[10]);
+            Assert.AreEqual(9000, pile.FreeChunkSizes[11]);
+            Assert.AreEqual(16000, pile.FreeChunkSizes[12]);
+            Assert.AreEqual(32000, pile.FreeChunkSizes[13]);
+            Assert.AreEqual(64000, pile.FreeChunkSizes[14]);
+            Assert.AreEqual(256000, pile.FreeChunkSizes[15]);
+
+            pile.Start();//just to test that it starts ok
+          }
+          
+          using (var pile = new DefaultPile("specialNamed"))
+          {
+            pile.Configure(null);
+           
+            Assert.AreEqual(AllocationMode.ReuseSpace, pile.AllocMode);
+            Assert.AreEqual(99000, pile.FreeListSize);
+            Assert.AreEqual(73, pile.MaxSegmentLimit);
+            Assert.AreEqual(395313152, pile.SegmentSize);
+            Assert.AreEqual(127666333000, pile.MaxMemoryLimit);
+            
+            Assert.AreEqual(77, pile.FreeChunkSizes[00]);
+            Assert.AreEqual(124, pile.FreeChunkSizes[01]);
+            Assert.AreEqual(180, pile.FreeChunkSizes[02]);
+            Assert.AreEqual(190, pile.FreeChunkSizes[03]);
+            Assert.AreEqual(200, pile.FreeChunkSizes[04]);
+            Assert.AreEqual(210, pile.FreeChunkSizes[05]);
+            Assert.AreEqual(220, pile.FreeChunkSizes[06]);
+            Assert.AreEqual(230, pile.FreeChunkSizes[07]);
+            Assert.AreEqual(1000, pile.FreeChunkSizes[08]);
+            Assert.AreEqual(2000, pile.FreeChunkSizes[09]);
+            Assert.AreEqual(3000, pile.FreeChunkSizes[10]);
+            Assert.AreEqual(4000, pile.FreeChunkSizes[11]);
+            Assert.AreEqual(5000, pile.FreeChunkSizes[12]);
+            Assert.AreEqual(32000, pile.FreeChunkSizes[13]);
+            Assert.AreEqual(64000, pile.FreeChunkSizes[14]);
+            Assert.AreEqual(257000, pile.FreeChunkSizes[15]);
+
+            pile.Start();//just to test that it starts ok
+          
+
+          }
+
+        }//using app
+      }
+
+
+
+
   }
 }

@@ -120,14 +120,14 @@ WAVE.Chart.SVG = (function () {
         var dPerV = (_d1.getTime() - _d0.getTime()) / (_v1 - _v0);
 
         this.d2v = function (d) { return Math.floor(_v0 + (d.getTime() - _d0.getTime()) / dPerV); }
-        this.v2d = function (v) { return new Date(Math.floor(_d0.getTime() + (v - _v0) * dPerV)); }
+        this.v2d = function (v) { return new Date(Math.ceil(_d0.getTime() + (v - _v0) * dPerV)); }
       } else {
         var dPerV = (_d1 - _d0) / (_v1 - _v0);
         this.d2v = function (d) { 
           var v = Math.floor(_v0 + (d - _d0) / dPerV);
           return v;
         }
-        this.v2d = function (v) { return Math.floor(_d0 + (v - _v0) * dPerV); }
+        this.v2d = function (v) { return Math.ceil(_d0 + (v - _v0) * dPerV); }
       }
     } else {
       if (fIsDate) {
@@ -137,7 +137,7 @@ WAVE.Chart.SVG = (function () {
         var s = _v0 - k * lgd0;
 
         this.d2v = function (d) { return Math.floor(d.getTime() <= 1 ? 0 : k * mathLog10(d.getTime()) + s); }
-        this.v2d = function (v) { return new Date(Math.floor(Math.pow(10, (v - s) / k))); }
+        this.v2d = function (v) { return new Date(Math.ceil(Math.pow(10, (v - s) / k))); }
       } else {
         var lgd0 = mathLog10(_d0 <= 0 ? 1 : _d0);
         var lgd1 = mathLog10(_d1 <= 0 ? 1 : _d1);
@@ -145,7 +145,7 @@ WAVE.Chart.SVG = (function () {
         var s = _v0 - k * lgd0;
 
         this.d2v = function (d) { return Math.floor(d <= 1 ? 0 : k * mathLog10(d) + s); }
-        this.v2d = function (v) { return Math.floor(Math.pow(10, (v - s) / k)); }
+        this.v2d = function (v) { return Math.ceil(Math.pow(10, (v - s) / k)); }
       }
     }
   }
@@ -677,7 +677,7 @@ WAVE.Chart.SVG = (function () {
     return v;
   }
 
-  published.YAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(this.dvInfo().v1() - v); }
+  published.YAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(this.dvInfo().v0() + this.dvInfo().v1() - v); }
 
   published.YAxis.prototype.markAxis = function (svgEl, area, dataSets) {
     var _ticks;
@@ -1093,6 +1093,26 @@ WAVE.Chart.SVG = (function () {
       if (idx === -1) return;
       fRulerScopes.splice(idx, 1);
       fireChanged();
+    }
+
+    // Defines if x-coordinate should be within sZone rect to show ruler (sets isInParentRc in getSlaveInfo chart method)
+    var fRulerCheckXContains = cfg.rulerCheckXContains !== false;
+    this.rulerCheckXContains = function (val) {
+      if (typeof (val) !== undefined && val !== fRulerCheckXContains) {
+        fRulerCheckXContains = val;
+        fireChanged();
+      }
+      return fRulerCheckXContains;
+    }
+
+    // Defines if y-coordinate should be within sZone rect to show ruler (sets isInParentRc in getSlaveInfo chart method)
+    var fRulerCheckYContains = cfg.rulerCheckYContains !== false;
+    this.rulerCheckYContains = function (val) {
+      if (typeof (val) !== undefined && val !== fRulerCheckYContains) {
+        fRulerCheckYContains = val;
+        fireChanged();
+      }
+      return fRulerCheckYContains;
     }
 
     var fLastArea = null;
@@ -2037,16 +2057,16 @@ WAVE.Chart.SVG = (function () {
           var rulerScope = rulerScopes[irs];
 
           // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
-          WAVE.GUI.setRuler({element: fSvgEl, scope: rulerScope, elementCfg: { // {getTxt: , getMasterInfo: , getSlaveInfo: }
-            getTxt: function (e) { // {clientPoint: , elementPoint: , divHint: }
+          WAVE.GUI.rulerSet({element: fSvgEl, scope: rulerScope, elementCfg: { // {getTxt: , getMasterInfo: , getSlaveInfo: }
+            getTxt: function (e) { // {clientPoint: , divHint: }
               var xAxis = self.xAxis();
               var yAxis = self.yAxis();
               var sZone = self.sZone();
               var lastArea = sZone.lastArea();
 
               if (sZoneClientRc.contains(e.clientPoint)) {
-                var sZoneVX = e.elementPoint.x();
-                var sZoneVY = e.elementPoint.y();
+                var sZoneVX = e.clientPoint.x() - clientRc.left;
+                var sZoneVY = e.clientPoint.y() - clientRc.top;
 
                 var dataX = xAxis.v2d(sZoneVX);
                 var dataY = yAxis.v2d(sZoneVY);
@@ -2058,39 +2078,40 @@ WAVE.Chart.SVG = (function () {
               }
             },
 
-            getMasterInfo: function (e) { // {clientPoint: , elementPoint: }
+            getMasterInfo: function (e) { // {clientPoint: }
               var xAxis = self.xAxis();
               var yAxis = self.yAxis();
               var sZone = self.sZone();
-              var lastArea = sZone.lastArea();
 
-              //if (sZoneClientRc.contains(e.clientPoint)) {
-              var sZoneVX = e.elementPoint.x();
-              var sZoneVY = e.elementPoint.y();
+              var sZoneVX = e.clientPoint.x() - clientRc.left;
+              var sZoneVY = e.clientPoint.y() - clientRc.top;
 
               var dataX = xAxis.v2d(sZoneVX);
               var dataY = yAxis.v2d(sZoneVY);
 
-              return { dataPoint: new WAVE.Geometry.Point(dataX, dataY) };
-              //} else {
-              //  return { dataPoint: null };
-              //}
-              
+              var r = { dataPoint: new WAVE.Geometry.Point(dataX, dataY) };
+              r.isInParentRc = sZoneClientRc.contains(e.clientPoint);
+
+              return r;
             },
 
-            // e is {masterRes: }, 
-            // returns {elementRcPoint: relative to parentRc}
+            // e is {masterRes: {dataPoint: , isInParentRc: }}, 
+            // returns {clientPoint: , isInParentRc: }
             getSlaveInfo: function (e) {
               var xAxis = self.xAxis();
               var yAxis = self.yAxis();
+              var sZone = self.sZone();
 
-              //if (e.masterRes.dataPoint) {
               var dataX = e.masterRes.dataPoint.x(), dataY = e.masterRes.dataPoint.y();
-              var vX = xAxis.d2v(dataX), vY = yAxis.d2v(dataY);
-              return { elementRcPoint: new WAVE.Geometry.Point(vX, vY) };
-              //} else {
-              //  return { elementRcPoint: null };
-              //}
+              var cVX = xAxis.d2v(dataX) + clientRc.left, cVY = yAxis.d2v(dataY) + clientRc.top;
+              var r = { clientPoint: new WAVE.Geometry.Point(cVX, cVY) };
+              r.isInParentRc =
+                (!sZone.rulerCheckXContains() || (r.clientPoint.x() >= sZoneClientRc.left() && r.clientPoint.x() <= sZoneClientRc.right()))
+                &&
+                (!sZone.rulerCheckYContains() || (r.clientPoint.y() >= sZoneClientRc.top() && r.clientPoint.y() <= sZoneClientRc.bottom()));
+
+                //sZoneClientRc.contains(r.clientPoint);
+              return r;
             },
 
             parentRc: sZoneClientRc
@@ -2098,35 +2119,8 @@ WAVE.Chart.SVG = (function () {
 
         }
       } else {
-        WAVE.GUI.unsetRuler({element: fSvgEl});
+        WAVE.GUI.rulerUnset({element: fSvgEl});
       }
-
-      //if (self.sZone().showRuler()) {
-      //  WAVE.GUI.attachRuler(fSvgEl, {
-      //    getTxtFunc: function (e) {
-      //      var xAxis = self.xAxis();
-      //      var yAxis = self.yAxis();
-      //      var sZone = self.sZone();
-      //      var lastArea = sZone.lastArea();
-
-      //      if (sZoneClientRc.contains(e.clientPoint)) {
-      //        var sZoneVX = e.elementPoint.x();
-      //        var sZoneVY = e.elementPoint.y();
-
-      //        var dataX = xAxis.v2d(sZoneVX);
-      //        var dataY = yAxis.v2d(sZoneVY);
-
-      //        e.divHint.style.visibility = "visible";
-      //        return xAxis.labelValToStr(dataX) + "; " + dataY;
-      //      } else {
-      //        e.divHint.style.visibility = "hidden";
-      //      }
-      //    },
-      //    parentRc: sZoneClientRc
-      //  });
-      //} else {
-      //  WAVE.GUI.detachRuler(fSvgEl);
-      //}
     }
 
     function drawIfChanged() {

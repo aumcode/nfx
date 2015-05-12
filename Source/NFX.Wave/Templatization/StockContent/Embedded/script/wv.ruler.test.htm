@@ -13,6 +13,10 @@
         margin: 0; padding: 0;
       }
 
+      #dvControl {
+        margin: 5px;
+      }
+
       #dv1 {
         background-color: #9999B0;
         margin-left: 100px; margin-top: 100px;
@@ -53,13 +57,36 @@
       }
 
       .wvRulerSight {
-        background-color: #111111;
+        border-left: 1px dashed #cccccc; 
+        border-top: 1px dashed #cccccc;
         pointer-events: none;
         z-index: 9999;
       }
     </style>
+
+    <script type="text/javascript">
+
+      WAVE.GUI.connectorEnsure();
+
+      function onNewWin() {
+        window.Connector.openWindow();
+      }
+
+      function callWindowFunc() {
+        window.Connector.callWindowFunc(function (w) { 
+          w.Connector.logMsg("test call");
+        });
+      }
+
+    </script>
 </head>
 <body>
+  <div id="dvControl">
+    <button id="btnNewWin" onclick="onNewWin()">New Win</button>
+    <button id="btnCloseWin" onclick="onCloseWin()">Close Win</button>
+    <button id="btnLogMsg" onclick="callWindowFunc()">Log Msg</button>
+  </div>
+
   <div id="dv1"></div>  
 
   <div id="dv2"></div>  
@@ -71,36 +98,33 @@
   <script type="text/javascript">
 
     var dv1 = WAVE.id("dv1");
-    WAVE.GUI.setRuler({ element: dv1 });
+    WAVE.GUI.rulerSet({ element: dv1 });
     var dv2 = WAVE.id("dv2");
-    WAVE.GUI.setRuler({ element: dv2 });
-    WAVE.GUI.setRuler({ element: dv2, scopeName: "svg" });
+    WAVE.GUI.rulerSet({ element: dv2 });
+    WAVE.GUI.rulerSet({ element: dv2, scopeName: "svg" });
     var svg1 = WAVE.id("svg1");
-    WAVE.GUI.setRuler({ element: svg1, scopeName: "svg" });
+    WAVE.GUI.rulerSet({ element: svg1, scopeName: "svg" });
     var svg2 = WAVE.id("svg2");
-    WAVE.GUI.setRuler({ element: svg2, scopeName: "svg" });
+    WAVE.GUI.rulerSet({ element: svg2, scopeName: "svg" });
 
-    //var dv1 = WAVE.id("dv1");
-    //WAVE.GUI.attachRuler(dv1);
+    WAVE.GUI.rulerEventBind(WAVE.GUI.EVT_RULER_MOUSE_MOVE, function(src, masterRes, scopeNames) { 
+      window.Connector.callWindowFunc(function(w) {
+        w.WAVE.GUI.rulerMouseMove(masterRes, scopeNames);
+      });
+    });
 
-    //var dv2 = WAVE.id("dv2");
-    //WAVE.GUI.attachRuler(dv2, {
-    //  hintCls: "wvRulerHint-alt",
-    //  getTxtFunc: function (e) {
-    //    return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
-    //  }
-    //});
+    WAVE.GUI.rulerEventBind(WAVE.GUI.EVT_RULER_MOUSE_ENTER, function (src, scopeNames) {
+      window.Connector.callWindowFunc(function (w) {
+        w.WAVE.GUI.rulerMouseEnter(scopeNames);
+      });
+    });
 
-    //var svg1 = WAVE.id("svg1");
-    //WAVE.GUI.attachRuler(svg1);
+    WAVE.GUI.rulerEventBind(WAVE.GUI.EVT_RULER_MOUSE_LEAVE, function (src, scopeNames) {
+      window.Connector.callWindowFunc(function (w) {
+        w.WAVE.GUI.rulerMouseLeave(scopeNames);
+      });
+    });
 
-    //var svg2 = WAVE.id("svg2");
-    //WAVE.GUI.attachRuler(svg2, {
-    //  hintCls: "wvRulerHint-alt",
-    //  getTxtFunc: function (e) {
-    //    return e.elementPoint.x() + "px; " + e.elementPoint.y() + "px;"
-    //  }
-    //});
   </script>
 
 </body>

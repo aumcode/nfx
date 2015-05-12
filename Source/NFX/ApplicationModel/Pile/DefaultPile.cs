@@ -430,13 +430,15 @@ namespace NFX.ApplicationModel.Pile
 
     #region static .ctor
 
-      public DefaultPile():base()
+      public DefaultPile(string name = null):base()
       {
+        Name = name;
         ctor();
       }
 
-      public DefaultPile(object director):base(director)
+      public DefaultPile(object director, string name = null):base(director)
       {
+        Name = name;
         ctor();
       }
 
@@ -1169,6 +1171,9 @@ namespace NFX.ApplicationModel.Pile
                 if (node==null) return;
             }
         }
+
+        ConfigAttribute.Apply(this, node);
+
 
         var fcs = node.AttrByName(CONFIG_FREE_CHUNK_SIZES_ATTR).ValueAsString();
         if (fcs.IsNotNullOrWhiteSpace())

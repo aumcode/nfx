@@ -11,6 +11,10 @@
     /*line {shape-rendering: crispEdges; }
     rect {shape-rendering: crispEdges; }*/
 
+    /*html, body {
+      margin: 0; padding: 0;
+    }*/
+
     rect.wvSvgBkgr { fill: #f9f6f6; }
     line.wvAxisLine { stroke: #000000; stroke-width: 1; }
     line.wvAxisTickLine { stroke: #000000;}
@@ -77,7 +81,7 @@
     div.chart {
       float: left;
       width: 60%;
-      background-color: #2222ee;
+      background-color: #bbbbee;
       margin: 0; padding: 0;
       border: none;
       overflow: auto;
@@ -115,13 +119,17 @@
     }
 
     .wvRulerHint {
-      background-color: #eeeecc;
+      background-color: rgba(238, 238, 204, .8);
+      border: 1px solid #aaaaaa;
+      border-radius: 3px;
+      padding: 2px;
       pointer-events: none;
       z-index: 10000;
     }
 
     .wvRulerSight {
-      background-color: #111111;
+      border-left: 1px dashed #444444; 
+      border-top: 1px dashed #444444;
       pointer-events: none;
       z-index: 9999;
     }
@@ -135,7 +143,7 @@
 
     var lZoneLegendMargin;
 
-    WAVE.GUI.setRulerScope("", { syncHor: true, syncVer: false });
+    WAVE.GUI.rulerSetScope("", {});
 
     function initSvg2() {
       svgEl = $("#svg2")[0];
@@ -199,7 +207,7 @@
       chart.yAxis().minWidth(50);
       
       chart.xAxis().isBottom(false);
-      chart.yAxis().isLeft(false);
+      //chart.yAxis().isLeft(false);
       chart.lZone().corner(WAVE.Chart.SVG.RectCorner.LEFTTOP);
       //chart.yZone().enabled(false);
       //chart.xZone().enabled(false);
@@ -409,7 +417,7 @@
       </defs>
     </svg>
 
-    <svg id="svg2" width="100%" height="250" <!--viewBox="0 0 400 300"--> xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg id="svg2" width="70%" height="250" <!--viewBox="0 0 400 300"--> xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
         <marker id="marker1" markerWidth="8" markerHeight="8" refx="5" refy="5">
             <circle cx="5" cy="5" r="2" style="stroke: none; fill:#808090;"/>

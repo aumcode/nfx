@@ -129,7 +129,7 @@ namespace NFX
     }
 
     /// <summary>
-    /// Converts to Guid by copying ID twise
+    /// Converts to Guid by copying ID twice
     /// </summary>
     public Guid ToGuid()
     {

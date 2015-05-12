@@ -50,6 +50,10 @@ WAVE.GUI = (function(){
         EVT_TREE_NODE_EXPANSION: 'tree-node-expansion',
         EVT_TREE_NODE_SELECTION: 'tree-node-selection',
 
+        EVT_RULER_MOUSE_MOVE: 'ruler-mouse-move',
+        EVT_RULER_MOUSE_ENTER: 'ruler-mouse-enter',
+        EVT_RULER_MOUSE_LEAVE: 'ruler-mouse-leave',
+
         TREE_SELECTION_NONE: 0,
         TREE_SELECTION_SINGLE: 1,
         TREE_SELECTION_MULTI: 2
@@ -381,11 +385,17 @@ WAVE.GUI = (function(){
 
     // Manages all ruler logic
     var RulerManager = function (cfg) {
+      var self = this;
+
+      WAVE.extend(this, WAVE.EventManager);
+
       var DEFAULT_SCOPE_NAME = "";
 
       var fScopeInfos = [], fScopeInfosWlk = WAVE.arrayWalkable(fScopeInfos); // [{name: , cfg: [{}], elementInfos: []}] 
       var fElementInfos = [], // [{element: , ruler: , cfg: {getInfo: , scopeMouseEnter: , scopeMouseLeave: , scopeMouseMove: }}, scopeInfos: []]
           fElementInfosWlk = WAVE.arrayWalkable(fElementInfos);
+
+      var fRemovedFromConnected = false;
 
       function getElementInfo(element) {
        return fElementInfosWlk.wFirst(function(e) { return e.element === element; });
@@ -398,7 +408,7 @@ WAVE.GUI = (function(){
       function ensureScopeInfo(scopeName, cfg) {
         var scopeInfo = getScopeInfo(scopeName);
         if (scopeInfo === null) {
-          scopeInfo = {name: scopeName, cfg: cfg || {syncHor: true, syncVer: true}, elementInfos: []};
+          scopeInfo = {name: scopeName, cfg: cfg || {}, elementInfos: []};
           fScopeInfos.push(scopeInfo);
         } else {
           if (cfg) scopeInfo.cfg = cfg;
@@ -474,38 +484,19 @@ WAVE.GUI = (function(){
         ensureScopeInfo(scopeName, cfg);
       }
 
-      function onMouseEnter(e) {
-        var el = e.currentTarget;
-        var elementInfo = getElementInfo(el);
-        if (elementInfo === null) return;
-
-        elementInfo.ruler.onMouseEnter();
-
-        for (var iSi in elementInfo.scopeInfos) {
-          var si = elementInfo.scopeInfos[iSi];
-          for(var iEi in si.elementInfos) {
-            var ei = si.elementInfos[iEi];
-            if (el === ei.element) continue;
-            ei.ruler.onScopeMouseEnter(e, si);
-          }
-        }
+      this.mouseMove = function(masterRes, scopeNames) {
+        var scopeInfos = fScopeInfosWlk.wWhere(function(si) { return scopeNames.indexOf(si.name) !== -1}).wToArray();
+        moveSlaves(null, scopeInfos, masterRes);
       }
 
-      function onMouseLeave(e) {
-        var el = e.currentTarget;
-        var elementInfo = getElementInfo(el);
-        if (elementInfo === null) return;
+      this.mouseEnter = function (scopeNames) {
+        var scopeInfos = fScopeInfosWlk.wWhere(function (si) { return scopeNames.indexOf(si.name) !== -1 }).wToArray();
+        enterSlaves(null, scopeInfos);
+      }
 
-        elementInfo.ruler.onMouseLeave(e);
-
-        for (var iSi in elementInfo.scopeInfos) {
-          var si = elementInfo.scopeInfos[iSi];
-          for (var iEi in si.elementInfos) {
-            var ei = si.elementInfos[iEi];
-            if (el === ei.element) continue;
-            ei.ruler.onScopeMouseLeave(e, si);
-          }
-        }
+      this.mouseLeave = function (scopeNames) {
+        var scopeInfos = fScopeInfosWlk.wWhere(function (si) { return scopeNames.indexOf(si.name) !== -1 }).wToArray();
+        leaveSlaves(null, scopeInfos);
       }
 
       function onMouseMove(e) {
@@ -516,111 +507,77 @@ WAVE.GUI = (function(){
         var masterRes = elementInfo.ruler.onMouseMove(e);
 
         // {scope: scopeInfo, masterRes: masterRes, event: e}
-        var slaveEvt = { scope: null, masterRes: masterRes, event: e };
-        for (var iSi in elementInfo.scopeInfos) {
-          var si = elementInfo.scopeInfos[iSi];
+
+        moveSlaves(el, elementInfo.scopeInfos, masterRes);
+
+        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function(si) { return si.name }).wToArray();
+        self.eventInvoke(published.EVT_RULER_MOUSE_MOVE, masterRes, scopeNames);
+      }
+
+      function onMouseEnter(e) {
+        var el = e.currentTarget;
+        var elementInfo = getElementInfo(el);
+        if (elementInfo === null) return;
+
+        elementInfo.ruler.onMouseEnter();
+
+        enterSlaves(el, elementInfo.scopeInfos);
+
+        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function (si) { return si.name }).wToArray();
+        self.eventInvoke(published.EVT_RULER_MOUSE_ENTER, scopeNames);
+      }
+
+      function onMouseLeave(e) {
+        var el = e.currentTarget;
+        var elementInfo = getElementInfo(el);
+        if (elementInfo === null) return;
+
+        elementInfo.ruler.onMouseLeave(e);
+
+        leaveSlaves(el, elementInfo.scopeInfos);
+
+        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function (si) { return si.name }).wToArray();
+        self.eventInvoke(published.EVT_RULER_MOUSE_LEAVE, scopeNames);
+      }
+
+      function moveSlaves(element, scopeInfos, masterRes) {
+        var slaveEvt = { scope: null, masterRes: masterRes};
+
+        for (var iSi in scopeInfos) {
+          var si = scopeInfos[iSi];
           slaveEvt.scope = si;
           for (var iEi in si.elementInfos) {
             var ei = si.elementInfos[iEi];
-            if (el === ei.element) {
-              continue;
-            }
+            if (element === ei.element) continue;
             ei.ruler.onScopeMouseMove(slaveEvt);
           }
         }
       }
 
-      function ___comment() {
-        //var fScopes = [], fScopeWlk = WAVE.arrayWalkable(fScopes); // {name: , cfg: }
-        //var fElements = [], fScopeWlk = WAVE.arrayWalkable(fElements);
-        //var fElementInScope = [], fElementsInScopeWlk = WAVE.arrayWalkable(fElementInScope); // {scopeName, element}
-
-        //this.setScope = function(name, cfg) {
-        //  var existing = getScope(name);
-        //  if (existing === null) 
-        //    fScopes.push({name: name, cfg: cfg || {}});
-        //  else
-        //    existing.cfg = cfg || {};
-        //}
-
-        //function getScope(name) {
-        //  return fScopeWlk.wFirst(function(s) { return s.name === name; });
-        //}
-
-        //this.bindElement = function(element, scopeName) {
-        //  if (!WAVE.inArray(element)) {
-        //    fElements.push(element);
-
-        //    var jElement = $(element);
-        //    jElement.bind("mouseenter", onMouseOver);
-        //    jElement.bind("mouseleave", onMouseLeave);
-        //    jElement.bind("mousemove", onMouseMove);
-        //  }
-
-        //  if (!scopeName) scopeName = DEFAULT_SCOPE_NAME;
-
-        //  var existingScope = fScopeWlk.wFirstIdx(function() {});
-
-        //  fElementInScope.wFirst(function(es) { return es. });
-        //}
-
-        //this.unbindElement = function(element, scopeName) {
-        //  function elementEqual(es) { return es.scopeName === scopeName };
-
-        //  var elementsToDelete = fElementsInScopeWlk.wWhere(elementEqual);
-
-        //  if(scopeName) elementsToDelete = elementsToDelete.wWhere();
-
-        //  elementsToDelete = elementsToDelete.wToArray();
-
-        //  for(var i in elementsToDelete)
-        //    WAVE.arrayDelete(fElementInScope, elementsToDelete[i]);
-
-        //  if (!fElementsInScopeWlk.wAny(elementEqual))
-        //  {
-        //    var jElement = $(element);
-
-        //    jElement.unbind("mouseenter", onMouseOver);
-        //    jElement.unbind("mouseleave", onMouseLeave);
-        //    jElement.unbind("mousemove", onMouseMove);
-
-        //    WAVE.arrayDelete(fElements, element);
-        //  }
-        //}
-
-        //var fScopes = {}; // {<SCOPE_NAME>: [element: DOMElement, ruler: Ruler]}
-        //var DEFAULT_SCOPE_NAME = "";
-
-        //this.set = function (element, scopeName, rulerCfg) {
-        //  if (!scopeName) scopeName = DEFAULT_SCOPE_NAME;
-        //  var scopeBucket = fScopes[scopeName];
-        //  if (!scopeBucket) scopeBucket = [];
-        //  fScopes[scopeName] = scopeBucket;
-        //}
-
-        //this.unset = function (element, scopeName) {
-        //  if (scopeName) {
-        //    var scopeBucket = fScopes[scopeName];
-        //    if (!scopeBucket) return;
-        //    var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
-        //    if (idx === -1) return;
-        //    scopeBucket.splice(idx, 1);
-        //  } else {
-        //    for (var key in fScopes) {
-        //      if (!fScopes.hasOwnProperty(key)) continue;
-
-        //      var scopeBucket = fScopes[key];
-        //      var idx = WAVE.arrayWalkable(scopeBucket).wFirstIdx(function (e) { return element === e; });
-        //      if (idx === -1) continue;
-        //      scopeBucket.splice(idx, 1);
-        //    }
-        //  }
-
-        //  $(element).unbind("mouseenter", onMouseOver);
-        //  $(element).unbind("mouseleave", onMouseLeave);
-        //  $(element).unbind("mousemove", onMouseMove);
-        //}
+      function enterSlaves(element, scopeInfos) {
+        for (var iSi in scopeInfos) {
+          var si = scopeInfos[iSi];
+          for (var iEi in si.elementInfos) {
+            var ei = si.elementInfos[iEi];
+            if (element === ei.element) continue;
+            ei.ruler.onScopeMouseEnter(si);
+          }
+        }
       }
+
+      function leaveSlaves(element, scopeInfos) {
+        for (var iSi in scopeInfos) {
+          var si = scopeInfos[iSi];
+          for (var iEi in si.elementInfos) {
+            var ei = si.elementInfos[iEi];
+            if (element === ei.element) continue;
+            ei.ruler.onScopeMouseLeave(si);
+          }
+        }
+      }
+
+      //function fireMouseMove(masterRes, scopeNames) { self.eventInvoke(published.EVT_RULER_MOUSE_MOVE, masterRes, scopeNames); }
+
     }//RulerManager
 
     var ElementRuler = function(element, cfg) {
@@ -666,8 +623,6 @@ WAVE.GUI = (function(){
           parentRc = WAVE.Geometry.toRectWH(parentRect.left, parentRect.top, parentRect.width, parentRect.height);
         }
 
-        ensureDivsVisibility(e.clientX, e.clientY, parentRc, true, true);
-
         var elX = e.clientX - parentRc.left();
         var elY = e.clientY - parentRc.top();
 
@@ -679,7 +634,6 @@ WAVE.GUI = (function(){
         if (fCfg.getTxt) {
           txt = fCfg.getTxt({
             clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY),
-            elementPoint: new WAVE.Geometry.Point(elX, elY),
             divHint: divHint
           });
         } else {
@@ -699,10 +653,13 @@ WAVE.GUI = (function(){
 
         locateSight(e.clientX, e.clientY, parentRc);
 
-        return fCfg.getMasterInfo ?
-                  fCfg.getMasterInfo({clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY), elementPoint: new WAVE.Geometry.Point(elX, elY),
-                  }) :
-                  { elementRcPoint: new WAVE.Geometry.Point(elX, elY) };
+        var r = fCfg.getMasterInfo ?
+                  fCfg.getMasterInfo({clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY)}) :
+                  { elementRcPoint: new WAVE.Geometry.Point(elX, elY), isInParentRc: true }; 
+
+        ensureDivsVisibility(e.clientX, e.clientY, r.isInParentRc);
+
+        return r;
       }
 
           function locateSight(clientX, clientY, parentRc) {
@@ -751,11 +708,9 @@ WAVE.GUI = (function(){
             divSightBoxBottom.style.top = bottom + "px";
           }
 
-          function ensureDivsVisibility(clientX, clientY, parentRc, syncHor, syncVer) {
+          function ensureDivsVisibility(clientX, clientY, isInParentRc) {
             var allDivsWlk = getAllDivsWlk();
-            //if (!parentRc.contains(new WAVE.Geometry.Point(clientX, clientY))) {
-            if (syncHor && (clientX < parentRc.left() || clientX > parentRc.right()) ||
-                syncVer && (clientY < parentRc.top() || clientY > parentRc.bottom()))
+            if (!isInParentRc)
             {
               allDivsWlk.wEach(function (d) {
                 if (d !== null && d.style.visibility !== "hidden")
@@ -776,11 +731,11 @@ WAVE.GUI = (function(){
                 divSlave]);
           }
 
-      this.onScopeMouseEnter = function (e, scope) {
+      this.onScopeMouseEnter = function (scope) {
         ensureSlaveElements();
       }
 
-      this.onScopeMouseLeave = function (e, scope) {
+      this.onScopeMouseLeave = function (scope) {
         ensureNoSlaveElements();
       }
 
@@ -794,17 +749,24 @@ WAVE.GUI = (function(){
         var clientY;
 
         var elementRcPoint;
+        var clientX, clientY;
+        var slaveIsInParentRc;
         if (fCfg.getSlaveInfo) {
           var slaveInfo = fCfg.getSlaveInfo({ masterRes: e.masterRes });
-          elementRcPoint = slaveInfo.elementRcPoint;
+          //elementRcPoint = slaveInfo.elementRcPoint;
+          slaveIsInParentRc = slaveInfo.isInParentRc;
+          clientX = slaveInfo.clientPoint.x();
+          clientY = slaveInfo.clientPoint.y();
         } else {
           elementRcPoint = e.masterRes.elementRcPoint;
+          slaveIsInParentRc = true;
+          clientX = slaveParentRc.left() + elementRcPoint.x();
+          clientY = slaveParentRc.top() + elementRcPoint.y();
         }
 
-        clientX = slaveParentRc.left() + elementRcPoint.x();
-        clientY = slaveParentRc.top() + elementRcPoint.y();
+        
 
-        ensureDivsVisibility(clientX, clientY, slaveParentRc, e.scope.cfg.syncHor, e.scope.cfg.syncVer);
+        ensureDivsVisibility(clientX, clientY, e.masterRes.isInParentRc && slaveIsInParentRc);
 
         divSlave.style.top = slaveParentRc.top() + "px";
         divSlave.style.height = slaveParentRc.height() + "px";
@@ -918,257 +880,119 @@ WAVE.GUI = (function(){
 
     var fRulerManager = null;
 
-    published.setRuler = function (e) { // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
+    published.rulerSet = function (e) { // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
       if (fRulerManager === null) fRulerManager = new RulerManager();
       fRulerManager.set(e);
     }
 
-    published.unsetRuler = function(e) { // {element: , scope: }}
+    published.rulerUnset = function(e) { // {element: , scope: }}
       if (fRulerManager === null) return;
       fRulerManager.unset(e);
     }
 
-    published.setRulerScope = function (scopeName, cfg) { // cfg is {syncHor: , syncVer: }
+    published.rulerSetScope = function (scopeName, cfg) { 
       if (fRulerManager === null) fRulerManager = new RulerManager();
       fRulerManager.setScope(scopeName, cfg);
     }
 
+    published.rulerMouseMove = function(masterRes, scopeNames) {
+      if (fRulerManager === null) return;
+      fRulerManager.mouseMove(masterRes, scopeNames);
+    }
 
-    var Ruler = function (cfg) {
-      WAVE.extend(this, WAVE.EventManager);
+    published.rulerMouseEnter = function (scopeNames) {
+      if (fRulerManager === null) return;
+      fRulerManager.mouseEnter(scopeNames);
+    }
 
-      var elementInfos = [];
-      var elementInfosWlk = WAVE.arrayWalkable(elementInfos);
+    published.rulerMouseLeave = function (scopeNames) {
+      if (fRulerManager === null) return;
+      fRulerManager.mouseLeave(scopeNames);
+    }
 
+    published.rulerEventBind = function(e, handler) {
+      if (fRulerManager === null) fRulerManager = new RulerManager();
+      fRulerManager.eventBind(e, handler);
+    }
+
+    // Implements inter-window browser commenication
+    published.WindowConnector = function (cfg) {
       cfg = cfg || {};
 
-      var fRulerHintCls = cfg.hintCls || "wvRulerHint";
-      var fRulerSightCls = cfg.sightCls || "wvRulerSight";
+      var self = this;
 
-      var fSigntSize = cfg.sightSize || 8;
+      var fWnd = cfg.wnd || window;
 
-      this.bindElement = function (element, cfg) {
-        var elementInfo = elementInfosWlk.wFirst(function (e) { return e.element === element });
-        if (elementInfo !== null) {
-          elementInfo.cfg = cfg;
-        } else {
-          $(element).bind("mouseenter", onMouseOver);
-          $(element).bind("mouseleave", onMouseLeave);
-          $(element).bind("mousemove", onMouseMove);
+      var fDomain = fWnd.location.protocol + "//" + fWnd.location.host;
 
-          elementInfos.push({ element: element, cfg: cfg || {} });
-        }
-      }
+      var fConnectedWindows = [], fConnectedWindowsWlk = WAVE.arrayWalkable(fConnectedWindows);
+      this.connectedWindows = function () { return WAVE.arrayShallowCopy(fConnectedWindows); }
 
-      this.unbindElement = function (element) {
-        var idx = elementInfosWlk.wFirst(function (e) { return e.element === element });
-        if (idx === -1) return;
+      this.openWindow = function (href) {
+        var win = window.open(href || window.location.href);
+        fConnectedWindowsWlk.wEach(function (w) {
+          w.Connector.addWindow(win);
+        });
+        self.addWindow(win);
+      },
 
-        $(element).unbind("mousemove", onMouseMove);
-        $(element).unbind("mouseleave", onMouseLeave);
-        $(element).unbind("mouseenter", onMouseOver);
+      this.closeCurrentWindow = function () {
+        fConnectedWindowsWlk.wEach(function (w) { w.Connector.removeWindow(win); });
+      },
 
-        elementInfos.splice(idx, 1);
-      }
+      this.addWindow = function (e) {
+        fConnectedWindows.push(e.window);
+      },
 
-      var divHint = null, divSightLeft = null, divSightTop = null, divSightRight = null, divSightBottom = null, divSightCenter = null,
-          divSightBoxLeft = null, divSightBoxTop = null, divSightBoxRight = null, divSightBoxBottom = null, divSightBoxCenter = null;
-      var curElementInfo = null;
+      this.removeWindow = function (w) {
+        WAVE.arrayDelete(fConnectedWindows, w);
+      },
 
-      function onMouseOver(e) {
-        curElementInfo = elementInfosWlk.wFirst(function (ei) { return ei.element === e.currentTarget });
-
-        ensureHint(curElementInfo);
-
-        divHint.style.left =  e.clientX + "px";
-        divHint.style.top = e.clientY + "px";
-      }
-
-      function onMouseLeave(e) {
-        if (divHint === null) return;
-
-        document.body.removeChild(divHint); divHint = null;
-
-        WAVE.arrayWalkable([divSightLeft, divSightRight, divSightTop, divSightBottom,
-                            divSightBoxLeft, divSightBoxRight, divSightBoxTop, divSightBoxBottom]).wEach(function (e) {
-          document.body.removeChild(e); e = null;
+      this.callWindowFunc = function (func) { // func is callback of type function(w) { }
+        var closedWindows;
+        fConnectedWindowsWlk.wEach(function (cw) {
+          if (cw.closed) {
+            if (!closedWindows) closedWindows = [];
+            closedWindows.push(cw);
+          } else {
+            func(cw);
+          }
         });
 
-        curElementInfo = null;
-      }
-
-      function onMouseMove(e) {
-        if (curElementInfo === null)
-          curElementInfo = elementInfosWlk.wFirst(function (ei) { return ei.element === e.currentTarget });
-
-        ensureHint(curElementInfo);
-
-        var parentRc;
-        if (curElementInfo.cfg.parentRc) {
-          parentRc = curElementInfo.cfg.parentRc;
-        } else {
-          var parentRect = curElementInfo.element.getBoundingClientRect();
-          parentRc = WAVE.Geometry.toRectWH(parentRect.left, parentRect.top, parentRect.width, parentRect.height);
-        }
-
-        var elX = e.clientX - parentRc.left();
-        var elY = e.clientY - parentRc.top();
-
-        divHint.style.left = e.clientX + "px";
-        divHint.style.top = e.clientY + "px";
-
-        var txt = null;
-
-        if (curElementInfo.cfg.getTxtFunc) {
-          txt = curElementInfo.cfg.getTxtFunc({
-            clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY),
-            elementPoint: new WAVE.Geometry.Point(elX, elY),
-            elementInfo: curElementInfo,
-            divHint: divHint
+        if (closedWindows) {
+          var closedWindowsWlk = WAVE.arrayWalkable(closedWindows);
+          closedWindowsWlk.wEach(function (rw) {
+            self.removeWindow(rw);
           });
-        } else {
-          txt = elX + ", " + elY;
+          closedWindowsWlk.wEach(function (rw) {
+            fConnectedWindowsWlk.wEach(function (w) {
+              w.Connector.removeWindow(rw);
+            });
+          });
         }
+      },
 
-        divHint.innerHTML = txt;
+      this.logMsg = function (msg) {
+        console.log(msg);
+      }
 
-        var divHintRect = divHint.getBoundingClientRect();
-
-        var hintRc = WAVE.Geometry.toRectWH(divHintRect.left, divHintRect.top, divHintRect.width, divHintRect.height);
-        
-        var hintPos = getHintPos(e.clientX, e.clientY, hintRc, parentRc);
-
-        divHint.style.left = hintPos.x() + "px";
-        divHint.style.top = hintPos.y() + "px";
-
-        {
-          var left = e.clientX - fSigntSize;
-          if (left < parentRc.left()) left = parentRc.left();
-
-          var right = e.clientX + fSigntSize;
-          if (right > parentRc.right()) right = parentRc.right();
-
-          var top = e.clientY - fSigntSize;
-          if (top < parentRc.top()) top = parentRc.top();
-
-          var bottom = e.clientY + fSigntSize;
-          if (bottom > parentRc.bottom()) bottom = parentRc.bottom();
-
-          divSightLeft.style.left = parentRc.left() + "px";
-          divSightLeft.style.width = (left - parentRc.left()) + "px";
-          divSightLeft.style.top = e.clientY + "px";
-
-          divSightRight.style.left = right + "px";
-          divSightRight.style.width = (parentRc.right() - right) + "px";
-          divSightRight.style.top = e.clientY + "px";
-
-          divSightTop.style.top = parentRc.top() + "px";
-          divSightTop.style.height = (top - parentRc.top()) + "px";
-          divSightTop.style.left = e.clientX + "px";
-
-          divSightBottom.style.top = bottom + "px";
-          divSightBottom.style.height = (parentRc.bottom() - bottom) + "px";
-          divSightBottom.style.left = e.clientX + "px";
-
-          divSightBoxLeft.style.top = top + "px";
-          divSightBoxLeft.style.height = (bottom - top) + "px";
-          divSightBoxLeft.style.left = left + "px";
-
-          divSightBoxRight.style.top = top + "px";
-          divSightBoxRight.style.height = (bottom - top) + "px";
-          divSightBoxRight.style.left = right + "px";
-
-          divSightBoxTop.style.left = left + "px";
-          divSightBoxTop.style.width = (right - left) + "px";
-          divSightBoxTop.style.top = top + "px";
-
-          divSightBoxBottom.style.left = left + "px";
-          divSightBoxBottom.style.width = (right - left) + "px";
-          divSightBoxBottom.style.top = bottom + "px";
+      if (fWnd.opener && fWnd.opener.Connector) {
+        self.addWindow(fWnd.opener);
+        var openerConnectedWindows = fWnd.opener.Connector.connectedWindows();
+        for (var i in openerConnectedWindows) {
+          var cw = openerConnectedWindows[i];
+          if (cw === fWnd) continue;
+          if (cw.closed) continue;
+          self.addWindow({ window: cw });
         }
       }
+    }//WindowConnector
 
-      function getHintPos(cx, cy, hintRc, parentElementRc) {
-        var resultRc = null;
-        var hintSquare = hintRc.square();
-
-        var minPenalty = Number.MAX_VALUE;
-        for (var rad = 0; rad < 2 * Math.PI; rad += Math.PI / 4) {
-          var rc = WAVE.Geometry.rotateRectAroundCircle(cx, cy, 20, hintRc.width(), hintRc.height(), rad);
-
-          var visibleSquare = WAVE.Geometry.overlapAreaRect(parentElementRc, rc);
-
-          var penalty = hintSquare - visibleSquare;
-
-          if (penalty == 0) {
-            resultRc = rc;
-            break;
-          }
-
-          if (penalty < minPenalty) {
-            minPenalty = penalty;
-            resultRc = rc;
-          }
-        }
-
-        return resultRc.topLeft();
-      }
-
-      function ensureHint(ei) {
-        if (divHint !== null) return;
-
-        divHint = document.createElement("div");
-        divHint.id = "WAVE_GUI_Ruler";
-        divHint.innerHTML = "Hint DIV";
-        divHint.className = ei.cfg.hintCls || fRulerHintCls;
-        divHint.style.position = "absolute";
-        document.body.appendChild(divHint);
-
-        function createLineDiv(horizontal) {
-          var div = document.createElement("div");
-          if (horizontal) div.style.height = "1px"; else div.style.width = "1px";
-          div.style.position = "absolute";
-          div.className = ei.cfg.sightCls || fRulerSightCls;
-          document.body.appendChild(div);
-          return div;
-        }
-
-        divSightRight = createLineDiv(true);
-        divSightLeft = createLineDiv(true);
-        divSightBoxRight = createLineDiv(false);
-        divSightBoxLeft = createLineDiv(false);
-
-        divSightTop = createLineDiv(false);
-        divSightBottom = createLineDiv(false);
-        divSightBoxTop = createLineDiv(true);
-        divSightBoxBottom = createLineDiv(true);
-      }
-    }//Ruler
-
-    var ruler = null;
-
-    published.attachRuler = function (element, cfg) {
-      if (ruler === null) ruler = new Ruler();
-
-      ruler.bindElement(element, cfg);
-    }
-
-    published.detachRuler = function (element) {
-      if (ruler === null) return;
-
-      ruler.unbindElement(element);
-    }
-
-    published.RulerScope = function() {
-      var fElements = [], fElementWlk = WAVE.arrayWalkable(fElements);
-
-      this.addElement = function(el) {
-        if (WAVE.inArray(fElements, el)) return;
-      }
-
-      this.removeElement = function(el) {
-        WAVE.arrayDelete(fElements, el);
-      }
+    // Ensures that wnd (window by default) has Connector property of type WindowConnector.
+    // Call this prior to first call to window.Connector
+    published.connectorEnsure = function (wnd) {
+      wnd = wnd || window;
+      if (!wnd.Connector) wnd.Connector = new published.WindowConnector({ wnd: wnd });
     }
 
     var fTreeNodeIDSeed = 0;

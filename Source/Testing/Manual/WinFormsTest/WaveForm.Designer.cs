@@ -65,6 +65,8 @@
       this.nudComplexRow = new System.Windows.Forms.NumericUpDown();
       this.chkLogin = new System.Windows.Forms.CheckBox();
       this.nudLogin = new System.Windows.Forms.NumericUpDown();
+      this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
+      this.label1 = new System.Windows.Forms.Label();
       this.pnlManage.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.nudCallsCnt)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudTaskCnt)).BeginInit();
@@ -81,6 +83,7 @@
       ((System.ComponentModel.ISupportInitialize)(this.nudRowGet_TypeRow)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudComplexRow)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudLogin)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).BeginInit();
       this.SuspendLayout();
       // 
       // tbLog
@@ -104,6 +107,8 @@
       // pnlManage
       // 
       this.pnlManage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.pnlManage.Controls.Add(this.nudBatchSize);
+      this.pnlManage.Controls.Add(this.label1);
       this.pnlManage.Controls.Add(this.btnCancel);
       this.pnlManage.Controls.Add(this.btnUnselectAll);
       this.pnlManage.Controls.Add(this.btnSelectAll);
@@ -152,17 +157,17 @@
       // 
       // nudCallsCnt
       // 
-      this.nudCallsCnt.Location = new System.Drawing.Point(196, 35);
+      this.nudCallsCnt.Location = new System.Drawing.Point(113, 35);
       this.nudCallsCnt.Maximum = new decimal(new int[] {
             1000000000,
             0,
             0,
             0});
       this.nudCallsCnt.Name = "nudCallsCnt";
-      this.nudCallsCnt.Size = new System.Drawing.Size(108, 20);
+      this.nudCallsCnt.Size = new System.Drawing.Size(82, 20);
       this.nudCallsCnt.TabIndex = 18;
       this.nudCallsCnt.Value = new decimal(new int[] {
-            1,
+            1000000000,
             0,
             0,
             0});
@@ -170,22 +175,22 @@
       // lblCallsCnt
       // 
       this.lblCallsCnt.AutoSize = true;
-      this.lblCallsCnt.Location = new System.Drawing.Point(140, 37);
+      this.lblCallsCnt.Location = new System.Drawing.Point(81, 37);
       this.lblCallsCnt.Name = "lblCallsCnt";
-      this.lblCallsCnt.Size = new System.Drawing.Size(48, 13);
+      this.lblCallsCnt.Size = new System.Drawing.Size(29, 13);
       this.lblCallsCnt.TabIndex = 17;
-      this.lblCallsCnt.Text = "Calls Cnt";
+      this.lblCallsCnt.Text = "Calls";
       // 
       // nudTaskCnt
       // 
-      this.nudTaskCnt.Location = new System.Drawing.Point(59, 35);
+      this.nudTaskCnt.Location = new System.Drawing.Point(40, 35);
       this.nudTaskCnt.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
       this.nudTaskCnt.Name = "nudTaskCnt";
-      this.nudTaskCnt.Size = new System.Drawing.Size(51, 20);
+      this.nudTaskCnt.Size = new System.Drawing.Size(35, 20);
       this.nudTaskCnt.TabIndex = 16;
       this.nudTaskCnt.Value = new decimal(new int[] {
             1,
@@ -198,9 +203,9 @@
       this.lblTaskCnt.AutoSize = true;
       this.lblTaskCnt.Location = new System.Drawing.Point(3, 37);
       this.lblTaskCnt.Name = "lblTaskCnt";
-      this.lblTaskCnt.Size = new System.Drawing.Size(50, 13);
+      this.lblTaskCnt.Size = new System.Drawing.Size(36, 13);
       this.lblTaskCnt.TabIndex = 15;
-      this.lblTaskCnt.Text = "Task Cnt";
+      this.lblTaskCnt.Text = "Tasks";
       // 
       // cmbURL
       // 
@@ -580,6 +585,32 @@
             0,
             0});
       // 
+      // nudBatchSize
+      // 
+      this.nudBatchSize.Location = new System.Drawing.Point(238, 35);
+      this.nudBatchSize.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+      this.nudBatchSize.Name = "nudBatchSize";
+      this.nudBatchSize.Size = new System.Drawing.Size(66, 20);
+      this.nudBatchSize.TabIndex = 23;
+      this.nudBatchSize.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(201, 37);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(35, 13);
+      this.label1.TabIndex = 22;
+      this.label1.Text = "Batch";
+      // 
       // WaveForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -607,6 +638,7 @@
       ((System.ComponentModel.ISupportInitialize)(this.nudRowGet_TypeRow)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudComplexRow)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudLogin)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -650,5 +682,7 @@
     private System.Windows.Forms.CheckBox chkLogin;
     private System.Windows.Forms.NumericUpDown nudLogin;
     private System.Windows.Forms.Button btnCancel;
+    private System.Windows.Forms.NumericUpDown nudBatchSize;
+    private System.Windows.Forms.Label label1;
   }
 }

@@ -81,7 +81,7 @@ namespace WinFormsTest
               [Field] public TestRow[] ErrorRows { get; set; }
             }
 
-            private class WebClientCookied: WebClient
+            public class WebClientCookied: WebClient
             {
               private CookieContainer m_CookieContainer = new CookieContainer();
 
@@ -106,7 +106,7 @@ namespace WinFormsTest
             {
               public CheckBox Chk;
               public NumericUpDown Nud;
-              public Action Action;  
+              public Action<WebClient> Action;  
 
               public bool ShouldRun { get { return Chk.Checked && Nud.Value > 0; } }
 
@@ -119,7 +119,7 @@ namespace WinFormsTest
 
             private struct TestBatchItem
             {
-              public Action Action;
+              public Action<WebClient> Action;
               public int Cnt;
 
               public static implicit operator TestBatchItem(TestItem testItem)
@@ -133,6 +133,7 @@ namespace WinFormsTest
             {
               public int CallCnt;
               public TestBatchItem[] BatchItems;
+              public int RawBatches;
             }
 
           #endregion
@@ -182,6 +183,7 @@ namespace WinFormsTest
 
       var taskCnt = (int)nudTaskCnt.Value;
       var callsCount = (int)nudCallsCnt.Value;
+      var rawBatchCnt = (int)nudBatchSize.Value;
 
       var callsPerTask = callsCount / taskCnt;
 
@@ -191,7 +193,7 @@ namespace WinFormsTest
       {
         var thread = new Thread(threadFunc);
         m_ThreadsState[thread.ManagedThreadId] = true;
-        thread.Start( new ThreadArg { CallCnt = callsPerTask, BatchItems = batchItems});
+        thread.Start( new ThreadArg { CallCnt = callsPerTask, BatchItems = batchItems, RawBatches = rawBatchCnt});
       }
     }
 
@@ -199,10 +201,19 @@ namespace WinFormsTest
     {
       var threadArg = arg as ThreadArg;
       var batchItems = threadArg.BatchItems;
+      var rawBatches = threadArg.RawBatches;
       int callCnt, errCnt;
+
+      WebClient wc = null;
 
       for (int iBatch = 0; iBatch < threadArg.CallCnt && m_IsRunning; iBatch++)
       {
+        if (iBatch % rawBatches == 0)
+        {
+          if (wc != null) wc.Dispose();
+          wc = this.CreateWebClient();
+        }
+
         errCnt = callCnt = 0;
         foreach (var item in batchItems)
         {
@@ -212,7 +223,7 @@ namespace WinFormsTest
             try
             {
               callCnt++;
-              item.Action();
+              item.Action(wc);
             }
             catch (Exception ex)
             {
@@ -224,6 +235,12 @@ namespace WinFormsTest
         } 
         Interlocked.Add(ref m_CallCnt, callCnt);
         Interlocked.Add(ref m_ErrCnt, errCnt);
+      }
+
+      if (wc != null) 
+      {
+        wc.Dispose();
+        wc = null;
       }
 
       m_ThreadsState[System.Threading.Thread.CurrentThread.ManagedThreadId] = false;
@@ -329,9 +346,9 @@ namespace WinFormsTest
 
     #region Tests
 
-      private void Action_Empty()
+      private void Action_Empty(WebClient wc)
       {
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           var res = wc.DownloadString(m_ServerURI + "Empty");
 
@@ -339,9 +356,9 @@ namespace WinFormsTest
         }
       }
 
-      private void Action_Action0Name()
+      private void Action_Action0Name(WebClient wc)
       {
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           try
           {
@@ -355,20 +372,20 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_ActionPost_Found()
+      public void Action_ActionPost_Found(WebClient wc)
       {
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           var res = wc.UploadString(m_ServerURI + "ActionPost", string.Empty);
           if (res != "ActionPost") throw new Exception();
         }
       }
 
-      public void Action_GetSetTimeSpan()
+      public void Action_GetSetTimeSpan(WebClient wc)
       {
         var initTs = TimeSpan.FromDays(10);
 
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           var values = new NameValueCollection();
           values.Add("ts", initTs.AsString());
@@ -382,11 +399,11 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_Add_BothArgs()
+      public void Action_Add_BothArgs(WebClient wc)
       {
         int a = 3, b = 14;
 
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           var values = new NameValueCollection();
           values.Add("a", a.AsString());
@@ -400,9 +417,9 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_GetList()
+      public void Action_GetList(WebClient wc)
       {
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           string str = wc.DownloadString(m_ServerURI + "GetList");
 
@@ -417,9 +434,9 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_GetWithNoPermission()
+      public void Action_GetWithNoPermission(WebClient wc)
       {
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           string str = wc.DownloadString(m_ServerURI + "GetWithPermission");
 
@@ -428,13 +445,13 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_RowGet_JSONDataMap()
+      public void Action_RowGet_JSONDataMap(WebClient wc)
       {
         var start = DateTime.Now;
 
         System.Threading.Thread.Sleep(3000);
 
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           string str = wc.DownloadString(m_ServerURI + "RowGet");
 
@@ -455,11 +472,11 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_RowGet_TypeRow()
+      public void Action_RowGet_TypeRow(WebClient wc)
       {
         var start = DateTime.Now;
 
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           string str = wc.DownloadString(m_ServerURI + "RowGet");
 
@@ -470,7 +487,7 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_ComplexRow()
+      public void Action_ComplexRow(WebClient wc)
       {
         var initalRow = new TestComplexRow();
 
@@ -487,7 +504,7 @@ namespace WinFormsTest
 
         var str = initalRow.ToJSON(JSONWritingOptions.CompactRowsAsMap);
 
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           wc.Headers[HttpRequestHeader.ContentType] = NFX.Web.ContentType.JSON;
           var res = wc.UploadString(m_ServerURI + "ComplexRowSet", str);
@@ -501,13 +518,13 @@ namespace WinFormsTest
         }
       }
 
-      public void Action_Login()
+      public void Action_Login(WebClient wc)
       {
         var values = new NameValueCollection();
         values.Add("id", USER_ID);
         values.Add("pwd", USER_PWD);
 
-        using (var wc = CreateWebClient())
+        //using (var wc = CreateWebClient())
         {
           var bytes = wc.UploadValues(m_ServerURI + "LoginUser", values);
           var str = GetUTF8StringWOBOM(bytes);
