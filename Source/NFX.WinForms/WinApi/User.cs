@@ -109,6 +109,27 @@ namespace NFX.WinApi
 
     [DllImport(USER32)]
     public static extern IntPtr GetFocus(); 
+
+
+    
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+    // Find window by Caption only. Note you must pass IntPtr.Zero as the first parameter.
+
+    [DllImport("user32.dll", EntryPoint="FindWindow", SetLastError = true)]
+    public static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
+
+    // You can also call FindWindow(default(string), lpWindowName) or FindWindow((string)null, lpWindowName)
+
+
+    [return: MarshalAs(UnmanagedType.Bool)]
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool PostMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+    public static extern uint RegisterWindowMessage(string lpString);
+
   }
 
 }

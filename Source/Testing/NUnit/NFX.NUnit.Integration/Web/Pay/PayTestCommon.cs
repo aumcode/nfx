@@ -81,14 +81,15 @@ namespace NFX.NUnit.Integration.Web.Pay
 
       public static void CaptureImplicitTotal(PaySession sess)
       {
+        var amount = new Financial.Amount("usd", 17.25M);
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT,
-          new Financial.Amount("usd", 17.25M), false, "test payment");
+          amount, false, "test payment");
 
-        Assert.IsFalse(charge.IsCaptured);
+        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountCaptured);
 
         charge.Capture(null);
 
-        Assert.IsTrue(charge.IsCaptured);
+        Assert.AreEqual(amount, charge.AmountCaptured);
       }
 
       public static void CaptureExplicitTotal(PaySession sess)
@@ -97,37 +98,41 @@ namespace NFX.NUnit.Integration.Web.Pay
 
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, amount, false, "test payment");
 
-        Assert.IsFalse(charge.IsCaptured);
+        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountCaptured);
 
         charge.Capture(null, amount);
 
-        Assert.IsTrue(charge.IsCaptured);
+        Assert.AreEqual(amount, charge.AmountCaptured);
       }
 
       public static void CapturePartial(PaySession sess)
       {
+        var chargeAmount = new Financial.Amount("usd", 17.25M);
+
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT,
-          new Financial.Amount("usd", 17.25M), false, "test payment");
+          chargeAmount, false, "test payment");
 
-        Assert.IsFalse(charge.IsCaptured);
+        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountCaptured);
 
-        charge.Capture(null, amount: new Financial.Amount("usd", 10.00M));
+        var captureAmount = new Financial.Amount("usd", 10.00M);
+        charge.Capture(null, amount: captureAmount);
 
-        Assert.IsTrue(charge.IsCaptured);
+        Assert.AreEqual(captureAmount, charge.AmountCaptured);
       }
 
       public static void RefundFullImplicit(PaySession sess)
       {
-        var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
-          new Financial.Amount("usd", 17.25M), true, "test payment");
+        var amountToRefund = new Financial.Amount("usd", 17.25M);
 
-        Assert.IsFalse(charge.IsRefunded);
+        var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance, amountToRefund, true, "test payment");
+
+        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountRefunded);
 
         FakePaySystemHost.Instance.SaveTransaction(charge);
 
         var refund = charge.Refund(null);
 
-        Assert.IsTrue(charge.IsRefunded);
+        Assert.AreEqual(amountToRefund, charge.AmountRefunded);
         Assert.AreEqual(charge.ID, refund.ParentTransactionID);
       }
 

@@ -56,9 +56,12 @@ WAVE.GUI = (function(){
 
         TREE_SELECTION_NONE: 0,
         TREE_SELECTION_SINGLE: 1,
-        TREE_SELECTION_MULTI: 2
-        // Tree }
-        
+        TREE_SELECTION_MULTI: 2,
+        // } Tree
+
+        //ObjectInspector {
+        CLS_OBJECTINSPECTOR_EDITOR: 'wvObjectInspectorEditor'
+        // { ObjectInspector
     };
 
     var CURTAIN_ZORDER  = 500000;
@@ -1504,6 +1507,70 @@ WAVE.GUI = (function(){
       var fRootNode = new Node();
       this.root = function() { return fRootNode; }
     }//Tree
+
+    var fObjectInspectorEditorIDSeed = 0, fObjectInspectorEditorIDPrefix = "objinsp_edit_";
+    // Visulalizes object properties hierarchy in editable form
+    published.ObjectInspector = function (obj, cfg) {
+      var self = this;
+
+      WAVE.extend(this, WAVE.EventManager);
+
+      var fTree = new published.Tree({ DIV: cfg.div });
+
+      cfg = cfg || {};
+
+      var fWVObjectInspectorEditor = cfg.wvObjectInspectorEditor || published.CLS_OBJECTINSPECTOR_EDITOR;
+      this.wvObjectInspectorEditor = function (val) {
+        if (typeof (val) === undefined) return fWVObjectInspectorEditor;
+        fWVObjectInspectorEditor = val;
+      }
+
+      this.wvTreeNodeButtonExpanded = function (val) {
+        if (typeof (val) === undefined) return (fWVTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded);
+        if (val === fWVTreeNodeButtonExpanded) return;
+        fWVTreeNodeButtonExpanded = val;
+        fExpander.className = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
+      }
+
+      var HTML_EDITOR = '<div class="@cls@">' +
+                        '  <label for="@id@">@key@</label>' +
+                        '  <input type="textbox" id="@id@" value="@val@" objpath="@objpath@">' +
+                        '</div>';
+
+      function build(troot, oroot, orootpath) {
+        var keys = Object.keys(oroot);
+        for (var iKey in keys) {
+          var key = keys[iKey];
+          var val = oroot[key];
+          if (val !== null && typeof (val) !== "object") { //leaf
+            var editorID = fObjectInspectorEditorIDPrefix + (fObjectInspectorEditorIDSeed++);
+            var html = WAVE.strTemplate(HTML_EDITOR, {
+              id: editorID, key: key, val: val,
+              objpath: orootpath ? orootpath + "/" + key : key,
+              cls: fWVObjectInspectorEditor
+            });
+
+            var cn = troot.addChild({ html: html });
+            
+            var input = WAVE.id(editorID);
+            input.objpath = cn.path();
+            input.addEventListener("input", function (e) {
+              var keys = e.target.getAttribute("objpath").split(/\//);
+              var objToEdit = obj;
+              for (var i = 0; i < keys.length-1; i++)
+                objToEdit = objToEdit[keys[i]];
+              
+              objToEdit[keys[keys.length - 1]] = e.target.value;
+            });
+          } else { //branch
+            var cn = troot.addChild({ html: key });
+            build(cn, val, orootpath ? orootpath + "/" + key : key);
+          }
+        }
+      }
+
+      build(fTree.root(), obj, "");
+    }//ObjectInspector
 
     return published;
 }());//WAVE.GUI

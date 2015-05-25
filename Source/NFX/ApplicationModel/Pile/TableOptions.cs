@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 
 using NFX.Environment;
+using NFX.Serialization.JSON;
 
 namespace NFX.ApplicationModel.Pile
 {
@@ -40,7 +41,7 @@ namespace NFX.ApplicationModel.Pile
         {
             if (nameRequired) 
             if (node==null || node.AttrByName(Configuration.CONFIG_NAME_ATTR).Value.IsNullOrWhiteSpace())
-                throw new NFXException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor($name=null|Empty)");
+                throw new PileException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor($name=null|Empty)");
 
             ConfigAttribute.Apply(this, node);
 
@@ -51,7 +52,7 @@ namespace NFX.ApplicationModel.Pile
         public TableOptions(string name)
         {
             if (name.IsNullOrWhiteSpace())
-                throw new NFXException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor(name=null|Empty)");
+                throw new PileException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor(name=null|Empty)");
            
             m_Name = name;
         }
@@ -184,26 +185,62 @@ namespace NFX.ApplicationModel.Pile
             {
               mc.Root.AddAttributeNode(pi.Name, pi.GetValue(this));
             }
-            return mc.ToLaconicString(CodeAnalysis.Laconfig.LaconfigWritingOptions.Compact);
+            return CoreConsts.EXT_PARAM_CONTENT_LACONIC + mc.ToLaconicString(CodeAnalysis.Laconfig.LaconfigWritingOptions.Compact);
           }
           set 
           {
-            if (value==null) return;
-
-            if (value is IConfigSectionNode) 
+            try
             {
-              var name = m_Name;
-              ConfigAttribute.Apply(this, value as IConfigSectionNode);
-              m_Name = name;
-            }
+                  if (value==null) return;
+
+                  if (value is IConfigSectionNode) 
+                  {
+                    var name = m_Name;
+                    ConfigAttribute.Apply(this, value as IConfigSectionNode);
+                    m_Name = name;
+                  }
             
-            var str = value.ToString();
-            var node = str.AsLaconicConfig();
-            if (node==null) node = ("opt{"+str+"}").AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-            var wasname = m_Name;
-            ConfigAttribute.Apply(this, node);
-            m_Name = wasname;
+                  ConfigSectionNode node = null;
+
+                  if (value is JSONDataMap)
+                    node = ((JSONDataMap)value).ToConfigNode();
+                  else
+                  {
+                    var str = value.ToString();
+
+                    if (str.IsNullOrWhiteSpace()) return;
+
+                    if (str.StartsWith(CoreConsts.EXT_PARAM_CONTENT_LACONIC))
+                    {
+                      str = str.Remove(0, CoreConsts.EXT_PARAM_CONTENT_LACONIC.Length);
+                      node = str.AsLaconicConfig();
+                      if (node==null) node = ("opt{"+str+"}").AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+                    }
+                    else
+                    {
+                      if (str.StartsWith(CoreConsts.EXT_PARAM_CONTENT_JSON))
+                       str = str.Remove(0, CoreConsts.EXT_PARAM_CONTENT_JSON.Length);
+
+                      var map = JSONReader.DeserializeDataObject( str ) as JSONDataMap;
+                      if (map==null)
+                        throw new PileException(str);
+
+                      node = map.ToConfigNode();
+                    }
+
+                  }
+                  var wasname = m_Name;
+                  ConfigAttribute.Apply(this, node);
+                  m_Name = wasname;
+
+            }
+            catch(Exception error)
+            {
+                throw new PileException(StringConsts.ARGUMENT_ERROR + GetType().Name+".AsExternalParameter.set({0})".Args(value) + error.ToMessageWithType());
+            }
           }
+
+           
         }
 
 

@@ -238,7 +238,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
 
-          var ta = new Transaction(taId, TransactionType.Charge, from, to, this.Name, taId, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Charge, this.Name, taId, from, to, amount, created, description);
 
           StatCharge(amount);
 
@@ -286,7 +286,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
 
-          var ta = new Transaction(taId, TransactionType.Charge, from, to, this.Name, taId, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Charge, this.Name, taId, from, to, amount, created, description);
 
           StatCharge(amount);
 
@@ -309,11 +309,7 @@ namespace NFX.Web.Pay.Mock
 
         var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Refund);
 
-        var refundTA = new Transaction(taId, TransactionType.Refund, Account.EmptyInstance, 
-                                      charge.From, this.Name, 
-                                      taId, refundAmount, created, description, 
-                                      relativeTransactionID: charge.ID,
-                                      isCaptured: true, canRefund: false);
+        var refundTA = new Transaction(taId, TransactionType.Refund, this.Name, taId, Account.EmptyInstance, charge.From, refundAmount, created, description, relatedTransactionID: charge.ID, canRefund: false);
 
         StatRefund(charge, amount);
 
@@ -343,7 +339,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, Account.EmptyInstance, to, this.Name, taId, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, taId, Account.EmptyInstance, to, amount, created, description);
 
           StatTransfer(amount);
 
@@ -361,7 +357,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, Account.EmptyInstance, to, this.Name, taId, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, taId, Account.EmptyInstance, to, amount, created, description);
 
           StatTransfer(amount);
 
@@ -387,7 +383,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, Account.EmptyInstance, to, this.Name, taId, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, taId, Account.EmptyInstance, to, amount, created, description);
 
           StatTransfer(amount);
 

@@ -146,7 +146,7 @@ namespace NFX.Web.Pay.Stripe
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
 
-          var ta = new Transaction(taId, TransactionType.Charge, from, to, this.Name, obj.id, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Charge, this.Name, obj.id, from, to, amount, created, description);
 
           StatCharge(amount);
 
@@ -282,9 +282,8 @@ namespace NFX.Web.Pay.Stripe
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Refund);
 
-          var refundTA = new Transaction(taId, TransactionType.Refund, Account.EmptyInstance, charge.From, this.Name,
-            lastRefund["id"], refundAmount, created, description, 
-            isCaptured: true, canRefund: false);
+          var refundTA = new Transaction(taId, TransactionType.Refund, this.Name,
+            lastRefund["id"], Account.EmptyInstance, charge.From, refundAmount, created, description, canRefund: false);
 
           StatRefund(charge, amount);
 
@@ -375,7 +374,7 @@ namespace NFX.Web.Pay.Stripe
 
           var taId = PaySystemHost.GenerateTransactionID(stripeSession, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, Account.EmptyInstance, customerAccount, this.Name, obj.id, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, obj.id, Account.EmptyInstance, customerAccount, amount, created, description);
 
           StatTransfer(amount);
 

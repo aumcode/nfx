@@ -20,6 +20,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+using NFX.Environment;
+
 namespace NFX.Serialization.JSON
 {
     /// <summary>
@@ -125,6 +127,31 @@ namespace NFX.Serialization.JSON
           }
 
           return this;
+        }
+
+        /// <summary>
+        /// Returns this object as a config tree
+        /// </summary>
+        public ConfigSectionNode ToConfigNode(string rootName = null)
+        {
+          var mc = new LaconicConfiguration();
+          mc.Create(rootName ?? GetType().Name);
+
+          buildNode(mc.Root, this);
+
+          return mc.Root;
+        }
+
+        private void buildNode(ConfigSectionNode node, JSONDataMap map)
+        {
+          foreach(var kvp in map)
+          {
+           var cmap = kvp.Value as JSONDataMap;
+           if (cmap!=null)
+            buildNode( node.AddChildNode(kvp.Key), cmap);
+           else
+            node.AddAttributeNode(kvp.Key, kvp.Value);   
+          }
         }
 
     }

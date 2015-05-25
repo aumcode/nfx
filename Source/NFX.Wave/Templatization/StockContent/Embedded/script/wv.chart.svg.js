@@ -2109,8 +2109,6 @@ WAVE.Chart.SVG = (function () {
                 (!sZone.rulerCheckXContains() || (r.clientPoint.x() >= sZoneClientRc.left() && r.clientPoint.x() <= sZoneClientRc.right()))
                 &&
                 (!sZone.rulerCheckYContains() || (r.clientPoint.y() >= sZoneClientRc.top() && r.clientPoint.y() <= sZoneClientRc.bottom()));
-
-                //sZoneClientRc.contains(r.clientPoint);
               return r;
             },
 

@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.Serialization.JSON;
+
 namespace NFX.Environment
 {
       /// <summary>
@@ -245,6 +247,12 @@ namespace NFX.Environment
             /// </summary>
             string ToLaconicString(NFX.CodeAnalysis.Laconfig.LaconfigWritingOptions options = null);
 
+            /// <summary>
+            /// Converts this IConfigSectionNode to JSONDataMap.
+            /// Be carefull: that this operation can "loose" data from IConfigSectionNode.
+            /// In other words some IConfigSectionNode information can not be reflected in corresponding JSONDataMap
+            /// </summary>
+            JSONDataMap ToJSONDataMap();
       }
 
       /// <summary>

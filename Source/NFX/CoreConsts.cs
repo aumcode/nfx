@@ -22,6 +22,9 @@ namespace NFX
   /// </summary>
   public static class CoreConsts
   {
+      public const string EXT_PARAM_CONTENT_LACONIC = "laconic://";
+      public const string EXT_PARAM_CONTENT_JSON = "json://";
+
       public const string EXT_PARAM_GROUP_PILE = "pile"; 
       public const string EXT_PARAM_GROUP_GLUE = "glue"; 
       public const string EXT_PARAM_GROUP_OBJSTORE = "objectstore"; 

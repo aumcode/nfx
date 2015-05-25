@@ -68,7 +68,7 @@ namespace NFX
     #endregion
 
 
-    #region Protected
+    #region Public/Protected
 
     /// <summary>
     /// Override this method to do actual destructor work
@@ -80,10 +80,10 @@ namespace NFX
     /// <summary>
     /// Checks to see whether object has been disposed and throws an exception if it has
     /// </summary>
-    protected void EnsureObjectNotDisposed()
+    public void EnsureObjectNotDisposed()
     {
       if (m_Disposed)
-        throw new DisposedObjectException(StringConsts.OBJECT_DISPOSED_ERROR);
+        throw new DisposedObjectException(StringConsts.OBJECT_DISPOSED_ERROR+" {0}".Args(this.GetType().FullName));
     }
 
     #endregion

@@ -52,49 +52,100 @@ namespace NFX.Web.Pay
     Transfer
   };
 
-
   /// <summary>
   /// Represents an abstraction of financial operation performed with pay system
   /// </summary>
   [Serializable]
   public sealed class Transaction
   {
+
+    #region static
+
+      public static Transaction CreateCharge(object id, 
+                         string processorName, object processorToken, 
+                         Account from, Account to, 
+                         Amount amount, DateTime createDateUTC, string description, 
+                         Amount captureddAmount, bool canCapture,
+                         bool canRefund, 
+                         object extraData = null)
+      {
+        var ta = new Transaction(id, TransactionType.Charge, 
+                                  processorName, processorToken, from, to, 
+                                  amount, createDateUTC, description, captureddAmount, canCapture, canRefund: canRefund, extraData: extraData);
+        return ta;
+      }
+
+      public static Transaction CreateRefund(object id, 
+                         string processorName, object processorToken, 
+                         Transaction relatedTransaction,
+                         Amount amount, DateTime createDateUTC, string description, 
+                         object extraData = null)
+      {
+        var ta = new Transaction(id, TransactionType.Refund, 
+                                  relatedTransaction.ProcessorName, relatedTransaction.ProcessorToken, 
+                                  relatedTransaction.To, relatedTransaction.From, 
+                                  amount, createDateUTC, description, extraData: extraData);
+        return ta;
+      }
+
+    #endregion
+
     #region ctor
 
+  
       /// <summary>
       /// Framework-only method. Developer shouldn't call it.
       /// </summary>
-    internal Transaction(object id, TransactionType type, 
-                          Account from, Account to, 
-                          string processorName, object processorToken, 
-                          Amount amount, DateTime createDateUTC, string description, 
-                          object relativeTransactionID = null,
-                          //List<object> childTransactionIDs = null, 
-                          //object parentTransactionID = null, object childTransactionID = null, 
-                          object extraData = null, 
-                          bool isCaptured = false, bool canRefund = true, bool isRefunded = false)
+      /// <param name="id">Trasaction ID</param>
+      /// <param name="type">Trasaction type</param>
+      /// <param name="from">Source account</param>
+      /// <param name="to">Destination account</param>
+      /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
+      /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
+      /// <param name="amount">Amount of this transaction</param>
+      /// <param name="createDateUTC">Creation date of this trasaction</param>
+      /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
+      /// <param name="captureddAmount">Captured amount (can be less or equals to amount)</param>
+      /// <param name="canCapture">Can be this trasaction be captured at all</param>
+      /// <param name="amountRefunded">Refunded amount (can be less or equals to amount)</param>
+      /// <param name="canRefund">Can be this trasaction be refunded at all</param>
+      /// <param name="relatedTransactionID">ID of trasaction which this transaction belongs to (e.g. refund transaction refers to its charge trasaction)</param>
+      /// <param name="extraData">Some extra data if needed</param>
+      internal Transaction(object id, TransactionType type, 
+                            string processorName, object processorToken, 
+                            Account from, Account to, Amount amount, 
+                            DateTime createDateUTC, string description = null, 
+                            Amount? amountCaptured = null, bool canCapture = true, 
+                            Amount? amountRefunded = null, bool canRefund = true, 
+                            object relatedTransactionID = null, object extraData = null)
+                         : this(id, type, processorName, processorToken)
+      {
+        m_From = from;
+        m_To = to;
+
+        m_Amount = amount;
+        m_CreateDateUTC = createDateUTC;
+
+        m_Description = description;
+
+        m_AmountCaptured = amountCaptured ?? new Amount(amount.CurrencyISO, 0);
+        m_CanCapture = canCapture;
+
+        m_AmountRefunded = amountRefunded ?? new Amount(amount.CurrencyISO, 0);
+        m_CanRefund = canRefund;
+
+        m_RelatedTransactionID = relatedTransactionID;
+
+        m_ExtraData = extraData;
+      }
+
+      private Transaction(object id, TransactionType type, string processorName, object processorToken)
       {
         m_ID = id;
         m_TransactionType = type;
 
-        m_From = from;
-        m_To = to;
-
         m_ProcessorName = processorName;
         m_ProcessorToken = processorToken;
-
-        m_Amount = amount;
-        m_CreateDateUTC = createDateUTC;
-        m_Description = description;
-
-        m_RelativeTransactionID = relativeTransactionID;
-        //m_ChildTransactionIDs = childTransactionIDs;
-
-        m_ExtraData = extraData;
-
-        m_IsCaptured = isCaptured;
-        m_IsRefunded = isRefunded;
-        m_CanRefund = canRefund;
       }
 
     #endregion
@@ -116,16 +167,12 @@ namespace NFX.Web.Pay
       private Amount m_AmountCaptured;
       private Amount m_AmountRefunded;
 
-      private object m_RelativeTransactionID;
+      private object m_RelatedTransactionID;
 
       private object m_ExtraData;
 
       private bool m_CanCapture;
-      private bool m_IsCaptured;
-
-      private bool m_Refundable;
       private bool m_CanRefund;
-      private bool m_IsRefunded;
 
     #endregion
 
@@ -179,6 +226,8 @@ namespace NFX.Web.Pay
       /// </summary>
       public Amount AmountCaptured { get { return m_AmountCaptured; } }
 
+      public bool CanCapture { get { return m_CanCapture && (m_Amount.Value - m_AmountCaptured.Value > 0M); } }
+
       /// <summary>
       /// Transaction amount - monetary value and currency code.
       /// Indicates refunded amount for charge transaction.
@@ -188,70 +237,19 @@ namespace NFX.Web.Pay
       /// </summary>
       public Amount AmountRefunded { get { return m_AmountRefunded; } }
 
+      public bool CanRefund { get { return m_CanRefund && (m_Amount.Value - m_AmountRefunded.Value > 0M); } }
+
       /// <summary>
       /// ID of transaction that this trasaction relates/belongs to
       /// e.g. charge transaction ID for this refund transaction
       /// </summary>
-      public object ParentTransactionID { get { return m_RelativeTransactionID; } }
-
-      ///// <summary>
-      ///// Contains IDs of transactions depending on this transaction
-      ///// e.g. charge transaction can have one or many related refund transactions
-      ///// </summary>
-      //public List<object> ChildTransactionIDs 
-      //{ 
-      //  get 
-      //  {
-      //    if (m_ChildTransactionIDs == null) m_ChildTransactionIDs = new List<object>();
-      //    return m_ChildTransactionIDs; 
-      //  } 
-      //}
+      public object ParentTransactionID { get { return m_RelatedTransactionID; } }
 
       /// <summary>
       /// Contains additional data
       /// </summary>
       public object ExtraData { get { return m_ExtraData; } }
 
-      /// <summary>
-      /// Indicates if this transaction (charge) can be captured
-      /// </summary>
-      public bool CanCapture { get { return m_TransactionType == TransactionType.Charge && !m_IsCaptured; } }
-
-      /// <summary>
-      /// Indicates if this transaction (charge) has already been captured
-      /// </summary>
-      public bool IsCaptured { get { return m_IsCaptured;} }
-
-
-      /// <summary>
-      /// Indicates if this transaction can be refunded due to not amount reasons
-      /// e.g. charge refund period is expired
-      /// </summary>
-      public bool Refundable { get { return m_Refundable; } }
-
-      /// <summary>
-      /// Trasaction can be refund if all conditions below are met:
-      ///   - transaction type is Charge
-      ///   - transaction flag IsRefunded is false 
-      ///   - summary amount of all child refund transactions (if present) is less than this charge amount.
-      /// Note that this method may cause loading of all child refund transactions so can be very slow  
-      /// </summary>
-      public bool CanRefund 
-      { 
-        get 
-        {
-          if (m_TransactionType != TransactionType.Charge) return false;
-          if (LeftToRefund.Value <= 0) return false;
-
-          return true;
-        } 
-      }
-
-      /// <summary>
-      /// Indicates that this transaction has been COMPLETELY refunded.
-      /// Note that even if PART of original amount has been refunded this property returns false
-      /// </summary>
-      public bool IsRefunded { get { return LeftToRefund.Value > 0; } }
 
       /// <summary>
       /// Returns amount that can be refunded.
@@ -270,7 +268,7 @@ namespace NFX.Web.Pay
       /// </summary>
       public Transaction Capture(ITransactionContext context, Amount? amount = null, string description = null, object extraData = null) 
       {
-        if (m_IsCaptured)
+        if (!CanCapture)
           throw new PaymentException(StringConsts.PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR + this.GetType() + 
             ".Capture(transaction='{0}')".Args(this));
 
@@ -279,7 +277,8 @@ namespace NFX.Web.Pay
         using(var pss = this.PaySystem.StartSession())
           pss.Capture(context, ref self, amount, description, extraData);
 
-        self.m_IsCaptured = true;
+        this.m_AmountCaptured += amount ?? (m_Amount - m_AmountCaptured);
+
         return self;
       }
 
@@ -290,10 +289,9 @@ namespace NFX.Web.Pay
       /// </summary>
       public Transaction Refund(ITransactionContext context, Amount? amount = null, string description = null, object extraData = null) 
       {
-        if (m_TransactionType != TransactionType.Charge || IsRefunded || !IsCaptured) 
+        if (m_TransactionType != TransactionType.Charge) 
           throw new PaymentException(StringConsts.PAYMENT_REFUND_CANNOT_BE_REFUNDED_ERROR.Args(this) + this.GetType().Name + ".Refund");
 
-        //var alreadyRefundedAmountVal = getChildTransactions().Where(ta => ta.m_TransactionType == TransactionType.Refund).Sum(ta => ta.Amount.Value);
         if (m_AmountRefunded.Value >= m_Amount.Value)
           throw new PaymentException(StringConsts.PAYMENT_REFUND_CANNOT_BE_REFUNDED_ERROR.Args(this) + this.GetType().Name + ".Refund");
 
@@ -309,8 +307,7 @@ namespace NFX.Web.Pay
         }
         else
         {
-          if (m_AmountRefunded.Value > 0)
-            amount = m_Amount - m_AmountRefunded;
+          amount = m_Amount - m_AmountRefunded;
         }
 
         var self = this;
@@ -319,19 +316,9 @@ namespace NFX.Web.Pay
         using(var pss = this.PaySystem.StartSession())
           refundTA = pss.Refund(context, ref self, amount, description, extraData);
 
-        //ChildTransactionIDs.Add(refundTA.ID);
-        refundTA.m_RelativeTransactionID = this.ID;
+        refundTA.m_RelatedTransactionID = this.ID;
 
-        if (amount.HasValue)
-        {
-          var justRefundedAmount = amount.Value;
-          m_AmountRefunded += justRefundedAmount;
-          m_IsRefunded = m_AmountRefunded >= m_Amount;//(amountToRefund.Value + m_AmountRefunded.Value >= m_Amount.Value);
-        }
-        else
-        {
-          //m_IsRefunded = (amountToRefund.Value + m_AmountRefunded.Value >= m_Amount.Value);
-        }
+        m_AmountRefunded += amount.Value;
 
         return refundTA;
       }
@@ -364,9 +351,9 @@ namespace NFX.Web.Pay
           && m_From == other.m_From && m_To == other.m_To
           && m_ProcessorName == other.ProcessorName && m_ProcessorToken == other.ProcessorToken && m_CreateDateUTC == other.m_CreateDateUTC
           && m_Description == other.m_Description && m_Amount == other.m_Amount 
-          && m_RelativeTransactionID == other.m_RelativeTransactionID /*&& Enumerable.SequenceEqual(m_ChildTransactionIDs, other.m_ChildTransactionIDs)*/
-          && m_ExtraData == other.m_ExtraData && m_CanRefund == other.m_CanRefund && m_IsRefunded == other.m_IsRefunded
-          && m_CanCapture == other.m_CanCapture && m_IsCaptured == other.m_IsCaptured;
+          && m_RelatedTransactionID == other.m_RelatedTransactionID
+          && m_ExtraData == other.m_ExtraData && m_CanRefund == other.m_CanRefund
+          && m_CanCapture == other.m_CanCapture;
       }
 
       public static bool operator==(Transaction tran0, Transaction tran1)
@@ -386,21 +373,6 @@ namespace NFX.Web.Pay
       {
         return !(tran0 == tran1);
       }
-
-    #endregion
-
-    #region pvt. impl.
-
-      //private IEnumerable<Transaction> getChildTransactions()
-      //{
-      //  if (m_ChildTransactionIDs == null) yield break;
-
-      //  foreach (var childID in m_ChildTransactionIDs)
-      //  {
-      //    var childTA = NFX.Web.Pay.PaySystem.PaySystemHost.FetchTransaction(null, childID);
-      //    yield return childTA;
-      //  }
-      //}
 
     #endregion
   }

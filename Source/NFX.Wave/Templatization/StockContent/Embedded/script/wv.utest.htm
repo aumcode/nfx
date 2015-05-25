@@ -600,6 +600,13 @@
            assertTrue( "    aa" == WAVE.strRTrim("    aa"));
        });
 
+       run("Strings", "strTrunc", function(){
+           assertTrue( "Naming convention" == WAVE.strTrunc("Naming convention", 20));
+           assertTrue( "Naming convention" == WAVE.strTrunc("Naming convention", 17));
+           assertTrue( "Naming conven..." == WAVE.strTrunc("Naming convention", 16));
+           assertTrue( "Naming c**" == WAVE.strTrunc("Naming convention", 10, "**"));
+       });
+
        run("Strings", "strCaps", function(){
            assertTrue( "Alex Josephy" == WAVE.strCaps("alex Josephy"));
            assertTrue( "Alex Josephy" == WAVE.strCaps("Alex Josephy"));
@@ -1604,18 +1611,18 @@
                function AfterHide (sender) { eventTrace += (sender.Name+" after hide Count= "+sender.ShowCount.toString()+", "); }
 
 
-       run("Chart", "rotateRectAroundCircle", function() {
-          var rc = WAVE.Chart.SVG.rotateRectAroundCircle(0, 0, 1, 4, 2, 0);
+       run("Geometry", "rotateRectAroundCircle", function() {
+          var rc = WAVE.Geometry.rotateRectAroundCircle(0, 0, 1, 4, 2, 0);
           assertTrue(4 == rc.width() && 2 == rc.height()); 
           assertTrue(devOk(1, rc.left()) && devOk(-1, rc.top())); 
 
-          rc = WAVE.Chart.SVG.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI / 2);
+          rc = WAVE.Geometry.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI / 2);
           assertTrue(devOk(-2, rc.left()) && devOk(1, rc.top()));
 
-          rc = WAVE.Chart.SVG.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI);
+          rc = WAVE.Geometry.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI);
           assertTrue(devOk(-5, rc.left()) && devOk(-1, rc.top()));
 
-          rc = WAVE.Chart.SVG.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI + Math.PI/2);
+          rc = WAVE.Geometry.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI + Math.PI/2);
           assertTrue(devOk(-2, rc.left()) && devOk(-3, rc.top()));
        });
 

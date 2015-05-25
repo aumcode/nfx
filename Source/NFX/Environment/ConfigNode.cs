@@ -28,6 +28,7 @@ using System.Text;
 
 using NFX.Parsing;
 using NFX.IO.FileSystem;
+using NFX.Serialization.JSON;
 
 namespace NFX.Environment
 {
@@ -1408,6 +1409,33 @@ namespace NFX.Environment
 
           return result;
         }
+
+        /// <summary>
+        /// Converts this ConfigSectionNode to JSONDataMap.
+        /// Be carefull: that this operation can "loose" data from ConfigSectionNode.
+        /// In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap
+        /// </summary>
+        public JSONDataMap ToJSONDataMap()
+        {
+          var map = new JSONDataMap();
+          buildMap(this, map);
+          return map;
+        }
+
+                  private void buildMap(ConfigSectionNode node, JSONDataMap map)
+                  {
+                    foreach (var attr in node.Attributes)
+                    {
+                      map[attr.Name] = attr.Value;
+                    }
+
+                    foreach (var childNode in node.Children)
+                    {
+                      var childMap = new JSONDataMap();
+                      map[childNode.Name] = childMap;
+                      buildMap(childNode, childMap);
+                    }
+                  }
 
 
     #endregion

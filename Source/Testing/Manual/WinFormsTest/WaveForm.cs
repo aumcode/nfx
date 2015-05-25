@@ -83,6 +83,12 @@ namespace WinFormsTest
 
             public class WebClientCookied: WebClient
             {
+              public WebClientCookied(bool keepAlive = true)
+              {
+                m_KeepAlive = keepAlive;
+              }
+
+              private bool m_KeepAlive = true;
               private CookieContainer m_CookieContainer = new CookieContainer();
 
               public CookieContainer CookieContainer { get { return m_CookieContainer; }}
@@ -94,6 +100,7 @@ namespace WinFormsTest
                 var httpRequest = request as HttpWebRequest;
                 if (httpRequest != null)
                 {
+                  httpRequest.KeepAlive = m_KeepAlive;
                   httpRequest.CookieContainer = CookieContainer;
                   httpRequest.AllowAutoRedirect = true;
                 }
@@ -134,6 +141,7 @@ namespace WinFormsTest
               public int CallCnt;
               public TestBatchItem[] BatchItems;
               public int RawBatches;
+              public bool KeepAlive;
             }
 
           #endregion
@@ -169,6 +177,7 @@ namespace WinFormsTest
 
     private void btnRun_Click(object sender, EventArgs e)
     {
+      syncServerURI();
       m_ThreadsState.Clear();
       m_IsRunning = true;
 
@@ -193,7 +202,7 @@ namespace WinFormsTest
       {
         var thread = new Thread(threadFunc);
         m_ThreadsState[thread.ManagedThreadId] = true;
-        thread.Start( new ThreadArg { CallCnt = callsPerTask, BatchItems = batchItems, RawBatches = rawBatchCnt});
+        thread.Start( new ThreadArg { CallCnt = callsPerTask, BatchItems = batchItems, RawBatches = rawBatchCnt, KeepAlive = chkKeepAlive.Checked});
       }
     }
 
@@ -202,6 +211,7 @@ namespace WinFormsTest
       var threadArg = arg as ThreadArg;
       var batchItems = threadArg.BatchItems;
       var rawBatches = threadArg.RawBatches;
+      var keepAlive = threadArg.KeepAlive;
       int callCnt, errCnt;
 
       WebClient wc = null;
@@ -211,7 +221,7 @@ namespace WinFormsTest
         if (iBatch % rawBatches == 0)
         {
           if (wc != null) wc.Dispose();
-          wc = this.CreateWebClient();
+          wc = this.CreateWebClient(keepAlive);
         }
 
         errCnt = callCnt = 0;
@@ -243,13 +253,12 @@ namespace WinFormsTest
         wc = null;
       }
 
-      m_ThreadsState[System.Threading.Thread.CurrentThread.ManagedThreadId] = false;
-      if (m_ThreadsState.Any(ts => ts.Value)) return;
-
       lock (m_ThreadsState)
       {
-        setControlEnabled(true);
+        m_ThreadsState[System.Threading.Thread.CurrentThread.ManagedThreadId] = false;
+        if (m_ThreadsState.Any(ts => ts.Value)) return;
 
+        setControlEnabled(true);
         
         LogMsg("OK={0:n0} ERR={1:n0}".Args(m_CallCnt - m_ErrCnt, m_ErrCnt), true);
         updateCaption();
@@ -337,8 +346,6 @@ namespace WinFormsTest
     private void btnSelectAll_Click(object sender, EventArgs e) { m_testItems.ForEach(i => i.Chk.Checked = true); }
 
     private void btnUnselectAll_Click(object sender, EventArgs e) { m_testItems.ForEach(i => i.Chk.Checked = false); }
-
-    private void cmbURL_TextChanged(object sender, EventArgs e) { syncServerURI(); }
 
     private void syncServerURI() { m_ServerURI = new Uri(cmbURL.Text); }
 
@@ -543,9 +550,9 @@ namespace WinFormsTest
         }
       }
 
-      private WebClientCookied CreateWebClient()
+      private WebClientCookied CreateWebClient(bool keepAlive)
       {
-        var wc = new WebClientCookied();
+        var wc = new WebClientCookied(keepAlive);
         wc.CookieContainer.Add(m_ServerURI, S_WAVE_COOKIE);
         return wc;
       }

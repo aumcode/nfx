@@ -32,6 +32,9 @@
       this.tbLog = new System.Windows.Forms.TextBox();
       this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
       this.pnlManage = new System.Windows.Forms.Panel();
+      this.chkKeepAlive = new System.Windows.Forms.CheckBox();
+      this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
+      this.label1 = new System.Windows.Forms.Label();
       this.btnCancel = new System.Windows.Forms.Button();
       this.btnUnselectAll = new System.Windows.Forms.Button();
       this.btnSelectAll = new System.Windows.Forms.Button();
@@ -65,9 +68,8 @@
       this.nudComplexRow = new System.Windows.Forms.NumericUpDown();
       this.chkLogin = new System.Windows.Forms.CheckBox();
       this.nudLogin = new System.Windows.Forms.NumericUpDown();
-      this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
-      this.label1 = new System.Windows.Forms.Label();
       this.pnlManage.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudCallsCnt)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudTaskCnt)).BeginInit();
       this.gbTests.SuspendLayout();
@@ -83,7 +85,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.nudRowGet_TypeRow)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudComplexRow)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudLogin)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).BeginInit();
       this.SuspendLayout();
       // 
       // tbLog
@@ -107,6 +108,7 @@
       // pnlManage
       // 
       this.pnlManage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.pnlManage.Controls.Add(this.chkKeepAlive);
       this.pnlManage.Controls.Add(this.nudBatchSize);
       this.pnlManage.Controls.Add(this.label1);
       this.pnlManage.Controls.Add(this.btnCancel);
@@ -124,12 +126,50 @@
       this.pnlManage.Size = new System.Drawing.Size(311, 436);
       this.pnlManage.TabIndex = 12;
       // 
+      // chkKeepAlive
+      // 
+      this.chkKeepAlive.AutoSize = true;
+      this.chkKeepAlive.Checked = true;
+      this.chkKeepAlive.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.chkKeepAlive.Location = new System.Drawing.Point(6, 65);
+      this.chkKeepAlive.Name = "chkKeepAlive";
+      this.chkKeepAlive.Size = new System.Drawing.Size(77, 17);
+      this.chkKeepAlive.TabIndex = 24;
+      this.chkKeepAlive.Text = "Keep Alive";
+      this.chkKeepAlive.UseVisualStyleBackColor = true;
+      // 
+      // nudBatchSize
+      // 
+      this.nudBatchSize.Location = new System.Drawing.Point(238, 35);
+      this.nudBatchSize.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+      this.nudBatchSize.Name = "nudBatchSize";
+      this.nudBatchSize.Size = new System.Drawing.Size(66, 20);
+      this.nudBatchSize.TabIndex = 23;
+      this.nudBatchSize.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(201, 37);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(35, 13);
+      this.label1.TabIndex = 22;
+      this.label1.Text = "Batch";
+      // 
       // btnCancel
       // 
       this.btnCancel.Enabled = false;
-      this.btnCancel.Location = new System.Drawing.Point(144, 62);
+      this.btnCancel.Location = new System.Drawing.Point(203, 62);
       this.btnCancel.Name = "btnCancel";
-      this.btnCancel.Size = new System.Drawing.Size(129, 23);
+      this.btnCancel.Size = new System.Drawing.Size(101, 23);
       this.btnCancel.TabIndex = 21;
       this.btnCancel.Text = "Cancel";
       this.btnCancel.UseVisualStyleBackColor = true;
@@ -218,13 +258,12 @@
       this.cmbURL.Size = new System.Drawing.Size(301, 21);
       this.cmbURL.TabIndex = 14;
       this.cmbURL.Text = "http://127.0.0.1:8080/mvc/IntegrationTester/";
-      this.cmbURL.Click += new System.EventHandler(this.cmbURL_TextChanged);
       // 
       // btnRun
       // 
-      this.btnRun.Location = new System.Drawing.Point(9, 62);
+      this.btnRun.Location = new System.Drawing.Point(96, 62);
       this.btnRun.Name = "btnRun";
-      this.btnRun.Size = new System.Drawing.Size(129, 23);
+      this.btnRun.Size = new System.Drawing.Size(101, 23);
       this.btnRun.TabIndex = 13;
       this.btnRun.Text = "Run";
       this.btnRun.UseVisualStyleBackColor = true;
@@ -585,32 +624,6 @@
             0,
             0});
       // 
-      // nudBatchSize
-      // 
-      this.nudBatchSize.Location = new System.Drawing.Point(238, 35);
-      this.nudBatchSize.Maximum = new decimal(new int[] {
-            1000000000,
-            0,
-            0,
-            0});
-      this.nudBatchSize.Name = "nudBatchSize";
-      this.nudBatchSize.Size = new System.Drawing.Size(66, 20);
-      this.nudBatchSize.TabIndex = 23;
-      this.nudBatchSize.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-      // 
-      // label1
-      // 
-      this.label1.AutoSize = true;
-      this.label1.Location = new System.Drawing.Point(201, 37);
-      this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(35, 13);
-      this.label1.TabIndex = 22;
-      this.label1.Text = "Batch";
-      // 
       // WaveForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -622,6 +635,7 @@
       this.Text = "WaveForm";
       this.pnlManage.ResumeLayout(false);
       this.pnlManage.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudCallsCnt)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudTaskCnt)).EndInit();
       this.gbTests.ResumeLayout(false);
@@ -638,7 +652,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.nudRowGet_TypeRow)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudComplexRow)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.nudLogin)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -684,5 +697,6 @@
     private System.Windows.Forms.Button btnCancel;
     private System.Windows.Forms.NumericUpDown nudBatchSize;
     private System.Windows.Forms.Label label1;
+    private System.Windows.Forms.CheckBox chkKeepAlive;
   }
 }

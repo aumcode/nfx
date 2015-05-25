@@ -177,6 +177,15 @@ var WAVE = (function(){
     published.strTrim = function(str){  return str.replace(/^\s+|\s+$/g, ''); }
     published.strLTrim = function(str){  return str.replace(/^\s+/,''); }
     published.strRTrim = function(str){  return str.replace(/\s+$/,''); }
+
+    // Truncates str if its length exceeds maxLen and adds endWith string to result end.
+    published.strTrunc = function(str, maxLen, endWith) {  
+      if (!str) return str;
+      var len = str.length;
+      if (len <= maxLen) return str;
+      endWith = endWith || "...";
+      return str.substr(0, maxLen - endWith.length) + endWith;
+    }
     
     //Capitalizes first chars after spaces or dots, otionally converting chars in between to lower case
     published.strCaps = function(str, norm){ 
