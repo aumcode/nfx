@@ -182,6 +182,14 @@
 
   </object-store>
 
+  <web-settings>
+    <service-point-manager check-certificate-revocation-list="true"
+                           default-connection-limit="64"
+                           max-service-points="128"
+                           use-nagle-algorithm="true" >
+    </service-point-manager>
+  </web-settings>
+
 
   <glue
       client-log-level="Info"

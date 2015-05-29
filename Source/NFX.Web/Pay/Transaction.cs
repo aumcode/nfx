@@ -61,29 +61,55 @@ namespace NFX.Web.Pay
 
     #region static
 
-      public static Transaction CreateCharge(object id, 
-                         string processorName, object processorToken, 
-                         Account from, Account to, 
-                         Amount amount, DateTime createDateUTC, string description, 
-                         Amount captureddAmount, bool canCapture,
-                         bool canRefund, 
-                         object extraData = null)
+      /// <summary>
+      /// Creates charge transaction
+      /// </summary>
+      /// <param name="id">Trasaction ID</param>
+      /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
+      /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
+      /// <param name="from">Source account</param>
+      /// <param name="to">Destination account</param>
+      /// <param name="amount">Amount of this transaction</param>
+      /// <param name="createDateUTC">Creation date of this trasaction</param>
+      /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
+      /// <param name="amountCaptured">Captured amount (can be less or equals to amount)</param>
+      /// <param name="canCapture">Can be this trasaction be captured at all</param>
+      /// <param name="canRefund">Can be this trasaction be refunded at all</param>
+      /// <param name="extraData">Some extra data if needed</param>
+      public static Transaction Charge(object id, 
+                                             string processorName, object processorToken, 
+                                             Account from, Account to, 
+                                             Amount amount, DateTime createDateUTC, string description, 
+                                             Amount? amountCaptured = null, bool canCapture = true,
+                                             bool canRefund = true, 
+                                             object extraData = null)
       {
         var ta = new Transaction(id, TransactionType.Charge, 
                                   processorName, processorToken, from, to, 
-                                  amount, createDateUTC, description, captureddAmount, canCapture, canRefund: canRefund, extraData: extraData);
+                                  amount, createDateUTC, description, amountCaptured, canCapture, canRefund: canRefund, extraData: extraData);
         return ta;
       }
 
-      public static Transaction CreateRefund(object id, 
-                         string processorName, object processorToken, 
-                         Transaction relatedTransaction,
-                         Amount amount, DateTime createDateUTC, string description, 
-                         object extraData = null)
+      /// <summary>
+      /// Creates transfer transaction
+      /// </summary>
+      /// <param name="id">Trasaction ID</param>
+      /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
+      /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
+      /// <param name="from">Source account</param>
+      /// <param name="to">Destination account</param>
+      /// <param name="amount">Amount of this transaction</param>
+      /// <param name="createDateUTC">Creation date of this trasaction</param>
+      /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
+      /// <param name="extraData">Some extra data if needed</param>
+      public static Transaction Transfer(object id, 
+                                        string processorName, object processorToken, 
+                                        Account from, Account to, 
+                                        Amount amount, DateTime createDateUTC, string description, 
+                                        object extraData = null)
       {
-        var ta = new Transaction(id, TransactionType.Refund, 
-                                  relatedTransaction.ProcessorName, relatedTransaction.ProcessorToken, 
-                                  relatedTransaction.To, relatedTransaction.From, 
+        var ta = new Transaction(id, TransactionType.Transfer, 
+                                  processorName, processorToken, from, to, 
                                   amount, createDateUTC, description, extraData: extraData);
         return ta;
       }
@@ -105,7 +131,7 @@ namespace NFX.Web.Pay
       /// <param name="amount">Amount of this transaction</param>
       /// <param name="createDateUTC">Creation date of this trasaction</param>
       /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
-      /// <param name="captureddAmount">Captured amount (can be less or equals to amount)</param>
+      /// <param name="amountCaptured">Captured amount (can be less or equals to amount)</param>
       /// <param name="canCapture">Can be this trasaction be captured at all</param>
       /// <param name="amountRefunded">Refunded amount (can be less or equals to amount)</param>
       /// <param name="canRefund">Can be this trasaction be refunded at all</param>
@@ -171,8 +197,8 @@ namespace NFX.Web.Pay
 
       private object m_ExtraData;
 
-      private bool m_CanCapture;
-      private bool m_CanRefund;
+      private bool m_CanCapture; // Can be this trasaction be captured at all
+      private bool m_CanRefund; // Can be this trasaction be refunded at all
 
     #endregion
 
@@ -226,7 +252,10 @@ namespace NFX.Web.Pay
       /// </summary>
       public Amount AmountCaptured { get { return m_AmountCaptured; } }
 
-      public bool CanCapture { get { return m_CanCapture && (m_Amount.Value - m_AmountCaptured.Value > 0M); } }
+      /// <summary>
+      /// If this transaction can be captured by value less or equal to its initial amount
+      /// </summary>
+      public bool CanCapture { get { return m_CanCapture && m_TransactionType == TransactionType.Charge && (m_Amount.Value - m_AmountCaptured.Value > 0M); } }
 
       /// <summary>
       /// Transaction amount - monetary value and currency code.
@@ -237,7 +266,10 @@ namespace NFX.Web.Pay
       /// </summary>
       public Amount AmountRefunded { get { return m_AmountRefunded; } }
 
-      public bool CanRefund { get { return m_CanRefund && (m_Amount.Value - m_AmountRefunded.Value > 0M); } }
+      /// <summary>
+      /// If this transaction can be refunded by value less or equal to its initial amount
+      /// </summary>
+      public bool CanRefund { get { return m_CanRefund && m_TransactionType == TransactionType.Charge && (m_Amount.Value - m_AmountRefunded.Value > 0M); } }
 
       /// <summary>
       /// ID of transaction that this trasaction relates/belongs to

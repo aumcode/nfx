@@ -238,7 +238,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
 
-          var ta = new Transaction(taId, TransactionType.Charge, this.Name, taId, from, to, amount, created, description);
+          var ta = Transaction.Charge(taId, this.Name, taId, from, to, amount, created, description);
 
           StatCharge(amount);
 
@@ -286,7 +286,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
 
-          var ta = new Transaction(taId, TransactionType.Charge, this.Name, taId, from, to, amount, created, description);
+          var ta = Transaction.Charge(taId, this.Name, taId, from, to, amount, created, description);
 
           StatCharge(amount);
 
@@ -339,7 +339,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, taId, Account.EmptyInstance, to, amount, created, description);
+          var ta = Transaction.Transfer(taId, this.Name, taId, Account.EmptyInstance, to, amount, created, description, extraData);
 
           StatTransfer(amount);
 
@@ -357,7 +357,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, taId, Account.EmptyInstance, to, amount, created, description);
+          var ta = Transaction.Transfer(taId, this.Name, taId, Account.EmptyInstance, to, amount, created, description, extraData);
 
           StatTransfer(amount);
 
@@ -383,7 +383,7 @@ namespace NFX.Web.Pay.Mock
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, taId, Account.EmptyInstance, to, amount, created, description);
+          var ta = Transaction.Transfer(taId, this.Name, taId, Account.EmptyInstance, to, amount, created, description, extraData);
 
           StatTransfer(amount);
 

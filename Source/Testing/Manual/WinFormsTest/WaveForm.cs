@@ -173,7 +173,11 @@ namespace WinFormsTest
       };
     }
 
-    protected override void OnLoad(EventArgs e) { syncServerURI(); }
+    protected override void OnLoad(EventArgs e) 
+    { 
+      NFX.Web.WebSettings.RequireInitializedSettings();
+      syncServerURI(); 
+    }
 
     private void btnRun_Click(object sender, EventArgs e)
     {

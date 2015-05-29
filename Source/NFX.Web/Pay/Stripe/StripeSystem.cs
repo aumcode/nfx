@@ -154,6 +154,8 @@ namespace NFX.Web.Pay.Stripe
         }
         catch (Exception ex)
         {
+          StatChargeError();
+
           var wex = ex as System.Net.WebException;
 
           if (wex != null)
@@ -167,8 +169,6 @@ namespace NFX.Web.Pay.Stripe
               throw stripeEx;  
             }
           }
-
-          StatChargeError();
 
           throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + this.GetType()
             + " .Capture(session='{0}', card='{1}', amount='{2}')".Args(session, from, amount), ex);
@@ -218,6 +218,8 @@ namespace NFX.Web.Pay.Stripe
         }
         catch (Exception ex)
         {
+          StatCaptureError();
+
           var wex = ex as System.Net.WebException;
           if (wex != null)
           {
@@ -229,8 +231,6 @@ namespace NFX.Web.Pay.Stripe
               throw stripeEx;
             }
           }
-
-          StatCaptureError();
 
           throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR + this.GetType()
             + " .Capture(session='{0}', charge='{1}')".Args(session, charge), ex);
@@ -291,6 +291,8 @@ namespace NFX.Web.Pay.Stripe
         }
         catch (Exception ex)
         {
+          StatRefundError();
+
           var wex = ex as System.Net.WebException;
           if (wex != null)
           {
@@ -304,8 +306,6 @@ namespace NFX.Web.Pay.Stripe
               if (stripeEx != null) throw stripeEx;
             }
           }
-
-          StatRefundError();
 
           throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR + this.GetType()
             + " .Refund(session='{0}', charge='{1}')".Args(session, charge), ex);
@@ -382,6 +382,8 @@ namespace NFX.Web.Pay.Stripe
         }
         catch (Exception ex)
         {
+          StatTransferError();
+
           var wex = ex as System.Net.WebException;
           if (wex == null)
           {
@@ -394,8 +396,6 @@ namespace NFX.Web.Pay.Stripe
               if (stripeEx != null) throw stripeEx; 
             }
           }
-
-          StatTransferError();
 
           throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_TRANSFER_ERROR + this.GetType()
             + " .transfer(customerAccout='{0}')".Args(actualAccountData), ex);

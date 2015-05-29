@@ -378,6 +378,8 @@ namespace NFX.Wave.Handlers
 
             private Type lookupTargetInLocations(string key)
             {
+              if (!isValidTypeNameKey(key)) return null;
+              
               var tname = getTypeName(key);
 
               foreach(var loc in m_TypeLocations)
@@ -408,7 +410,22 @@ namespace NFX.Wave.Handlers
             }
 
 
-           
+            private bool isValidTypeNameKey(string key)
+            {
+              if (key==null) return false;
+
+              for(var i=0; i<key.Length; i++)
+              {
+                var c = key[i];
+                if (c < '-') return false;
+                if (c > '9' && c < 'A') return false;
+                if (c > 'Z' && c < 'a' && c != '\\') return false;
+                if (c > 'z' && c < 'À') return false;
+              } 
+
+              return true;
+            }
+                       
             private string getTypeName(string key)
             {
               var cname = Path.GetFileNameWithoutExtension(key);
@@ -416,8 +433,12 @@ namespace NFX.Wave.Handlers
           
               ns = ns.Replace('/','.').Replace('\\','.').Trim('.');
 
-              return string.IsNullOrWhiteSpace(ns)? cname :  ns + '.'+ cname;
+              var fullName =  string.IsNullOrWhiteSpace(ns)? cname :  ns + '.'+ cname;
+
+              return fullName.Replace('-', '_');
             }
+
+           
 
        #endregion
     }

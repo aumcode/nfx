@@ -31,6 +31,8 @@ namespace NFX.Financial
     public Amount(string currencyISO, decimal value)
     {
       m_CurrencyISO = (currencyISO ?? string.Empty).Trim();
+      if (m_CurrencyISO.Length != 3)
+        throw new FinancialException(StringConsts.ARGUMENT_ERROR + typeof(Amount).FullName + ".ctor(currencyISO '{0}' length is not equal to 3)".Args(currencyISO));
       m_Value = value;
     }
 
@@ -51,7 +53,7 @@ namespace NFX.Financial
     
     public static Amount Parse(string val)
     {
-      if (val==null) throw new FinancialException(StringConsts.ARGUMENT_ERROR+"Amount(Parse(null)");
+      if (val==null) throw new FinancialException(StringConsts.ARGUMENT_ERROR + typeof(Amount).FullName + ".Parse(null)");
 
       try
       {

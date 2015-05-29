@@ -504,7 +504,7 @@ namespace WinFormsTest
                 
                     var calls = new ConcurrentQueue<Call>();
                     var derrors = new ConcurrentQueue<string>();
-                    System.Threading.Tasks.Parallel.For(0, totalCalls,
+                    System.Threading.Tasks.Parallel.For(0, totalCalls, new ParallelOptions{ MaxDegreeOfParallelism = tbReactors.Text.AsInt(16)},
                         (i) =>
                         {
                             try

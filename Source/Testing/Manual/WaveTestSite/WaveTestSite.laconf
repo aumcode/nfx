@@ -70,7 +70,7 @@
   }
 
  
-  instrumentation 
+  /*instrumentation 
   {
       name="Instruments" interval-ms="2000"
       provider
@@ -80,7 +80,7 @@
          use-log="false"
          receiver-node="sync://127.0.0.1:8300"
       }
-  }
+  }*/
   
   glue 
   {
@@ -127,11 +127,11 @@
   }
   
 
-  geo-lookup
+  /*geo-lookup
   {
     data-path=$"d:\geodata"
     resolution="city"    
-  }
+  }*/
   
   wave
   {
@@ -289,11 +289,11 @@
                 match{ path="pages/{*type}"}
                 type-location { name="local" assembly="WaveTestSite.exe" ns{ name="WaveTestSite.Pages"} }
                 
-                filter
+                /*filter
                 {
                     name="geoLocation"
                     type="NFX.Wave.Filters.GeoLookupFilter, NFX.Wave"
-                }
+                }*/
                 
             }
             

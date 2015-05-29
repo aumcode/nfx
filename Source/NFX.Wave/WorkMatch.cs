@@ -458,7 +458,8 @@ namespace NFX.Wave
           if (cvar.QueryName==Variable.QUERY_NAME_WC)
           {
             foreach(var qk in work.Request.QueryString.AllKeys)
-              result[qk] = work.Request.QueryString[qk];
+              if (qk.IsNotNullOrWhiteSpace())//20150528 DKh  fixed: ?a=1&b
+               result[qk] = work.Request.QueryString[qk];
             continue;
           }
           
