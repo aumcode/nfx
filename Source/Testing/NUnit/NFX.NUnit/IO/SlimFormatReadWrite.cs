@@ -1002,7 +1002,7 @@ namespace NFX.NUnit.IO
                 
                         w.Write(new MetaHandle(1));// 1 byte
                         w.Write(new MetaHandle(0xffff));// 3 byte
-                        w.Write(new MetaHandle(0xffff, "0123456789"));// 3 byte + 2 len + 10 byte  = 19
+                        w.Write(new MetaHandle(0xffff, new VarIntStr("0123456789")));// 3 byte + 2 len + 10 byte  = 19
                         ms.Seek(0, SeekOrigin.Begin);
                 
                         Assert.AreEqual(1, r.ReadMetaHandle().Handle);
@@ -1024,14 +1024,14 @@ namespace NFX.NUnit.IO
             w.BindStream(ms);
 
                         w.Write((MetaHandle?)null); //1 byte
-                        w.Write((MetaHandle?)new MetaHandle(12, "It works"));// 1(nnul) + 1(12) + 2(strlen) + 8(It works) = 12 bytes
+                        w.Write((MetaHandle?)new MetaHandle(12, new VarIntStr("It works")));// 1(nnul) + 1(12) + 2(strlen) + 8(It works) = 12 bytes
                         ms.Seek(0, SeekOrigin.Begin);
                 
                         Assert.AreEqual(false, r.ReadNullableMetaHandle().HasValue); 
                        
                         var mh = r.ReadNullableMetaHandle().Value;
                         Assert.AreEqual(12, mh.Handle);
-                        Assert.AreEqual("It works", mh.Metadata);
+                        Assert.AreEqual("It works", mh.Metadata.Value.StringValue);
 
                         Assert.AreEqual(13,  ms.Length); 
                     }

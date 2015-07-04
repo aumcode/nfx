@@ -19,10 +19,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 using NFX.IO;
-using System.Reflection;
+
 
 namespace NFX.Serialization.Slim
 {
@@ -198,7 +199,7 @@ namespace NFX.Serialization.Slim
                       }
                     }
                     
-                    var pool = reservePool();
+                    var pool = reservePool( SerializationOperation.Serializing );
                     try
                     {
                      m_SerializeNestLevel++;
@@ -242,7 +243,7 @@ namespace NFX.Serialization.Slim
                       }
                     }
 
-                    var pool = reservePool();
+                    var pool = reservePool( SerializationOperation.Deserializing );
                     try
                     {
                        m_DeserializeNestLevel++;
@@ -274,7 +275,7 @@ namespace NFX.Serialization.Slim
             [ThreadStatic]
             private static int ts_poolFreeIdx;
 
-            private static RefPool reservePool()
+            private static RefPool reservePool(SerializationOperation mode)
             {
               RefPool result = null;
               if (ts_pools==null)
@@ -293,13 +294,14 @@ namespace NFX.Serialization.Slim
               else
                result = new RefPool();
 
+              result.Acquire( mode );
               return result;
             }
 
             private static void releasePool(RefPool pool)
             {
               if (ts_poolFreeIdx==0) return;
-              pool.Reuse();
+              pool.Release();
               ts_poolFreeIdx--;
               ts_pools[ts_poolFreeIdx] = pool;
             }
@@ -483,201 +485,5 @@ namespace NFX.Serialization.Slim
    
     }
 
-
-    internal class _ISerializableFixup
-    {
-       public object Instance;
-       public SerializationInfo Info;
-    } 
-
-    internal class _OnDeserializedCallback
-    {
-       public object Instance;
-       public TypeDescriptor Descriptor;
-    } 
-
-
-
-    internal class RefPool 
-    {
-       public RefPool()
-       {
-         m_List.Add(null);// null must be at index ZERO
-       }
-
-       //resets inner state so the instance may be re-used
-       public void Reuse()
-       {
-         m_List.Clear();
-         m_List.Add(null);// null must be at index ZERO
-         m_Dict.Clear();
-         m_Fixups.Clear();
-         m_OnDeserializedCallbacks.Clear();
-       }
-
-       
-       private List<object> m_List = new List<object>(128);
-       private Dictionary<object, int> m_Dict = new Dictionary<object,int>(128, ReferenceEqualityComparer<object>.Instance);
-       private List<_ISerializableFixup> m_Fixups = new List<_ISerializableFixup>();
-       private List<_OnDeserializedCallback> m_OnDeserializedCallbacks = new List<_OnDeserializedCallback>(); 
-        
-       public int Count { get { return m_List.Count;} }
-
-       public List<_ISerializableFixup> Fixups { get { return m_Fixups; }}
-
-       public List<_OnDeserializedCallback> OnDeserializedCallbacks { get { return m_OnDeserializedCallbacks; }}
-       
-       public object this[int i]
-       {
-         get { return m_List[i]; }
-         set { m_List[i] = value; }
-       }
-       
-       public bool Add(object reference)
-       {
-         bool added;
-         getIndex(reference, out added);
-         return added;
-       }
-
-       public void AddISerializableFixup(object instance, SerializationInfo info)
-       {
-         m_Fixups.Add( new _ISerializableFixup{ Instance = instance, Info = info } );
-       }
-
-       public void AddOnDeserializedCallback(object instance, TypeDescriptor descriptor)
-       {
-         m_OnDeserializedCallbacks.Add( new _OnDeserializedCallback{ Instance = instance, Descriptor = descriptor } );
-       }
-
-       /// <summary>
-       /// Emits MetaHandle that contains type handle for reference handle only when this referenced is added to pool for the first time.
-       /// Emits inlined string for strings and inlined value types for boxed objects.
-       /// Emits additional array dimensions info for array refernces who's types are emitted for the first time
-       /// </summary>
-       public MetaHandle GetHandle(object reference, TypeRegistry treg, SlimFormat format, out Type type)
-       {
-         if (reference==null)
-         {
-           type = null;
-           return new MetaHandle(0);
-         }
-         
-         if (reference is string)
-         {
-           type = typeof(string);
-           return MetaHandle.InlineString(reference as string);
-         }
-
-         if (reference is Type)
-         {
-           type = typeof(Type);
-           var thandle = treg.GetTypeHandle(reference as Type); 
-           return MetaHandle.InlineTypeValue(thandle);
-         }
-
-         type = reference.GetType();
-         if (type.IsValueType)
-         {
-           var vth = treg.GetTypeHandle(type);
-           return MetaHandle.InlineValueType(vth);
-         }
-         
-         bool added;
-
-         uint handle = (uint)getIndex(reference, out added);
-         string th = added ? treg.GetTypeHandle(type) : null; 
-
-         if (added)
-         {
-              if (format.IsRefTypeSupported(type))//20150305 Refhandle inline
-                return MetaHandle.InlineRefType(th);
-
-              if (reference is Array)//write array header like so:  "System.int[,]|0~10,0~12" or "$3|0~10,0~12"
-              {
-                //DKh 20130712 Removed repetitive code that was refactored into Arrays class
-                var arr = (Array)reference;
-                th = Arrays.ArrayToDescriptor(arr, treg, type, th);
-              }
-         }
-         return new MetaHandle(handle, th);
-       } 
-
-
-       /// <summary>
-       /// Returns object reference for supplied metahandle
-       /// </summary>
-       public object HandleToReference(MetaHandle handle, TypeRegistry treg, SlimFormat format, SlimReader reader)
-       {
-         if (handle.IsInlinedString) return handle.Metadata;
-         if (handle.IsInlinedTypeValue) 
-         {
-           var tref = treg.GetByHandle(handle.Metadata);//adding this type to registry if it is not there yet
-           return tref;
-         }
-
-         if (handle.IsInlinedRefType)
-         {
-             var tref = treg.GetByHandle(handle.Metadata);//adding this type to registry if it is not there yet
-             var ra = format.GetReadActionForRefType(tref);
-             if (ra!=null)
-             {
-               var inst = ra(reader);
-               m_List.Add(inst);
-               m_Dict.Add(inst, m_List.Count - 1);
-               return inst;
-             }
-             else
-              throw new SlimDeserializationException("Internal error HandleToReference: no read action for ref type, but ref mhandle is inlined");
-         }
-
-         
-         int idx = (int)handle.Handle;
-         if (idx<m_List.Count) return m_List[idx];
-         
-         if (string.IsNullOrEmpty(handle.Metadata))
-          throw new SlimDeserializationException(StringConsts.SLIM_HNDLTOREF_MISSING_TYPE_NAME_ERROR + handle.ToString());
-
-         var metadata = handle.Metadata;
-         var ip = metadata.IndexOf('|');
-         //var segments = metadata.Split('|');
-         var th = ip>0 ? metadata.Substring(0, ip) : metadata;
-
-         //20140701 DKh 
-         var type = treg[th];//segments[0]];
-         
-         object instance = null;
-         
-         if (type.IsArray)
-              //DKh 20130712 Removed repetitive code that was refactored into Arrays class
-              instance = Arrays.DescriptorToArray(metadata, treg, type); 
-         else
-              //20130715 DKh
-              instance = SerializationUtils.MakeNewObjectInstance(type);
-
-         m_List.Add(instance);
-         m_Dict.Add(instance, m_List.Count - 1);
-         return instance;
-       }
-
-       private int getIndex(object reference, out bool added)
-       {
-           added = false;
-           if (reference==null) return 0;
-
-           int idx = -1;
-           if (m_Dict.TryGetValue(reference, out idx)) return idx;
-                      
-
-           added = true;
-           m_List.Add(reference);
-           idx = m_List.Count - 1;
-           m_Dict.Add(reference, idx);
-           return idx;
-      }
-
-
-
-    }
 
 }

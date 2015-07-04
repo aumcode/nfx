@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using NFX.Environment;
 using NFX.Security;
@@ -161,6 +162,15 @@ namespace NFX.IO.FileSystem
         }
 
 
+                /// <summary>
+                /// Async version of <see cref="P:Size"/>
+                /// </summary>
+                public Task<ulong> GetSizeAsync()
+                {
+                    return FileSystem.DoGetItemSizeAsync( this );
+                } 
+
+
         /// <summary>
         /// Gets/sets UTC creation timestamp
         /// </summary>
@@ -175,6 +185,14 @@ namespace NFX.IO.FileSystem
               m_Modified = true;
             }
         }
+
+                /// <summary>
+                /// Async version of <see cref="P:CreationTimestamp"/>
+                /// </summary>
+                public Task SetCreationTimestampAsync(DateTime timestamp)
+                {
+                    return FileSystem.DoSetCreationTimestampAsync( this, timestamp );
+                } 
         
         /// <summary>
         /// Gets/sets UTC modification timestamp
@@ -191,6 +209,14 @@ namespace NFX.IO.FileSystem
             }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:ModificationTimestamp"/>
+                /// </summary>
+                public Task SetModificationTimestampAsync(DateTime timestamp)
+                {
+                    return FileSystem.DoSetModificationTimestampAsync( this, timestamp );
+                } 
+
         /// <summary>
         /// Gets/sets UTC last access timestamp
         /// </summary>
@@ -206,22 +232,44 @@ namespace NFX.IO.FileSystem
             }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:LastAccessTimestamp"/>
+                /// </summary>
+                public Task SetLastAccessTimestampAsync(DateTime timestamp)
+                {
+                    return FileSystem.DoSetLastAccessTimestampAsync( this, timestamp );
+                } 
+
 
         /// <summary>
         /// Gets the user who created this item
         /// </summary>
         public User CreationUser     { get { return FileSystem.DoGetCreationUser(this); }} 
+
+                /// <summary>
+                /// Async version of <see cref="P:CreationUser"/>
+                /// </summary>
+                public Task<User> GetCreationUserAsync()     { return FileSystem.DoGetCreationUserAsync(this); } 
         
         /// <summary>
         /// Gets the user who modified this item
         /// </summary>
         public User ModificationUser { get { return FileSystem.DoGetModificationUser(this); }} 
+
+                /// <summary>
+                /// Async version of <see cref="P:ModificationUser"/>
+                /// </summary>
+                public Task<User> GetModificationUserAsync()     { return FileSystem.DoGetModificationUserAsync(this); } 
         
         /// <summary>
         /// Gets the last user who accessed the item
         /// </summary>
         public User LastAccessUser    { get { return FileSystem.DoGetLastAccessUser(this); }} 
 
+                /// <summary>
+                /// Async version of <see cref="P:LastAccessUser"/>
+                /// </summary>
+                public Task<User> GetLastAccessUserAsync()     { return FileSystem.DoGetLastAccessUserAsync(this); } 
 
 
         /// <summary>
@@ -238,6 +286,14 @@ namespace NFX.IO.FileSystem
           }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:ReadOnly"/>
+                /// </summary>
+                public Task SetReadOnlyAsync(bool readOnly)
+                {
+                    return FileSystem.DoSetReadOnlyAsync( this, readOnly );
+                } 
+
         /// <summary>
         /// Indicates whether this item can change and file system supports modifications
         /// </summary>
@@ -246,12 +302,10 @@ namespace NFX.IO.FileSystem
           get{ return m_FileSystem.InstanceCapabilities.IsReadonly || ReadOnly;}
         }
 
-
-
       #endregion
 
 
-      #region Public Methods
+      #region Public Sync Methods
         
         /// <summary>
         /// Throws when item can not change
@@ -262,7 +316,14 @@ namespace NFX.IO.FileSystem
           if (IsReadOnly)
             throw new NFXIOException(StringConsts.IO_FS_ITEM_IS_READONLY_ERROR.Args(this.m_FileSystem, this));
         }
-        
+
+                /// <summary>
+                /// Async version of <see cref="CheckCanChange()"/>
+                /// </summary>
+                public Task CheckCanChangeAsync()
+                {
+                  return FileSystem.DoCheckCanChangeAsync(this);
+                }
         
         /// <summary>
         /// Renames an item. Check file system capabilities to see if renaming is supported
@@ -274,6 +335,19 @@ namespace NFX.IO.FileSystem
           if (m_Session.FileSystem.DoRenameItem(this, newName))
             m_Modified = true;
         }
+
+                /// <summary>
+                /// Async version of <see cref="Rename(string)"/>
+                /// </summary>
+                public Task RenameAsync( string newName)
+                {
+                  return CheckCanChangeAsync().ContinueWith(t => {
+                    EnsureObjectNotDisposed();
+                    m_Session.FileSystem.DoRenameItemAsync(this, newName).ContinueWith(t1 => {
+                      if (t1.Result) m_Modified = true;
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                  }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                }
 
 
         /// <summary>
@@ -287,6 +361,19 @@ namespace NFX.IO.FileSystem
           Dispose();
         }
 
+                /// <summary>
+                /// Async version of <see cref="Delete()"/>
+                /// </summary>
+                public Task DeleteAsync()
+                {
+                  return CheckCanChangeAsync().ContinueWith(t => {
+                    EnsureObjectNotDisposed();
+                    m_Session.FileSystem.DoDeleteItemAsync(this).ContinueWith(t1 => {
+                      Dispose();
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                  }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                }
+
         /// <summary>
         /// Refreshes the state represented by this item, i.e. this may re-read attributes from remote file system
         /// </summary>
@@ -295,6 +382,13 @@ namespace NFX.IO.FileSystem
           m_FileSystem.DoRefresh( this );
         }
 
+                /// <summary>
+                /// Async version of <see cref="Refresh()"/>
+                /// </summary>
+                public Task RefreshAsync()
+                {
+                  return m_FileSystem.DoRefreshAsync(this);
+                }
 
         public override string ToString()
         {

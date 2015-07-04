@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 
 using NFX.Environment;
 
@@ -73,7 +74,7 @@ namespace NFX.IO.FileSystem
 
       #endregion
 
-      #region
+      #region Public Sync Methods
         
         /// <summary>
         /// Reads all text from file using byte order mark detection with UTF8 encoding
@@ -85,6 +86,16 @@ namespace NFX.IO.FileSystem
               return r.ReadToEnd();
         }
 
+                /// <summary>
+                /// Async version of <see cref="ReadAllText()"/>
+                /// </summary>
+                public Task<string> ReadAllTextAsync()
+                {
+                  using(var fs = this.FileStream)
+                  using(var r = new StreamReader(fs))
+                    return r.ReadToEndAsync();
+                }
+
         /// <summary>
         /// Reads all text from stream using the specified parameters
         /// </summary>
@@ -94,6 +105,16 @@ namespace NFX.IO.FileSystem
             using(var r = new StreamReader(fs, encoding, detectEncodingFromByteOrderMarks, bufferSize))
               return r.ReadToEnd();
         }
+
+                /// <summary>
+                /// Async version of <see cref="ReadAllText(Encoding, bool, int)"/>
+                /// </summary>
+                public Task<string> ReadAllTextAsync(Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize = 1024)
+                {
+                  using(var fs = this.FileStream)
+                  using(var r = new StreamReader(fs, encoding, detectEncodingFromByteOrderMarks, bufferSize))
+                    return r.ReadToEndAsync();
+                }
 
         /// <summary>
         /// Sets file content to supplied string using default UTF8 encoding
@@ -105,6 +126,16 @@ namespace NFX.IO.FileSystem
               w.Write(text);
         }
 
+                /// <summary>
+                /// Async version of <see cref="WriteAllText(string)"/>
+                /// </summary>
+                public Task WriteAllTextAsync(string text)
+                {
+                  using(var fs = this.FileStream)
+                  using(var w = new StreamWriter(fs))
+                    return w.WriteAsync(text);
+                }
+
         /// <summary>
         /// Sets file content to supplied string using the specified parameters
         /// </summary>
@@ -115,6 +146,15 @@ namespace NFX.IO.FileSystem
               w.Write(text);
         }
 
+                /// <summary>
+                /// Async version of <see cref="WriteAllText(string, Encoding, int)"/>
+                /// </summary>
+                public Task WriteAllTextAsync(string text, Encoding encoding, int bufferSize = 1024)
+                {
+                  using(var fs = this.FileStream)
+                  using(var w = new StreamWriter(fs, encoding, bufferSize))
+                    return w.WriteAsync(text);
+                }
 
       #endregion
     }

@@ -55,6 +55,7 @@ namespace NFX
   /// the new IDs will not collide with IDs generated right before the crash for at least 14 days (14 day sliding window).
   /// In a parallel test on 6 Core i7 3.2 GHz this class generates 405 million IDs/sec, which is 57 times faster than Guid that only generates 7 million IDs/sec
   /// </summary>
+  [Serializable]
   public struct FID : IEquatable<FID>, DataAccess.Cache.IULongHashProvider
   {
     private const int MASK_16_BIT = 0x0000ffff;

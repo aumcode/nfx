@@ -98,6 +98,12 @@ namespace NFX.IO.FileSystem
 
         bool SupportsFileSizes      { get;}
         bool SupportsDirectorySizes { get;}
+
+        /// <summary>
+        /// Defines if this FileSystem implements Async methods in real asynchronous manner.
+        /// By default asynchronous methods are actually executed syncronously and return Task with execution result or exception
+        /// </summary>
+        bool SupportsAsyncronousAPI { get;}
     }
 
 }

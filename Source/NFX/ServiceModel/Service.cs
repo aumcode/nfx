@@ -37,7 +37,7 @@ namespace NFX.ServiceModel
 {
 
     /// <summary>
-    /// Defines abstraction for an entoty that is controlled by Start/Stop commands and has a status
+    /// Defines abstraction for an entity that is controlled by Start/Stop commands and has a status
     /// </summary>
     public interface IService : INamed, IConfigurable
     {

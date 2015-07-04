@@ -39,6 +39,7 @@ namespace NFX.IO
             }
 
             protected byte[] m_Buff32 = new byte[32];
+
             protected Stream m_Stream;
             protected Encoding m_Encoding;
             

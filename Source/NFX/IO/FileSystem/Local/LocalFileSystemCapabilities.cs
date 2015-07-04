@@ -80,6 +80,8 @@ namespace NFX.IO.FileSystem.Local
 
       public bool SupportsFileSizes        { get { return true;  }}
       public bool SupportsDirectorySizes   { get { return true;  }}
+
+      public bool SupportsAsyncronousAPI { get { return false; }}
     #endregion
   }
 }

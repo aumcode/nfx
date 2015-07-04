@@ -231,7 +231,7 @@ namespace NFX.Glue
 
 
       /// <summary>
-      /// Gets the CallSlot instance as a task that gets completed either instantly for on-way calls or when result arrives or timeout happens.
+      /// Gets the CallSlot instance as a task that gets completed either instantly for one-way calls or when result arrives or timeout happens.
       /// The returned task never gets canceled
       /// </summary>
       public Task<CallSlot> AsTask
@@ -321,7 +321,7 @@ namespace NFX.Glue
       }
 
       /// <summary>
-      /// Blocks until response comes or timeout happens. Response message inspection happens in the context of calling thread
+      /// Blocks until response comes or timeout happens. Response message inspection happens in the context of a calling thread
       /// </summary>
       public ResponseMsg ResponseMsg
       {
@@ -382,7 +382,7 @@ namespace NFX.Glue
                 catch(Exception error)
                 {
                     throw new ClientMsgInspectionException(inspector, error);
-                }
+                }       
                 m_ResponseMsg = response;
            }
 
@@ -449,7 +449,7 @@ namespace NFX.Glue
           if (m_TaskCompletionSource==null) return;
           if (m_TaskCompletionSource.Task.IsCompleted) return;
 
-          //Invoke asynchronously, as TrySetResult may synchronously run continuations and cause deadlock
+          //Invoke asynchronously, as TrySetResult may synchronously run long continuations
           Task.Run( () => m_TaskCompletionSource.TrySetResult(this) );
        }
 

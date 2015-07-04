@@ -309,7 +309,7 @@ namespace NFX.Serialization.Slim
                  while(senum.MoveNext())
                  {
                    writer.Write(senum.Name);
-                   writer.Write(registry.GetTypeHandle( senum.ObjectType ));
+                   writer.Write( registry.GetTypeHandle( senum.ObjectType ) );
                    Schema.Serialize(writer, registry, refs, senum.Value, streamingContext);
                  }
              }
@@ -323,7 +323,9 @@ namespace NFX.Serialization.Slim
                  for(int i=0; i<cnt; i++)
                  {
                    var name = reader.ReadString();
-                   var type = registry[ reader.ReadString() ];
+
+                   var vis = reader.ReadVarIntStr();
+                   var type = registry[ vis ];
                    var obj = Schema.Deserialize(reader, registry, refs, streamingContext);
 
                    info.AddValue(name, obj, type);
@@ -647,6 +649,8 @@ namespace NFX.Serialization.Slim
           
           Type type = valueType;
 
+          VarIntStr typeHandle = new VarIntStr(0);
+
           if (type==null)
           {
               if (instance==null)
@@ -659,7 +663,8 @@ namespace NFX.Serialization.Slim
 
               //Write type name. Full or compressed. Full Type names are assembly-qualified strings, compressed are string in form of
               // $<name_table_index> i.e.  $1 <--- get string[1]
-              writer.Write(registry.GetTypeHandle(type));
+              typeHandle = registry.GetTypeHandle(type); 
+              writer.Write( typeHandle );
           }
 
           //we get here if we have a boxed value of directly-handled type
@@ -674,7 +679,7 @@ namespace NFX.Serialization.Slim
           
           if (td.IsArray) //need to write array dimensions 
           {
-            writer.Write( Arrays.ArrayToDescriptor((Array)instance, registry) );
+            writer.Write( Arrays.ArrayToDescriptor((Array)instance, type, typeHandle) );
           }
                            
           td.SerializeInstance(writer, registry, refs, instance, streamingContext);
@@ -713,7 +718,7 @@ namespace NFX.Serialization.Slim
 
            if (mh.IsInlinedValueType)
            {
-             var tboxed = registry.GetByHandle(mh.Metadata);//adding this type to registry if it is not there yet
+             var tboxed = registry[ mh.Metadata.Value ];//adding this type to registry if it is not there yet
 
              var ra = Format.GetReadActionForType(tboxed);
              if (ra!=null)
@@ -735,10 +740,27 @@ namespace NFX.Serialization.Slim
          Type type = valueType;
          if (type==null)
          {
-             var thandle = reader.ReadString();
-             if (TypeRegistry.IsNullHandle(thandle)) return null;
-
-             type = registry[thandle];
+             var thandle = reader.ReadVarIntStr();
+             if (thandle.StringValue!=null)//need to search for possible array descriptor
+             {
+                var ip = thandle.StringValue.IndexOf('|');//array descriptor start
+                if (ip>0)
+                {
+                  var tname =  thandle.StringValue.Substring(0, ip);
+                  if (TypeRegistry.IsNullHandle(tname)) return null;
+                  type = registry[ tname ];
+                }
+                else
+                {
+                  if (TypeRegistry.IsNullHandle(thandle)) return null;
+                  type = registry[ thandle ]; 
+                }
+             }
+             else
+             {
+                if (TypeRegistry.IsNullHandle(thandle)) return null;
+                type = registry[ thandle ];
+             }
          }
 
          //we get here if we have a boxed value of directly-handled type
@@ -752,7 +774,7 @@ namespace NFX.Serialization.Slim
          object instance = null;
          
          if (td.IsArray)
-           instance = Arrays.DescriptorToArray( reader.ReadString(), registry);
+           instance = Arrays.DescriptorToArray( reader.ReadString(), type);
          else
            instance = SerializationUtils.MakeNewObjectInstance(type);
         
@@ -775,7 +797,7 @@ namespace NFX.Serialization.Slim
 
          var type = instance.GetType();
 
-          reader.ReadString();//skip type as we already know it from prior-allocated metahandle
+          reader.ReadVarIntStr();//skip type as we already know it from prior-allocated metahandle
 
                  
          TypeDescriptor td = getTypeDescriptorCachedOrMake(type);

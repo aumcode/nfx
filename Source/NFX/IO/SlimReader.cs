@@ -111,7 +111,7 @@ namespace NFX.IO
 
             var len = this.ReadInt();
             if (len>SlimFormat.MAX_BYTE_ARRAY_LEN)
-              throw new NFXIOException(StringConsts.SLIM_READ_BYTE_BUF_MAX_SIZE_ERROR.Args(len, SlimFormat.MAX_BYTE_ARRAY_LEN));
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "bytes", SlimFormat.MAX_BYTE_ARRAY_LEN));
 
             var buf = new byte[len];
 
@@ -119,6 +119,68 @@ namespace NFX.IO
 
             return buf;
           }
+
+
+
+          public override int[] ReadIntArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var len = this.ReadInt();
+            if (len>SlimFormat.MAX_INT_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "ints", SlimFormat.MAX_INT_ARRAY_LEN));
+
+            var result = new int[len];
+
+
+            for(int i=0; i<len; i++)
+              result[i] = this.ReadInt();
+
+            return result;
+          }
+
+
+          public override long[] ReadLongArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var len = this.ReadInt();
+            if (len>SlimFormat.MAX_LONG_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "longs", SlimFormat.MAX_LONG_ARRAY_LEN));
+
+            var result = new long[len];
+
+
+            for(int i=0; i<len; i++)
+              result[i] = this.ReadLong();
+
+            return result;
+          }
+
+
+          public override double[] ReadDoubleArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var len = this.ReadInt();
+            if (len>SlimFormat.MAX_DOUBLE_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "doubles", SlimFormat.MAX_DOUBLE_ARRAY_LEN));
+
+            var result = new double[len];
+
+
+            for(int i=0; i<len; i++)
+              result[i] = this.ReadDouble();
+
+            return result;
+          }
+
+
+
+
   
           public override char ReadChar()
           {
@@ -151,7 +213,7 @@ namespace NFX.IO
             var len = this.ReadInt();
             
             if (len>SlimFormat.MAX_STRING_ARRAY_CNT)
-              throw new NFXIOException(StringConsts.SLIM_READ_STRING_ARRAY_MAX_SIZE_ERROR.Args(len, SlimFormat.MAX_STRING_ARRAY_CNT));
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "strings", SlimFormat.MAX_STRING_ARRAY_CNT));
 
 
             var result = new string[len];
@@ -360,12 +422,39 @@ namespace NFX.IO
                 return null;
               }
         
+          private const int STR_BUF_SZ = 32 * 1024;
+
+          [ThreadStatic]
+          private static byte[] s_StrBuff;
+
           
           public override string ReadString()
           {
-            var buf = this.ReadByteArray();
-            if (buf==null) return null;
+            //20150626 DKh
+            //var buf = this.ReadByteArray();
+            //if (buf==null) return null;
             
+            //return m_Encoding.GetString(buf);
+
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var bsz = this.ReadInt();
+            if (bsz<STR_BUF_SZ)
+            {
+              if (s_StrBuff==null) s_StrBuff = new byte[STR_BUF_SZ];
+              ReadFromStream(s_StrBuff, bsz);
+              return m_Encoding.GetString(s_StrBuff, 0, bsz);
+            }
+
+           
+            if (bsz>SlimFormat.MAX_BYTE_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(bsz, "string bytes", SlimFormat.MAX_BYTE_ARRAY_LEN));
+
+            var buf = new byte[bsz];
+
+            ReadFromStream(buf, bsz);
+
             return m_Encoding.GetString(buf);
           }
 
@@ -490,7 +579,16 @@ namespace NFX.IO
                bitcnt += 7;
             }
 
-            return meta ? new MetaHandle(true, handle, this.ReadString()) : new MetaHandle(true, handle);
+            if (meta)
+            {
+               var sv = ReadString();
+               if (sv!=null)
+                return new MetaHandle(true, handle, new VarIntStr( sv ));
+               else
+                return new MetaHandle(true, handle, new VarIntStr( ReadUInt() ));
+            }
+
+            return new MetaHandle(true, handle);
           }
             
 
@@ -507,8 +605,13 @@ namespace NFX.IO
 
           public override DateTime ReadDateTime()
           {
-            var bin = this.ReadLong();
-            return DateTime.FromBinary(bin);
+            //prior to 20150625 DKh
+            //var bin = this.ReadLong();
+            //return DateTime.FromBinary(bin);
+
+            var ticks = (long) m_Stream.ReadBEUInt64();
+            var kind = (DateTimeKind) m_Stream.ReadByte();
+            return new DateTime(ticks, kind);
           }
 
               public override DateTime? ReadNullableDateTime()
@@ -619,7 +722,25 @@ namespace NFX.IO
 
                 return null;
               }
+        
+        
+        
+          public override VarIntStr ReadVarIntStr()
+          {
+            var str = this.ReadString();
+            if (str!=null) return new VarIntStr(str);
 
+            return new VarIntStr( this.ReadUInt() );
+          }
+
+              public override VarIntStr? ReadNullableVarIntStr()
+              {
+                var has = this.ReadBool();
+                                                  
+                if (has) return this.ReadVarIntStr();
+
+                return null;
+              }
 
         #endregion
 

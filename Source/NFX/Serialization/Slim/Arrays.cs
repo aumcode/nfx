@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.IO;
+
 namespace NFX.Serialization.Slim
 {
     internal static class Arrays
@@ -35,30 +37,28 @@ namespace NFX.Serialization.Slim
           /// </summary>
           public const int MAX_ELM_COUNT = MAX_DIM_COUNT * 10 * 1024 * 1024;
           
-           public static string ArrayToDescriptor(Array array, 
-                                                  TypeRegistry treg, 
-                                                  Type type = null, 
-                                                  string th = null)
+           public static string ArrayToDescriptor(Array array, Type type, VarIntStr typeHandle)
            {
-              if (type==null)
-                 type = array.GetType();
-
               if (array.LongLength>MAX_ELM_COUNT)
                 throw new SlimSerializationException(StringConsts.SLIM_ARRAYS_OVER_MAX_ELM_ERROR.Args(array.LongLength, MAX_ELM_COUNT)); 
               
               if (type==typeof(object[]))//special case for object[], because this type is very often used in Glue and other places
-               return "$1|"+array.Length.ToString();
+               return "$2|"+array.Length.ToString();
 
 
-              if (th==null)
-                 th = treg.GetTypeHandle(type);
+              var th = typeHandle.StringValue ?? 
+                      ( typeHandle.IntValue < TypeRegistry.STR_HNDL_POOL.Length ? 
+                                TypeRegistry.STR_HNDL_POOL[typeHandle.IntValue] : 
+                                '$'+typeHandle.IntValue.ToString() 
+                      );
 
                var ar = array.Rank;
                if (ar>MAX_DIM_COUNT)
                 throw new SlimSerializationException(StringConsts.SLIM_ARRAYS_OVER_MAX_DIMS_ERROR.Args(ar, MAX_DIM_COUNT));
 
 
-               var descr = new StringBuilder(th);
+               var descr = new StringBuilder();
+               descr.Append( th );
                descr.Append('|');//separator char
 
                for(int i=0; i<ar; i++)
@@ -74,9 +74,7 @@ namespace NFX.Serialization.Slim
            }
 
       //20140702 DLat+Dkh parsing speed optimization
-      public static Array DescriptorToArray(string descr,
-                                            TypeRegistry treg,
-                                            Type type = null)
+      public static Array DescriptorToArray(string descr, Type type)
       {
           var i = descr.IndexOf('|');
                    
@@ -85,7 +83,7 @@ namespace NFX.Serialization.Slim
             throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_MISSING_ARRAY_DIMS_ERROR + descr.ToString());
           }
 
-          if (i==2 && descr[1]=='1' && descr[0]=='$')//object[] case: $1|len
+          if (i==2 && descr[1]=='2' && descr[0]=='$')//object[] case: $2|len
           {
             i++;//over |
             var total = quickParseInt(descr, ref i, descr.Length);
@@ -95,10 +93,7 @@ namespace NFX.Serialization.Slim
             return new object[total];
           }
 
-          if (type==null)
-          {
-            type = treg[descr.Substring(0,i)];
-          }
+         
     
           Array instance = null;
          
@@ -146,7 +141,6 @@ namespace NFX.Serialization.Slim
           return instance;
       }
 
-              
                 private static int quickParseInt(string str, ref int i, int len)
                 {
                   int result = 0;

@@ -186,6 +186,7 @@
     <Compile Include="Serialization\PODSlim.cs" />
     <Compile Include="Serialization\TestObjects.cs" />
     <Compile Include="Serialization\Slim.cs" />
+    <Compile Include="TaskUtilsTest.cs" />
     <Compile Include="Templatization\TextCSTemplateCompilerTests.cs" />
     <Compile Include="Templatization\TeztTemplate.cs" />
     <Compile Include="TestLog.cs" />

@@ -189,11 +189,13 @@
     <Compile Include="IO\ErrorHandling\GaloisPolynomial.cs" />
     <Compile Include="IO\ErrorHandling\ReedSolomonEncoder.cs" />
     <Compile Include="IO\FileSystem\FileSystemDirectory.cs" />
+    <Compile Include="IO\FileSystem\FileSystemException.cs" />
     <Compile Include="IO\FileSystem\FileSystemFile.cs" />
     <Compile Include="IO\FileSystem\FileSystemCapabilities.cs" />
     <Compile Include="IO\FileSystem\FileSystemSessionItem.cs" />
     <Compile Include="IO\FileSystem\FileSystem.cs" />
     <Compile Include="IO\FileSystem\FileSystemSession.cs" />
+    <Compile Include="IO\FileSystem\FileSystemStarter.cs" />
     <Compile Include="IO\FileSystem\FileSystemStream.cs" />
     <Compile Include="IO\FileSystem\Intfs.cs" />
     <Compile Include="IO\FileSystem\Local\LocalFileSystem.cs" />
@@ -530,6 +532,7 @@
     <Compile Include="Serialization\Slim\Arrays.cs" />
     <Compile Include="Serialization\Slim\ISlimSerializer.cs" />
     <Compile Include="Serialization\Slim\PODSlimSerializer.cs" />
+    <Compile Include="Serialization\Slim\RefPool.cs" />
     <Compile Include="Serialization\Slim\SlimSerializer.cs" />
     <Compile Include="IO\SlimWriter.cs" />
     <Compile Include="Serialization\Slim\Exceptions.cs" />
@@ -545,6 +548,7 @@
     <Compile Include="ServiceModel\WorkQueue.cs" />
     <Compile Include="StringConsts.cs" />
     <Compile Include="StringValueConversion.cs" />
+    <Compile Include="TaskUtils.cs" />
     <Compile Include="Templatization\Sources.cs" />
     <Compile Include="Templatization\IRenderingTarget.cs" />
     <Compile Include="Templatization\Exceptions.cs" />

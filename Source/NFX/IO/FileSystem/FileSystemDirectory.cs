@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using NFX.Environment;
 
@@ -29,7 +30,6 @@ namespace NFX.IO.FileSystem
     /// </summary>
     public sealed class FileSystemDirectory : FileSystemSessionItem
     {
-      
       #region .ctor
         
         /// <summary>
@@ -56,6 +56,14 @@ namespace NFX.IO.FileSystem
            get { return m_FileSystem.DoGetSubDirectoryNames(this, false); }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:SubDirectoryNames"/>
+                /// </summary>
+                public Task<IEnumerable<string>> GetSubDirectoryNamesAsync()
+                {
+                   return m_FileSystem.DoGetSubDirectoryNamesAsync(this, false);
+                }
+
         /// <summary>
         /// Returns file names contained in this directory
         /// </summary>
@@ -63,6 +71,14 @@ namespace NFX.IO.FileSystem
         {
           get { return m_FileSystem.DoGetFileNames(this, false); }
         }
+
+                /// <summary>
+                /// Async version of <see cref="P:FileNames"/>
+                /// </summary>
+                public Task<IEnumerable<string>> GetFileNamesAsync()
+                {
+                   return m_FileSystem.DoGetFileNamesAsync(this, false);
+                }
 
         /// <summary>
         /// Returns directory names contained in this directory and all subdirectories
@@ -72,6 +88,14 @@ namespace NFX.IO.FileSystem
           get { return m_FileSystem.DoGetSubDirectoryNames(this, true); }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:RecursiveSubDirectoryNames"/>
+                /// </summary>
+                public Task<IEnumerable<string>> GetRecursiveSubDirectoryNamesAsync()
+                {
+                   return m_FileSystem.DoGetSubDirectoryNamesAsync(this, true);
+                }
+
         /// <summary>
         /// Returns file names contained in this directory and all subdirectories
         /// </summary>
@@ -79,6 +103,14 @@ namespace NFX.IO.FileSystem
         {
           get { return m_FileSystem.DoGetFileNames(this, true); }
         }
+
+                /// <summary>
+                /// Async version of <see cref="P:RecursiveFileNames"/>
+                /// </summary>
+                public Task<IEnumerable<string>> GetRecursiveFileNamesAsync()
+                {
+                   return m_FileSystem.DoGetFileNamesAsync(this, true);
+                }
 
         /// <summary>
         /// Navigates to the specified path relative to this directory
@@ -90,9 +122,17 @@ namespace NFX.IO.FileSystem
           get { return m_FileSystem.DoNavigate(m_Session, m_FileSystem.CombinePaths(Path, path)); }
         }
 
+                /// <summary>
+                /// Async version of Item(string)
+                /// </summary>
+                public Task<FileSystemSessionItem> GetItemAsync(string path)
+                {
+                  return m_FileSystem.DoNavigateAsync(m_Session, m_FileSystem.CombinePaths(Path, path));
+                }
+
       #endregion
 
-      #region Public Methods
+      #region Public Sync Methods
 
         /// <summary>
         /// Gets file in this directory or null if it does not exist or not a file
@@ -102,6 +142,16 @@ namespace NFX.IO.FileSystem
           return this[name] as FileSystemFile; 
         }
 
+                /// <summary>
+                /// Async version of <see cref="GetFile(string)"/>
+                /// </summary>
+                public Task<FileSystemFile> GetFileAsync(string name)
+                {
+                  return GetItemAsync(name).ContinueWith(t => {
+                    return t.Result as FileSystemFile;
+                  }, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously);
+                }
+
         /// <summary>
         /// Gets dubdirectory in this directory or null if it does not exist or not a directory
         /// </summary>
@@ -109,6 +159,16 @@ namespace NFX.IO.FileSystem
         {
           return this[name] as FileSystemDirectory; 
         }
+
+                /// <summary>
+                /// Async version of <see cref="GetFile(string)"/>
+                /// </summary>
+                public Task<FileSystemDirectory> GetSubDirectoryAsync(string name)
+                {
+                  return GetItemAsync(name).ContinueWith(t => {
+                    return t.Result as FileSystemDirectory;
+                  }, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously);
+                }
 
         /// <summary>
         /// Creates a new file optionally pre-allocating te specified number of bytes
@@ -120,6 +180,19 @@ namespace NFX.IO.FileSystem
           m_Modified = true;
           return result;
         }
+
+                /// <summary>
+                /// Async version of <see cref="CreateFile(string, int)"/>
+                /// </summary>
+                public Task<FileSystemFile> CreateFileAsync(string name, int size = 0)
+                {
+                  return CheckCanChangeAsync()
+                    .ContinueWith(t => m_FileSystem.DoCreateFileAsync(this, name, size), TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap()
+                    .ContinueWith(t => {
+                      m_Modified = true;
+                      return t.Result;
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously);
+                }
 
         /// <summary>
         /// Puts local existing file into file system
@@ -136,6 +209,20 @@ namespace NFX.IO.FileSystem
           return result;
         }
 
+                /// <summary>
+                /// Async version of <see cref="CreateFile(string, string, bool)"/>
+                /// </summary>
+                public Task<FileSystemFile> CreateFileAsync(string name, string localFilePath, bool readOnly = false)
+                {
+                  return CheckCanChangeAsync()
+                    .ContinueWith(t => m_FileSystem.DoCreateFileAsync(this, name, localFilePath, readOnly), TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap()
+                    .ContinueWith(t => {
+                      m_Modified = true;
+                      return t.Result;
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously);
+                }
+
+
         /// <summary>
         /// Creates a directory in this directory
         /// </summary>
@@ -146,6 +233,19 @@ namespace NFX.IO.FileSystem
           m_Modified = true;
           return result;
         }
+
+                /// <summary>
+                /// Async version of <see cref="CreateDirectory(string)"/>
+                /// </summary>
+                public Task<FileSystemDirectory> CreateDirectoryAsync(string name)
+                {
+                  return CheckCanChangeAsync()
+                    .ContinueWith(t => m_FileSystem.DoCreateDirectoryAsync(this, name), TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap()
+                    .ContinueWith(t => {
+                      m_Modified = true;
+                      return t.Result;
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously);
+                }
 
         [Flags]
         public enum DirCopyFlags
@@ -169,7 +269,12 @@ namespace NFX.IO.FileSystem
         /// <param name="flags">Copy flags that specify what to copy</param>
         /// <param name="bufferSize">Copy buffer size</param>
         /// <param name="filter">Optional filter function</param>
-        public void DeepCopyTo(FileSystemDirectory target, DirCopyFlags flags = DirCopyFlags.All, int bufferSize = 64 * 1024, Func<FileSystemSessionItem, bool> filter = null)
+        /// <param name="cancel">Optional cancellation function. Return true to abort copying</param>
+        public void DeepCopyTo(FileSystemDirectory target, 
+                                DirCopyFlags flags = DirCopyFlags.All, 
+                                int bufferSize = 64 * 1024, 
+                                Func<FileSystemSessionItem, bool> filter = null, 
+                                Func<FileSystemSessionItem, bool> cancel = null)
         {  
             const int MAX_BUFFER = 64 * 1024 * 1024;
 
@@ -179,15 +284,27 @@ namespace NFX.IO.FileSystem
             
             var buffer = new byte[bufferSize];
 
-            deepCopyTo(target, flags, buffer, filter);
+            deepCopyTo(target, flags, buffer, filter, cancel);
         }
+
+                /// <summary>
+                /// Async version of DeepCopyTo(...)
+                /// </summary>
+                public Task DeepCopyToAsync(FileSystemDirectory target, 
+                                              DirCopyFlags flags = DirCopyFlags.All, 
+                                              int bufferSize = 64 * 1024, 
+                                              Func<FileSystemSessionItem, bool> filter = null,
+                                              Func<FileSystemSessionItem, bool> cancel = null)
+                { 
+                  return m_FileSystem.DoDirectoryDeepCopyAsync(this, target, flags, bufferSize, filter, cancel); 
+                }
 
       #endregion
 
       #region .pvt
 
 
-        private void deepCopyTo(FileSystemDirectory target, DirCopyFlags flags, byte[] buffer, Func<FileSystemSessionItem, bool> filter)
+        private void deepCopyTo(FileSystemDirectory target, DirCopyFlags flags, byte[] buffer, Func<FileSystemSessionItem, bool> filter, Func<FileSystemSessionItem, bool> cancel = null)
         {
             target.CheckCanChange();
 
@@ -196,17 +313,21 @@ namespace NFX.IO.FileSystem
               foreach(var sdn in this.SubDirectoryNames)
                 using(var sdir = this.GetSubDirectory(sdn))
                  if (filter==null||filter(sdir))
-                  using(var newSDir = target.CreateDirectory(sdn))
-                  {
-                    copyCommonAttributes(sdir, newSDir, buffer, flags);
+                 {
+                    if (cancel != null && cancel(sdir)) return;
+
+                    using(var newSDir = target.CreateDirectory(sdn))
+                    {
+                      copyCommonAttributes(sdir, newSDir, buffer, flags);
 
                     
-                    if (flags.HasFlag(DirCopyFlags.Readonly) &&
-                        this.FileSystem.InstanceCapabilities.SupportsReadonlyDirectories &&
-                        target.FileSystem.InstanceCapabilities.SupportsReadonlyDirectories) newSDir.ReadOnly = sdir.ReadOnly;
+                      if (flags.HasFlag(DirCopyFlags.Readonly) &&
+                          this.FileSystem.InstanceCapabilities.SupportsReadonlyDirectories &&
+                          target.FileSystem.InstanceCapabilities.SupportsReadonlyDirectories) newSDir.ReadOnly = sdir.ReadOnly;
 
-                    sdir.deepCopyTo(newSDir, flags, buffer, filter);
-                }
+                      sdir.deepCopyTo(newSDir, flags, buffer, filter, cancel);
+                    }
+                 }//if
             }
 
             if (flags.HasFlag(DirCopyFlags.Files))
@@ -214,6 +335,9 @@ namespace NFX.IO.FileSystem
               foreach(var fn in this.FileNames)
                 using(var file = this.GetFile(fn))
                   if (filter==null||filter(file))
+                  {
+                    if (cancel != null && cancel(file)) return;
+
                     using(var newFile = target.CreateFile(fn))
                     {
                       copyCommonAttributes(file, newFile, buffer, flags);
@@ -223,12 +347,12 @@ namespace NFX.IO.FileSystem
                           target.FileSystem.InstanceCapabilities.SupportsReadonlyFiles) newFile.ReadOnly = file.ReadOnly;
 
                       copyStream(file.FileStream, newFile.FileStream, buffer);
+                    }
                   }
             }
 
 
         }//deepCopyTo
-
 
         private void copyCommonAttributes(FileSystemSessionItem source, FileSystemSessionItem target, byte[] buffer, DirCopyFlags flags)
         {
@@ -252,7 +376,6 @@ namespace NFX.IO.FileSystem
                 target.FileSystem.InstanceCapabilities.SupportsLastAccessTimestamps) target.LastAccessTimestamp = source.LastAccessTimestamp;
           }
         }
-
         
         private void copyStream(FileSystemStream from, FileSystemStream to, byte[] buffer)
         {
@@ -263,7 +386,6 @@ namespace NFX.IO.FileSystem
              to.Write(buffer, 0, read); 
            }
         } 
-
 
       #endregion
 

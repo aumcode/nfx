@@ -20,6 +20,8 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
+using NFX.IO;
+
 namespace NFX.Serialization.Slim
 {
     /// <summary>
@@ -31,23 +33,26 @@ namespace NFX.Serialization.Slim
            /// <summary>
            /// Denotes a special type which is object==null
            /// </summary>
-           public const string NULL_HANDLE="$N";
+           public static readonly VarIntStr NULL_HANDLE = new VarIntStr(0);
        
        #endregion
 
        #region STATIC
 
+           [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+           public static bool IsNullHandle(VarIntStr handle)
+           {
+             return handle.IntValue==0 && IsNullHandle(handle.StringValue);
+           }
+
+           [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
            public static bool IsNullHandle(string handle)
            {
              if (handle==null) return true;
              var l = handle.Length;
              if (l==0) return true;
              return l==2 && handle[0]=='$' && handle[1]=='N';
-             
-             //20140701 DKh speed improvement
-             //string.Equals(handle, NULL_HANDLE, StringComparison.OrdinalIgnoreCase);
            }
-
 
            /// <summary>
            /// Returns Record-model specific types
@@ -247,26 +252,33 @@ namespace NFX.Serialization.Slim
            }
 
 
+           
            //20140701 DKh - speed optimization
            private const int STR_HNDL_POOL_SIZE = 512;
-           private readonly static string[] STR_HNDL_POOL;
+           internal readonly static string[] STR_HNDL_POOL;
 
            static TypeRegistry()
            {
               STR_HNDL_POOL = new string[STR_HNDL_POOL_SIZE];
-              for(var i=0; i<STR_HNDL_POOL_SIZE; i++)
+              STR_HNDL_POOL[0] = "$N"; 
+              for(var i=1; i<STR_HNDL_POOL_SIZE; i++)
                STR_HNDL_POOL[i] = '$'+i.ToString();
            }
            //20140701 DKh - speed optimization
+
 
        #endregion
 
        #region .ctors
           
+           private struct NULL_HANDLE_FAKE_TYPE{}
+
+
            public TypeRegistry()
            {  //WARNING!!! These types MUST be at the following positions always at the pre-defined index:
-              add(typeof(object));//must be at index zero
-              add(typeof(object[]));//must be at index 1
+              add(typeof(NULL_HANDLE_FAKE_TYPE));//must be at index zero - NULL HANDLE
+              add(typeof(object));//must be at index zero - object(not null)
+              add(typeof(object[]));//must be at index 2
               add(typeof(byte[]));
            }
           
@@ -312,6 +324,45 @@ namespace NFX.Serialization.Slim
                       private static Dictionary<string, Type> s_Types = new Dictionary<string,Type>(StringComparer.Ordinal);
 
            /// <summary>
+           /// Returns type by handle i.e. VarIntStr(1) or VarIntStr("full name"). Throws in case of error
+           /// </summary>
+           public Type this[VarIntStr handle]
+           {
+            get
+            {
+              try
+              {
+                if (IsNullHandle(handle)) return typeof(object);
+            
+                if (handle.StringValue==null)
+                {
+                    var idx = (int)handle.IntValue;
+                    if (idx<m_List.Count)
+                     return m_List[idx];
+                    throw new Exception();
+                }
+
+                Type result;
+                if (!s_Types.TryGetValue(handle.StringValue, out result))
+                {
+                  result = Type.GetType(handle.StringValue, true);
+                  var dict = new Dictionary<string,Type>(s_Types, StringComparer.Ordinal);
+                  dict[handle.StringValue] = result;
+                  s_Types = dict;//atomic
+                }
+
+                bool added;
+                getTypeIndex(result, out added);
+                return result;
+              }
+              catch
+              {
+                throw new SlimInvalidTypeHandleException("TypeRegistry[handle] is invalid: " + handle.ToString());
+              }
+            }
+           }
+
+           /// <summary>
            /// Returns type by handle i.e. '$11' or full name. Throws in case of error
            /// </summary>
            public Type this[string handle]
@@ -327,8 +378,7 @@ namespace NFX.Serialization.Slim
                    // var idx = int.Parse(handle.Substring(1));
                     //20140701 DKh speed improvement
                     var idx = quickParseInt(handle);
-                    if (idx<m_List.Count)
-                     return m_List[idx];
+                    if (idx<m_List.Count) return m_List[idx];
                     throw new Exception();
                 }
 
@@ -342,7 +392,7 @@ namespace NFX.Serialization.Slim
                 }
 
                 bool added;
-                GetTypeIndex(result, out added);
+                getTypeIndex(result, out added);
                 return result;
               }
               catch
@@ -352,7 +402,8 @@ namespace NFX.Serialization.Slim
             }
            }
 
-                   private int quickParseInt(string str)
+                   [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+                   private static int quickParseInt(string str)
                    {
                       int result = 0;
                       var l = str.Length;
@@ -367,18 +418,11 @@ namespace NFX.Serialization.Slim
                       return result; 
                    }
 
+
        #endregion
 
        #region Public
-               /// <summary>
-               /// See this[handle]
-               /// </summary>
-               public Type GetByHandle(string handle)
-               {
-                 return this[handle];
-               }
-
-
+               
                /// <summary>
                /// Adds the type if it not already in registry and returns true
                /// </summary>
@@ -389,27 +433,15 @@ namespace NFX.Serialization.Slim
                  add(type);
                  return true;
                }
-
-               public int GetTypeIndex(Type type, out bool added)
-               {
-
-                 added = false;
-                 var idx = 0;
-                 if (m_Types.TryGetValue(type, out idx)) return idx;
-
-                 added = true;
-                 idx = add(type);
-
-                 return idx;
-               }
-
+               
+               
                /// <summary>
-               /// Returns type index formatted as handle if type exists in registry, or fully qualified type name otherwise
+               /// Returns a string with the type index formatted as handle if type exists in registry, or fully qualified type name otherwise
                /// </summary>
-               public string GetTypeHandle(Type type)
+               public string GetTypeHandleAsString(Type type)
                {
                  bool added;
-                 var idx = GetTypeIndex(type, out added);
+                 var idx = getTypeIndex(type, out added);
                  if (!added)
                  {
                    if (idx<STR_HNDL_POOL_SIZE) return STR_HNDL_POOL[idx];
@@ -417,6 +449,19 @@ namespace NFX.Serialization.Slim
                  }
 
                  return type.AssemblyQualifiedName;
+               }
+               
+               /// <summary>
+               /// Returns a VarIntStr with the type index formatted as handle if type exists in registry, or fully qualified type name otherwise
+               /// </summary>
+               public VarIntStr GetTypeHandle(Type type)
+               {
+                 bool added;
+                 var idx = getTypeIndex(type, out added);
+                 if (!added)
+                   return new VarIntStr( (uint)idx);
+
+                 return new VarIntStr( type.AssemblyQualifiedName );
                }
 
 
@@ -452,6 +497,19 @@ namespace NFX.Serialization.Slim
              return idx;
            }
 
+
+            private int getTypeIndex(Type type, out bool added)
+            {
+
+              added = false;
+              var idx = 0;
+              if (m_Types.TryGetValue(type, out idx)) return idx;
+
+              added = true;
+              idx = add(type);
+
+              return idx;
+            }
 
 
        #endregion

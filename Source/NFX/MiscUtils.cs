@@ -32,9 +32,10 @@ using System.Reflection;
 using System.Data.Common;
 using System.Text.RegularExpressions;
 using System.Linq.Expressions;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 using NFX.Environment;
-using System.Net.Sockets;
 
 namespace NFX
 {
@@ -43,6 +44,7 @@ namespace NFX
     public static readonly DateTime UNIX_EPOCH_START_DATE = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     public static readonly string[] WIN_UNIX_LINE_BRAKES = new string[]{ "\r\n", "\n" };
 
+    
 
     /// <summary>
     /// Checks the value for null and throws exception if it is.

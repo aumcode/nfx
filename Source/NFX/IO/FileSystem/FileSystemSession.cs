@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using NFX.Environment;
 using NFX.Security;
@@ -162,6 +163,14 @@ namespace NFX.IO.FileSystem
           get { return m_FileSystem.DoNavigate(this, path); }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:Item(string)"/>
+                /// </summary>
+                public Task<FileSystemSessionItem> GetItemAsync(string path)
+                {
+                  return m_FileSystem.DoNavigateAsync(this, path);
+                }
+
         /// <summary>
         /// Gets/sets version of the file system that this session works against (a changeset that session "sees")
         /// </summary>
@@ -171,6 +180,15 @@ namespace NFX.IO.FileSystem
           set { m_FileSystem.DoSetVersion( this, value ); }
         }
 
+                /// <summary>
+                /// Async version of <see cref="P:Version"/>
+                /// </summary>
+                /// <returns></returns>
+                public virtual Task SetFileSystemVersionAsync(IFileSystemVersion version)
+                {
+                  return m_FileSystem.DoSetVersionAsync(this, version);
+                }
+
         /// <summary>
         /// Returns latest version for file systems that support versioning, null otherwise
         /// </summary>
@@ -178,6 +196,15 @@ namespace NFX.IO.FileSystem
         { 
           get { return m_FileSystem.DoGetLatestVersion( this );} 
         }
+
+                /// <summary>
+                /// Async version of <see cref="P:LatestVersion"/>
+                /// </summary>
+                /// <returns></returns>
+                public virtual Task<IFileSystemVersion> GetLatestVersionAsync()
+                {
+                  return m_FileSystem.DoGetLatestVersionAsync(this);
+                }
 
         /// <summary>
         /// Returns security manager that services this file system session. This may be useful in cases when file system implements
@@ -203,6 +230,14 @@ namespace NFX.IO.FileSystem
           return m_TransactionHandle;
         }
 
+                /// <summary>
+                /// Async version of <see cref="BeginTransaction()"/>
+                /// </summary>
+                public Task<IFileSystemTransactionHandle> BeginTransactionAsync()
+                {
+                  return m_FileSystem.DoBeginTransactionAsync(this);
+                }
+
         /// <summary>
         /// Commits active transaction, does nothing otherwise
         /// </summary>
@@ -210,6 +245,15 @@ namespace NFX.IO.FileSystem
         {
           m_FileSystem.DoCommitTransaction( this );
         }
+
+                /// <summary>
+                /// Async version of <see cref="CommitTransaction()"/>
+                /// </summary>
+                public Task CommitTransactionAsync()
+                {
+                  return m_FileSystem.DoCommitTransactionAsync(this);
+                }
+
 
         /// <summary>
         /// Cancels active transaction changes, does nothing otherwise
@@ -219,6 +263,14 @@ namespace NFX.IO.FileSystem
           m_FileSystem.DoRollbackTransaction( this );
         }
 
+                /// <summary>
+                /// Async version of <see cref="RollbackTransaction()"/>
+                /// </summary>
+                public Task RollbackTransactionAsync()
+                {
+                  return m_FileSystem.DoRollbackTransactionAsync(this);
+                }
+
         /// <summary>
         /// Returns specified number of versions going back from the specific version. This call is thread-safe 
         /// </summary>
@@ -226,6 +278,14 @@ namespace NFX.IO.FileSystem
         {
           return Enumerable.Empty<IFileSystemVersion>();
         }
+
+                /// <summary>
+                /// Async version of <see cref="GetVersions(IFileSystemVersion, int)"/>
+                /// </summary>
+                public virtual Task<IEnumerable<IFileSystemVersion>> GetVersionsAsync(IFileSystemVersion from, int countBack)
+                {
+                  return Task.FromResult(Enumerable.Empty<IFileSystemVersion>());
+                }
 
       #endregion
 

@@ -91,15 +91,7 @@ namespace NFX.Serialization.JSON
 
 
 
-        /// <summary>
-        /// Returns a padding string for specified level per set options
-        /// </summary>
-        public static string Indent(int level, JSONWritingOptions opt)
-        {
-            if (opt.IndentWidth>0) return string.Empty.PadLeft(level * opt.IndentWidth);
-
-            return string.Empty;
-        }
+       
 
 
         /// <summary>
@@ -246,6 +238,17 @@ namespace NFX.Serialization.JSON
                     
                 #region .pvt .impl
                     
+                       
+                        private static void indent(TextWriter wri, int level, JSONWritingOptions opt)
+                        {
+                            if (opt.IndentWidth==0) return;
+                            
+                            var total = level * opt.IndentWidth;
+                            for(var i=0; i<total; i++)
+                             wri.Write(' ');
+                        }
+
+
                         private static void writeAny(TextWriter wri, object data, int level, JSONWritingOptions opt)
                         {
                             if (data==null)
@@ -335,33 +338,93 @@ namespace NFX.Serialization.JSON
                             }
 
                             var fields = SerializationUtils.GetSerializableFields(tdata);
+            
+                            //20150620 DKh
+                            //var dict = new Dictionary<string, object>();
+                            //foreach(var f in fields)
+                            //{
+                            //    var name = f.Name;
+                            //    var iop = name.IndexOf('<');
+                            //    if (iop>=0)//handle anonymous type field name
+                            //    {
+                            //        var icl = name.IndexOf('>');
+                            //        if (icl>iop+1)
+                            //            name = name.Substring(iop+1, icl-iop-1);
+                            //    }
+                            //    dict.Add(name, f.GetValue(data));
+                            //}
 
-                            var dict = new Dictionary<string, object>();
-                            foreach(var f in fields)
+                            var dict = fields.Select( 
+                            f =>
                             {
-                                var name = f.Name;
-                                var iop = name.IndexOf('<');
-                                if (iop>=0)//handle anonymous type field name
-                                {
+                              var name = f.Name;
+                              var iop = name.IndexOf('<');
+                              if (iop>=0)//handle anonymous type field name
+                              {
                                     var icl = name.IndexOf('>');
                                     if (icl>iop+1)
                                         name = name.Substring(iop+1, icl-iop-1);
-                                }
-                                dict.Add(name, f.GetValue(data));
-                            }
+                              }
+
+                              return new DictionaryEntry(name, f.GetValue(data));
+                            });//select
+
 
                             writeMap(wri, dict, level, opt);
                         }
 
 
+                             //20150620 DKh
+                             private struct dictEnumberable : IEnumerable<DictionaryEntry>
+                             {
+                               public dictEnumberable(IDictionary dict) { Dictionary = dict;}
+
+                               private readonly IDictionary Dictionary;
+
+                               public IEnumerator<DictionaryEntry> GetEnumerator()
+                               {
+                                 return new dictEnumerator(Dictionary.GetEnumerator());
+                               }
+
+                               IEnumerator IEnumerable.GetEnumerator()
+                               {
+                                 return Dictionary.GetEnumerator();
+                               }
+                             }
+
+                             //20150620 DKh
+                             private struct dictEnumerator : IEnumerator<DictionaryEntry>
+                             {
+
+                               public dictEnumerator(IDictionaryEnumerator enumerator) { Enumerator = enumerator;}
+
+                               private readonly IDictionaryEnumerator Enumerator;
+
+                               public DictionaryEntry Current { get { return (DictionaryEntry)Enumerator.Current; } }
+
+                               public void Dispose() {}
+
+                               object IEnumerator.Current { get { return Enumerator.Current; } }
+
+                               public bool MoveNext() { return Enumerator.MoveNext(); }
+
+                               public void Reset() { Enumerator.Reset();}
+                             }
+
+
                         private static void writeMap(TextWriter wri, IDictionary data, int level, JSONWritingOptions opt)
+                        {
+                           writeMap(wri, new dictEnumberable(data), level, opt);
+                        }
+
+                        private static void writeMap(TextWriter wri, IEnumerable<DictionaryEntry> data, int level, JSONWritingOptions opt)
                         {
                             if (level>0) level++;
 
                             if (opt.ObjectLineBreak)
                             { 
                               wri.WriteLine();
-                              wri.Write(Indent(level, opt));
+                              indent(wri, level, opt);
                             }
                             
                             wri.Write('{');
@@ -375,7 +438,7 @@ namespace NFX.Serialization.JSON
                               if (opt.MemberLineBreak)
                               {
                                 wri.WriteLine();
-                                wri.Write(Indent(level+1, opt));
+                                indent(wri, level+1, opt);
                               }
                               EncodeString(wri, entry.Key.ToString(), opt);
                               wri.Write(opt.SpaceSymbols ? ": " : ":");
@@ -386,7 +449,7 @@ namespace NFX.Serialization.JSON
                             if (!first && opt.MemberLineBreak)
                             {
                               wri.WriteLine();
-                              wri.Write(Indent(level, opt));
+                              indent(wri, level, opt);
                             }
                             
                             wri.Write('}');

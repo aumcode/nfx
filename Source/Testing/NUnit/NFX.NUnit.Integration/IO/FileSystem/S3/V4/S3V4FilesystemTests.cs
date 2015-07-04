@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using System.Threading.Tasks;
 using S3V4FSH = NFX.IO.FileSystem.S3.V4.S3V4FileSystem.S3V4FSH;
 
 using NFX;
@@ -27,14 +27,15 @@ using NFX.Environment;
 using NFX.IO.FileSystem;
 using NFX.IO.FileSystem.S3.V4;
 using NFX.Security;
+using FS = NFX.IO.FileSystem;
+
+using NUnit.Framework;
 
 namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
 {
   [TestFixture]
-  public class S3V4FilesystemTests: ExternalCfg //S3V4TestBase
+  public class S3V4FileSystemTests: ExternalCfg
   {
-    private const string CONFIG_FILES_SYSTEMS_SECTION = "file-systems";
-
     private const string S3_ROOT_FS = "/nfx-root";
     private const string LOCAL_ROOT_FS = @"c:\NFX";
 
@@ -133,12 +134,13 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
       {
         using (var fs = new S3V4FileSystem("S3-1"))
         {
-          var session = fs.StartSession(CONN_PARAMS);
+          using(var session = fs.StartSession(CONN_PARAMS))
+          {
+            var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
-          var dir = session[S3_ROOT_FS] as FileSystemDirectory;
-
-          Assert.AreEqual("/", dir.ParentPath);
-          Assert.AreEqual(S3_ROOT_FS, dir.Path);
+            Assert.AreEqual("/", dir.ParentPath);
+            Assert.AreEqual(S3_ROOT_FS, dir.Path);
+          }
         }  
       }
     }
@@ -148,10 +150,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           var file = dir.CreateFile(FN1_FS, 1500);
@@ -161,7 +163,33 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
           Assert.IsTrue(S3V4.FileExists(file.Path, S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET, S3_REGION, 0));
           Assert.AreEqual(1500, S3V4.GetItemMetadata(file.Path, S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET, S3_REGION, 0)["Content-Length"].AsLong());
           Assert.AreEqual(1500, file.FileStream.Length);
-        }    
+        }
+      }
+    }
+
+    [TestCase]
+    public void CreateFileAsync()
+    {
+      using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
+      {
+        var fs = FS.FileSystem.Instances[NFX_S3];
+
+        using(var session = fs.StartSession())
+        {
+          var task = session.GetItemAsync(S3_ROOT_FS);
+          //task.Start();
+          var dir = task.Result as FileSystemDirectory;
+
+          var task1 = dir.CreateFileAsync(FN1_FS, 1500);
+          //task1.Start();
+          var file = task1.Result;
+
+          Assert.AreEqual(FN1_FS, file.Name);
+
+          Assert.IsTrue(S3V4.FileExists(file.Path, S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET, S3_REGION, 0));
+          Assert.AreEqual(1500, S3V4.GetItemMetadata(file.Path, S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET, S3_REGION, 0)["Content-Length"].AsLong());
+          Assert.AreEqual(1500, file.FileStream.Length);
+        }
       }
     }
 
@@ -170,9 +198,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
+        var fs = FS.FileSystem.Instances[NFX_S3];
+
+        using(var session = fs.StartSession())
         {
-          var session = fs.StartSession();
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
           var file = dir.CreateFile(S3_FN1, 1500);
 
@@ -193,7 +222,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
 
           file2.Delete();
           Assert.IsFalse(fileExists((FileSystemFile)file2));
-        } 
+        }
       }
     }
 
@@ -202,10 +231,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           using (Stream s = new FileStream(FN2_FS_FULLPATH, FileMode.Create, FileAccess.Write))
@@ -233,7 +262,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
             Assert.AreEqual(true, rdr.ReadBoolean());
             Assert.AreEqual(27.4d, rdr.ReadDouble());
           }
-        } 
+        }
       }
     }
 
@@ -242,10 +271,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           using (var file = dir.CreateFile(FN2_FS))
@@ -270,7 +299,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
             Assert.AreEqual(true, rdr.ReadBoolean());
             Assert.AreEqual(27.4d, rdr.ReadDouble());
           }
-        } 
+        }
       }
     }
 
@@ -279,10 +308,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           using (var file = dir.CreateFile(FN4_FS))
@@ -294,7 +323,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
           {
             Assert.AreEqual("This is what it takes!", file.ReadAllText());
           }
-        } 
+        }
       }
     }
 
@@ -303,10 +332,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           using (var file = dir.CreateFile(FN4_FS))
@@ -319,19 +348,65 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
           {
             Assert.AreEqual("this will overwrite", file.ReadAllText());
           }
-        } 
+        }
       }
     }
+
+    [TestCase]
+    public void CreateWriteReadFile_3_Async()
+    {
+      using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
+      {
+        var fs = FS.FileSystem.Instances[NFX_S3];
+
+        using(var session = fs.StartSession())
+        {
+          var dirTask = session.GetItemAsync(S3_ROOT_FS);
+          dirTask.ContinueWith(t => {
+
+            var dir = t.Result as FileSystemDirectory;
+
+            var createFileTask = dir.CreateFileAsync(FN4_FS);
+            createFileTask.ContinueWith(t1 => {
+
+              using (var file = t1.Result)
+              {
+                var writeTask1 = file.WriteAllTextAsync("Hello,");
+                writeTask1.Wait();
+                var writeTask2 = file.WriteAllTextAsync("this will overwrite");
+                writeTask2.ContinueWith(t2 => {
+
+                  var readTask = getFileText(session, fs.CombinePaths(S3_ROOT_FS, FN4_FS));
+
+                  Assert.AreEqual("this will overwrite", readTask.Result);
+
+                });
+              }
+             
+            });
+
+          });
+        }
+      }
+    }
+
+            private async Task<string> getFileText(FileSystemSession session, string path)
+            {
+              using (var file = await session.GetItemAsync(path) as FileSystemFile)
+              {
+                return await file.ReadAllTextAsync();
+              }  
+            }
 
     [TestCase]
     public void CreateDeleteDir()
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           var dir2 = dir[DIR_1] as FileSystemDirectory;
@@ -349,7 +424,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
 
           dir2.Delete();
           Assert.IsFalse(folderExists(dir2));
-        }    
+        }
       }
     }
 
@@ -358,10 +433,10 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession())
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
           Assert.AreEqual(1, session.Items.Count());//checking item registation via .ctor/.dctor                                                           
           var dir2 = dir[DIR_1] as FileSystemDirectory;
@@ -397,18 +472,37 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     }
 
     [TestCase]
+    public void CreateRefreshDeleteDirAsync()
+    {
+      using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
+      {
+        var fs = FS.FileSystem.Instances[NFX_S3];
+
+        using(var session = fs.StartSession())
+        {
+          var dir = session[S3_ROOT_FS] as FileSystemDirectory;
+          dir.CreateDirectoryAsync(DIR_1).ContinueWith(t => {
+            var dir1 = t.Result;
+            dir1.RefreshAsync().Wait();
+            dir1.DeleteAsync().Wait();
+          });
+        }  
+      }
+    }
+
+    [TestCase]
     public void Parallel_CreateWriteReadFile()
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
-        {
-          System.Threading.Tasks.Parallel.For(PARALLEL_FROM, PARALLEL_TO,
-            (i) =>
-            {
-              var fn = FN_PARALLEL_MASK.Args(i);
-              var session = fs.StartSession();
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        System.Threading.Tasks.Parallel.For(PARALLEL_FROM, PARALLEL_TO,
+          (i) =>
+          {
+            var fn = FN_PARALLEL_MASK.Args(i);
+            using(var session = fs.StartSession())
+            {
               var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
               using (var file = dir.CreateFile(fn))
@@ -422,9 +516,52 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
                 file.Delete();
               }
               Assert.IsNull(session[fs.CombinePaths(S3_ROOT_FS, fn)]);
+            }
 
-            });//Parallel.For
-        } 
+          });//Parallel.For
+      }
+    }
+
+    [TestCase]
+    public void Parallel_CreateWriteReadFile_Async()
+    {
+      using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
+      {
+        var fs = FS.FileSystem.Instances[NFX_S3];
+
+        System.Threading.Tasks.Parallel.For(PARALLEL_FROM, PARALLEL_TO,
+          (i) =>
+          {
+            var fn = FN_PARALLEL_MASK.Args(i);
+
+            var session = fs.StartSession();
+
+            Action disposeAction = () => { if (!session.Disposed) { session.Dispose(); } };
+
+            Task.Factory.StartNew(() => session.GetItemAsync(S3_ROOT_FS) )
+              .Then(item => 
+              {
+                
+              });
+
+            //using(var session = fs.StartSession())
+            //{
+            //  var dir = session[S3_ROOT_FS] as FileSystemDirectory;
+
+            //  using (var file = dir.CreateFile(fn))
+            //  {
+            //    file.WriteAllText("Hello, {0}".Args(i));
+            //  }
+
+            //  using (var file = session[fs.CombinePaths(S3_ROOT_FS, fn)] as FileSystemFile)
+            //  {
+            //    Assert.AreEqual("Hello, {0}".Args(i), file.ReadAllText());
+            //    file.Delete();
+            //  }
+            //  Assert.IsNull(session[fs.CombinePaths(S3_ROOT_FS, fn)]);
+            //}
+
+          });//Parallel.For
       }
     }
 
@@ -434,15 +571,15 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
     {
       using(new NFX.ApplicationModel.ServiceBaseApplication(null, LACONF.AsLaconicConfig()))
       {
-        using (var fs = new S3V4FileSystem("S3-1"))
-        {
-          var session = fs.StartSession(CONN_PARAMS_TIMEOUT);
+        var fs = FS.FileSystem.Instances[NFX_S3];
 
+        using(var session = fs.StartSession(CONN_PARAMS_TIMEOUT))
+        {
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           Assert.AreEqual("/", dir.ParentPath);
           Assert.AreEqual(S3_ROOT_FS, dir.Path);
-        }  
+        }
       }
     }
 
@@ -452,14 +589,15 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
       {
         deleteFile(FN2_FS_FULLPATH);
 
-        using (var fs = new S3V4FileSystem(NFX_S3, getFSNode(NFX_S3)))
+        var fs = FS.FileSystem.Instances[NFX_S3];
+
+        using(var session = fs.StartSession())
         {
-          var session = fs.StartSession();
           var dir = session[S3_ROOT_FS] as FileSystemDirectory;
 
           if (dir != null)
             dir.Delete();
-        } 
+        }
       }
     }
 
@@ -502,7 +640,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
 
     private IConfigSectionNode getFSNode(string name)
     {
-      return LACONF.AsLaconicConfig()[CONFIG_FILES_SYSTEMS_SECTION].Children.First(c => c.IsSameNameAttr(name));
+      return LACONF.AsLaconicConfig()[NFX.IO.FileSystem.FileSystem.CONFIG_FILESYSTEMS_SECTION].Children.First(c => c.IsSameNameAttr(name));
     }
   }
 }

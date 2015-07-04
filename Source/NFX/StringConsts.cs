@@ -52,6 +52,8 @@ namespace NFX
         public const string ARGUMENT_ERROR =
             "Argument error: ";
 
+        public const string CANNOT_RETURN_NULL_ERROR = "'next' function cannot return null. ";
+
         public const string HTTP_OPERATION_ERROR = "HTTP[S] error: ";
 
         public const string FILE_NOT_FOUND_ERROR = "File not found: ";
@@ -495,17 +497,13 @@ namespace NFX
         "Stream EOF before operation could complete: ";
 
 
-    public const string SLIM_READ_BYTE_BUF_MAX_SIZE_ERROR =
-        "Slim reader could not read requested buffer of {0} bytes as it exceeds the maximum limit of {1} bytes'";
+    public const string SLIM_READ_X_ARRAY_MAX_SIZE_ERROR =
+        "Slim reader could not read requested array of {0} {1} as it exceeds the maximum limit of {2} bytes'";
 
-    public const string SLIM_WRITE_BYTE_BUF_MAX_SIZE_ERROR =
-        "Slim writer could not write requested buffer of {0} bytes as it exceeds the maximum limit of {1} bytes'";
+    public const string SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR =
+        "Slim writer could not write requested array of {0} {1} as it exceeds the maximum limit of {2} bytes'";
 
-    public const string SLIM_READ_STRING_ARRAY_MAX_SIZE_ERROR =
-        "Slim reader could not read requested array of {0} strings as it exceeds the maximum limit of {1} strings'";
 
-    public const string SLIM_WRITE_STRING_ARRAY_MAX_SIZE_ERROR =
-        "Slim writer could not write requested array of {0} strings as it exceeds the maximum limit of {1} strings'";
 
     public const string SLIM_SERIALIZATION_EXCEPTION_ERROR =
         "Exception in SlimSerializer.Serialize():  ";
@@ -910,6 +908,8 @@ namespace NFX
     public const string LOCAL_INSTALL_INSTALL_SET_PACKAGE_WITHOUT_MANIFEST_ERROR = 
       "Local installation can not install a package '{0}' from the install set. The package does not contain a manifest file '{1}' in its root";
 
+
+    public const string FS_DUPLICATE_NAME_ERROR = "Can not have file system instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
     public const string FS_SESSION_BAD_PARAMS_ERROR = 
       "Can not create an instance of file system session '{0}'. Make sure that suitable derivative of FileSystemSessionConnectParams is passed for the particular file system";

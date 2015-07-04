@@ -21,15 +21,53 @@ using System.Text;
 
 namespace NFX.IO
 {
+    
     /// <summary>
-    /// Represents tuple of an unsigned integer with optional string metadata. If metadata is null then integer is stored by itself in an efficient way.
+    /// Holds either an integer or a string value.
+    /// This is useful for metadata, i.e. types, if type is known an integer is sent, otherwise a full type name is sent
+    /// </summary>
+    [Serializable]
+    public struct VarIntStr : IEquatable<VarIntStr>
+    {
+      public VarIntStr(uint value)   { IntValue = value; StringValue = null;  }
+      public VarIntStr(string value) { IntValue = 0;     StringValue = value; }
+      
+      public readonly uint   IntValue;
+      public readonly string StringValue;
+
+      public override string ToString()
+      {
+        return StringValue ?? IntValue.ToString();
+      }
+
+      public override bool Equals(object obj)
+      {
+        return base.Equals((VarIntStr)obj);
+      }
+
+      public bool Equals(VarIntStr other)
+      {
+        return this.IntValue==other.IntValue && this.StringValue==other.StringValue;
+      }
+
+      public override int GetHashCode()
+      {
+        return IntValue.GetHashCode() + (StringValue!=null ? StringValue.GetHashCode() : 0);
+      }
+    }
+    
+    
+    
+    
+    /// <summary>
+    /// Represents tuple of an unsigned integer with optional int or string metadata. If metadata is null then integer is stored by itself in an efficient way.
     /// The type is useful for storage of handles/indexes (such as pointer surrogates) with optional description of pointed-to data (such as type information).
     /// A special case is reserved for strings which are immutable yet reference types, in which case a special handle INLINED_STRING_HANDLE is set to indicate that 
     ///  "Metadata" really contains string data that this handle should resolve into. Check "IsInlinedString" property to see if string was inlined.
     /// Check "IsInlinedValueType" is set to true when a struct/valuetype is inlined and "Metadata" contains type spec 
     /// </summary>
     [Serializable]
-    public struct MetaHandle     
+    public struct MetaHandle : IEquatable<MetaHandle>     
     {                               
       internal const uint INLINED_STRING_HANDLE = 0;
       internal const uint INLINED_VALUETYPE_HANDLE = 1;
@@ -39,7 +77,7 @@ namespace NFX.IO
 
       
       internal uint m_Handle;     
-      private string m_Metadata;   
+      private VarIntStr? m_Metadata;   
 
 
       /// <summary>
@@ -69,7 +107,9 @@ namespace NFX.IO
       public bool IsInlinedTypeValue { get { return m_Handle == INLINED_TYPEVAL_HANDLE;}}
 
       
-      public string Metadata { get { return m_Metadata;}}
+      public VarIntStr? Metadata   { get{ return m_Metadata;} }
+      public uint   IntMetadata    { get{ return m_Metadata.HasValue ? m_Metadata.Value.IntValue : 0;}}
+      public string StringMetadata { get{ return m_Metadata.HasValue ? m_Metadata.Value.StringValue : null;}}
 
 
       
@@ -79,19 +119,19 @@ namespace NFX.IO
         m_Metadata = null;
       }
 
-       public MetaHandle(bool serializer, uint handle)
+      public MetaHandle(bool serializer, uint handle)
       {
         m_Handle = handle + (serializer ? 0 : HANDLE_OFFSET);
         m_Metadata = null;
       }
 
-      public MetaHandle(uint handle, string metadata)
+      public MetaHandle(uint handle, VarIntStr? metadata)
       {
         m_Handle = handle + HANDLE_OFFSET;
         m_Metadata = metadata;
       }
 
-      internal MetaHandle(bool serializer, uint handle, string metadata)
+      internal MetaHandle(bool serializer, uint handle, VarIntStr? metadata)
       {
         m_Handle = handle + (serializer ? 0 : HANDLE_OFFSET);
         m_Metadata = metadata;
@@ -104,7 +144,7 @@ namespace NFX.IO
       {
          var result = new MetaHandle();
          result.m_Handle = INLINED_STRING_HANDLE;
-         result.m_Metadata = inlinedString;
+         result.m_Metadata = new VarIntStr( inlinedString );
          return result;
       }
 
@@ -112,7 +152,7 @@ namespace NFX.IO
       /// <summary>
       /// Inlines value type instead of pointer handle
       /// </summary>
-      public static MetaHandle InlineValueType(string inlinedValueType)
+      public static MetaHandle InlineValueType(VarIntStr? inlinedValueType)
       {
          var result = new MetaHandle();
          result.m_Handle = INLINED_VALUETYPE_HANDLE;
@@ -123,7 +163,7 @@ namespace NFX.IO
       /// <summary>
       /// Inlines ref type instead of pointer handle
       /// </summary>
-      public static MetaHandle InlineRefType(string inlinedRefType)
+      public static MetaHandle InlineRefType(VarIntStr? inlinedRefType)
       {
          var result = new MetaHandle();
          result.m_Handle = INLINED_REFTYPE_HANDLE;
@@ -134,7 +174,7 @@ namespace NFX.IO
       /// <summary>
       /// Inlines type value instead of pointer handle
       /// </summary>
-      public static MetaHandle InlineTypeValue(string inlinedTypeValue)
+      public static MetaHandle InlineTypeValue(VarIntStr? inlinedTypeValue)
       {
          var result = new MetaHandle();
          result.m_Handle = INLINED_TYPEVAL_HANDLE;
@@ -146,7 +186,7 @@ namespace NFX.IO
       {
           return string.Format("[{0}] {1}",
                IsInlinedString ? "string" : IsInlinedValueType ? "struct" : IsInlinedRefType ? "refobj" : Handle.ToString(),
-               Metadata ?? StringConsts.NULL_STRING);
+               Metadata);
       }
 
       public override int GetHashCode()
@@ -158,7 +198,16 @@ namespace NFX.IO
       {
           if (obj==null) return false;
           var other = (MetaHandle)obj;
-          return m_Handle==other.m_Handle && ((m_Metadata==null && other.m_Metadata==null) || (m_Metadata == other.m_Metadata));
+          return this.Equals(other);
+      }
+
+      public bool Equals(MetaHandle other)
+      {
+         var h1 = m_Metadata.HasValue;
+         var h2 = other.m_Metadata.HasValue;
+
+         return m_Handle==other.m_Handle && 
+               ((!h1 && !h2) || (h1 && h2 && m_Metadata.Value.Equals(other.m_Metadata.Value)));
       }
     }
 }

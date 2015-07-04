@@ -52,7 +52,7 @@ namespace NFX.IO.FileSystem.SVN
 
     #region .ctor
 
-      public SVNFileSystem(string name) : base(name) 
+      public SVNFileSystem(string name, IConfigSectionNode node = null) : base(name, node) 
       {
         NFX.Web.WebSettings.RequireInitializedSettings();
       }

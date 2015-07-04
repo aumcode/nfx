@@ -61,6 +61,12 @@ namespace NFX.IO
         
 
           public abstract void Write(byte[] buffer);
+
+          public abstract void Write(int[] value);
+
+          public abstract void Write(long[] value);
+
+          public abstract void Write(double[] value);
           
   
           public abstract void Write(char ch);
@@ -190,6 +196,12 @@ namespace NFX.IO
            public abstract void Write(NFX.ApplicationModel.Pile.PilePointer value);
 
               public abstract void Write(NFX.ApplicationModel.Pile.PilePointer? value);
+
+
+
+           public abstract void Write(VarIntStr value);
+
+              public abstract void Write(VarIntStr? value);
 
         #endregion
 

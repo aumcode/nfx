@@ -24,7 +24,21 @@ using System.IO;
 namespace NFX.Serialization
 {
    
-   
+    /// <summary>
+    /// Denotes ser/deser operations
+    /// </summary>
+    public enum SerializationOperation
+    {
+      /// <summary>
+      /// Serializing object to stream
+      /// </summary>
+      Serializing,
+
+      /// <summary>
+      /// Deserializing object from stream
+      /// </summary>
+      Deserializing
+    };
    
    
     /// <summary>

@@ -233,7 +233,7 @@ namespace NFX.NUnit.Serialization
                      obj. fStringArray = new string[3] {"slava","kpss","ura!"};
 
 
-                     obj. fMetaHandle = new MetaHandle(12, "my test handle");
+                     obj. fMetaHandle = new MetaHandle(12, new VarIntStr("my test handle"));
 
                      return obj;
               }

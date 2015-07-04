@@ -26,7 +26,8 @@ namespace NFX
     /// <summary>
     /// Denotes an entity that has a Name property. 
     /// This interface is primarily used with Registry[INamed] class that allows for 
-    ///  string-based addressing (getting instances by object instance name)
+    ///  string-based addressing (getting instances by object instance name).
+    /// The names are ideal for many system functions, like naming components in configs and admin tools 
     /// </summary>
     public interface INamed
     {
@@ -34,7 +35,7 @@ namespace NFX
     }
 
     /// <summary>
-    /// Denotes an entity that has an Order property
+    /// Denotes an entity that has a relative Order property within a collection of entities
     /// </summary>
     public interface IOrdered
     {
@@ -115,7 +116,9 @@ namespace NFX
 
     /// <summary>
     /// Represents a thread-safe registry of T. This class is efficient for concurrent read access and is not designed for cases when frequent modifications happen.
-    /// It is ideal for lookup of named instances that have much longer time span than components that look them up
+    /// It is ideal for lookup of named instances (such as components) that have much longer time span than components that look them up.
+    /// Registry performs lock-free lookup which speeds-up many concurrent operations that need to map names into objects.
+    /// The enumeration over registry makes a snapshot of its data, hence a registry may be modified by other threads while being enumerated.
     /// </summary>
     [Serializable]
     public class Registry<T> : IRegistry<T> where T : INamed
@@ -255,20 +258,47 @@ namespace NFX
              m_Data = new RegistryDictionary<T>(); //atomic
           }
 
+
           /// <summary>
           /// Tries to find an item by name, and returns it if it is found, otherwise calls a factory function supplying context value and registers the obtained
-          ///  new item. The operation is performed atomically under lock
+          ///  new item. The first lookup is performed in a lock-free way and if an item is found then it is immediately returned.
+          ///  The second check and factory call operation is performed atomically under the lock to ensure consistency
           /// </summary>
           public T GetOrRegister<TContext>(string name, Func<TContext, T> regFactory, TContext context)
           {
+            bool wasAdded;
+            return this.GetOrRegister<TContext>(name, regFactory, context, out wasAdded);
+          }
+
+
+          /// <summary>
+          /// Tries to find an item by name, and returns it if it is found, otherwise calls a factory function supplying context value and registers the obtained
+          ///  new item. The first lookup is performed in a lock-free way and if an item is found then it is immediately returned.
+          ///  The second check and factory call operation is performed atomically under the lock to ensure consistency
+          /// </summary>
+          public T GetOrRegister<TContext>(string name, Func<TContext, T> regFactory, TContext context, out bool wasAdded)
+          {
+            //1st check - lock-free lookup attempt
+            var data = m_Data;
+            T result;
+            if (data.TryGetValue(name, out result))
+            {
+               wasAdded = false;
+               return result;
+            }
+
             lock(m_Sync)
             {
-                var data = m_Data;
-                T result;
-                if (data.TryGetValue(name, out result)) return result;
-
+                //2nd check under lock
+                data = m_Data;//must re-read the reference
+                if (data.TryGetValue(name, out result))
+                {
+                  wasAdded = false;
+                  return result;
+                }
                 result = regFactory( context );
                 Register( result );
+                wasAdded = true;
                 return result;
             }
           }
@@ -336,7 +366,9 @@ namespace NFX
     /// <summary>
     /// Represents a thread-safe registry of T which is ordered by Order property.
     /// This class is efficient for concurrent read access and is not designed for cases when frequent modifications happen.
-    /// It is ideal for lookup of named instances that have much longer time span than components that look them up
+    /// It is ideal for lookup of named instances that have much longer time span than components that look them up.
+    /// Note: since registry does reading in a lock-free manner, it is possible to have an inconsistent read snapshot
+    ///  of ordered items which may capture items that have already/not yet been added to the registry
     /// </summary>
     [Serializable]
     public class OrderedRegistry<T> : Registry<T> where T : INamed, IOrdered
@@ -350,7 +382,9 @@ namespace NFX
 
           /// <summary>
           /// Returns items that registry contains ordered by their Order property.
-          /// The returned sequence is pre-sorted during alteration of registry, so this property access is efficient
+          /// The returned sequence is pre-sorted during alteration of registry, so this property access is efficient.
+          /// Note: since registry does reading in a lock-free manner, it is possible to have an inconsistent read snapshot
+          ///  of ordered items which may capture items that have already/not yet been added to the registry
           /// </summary>
           public IEnumerable<T> OrderedValues
           {
@@ -359,7 +393,9 @@ namespace NFX
 
           /// <summary>
           /// Tries to return an item by its position index in ordered set of items that this registry keeps.
-          /// Null is returned when index is out of bounds
+          /// Null is returned when index is out of bounds.
+          /// Note: since registry does reading in a lock-free manner, it is possible to have an inconsistent read snapshot
+          ///  of ordered items which may capture items that have already/not yet been added to the registry
           /// </summary>
           public T this[int index]
           {

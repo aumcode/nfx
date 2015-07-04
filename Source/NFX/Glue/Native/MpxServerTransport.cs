@@ -155,10 +155,7 @@ namespace NFX.Glue.Native
           var sites = m_ClientSites;
           if (sites==null) return;
 
-          var existing = sites[socket.ClientSite.Name];//1st check lock-free
-
-          if (existing==null)
-            existing = m_ClientSites.GetOrRegister(socket.ClientSite.Name,  (_) => new clientSiteState(this, socket.ClientSite), true);
+          var existing = sites.GetOrRegister(socket.ClientSite.Name,  (_) => new clientSiteState(this, socket.ClientSite), true);
 
           existing.AddSocket(socket);
         }

@@ -267,5 +267,35 @@ namespace NFX.NUnit.Collections
     }
 
 
+    [TestCase]
+    public void OrderedRegistry_GetOrRegister()
+    {
+       var reg = new OrderedRegistry<OrderedClazz>();
+       
+       bool wasAdded;
+       var obj1 = reg.GetOrRegister<object>("Apple", (_) => new OrderedClazz("Apple",  8,  1), null, out wasAdded);
+       Assert.AreEqual( 8, obj1.Order );
+       Assert.IsTrue( wasAdded );
+
+       var obj2 = reg.GetOrRegister<object>("Yabloko", (_) => new OrderedClazz("Yabloko",  3,  2), null, out wasAdded);
+       Assert.AreEqual( 3, obj2.Order );
+       Assert.IsTrue( wasAdded );
+
+       Assert.IsFalse( object.ReferenceEquals( obj1, obj2 ) );
+
+       var obj3 = reg.GetOrRegister<object>("Apple", (_) => new OrderedClazz("Apple",  123,  111), null, out wasAdded);
+       Assert.AreEqual( 8, obj3.Order );
+       Assert.IsFalse( wasAdded );
+
+       Assert.IsTrue( object.ReferenceEquals( obj1, obj3 ) );
+
+
+       var ordered = reg.OrderedValues.ToArray();
+       Assert.AreEqual(2, ordered.Length);
+       Assert.AreEqual("Yabloko", ordered[0].Name);
+       Assert.AreEqual("Apple", ordered[1].Name);
+    }
+
+
   }
 }

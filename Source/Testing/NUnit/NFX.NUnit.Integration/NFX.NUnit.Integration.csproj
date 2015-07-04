@@ -70,7 +70,7 @@
     <Compile Include="Glue\JokeContracts.cs" />
     <Compile Include="Glue\JokeHelper.cs" />
     <Compile Include="Glue\JokeTestBase.cs" />
-    <Compile Include="IO\FileSystem\S3\V4\S3V4FilesystemTests.cs" />
+    <Compile Include="IO\FileSystem\S3\V4\S3V4FileSystemTests.cs" />
     <Compile Include="IO\FileSystem\S3\V4\S3V4Tests.cs" />
     <Compile Include="IO\FileSystem\SVN\SVNFileSystemTest.cs" />
     <Compile Include="IO\FileSystem\SVN\WebDAVTest.cs" />

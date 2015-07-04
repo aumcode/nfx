@@ -1632,6 +1632,44 @@ namespace NFX.NUnit.Serialization
           }
         }
 
+
+
+        [TestCase(10, 512000)]
+        [TestCase(10, 1512000)]
+        public void VeryLargeStrings(int cnt, int sz)
+        {
+           var data = new List<string>();
+
+           for(var i=0; i<cnt; i++)
+           {
+             var sb = new StringBuilder(sz);
+             while(sb.Length<sz)
+              sb.Append( NFX.Parsing.NaturalTextGenerator.Generate(50));
+
+             data.Add( sb.ToString());
+           }
+
+           using(var ms = new MemoryStream())
+           {  
+             var s = new SlimSerializer();
+
+             s.Serialize(ms, data);
+
+             Console.WriteLine("Serialized bytes: "+ ms.Position);
+             Console.WriteLine("Serialized strings: "+ data.Count);
+
+             ms.Position = 0;
+
+             var got = s.Deserialize(ms) as List<string>;
+
+             Console.WriteLine("DeSerialized bytes: "+ ms.Position);
+             Console.WriteLine("DeSerialized strings: "+ got.Count);
+
+             Assert.IsTrue( data.SequenceEqual(got) );
+           }
+        }
+
+
                      private class binwrap
                      {
                        public byte[] bin;

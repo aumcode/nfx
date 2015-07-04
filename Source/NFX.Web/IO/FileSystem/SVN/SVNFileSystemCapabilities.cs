@@ -106,6 +106,8 @@ namespace NFX.IO.FileSystem.SVN
 
       public bool SupportsDirectorySizes { get { return false; } }
 
+      public bool SupportsAsyncronousAPI { get { return false; } }
+
     #endregion
     
   } //SVNFileSystemCapabilities

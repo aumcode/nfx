@@ -77,6 +77,12 @@ namespace NFX.IO
         
 
           public abstract byte[] ReadByteArray();
+
+          public abstract int[] ReadIntArray();
+
+          public abstract long[] ReadLongArray();
+
+          public abstract double[] ReadDoubleArray();
           
   
           public abstract char ReadChar();
@@ -208,6 +214,12 @@ namespace NFX.IO
           
 
               public abstract NFX.ApplicationModel.Pile.PilePointer? ReadNullablePilePointer();
+
+
+             public abstract VarIntStr ReadVarIntStr();
+          
+
+              public abstract VarIntStr? ReadNullableVarIntStr();
 
 
         #endregion

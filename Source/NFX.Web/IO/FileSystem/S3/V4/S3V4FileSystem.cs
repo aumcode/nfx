@@ -125,10 +125,9 @@ namespace NFX.IO.FileSystem.S3.V4
 
     #region .ctor
 
-      public S3V4FileSystem(string name, IConfigSectionNode node = null) : base(name) 
+      public S3V4FileSystem(string name, IConfigSectionNode node = null) : base(name, node) 
       {
         NFX.Web.WebSettings.RequireInitializedSettings();
-        Configure(node);
       }
 
     #endregion

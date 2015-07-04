@@ -117,11 +117,66 @@ namespace NFX.IO
             this.Write(true);
             var len = buffer.Length;
             if (len>SlimFormat.MAX_BYTE_ARRAY_LEN)
-              throw new NFXIOException(StringConsts.SLIM_WRITE_BYTE_BUF_MAX_SIZE_ERROR.Args(len, SlimFormat.MAX_BYTE_ARRAY_LEN));
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "bytes", SlimFormat.MAX_BYTE_ARRAY_LEN));
 
             this.Write(len);
             m_Stream.Write(buffer, 0, len);
           }
+
+
+          public override void Write(int[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_INT_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "ints", SlimFormat.MAX_INT_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]); //WITH compression
+          }
+
+
+          public override void Write(long[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_LONG_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "longs", SlimFormat.MAX_LONG_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]); //WITH compression
+          }
+
+
+          public override void Write(double[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_DOUBLE_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "doubles", SlimFormat.MAX_DOUBLE_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]); 
+          }
+
   
           public override void Write(char ch)
           {
@@ -163,7 +218,7 @@ namespace NFX.IO
             this.Write(true);
             var len = array.Length;
             if (len>SlimFormat.MAX_STRING_ARRAY_CNT)
-              throw new NFXIOException(StringConsts.SLIM_WRITE_STRING_ARRAY_MAX_SIZE_ERROR.Args(len, SlimFormat.MAX_STRING_ARRAY_CNT));
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "strings", SlimFormat.MAX_STRING_ARRAY_CNT));
 
             this.Write(len);
             for(int i=0; i<len; i++)
@@ -372,15 +427,48 @@ namespace NFX.IO
                 this.Write(false);
               }
         
+          private const int STR_BUF_SZ = 32 * 1024;
+
+          private const int MAX_STR_LEN = STR_BUF_SZ / 2; //2 bytes per UTF16 character
+                                                          //this is done on purpose NOT to call
+                                                          //Encoding.GetByteCount()
+          [ThreadStatic]
+          private static byte[] s_StrBuff;
+
           public override void Write(string value)
           {
+            //20150626 DKh
+            //if (value==null)
+            //{
+            //  this.Write(false);
+            //  return;
+            //}
+            //var buf = m_Encoding.GetBytes(value);
+            //this.Write(buf);
+            
             if (value==null)
             {
               this.Write(false);
               return;
             }
-            var buf = m_Encoding.GetBytes(value);
-            this.Write(buf);
+              
+            this.Write(true);  
+                      
+            var len = value.Length;
+            if (len>MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
+            {
+              var buf = m_Encoding.GetBytes(value);
+              this.Write(buf.Length);
+              m_Stream.Write(buf, 0, buf.Length);
+              return;
+            }
+          
+            //try to reuse pre-allocated buffer
+            if (s_StrBuff==null) s_StrBuff = new byte[STR_BUF_SZ];
+            var bcnt = m_Encoding.GetBytes(value, 0, len, s_StrBuff, 0);
+
+            this.Write(bcnt);
+            m_Stream.Write(s_StrBuff, 0, bcnt);
           }
          
           public override void Write(uint value)
@@ -462,7 +550,7 @@ namespace NFX.IO
 
           public override void Write(MetaHandle value)
           {
-            var meta = !string.IsNullOrEmpty(value.Metadata);
+            var meta = value.Metadata.HasValue;
            
             var handle = value.m_Handle; 
 
@@ -487,7 +575,13 @@ namespace NFX.IO
             }
 
             if (meta)
-             this.Write(value.Metadata);
+            {
+              var vis = value.Metadata.Value;
+              this.Write( vis.StringValue );
+              
+              if (vis.StringValue==null)
+                this.Write( vis.IntValue );
+            }
           }
 
             
@@ -518,7 +612,11 @@ namespace NFX.IO
 
           public override void Write(DateTime value)
           {
-            this.Write(value.ToBinary());
+            //Prior to 20150626 DKh
+            //this.Write(value.ToBinary());
+
+            m_Stream.WriteBEUInt64( (ulong)value.Ticks );
+            m_Stream.WriteByte( (byte)value.Kind );
           }
 
               public override void Write(DateTime? value)
@@ -632,6 +730,24 @@ namespace NFX.IO
                 this.Write(false);
               }
          
+          public override void Write(VarIntStr value)
+          {
+            this.Write(value.StringValue);
+            if (value.StringValue==null)
+              this.Write(value.IntValue);
+          }
+
+              public override void Write(VarIntStr? value)
+              {
+                if (value.HasValue)
+                {
+                  this.Write(true);
+                  Write(value.Value);
+                  return;
+                }
+                this.Write(false);
+              }
+
 
         #endregion
 

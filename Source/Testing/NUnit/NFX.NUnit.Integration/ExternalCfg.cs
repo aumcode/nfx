@@ -38,6 +38,12 @@ namespace NFX.NUnit.Integration
   {
     starter
     {
+      name='File Systems'
+      type='NFX.IO.FileSystem.FileSystemStarter, NFX'
+    }
+
+    starter
+    {
       name='Payment Processing 1'
       type='NFX.Web.Pay.PaySystemStarter, NFX.Web'
       application-start-break-on-exception=true
@@ -62,8 +68,7 @@ namespace NFX.NUnit.Integration
 
     file-system 
     { 
-      name='NFX-SVN'
-      type='NFX.IO.FileSystem.SVN.SVNFileSystem, NFX.Web'
+      name='NFX-SVN' type='NFX.IO.FileSystem.SVN.SVNFileSystem, NFX.Web' auto-start=true
 
       default-session-connect-params
       {
@@ -75,8 +80,7 @@ namespace NFX.NUnit.Integration
 
     file-system 
     { 
-      name='[S3_FS_NAME]'
-      type='NFX.IO.FileSystem.S3.V4.S3V4FileSystem, NFX.Web'
+      name='[S3_FS_NAME]' type='NFX.IO.FileSystem.S3.V4.S3V4FileSystem, NFX.Web' auto-start=true
 
       default-session-connect-params
       {

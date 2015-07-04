@@ -172,6 +172,11 @@ namespace NFX.IO.FileSystem.S3.V4
       public bool SupportsDirectorySizes
       {
         get { return false; }
+      }
+      
+      public bool SupportsAsyncronousAPI 
+      { 
+        get { return false; } 
       } 
 
     #endregion
