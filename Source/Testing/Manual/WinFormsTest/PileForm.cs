@@ -131,6 +131,7 @@ namespace WinFormsTest
     private void PileForm_Load(object sender, EventArgs e)
     {
       m_Pile = new DefaultPile();
+      m_Pile.Configure(null);
       chkSpeed_CheckedChanged(null, null);
     }
 

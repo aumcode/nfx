@@ -116,6 +116,13 @@ namespace NFX.Instrumentation
 
 
             /// <summary>
+            /// Locking/coordination-related operations
+            /// </summary>
+            [InstrumentViewGroup]
+            public interface ILockingInstrument : IOperationClass { }
+
+
+            /// <summary>
             /// Web-related operations
             /// </summary>
             [InstrumentViewGroup]

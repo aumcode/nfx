@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace NFX.IO.FileSystem
@@ -77,6 +79,11 @@ namespace NFX.IO.FileSystem
             DoFlush();
           }
 
+                  public sealed override Task FlushAsync(CancellationToken ct)
+                  {
+                    return Item.FileSystem.DoFlushAsync(this, ct);
+                  }
+
           public sealed override long Length
           {
             get { return DoGetLength(); }
@@ -102,6 +109,11 @@ namespace NFX.IO.FileSystem
             return DoRead(buffer, offset, count);
           }
 
+                  public override sealed Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+                  {
+                    return Item.FileSystem.DoReadAsync(this, buffer, offset, count, cancellationToken);
+                  }
+
           public sealed override long Seek(long offset, SeekOrigin origin)
           {
             var willChange = false;
@@ -124,6 +136,7 @@ namespace NFX.IO.FileSystem
             return DoSeek(offset, origin);
           }
 
+
           public sealed override void SetLength(long value)
           {
             if (DoGetLength()==value) return;
@@ -139,6 +152,12 @@ namespace NFX.IO.FileSystem
             Item.m_Modified = true;
             DoWrite(buffer, offset, count);
           }
+
+                  public sealed override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+                  {
+                    return Item.FileSystem.DoWriteAsync(this, buffer, offset, count, cancellationToken);
+                  }
+
        #endregion
 
        #region Protected

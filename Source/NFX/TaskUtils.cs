@@ -21,31 +21,17 @@
  * Revision: NFX 1.0  2011.01.31
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Text;
-using System.Net;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Data.Common;
-using System.Text.RegularExpressions;
-using System.Linq.Expressions;
-using System.Net.Sockets;
 using System.Threading.Tasks;
-
-using NFX.Environment;
 
 namespace NFX
 {
   public static class TaskUtils
   {
     /// <summary>
-    /// Chains task 'first' with 'next'.
+    /// Chains task 'first' with 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes when 'next' completes
     /// </summary>
-    public static Task Then(this Task first, Action next, TaskContinuationOptions options = TaskContinuationOptions.ExecuteSynchronously)
+    public static Task OnOk(this Task first, Action next, TaskContinuationOptions options = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<object>();
 
@@ -77,10 +63,10 @@ namespace NFX
     }
 
     /// <summary>
-    /// Chains task 'first' with 'next' passing result of 'first' to 'next'.
+    /// Chains task 'first' with 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes when 'next' completes
     /// </summary>
-    public static Task Then<T1>(this Task<T1> first, Action<T1> next, TaskContinuationOptions options = TaskContinuationOptions.ExecuteSynchronously)
+    public static Task OnOk<T1>(this Task<T1> first, Action<T1> next, TaskContinuationOptions options = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<object>();
 
@@ -112,10 +98,10 @@ namespace NFX
     }
 
     /// <summary>
-    /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next'.
+    /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes
     /// </summary>
-    public static Task Then<T1>(this Task<T1> first, Func<T1, Task> next, 
+    public static Task OnOk<T1>(this Task<T1> first, Func<T1, Task> next, 
                                 TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
                                 TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
@@ -158,10 +144,10 @@ namespace NFX
     }
 
     /// <summary>
-    /// Chains task 'first' with task returned by 'next'.
+    /// Chains task 'first' with task returned by 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes with result from 'next' task
     /// </summary>
-    public static Task<T1> Then<T1>(this Task first, Func<Task<T1>> next, 
+    public static Task<T1> OnOk<T1>(this Task first, Func<Task<T1>> next, 
                                 TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
                                 TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
@@ -204,10 +190,10 @@ namespace NFX
     }
 
     /// <summary>
-    /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next'.
+    /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes with result from 'next' task
     /// </summary>
-    public static Task<T2> Then<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next, 
+    public static Task<T2> OnOk<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next, 
                                         TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
                                         TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
@@ -249,36 +235,101 @@ namespace NFX
       return tcs.Task;
     }
 
-    ///// <summary>
-    ///// Shortcut for <see cref="P:OnFailed(Task, Action)"/>
-    ///// with firstOptions and nextOptions set to <see cref="P:TaskContinuationOptions.ExecuteSynchronously" /> | <see cref="TaskContinuationOptions.OnlyOnRanToCompletion" />
-    ///// </summary>
-    //public static Task<T2> OnSuccess<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next)
-    //{
-    //  return first.Then(next, 
-    //                    TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion, 
-    //                    TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion);
-    //}
-
     /// <summary>
-    /// Registers action executed if task was faulted or cancelled.
-    /// Returns original task to allow chaining in 'RanToCompletion' case
+    /// Registers action executed if task was faulted or cancelled
     /// </summary>
-    public static Task OnFailed(this Task task, Action handler)
+    public static Task OnError(this Task task, Action handler)
     {
-      task.ContinueWith(t => handler(), TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.NotOnRanToCompletion);
-      return task;
+      var tcs = new TaskCompletionSource<object>();
+
+      task.ContinueWith(_ => {
+        
+        if (task.IsFaulted || task.IsCanceled)
+        {
+          try
+          {
+            handler();
+          }
+          catch (Exception ex)
+          {
+            tcs.TrySetException(ex);
+            return;
+          }		 
+        }
+
+        if (task.IsFaulted)
+          tcs.TrySetException(task.Exception.InnerExceptions);
+        else if (task.IsCanceled)
+          tcs.TrySetCanceled();
+        else
+          tcs.TrySetResult(null);
+
+      }, TaskContinuationOptions.ExecuteSynchronously);
+
+      return tcs.Task;
     }
 
-    ///// <summary>
-    ///// Registers action executed if task was faulted or cancelled.
-    ///// Returns original task to allow chaining in 'RanToCompletion' case
-    ///// </summary>
-    //public static Task<T> OnFailed<T>(this Task<T> task, Action handler)
-    //{
-    //  task.ContinueWith(t => handler(), TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.NotOnRanToCompletion);
-    //  return task;
-    //}
+    /// <summary>
+    /// Registers action executed disregarding task state
+    /// </summary>
+    public static Task OnOkOrError(this Task task,  Action<Task> handler)
+    {
+      var tcs = new TaskCompletionSource<object>();
+
+      task.ContinueWith(_ => {
+
+        try
+        {
+          handler(task);
+        }
+        catch (Exception ex)
+        {
+          tcs.TrySetException(ex);
+          return;
+        }		 
+
+        if (task.IsFaulted)
+          tcs.TrySetException(task.Exception.InnerExceptions);
+        else if (task.IsCanceled)
+          tcs.TrySetCanceled();
+        else
+          tcs.TrySetResult(null);
+
+      }, TaskContinuationOptions.ExecuteSynchronously);
+
+      return tcs.Task;
+    }
+
+    /// <summary>
+    /// Registers action executed disregarding task state
+    /// </summary>
+    public static Task<T> OnOkOrError<T>(this Task<T> task, Action<Task> handler)
+    {
+      var tcs = new TaskCompletionSource<T>();
+
+      task.ContinueWith(_ => {
+
+        try
+        {
+          handler(task);
+        }
+        catch (Exception ex)
+        {
+          tcs.TrySetException(ex);
+          return;
+        }		 
+
+        if (task.IsFaulted)
+          tcs.TrySetException(task.Exception.InnerExceptions);
+        else if (task.IsCanceled)
+          tcs.TrySetCanceled();
+        else
+          tcs.TrySetResult(task.Result);
+
+      }, TaskContinuationOptions.ExecuteSynchronously);
+
+      return tcs.Task;
+    }
 
     /// <summary>
     /// Non-generic version of <see cref="AsCompletedTask{T}(Func{T})"/>

@@ -529,6 +529,8 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
       {
         var fs = FS.FileSystem.Instances[NFX_S3];
 
+        var tasks = new List<Task>();
+
         System.Threading.Tasks.Parallel.For(PARALLEL_FROM, PARALLEL_TO,
           (i) =>
           {
@@ -536,32 +538,59 @@ namespace NFX.NUnit.Integration.IO.FileSystem.S3.V4
 
             var session = fs.StartSession();
 
-            Action disposeAction = () => { if (!session.Disposed) { session.Dispose(); } };
+            FileSystemDirectory dir = null;
+            FileSystemFile file = null;
 
-            Task.Factory.StartNew(() => session.GetItemAsync(S3_ROOT_FS) )
-              .Then(item => 
-              {
-                
-              });
+            var t = session.GetItemAsync(S3_ROOT_FS)
+            .OnOk(item => 
+            {
+              dir = item as FileSystemDirectory;
+              return dir.CreateFileAsync(fn);
+                 
+            }).OnOk(f => {
+              Console.WriteLine("file '{0}' created", f.Name);
+              file = f;
+              return file.WriteAllTextAsync("Hello, {0}".Args(i));
+            })
+            .OnOkOrError(_ => {
+              Console.WriteLine("text written into '{0}'", file.Name);
+              if (file != null && !file.Disposed) {
+                  file.Dispose(); 
+                  Console.WriteLine("file '{0}' disposed", file.Name);
+              } 
+            })
+            .OnOk(() => session.GetItemAsync(fs.CombinePaths(S3_ROOT_FS, fn)) )
+            .OnOk(item => {
+              file = item as FileSystemFile;
+              Console.WriteLine("file {0} got", file.Name);
+              return file.ReadAllTextAsync();
+            })
+            .OnOk(txt => {
+              Console.WriteLine("file '{0}' red {1}", file.Name, txt);
+              Assert.AreEqual("Hello, {0}".Args(i), txt);
+              return file.DeleteAsync();
+            })
+            .OnOkOrError(_ => {
+              Console.WriteLine("file '{0}' deleted", file.Name);
+              if (file != null && !file.Disposed) {
+                file.Dispose(); 
+                Console.WriteLine("file '{0}' disposed", file.Name);
+              }
+             })
+            .OnOk(() => session.GetItemAsync(fs.CombinePaths(S3_ROOT_FS, fn)) )
+            .OnOk(item => { Assert.IsNull(item); })
+            .OnOkOrError(_ => { if (!session.Disposed) session.Dispose(); } );
 
-            //using(var session = fs.StartSession())
-            //{
-            //  var dir = session[S3_ROOT_FS] as FileSystemDirectory;
-
-            //  using (var file = dir.CreateFile(fn))
-            //  {
-            //    file.WriteAllText("Hello, {0}".Args(i));
-            //  }
-
-            //  using (var file = session[fs.CombinePaths(S3_ROOT_FS, fn)] as FileSystemFile)
-            //  {
-            //    Assert.AreEqual("Hello, {0}".Args(i), file.ReadAllText());
-            //    file.Delete();
-            //  }
-            //  Assert.IsNull(session[fs.CombinePaths(S3_ROOT_FS, fn)]);
-            //}
-
+            tasks.Add(t);
           });//Parallel.For
+
+          Console.WriteLine("all tasks created");
+
+          Task.WaitAll(tasks.ToArray());
+
+          Assert.AreEqual(0, fs.Sessions.Count());//checking item registation via .ctor/.dctor
+
+          Console.WriteLine("done");
       }
     }
 

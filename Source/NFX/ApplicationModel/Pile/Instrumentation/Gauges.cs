@@ -183,6 +183,21 @@ namespace NFX.ApplicationModel.Pile.Instrumentation
         protected override Datum MakeAggregateInstance() { return new GetCount(this.Source, 0); }
     }
 
+    /// <summary>
+    /// Number of free clots(chunks) in the free list
+    /// </summary>
+    [Serializable]
+    public class FreeListCapacity : PileLongGauge
+    {
+        internal FreeListCapacity(string src, long value) : base(src, value) {}
+
+        public override string Description { get{ return "Number of free clots(chunks) in the free list";} }
+
+        public override string ValueUnitName  { get { return CoreConsts.UNIT_NAME_SLOT; } }
+
+        protected override Datum MakeAggregateInstance() { return new FreeListCapacity(this.Source, 0); }
+    }
+
 
 
 

@@ -55,6 +55,7 @@ namespace WinFormsTest
       this.btnDynAss = new System.Windows.Forms.Button();
       this.btnDates = new System.Windows.Forms.Button();
       this.btnObjRef = new System.Windows.Forms.Button();
+      this.btnABsSpeed = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // button1
@@ -167,11 +168,22 @@ namespace WinFormsTest
       this.btnObjRef.UseVisualStyleBackColor = true;
       this.btnObjRef.Click += new System.EventHandler(this.btnObjRef_Click);
       // 
+      // btnABsSpeed
+      // 
+      this.btnABsSpeed.Location = new System.Drawing.Point(757, 372);
+      this.btnABsSpeed.Name = "btnABsSpeed";
+      this.btnABsSpeed.Size = new System.Drawing.Size(206, 55);
+      this.btnABsSpeed.TabIndex = 11;
+      this.btnABsSpeed.Text = "ABS Speed";
+      this.btnABsSpeed.UseVisualStyleBackColor = true;
+      this.btnABsSpeed.Click += new System.EventHandler(this.btnABsSpeed_Click);
+      // 
       // SerializerForm2
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1007, 454);
+      this.Controls.Add(this.btnABsSpeed);
       this.Controls.Add(this.btnObjRef);
       this.Controls.Add(this.btnDates);
       this.Controls.Add(this.btnDynAss);
@@ -202,5 +214,6 @@ namespace WinFormsTest
         private System.Windows.Forms.Button btnDynAss;
         private System.Windows.Forms.Button btnDates;
         private System.Windows.Forms.Button btnObjRef;
+        private System.Windows.Forms.Button btnABsSpeed;
     }
 }

@@ -159,8 +159,10 @@ namespace NFX.ApplicationModel.Pile
                
                private readonly DefaultPile Pile;
                
-               public long LCK_READERS;
-               public int LCK_WAITING_WRITERS;
+
+               //be careful not to make this field readonly as interlocked(ref) just does not work in runtime
+               public OS.ManyReadersOneWriterSynchronizer RWSynchronizer;
+
 
                public int DELETED;
                
@@ -193,6 +195,14 @@ namespace NFX.ApplicationModel.Pile
                public DateTime LastCrawl = DateTime.UtcNow;
 
                
+               /// <summary>
+               /// takes a snapshot of free chunk capacities for instrumentation
+               /// </summary>
+               public int[] SnapshotOfFreeChunkCapacities
+               {
+                 get { return FreeChunks.Select( fc => fc.CurrentIndex + 1).ToArray(); } //index 0 = 1 free element
+               }
+
                //must be under lock
                //tries to allocate the payload size in this segment ant put payload bytes in.
                // returns -1 when could not find spot. does not do crawl
@@ -839,7 +849,7 @@ namespace NFX.ApplicationModel.Pile
                  if (!getWriteLock(seg)) return PilePointer.Invalid;
                  try
                  {
-                   if (Thread.VolatileRead(ref seg.DELETED)==0)
+                   if (Thread.VolatileRead(ref seg.DELETED)==0 && seg.FreeCapacity > chunkSize)
                    {
                      var adr = seg.Allocate(buffer, payloadSize, serializerVersion); 
                      if (adr>=0) return new PilePointer(idxSegment, adr);//allocated before crawl
@@ -875,10 +885,9 @@ namespace NFX.ApplicationModel.Pile
         //allocate segment
         lock(m_SegmentsLock)
         {
-           var scount = m_Segments.Count( s => s!=null );
            if (
-               (m_MaxMemoryLimit>0 && AllocatedMemoryBytes+m_SegmentSize>m_MaxMemoryLimit)||
-               (m_MaxSegmentLimit>0 && scount+1>m_MaxSegmentLimit)
+               (m_MaxMemoryLimit>0  && AllocatedMemoryBytes+m_SegmentSize     > m_MaxMemoryLimit  )||
+               (m_MaxSegmentLimit>0 && (m_Segments.Count( s => s!=null ) + 1) > m_MaxSegmentLimit )
               )
            throw new PileOutOfSpaceException(StringConsts.PILE_OUT_OF_SPACE_ERROR.Args(m_MaxMemoryLimit, m_MaxSegmentLimit, m_SegmentSize));
         
@@ -905,7 +914,7 @@ namespace NFX.ApplicationModel.Pile
 
 
         var seg = segs[ptr.Segment];
-        if (seg==null)
+        if (seg==null || seg.DELETED!=0)
           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
         
         Interlocked.Increment(ref m_stat_GetCount);
@@ -913,6 +922,9 @@ namespace NFX.ApplicationModel.Pile
         if (!getReadLock(seg)) return null;//Service shutting down
         try
         {
+          //2nd check under lock
+          if (seg.DELETED!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+
           var data = seg.Data;
           var addr = ptr.Address;
           if (addr<0 || addr>=data.LongLength-CHUNK_HDER_SZ)
@@ -956,7 +968,7 @@ namespace NFX.ApplicationModel.Pile
 
 
         var seg = segs[ptr.Segment];
-        if (seg==null)
+        if (seg==null || seg.DELETED!=0)
         {
           if (throwInvalid) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
           return false;
@@ -964,9 +976,14 @@ namespace NFX.ApplicationModel.Pile
 
         Interlocked.Increment(ref m_stat_DeleteCount);
 
+        var removeEmptySegment = false;
+
         if (!getWriteLock(seg)) return false;//Service shutting down
         try
         {
+          //2nd check under lock
+          if (seg.DELETED!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+
           var data = seg.Data;
           var addr = ptr.Address;
           if (addr<0 || addr>=data.LongLength-CHUNK_HDER_SZ)
@@ -989,38 +1006,42 @@ namespace NFX.ApplicationModel.Pile
           //if nothing left allocated and either reuseSpace or 50/50 chance
           if (seg.ObjectCount==0 && (m_AllocMode==AllocationMode.ReuseSpace || (ptr.Address & 1) == 1))
           {
-            lock(m_SegmentsLock)
-            {
-               Thread.VolatileWrite(ref seg.DELETED, 1);
-               var newSegs = new List<_segment>(m_Segments);
-               if (newSegs.Count>0)//safegaurd, always true
-               {
-                   if (newSegs.Count==1)
-                   {
-                     if (newSegs[0]==seg) newSegs.Clear();
-                   }
-                   else
-                   if (seg==newSegs[newSegs.Count-1])
-                    newSegs.Remove( seg );
-                   else
-                   {
-                     for(var k=0; k<newSegs.Count; k++)
-                      if (newSegs[k] == seg)
-                      {
-                        newSegs[k] = null;
-                        break;
-                      }
-                   }
-               }
-               m_Segments = newSegs;//atomic
-            }//lock barrier
+            Thread.VolatileWrite(ref seg.DELETED, 1);//Mark as deleted
+            removeEmptySegment = true;
           }
-     
         }
         finally
         {
           releaseWriteLock(seg);
         }
+
+        if (removeEmptySegment) //it is ok that THIS is not under segment write lock BECAUSE
+          lock(m_SegmentsLock)  // the segment was marked as DELETED, and it can not be re-allocated as it was marked under the lock
+          {
+               
+              var newSegs = new List<_segment>(m_Segments);
+              if (newSegs.Count>0)//safeguard, always true
+              {
+                  if (newSegs.Count==1)
+                  {
+                    if (newSegs[0]==seg) newSegs.Clear();
+                  }
+                  else
+                  if (seg==newSegs[newSegs.Count-1])
+                  newSegs.Remove( seg );
+                  else
+                  {
+                    for(var k=0; k<newSegs.Count; k++)
+                    if (newSegs[k] == seg)
+                    {
+                      newSegs[k] = null;
+                      break;
+                    }
+                  }
+              }
+              m_Segments = newSegs;//atomic
+          }//lock barrier
+
 
         return true;
       }
@@ -1040,12 +1061,15 @@ namespace NFX.ApplicationModel.Pile
 
 
         var seg = segs[ptr.Segment];
-        if (seg==null)
+        if (seg==null || seg.DELETED!=0)
           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
 
         if (!getReadLock(seg)) return 0;//Service shutting down
         try
         {
+          //2nd check under lock
+          if (seg.DELETED!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+
           var data = seg.Data;
           var addr = ptr.Address;
           if (addr<0 || addr>=data.LongLength-CHUNK_HDER_SZ)
@@ -1226,91 +1250,38 @@ namespace NFX.ApplicationModel.Pile
 
         private void ensureFreeChunkSizes(int[] sizes)
         {
-          if (m_FreeChunkSizes==null || m_FreeChunkSizes.Length<FREE_LST_COUNT || m_FreeChunkSizes.Length>FREE_LST_COUNT)
-            throw new PileException(StringConsts.PILE_CHUNK_SZ_ERROR.Args(FREE_LST_COUNT));
+          if (m_FreeChunkSizes==null || m_FreeChunkSizes.Length!=FREE_LST_COUNT)
+            throw new PileException(StringConsts.PILE_CHUNK_SZ_ERROR.Args(FREE_LST_COUNT, FREE_CHUNK_SIZE_MIN));
           var psize = 0;
           foreach(var size in m_FreeChunkSizes)
-           if (size < FREE_CHUNK_SIZE_MIN || size <= psize)
-             throw new PileException(StringConsts.PILE_CHUNK_SZ_ERROR.Args(FREE_LST_COUNT, FREE_CHUNK_SIZE_MIN));
+          {
+            if (size < FREE_CHUNK_SIZE_MIN || size <= psize)
+              throw new PileException(StringConsts.PILE_CHUNK_SZ_ERROR.Args(FREE_LST_COUNT, FREE_CHUNK_SIZE_MIN));
+            psize = size;
+          }
         }
 
 
         //the reader lock allows to have many readers but only 1 writer
         private bool getReadLock(_segment segment)
         {
-          //Since there are 2^63 positive combinations, even if the system has 1000 real threads that all physically execute at the same time (will never happen),
-          //there are 100 10-ms intervals a second = 1000 threads * 100 intervals * 60 sec = 6,000,000 increments a minute in the worst case (out of 2^63)
-          //which means that LCK_READERS will take around 2 million years to reach ZERO
-          long spinCount = 0;
-          while(Interlocked.Increment(ref segment.LCK_READERS)<=0)
-          {
-            if (spinCount<12000)
-            {
-               var tightWait  = Thread.VolatileRead(ref segment.LCK_WAITING_WRITERS) < CPU_COUNT;
-               if (tightWait)
-               {
-                 if (spinCount>10000) 
-                   if (!Thread.Yield()) Thread.SpinWait(1000);
-                 else
-                   Thread.SpinWait(500);
-                 
-                 spinCount++;
-                 continue;
-               }
-            }
-            
-            //severe contention
-            if (!this.Running) return false;//lock failed
-            Thread.Sleep(10 + (Thread.CurrentThread.GetHashCode() & 0xf));
-            spinCount++;
-          }//while
-          return true;//lock taken
+          return segment.RWSynchronizer.GetReadLock((_) => !this.Running);
         }
 
         private void releaseReadLock(_segment segment)
         {
-          Interlocked.Decrement(ref segment.LCK_READERS);
+          segment.RWSynchronizer.ReleaseReadLock();
         }
 
         //the writer lock allows only 1 writer at a time that conflicts with a single reader
         private bool getWriteLock(_segment segment)
         {
-          long spinCount = 0;
-          var tightWait = Interlocked.Increment(ref segment.LCK_WAITING_WRITERS) < CPU_COUNT;
-          while(Interlocked.CompareExchange(ref segment.LCK_READERS, long.MinValue, 0)!=0)
-          {
-            if (tightWait)
-            {
-               if (spinCount<10000)
-               { 
-                  Thread.SpinWait(500);
-                  spinCount++;
-                  continue;
-               }
-               if (spinCount<12000)
-               {
-                  if (!Thread.Yield()) Thread.SpinWait(1000);
-                  spinCount++;
-                  continue;
-               }
-            }
-          
-            if (!this.Running)
-            {
-              Interlocked.Decrement(ref segment.LCK_WAITING_WRITERS);
-              return false;//lock failed
-            }
-            Thread.Sleep(10 + (Thread.CurrentThread.GetHashCode() & 0xf));
-          
-            spinCount++;
-          }
-          Interlocked.Decrement(ref segment.LCK_WAITING_WRITERS);
-          return true;//lock taken
+          return segment.RWSynchronizer.GetWriteLock((_) => !this.Running);
         }
 
         private void releaseWriteLock(_segment segment)
         {
-          Thread.VolatileWrite(ref segment.LCK_READERS, 0L);
+          segment.RWSynchronizer.ReleaseWriteLock();
         }
 
 
@@ -1481,6 +1452,16 @@ namespace NFX.ApplicationModel.Pile
             instr.Record( new Instrumentation.PutCount(src, m_stat_PutCount) );
             instr.Record( new Instrumentation.DeleteCount(src, m_stat_DeleteCount) );
             instr.Record( new Instrumentation.GetCount(src, m_stat_GetCount) );
+
+            var segs = m_Segments;
+            var totalFreeCapacities
+                      = segs.Where(seg => seg!=null)
+                            .Aggregate( new int[FREE_LST_COUNT],
+                                       (sum, seg)  => seg.SnapshotOfFreeChunkCapacities.Zip(sum, (i1, i2) => i1+i2).ToArray()
+                                      );
+
+            for(var i=0; i<totalFreeCapacities.Length; i++)                                                           
+              instr.Record( new Instrumentation.FreeListCapacity(src+"::"+ m_FreeChunkSizes[i].ToString().PadLeft(10), totalFreeCapacities[i]) );
 
              m_stat_PutCount = 0;
              m_stat_DeleteCount = 0;

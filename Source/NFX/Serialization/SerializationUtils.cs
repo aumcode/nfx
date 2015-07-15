@@ -30,34 +30,18 @@ namespace NFX.Serialization
     /// </summary>
     public static class SerializationUtils
     {
-   
-/*   
-        
-                //20150124 Added caching
-                private static Dictionary<Type, ConstructorInfo> s_CtorCache = new Dictionary<Type, ConstructorInfo>();
-
 
         /// <summary>
-        /// Create new object instance for type, calling default ctor
+        /// Returns .ctor(SerializationInfo, StreamingContext) that complies with ISerializable concept, or null.
         /// </summary>
-        public static object MakeNewObjectInstance(Type type)
+        public static ConstructorInfo GetISerializableCtorInfo(Type type)
         {
-            var instance = FormatterServices.GetUninitializedObject(type);
-
-            ConstructorInfo ctor;
-            if (!s_CtorCache.TryGetValue(type, out ctor))
-            {
-               ctor = type.GetConstructor(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance, null, Type.EmptyTypes, null);
-               var dict = new Dictionary<Type, ConstructorInfo>(s_CtorCache);
-               dict[type] = ctor;
-               s_CtorCache = dict;//atomic                    
-            }
-
-            if (ctor!=null) ctor.Invoke(instance, null);
-
-            return instance;
+           return type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, 
+                                             null,
+                                             new Type[] { typeof(SerializationInfo), typeof(StreamingContext)},
+                                             null);
         }
-*/    
+
 
              //20150201 Added caching
              private static Dictionary<Type, Func<object>> s_CreateFuncCache = new Dictionary<Type, Func<object>>();
@@ -72,8 +56,16 @@ namespace NFX.Serialization
            Func<object> f;
            if (!s_CreateFuncCache.TryGetValue(type, out f))
            {
-             var ctor = type.GetConstructor(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance, null, Type.EmptyTypes, null);
-             if (ctor!=null)
+             var ctorEmpty = type.GetConstructor(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance,
+                                             null, 
+                                             Type.EmptyTypes,
+                                             null);
+
+             //20150715 DKh look for ISerializable .ctor
+             var ctorSer = GetISerializableCtorInfo(type);
+
+             //20150715 DKh, the empty .ctor SHOULD NOT be called for types that have SERIALIZABLE .ctor which is called later(after object init)
+             if (ctorEmpty!=null && ctorSer==null)
                f = Expression.Lambda<Func<object>>(Expression.New(type)).Compile(); 
              else
                f = () => FormatterServices.GetUninitializedObject(type);  

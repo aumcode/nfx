@@ -115,8 +115,8 @@ namespace NFX.ApplicationModel.Pile
                      public readonly LocalCacheTable<TKey> Table;
                      public _entry[] Entries;
 
-                     public long LCK_READERS;
-                     public int LCK_WAITING_WRITERS;
+                     //be careful not to make this field readonly as interlocked(ref) just does not work in runtime
+                     public OS.ManyReadersOneWriterSynchronizer RWSynchronizer;
 
 
                      public long COUNT;
@@ -481,7 +481,8 @@ namespace NFX.ApplicationModel.Pile
       var result = this.Get(key, ageSec);
       if (result!=null) return result;
 
-      lock(s_GetPutLocks[ Math.Abs( key.GetHashCode() % s_GetPutLocks.Length) ])
+      var idx = (key.GetHashCode() & CoreConsts.ABS_HASH_MASK) % s_GetPutLocks.Length;
+      lock(s_GetPutLocks[idx])
       {
         result = this.Get(key, ageSec);
         if (result!=null) return result;
@@ -570,7 +571,7 @@ namespace NFX.ApplicationModel.Pile
       private _entry fetchExistingEntry(_bucket bucket, TKey key, int hashCode, out int entryIdx)
       {
         var entries = bucket.Entries;
-        entryIdx = Math.Abs(hashCode % entries.Length);
+        entryIdx = (hashCode & CoreConsts.ABS_HASH_MASK) % entries.Length;
         for(var probe=0; probe<PROBE_COUNT; probe++)
         {
           var entry = entries[entryIdx];
@@ -589,7 +590,7 @@ namespace NFX.ApplicationModel.Pile
 
       private PutResult putEntry(_entry[] entries, TKey key, int hashCode, object data, PilePointer ptrData, int existingAgeSec, int  maxAgeSec,int priority, DateTime? absoluteExpirationUTC, Func<object, PilePointer> fPilePut)
       {
-        var entryLocationIdx = Math.Abs(hashCode % entries.Length);
+        var entryLocationIdx = (hashCode & CoreConsts.ABS_HASH_MASK) % entries.Length;
        
         var secondPass = false;
         while(true)
@@ -645,79 +646,23 @@ namespace NFX.ApplicationModel.Pile
         //the reader lock allows to have many readers but only 1 writer
         private bool getReadLock(_bucket bucket)
         {
-          //Since there are 2^63 positive combinations, even if the system has 1000 real threads that all physically execute at the same time (will never happen),
-          //there are 100 10-ms intervals a second = 1000 threads * 100 intervals * 60 sec = 6,000,000 increments a minute in the worst case (out of 2^63)
-          //which means that LCK_READERS will take around 2 million years to reach ZERO
-          long spinCount = 0;
-          while(Interlocked.Increment(ref bucket.LCK_READERS)<=0)
-          {
-            if (spinCount<12000)
-            {
-               var tightWait  = Thread.VolatileRead(ref bucket.LCK_WAITING_WRITERS) < CPU_COUNT;
-               if (tightWait)
-               {
-                 if (spinCount>10000) 
-                   if (!Thread.Yield()) Thread.SpinWait(1000);
-                 else
-                   Thread.SpinWait(500);
-                 
-                 spinCount++;
-                 continue;
-               }
-            }
-            
-            //severe contention
-            if (!m_Cache.Running) return false;//lock failed
-            Thread.Sleep(10 + (Thread.CurrentThread.GetHashCode() & 0xf));
-            spinCount++;
-          }//while
-          return true;//lock taken
+          return bucket.RWSynchronizer.GetReadLock((_) => !m_Cache.Running);
         }
 
         private void releaseReadLock(_bucket bucket)
         {
-          Interlocked.Decrement(ref bucket.LCK_READERS);
+           bucket.RWSynchronizer.ReleaseReadLock();
         }
 
         //the writer lock allows only 1 writer at a time that conflicts with a single reader
         private bool getWriteLock(_bucket bucket, bool disregardRunning = false)
         {
-          long spinCount = 0;
-          var tightWait = Interlocked.Increment(ref bucket.LCK_WAITING_WRITERS) < CPU_COUNT;
-          while(Interlocked.CompareExchange(ref bucket.LCK_READERS, long.MinValue, 0)!=0)
-          {
-            if (tightWait)
-            {
-               if (spinCount<10000)
-               { 
-                  Thread.SpinWait(500);
-                  spinCount++;
-                  continue;
-               }
-               if (spinCount<12000)
-               {
-                  if (!Thread.Yield()) Thread.SpinWait(1000);
-                  spinCount++;
-                  continue;
-               }
-            }
-          
-            if (!disregardRunning && !m_Cache.Running)
-            {
-              Interlocked.Decrement(ref bucket.LCK_WAITING_WRITERS);
-              return false;//lock failed
-            }
-            Thread.Sleep(10 + (Thread.CurrentThread.GetHashCode() & 0xf));
-          
-            spinCount++;
-          }
-          Interlocked.Decrement(ref bucket.LCK_WAITING_WRITERS);
-          return true;//lock taken
+          return bucket.RWSynchronizer.GetWriteLock((_) => !disregardRunning && !m_Cache.Running);
         }
 
         private void releaseWriteLock(_bucket bucket)
         {
-          Thread.VolatileWrite(ref bucket.LCK_READERS, 0L);
+          bucket.RWSynchronizer.ReleaseWriteLock();
         }
 
     #endregion

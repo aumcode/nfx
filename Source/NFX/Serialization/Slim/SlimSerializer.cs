@@ -309,7 +309,7 @@ namespace NFX.Serialization.Slim
 
             private void serialize(SlimWriter writer, object root, RefPool pool)
             {                           
-               if (root is Type)
+               if (root is Type)        
                  root = new rootTypeBox{ TypeValue = (Type)root};
 
                var scontext = new StreamingContext();
@@ -413,10 +413,7 @@ namespace NFX.Serialization.Slim
                {                            
                  var fixup = fxps[i];  
                  var t = fixup.Instance.GetType();
-                 var ctor = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, 
-                                             null,
-                                             new Type[] { typeof(SerializationInfo), typeof(StreamingContext)},
-                                             null);
+                 var ctor = SerializationUtils.GetISerializableCtorInfo(t);
                  if (ctor==null)
                   throw new SlimDeserializationException(StringConsts.SLIM_ISERIALIZABLE_MISSING_CTOR_ERROR + t.FullName); 
                  ctor.Invoke(fixup.Instance, new object[]{ fixup.Info, scontext} );

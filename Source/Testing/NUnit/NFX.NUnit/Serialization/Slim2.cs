@@ -299,37 +299,6 @@ namespace NFX.NUnit.Serialization
     }
 
 
-    //[Test]
-    //public void T09_CyclicStructs()
-    //{
-    //  using (var ms = new MemoryStream())
-    //  {
-    //    var s = new SlimSerializer();
-
-    //    object s2 = new S2();
-    //    object dIn = new S1() { FS2 = s2};
-    //    ((S2)s2).FS1 = dIn;
-        
-    //    s.Serialize(ms, dIn);
-    //    ms.Seek(0, SeekOrigin.Begin);
-
-    //    var dOut = (S1)s.Deserialize(ms);
-
-    //    Assert.AreEqual(dOut, ((S2)dOut.FS2).FS1);
-    //  }
-    //}
-
-    //internal struct S1 
-    //{
-    //  public object FS2 { get; set; }
-    //}
-
-    //internal struct S2
-    //{
-    //  public object FS1 { get; set; }
-    //}
-
-
     [Test]
     public void T10_CovariantStructInterfaceArrays()
     {
@@ -594,6 +563,114 @@ namespace NFX.NUnit.Serialization
       }
     }
       
+
+    [Test]
+    public void T2000_TypeRegistry()
+    {
+      using (var ms = new MemoryStream())
+      {
+        var s = new SlimSerializer();
+        var tr1 = new TypeRegistry();
+
+        Assert.IsTrue(   tr1.Add(typeof(List<S3>))  );
+        Assert.IsTrue(   tr1.Add(typeof(S3[]))  );
+        Assert.IsTrue(   tr1.Add(typeof(Tuple<string, S3>))  );
+
+
+        s.Serialize(ms, tr1);
+
+        ms.Position = 0;
+
+        var tr2 = s.Deserialize(ms) as TypeRegistry;
+
+        Assert.IsNotNull( tr2 );
+
+        Assert.AreEqual(7, tr2.Count);//including system types
+        Assert.AreEqual(typeof(Tuple<string, S3>), tr2["$6"]);
+        Assert.AreEqual(typeof(S3[]),              tr2["$5"]);
+        Assert.AreEqual(typeof(List<S3>),          tr2["$4"]);
+       
+      }
+    }
+
+
+    [Test]
+    public void T3000_Dictionary_TYPE_Int_Root()
+    {
+      using (var ms = new MemoryStream())
+      {
+        var s = new SlimSerializer();
+        var d1 = new Dictionary<Type, int>();
+
+       d1.Add(typeof(List<S3>) ,1 ) ;
+       d1.Add(typeof(S3[]) ,20);
+       d1.Add(typeof(Tuple<string, S3>), 90);
+
+
+        s.Serialize(ms, d1);
+
+        ms.Position = 0;
+
+        var d2 = s.Deserialize(ms) as Dictionary<Type, int>;
+
+        Assert.IsNotNull( d2 );
+
+        Assert.AreEqual(3,  d2.Count);
+        Assert.AreEqual(1,  d2[typeof(List<S3>)]);
+        Assert.AreEqual(20, d2[typeof(S3[])]);
+        Assert.AreEqual(90, d2[typeof(Tuple<string, S3>)]);
+       
+      }
+    }
+
+          private class dictTypeClass
+          {
+            public List<Type> ADummy;
+            public Dictionary<Type, int> Data;
+          }
+
+    [Test]
+    public void T3100_Dictionary_TYPE_Int_Field()
+    {
+      using (var ms = new MemoryStream())
+      {
+        var s = new SlimSerializer();
+        var d1 = new dictTypeClass{
+                  Data  =  new Dictionary<Type, int>(0xff), 
+                  ADummy = new List<Type>(0xff)};
+
+       d1.Data.Add(typeof(List<S3>) ,1 ) ;
+       d1.Data.Add(typeof(S3[]) ,20);
+       d1.Data.Add(typeof(Tuple<string, S3>), 90);
+
+       d1.ADummy.Add(typeof(List<S3>)) ;
+       d1.ADummy.Add(typeof(S3[]));
+       d1.ADummy.Add(typeof(Tuple<string, S3>));
+
+
+        s.Serialize(ms, d1);
+
+        ms.Position = 0;
+
+        var d2 = s.Deserialize(ms) as dictTypeClass;
+
+        Assert.IsNotNull( d2 );
+        Assert.IsNotNull( d2.Data );
+        Assert.IsNotNull( d2.ADummy );
+
+        Assert.AreEqual(3,  d2.Data.Count);
+        Assert.AreEqual(1,  d2.Data[typeof(List<S3>)]);
+        Assert.AreEqual(20, d2.Data[typeof(S3[])]);
+        Assert.AreEqual(90, d2.Data[typeof(Tuple<string, S3>)]);
+
+        Assert.AreEqual(3,  d2.ADummy.Count);
+        Assert.AreEqual(typeof(List<S3>),  d2.ADummy[0]);
+        Assert.AreEqual(typeof(S3[]),    d2.ADummy[1]);
+        Assert.AreEqual(typeof(Tuple<string, S3>),    d2.ADummy[2]);
+       
+      }
+    }
+
 
 
 

@@ -203,10 +203,10 @@ namespace NFX.NUnit.Financial
         }
 
         [TestCase]
+        [ExpectedException(typeof(FinancialException), ExpectedMessage="parse", MatchType=MessageMatch.Contains)]
         public void Parse_3()
         {
-           var a = Amount.Parse("-123.12");
-           Assert.AreEqual(new Amount(null, -123.12m), a);
+           Amount.Parse("-123.12");
         }
 
         [TestCase]
@@ -239,10 +239,10 @@ namespace NFX.NUnit.Financial
         }
 
         [TestCase]
+        [ExpectedException(typeof(FinancialException), ExpectedMessage="parse", MatchType = MessageMatch.Contains)]
         public void Parse_8()
         {
-           var a = Amount.Parse("-123.12 :");
-           Assert.AreEqual(new Amount(null, -123.12m), a);
+           Amount.Parse("-123.12 :");
         }
 
 
@@ -268,18 +268,18 @@ namespace NFX.NUnit.Financial
         public void TryParse_3()
         {
            Amount a;
-           var parsed = Amount.TryParse("-1123:", out a);
+           var parsed = Amount.TryParse("-1123:eur", out a);
            Assert.IsTrue( parsed );
-           Assert.AreEqual( new Amount("", -1123M), a);
+           Assert.AreEqual( new Amount("eur", -1123M), a);
         }
 
         [TestCase]
         public void TryParse_4()
         {
            Amount a;
-           var parsed = Amount.TryParse("-1123", out a);
+           var parsed = Amount.TryParse("-1123:rub", out a);
            Assert.IsTrue( parsed );
-           Assert.AreEqual( new Amount("", -1123M), a);
+           Assert.AreEqual( new Amount("rub", -1123M), a);
         }
 
         [TestCase]
@@ -318,9 +318,9 @@ namespace NFX.NUnit.Financial
         public void TryParse_9()
         {
            Amount a;
-           var parsed = Amount.TryParse("-1123 :", out a);
+           var parsed = Amount.TryParse("-1123 :gbp", out a);
            Assert.IsTrue( parsed );
-           Assert.AreEqual( new Amount("", -1123M), a);
+           Assert.AreEqual( new Amount("gbp", -1123M), a);
         }
 
         [TestCase]

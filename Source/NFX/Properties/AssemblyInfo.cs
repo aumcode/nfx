@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IT Adapter Corp. Inc.")]
 [assembly: AssemblyProduct("NFX")]
-[assembly: AssemblyCopyright("Copyright ©  2003-2015 IT Adapter Corp. Inc.")]
+[assembly: AssemblyCopyright("Copyright ©  2003-2015 IT Adapter LLC")]
 [assembly: AssemblyTrademark("NFX")]
 [assembly: AssemblyCulture("")]
 

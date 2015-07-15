@@ -474,7 +474,7 @@ namespace NFX.Glue
 
                         public static void Subscribe(CallSlot call)
                         {
-                          var bucket = s_Calls[Math.Abs(call.GetHashCode() % BUCKETS)];
+                          var bucket = s_Calls[(call.GetHashCode() & CoreConsts.ABS_HASH_MASK) % BUCKETS];
 
                           lock(bucket) bucket.Add(call);
                           if (s_Thread==null)

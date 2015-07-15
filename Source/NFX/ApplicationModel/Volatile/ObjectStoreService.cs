@@ -576,7 +576,7 @@ namespace NFX.ApplicationModel.Volatile
 
                 private Bucket getBucket(Guid key)
                 {
-                  var idx = Math.Abs(key.GetHashCode() % m_BucketCount);   //todo IMPORTANT!!!!! replace with more efficient Bucket determination call from NFX.IntMath
+                  var idx = (key.GetHashCode() & CoreConsts.ABS_HASH_MASK) % m_BucketCount;
                   return m_Buckets[idx];
                 }
 

@@ -56,7 +56,7 @@ namespace NFX.Glue.Implementation
          var requestID = call.RequestID;
 
          //getBucket() inlined for performance
-         var idx = Math.Abs(requestID.GetHashCode() % m_BucketCount); 
+         var idx = (requestID.GetHashCode() & CoreConsts.ABS_HASH_MASK) % m_BucketCount; 
          var bucket = m_Buckets[idx];
 
          bucket.TryAdd(requestID, call);
@@ -70,7 +70,7 @@ namespace NFX.Glue.Implementation
       public CallSlot TryGetAndRemove(FID requestID)
       {
           //getBucket() inlined for performance
-          var idx = Math.Abs(requestID.GetHashCode() % m_BucketCount);
+          var idx = (requestID.GetHashCode() & CoreConsts.ABS_HASH_MASK) % m_BucketCount;
           var bucket = m_Buckets[idx];
 
           CallSlot result;

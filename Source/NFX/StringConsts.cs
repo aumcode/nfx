@@ -945,7 +945,7 @@ namespace NFX
     
     public const string PILE_CRAWL_INTERNAL_SEGMENT_CORRUPTION_ERROR =  "Pile segment crawl internal error: chunk flag corrupted at address {0}";        
 
-    public const string PILE_OUT_OF_SPACE_ERROR =  "Pile is out of allowed space of {0:n} max bytes : {1} max segments @ {2:n} bytes/segment";        
+    public const string PILE_OUT_OF_SPACE_ERROR =  "Pile is out of allowed space of {0:n} max bytes, {1} max segments @ {2:n} bytes/segment";        
 
     public const string PILE_OBJECT_LARGER_SEGMENT_ERROR =  "Pile could not put object of {0} bytes as this size exceeds the size of a segment";        
    

@@ -197,7 +197,7 @@ namespace NFX
         var result = new StringBuilder();
 
         for(var i=0; i<count; i++)
-          result.Append( CHAR_DICT[ Math.Abs(this.NextRandomInteger) % CHAR_DICT_LEN ]);
+          result.Append( CHAR_DICT[ (this.NextRandomInteger & CoreConsts.ABS_HASH_MASK) % CHAR_DICT_LEN ]);
           
 
         return result.ToString();

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 using NFX.IO;
 
@@ -27,7 +28,8 @@ namespace NFX.Serialization.Slim
     /// <summary>
     /// Provides a registry of types, types that do not need to be described in a serialization stream
     /// </summary>
-    public class TypeRegistry : IEnumerable<Type>
+    [Serializable]
+    public class TypeRegistry : IEnumerable<Type>, ISerializable
     {
        #region COSNSTS
            /// <summary>
@@ -274,32 +276,61 @@ namespace NFX.Serialization.Slim
            private struct NULL_HANDLE_FAKE_TYPE{}
 
 
-           public TypeRegistry()
-           {  //WARNING!!! These types MUST be at the following positions always at the pre-defined index:
-              add(typeof(NULL_HANDLE_FAKE_TYPE));//must be at index zero - NULL HANDLE
-              add(typeof(object));//must be at index zero - object(not null)
-              add(typeof(object[]));//must be at index 2
-              add(typeof(byte[]));
+           //used by ser
+           private TypeRegistry(SerializationInfo info, StreamingContext context)
+           {
+             initCtor();
+
+             var types = info.GetValue("tps", typeof(string[])) as string[];
+
+             Debug.Assert( types!=null, "types==null in TypeRegistry.ctor(ser)", DebugAction.ThrowAndLog);
+
+             for(var i=0; i<types.Length; i++)
+             {
+               var hndl = this[types[i]];
+             }
            }
+
+            void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+              info.AddValue("tps", m_List.Skip(4/*system type count see ctor*/).Select( t => t.AssemblyQualifiedName).ToArray());
+            }
+
           
            /// <summary>
            /// Initializes TypeRegistry with types from other sources
            /// </summary>
-           public TypeRegistry(params IEnumerable<Type>[] others) : this()
+           public TypeRegistry(params IEnumerable<Type>[] others) 
            {
+             initCtor();
+
              if (others!=null)
-              foreach(var other in others)
-               if (other!=null)
-                foreach(var t in other) Add(t);
+              for(var i=0; i<others.Length; i++)
+              {
+               var other = others[i];
+               if (other==null) continue;
+
+               foreach(var t in other) Add(t);
+              }
            }
 
-          
+                         private void initCtor()
+                         {  
+                            m_Types =  new Dictionary<Type, int>(0xff);
+                            m_List = new List<Type>(0xff);
+           
+                            //WARNING!!! These types MUST be at the following positions always at the pre-defined index:
+                            add(typeof(NULL_HANDLE_FAKE_TYPE));//must be at index zero - NULL HANDLE
+                            add(typeof(object));//must be at index 1 - object(not null)
+                            add(typeof(object[]));//must be at index 2
+                            add(typeof(byte[]));
+                         }
 
        #endregion
 
        #region Fields
-           private Dictionary<Type, int> m_Types =  new Dictionary<Type, int>(0xff);
-           private List<Type> m_List = new List<Type>(0xff);
+           private Dictionary<Type, int> m_Types;
+           private List<Type> m_List;
 
            private ulong m_CSum;
 

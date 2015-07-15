@@ -623,19 +623,22 @@ namespace NFX.DataAccess.Cache
 
             private int getLockIndex(int bucketIndex)
             {
-                return Math.Abs(bucketIndex % m_LockCount);   
+                var r = (bucketIndex % m_LockCount);
+                return (r >= 0) ? r : -r;
             }
 
             private int getBucketIndex(ulong key)
             {
                 var hc = (int)(key>>32) ^ (int)key;
-                return Math.Abs(hc % m_BucketCount);   
+                var r = (hc % m_BucketCount);
+                return (r >= 0) ? r : -r;
             }
 
             private int getPageIndex(ulong key)
             {
                 var hc = (int)(key>>32) ^ (int)key;
-                return Math.Abs(hc % m_RecPerPage);   
+                var r = (hc % m_RecPerPage);
+                return (r >= 0) ? r : -r;
             }
 
 

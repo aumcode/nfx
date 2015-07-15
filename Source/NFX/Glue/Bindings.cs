@@ -602,7 +602,7 @@ namespace NFX.Glue
                //otherwise we need to create a new transport
                if (m_ClientTransportMaxCount>0)
                {
-                 var alock = m_ClientTransportAllocatorLocks[Math.Abs(client.Node.GetHashCode() % m_ClientTransportAllocatorLocks.Length)];
+                 var alock = m_ClientTransportAllocatorLocks[(client.Node.GetHashCode() & CoreConsts.ABS_HASH_MASK) % m_ClientTransportAllocatorLocks.Length];
                  lock(alock)
                  {
                    transport = TryGetExistingAcquiredTransportPerRemoteNode( client.Node );
@@ -713,7 +713,7 @@ namespace NFX.Glue
             /// <returns>Available acquired transport or null</returns>
             protected virtual ClientTransport TryGetExistingAcquiredTransportPerRemoteNode(Node remoteNode)
             {
-                int GRANULARITY_MS = 5 + Math.Abs(System.Threading.Thread.CurrentThread.GetHashCode() % 15);
+                int GRANULARITY_MS = 5 + ((System.Threading.Thread.CurrentThread.GetHashCode() & CoreConsts.ABS_HASH_MASK) % 15);
               
                 var elapsed = 0;
                 do

@@ -22,11 +22,14 @@ namespace NFX
   /// </summary>
   public static class CoreConsts
   {
+      public const int ABS_HASH_MASK = 0x7FFFFFFF;
+
       public const string EXT_PARAM_CONTENT_LACONIC = "laconic://";
       public const string EXT_PARAM_CONTENT_JSON = "json://";
 
       public const string EXT_PARAM_GROUP_PILE = "pile"; 
       public const string EXT_PARAM_GROUP_GLUE = "glue"; 
+      public const string EXT_PARAM_GROUP_LOCKING = "locking"; 
       public const string EXT_PARAM_GROUP_OBJSTORE = "objectstore"; 
       public const string EXT_PARAM_GROUP_WEB = "web";  
       public const string EXT_PARAM_GROUP_INSTRUMENTATION = "instrumentation"; 
@@ -92,6 +95,7 @@ namespace NFX
                   public const string UNIT_NAME_CALL = "calls";
                   public const string UNIT_NAME_SWEEP = "swps.";
                   public const string UNIT_NAME_TRANSPORT = "tran.";
+                  public const string UNIT_NAME_TRANSACTION = "trxn.";
                   public const string UNIT_NAME_CHANNEL = "chan.";
                   public const string UNIT_NAME_BYTE = "bytes";
                   public const string UNIT_NAME_MESSAGE = "msgs.";
@@ -111,6 +115,7 @@ namespace NFX
                   public const string UNIT_NAME_GEO_LOOKUP_HIT = "geo.hit.";
                   public const string UNIT_NAME_MONEY = "money";
                   public const string UNIT_NAME_TABLE = "table";
+                  public const string UNIT_NAME_NAMESPACE = "nmsp.";
 
   }
 }

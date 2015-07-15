@@ -7,6 +7,17 @@
        log-name="test-client"
        trace-disable="true"
 >
+
+  <memory-management>
+
+    <!--pile max-segment-limit="7">
+      
+      
+    </pile-->
+    
+  </memory-management>
+  
+  
   <instrumentation
     name="Instruments" 
     interval-ms="5000"

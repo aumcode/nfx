@@ -108,6 +108,7 @@
     <Compile Include="ApplicationModel\Volatile\ObjectStoreEntry.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreProvider.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
+    <Compile Include="Collections\NamedInterlocked.cs" />
     <Compile Include="CoreConsts.cs" />
     <Compile Include="ExternalParameterAttribute.cs" />
     <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Erlang\ErlInputStream.cs" />
     <Compile Include="OS\Computer.cs" />
     <Compile Include="OS\Instrumentation\Gauges.cs" />
+    <Compile Include="OS\ManyReadersOneWriterSynchronizer.cs" />
     <Compile Include="OS\NetworkUtils.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />

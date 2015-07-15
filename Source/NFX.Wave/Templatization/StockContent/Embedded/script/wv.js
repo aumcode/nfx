@@ -1585,15 +1585,15 @@ var WAVE = (function(){
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
                         var curr;
-                        return new function() {
-                          this.reset = function() { walker.reset(); };
-                          this.moveNext = function() { 
+                        return {
+                          reset: function() { walker.reset(); },
+                          moveNext: function() { 
                             if (!walker.moveNext()) return false;
                             curr = selector(walker.current());
                             return true; 
-                          };
-                          this.current = function() { return curr; };
-                        }
+                          },
+                          current: function() { return curr; }
+                        };
                       }
                     };
                     WAVE.extend(walkable, WAVE.Walkable);
@@ -1606,9 +1606,8 @@ var WAVE = (function(){
                       getWalker: function () {
                         var walker = srcWalkable.getWalker();
                         var currWalker, curr;
-                        return new function () {
-
-                          this.reset = function () {
+                        return {
+                          reset: function () {
                             walker.reset();
                             while (walker.moveNext()) {
                               var walkerCurrent = walker.current();
@@ -1617,9 +1616,9 @@ var WAVE = (function(){
                               currWalker = eWalkable.getWalker();
                               break;
                             }
-                          };
+                          },
 
-                          this.moveNext = function () {
+                          moveNext: function () {
                             if (currWalker && currWalker.moveNext()) {
                               curr = currWalker.current();
                               return true;
@@ -1635,9 +1634,9 @@ var WAVE = (function(){
                               }
                             }
                             return false;
-                          };
+                          },
 
-                          this.current = function () { return curr; };
+                          current: function () { return curr; }
                         }
                       }
                     };
@@ -1651,18 +1650,16 @@ var WAVE = (function(){
                     var walkable = {
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
-                        return new function() 
-                        {
-                          this.reset = function() { walker.reset(); };
-                          this.moveNext = function() { 
+                        return {
+                          reset: function() { walker.reset(); },
+                          moveNext: function() { 
                             while (walker.moveNext()) {
                               var has = filter(walker.current());
                               if (has) return true;
                             }
                             return false;
-                          };
-                          this.current = function() { return walker.current(); };
-                          
+                          },
+                          current: function() { return walker.current(); }
                         };
                       }
                     }
@@ -1743,7 +1740,6 @@ var WAVE = (function(){
                             return false;
                           };
                           this.current = function() { return walker.current(); };
-                          
                         };
                       }
                     }
@@ -1758,9 +1754,9 @@ var WAVE = (function(){
             getWalker: function() {
               var walker = srcWalkable.getWalker();
               var walkerOther = null;
-              return new function() {
-                this.reset = function() { walker.reset(); walkerOther = null; };
-                this.moveNext = function() {
+              return {
+                reset: function() { walker.reset(); walkerOther = null; },
+                moveNext: function() {
                   if (walkerOther == null) {
                     if (walker.moveNext()) {
                       return true;
@@ -1769,8 +1765,8 @@ var WAVE = (function(){
                     }
                   }
                   return walkerOther.moveNext();
-                };
-                this.current = function() { return walkerOther == null ? walker.current() : walkerOther.current(); };
+                },
+                current: function() { return walkerOther == null ? walker.current() : walkerOther.current(); }
               };
             }
           }; //wConcat
@@ -1781,13 +1777,13 @@ var WAVE = (function(){
 
         wExcept: function(other, equal) {
                     var srcWalkable = this;
+
                     var walkable = {
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
-                        return new function() 
-                        {
-                          this.reset = function() { walker.reset(); };
-                          this.moveNext = function() { 
+                        return {
+                          reset: function() { walker.reset(); },
+                          moveNext: function() { 
                             while (walker.moveNext()) {
                               if (other.wFirstIdx(function(e) { 
                                                                if (equal) {
@@ -1801,8 +1797,8 @@ var WAVE = (function(){
                               }
                             }
                             return false;
-                          };
-                          this.current = function() { return walker.current(); };
+                          },
+                          current: function() { return walker.current(); }
                         };
                       }
                     }
@@ -1850,16 +1846,16 @@ var WAVE = (function(){
                     var walkable = {
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
-                        return new function() {
-                          this.reset = function() { walker.reset(); };
-                          this.moveNext = function() { return walker.moveNext() };
-                          this.current = function() { 
+                        return {
+                          reset: function() { walker.reset(); },
+                          moveNext: function() { return walker.moveNext() },
+                          current: function() { 
                             var cur = walker.current();
                             return {
                               k: cur.k, 
                               v: cur.v.wAggregate( function(r, e) { return aggregator(cur.k, r, e) })
                             };
-                          };
+                          }
                         }
                       }
                     };
@@ -1901,14 +1897,14 @@ var WAVE = (function(){
                     var walkable = {
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
-                        return new function() {
-                          this.reset = function() { walker.reset(); };
-                          this.moveNext = function() {
+                        return {
+                          reset: function() { walker.reset(); },
+                          moveNext: function() {
                             if (!walker.moveNext()) return false;
                             if (!cond(walker.current())) return false;
                             return true;
-                          };
-                          this.current = function() { return walker.current() };
+                          },
+                          current: function() { return walker.current() }
                         }
                       }
                     };
@@ -2052,14 +2048,14 @@ var WAVE = (function(){
                         var prevOutA = null; // previous oubound (processed) amplitude
                         var currOutS = {s: -1, a: 0}; // current outbound (processed) sample
 
-                        return new function() {
-                          this.reset = function() {
+                        return {
+                          reset: function() {
                             prevOutA = null;
                             currOutS = {s: -1, a: 0}; 
                             walker.reset(); 
-                          };
+                          },
 
-                          this.moveNext = function() { 
+                          moveNext: function() { 
                             if (!walker.moveNext()) return false;
 
                             currOutS.s = walker.current().s;
@@ -2074,11 +2070,11 @@ var WAVE = (function(){
                             prevOutA = currOutS.a;
                             
                             return true;
-                          };
+                          },
 
-                          this.current = function() { return currOutS; };
+                          current: function() { return currOutS; },
 
-                          this.samplingRate = function() { return walker.samplingRate ? walker.samplingRate() : 2; };
+                          samplingRate: function() { return walker.samplingRate ? walker.samplingRate() : 2; }
                         }
                       }
                     };
@@ -2103,16 +2099,16 @@ var WAVE = (function(){
                         var v = 0;
                         var prevInA = 0;
 
-                        return new function() {
-                          this.reset = function() {
+                        return {
+                          reset: function() {
                             prevOutA = 0;
                             v = 0;
                             prevInA = 0;
                             currOutS = {s: -1, a: 0}; 
                             walker.reset(); 
-                          };
+                          },
 
-                          this.moveNext = function() { 
+                          moveNext: function() { 
                             if (!walker.moveNext()) return false;
 
                             currOutS.s = walker.current().s;
@@ -2132,11 +2128,11 @@ var WAVE = (function(){
                             prevOutA = currOutS.a;
                             
                             return true;
-                          };
+                          },
 
-                          this.current = function() { return currOutS; };
+                          current: function() { return currOutS; },
 
-                          this.samplingRate = function() { return walker.samplingRate ? walker.samplingRate() : 2; };
+                          samplingRate: function() { return walker.samplingRate ? walker.samplingRate() : 2; }
                         }
                       }
                     };

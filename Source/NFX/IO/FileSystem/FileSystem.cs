@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NFX.Environment;
@@ -746,6 +747,23 @@ namespace NFX.IO.FileSystem
                   {
                       return TaskUtils.AsCompletedTask(() => DoGetLastAccessUser(item));
                   }
+
+
+
+          protected internal virtual Task DoFlushAsync(FileSystemStream stream, CancellationToken cancellationToken)
+          {
+            return TaskUtils.AsCompletedTask(stream.Flush);
+          }
+
+          protected internal virtual Task<int> DoReadAsync(FileSystemStream stream, byte[] buffer, int offset, int count, CancellationToken ct)
+          {
+            return TaskUtils.AsCompletedTask(() => stream.Read(buffer, offset, count));
+          }
+
+          protected internal virtual Task DoWriteAsync(FileSystemStream stream, byte[] buffer, int offset, int count, CancellationToken ct)
+          {
+            return TaskUtils.AsCompletedTask(() => stream.Write(buffer, offset, count));
+          }
 
         #endregion
 

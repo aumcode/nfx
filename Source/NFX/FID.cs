@@ -60,7 +60,7 @@ namespace NFX
   {
     private const int MASK_16_BIT = 0x0000ffff;
     private const int MASK_24_BIT = 0x00ffffff;
-    private static readonly DateTime START = new DateTime(2015, 1, 1);
+    private static readonly DateTime START = new DateTime(2015, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     private static int s_Seed;
 
@@ -72,7 +72,7 @@ namespace NFX
     {
       var seed = (ulong)(Interlocked.Increment(ref s_Seed) & MASK_24_BIT) << 16;
 
-      var ts = ((ulong)((DateTime.Now - START).TotalMilliseconds / 100d) & 0x0000000000fffffful) << 40;//64-24
+      var ts = ((ulong)((DateTime.UtcNow - START).TotalMilliseconds / 100d) & 0x0000000000fffffful) << 40;//64-24
       
       ts_Prefix = ts | seed;//prefix is:  24 bit timestamp + 24 bit thread seed 
 
