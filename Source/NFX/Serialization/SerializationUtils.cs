@@ -61,11 +61,17 @@ namespace NFX.Serialization
                                              Type.EmptyTypes,
                                              null);
 
+             //20150717 DKh added SlimDeserializationCtorSkipAttribute
+             var skipAttr = ctorEmpty!=null ?
+                              ctorEmpty.GetCustomAttributes<Slim.SlimDeserializationCtorSkipAttribute>(false).FirstOrDefault()
+                              : null;
+
+
              //20150715 DKh look for ISerializable .ctor
              var ctorSer = GetISerializableCtorInfo(type);
 
              //20150715 DKh, the empty .ctor SHOULD NOT be called for types that have SERIALIZABLE .ctor which is called later(after object init)
-             if (ctorEmpty!=null && ctorSer==null)
+             if (ctorEmpty!=null && skipAttr==null && ctorSer==null)
                f = Expression.Lambda<Func<object>>(Expression.New(type)).Compile(); 
              else
                f = () => FormatterServices.GetUninitializedObject(type);  

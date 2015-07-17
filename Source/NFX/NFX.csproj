@@ -532,6 +532,7 @@
     <Compile Include="Serialization\POD\PortableObjectDocument.cs" />
     <Compile Include="Serialization\SerializationUtils.cs" />
     <Compile Include="Serialization\Slim\Arrays.cs" />
+    <Compile Include="Serialization\Slim\Attributes.cs" />
     <Compile Include="Serialization\Slim\ISlimSerializer.cs" />
     <Compile Include="Serialization\Slim\PODSlimSerializer.cs" />
     <Compile Include="Serialization\Slim\RefPool.cs" />

@@ -29,16 +29,26 @@ namespace NFX.IO
     /// </summary>
     public abstract class Streamer 
     {
-            
             public static readonly UTF8Encoding UTF8Encoding = new UTF8Encoding(false, false);
-            
         
             protected Streamer(Encoding encoding = null)
             {
               m_Encoding = encoding ?? UTF8Encoding;
+
+              m_Buff32 = ts_Buff32;
+              if (m_Buff32==null)
+              {
+                var buf = new byte[32];
+                m_Buff32 = buf;
+                ts_Buff32 = buf;
+              }
+
             }
 
-            protected byte[] m_Buff32 = new byte[32];
+            [ThreadStatic]
+            private static byte[] ts_Buff32;
+
+            protected byte[] m_Buff32;
 
             protected Stream m_Stream;
             protected Encoding m_Encoding;

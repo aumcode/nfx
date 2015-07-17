@@ -636,6 +636,8 @@ namespace NFX.DataAccess.CRUD
             public bool IsEquivalentTo(Schema other)
             {
                 if (other==null) return false;
+                if (object.ReferenceEquals(this, other)) return true;
+
                 if (!string.Equals(Name, other.Name, StringComparison.InvariantCultureIgnoreCase)) return false;
                 
                 if (this.m_TableAttrs.Count != other.m_TableAttrs.Count ||

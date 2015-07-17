@@ -67,6 +67,42 @@ namespace NFX.NUnit.DataAccess
             }
         }
 
+       
+        [TestCase]
+        public void Slim_SerializeTable_DynamicRows()
+        {
+            var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
+            
+            for(var i=0; i<1000; i++)
+            {
+                var row = new DynamicRow( tbl.Schema );
+
+                row["ID"] = "POP{0}".Args(i);
+                row["FirstName"] = "Oleg";
+                row["LastName"] = "Popov-{0}".Args(i);
+                row["DOB"] = new DateTime(1953, 12, 10);
+                row["YearsInSpace"] = 12;
+            
+                tbl.Insert( row );
+            }
+
+            var ser = new SlimSerializer();
+            using(var ms = new MemoryStream())
+            {
+                ser.Serialize(ms, tbl);
+            Console.WriteLine("{0} rows took {1} bytes".Args(tbl.Count, ms.Position));
+                ms.Position = 0;
+
+                var tbl2 = ser.Deserialize(ms) as Table;
+
+                Assert.IsNotNull( tbl2 );
+                Assert.IsFalse( object.ReferenceEquals(tbl ,tbl2) );
+
+                Assert.AreEqual( 1000, tbl2.Count);
+                Assert.IsTrue( tbl.SequenceEqual( tbl2 ) );
+            }
+        }
+
         [TestCase]
         public void Slim_SerializeTable_ComplexTypedRows()
         {

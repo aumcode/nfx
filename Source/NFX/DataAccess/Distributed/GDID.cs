@@ -74,9 +74,9 @@ namespace NFX.DataAccess.Distributed
           ID = (((UInt64)authority)<<60) | (counter & COUNTER_MASK);
         }
     
-        public GDID(byte[] bytes)
+        public GDID(byte[] bytes, int startIdx = 0)
         {
-          if (bytes==null ||  bytes.Length<sizeof(uint)+sizeof(ulong))
+          if (bytes==null || startIdx <0 || (bytes.Length-startIdx)<sizeof(uint)+sizeof(ulong))
             throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+"GDID.ctor(bytes==null<minsz)");
            
           Era = bytes.ReadBEUInt32();

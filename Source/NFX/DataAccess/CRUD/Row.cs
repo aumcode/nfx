@@ -200,7 +200,7 @@ namespace NFX.DataAccess.CRUD
             public virtual bool Equals(Row other)
             {
                 if (other==null) return false;
-                if (this.Schema!=other.Schema) return false;
+                if (!this.Schema.IsEquivalentTo(other.Schema)) return false;
         
                 foreach(var fdef in Schema.AnyTargetKeyFieldDefs)
                 {
