@@ -5,6 +5,11 @@ License: Apache 2.0
 
 This framework is written in C# from scratch and runs on Windows and Linux/Mono servers.
 
+NUGET:
+ https://www.nuget.org/packages/NFX/
+ pm> install-package NFX
+
+
 IMPORTANT!
 This is NOT a typical .NET system.
 Actually, the NFX framework has very little to do with Microsoft software stack, and the purpose
@@ -41,7 +46,7 @@ NFX Does NOT use/avoids:
 * 100s of "heavy" .NET "typical" classes (DataSet/DataTable/Unity etc.)
 * References typical to many .NET projects:
     log4net, nLog, EntLib, Castle, NSpring, ServiceStack, Newtonsoft etc.
-* No NuGet support, the whole idea of "packages" is contrary to Unistack 
+* No NuGet dependencies within NFX, the whole idea of "packages" is contrary to Unistack 
 
 UNISTACK = all base components needed to create solutions/applications.
 
