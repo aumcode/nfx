@@ -37,7 +37,7 @@ namespace NFX.Web.Social
     /// <summary>
     /// Defines an abstraction for social networks
     /// </summary>
-    public abstract class SocialNetwork: Service, IWebClientCaller, ISocialNetworkImplementation
+    public abstract class SocialNetwork: ServiceWithInstrumentationBase<object>, IWebClientCaller, ISocialNetworkImplementation
     {
       #region Const
 
@@ -135,21 +135,27 @@ namespace NFX.Web.Social
           KeepAlive = true;
           Pipelined = true;
         }
+
+        protected override void Destructor()
+        {
+          DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
+          base.Destructor();
+        }
         
       #endregion
 
       #region fields
 
         private bool m_InstrumentationEnabled;
+        private Time.Event m_InstrumentationEvent;
         
         private int m_WebServiceCallTimeoutMs;
-
 
         private int m_stat_Login;
         private int m_stat_LoginErr;
         private int m_stat_RenewLongTermToken;
         private int m_stat_PostMessage;
-
+        
       #endregion
 
       #region Properties
@@ -161,32 +167,25 @@ namespace NFX.Web.Social
         /// </summary>
         [Config]
         [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION, CoreConsts.EXT_PARAM_GROUP_SOCIAL)]
-        public bool InstrumentationEnabled
+        public override bool InstrumentationEnabled
         {
           get { return m_InstrumentationEnabled;}
           set
           { 
              m_InstrumentationEnabled = value;
-             var evt = App.EventTimer.Events[instrTimerEventName()];
-             if (evt==null)
+             if (m_InstrumentationEvent==null)
              {
                if (!value) return;
-               new Time.Event(App.EventTimer, instrTimerEventName(), e => AcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
+               resetStats();
+               m_InstrumentationEvent = new Time.Event(App.EventTimer, null, e => AcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
              }
              else
              {
                if (value) return;
-               evt.Dispose();
+               DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
              }
           }
         }
-
-        /// <summary>
-        /// Returns named parameters that can be used to control this component
-        /// </summary>
-        public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-
 
         /// <summary>
         /// Globally uniquelly identifies social network architype
@@ -434,31 +433,6 @@ namespace NFX.Web.Social
           return returnURL;
         }
 
-
-        /// <summary>
-        /// Returns named parameters that can be used to control this component
-        /// </summary>
-        public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-        { 
-          return ExternalParameterAttribute.GetParameters(this, groups); 
-        }
-
-        /// <summary>
-        /// Gets external parameter value returning true if parameter was found
-        /// </summary>
-        public bool ExternalGetParameter(string name, out object value, params string[] groups)
-        {
-          return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-        }
-          
-        /// <summary>
-        /// Sets external parameter value returning true if parameter was found and set
-        /// </summary>
-        public bool ExternalSetParameter(string name, object value, params string[] groups)
-        {
-          return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-        }
-
       #endregion
 
       #region Protected
@@ -483,12 +457,6 @@ namespace NFX.Web.Social
 
       #region .pvt .impl
 
-                    private string instrTimerEventName()
-                    {
-                      return "SocialNetwork::" + GetType().FullName + "-" + Name;
-                    }
-
-
                     private void dumpStats()
                     {
                       var src = this.Name;
@@ -503,6 +471,14 @@ namespace NFX.Web.Social
                       m_stat_RenewLongTermToken = 0;
 
                       Instrumentation.PostMsgCount.Record(src, m_stat_PostMessage);
+                      m_stat_PostMessage = 0;
+                    }
+
+                    private void resetStats()
+                    {
+                      m_stat_Login = 0;
+                      m_stat_LoginErr = 0;
+                      m_stat_RenewLongTermToken = 0;
                       m_stat_PostMessage = 0;
                     }
       #endregion

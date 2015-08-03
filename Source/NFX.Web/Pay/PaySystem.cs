@@ -33,7 +33,7 @@ namespace NFX.Web.Pay
   /// Instances of descendants of this class is typically created and configured in PaySystemStarter class.
   /// Then particular pay system can be obtained from PaySystem.Instances[PAY_SYSTEM_NAME] indexer
   /// </summary>
-  public abstract class PaySystem : Service, IWebClientCaller, IPaySystemImplementation
+  public abstract class PaySystem : ServiceWithInstrumentationBase<object>, IWebClientCaller, IPaySystemImplementation
   {
     #region CONSTS
 
@@ -181,11 +181,18 @@ namespace NFX.Web.Pay
         m_Sessions = new List<PaySession>();
       }
 
+      protected override void Destructor()
+      {
+        DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
+        base.Destructor();
+      }
+
     #endregion
 
     #region Pvt/Prot/Int Fields
       
       private bool m_InstrumentationEnabled;
+      private Time.Event m_InstrumentationEvent;
 
       private IConfigSectionNode m_DefaultSesssionConnParamsCfg;
       private PayConnectionParameters m_DefaultSessionConnectParams;
@@ -210,6 +217,31 @@ namespace NFX.Web.Pay
     #endregion
 
     #region Public properties
+
+      /// <summary>
+      /// Implements IInstrumentable
+      /// </summary>
+      [Config(Default=false)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION, CoreConsts.EXT_PARAM_GROUP_PAY)]
+      public override bool InstrumentationEnabled
+      {
+        get { return m_InstrumentationEnabled;}
+        set
+        { 
+            m_InstrumentationEnabled = value;
+            if (m_InstrumentationEvent==null)
+            {
+              if (!value) return;
+              resetStats();
+              m_InstrumentationEvent = new Time.Event(App.EventTimer, null, e => AcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
+            }
+            else
+            {
+              if (value) return;
+              DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
+            }
+        }
+      }
 
       [Config("default-session-connect-params")]
       public IConfigSectionNode DefaultSesssionConnectParamsCfg
@@ -246,64 +278,6 @@ namespace NFX.Web.Pay
       public abstract Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
 
       public abstract Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null);
-
-      #region IInstrumentable implementation
-
-        /// <summary>
-        /// Implements IInstrumentable
-        /// </summary>
-        [Config(Default=false)]
-        [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION, CoreConsts.EXT_PARAM_GROUP_PAY)]
-        public bool InstrumentationEnabled
-        {
-          get { return m_InstrumentationEnabled; }
-          set 
-          { 
-            m_InstrumentationEnabled = value;
-            var evt = App.EventTimer.Events[instrTimerEventName()];
-            if (evt==null)
-            {
-              if (!value) return;
-              new Time.Event(App.EventTimer, instrTimerEventName(), e => DoAcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
-            }
-            else
-            {
-              if (value) return;
-              evt.Dispose();
-            }
-          }
-        }
-
-        /// <summary>
-        /// Returns named parameters that can be used to control this component
-        /// </summary>
-        public IEnumerable<KeyValuePair<string, Type>> ExternalParameters { get { return ExternalParameterAttribute.GetParameters(this); } }
-
-        /// <summary>
-        /// Returns named parameters that can be used to control this component
-        /// </summary>
-        public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-        {
-          return ExternalParameterAttribute.GetParameters(this, groups);
-        }
-
-        /// <summary>
-        /// Gets external parameter value returning true if parameter was found
-        /// </summary>
-        public bool ExternalGetParameter(string name, out object value, params string[] groups)
-        {
-          return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-        }
-
-        /// <summary>
-        /// Sets external parameter value returning true if parameter was found and set
-        /// </summary>
-        public bool ExternalSetParameter(string name, object value, params string[] groups)
-        {
-          return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-        }
-
-      #endregion
 
     #endregion
 
@@ -425,12 +399,6 @@ namespace NFX.Web.Pay
 
     #region .pvt .impl
 
-                    private string instrTimerEventName()
-                    {
-                      return "PaySystem::" + GetType().FullName + "-" + Name;
-                    }
-
-
                     private void dumpStats()
                     {
                       var src = this.Name;
@@ -530,6 +498,21 @@ namespace NFX.Web.Pay
                         } 
 
                       #endregion
+                    }
+
+                    private void resetStats()
+                    {
+                      m_stat_ChargeCount = m_stat_ChargeErrorCount = 0;
+                      m_stat_ChargeAmounts.Clear();
+
+                      m_stat_CaptureCount = m_stat_CaptureErrorCount = 0;
+                      m_stat_CaptureAmounts.Clear();
+
+                      m_stat_RefundCount = m_stat_RefundErrorCount = 0;
+                      m_stat_RefundAmounts.Clear();
+
+                      m_stat_TransferCount = m_stat_TransferErrorCount = 0;
+                      m_stat_TransferAmounts.Clear();
                     }
 
       #endregion

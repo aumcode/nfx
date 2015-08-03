@@ -24,7 +24,7 @@ namespace NFX.IO.ErrorHandling
     /// <summary>
     /// Implements Adler32 checksum algorithm
     /// </summary>    
-    public class Adler32 
+    public struct Adler32 
     {
         #region CONSTS
 
@@ -56,9 +56,7 @@ namespace NFX.IO.ErrorHandling
             if (text.IsNullOrWhiteSpace()) return 0;
 
             var adler = new Adler32();
-            for(var i=0; i<text.Length; i++)
-             adler.Add( text[i] );
-
+            adler.Add( text );
             return adler.m_Value;
           }
       
@@ -74,14 +72,12 @@ namespace NFX.IO.ErrorHandling
 
         #endregion
 
-        #region .ctor
-          public Adler32(){ }
-
-        #endregion
+        
 
 
         #region Private Fields
-          private uint m_Value = 1;
+          private uint m_Value;
+          private bool m_Started;
         #endregion   
 
         #region Properties
@@ -95,24 +91,6 @@ namespace NFX.IO.ErrorHandling
         #region Public        
                
             /// <summary>
-            /// Adds byte to checksum
-            /// </summary>
-            public void Add(int value)
-            {
-               uint lo = m_Value & 0xffff;
-               uint hi = m_Value >> 16;
-                       
-               lo += (uint)(value & 0xff);
-               hi += lo;
-               
-               lo %= ADLER_BASE;
-               hi %= ADLER_BASE;        
-               
-               m_Value = (hi << 16) + lo;
-            }
-               
-                
-            /// <summary>
             /// Addes byte[] to checksum
             /// </summary>
             public void Add(byte[] buff)
@@ -122,6 +100,12 @@ namespace NFX.IO.ErrorHandling
                
             public void Add(byte[] buff, int offset, int count)
             {
+                if (!m_Started)
+                {
+                  m_Started = true;
+                  m_Value = 1;//structs ca not have dflt ctor, needed to init on first call not to make a class instance
+                }
+
                 uint lo = m_Value & 0xFFFF;
                 uint hi = m_Value >> 16;
                        
@@ -143,6 +127,47 @@ namespace NFX.IO.ErrorHandling
                        
                 m_Value = (hi << 16) | lo;
             }
+
+
+
+            /// <summary>
+            /// Addes string to checksum
+            /// </summary>
+            public void Add(string buff)
+            {
+               Add(buff, 0, buff.Length);
+            }
+
+            public void Add(string buff, int offset, int count)
+            {
+                if (!m_Started)
+                {
+                  m_Started = true;
+                  m_Value = 1;//structs ca not have dflt ctor, needed to init on first call not to make a class instance
+                }
+
+                uint lo = m_Value & 0xFFFF;
+                uint hi = m_Value >> 16;
+                       
+                while (count > 0) 
+                {
+                  // Modulo calc is deferred
+                  var n = count < NMAX ? count : NMAX;
+
+                  count -= n;
+                  while (--n >= 0)
+                  {
+                    lo += (uint)buff[offset];
+                    hi += lo;
+                    offset++;
+                  }
+                  lo %= ADLER_BASE;
+                  hi %= ADLER_BASE;
+                }
+                       
+                m_Value = (hi << 16) | lo;
+            }
+
         #endregion
 
 

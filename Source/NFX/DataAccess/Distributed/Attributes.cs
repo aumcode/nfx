@@ -21,36 +21,11 @@ using System.Text;
 
 namespace NFX.DataAccess.Distributed
 {
-    
-    /// <summary>
-    /// Specifies modes of wrapping handling of parcel payload.
-    /// This setting controls whether parcel's payload is sub-serialized into inner byte[].
-    /// When a parcel contains simple data payload (i.e. typed row), then wrapping its content in extra byte[] would
-    ///  cause extra overhead in which case NotWrapped mode should be used (default).
-    /// </summary>
-    public enum ParcelPayloadWrappingMode
-    { 
-      /// <summary>
-      /// The parcel payload will be stored as an object graph which will be completely serialized instead of byte[].
-      /// This option should be used for parcels that have simple structure without many object ref fields and without nesting
-      ///  because wrapping parcel content in inner byte[] would cause extra overhead due to simple structure of payload.
-      ///  This is the default setting which is applicable to most common cases
-      /// </summary>
-      NotWrapped = 0, 
-      
-      /// <summary>
-      /// The parcel payload will be wrapped into byte[] for (re-)transmission efficency.
-      /// Use this setting when parcel contains large object graph with nesting or many reference fields 
-      /// </summary>
-      Wrapped 
-    }
-    
-    
     /// <summary>
     /// Decorates Pacel-derivative classes specifying distributed data store options
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
-    public sealed class DataParcelAttribute : Attribute, IParcelCachePolicy
+    public sealed class DataParcelAttribute : Attribute, ICachePolicy
     {
 
         /// <summary>
@@ -97,7 +72,6 @@ namespace NFX.DataAccess.Distributed
                              
                              bool supportsMerge = false,
                              Type shardingParcel = null,
-                             ParcelPayloadWrappingMode wrappingMode = ParcelPayloadWrappingMode.NotWrapped,
                              string replicationChannel = null,
                              string cacheTableName = null,
                              int cacheWriteMaxAgeSec = -1,
@@ -117,7 +91,6 @@ namespace NFX.DataAccess.Distributed
             
             SupportsMerge = supportsMerge;
             ShardingParcel = shardingParcel;
-            PayloadWrappingMode = wrappingMode;
             ReplicationChannel = replicationChannel;
             CacheTableName = cacheTableName;
             CacheWriteMaxAgeSec = cacheWriteMaxAgeSec <0 ? (int?)null : cacheWriteMaxAgeSec;
@@ -163,15 +136,6 @@ namespace NFX.DataAccess.Distributed
         /// and even be stored in different back-end technologies (i.e. NoSQL/RDBMS/flat files)
         /// </remarks>
         public string AreaName { get; private set;}
-
-
-        /// <summary>
-        /// Specifies modes of wrapping handling of parcel payload.
-        /// This setting controls whether parcel's payload is sub-serialized into inner byte[].
-        /// When a parcel contains simple typed data payload (i.e. typedrow), then wrapping its content in extra byte[] would
-        ///  cause extra overhead in which case NotWrapped mode should be used (default).
-        /// </summary>
-        public ParcelPayloadWrappingMode PayloadWrappingMode { get; private set;}
 
 
         /// <summary>

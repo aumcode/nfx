@@ -25,159 +25,96 @@ using System.Collections;
 namespace NFX.DataAccess.Distributed
 {
     /// <summary>
-    /// Defines a command sent into IDistributedDataStore implementor to retrieve or change data.
-    /// A Command is a named bag of paremeters where every parameter has a name and a value 
+    /// Defines a command sent into an IDistributedDataStore implementor to retrieve or change(if supported) data.
+    /// A Command is a named bag of paremeters where every parameter has a name and a value.
+    /// Every command has a unique Identity(GUID) which represents a token of the whole command state (name, type,all params).
+    /// The identity is used for quick lookup/caching. The identity may be supplied externally as
+    /// business code may map certain parameters into GUID and later reuse the same GUID to retrieve the cached command result, for example
+    ///  a web server app may cache command "GetPurchases(user=123, year=2015, month=3)" under session key "MY_PURCHASES_201503" to later
+    ///  retrieve a cached (if available) command results from the DB layer, this way the DB server does not have to store the whole
+    ///  commands with all params as the cache key (which would have been slow to compare and would have induced GC pressure).
+    ///  Warning: DO NOT CACHE command identity value on a client (i.e. web page) in an un-encrypted state, as this is a security flaw
     /// </summary>
     [Serializable]
-    public class Command : List<Command.Param>, IParameters, INamed, IULongHashProvider, IShardingIDProvider
+    public class Command : List<Command.Param>, INamed, IShardingPointerProvider, ICachePolicy
     {
-            #region Inner Classes
                 /// <summary>
                 /// Represents a distributed command parameter
                 /// </summary>
                 [Serializable]
-                public sealed class Param : IParameter
+                public sealed class Param 
                 {
                     public Param(string name, object value = null)
                     {
-                        m_Name = name;
-                        m_Value = value;
+                        Name = name ?? string.Empty;
+                        Value = value;
                     }
 
-                    #region Fields
-                        private string m_Name;  
-                        private object m_Value; 
-                    #endregion
 
-                    #region Properties
-                        public string Name   { get { return m_Name ?? string.Empty; } }
+                    public readonly string Name;
+                    public readonly object Value;
 
-                        public object Value  { get { return m_Value;} }
-
-                        public bool HasValue { get {return true; } }
-
-                        public bool IsInput  { get { return true;} }
-                    #endregion
-
-                    #region Public
-
-                        public override string ToString()
-                        {
-                          return "{0}='{1}'".Args(m_Name ?? StringConsts.NULL_STRING, m_Value ?? StringConsts.NULL_STRING);
-                        }
-
-                        public override int GetHashCode()
-                        {
-                          var result = Name.GetHashCode();
-                          var valueHC = 0;
-                          if (m_Value!=null)
-                          {
-                             if (m_Value is IStructuralEquatable)
-                              valueHC = ((IStructuralEquatable)m_Value).GetHashCode(StructuralComparisons.StructuralEqualityComparer);
-                             else
-                              valueHC = m_Value.GetHashCode();
-                          }
-                          return result ^ valueHC;
-                        }
-
-                        /// <summary>
-                        /// Equates param by name and values
-                        /// </summary>
-                        public override bool Equals(object obj)
-                        {
-                          var other = obj as Param;
-                          if (other==null) return false;
-                          if (!string.Equals(m_Name, other.m_Name, StringComparison.InvariantCultureIgnoreCase)) return false;
-
-                          if (this.m_Value==null && other.m_Value==null) return true;
-
-                          if (this.m_Value!=null)
-                          {
-                            if (this.m_Value is IStructuralEquatable)
-                            {                                                    
-                              return ((IStructuralEquatable)this.m_Value).Equals(other.m_Value, StructuralComparisons.StructuralEqualityComparer);
-                            }
-                            return this.m_Value.Equals(other.m_Value);
-                          }
-
-                          return false;
-                        }
-                    #endregion
+                    public override string ToString()
+                    {
+                      return "{0}='{1}'".Args(Name, Value ?? StringConsts.NULL_STRING);
+                    }
                 }
 
-
-                /// <summary>
-                /// Used to denote a list of values in command params, use this class instead of array as it gives better hash distribution
-                /// </summary>
-                [Serializable]
-                public class PList : List<object>
-                {
-                  public override bool Equals(object obj)
-                  {
-                    var other = obj as PList;
-                    if (other==null) return false;
-                    
-                    //loop is faster that SequenceEquals()
-                    if (this.Count!=other.Count) return false;
-                    for(var i=0; i<this.Count; i++)
-                     if (!this[i].Equals(other[i])) return false; 
-                    
-                    return true;
-                  }
-
-                  public override int GetHashCode()
-                  {
-                    var csum = this.Count;
-                    for(var i=0; i<this.Count; i++)
-                     csum ^= this[i].GetHashCode() << (i % 3);
-                    return csum;
-                  }
-                }
-            #endregion
         
         #region .ctor
             
-            public Command(string name, params Param[] pars )
+            public Command(Guid? identity, string name, params Param[] pars )
             {
+                m_Identity = identity ?? Guid.NewGuid(); 
                 m_Name = name;
                 if (pars!=null) AddRange(pars);
             }
 
-            public Command(string name, Parcel shardingParcel, params Param[] pars ) : this(name, 
-                                                                                            shardingParcel.NonNull(text: "Command.ctor(shardingParcel=null)").GetType(), 
-                                                                                            shardingParcel.NonNull(text: "Command.ctor(shardingParcel=null)").ShardingID, 
+            public Command(Guid? identity, string name, Parcel shardingParcel, params Param[] pars ) : this(identity,
+                                                                                            name, 
+                                                                                            shardingParcel.NonNull(text: "Command.ctor(shardingParcel=null)").ShardingPointer, 
                                                                                             pars)
             {
                
             }
 
-            public Command(string name, Type shardingParcel, object shardingID, params Param[] pars )
+            public Command(Guid? identity, string name, ShardingPointer shardingPtr, params Param[] pars )
             {
+                m_Identity = identity ?? Guid.NewGuid(); 
+
                 m_Name = name;
                 
-                if (shardingParcel!=null)
-                 if (!typeof(Parcel).IsAssignableFrom(shardingParcel))
-                   throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+ GetType().FullName+".ctor(shardingParcel='"+shardingParcel.FullName+"' isnot Parcel-derived");
+                if (!shardingPtr.IsAssigned)
+                   throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+ GetType().FullName+".ctor(!shardingPtr.IsAssigned)");
                 
-                m_ShardingParcel = shardingParcel;
-                m_ShardingID = shardingID;
+                m_ShardingPointer = shardingPtr;
 
                 if (pars!=null) AddRange(pars);
             }
-
         #endregion
         
         #region Fields
             
+            private Guid m_Identity;
             private string m_Name;
-
-            private Type m_ShardingParcel;
-            private object m_ShardingID;
+            private ShardingPointer m_ShardingPointer;
 
         #endregion
 
 
         #region Properties
+            
+            
+            /// <summary>
+            /// Returns the identity of this instance, that is - an ID that UNIQUELY identifies the instance of this command
+            /// including all of the names, parameters, values. This is needed for Equality comparison and cache lookup.
+            /// The identity is either generated by .ctor or supplied to it if it is cached (i.e. in a user session)
+            /// </summary>
+            public Guid Identity
+            {
+               get { return m_Identity;}
+            }
+            
             
             /// <summary>
             /// Returns Command name, providers use it to locate modules particular to backend implementation that they represent
@@ -188,19 +125,11 @@ namespace NFX.DataAccess.Distributed
             }
 
             /// <summary>
-            /// Returns the type of parcel that sharding is performed on or null.
+            /// Returns the ShardingPointer for this command
             /// </summary>
-            public virtual Type ShardingParcel
+            public virtual ShardingPointer ShardingPointer
             {
-                get { return m_ShardingParcel; }
-            }
-
-            /// <summary>
-            /// Returns the ID used for sharding or null
-            /// </summary>
-            public virtual object ShardingID
-            {
-                get { return m_ShardingID; }
+                get { return m_ShardingPointer; }
             }
 
 
@@ -209,32 +138,71 @@ namespace NFX.DataAccess.Distributed
             /// </summary>
             public Param this[string name]
             {
-                get {return FindParamByName(name) as Param;}
+                get {return this.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));}
             }
-            
-            
-            public IEnumerable<IParameter> AllParameters
+
+
+            /// <summary>
+            /// Implements IParcelCachePolicy contract.
+            /// The default implementation returns null.
+            /// Override to supply a value for maximum length of this isntance stay in cache
+            ///  that may depend on particular command state (i.e. param values) 
+            /// </summary>
+            public virtual int? CacheWriteMaxAgeSec
             {
-                get { return this; }
+                get { return null; }
             }
-           
+
+            /// <summary>
+            /// Implements IParcelCachePolicy contract.
+            /// The default implementation returns null.
+            /// Override to supply a value for maximum validity span of cached command data
+            ///  that may depend on particular command state (i.e. param values). 
+            /// </summary>
+            public virtual int? CacheReadMaxAgeSec
+            {
+                get { return null; }
+            }
+
+            /// <summary>
+            /// Implements IParcelCachePolicy contract.
+            /// The default implementation returns null.
+            /// Override to supply a relative cache priority of this command data
+            ///  that may depend on particular command state (i.e. param values). 
+            /// </summary>
+            public virtual int? CachePriority
+            {
+                get { return null; }
+            }
+
+            /// <summary>
+            /// Implements IParcelCachePolicy contract.
+            /// The implementation returns null for commands
+            /// </summary>
+            string ICachePolicy.CacheTableName
+            {
+                get { return null; }
+            }
+
+            /// <summary>
+            /// Implements IParcelCachePolicy contract.
+            /// The default implementation returns null.
+            /// Override to supply a different absolute cache expiration UTC timestamp for this command data
+            ///  that may depend on particular command state (i.e. field values). 
+            /// </summary>
+            public DateTime? CacheAbsoluteExpirationUTC
+            {
+                get { return null; }
+            }
+            
        #endregion
 
        #region Public
             
-            public IParameter ParamByName(string name)
-            {
-                return this.First(p => string.Equals(p.Name, name, StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            public IParameter FindParamByName(string name)
-            {
-                return this.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.InvariantCultureIgnoreCase));
-            }
 
             public override string ToString()
             {
-                return "{0}[{1}]({2})".Args(GetType().FullName, Name, this.Count());
+                return "{0}[{1}]('{2}')`{3}".Args(GetType().Name, m_Identity, Name, this.Count());
             }
 
 
@@ -242,43 +210,13 @@ namespace NFX.DataAccess.Distributed
             {
               var other = obj as Command;
               if (other==null) return false;
-              if (this.GetType() != other.GetType()) return false;
-              if (!string.Equals(this.Name, other.Name, StringComparison.InvariantCultureIgnoreCase)) return false;
-
-              //Loop is faster that SequenceEquals()
-              //if (!this.SequenceEqual(other)) return false;
-              if (this.Count!=other.Count) return false;
-              for(var i=0; i<this.Count; i++)
-               if (!this[i].Equals(other[i])) return false;
-
-              if (this.ShardingParcel != other.ShardingParcel) return false;//Type may use ref comparison
-              
-              if (this.ShardingID!=null) 
-              {
-               if (other.ShardingID==null) return false;
-               if (!this.ShardingID.Equals(other.ShardingID)) return false;
-              }
-              else if (other.ShardingID!=null) return false;
-
-              return true;
+                           
+              return this.m_Identity == other.Identity;
             }
 
             public override int GetHashCode()
             {
-              var result = this.Name.GetHashCode();
-              var csum = this.Count;
-              for(var i=0; i<this.Count; i++)
-               csum ^= this[i].GetHashCode() << (i % 3);
-              return result ^ csum;
-            }
-
-            public ulong GetULongHash()
-            {
-              ulong result = ((ulong)this.Name.GetHashCode() << 32) ^ ((ulong)this.GetType().Name.GetHashCode() << 32);
-              var csum = this.Count;
-              for(var i=0; i<this.Count; i++)
-               csum ^= this[i].GetHashCode() << (i % 3);
-              return result ^ (ulong)(uint)csum;
+              return this.m_Identity.GetHashCode();
             }
 
        #endregion

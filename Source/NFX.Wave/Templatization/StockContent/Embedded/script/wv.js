@@ -211,6 +211,41 @@ var WAVE = (function(){
         }
         return result;
     }
+
+    var intPrefixes = ["", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+    var floatPrefixes = ["", "m", "µ", "n", "p", "f", "a", "z", "y"];
+
+    var siPrefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+
+    // converts num to its string representation in SI (Le Système International d’Unités, SI) with precision desired
+    // so 1000 = "1.00k", .1="100.00m", 23.55 = "23.55", 999.999="1.00k"
+    published.siNum = function (num, decimalPlaces) {
+
+      if (typeof (decimalPlaces) === undefined) decimalPlaces = 2;
+
+      if (num == 0) return num.toFixed(decimalPlaces);
+
+      var n = num;
+      if (num < 0) n = -n;
+
+      var k = 0;
+      var res = n.toFixed(decimalPlaces) + siPrefixes[k + 8];
+
+      while (n >= 1000) { n /= 1000; k++; }
+      while (n < 1) { n *= 1000; k--; }
+
+      var roundK = Math.pow(10, decimalPlaces);
+
+      var n = Math.round(n * roundK) / roundK;
+
+      while (n >= 1000) { n /= 1000; k++; }
+      while (n < 1) { n *= 1000; k--; }
+
+      if (num < 0) n = -n;
+      var res = n.toFixed(decimalPlaces) + siPrefixes[k + 8];
+
+      return res;
+    }
     
     //True for [a-zA-Z0-9]
     published.charIsAZLetterOrDigit = function(c){

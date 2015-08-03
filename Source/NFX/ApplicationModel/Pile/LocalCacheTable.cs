@@ -471,7 +471,7 @@ namespace NFX.ApplicationModel.Pile
 
      
 
-    public object GetOrPut(TKey key, Func<ICacheTable<TKey>, TKey, object, object> valueFactory, object factoryContext, out PutResult? putNewResult, int ageSec = 0, int putMaxAgeSec = 0, int putPrioroty = 0, DateTime? putAbsoluteExpirationUTC = null)
+    public object GetOrPut(TKey key, Func<ICacheTable<TKey>, TKey, object, object> valueFactory, object factoryContext, out PutResult? putNewResult, int ageSec = 0, int putMaxAgeSec = 0, int putPriority = 0, DateTime? putAbsoluteExpirationUTC = null)
     { 
       if (valueFactory==null) 
        throw new PileCacheException(StringConsts.ARGUMENT_ERROR+GetType().Name+".GetOrPut(valueFactory==null)");
@@ -489,7 +489,7 @@ namespace NFX.ApplicationModel.Pile
 
         result = valueFactory(this, key, factoryContext);
 
-        putNewResult = this.Put(key, result, putMaxAgeSec, putPrioroty, putAbsoluteExpirationUTC);
+        putNewResult = this.Put(key, result, putMaxAgeSec, putPriority, putAbsoluteExpirationUTC);
       }
 
       return result;

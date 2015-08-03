@@ -35,6 +35,23 @@ namespace NFX
   public abstract class DisposableObject : IDisposable
   {
 
+    #region STATIC
+
+       /// <summary>
+       /// Checks to see if the IDisposable reference is not null and calls Dispose() then setting it to null.
+       /// Returns false if it is already null
+       /// </summary>
+       public static bool DisposeAndNull<T>(ref T obj) where T : class, IDisposable
+       {
+         if (obj==null) return false;
+         obj.Dispose();
+         obj = null;
+         return true;
+       }
+
+    #endregion
+
+
     #region .ctor / .dctor
      
       ~DisposableObject()

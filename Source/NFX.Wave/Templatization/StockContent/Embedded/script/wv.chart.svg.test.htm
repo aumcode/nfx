@@ -24,7 +24,7 @@
 
     rect.wvXZoneBackground { fill: #e6e9e9; }
     text.wvAxisLabel { fill: #000000; font-family: verdana, sans-serif; font-size: 10px; text-anchor: start; }
-    /*text.wvXAxisLabel { fill: #000000; font-size: 10px; }*/
+    text.wvYAxisLabel { fill: #000000; font-size: 10px; text-anchor: end; }
 
     rect.wvYZoneBackground { fill: #e9e6e6; }
 
@@ -171,9 +171,9 @@
 
 
       series0.dataSet().addPoint(new Date("2014/09/23 12:00"), 0, "1st point");
-      series0.dataSet().addPoint(new Date("2014/09/23 12:20"), 30, "2nd point");
-      series0.dataSet().addPoint(new Date("2014/09/23 12:40"), 110, "3rd point");
-      series0.dataSet().addPoint(new Date("2014/09/23 13:00"), 150, "4th point");
+      series0.dataSet().addPoint(new Date("2014/09/23 12:20"), .003, "2nd point");
+      series0.dataSet().addPoint(new Date("2014/09/23 12:40"), .003, "3rd point");
+      series0.dataSet().addPoint(new Date("2014/09/23 13:00"), .003, "4th point");
 
       chart.sZone().attachToRulerScope("");
 

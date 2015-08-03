@@ -116,7 +116,7 @@ namespace NFX.Glue
       private CallStatus m_CallStatus;
       private string m_DispatchErrorMessage;
       private volatile ResponseMsg m_ResponseMsg;
-      private byte m_ResponseInspected;
+      private int m_ResponseInspected;
       private int m_TimeoutMs;
 
       private long m_StatStartTimeTicks;
@@ -244,7 +244,7 @@ namespace NFX.Glue
             if (m_TaskCompletionSource!=null) return m_TaskCompletionSource.Task;
             var tcs = new TaskCompletionSource<CallSlot>(this);
                   
-            if (Available) tcs.SetResult(this);//Complete tasks for OneWay or already completed calls                                  
+            if (Available) tcs.SetResult(this);//Complete tasks for OneWay or already completed calls
             else
             if (CallStatus!=CallStatus.Dispatched) tcs.SetResult(this);//Complete task for calls that are not pending - were not dispatched properly or timed out
             else
@@ -262,7 +262,16 @@ namespace NFX.Glue
       /// </summary>
       public Task<TCallResult> AsTaskReturning<TCallResult>()
       {
-        return this.AsTask.ContinueWith<TCallResult>( (cst) => cst.Result.GetValue<TCallResult>() );
+        return this.AsTask.ContinueWith<TCallResult>( (cst) => cst.Result.GetValue<TCallResult>() , TaskContinuationOptions.ExecuteSynchronously);
+      }
+
+      /// <summary>
+      /// Creates a wrapper task around CallSlot.AsTask and returns CallSlot.CheckVoidValue() 
+      /// Note: the created wrapper task is not cached
+      /// </summary>
+      public Task AsTaskReturningVoid()
+      {
+        return this.AsTask.ContinueWith( (cst) => cst.Result.CheckVoidValue() , TaskContinuationOptions.ExecuteSynchronously);
       }
 
 
@@ -349,10 +358,8 @@ namespace NFX.Glue
            }          
 
            
-           if (0==Thread.VolatileRead(ref m_ResponseInspected))
+           if (Interlocked.CompareExchange(ref m_ResponseInspected, 1, 0) == 0)
            { 
-                Thread.VolatileWrite(ref m_ResponseInspected, 1);
-
                 var response = m_ResponseMsg;
 
                 IClientMsgInspector inspector = null;
@@ -446,9 +453,10 @@ namespace NFX.Glue
        //this must be called from under lock(m_Sync)
        private void completePendingTask()
        {
-          if (m_TaskCompletionSource==null) return;
+          if (m_TaskCompletionSource==null) return; //must be here
+          
           if (m_TaskCompletionSource.Task.IsCompleted) return;
-
+                   
           //Invoke asynchronously, as TrySetResult may synchronously run long continuations
           Task.Run( () => m_TaskCompletionSource.TrySetResult(this) );
        }
@@ -462,21 +470,21 @@ namespace NFX.Glue
                       internal static class TimeoutReactor
                       {
                         private const int BUCKETS = 127;//prime
-                        private const int GRANULARITY_MS = 1000;
+                        private const int GRANULARITY_MS = 500;
 
-                        private static List<CallSlot>[] s_Calls = new List<CallSlot>[BUCKETS];
+                        private static LinkedList<CallSlot>[] s_Calls = new LinkedList<CallSlot>[BUCKETS];
                         private static Thread s_Thread;
 
                         static TimeoutReactor()
                         {
-                          for(var i=0; i<BUCKETS; i++) s_Calls[i] = new List<CallSlot>(); 
+                          for(var i=0; i<BUCKETS; i++) s_Calls[i] = new LinkedList<CallSlot>(); 
                         }
 
                         public static void Subscribe(CallSlot call)
                         {
                           var bucket = s_Calls[(call.GetHashCode() & CoreConsts.ABS_HASH_MASK) % BUCKETS];
 
-                          lock(bucket) bucket.Add(call);
+                          lock(bucket) bucket.AddLast(call);
                           if (s_Thread==null)
                           {
                             lock(typeof(TimeoutReactor))
@@ -494,27 +502,49 @@ namespace NFX.Glue
                          {
                            while(App.Active)
                            {
+                             try
+                             {
+                               scanOnce();
+                             }
+                             catch(Exception err)
+                             {
+                               App.Log.Write(new Log.Message {
+                                 Type = Log.MessageType.Critical,
+                                 Topic = CoreConsts.GLUE_TOPIC,
+                                 From = typeof(TimeoutReactor).FullName + ".scanOnce()",
+                                 Text = "Exception leaked: " + err.ToMessageWithType(),
+                                 Exception = err
+                               });
+                             } 
+                           
+                             Thread.Sleep(GRANULARITY_MS);
+                           }
+                           s_Thread = null;
+                         }
+
+                         private static void scanOnce()
+                         {
                              for(var i=0;i<BUCKETS; i++)
                              {
                                var  bucket = s_Calls[i];
                                lock(bucket)
                                {
-                                 for(var j=0; j<bucket.Count;)
+                                 var node = bucket.First;       
+                                 while(node!=null)
                                  {
-                                    var call = bucket[j];
+                                    var call = node.Value;
                                     var status = call.CallStatus; //this will detect timeout
-                                    if (status==CallStatus.Timeout)
+                                    if (status!=CallStatus.Dispatched || call.OneWay)//oneway check for clarity, one way calls do no get registered here anyway
                                     {
-                                      bucket.RemoveAt(j);
+                                      var toDelete = node;
+                                      node = node.Next;
+                                      bucket.Remove( toDelete );
                                       continue;
                                     }
-                                    j++;
-                                 }  
+                                    node = node.Next;
+                                 }
                                }
                              }
-                             Thread.Sleep(GRANULARITY_MS);
-                           }
-                           s_Thread = null;
                          }
 
                       }//TimeoutReactor

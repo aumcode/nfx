@@ -30,7 +30,7 @@ namespace NFX.Glue
     /// <summary>
     /// Provides base functionality for internal glue component implementations 
     /// </summary>
-    public abstract class GlueComponentService : Service<IGlueImplementation>, IInstrumentable
+    public abstract class GlueComponentService : ServiceWithInstrumentationBase<IGlueImplementation>
     {
         internal GlueComponentService(IGlueImplementation glue) : base(glue)
         {
@@ -60,23 +60,10 @@ namespace NFX.Glue
             /// </summary>
             [Config(Default=false)]
             [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
-            public virtual bool InstrumentationEnabled
+            public override bool InstrumentationEnabled
             {
               get { return m_InstrumentationEnabled;}
               set { m_InstrumentationEnabled = value;}
-            }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            { 
-              return ExternalParameterAttribute.GetParameters(this, groups); 
             }
 
         #endregion
@@ -112,23 +99,6 @@ namespace NFX.Glue
 
           }
 
-          
-          /// <summary>
-          /// Gets external parameter value returning true if parameter was found
-          /// </summary>
-          public virtual bool ExternalGetParameter(string name, out object value, params string[] groups)
-          {
-              return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-          }
-          
-          /// <summary>
-          /// Sets external parameter value returning true if parameter was found and set
-          /// </summary>
-          public virtual bool ExternalSetParameter(string name, object value, params string[] groups)
-          {
-            return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-          }
-                  
         #endregion
 
 

@@ -103,7 +103,10 @@ namespace WinFormsTest
 
     private void button7_Click(object sender, EventArgs e)
     {
-     
+      var rec =  Record.Make<BusinessLogic.PatientRecord>();
+      recordContextPanel1.AttachModel( rec );
+
+      rec.Create();
     }
 
     private void button1_Click(object sender, EventArgs e)

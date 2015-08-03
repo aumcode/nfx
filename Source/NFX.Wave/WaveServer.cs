@@ -56,7 +56,7 @@ namespace NFX.Wave
   ///   (a) much increased implementation/maintenance complexity 
   ///   (b) many additional task/thread context switches and extra objects that facilitate the event loops/messages/tasks etc...
   /// </remarks>
-  public class WaveServer : Service, IInstrumentable
+  public class WaveServer : ServiceWithInstrumentationBase<object>
   {
     #region CONSTS
       
@@ -214,23 +214,10 @@ namespace NFX.Wave
       /// </summary>
       [Config]
       [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
-      public bool InstrumentationEnabled
+      public override bool InstrumentationEnabled
       {
           get { return m_InstrumentationEnabled;}
           set { m_InstrumentationEnabled = value;}
-      }
-
-      /// <summary>
-      /// Returns named parameters that can be used to control this component
-      /// </summary>
-      public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-      /// <summary>
-      /// Returns named parameters that can be used to control this component
-      /// </summary>
-      public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-      { 
-        return ExternalParameterAttribute.GetParameters(this, groups); 
       }
 
       /// <summary>
@@ -417,25 +404,7 @@ namespace NFX.Wave
         App.Log.Write(msg);     
       }
 
-
-      /// <summary>
-      /// Gets external parameter value returning true if parameter was found
-      /// </summary>
-      public bool ExternalGetParameter(string name, out object value, params string[] groups)
-      {
-          return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-      }
-          
-      /// <summary>
-      /// Sets external parameter value returning true if parameter was found and set
-      /// </summary>
-      public bool ExternalSetParameter(string name, object value, params string[] groups)
-      {
-        return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-      }
-
     #endregion
-
 
 
     #region Protected

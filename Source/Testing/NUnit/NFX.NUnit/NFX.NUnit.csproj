@@ -98,6 +98,7 @@
     <Compile Include="Config\ValueAccessors.cs" />
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
+    <Compile Include="DataAccess\GDIDTest.cs" />
     <Compile Include="DataAccess\SchemaEQU.cs" />
     <Compile Include="FIDTests.cs" />
     <Compile Include="DataAccess\FieldAttrPrototyping.cs" />

@@ -35,46 +35,6 @@ using NFX.Time;
 
 namespace NFX.ServiceModel
 {
-
-    /// <summary>
-    /// Defines abstraction for an entity that is controlled by Start/Stop commands and has a status
-    /// </summary>
-    public interface IService : INamed, IConfigurable
-    {
-      /// <summary>
-      /// Current service status
-      /// </summary>
-      ControlStatus Status { get;}
-      
-      /// <summary>
-      /// Returns true when service is active or about to become active.
-      /// Check in service implementation loops/threads/tasks
-      /// </summary>
-      bool Running { get;}
-
-      /// <summary>
-      /// Blocking call that starts the service instance
-      /// </summary>
-      void Start();
-
-      /// <summary>
-      /// Non-blocking call that initiates the stopping of the service
-      /// </summary>
-      void SignalStop();
-
-      /// <summary>
-      /// Non-blocking call that returns true when the service instance has completely stopped after SignalStop()
-      /// </summary>
-      bool CheckForCompleteStop();
-
-      /// <summary>
-      /// Blocks execution of current thread until this service has completely stopped
-      /// </summary>
-      void WaitForCompleteStop();
-    } 
-
-
-
     /// <summary>
     /// Represents a lightweight service that can be controlled by Start/SignalStop-like commands.
     /// This class serves a a base for various implementations (i.e. LogService) including their composites.
@@ -431,21 +391,20 @@ namespace NFX.ServiceModel
     /// <summary>
     /// Represents service with typed ComponentDirector property
     /// </summary>
-    public class Service<T> : Service where T : class
+    public class Service<TDirector> : Service where TDirector : class
     {
 
         protected Service() : base()
         {
-
         }
 
-        protected Service(T director) : base(director)
+        protected Service(TDirector director) : base(director)
         {   
         }
        
-        public new T ComponentDirector
+        public new TDirector ComponentDirector
         {
-            get { return (T)base.ComponentDirector; }
+            get { return (TDirector)base.ComponentDirector; }
         }
 
     }

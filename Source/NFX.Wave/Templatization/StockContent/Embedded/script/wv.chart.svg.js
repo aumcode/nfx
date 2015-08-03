@@ -124,10 +124,12 @@ WAVE.Chart.SVG = (function () {
       } else {
         var dPerV = (_d1 - _d0) / (_v1 - _v0);
         this.d2v = function (d) { 
-          var v = Math.floor(_v0 + (d - _d0) / dPerV);
+          var v = (_v0 + (d - _d0) / dPerV);
           return v;
         }
-        this.v2d = function (v) { return Math.ceil(_d0 + (v - _v0) * dPerV); }
+        this.v2d = function (v) {
+          return (_d0 + (v - _v0) * dPerV);
+        }
       }
     } else {
       if (fIsDate) {
@@ -350,7 +352,13 @@ WAVE.Chart.SVG = (function () {
   }
 
   published.Axis.prototype.labelValToStr = function (val) {
-    return this.dataType() == published.DataType.NUMBER ? String(Math.round(val)) : WAVE.toUSDateTimeString(val);
+    var res;
+    if (this.dataType() == published.DataType.NUMBER) {
+      res = WAVE.siNum(val, 2);
+    } else {
+      res = WAVE.toUSDateTimeString(val);
+    }
+    return res;
   }
 
   published.Axis.prototype.calcLabelRc = function (svgEl, min, max) {
@@ -689,7 +697,8 @@ WAVE.Chart.SVG = (function () {
       var lblRc = this.calcLabelRc(svgEl, minMax.min, minMax.max);
       var labelLength = lblRc.height;
       var labelMargin = labelLength * .2;
-      var labelHeight = lblRc.width;
+      var labelWidth = lblRc.width;
+      //console.log(lblRc, minMax.min, minMax.max);
 
       if (this.dataType() == published.DataType.DATE) {
         _ticks = this.getVTimeTicks(area.top(), area.bottom(), minMax.min, minMax.max, labelLength, labelMargin);
@@ -709,6 +718,9 @@ WAVE.Chart.SVG = (function () {
 
     this.ticks(_ticks);
 
+    var maxTickTxtWidth = 0;
+
+    var txtElms = [];
     for (var i in _ticks) {
       var tick = _ticks[i];
       var invVTick = area.top() + area.bottom() - tick.vTick;
@@ -723,12 +735,25 @@ WAVE.Chart.SVG = (function () {
       var txt = this.labelValToStr(tick.dTick);
       var txtEl;
       if (this.isLeft())
-        txtEl = WAVE.SVG.createText(txt, area.right() - this.tickTextMargin() - this.tickLength() - labelHeight, invVTick, { class: UICls.CSS_CLASS_AXIS_LABEL + " " + UICls.CSS_CLASS_YAXIS_LABEL });
+        txtEl = WAVE.SVG.createText(txt, area.right() - this.tickTextMargin() - this.tickLength(), invVTick,
+                                      { class: UICls.CSS_CLASS_AXIS_LABEL + " " + UICls.CSS_CLASS_YAXIS_LABEL });
       else
-        txtEl = WAVE.SVG.createText(txt, area.left() + this.tickLength() + this.tickTextMargin(), invVTick, { class: UICls.CSS_CLASS_AXIS_LABEL + " " + UICls.CSS_CLASS_YAXIS_LABEL });
+        txtEl = WAVE.SVG.createText(txt, area.left() + this.tickLength() + this.tickTextMargin(), invVTick,
+                                      { class: UICls.CSS_CLASS_AXIS_LABEL + " " + UICls.CSS_CLASS_YAXIS_LABEL });
       svgEl.appendChild(txtEl);
       var txtRc = txtEl.getBBox();
       txtEl.setAttribute("y", invVTick + txtRc.height / 3);
+      txtElms.push(txtEl);
+      if (txtRc.width > maxTickTxtWidth) maxTickTxtWidth = txtRc.width;
+    }
+
+    if (!this.isLeft()) {
+      for (var i in txtElms) {
+        var txtElm = txtElms[i];
+        var x = parseFloat( txtElm.getAttribute("x"));
+        x += maxTickTxtWidth;
+        txtElm.setAttribute("x", x);
+      }
     }
   }
 
@@ -2072,7 +2097,7 @@ WAVE.Chart.SVG = (function () {
                 var dataY = yAxis.v2d(sZoneVY);
 
                 e.divHint.style.visibility = "visible";
-                return xAxis.labelValToStr(dataX) + "; " + dataY;
+                return xAxis.labelValToStr(dataX) + "; " + yAxis.labelValToStr(dataY);
               } else {
                 e.divHint.style.visibility = "hidden";
               }

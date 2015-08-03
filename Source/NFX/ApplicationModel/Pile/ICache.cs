@@ -183,7 +183,7 @@ namespace NFX.ApplicationModel.Pile
                   out PutResult? newPutResult,
                   int ageSec = 0,
                   int putMaxAgeSec = 0,
-                  int putPrioroty = 0,
+                  int putPriority = 0,
                   DateTime? putAbsoluteExpirationUTC = null);
   }
 

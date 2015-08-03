@@ -19,18 +19,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.DataAccess.Distributed;
+
 namespace NFX.DataAccess.Cache
 {
-    /// <summary>
-    /// Denotes entities that provide ULONG hash code
-    /// </summary>
-    public interface IULongHashProvider
-    {
-      ulong GetULongHash();
-    }
-
-    
-    
     /// <summary>
     /// Provides hashing strategy for keys that are not scalar uint64.
     /// This is a companion class for CacheStore which only understands uint64 as keys for efficiency purposes.
@@ -69,8 +61,8 @@ namespace NFX.DataAccess.Cache
             if (key is string)
               return DefaultStringKeyToCacheKey((string)key);
            
-            if (key is IULongHashProvider)
-              return ((IULongHashProvider)key).GetULongHash();//covers GDID and parcels as well
+            if (key is IDistributedStableHashProvider)
+              return ((IDistributedStableHashProvider)key).GetDistributedStableHash();//covers GDID and parcels as well
 
             return (ulong)key.GetHashCode();
         }

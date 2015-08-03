@@ -27,7 +27,8 @@ namespace NFX.OS
   ///  do not block on IO and other locks, and are expected to complete under a tenth fraction of a second.
   /// Warning: this lock CAN NOT be held for longer than 5 hrs by design. DO NOT use this lock with IO-dependent operations.
   /// This is not really a limitation as this class is used to guard operations which are very fast (fractions of a second) and 
-  /// should fail faster otherwise
+  /// should fail faster otherwise. 
+  /// This lock IS NOT REENTRANT!
   /// </summary>
   public struct ManyReadersOneWriterSynchronizer
   {

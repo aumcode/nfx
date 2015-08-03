@@ -429,7 +429,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
       {
         Console.WriteLine("test will take about 1 minute");
 
-        int objectsPut = 0, objectsDeleted = 0, objectGot = 0;
+        int objectsPut = 0, objectsDeleted = 0;//, objectGot = 0;
 
         using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE})
         {

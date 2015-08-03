@@ -132,7 +132,7 @@
     <Compile Include="DataAccess\CRUD\FormModel.cs" />
     <Compile Include="DataAccess\Distributed\Attributes.cs" />
     <Compile Include="DataAccess\Distributed\Command.cs" />
-    <Compile Include="DataAccess\Distributed\IShardingIDProvider.cs" />
+    <Compile Include="DataAccess\Distributed\IShardingPointerProvider.cs" />
     <Compile Include="DataAccess\Distributed\Exceptions.cs" />
     <Compile Include="DataAccess\Distributed\GDID.cs" />
     <Compile Include="DataAccess\Distributed\StoreIntfs.cs" />
@@ -545,7 +545,9 @@
     <Compile Include="Serialization\NFXSerializationException.cs" />
     <Compile Include="ServiceModel\CompositeServiceHost.cs" />
     <Compile Include="ServiceModel\Enums.cs" />
+    <Compile Include="ServiceModel\IService.cs" />
     <Compile Include="ServiceModel\Service.cs" />
+    <Compile Include="ServiceModel\ServiceWithInstrumentationBase.cs" />
     <Compile Include="ServiceModel\WorkItem.cs" />
     <Compile Include="ServiceModel\WorkItemAggregatorService.cs" />
     <Compile Include="ServiceModel\WorkQueue.cs" />

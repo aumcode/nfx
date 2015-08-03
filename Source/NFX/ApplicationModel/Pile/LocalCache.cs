@@ -15,7 +15,7 @@ namespace NFX.ApplicationModel.Pile
   /// Provides default implementation of a cache that stores the mapping locally.
   /// The mapped-to objects may reside in local or distributed pile as configured
   /// </summary>
-  public sealed class LocalCache : Service, ICacheImplementation
+  public sealed class LocalCache : ServiceWithInstrumentationBase<object>, ICacheImplementation
   {
     #region CONSTS
       public const string DEFAULT_TABLE_OPTIONS_SECTION = "default-table-options";
@@ -87,7 +87,7 @@ namespace NFX.ApplicationModel.Pile
         /// </summary>
         [Config(Default=false)]
         [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_CACHE, CoreConsts.EXT_PARAM_GROUP_PILE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
-        public bool InstrumentationEnabled
+        public override bool InstrumentationEnabled
         {
           get { return m_InstrumentationEnabled;}
           set
@@ -300,7 +300,7 @@ namespace NFX.ApplicationModel.Pile
           /// <summary>
           /// Returns named parameters that can be used to control this component
           /// </summary>
-          public IEnumerable<KeyValuePair<string, Type>> ExternalParameters
+          public override IEnumerable<KeyValuePair<string, Type>> ExternalParameters
           {
             get
             {
@@ -311,7 +311,7 @@ namespace NFX.ApplicationModel.Pile
           /// <summary>
           /// Returns named parameters that can be used to control this component
           /// </summary>
-          public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
+          public override IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
           { 
             return ExternalParameterAttribute.GetParameters(this, groups).Concat( getTableOptionsAsExternalParameters()); 
           }
@@ -319,7 +319,7 @@ namespace NFX.ApplicationModel.Pile
           /// <summary>
           /// Gets external parameter value returning true if parameter was found
           /// </summary>
-          public bool ExternalGetParameter(string name, out object value, params string[] groups)
+          public override bool ExternalGetParameter(string name, out object value, params string[] groups)
           {
             if (name.StartsWith(TBL_PARAM_PREFIX) && name.Length > TBL_PARAM_PREFIX.Length)
             {
@@ -340,7 +340,7 @@ namespace NFX.ApplicationModel.Pile
           /// <summary>
           /// Sets external parameter value returning true if parameter was found and set
           /// </summary>
-          public bool ExternalSetParameter(string name, object value, params string[] groups)
+          public override bool ExternalSetParameter(string name, object value, params string[] groups)
           {
             if (name.StartsWith(TBL_PARAM_PREFIX) && name.Length > TBL_PARAM_PREFIX.Length)
             {
@@ -361,7 +361,7 @@ namespace NFX.ApplicationModel.Pile
 
         protected override void DoConfigure(IConfigSectionNode node)
         {
-          if (node==null)
+          if (node==null || !node.Exists)
                 {
                     node = App.ConfigRoot[DataAccess.Cache.CacheStore.CONFIG_CACHE_SECTION]
                               .Children
@@ -388,6 +388,9 @@ namespace NFX.ApplicationModel.Pile
                 var dton = node[DEFAULT_TABLE_OPTIONS_SECTION];
                 if (dton.Exists)
                  m_DefaultTableOptions = new TableOptions(dton, false);
+
+                if (m_Pile.ComponentDirector==this)
+                  m_Pile.Configure(node[DefaultPile.CONFIG_PILE_SECTION]);
         }
 
 

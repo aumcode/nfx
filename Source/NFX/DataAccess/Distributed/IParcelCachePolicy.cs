@@ -21,10 +21,8 @@ using System.Text;
 
 namespace NFX.DataAccess.Distributed
 {
-    /// <summary>
-    /// Stipulates a contract for getting parcel caching options
-    /// </summary>
-    public interface IParcelCachePolicy
+
+    public interface ICachePolicy
     {
         /// <summary>
         /// Specifies for how long should this parcel be cached in RAM after a write (after a parcel gets saved).
@@ -41,22 +39,21 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         int? CachePriority { get;  }
 
-        
-        /// <summary>
-        /// Specifies the name of the cache table for this parcel
-        /// </summary>
-        string CacheTableName { get; }
-
         /// <summary>
         /// Specifies the absolute time when items expires in cache
         /// </summary>
         DateTime? CacheAbsoluteExpirationUTC { get;}
+
+        /// <summary>
+        /// Specifies the name of cache table
+        /// </summary>
+        string CacheTableName { get;}
     }
 
     /// <summary>
     /// Holds data per IParcelCachePolicy contract 
     /// </summary>
-    public struct ParcelCachePolicyData : IParcelCachePolicy
+    public struct CachePolicyData : ICachePolicy
     {
       public int? CacheWriteMaxAgeSec {  get; internal set;  }
       public int? CacheReadMaxAgeSec  {  get; internal set;  }

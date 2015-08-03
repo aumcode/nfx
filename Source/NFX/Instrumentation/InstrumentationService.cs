@@ -32,7 +32,7 @@ namespace NFX.Instrumentation
     /// Implements IInstrumentation. This service aggregates data by type,source and sends result into provider
     /// </summary>
     [ConfigMacroContext]
-    public sealed class InstrumentationService : Service, IInstrumentationImplementation
+    public sealed class InstrumentationService : ServiceWithInstrumentationBase<object>, IInstrumentationImplementation
     {
         #region CONSTS
             private const int MIN_INTERVAL_MSEC = 500;
@@ -177,23 +177,10 @@ namespace NFX.Instrumentation
             /// </summary>
             [Config(Default=false)]
             [ExternalParameter] 
-            public bool InstrumentationEnabled
+            public override bool InstrumentationEnabled
             {
               get { return this.SelfInstrumented;}
               set { SelfInstrumented = value;}
-            }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            { 
-              return ExternalParameterAttribute.GetParameters(this, groups); 
             }
 
             /// <summary>
@@ -397,23 +384,6 @@ namespace NFX.Instrumentation
                defaultInstance = null;
                return Enumerable.Empty<string>();
             }
-
-            /// <summary>
-            /// Gets external parameter value returning true if parameter was found
-            /// </summary>
-            public bool ExternalGetParameter(string name, out object value, params string[] groups)
-            {
-                return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-            }
-          
-            /// <summary>
-            /// Sets external parameter value returning true if parameter was found and set
-            /// </summary>
-            public bool ExternalSetParameter(string name, object value, params string[] groups)
-            {
-              return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-            }
-
 
         #endregion
 

@@ -19,7 +19,7 @@ namespace NFX.ApplicationModel.Pile
   /// Provides default implementation of IPile which stores objects on a local machine.
   /// Use Instance static property to lazily allocated the default instance
   /// </summary>
-  public sealed class DefaultPile : Service, IPileImplementation
+  public sealed class DefaultPile : ServiceWithInstrumentationBase<object>, IPileImplementation
   {
       private static readonly TimeSpan INSTR_INTERVAL = TimeSpan.FromMilliseconds(3700);
 
@@ -438,7 +438,7 @@ namespace NFX.ApplicationModel.Pile
 
 
 
-    #region static .ctor
+    #region .ctor
 
       public DefaultPile(string name = null):base()
       {
@@ -454,6 +454,7 @@ namespace NFX.ApplicationModel.Pile
 
       protected override void Destructor()
       {
+        DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
         base.Destructor();   
       }
 
@@ -466,12 +467,12 @@ namespace NFX.ApplicationModel.Pile
          );
       }
 
-
     #endregion
 
     #region Fields
 
       private bool m_InstrumentationEnabled;
+      private Time.Event m_InstrumentationEvent;
 
       private AllocationMode m_AllocMode;
       private long m_MaxMemoryLimit;
@@ -490,38 +491,35 @@ namespace NFX.ApplicationModel.Pile
       private long m_stat_PutCount;
       private long m_stat_DeleteCount;
       private long m_stat_GetCount;
-      
+
     #endregion
 
     #region Properties
 
-                   
-        
-        
         /// <summary>
         /// Implements IInstrumentable
         /// </summary>
         [Config(Default=false)]
         [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_PILE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
-        public bool InstrumentationEnabled
+        public override bool InstrumentationEnabled
         {
           get { return m_InstrumentationEnabled;}
           set
           { 
              m_InstrumentationEnabled = value;
-             var evt = App.EventTimer.Events[instrTimerEventName()];
-             if (evt==null)
+
+             if (m_InstrumentationEvent==null)
              {
                if (!value) return;
                m_stat_PutCount = 0;
                m_stat_DeleteCount = 0;
                m_stat_GetCount = 0;
-               new Time.Event(App.EventTimer, instrTimerEventName(), e => AcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
+               m_InstrumentationEvent = new Time.Event(App.EventTimer, null, e => AcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
              }
              else
              {
                if (value) return;
-               evt.Dispose();
+               DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
              }
           }
         }
@@ -1145,36 +1143,6 @@ namespace NFX.ApplicationModel.Pile
         return total;
       }
 
-
-          /// <summary>
-          /// Returns named parameters that can be used to control this component
-          /// </summary>
-          public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-          /// <summary>
-          /// Returns named parameters that can be used to control this component
-          /// </summary>
-          public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-          { 
-            return ExternalParameterAttribute.GetParameters(this, groups); 
-          }
-
-          /// <summary>
-          /// Gets external parameter value returning true if parameter was found
-          /// </summary>
-          public bool ExternalGetParameter(string name, out object value, params string[] groups)
-          {
-              return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-          }
-          
-          /// <summary>
-          /// Sets external parameter value returning true if parameter was found and set
-          /// </summary>
-          public bool ExternalSetParameter(string name, object value, params string[] groups)
-          {
-            return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-          }
-
     #endregion
 
 
@@ -1182,7 +1150,7 @@ namespace NFX.ApplicationModel.Pile
 
       protected override void DoConfigure(IConfigSectionNode node)
       {
-        if (node==null)
+        if (node==null || !node.Exists)
         {
             node = App.ConfigRoot[CommonApplicationLogic.CONFIG_MEMORY_MANAGEMENT_SECTION]
                       .Children
@@ -1421,13 +1389,6 @@ namespace NFX.ApplicationModel.Pile
             return result;
           }
                    
-
-
-          private string instrTimerEventName()
-          {
-            return "Pile::" + GetType().FullName + "-" + Name;
-          }
-
 
           private void dumpStats()
           {

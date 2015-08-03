@@ -187,7 +187,14 @@ namespace NFX
           public bool RegisterOrReplace(T item)
           {
             T existing;
-            
+            return RegisterOrReplace(item, out existing);
+          }
+
+          /// <summary>
+          /// Registers item and returns true if it was registered, false if this named instance already existed and was replaced 
+          /// </summary>
+          public bool RegisterOrReplace(T item, out T existing)
+          {
             lock(m_Sync)
             {
                 var data = new RegistryDictionary<T>(m_Data);
@@ -199,6 +206,7 @@ namespace NFX
                 }
                 else
                 {
+                   existing = default(T);//safeguard
                    data.Add(item.Name, item);
                    JustRegistered(item);
                 }

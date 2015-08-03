@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.ApplicationModel;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
 
@@ -130,12 +131,11 @@ namespace NFX.NUnit.DataAccess
     }
 
 
-    [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General", wrappingMode: ParcelPayloadWrappingMode.Wrapped)]
+    [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General")]
     public class PeopleNamesParcel : Parcel<List<string>>
     {
-      public PeopleNamesParcel(GDID id, List<string> data) : base(id)
+      public PeopleNamesParcel(GDID id, List<string> data) : base(id, data)
       {
-        m_Payload = data ?? new List<string>();
       }
 
       public override bool ReadOnly
@@ -145,33 +145,9 @@ namespace NFX.NUnit.DataAccess
 
       protected override void DoValidate(IBank bank)
       {
-        if (m_Payload==null) m_ValidationExceptions.Add(new ParcelValidationException ("payload==null") );
-
         if (!Payload.Contains("Aroyan")) m_ValidationExceptions.Add(new ParcelValidationException ("Aroyan must be present") );
       }
     }
-
-    [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General", wrappingMode: ParcelPayloadWrappingMode.NotWrapped)]
-    public class PeopleNamesParcel_NotWrapped : Parcel<List<string>>
-    {
-      public PeopleNamesParcel_NotWrapped(GDID id, List<string> data) : base(id)
-      {
-        m_Payload = data ?? new List<string>();
-      }
-
-      public override bool ReadOnly
-      {
-        get { return false; }
-      }
-
-      protected override void DoValidate(IBank bank)
-      {
-        if (m_Payload==null) m_ValidationExceptions.Add(new ParcelValidationException ("payload==null") );
-
-        if (!Payload.Contains("Aroyan")) m_ValidationExceptions.Add(new ParcelValidationException ("Aroyan must be present") );
-      }
-    }
-
 
        public enum HumanStatus{Ok, NotOk, Unknown}
 
@@ -194,12 +170,12 @@ namespace NFX.NUnit.DataAccess
 
 
 
-    [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General", wrappingMode: ParcelPayloadWrappingMode.Wrapped)]
+    [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General")]
     public class HumanParcel : Parcel<Human>
     {
-      public HumanParcel(GDID id, Human data) : base(id)
+      public HumanParcel(GDID id, Human data) : base(id, data)
       {
-        m_Payload = data ?? new Human();
+
       }
 
       public override bool ReadOnly  {   get { return false; }   }
@@ -207,17 +183,81 @@ namespace NFX.NUnit.DataAccess
       
     }
 
-    [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General", wrappingMode: ParcelPayloadWrappingMode.NotWrapped)]
-    public class HumanParcel_NotWrapped : Parcel<Human>
+    
+    //used only for test
+    public class FakeNOPBank : IBank
     {
-      public HumanParcel_NotWrapped(GDID id, Human data) : base(id)
+
+      public static readonly FakeNOPBank Instance = new FakeNOPBank();
+      
+      
+      public IDistributedDataStore DataStore {get { return null;}}
+     
+
+      public ISchema Schema {get { return null;}}
+
+      public IRegistry<IAreaInstance> Areas {get { return null;}}
+
+
+      public string Description { get {return "NOP";}}
+
+      public string GetDescription(string culture) { return "NOP";}
+
+      public NFX.DataAccess.IGDIDProvider IDGenerator {get { return null;}}
+
+      public IReplicationVersionInfo GenerateReplicationVersionInfo(Parcel parcel) { return null;}
+
+
+      public UInt64 ObjectToShardingID(object key)
       {
-        m_Payload = data ?? new Human();
+        return NFX.DataAccess.Cache.ComplexKeyHashingStrategy.DefaultComplexKeyToCacheKey(key);
       }
 
-      public override bool ReadOnly  {   get { return false; }   }
-      protected override void DoValidate(IBank bank){}
-    }
 
+      public T Load<T>(GDID id, object shardingId = null, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null) where T : Parcel
+      {
+        throw new NotImplementedException();
+      }
+
+      public System.Threading.Tasks.Task<T> LoadAsync<T>(GDID id,object shardingId = null, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null) where T : Parcel
+      {
+        throw new NotImplementedException();
+      }
+
+      public object Query(Command command, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null)
+      {
+        throw new NotImplementedException();
+      }
+
+      public System.Threading.Tasks.Task<object> QueryAsync(Command command, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null)
+      {
+        throw new NotImplementedException();
+      }
+
+      public void Save(Parcel parcel, DataCaching cacheOpt = DataCaching.Everywhere, int? cachePriority = null, int? cacheMaxAgeSec = null, DateTime? cacheAbsoluteExpirationUTC = null, ISession session = null)
+      {
+        throw new NotImplementedException();
+      }
+
+      public System.Threading.Tasks.Task SaveAsync(Parcel parcel, DataCaching cacheOpt = DataCaching.Everywhere, int? cachePriority = null, int? cacheMaxAgeSec = null, DateTime? cacheAbsoluteExpirationUTC = null, ISession session = null)
+      {
+        throw new NotImplementedException();
+      }
+
+      public bool Remove<T>(GDID id, object shardingId = null, ISession session = null) where T : Parcel
+      {
+        throw new NotImplementedException();
+      }
+
+      public System.Threading.Tasks.Task<bool> RemoveAsync<T>(GDID id, object shardingId = null, ISession session = null) where T : Parcel
+      {
+        throw new NotImplementedException();
+      }
+
+      public string Name
+      {
+        get { throw new NotImplementedException(); }
+      }
+    }
 
 }

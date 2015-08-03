@@ -30,7 +30,7 @@ namespace NFX.Time
   /// <summary>
   /// Provides default implementation for IEventTimer
   /// </summary>
-  public sealed class EventTimer : Service, IEventTimerImplementation
+  public sealed class EventTimer : ServiceWithInstrumentationBase<object>, IEventTimerImplementation
   {
     #region CONSTS
       public const int DEFAULT_RESOLUTION_MS = 500;
@@ -68,7 +68,7 @@ namespace NFX.Time
 
      [Config]
      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_TIME, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
-     public bool InstrumentationEnabled 
+     public override bool InstrumentationEnabled 
      {
        get { return m_InstrumentationEnabled;}
        set { m_InstrumentationEnabled = value;}
@@ -79,41 +79,28 @@ namespace NFX.Time
      /// </summary>
      public IRegistry<Event> Events { get { return m_Events;}}
 
-     /// <summary>
-     /// Returns named parameters that can be used to control this component
-     /// </summary>
-     public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
     #endregion
     
-    #region Public
-     
-      public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-      {
-        return ExternalParameterAttribute.GetParameters(this, groups); 
-      }
-
-      public bool ExternalGetParameter(string name, out object value, params string[] groups)
-      {
-        return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-      }
-
-      public bool ExternalSetParameter(string name, object value, params string[] groups)
-      {
-        return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-      }
-
-    #endregion
-
     #region Protected
 
       void IEventTimerImplementation.__InternalRegisterEvent(Event evt)
       {
-        m_Events.RegisterOrReplace(evt);
+        if (evt==null || evt.Timer!=this)
+          throw new TimeException(StringConsts.ARGUMENT_ERROR+GetType().Name+"__InternalRegisterEvent(evt==null|does not belog to timer)");
+
+        Event existing;
+        m_Events.RegisterOrReplace(evt, out existing);
+        if ( existing!=null )
+        {
+          existing.Dispose();
+        }
       }
 
       void IEventTimerImplementation.__InternalUnRegisterEvent(Event evt)
       {
+        if (evt==null || evt.Timer!=this)
+          throw new TimeException(StringConsts.ARGUMENT_ERROR+GetType().Name+"__InternalUnRegisterEvent(evt==null|does not belog to timer)");
+
         m_Events.Unregister(evt);
       }
 

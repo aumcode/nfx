@@ -56,7 +56,7 @@ namespace NFX
   /// In a parallel test on 6 Core i7 3.2 GHz this class generates 405 million IDs/sec, which is 57 times faster than Guid that only generates 7 million IDs/sec
   /// </summary>
   [Serializable]
-  public struct FID : IEquatable<FID>, DataAccess.Cache.IULongHashProvider
+  public struct FID : IEquatable<FID>, DataAccess.Distributed.IDistributedStableHashProvider
   {
     private const int MASK_16_BIT = 0x0000ffff;
     private const int MASK_24_BIT = 0x00ffffff;
@@ -124,7 +124,7 @@ namespace NFX
       return "{0}-{1}-{2}".Args(ID >> 40, (ID >> 16) & MASK_24_BIT, ID & MASK_16_BIT);
     }
 
-    public ulong GetULongHash()
+    public ulong GetDistributedStableHash()
     {
       return ID;
     }

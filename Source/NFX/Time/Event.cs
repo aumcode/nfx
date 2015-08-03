@@ -32,6 +32,31 @@ namespace NFX.Time
   public enum EventStatus {NotStarted = 0, Started, Expired, Invalid}
 
 
+
+  /// <summary>
+  /// Defines event body execution asynchrony model
+  /// </summary>
+  public enum EventBodyAsyncModel
+  {
+    /// <summary>
+    /// The body should be called as a short-lived (less than 1 sec) task
+    /// </summary>
+    AsyncTask = 0, 
+
+    /// <summary>
+    /// The body should be called as a long-runnig task. The system may dedicate it a thread.
+    /// Use this ONLY for events that fire infrequently (i.e. once every X minutes+) and take long time to execute (seconds+)
+    /// </summary>
+    LongRunningAsyncTask, 
+    
+    /// <summary>
+    /// ADVANCED FEATURE. Run task synchronously on the timer thread. 
+    /// Use this option ONLY if the task body is very short (less than 10 ms).
+    /// In most cases do not use this option as event body blocks the whole global application timer thread
+    /// </summary>
+    Sync 
+  }
+
   /// <summary>
   /// Represents an entity that can handle events.
   /// This type is used to implement event handlers that get injected via config
@@ -102,6 +127,12 @@ namespace NFX.Time
           lock(m_Lock)
           {
             ((IEventTimerImplementation)m_Timer).__InternalUnRegisterEvent(this);
+         
+            m_Context = null;
+            Body = null;
+            StatusChange = null;
+            DefinitionChange = null;
+
             base.Destructor();
           }
       }
@@ -128,6 +159,8 @@ namespace NFX.Time
       private int m_CallCount;
       private DateTime m_LastCall;
       private Exception m_LastError;
+
+      private EventBodyAsyncModel m_BodyAsyncModel;
     #endregion  
 
     #region Properties
@@ -204,6 +237,18 @@ namespace NFX.Time
             definitionChange("Enabled");
            }
          }
+      }
+
+
+      /// <summary>
+      /// Defines how event body should be invoked
+      /// </summary>
+      [Config]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_TIME)]
+      public EventBodyAsyncModel BodyAcyncModel
+      {
+         get { return m_BodyAsyncModel; }
+         set { m_BodyAsyncModel = value; }
       }
 
       /// <summary>
@@ -346,20 +391,30 @@ namespace NFX.Time
 
       /// <summary>
       /// Calls event regardless of any constraints.
-      /// Invokes a handler right away if syncInvoke is true, or queues the task on a thread pool
+      /// Invokes a handler right away if syncInvoke is true or BodyAsyncModel is Sync, 
+      /// otherwise queues the task on a thread pool either as a regular or long-running task depending on BodyAsyncModel
       /// </summary>
       public void Fire(bool syncInvoke = false)
       {
-        if (syncInvoke)
+        if (Disposed) return;
+
+        if (syncInvoke || m_BodyAsyncModel==EventBodyAsyncModel.Sync)
          fireBody();
         else
-         Task.Run( (Action)fireBody ); 
+        {
+          if (m_BodyAsyncModel==EventBodyAsyncModel.LongRunningAsyncTask)
+            Task.Factory.StartNew( fireBody, TaskCreationOptions.LongRunning ); 
+          else 
+            Task.Factory.StartNew( fireBody );
+        }
       }
 
            
 
       public virtual void Configure(IConfigSectionNode config)
       {
+        if (Disposed) return;
+
         if (config==null) return;
         ConfigAttribute.Apply(this, config);
 
@@ -457,6 +512,8 @@ namespace NFX.Time
       /// </summary>
       protected internal bool VisitAndCheck(DateTime utcNow)
       {
+        if (Disposed) return false;
+
         bool fire = false;
         lock(m_Lock)
         {
@@ -549,8 +606,6 @@ namespace NFX.Time
 
             private void fireBody()
             {
-              if (this.Disposed) return;
-
               var body = Body;//thread-safe ref swap
               try
               {

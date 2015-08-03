@@ -37,19 +37,11 @@ namespace NFX.DataAccess.Distributed
     /// Describes a data parcel - a piece of logically-grouped data that gets fetched from/comitted into a distributed backend system.
     /// Parcels represent an atomic unit of change, a changeset that gets replicated between failover hosts.
     /// Every parcel has a Payload property that stores business data of interest that the parcel contains.
-    /// This class is designed in such way that Payload property (unwrapped data) is not serialized, instead a byte[](wrapped data) is serialized.
-    /// This is needed because an instance of Parcel may travel between many hosts that do not need to serialize/deserialize possibly complex business
-    /// object that parcel contains.
-    /// Parcels wrap their payload - when parcels get transported between hosts only parcel metadata (Parcel class fields) get serialized/deserialized by 
-    /// hosts in the data supply chain, so metadata is available for tasks like parcel routing and cache policy adjustment, but the business data (the payload) must be 
-    /// unwrapped first before it can be used. This design promotes efficient storage in distributed cache systems, i.e. the data origination host may keep cached version
-    /// in an unwrapped state (not serialized) so business payload is ready for access right away without deserialization. 
-    /// On the other hand, the intermediary parcel relays do not need to deserialize/serialize payload every time as it may be complex and waste significant processing time.
     /// This class is not thread-safe. Use DeepClone() to create 100% copies for working in multiple threads.
     /// This particular class serves as a very base for all Parcel implementations 
     /// </summary>
     [Serializable]
-    public abstract class Parcel : DisposableObject, IReplicatable, IParcelCachePolicy, IULongHashProvider, IShardingIDProvider 
+    public abstract class Parcel : DisposableObject, IReplicatable, ICachePolicy, IDistributedStableHashProvider, IShardingPointerProvider 
     {
         #region CONSTS
 
@@ -61,16 +53,6 @@ namespace NFX.DataAccess.Distributed
           
           
           /// <summary>
-          /// Denotes a payload serialization format that uses Slim with standard(to this class) type registry
-          /// </summary>
-          public const string STANDARD_SLIM_PAYLOAD_FORMAT = "std.slim";
-
-          /// <summary>
-          /// Denotes a payload serialization format that uses PODSlim (Portable Object Document + Slim) with standard(to this class) type registry
-          /// </summary>
-          public const string STANDARD_PODSLIM_PAYLOAD_FORMAT = "std.PODslim";
-
-          /// <summary>
           /// Defines well-known frequently used types for slim serializer compression
           /// </summary>
           public static readonly TypeRegistry STANDARD_KNOWN_SERIALIZER_TYPES = new TypeRegistry(
@@ -79,11 +61,6 @@ namespace NFX.DataAccess.Distributed
                                                                  TypeRegistry.CommonCollectionTypes,
                                                                  TypeRegistry.DataAccessCRUDTypes
                                                                  ); 
-
-          public const int DEFAULT_WRAPPED_PAYLOAD_BUFFER_SIZE = 1 * 1024;
-
-          public const int REALLOC_EXCESS_THRESHOLD = 0xff;
-
         #endregion
         
         
@@ -112,25 +89,17 @@ namespace NFX.DataAccess.Distributed
               return result;
             }
             
-            
-            
-            /// <summary>
-            /// Used by serialization
-            /// </summary>
-            protected Parcel()
-            {       
-
-            }
-
             /// <summary>
             /// Called when creating new Parcel instances by the original author.
             /// The new instance is in 'ParcelState.Creating' state
             /// </summary>
-            protected Parcel(GDID id, object payload = null)
+            protected Parcel(GDID id, object payload)
             {
                 m_GDID = id;
+                if (payload==null) 
+                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(payload==null)");
+
                 m_State = ParcelState.Creating;
-                m_PayloadUnwrapped = true;
                 m_Payload = payload;
             }
 
@@ -142,8 +111,14 @@ namespace NFX.DataAccess.Distributed
             protected Parcel(GDID id, object payload, IReplicationVersionInfo versInfo)
             {
                m_GDID = id;
+
+               if (payload==null) 
+                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(payload==null)");
+
+               if (versInfo==null) 
+                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(versInfo==null)");
+
                m_State = ParcelState.Sealed;
-               m_PayloadUnwrapped = true;
                m_Payload = payload;
                m_ReplicationVersionInfo = versInfo;
             }
@@ -157,17 +132,9 @@ namespace NFX.DataAccess.Distributed
 
             private GDID m_GDID;
 
-            private string m_WrappedPayloadFormat; //attributes such as: serialization format slim/POD IF this parcel has ParcelPayloadWrappingMode==Wrapped, null otherwise
-            private object m_PayloadData;//Either a byte[] if ParcelPayloadWrappingMode==Wrapped, or a payload object itself (which can also be a byte[] but it will not be deserialized)
-
             private IReplicationVersionInfo m_ReplicationVersionInfo;//created by Seal()
 
-           
-
-            [NonSerialized]
-            protected bool m_PayloadUnwrapped;//even if m_Payload is null we need a flag to know that we obtained null
-            [NonSerialized]
-            protected object m_Payload;//cached unwrapped data
+            private object m_Payload;
 
             
             [NonSerialized]
@@ -195,13 +162,25 @@ namespace NFX.DataAccess.Distributed
 
             
             /// <summary>
-            /// Returns the ID used for sharding, default implementation returns GDID. override to return another sharding key, i.e.
-            ///  a social comment msg may use parent item (that the msg relates to) ID as the shard key so msgs are co-located with related items.
-            ///  IMPORTANT!!! ShardingID must return an immutable value, the one that CAN NOT be changed during parcel payload life.  
+            /// Returns the ShardingPointer(type:ID) used for sharding, default implementation returns this parcel type and GDID.
+            /// Override ShardingID property to return another sharding key, i.e. a social comment msg may use parent item (that the msg relates to) ID 
+            /// as the shard key so msgs are co-located with related items. Use CompositeShardingID to return multiple values.
+            ///  IMPORTANT!!! ShardingPointer must return an immutable value, the one that CAN NOT be changed during parcel payload life
+            /// </summary>
+            public ShardingPointer ShardingPointer
+            {
+                get { return new ShardingPointer( MetadataAttribute.ShardingParcel ?? this.GetType() , this.ShardingID ); }
+            }
+
+            /// <summary>
+            /// Returns the ShardingID used for sharding, default implementation returns this parcel type and GDID.
+            /// Override to return another sharding key, i.e. a social comment msg may use parent item (that the msg relates to) ID 
+            /// as the shard key so msgs are co-located with related items. Use CompositeShardingID to return multiple values.
+            ///  IMPORTANT!!! ShardingID must return an immutable value, the one that CAN NOT be changed during parcel payload life
             /// </summary>
             public virtual object ShardingID
             {
-                get { return m_GDID; }
+               get { return m_GDID;}
             }
 
             /// <summary>
@@ -216,8 +195,6 @@ namespace NFX.DataAccess.Distributed
 
             /// <summary>         
             /// Returns payload of this parcel.
-            /// If the parcel is sealed and payload has not been unwrapped yet it will be unwrapped first then cached for subsequent access.
-            /// May set payload only if parcel is in Creating or Modifying state (opened/not sealed).
             /// WARNING!!! Although parcels do not allow to set Payload property if they are sealed, one can still mutate/modify the payload object graph 
             /// even on a sealed parcel instance, i.e. one may write: 
             ///   <code>mySealedParcel.Payload.DueDates.Add(DateTime.Now) (given DueDates of type List(DateTime))</code>.
@@ -226,77 +203,8 @@ namespace NFX.DataAccess.Distributed
             ///  does not impose (and should not) any constraints on what can be a payload.
             /// In Aum language we will use static type checker that will detect possible property access via Payload BEFORE calling Open() 
             /// </summary>
-            public object Payload
-            {
-                get           
-                {
-                  if (m_State==ParcelState.Sealed)
-                    EnsurePayloadUnwrapped();
-                 
-                  return m_Payload;
-                }
-                set
-                {
-                  if (m_State!=ParcelState.Creating && m_State!=ParcelState.Modifying) 
-                   throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("Payload.set()", GetType().FullName, m_State) );
-                  
-                  m_Payload = value;
-                }
-            }
+            public object Payload { get { return m_Payload;}}
 
-            /// <summary>
-            /// Returns true when payload data is already cached - either deserialized from internal byte[] prepped for transmission, or was created locally
-            /// </summary>
-            public bool PayloadUnwrapped  
-            {
-                get { return m_PayloadUnwrapped;}
-            }
-
-
-            /// <summary>
-            /// Returns payload wrapped as byte[] for transmission.
-            /// If payload has not been wrapped yet it will be wrapped first (serialized into byte[]) then cached for subsequent access.
-            /// Parcel must be in a Sealed state for this call. Returns null if ParcelPayloadWrappingMode==NotWrapped
-            /// </summary>
-            internal byte[] WrappedPayload  
-            {
-                get
-                {
-                  if (MetadataAttribute.PayloadWrappingMode== ParcelPayloadWrappingMode.Wrapped)
-                  {
-                    EnsurePayloadWrappedCopy();
-                    return m_PayloadData as byte[];
-                  }
-
-                  return null;
-                }
-            }
-
-            /// <summary>
-            /// Returns true to indicate that internal wrapped payload buffer is available (does not need to be wrapped)
-            /// </summary>
-            internal bool HasWrappedPayload    
-            {
-                get{ return MetadataAttribute.PayloadWrappingMode==ParcelPayloadWrappingMode.Wrapped && m_PayloadData is byte[];}
-            } 
-
-
-            /// <summary>
-            /// Returns pauload wrap format - a type of serialization used to wrap the payload
-            /// Parcel must be in a Sealed state for this call. Returns null if ParcelPayloadWrappingMode==NotWrapped
-            /// </summary>
-            public string WrappedPayloadFormat
-            {
-               get
-               {
-                 if (MetadataAttribute.PayloadWrappingMode== ParcelPayloadWrappingMode.Wrapped)
-                 { 
-                   EnsurePayloadWrappedCopy();
-                   return m_WrappedPayloadFormat;
-                 }
-                 return null;
-               }
-            }
 
             /// <summary>
             /// Indicates whether the data may be altered. 
@@ -359,12 +267,9 @@ namespace NFX.DataAccess.Distributed
 
             /// <summary>
             /// Implements IParcelCachePolicy contract.
-            /// The default implementation returns null.
-            /// Override to supply a different name of caching table
-            ///  that may depend on particular parcel payload state (i.e. field values). 
-            /// Example: store 'ultra hot' items in a dedicated cache table 
+            /// The implementation returns null for parcel.
             /// </summary>
-            public virtual string CacheTableName
+            string ICachePolicy.CacheTableName
             {
                 get { return null; }
             }
@@ -388,7 +293,7 @@ namespace NFX.DataAccess.Distributed
 
                          [NonSerialized] private DataParcelAttribute m_MetadataAttribute;
             /// <summary>
-            /// Returns DataParcelAttribute that describes this parcel
+            /// Returns DataParcelAttribute that describes this parcel. Every parcel MUST be decorated by the DataParcel attribute
             /// </summary>
             public DataParcelAttribute MetadataAttribute
             {
@@ -403,17 +308,17 @@ namespace NFX.DataAccess.Distributed
             /// <summary>
             /// Returns effective cache policy the one that is calculated from attribute and overidden by the instance
             /// </summary>
-            public IParcelCachePolicy EffectiveCachePolicy
+            public ICachePolicy EffectiveCachePolicy
             {
               get
               {
-                 var result =  new ParcelCachePolicyData
+                 var result =  new CachePolicyData
                  {
-                   CacheReadMaxAgeSec  = this.CacheReadMaxAgeSec.HasValue ? this.CacheReadMaxAgeSec.Value : MetadataAttribute.CacheReadMaxAgeSec,
-                   CacheWriteMaxAgeSec = this.CacheWriteMaxAgeSec.HasValue ? this.CacheWriteMaxAgeSec.Value : MetadataAttribute.CacheWriteMaxAgeSec,
-                   CachePriority       = this.CachePriority.HasValue ? this.CachePriority : MetadataAttribute.CachePriority,
-                   CacheTableName      = this.CacheTableName.IsNotNullOrWhiteSpace() ? this.CacheTableName : MetadataAttribute.CacheTableName,
-                   CacheAbsoluteExpirationUTC = this.CacheAbsoluteExpirationUTC.HasValue ? this.CacheAbsoluteExpirationUTC.Value : MetadataAttribute.CacheAbsoluteExpirationUTC
+                   CacheReadMaxAgeSec  = this.CacheReadMaxAgeSec ?? MetadataAttribute.CacheReadMaxAgeSec,
+                   CacheWriteMaxAgeSec = this.CacheWriteMaxAgeSec ?? MetadataAttribute.CacheWriteMaxAgeSec,
+                   CachePriority       = this.CachePriority ?? MetadataAttribute.CachePriority,
+                   CacheTableName      = MetadataAttribute.CacheTableName,
+                   CacheAbsoluteExpirationUTC = this.CacheAbsoluteExpirationUTC ?? MetadataAttribute.CacheAbsoluteExpirationUTC
                  }; 
 
                  if (result.CacheTableName.IsNullOrWhiteSpace())
@@ -442,12 +347,7 @@ namespace NFX.DataAccess.Distributed
                 if (ReadOnly)
                  throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("Open", GetType().FullName+"(ReadOnly)", m_State) );
 
-                EnsurePayloadUnwrapped();
-                m_PayloadData = null;
-                m_WrappedPayloadFormat = null;
-                
                 DoOpen();
-
                 m_State = ParcelState.Modifying;  
             }
 
@@ -520,40 +420,6 @@ namespace NFX.DataAccess.Distributed
             }
 
             /// <summary>
-            /// Forgets wrapped payload copy by deallocating byte[] that stores serialized payload.
-            /// If parcel is ParcelPayloadWrappingMode.NotWrapped then forgets a reference to payload data which is transmitted(serialized).
-            /// This method is usually used by business code after Parcel instance gets sent to backend, then this method is called, then
-            ///  the instance gets written into local in-memory field/cache (same process address space).
-            /// WARNING!!! Parcel instances are NOT thread-safe, they can not be mutated by multiple threads at the same time, so
-            ///  if a parcel instance needs to be cached for subsequent parallel modifications then DeepClone() should be used.
-            ///  DeepClone() will recreate the wrapped payload buffer, so this method does not need to be called in this case
-            /// Parcel must be in a Sealed state for this call
-            /// </summary>
-            public void ForgetWrappedPayloadCopy()     
-            {
-                if (m_State!=ParcelState.Sealed)
-                 throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("ForgetWrappedPayloadCopy", GetType().FullName, m_State) );
-                EnsurePayloadUnwrapped();
-                m_PayloadData = null;
-                m_WrappedPayloadFormat = null;
-            }
-
-            /// <summary>
-            /// Forgets the unwrapped payload object graph.
-            /// This method is used by cache store that holds data in byte[] anyway because it needs to do DeepClone() for cache hits,
-            ///  consequently the redundant object graph is not needed.
-            /// Parcel must be in a Sealed state for this call 
-            /// </summary>
-            public void ForgetPayloadCopy() 
-            {
-                if (m_State!=ParcelState.Sealed)
-                 throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("ForgetPayloadCopy", GetType().FullName, m_State) );
-                EnsurePayloadWrappedCopy();
-                m_Payload = null;
-                m_PayloadUnwrapped = false;
-            }
-
-            /// <summary>
             /// Duplicates this parcel by doing a complete deep-clone of its state via serialization.
             /// This method is useful for making copies of the same parcel for different threads as it is thread-safe while no other thread mutates the instance,
             /// however Parcel instances are NOT THREAD-SAFE for parallel changes.
@@ -565,7 +431,7 @@ namespace NFX.DataAccess.Distributed
               if (m_State!=ParcelState.Sealed)
                  throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("DeepClone", GetType().FullName, m_State) );
 
-              using(var ms = new System.IO.MemoryStream(GetEstimatedWrappedPayloadBufferSize()))
+              using(var ms = new System.IO.MemoryStream(4*1024))
               {
                 var serializer = new SlimSerializer( STANDARD_KNOWN_SERIALIZER_TYPES ); 
 
@@ -595,9 +461,9 @@ namespace NFX.DataAccess.Distributed
               return this.GetType().GetHashCode() ^  m_GDID.GetHashCode();
             }
 
-            public ulong GetULongHash()
+            public ulong GetDistributedStableHash()
             {
-              return (ulong)this.GetType().GetHashCode() ^ m_GDID.GetULongHash();
+              return m_GDID.GetDistributedStableHash();
             }
 
             public override string ToString()
@@ -606,7 +472,7 @@ namespace NFX.DataAccess.Distributed
                             GetType().DisplayNameWithExpandedGenericArgs(),
                             m_GDID,
                             m_State,
-                            (m_Payload != null) ? m_Payload.GetType().DisplayNameWithExpandedGenericArgs() : "<null/wrapped>"
+                            (m_Payload != null) ? m_Payload.GetType().DisplayNameWithExpandedGenericArgs() : "<null>"
                          );
             }      
 
@@ -616,192 +482,6 @@ namespace NFX.DataAccess.Distributed
 
         #region Protected
            
-            /// <summary>
-            /// Checks to see if payload is already unwrapped and does nothing if it is.
-            /// Otherwise, unwraps the payload by deserializing byte[] stream into payload object.
-            /// If this parcel is ParcelPayloadWrappingMode.NotWrapped then just swaps references.
-            /// Parcel must be in a Sealed state for this call
-            /// </summary>
-            protected void EnsurePayloadUnwrapped()
-            {
-              if (m_State!=ParcelState.Sealed)
-                 throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("EnsurePayloadUnwrapped", GetType().FullName, m_State) );
-              if (m_PayloadUnwrapped) return;
-              
-              if (MetadataAttribute.PayloadWrappingMode==ParcelPayloadWrappingMode.Wrapped)
-              {
-                  OnBeforePayloadUnwrap();
-              
-                  m_Payload = DoUnwrapPayload();
-                  m_PayloadUnwrapped = true;
-
-                  OnAfterPayloadUnwrap();
-              }
-              else
-              {
-                  m_Payload = m_PayloadData;
-                  m_PayloadUnwrapped = true;
-              }
-            }
-            
-            /// <summary>
-            /// Checks to see if payload wrapped copy is present and does nothing if it is.
-            /// Otherwise, wraps the payload by serializing payload into a byte[], thus creating payload copy for wire transmission.
-            /// If this parcel is ParcelPayloadWrappingMode.NotWrapped then just swaps references.
-            /// Parcel must be in a Sealed state for this call
-            /// </summary>
-            protected void EnsurePayloadWrappedCopy()
-            {
-              if (m_State!=ParcelState.Sealed)
-                 throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("EnsurePayloadWrappedCopy", GetType().FullName, m_State) );
-              if (m_PayloadData!=null) return;
-             
-              if (MetadataAttribute.PayloadWrappingMode==ParcelPayloadWrappingMode.Wrapped)
-              {
-
-                OnBeforePayloadWrap();
-
-                m_PayloadData = DoWrapPayloadCopy(out m_WrappedPayloadFormat);
-              
-                OnAfterPayloadWrap();
-              }
-              else
-              {
-                m_PayloadData = m_Payload;
-                m_WrappedPayloadFormat = null;
-              }
-            }
-            
-            
-            
-            /// <summary>
-            /// Called only if this parcel is ParcelPayloadWrappingMode.Wrapped.
-            /// Override to perform custom content deserialization, i.e. when particular store may use special format for data marshalling.
-            /// Base implementation understands  Parcel.STANDARD_SLIM_PAYLOAD_FORMAT and Parcel.STANDARD_PODSLIM_PAYLOAD_FORMAT formats
-            /// </summary>
-            protected virtual object DoUnwrapPayload()
-            {
-                var wrapped = m_PayloadData as byte[];
-                if (wrapped==null) return null;
-
-
-                ISerializer serializer = null;
-                if (m_WrappedPayloadFormat==STANDARD_SLIM_PAYLOAD_FORMAT)
-                  serializer = new SlimSerializer( STANDARD_KNOWN_SERIALIZER_TYPES );
-                else if (m_WrappedPayloadFormat==STANDARD_PODSLIM_PAYLOAD_FORMAT)
-                  serializer = new PODSlimSerializer();
-                else
-                  throw new DistributedDataParcelSerializationException(
-                              StringConsts.DISTRIBUTED_DATA_PARCEL_UNWRAP_FORMAT_ERROR.Args(GetType().FullName, m_WrappedPayloadFormat ?? StringConsts.NULL_STRING));
-                
-                try
-                {
-                  using(var ms = new System.IO.MemoryStream( wrapped ))
-                    return serializer.Deserialize( ms );
-                }
-                catch(Exception error)
-                {
-                  throw new DistributedDataParcelSerializationException(
-                             StringConsts.DISTRIBUTED_DATA_PARCEL_UNWRAP_DESER_ERROR.Args(GetType().FullName, error.ToMessageWithType())
-                             , error);
-                } 
-            }
-            
-            /// <summary>
-            /// Called only if this parcel is ParcelPayloadWrappingMode.Wrapped.
-            /// Override to perform custom content serialization, i.e. when particular store may use special format for data marshalling.
-            /// Base implementation uses  Parcel.STANDARD_SLIM_PAYLOAD_FORMAT with SlimSerializer
-            /// </summary>
-            protected virtual byte[] DoWrapPayloadCopy(out string format)
-            {
-                if (m_Payload==null)
-                {
-                  format = null;
-                  return null;
-                }
-                
-                try
-                {
-                  ISerializer serializer = new SlimSerializer( STANDARD_KNOWN_SERIALIZER_TYPES );
-                  using(var ms = new System.IO.MemoryStream(GetEstimatedWrappedPayloadBufferSize())) //todo Instrument!!!  
-                  {
-                    
-                    serializer.Serialize(ms, m_Payload );
-
-                    format = STANDARD_SLIM_PAYLOAD_FORMAT;
-
-                    var buffer = ms.GetBuffer();
-                    if (ms.Capacity - ms.Length < REALLOC_EXCESS_THRESHOLD)
-                     return buffer;//do not make a copy
- //todo Instrument!!!  PREALLOCATIOn vs ACTUAL SIZE at the end!!!!
-                    //make a trimmed buffer copy
-                    var data = new byte[ms.Length];
-                    Buffer.BlockCopy(buffer, 0, data, 0, (int)ms.Length);
-                    return data;
-                  }
-                }
-                catch(Exception error)
-                {
-                  throw new DistributedDataParcelSerializationException(
-                             StringConsts.DISTRIBUTED_DATA_PARCEL_UNWRAP_DESER_ERROR.Args(GetType().FullName, error.ToMessageWithType())
-                             , error);
-                }
-            }
-
-            /// <summary>
-            /// Override to provide a better estimate for buffer size needed to serialize the Payload instance into WrappedPayload which is a byte[].
-            /// Used by cloning and wrapped payload serialization. 
-            /// This implementation returns default buffer size if wrapped payload is null
-            /// </summary>
-            protected virtual int GetEstimatedWrappedPayloadBufferSize()
-            {
-              if (m_PayloadData!=null &&
-                  MetadataAttribute.PayloadWrappingMode==ParcelPayloadWrappingMode.Wrapped)
-               return ((byte[])m_PayloadData).Length;
-
-              return DEFAULT_WRAPPED_PAYLOAD_BUFFER_SIZE;
-            }
-
-            /// <summary>
-            /// Override to initialize internal Parcel state right before payload gets unwrapped - deserialized from byte[], 
-            ///  i.e.  this may be used to clear some internal fields. Base implementation does nothing
-            /// </summary>
-            protected virtual void OnBeforePayloadUnwrap()
-            {
-
-            }
-           
-            /// <summary>
-            /// Override to initialize internal Parcel state right after payload gets unwrapped - deserialized from byte[], 
-            ///  i.e.  this may be used to cache or clear some internal fields. Base implementation does nothing
-            /// </summary>
-            protected virtual void OnAfterPayloadUnwrap()
-            {
-
-            }
-
-            /// <summary>
-            /// Override to initialize internal Parcel state right before payload gets wrapped - serialized into byte[], 
-            ///  i.e.  this may be used to set some internal fields used for caching, i.e. copy user rating field from complex user object(payload)
-            /// which will be wrapped into byte[] into separate field that may influence Parcel caching policy. Base implementation does nothing  
-            /// </summary>
-            protected virtual void OnBeforePayloadWrap()
-            {
-
-            }
-            
-            /// <summary>
-            /// Override to initialize internal Parcel state right after payload gets wrapped - serialized into byte[], 
-            ///  i.e.  this may be used to clear some internal fields. Base implementation does nothing
-            /// </summary>
-            protected virtual void OnAfterPayloadWrap()
-            {
-
-            }
-
-
-
-            
             /// <summary>
             /// Override to perform actions when parcel is unsealed (opened) for modification
             /// </summary>
@@ -848,27 +528,15 @@ namespace NFX.DataAccess.Distributed
            {
               if (m_State!=ParcelState.Sealed)
                  throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("OnSerializing", GetType().FullName, m_State) );
-              EnsurePayloadWrappedCopy();
            }
 
         #endregion
-
-
-           
-    }
+    }//Parcel
 
     /// <summary>
     /// Describes a data parcel - a piece of logically-grouped data that gets fetched from/comitted into a distributed backend system.
     /// Parcels represent an atomic unit of change, a changeset that gets replicated between failover hosts.
     /// Every parcel has a Payload property that stores business data of interest that the parcel contains.
-    /// This class is designed in such way that Payload property (unwrapped data) is not serialized, instead a byte[](wrapped data) is serialized.
-    /// This is needed because an instance of Parcel may travel between many hosts that do not need to serialize/deserialize possibly complex business
-    /// object that parcel contains.
-    /// Parcels wrap their payload - when parcels get transported between hosts only parcel metadata (Parcel class fields) get serialized/deserialized by 
-    /// hosts in the data supply chain, so metadata is available for tasks like parcel routing and cache policy adjustment, but the business data (the payload) must be 
-    /// unwrapped first before it can be used. This design promotes efficient storage in distributed cache systems, i.e. the data origination host may keep cached version
-    /// in an unwrapped state (not serialized) so business payload is ready for access right away without deserialization. 
-    /// On the other hand, the intermediary parcel relays do not need to deserialize/serialize payload every time as it may be complex and waste significant processing time.
     /// This class is not thread-safe.
     /// This particular class serves as a very base for distributed data store implementations
     /// </summary>
@@ -891,14 +559,11 @@ namespace NFX.DataAccess.Distributed
         
         #region Properties
            /// <summary>
-           /// Returns payload of this parcel.
-           /// If the parcel is sealed and payload has not been unwrapped yet it will be unwrapped first then cached for subsequent access.
-           /// May set payload only if parcel is in Creating or Modifying state (opened/not sealed)
+           /// Returns payload of this parcel
            /// </summary>
            public new TPayload Payload
            {
               get{ return (TPayload)base.Payload; }
-              set { base.Payload = value;}
            }
         #endregion
     }

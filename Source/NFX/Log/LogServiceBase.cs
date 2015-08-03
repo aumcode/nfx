@@ -40,7 +40,7 @@ namespace NFX.Log
     ///  get sent into destinations synchronously by internal thread so specifying too many destinations may
     ///  limit overall LogService throughput. In complex scenarios consider using LogServiceDestination instead.
     /// </summary>
-    public abstract class LogServiceBase : Service, ILogImplementation
+    public abstract class LogServiceBase : ServiceWithInstrumentationBase<object>, ILogImplementation
     {
         public class DestinationList : List<Destination> {}
 
@@ -137,7 +137,7 @@ namespace NFX.Log
             /// </summary>
             [Config(Default=false)]
             [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
-            public virtual bool InstrumentationEnabled
+            public override bool InstrumentationEnabled
             {
               get { return m_InstrumentationEnabled;}
               set { m_InstrumentationEnabled = value;}
@@ -149,19 +149,6 @@ namespace NFX.Log
             {
               get { return m_InstrBuffer.BufferSize; }
               set { m_InstrBuffer.BufferSize = value; }
-            }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            { 
-              return ExternalParameterAttribute.GetParameters(this, groups); 
             }
 
             /// <summary>
@@ -303,23 +290,6 @@ namespace NFX.Log
                     foreach (Destination d in m_Destinations)
                         d.TimeChanged();
                 }
-            }
-
-
-            /// <summary>
-            /// Gets external parameter value returning true if parameter was found
-            /// </summary>
-            public bool ExternalGetParameter(string name, out object value, params string[] groups)
-            {
-                return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-            }
-          
-            /// <summary>
-            /// Sets external parameter value returning true if parameter was found and set
-            /// </summary>
-            public bool ExternalSetParameter(string name, object value, params string[] groups)
-            {
-              return ExternalParameterAttribute.SetParameter(this, name, value, groups);
             }
 
             /// <summary>

@@ -34,7 +34,7 @@ namespace NFX.Glue.Implementation
     /// Provides default implementation for IGlue. This is the root context for all other glue objects
     /// </summary>
     [ConfigMacroContext]
-    public sealed class GlueService : Service, IGlueImplementation
+    public sealed class GlueService : ServiceWithInstrumentationBase<object>, IGlueImplementation
     {
         #region CONSTS
            public const string CONFIG_PROVIDERS_SECTION = "providers";
@@ -123,25 +123,11 @@ namespace NFX.Glue.Implementation
                     /// </summary>
                     [Config(Default=false)]
                     [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
-                    public bool InstrumentationEnabled
+                    public override bool InstrumentationEnabled
                     {
                       get { return m_InstrumentationEnabled;}
                       set { m_InstrumentationEnabled = value;}
                     }
-
-              /// <summary>
-              /// Returns named parameters that can be used to control this component
-              /// </summary>
-              public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-              /// <summary>
-              /// Returns named parameters that can be used to control this component
-              /// </summary>
-              public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-              { 
-                return ExternalParameterAttribute.GetParameters(this, groups); 
-              }
-
 
                     [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE)]                                                                          
                     public int DefaultDispatchTimeoutMs
@@ -361,23 +347,6 @@ namespace NFX.Glue.Implementation
             public ResponseMsg ServerHandleRequestFailure(FID reqID, bool oneWay, Exception failure, object bindingSpecCtx)
             {
                 return m_ServerHandler.HandleRequestFailure(reqID, oneWay, failure, bindingSpecCtx);
-            }
-
-
-            /// <summary>
-            /// Gets external parameter value returning true if parameter was found
-            /// </summary>
-            public bool ExternalGetParameter(string name, out object value, params string[] groups)
-            {
-                return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-            }
-          
-            /// <summary>
-            /// Sets external parameter value returning true if parameter was found and set
-            /// </summary>
-            public bool ExternalSetParameter(string name, object value, params string[] groups)
-            {
-              return ExternalParameterAttribute.SetParameter(this, name, value, groups);
             }
 
         #endregion
