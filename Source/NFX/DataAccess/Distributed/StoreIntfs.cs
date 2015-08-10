@@ -108,6 +108,13 @@ namespace NFX.DataAccess.Distributed
         /// Returns registry of named schema areas
         /// </summary>
         IRegistry<IArea>  Areas { get;}
+
+        /// <summary>
+        /// Returns target name suffix which is added at the end.
+        /// This allows for detailed targeting of metadata for particular schema.
+        /// In most cases this property returns null which means no specific schema targeting
+        /// </summary>
+        string TargetSuffix { get;}
     }
 
     /// <summary>

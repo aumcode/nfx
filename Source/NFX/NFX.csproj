@@ -215,6 +215,43 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\PDF\Constants.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfObject.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfResource.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfWritable.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfXObject.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfDocument.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfFont.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfHeader.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfMeta.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfObject.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfOutlines.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfPage.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfPageTree.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfRoot.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfTrailer.cs" />
+    <Compile Include="Media\PDF\Elements\BezierPrimitive.cs" />
+    <Compile Include="Media\PDF\Elements\ImageElement.cs" />
+    <Compile Include="Media\PDF\Elements\LinePrimitive.cs" />
+    <Compile Include="Media\PDF\Elements\PathElement.cs" />
+    <Compile Include="Media\PDF\Elements\PathPrimitive.cs" />
+    <Compile Include="Media\PDF\Elements\PdfElement.cs" />
+    <Compile Include="Media\PDF\Elements\RectangleElement.cs" />
+    <Compile Include="Media\PDF\Elements\TextElement.cs" />
+    <Compile Include="Media\PDF\Exceptions.cs" />
+    <Compile Include="Media\PDF\ObjectRepository.cs" />
+    <Compile Include="Media\PDF\PdfWriter.cs" />
+    <Compile Include="Media\PDF\ResourceRepository.cs" />
+    <Compile Include="Media\PDF\Styling\Enums.cs" />
+    <Compile Include="Media\PDF\Styling\PdfColor.cs" />
+    <Compile Include="Media\PDF\Styling\PdfDrawStyle.cs" />
+    <Compile Include="Media\PDF\Styling\PdfPageSize.cs" />
+    <Compile Include="Media\PDF\Styling\PdfSize.cs" />
+    <Compile Include="Media\PDF\Styling\PdfUnit.cs" />
+    <Compile Include="Media\PDF\Text\PdfTrivialEncoding.cs" />
+    <Compile Include="Media\PDF\Text\PdfUnicodeEncoding.cs" />
+    <Compile Include="Media\PDF\Text\TextAdapter.cs" />
     <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />
     <Compile Include="Media\TagCodes\QR\QRImageRenderer.cs" />
     <Compile Include="Media\TagCodes\QR\QRMatrix.cs" />
@@ -607,7 +644,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Media\DocModel\" />
-    <Folder Include="Media\PDF\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />

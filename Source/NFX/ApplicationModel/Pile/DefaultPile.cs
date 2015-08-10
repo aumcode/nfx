@@ -1291,7 +1291,7 @@ namespace NFX.ApplicationModel.Pile
           {
             var stream = getTLWriteStream();
             var serializer = ts_WriteSerializer;
-            if (serializer==null || serializer.Owner != this)
+            if (serializer==null || serializer.Owner != this || serializer.__globalTypeRegistry!=m_CurrentTypeRegistry)
             {
                 serializer = new SlimSerializer(m_CurrentTypeRegistry, SlimFormat.Instance);
                 serializer.Owner = this;
@@ -1342,21 +1342,22 @@ namespace NFX.ApplicationModel.Pile
                ts_ReadSerializer = serializer;
             }
 
-            try
-            {
-              return serializer.Deserialize(stream);
-            }
-            catch(SlimDeserializationException e)
-            {
-              if (!(e.InnerException is SlimInvalidTypeHandleException)) throw;
+            while(Running)
+              try
+              {
+                return serializer.Deserialize(stream);
+              }
+              catch(SlimDeserializationException e)
+              {
+                if (!(e.InnerException is SlimInvalidTypeHandleException)) throw;
 
-              serializer = new SlimSerializer(m_CurrentTypeRegistry, SlimFormat.Instance);
-              serializer.Owner = this;
-              serializer.TypeMode = TypeRegistryMode.Batch;
-              ts_ReadSerializer = serializer;
+                serializer = new SlimSerializer(m_CurrentTypeRegistry, SlimFormat.Instance);
+                serializer.Owner = this;
+                serializer.TypeMode = TypeRegistryMode.Batch;
+                ts_ReadSerializer = serializer;
+              }
 
-              return serializer.Deserialize(stream);
-            }
+            return null;
           }
 
 

@@ -973,6 +973,18 @@ namespace NFX
     public const string PILE_CACHE_TBL_KEYCOMPARER_MISMATCH_ERROR = 
       "Key comparer mismatch for pile cache table '{0}'. Existing: '{1}' Requested: '{2}'";          
      
+
+    public const string PDF_UNIT_INCONSISTENCY_ERROR =
+        "PDF Unit '{0}' is inconsistently defined";
+
+    public const string PDF_UNIT_DOESNOTEXIST_ERROR =
+        "PDF Unit '{0}' does not exist";
+     
+    public const string PDF_COLOR_DOESNOTEXIST_ERROR =
+        "PDF Color '{0}' does not exist";
+             
+    public const string PDF_COLOR_INCONSISTENCY_ERROR =
+        "PDF Color '{0}' is inconsistently defined";
   }
 }
 

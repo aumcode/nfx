@@ -50,7 +50,7 @@ namespace NFX.DataAccess.MongoDB
 
 
          protected static Dictionary<Type, Func<object, BsonValue>> s_CLRtoBSON = new Dictionary<Type,Func<object, BsonValue>>
-          {
+         {
             { typeof(string),   (v) => { var str = (string)v;  return str==string.Empty ? BsonString.Empty : new BsonString(str); } },
             { typeof(bool),     (v) => ((bool)v) ? BsonBoolean.True : BsonBoolean.False },
             { typeof(int),      (v) => new BsonInt32((int)v) },
@@ -94,7 +94,7 @@ namespace NFX.DataAccess.MongoDB
             { typeof(DateTime), (v) => v.ToString().AsDateTime(/* it throws anyway handling: ConvertErrorHandling.Throw*/) },
             { typeof(TimeSpan), (v) => TimeSpan.FromTicks( v.ToString().AsLong(handling: ConvertErrorHandling.Throw)) },
             { typeof(Guid),     (v) => v.ToString().AsGUID(Guid.Empty, ConvertErrorHandling.Throw) },
-            { typeof(byte[]),   (v) => (byte[])v },
+            { typeof(byte[]),   (v) => ByteBuffer_BSONtoCLR(v) },
             //nullable are not needed, as BsonNull is handled already
           };
 
@@ -131,14 +131,17 @@ namespace NFX.DataAccess.MongoDB
         ///  BSON types into corresponding CLR types. The sub-documents get mapped into JSONDataObjects,
         ///   and BSON arrays get mapped into CLR object[]
         /// </summary>
-        public virtual JSONDataMap BSONDocumentToJSONMap(BsonDocument doc)
+        public virtual JSONDataMap BSONDocumentToJSONMap(BsonDocument doc, Func<BsonDocument, BsonElement, bool> filter = null)
         {
           if (doc==null) return null;
 
           var result = new JSONDataMap(true);
           foreach(var elm in doc)
           {
-             var clrValue = DirectConvertBSONValue(elm.Value);
+             if (filter!=null)
+              if (!filter(doc, elm)) continue;
+
+             var clrValue = DirectConvertBSONValue(elm.Value, filter);
              result[elm.Name] = clrValue;
           }
 
@@ -195,7 +198,7 @@ namespace NFX.DataAccess.MongoDB
         /// the fields either not found in row, or the fields that could not be type-converted to CLR type will be 
         /// stowed in amorphous data dictionary
         /// </summary>
-        public virtual void BSONDocumentToRow(BsonDocument doc, Row row, string targetName, bool useAmorphousData = true)
+        public virtual void BSONDocumentToRow(BsonDocument doc, Row row, string targetName, bool useAmorphousData = true, Func<BsonDocument, BsonElement, bool> filter = null)
         {                
           if (doc==null || row==null) throw new MongoDBDataAccessException(StringConsts.ARGUMENT_ERROR+"BSONDocumentToRow(doc|row=null)");
          
@@ -203,6 +206,9 @@ namespace NFX.DataAccess.MongoDB
 
           foreach(var elm in doc)
           {
+            if (filter!=null)
+             if (!filter(doc, elm)) continue;
+           
             // 2015.03.01 Introduced caching
             var fld = MapBSONFieldNameToSchemaFieldDef(row.Schema, targetName, elm.Name);
 
@@ -210,15 +216,15 @@ namespace NFX.DataAccess.MongoDB
             if (fld==null)
             {
                if (amrow!=null && useAmorphousData && amrow.AmorphousDataEnabled)
-                 SetAmorphousFieldAsCLR(amrow, elm, targetName); 
+                 SetAmorphousFieldAsCLR(amrow, elm, targetName, filter); 
                continue;
             }
 
-            var wasSet = TrySetFieldAsCLR(row, fld, elm.Value, targetName);
+            var wasSet = TrySetFieldAsCLR(row, fld, elm.Value, targetName, filter);
             if (!wasSet)//again dump it in amorphous
             {
               if (amrow!=null && useAmorphousData && amrow.AmorphousDataEnabled)
-                 SetAmorphousFieldAsCLR(amrow, elm, targetName);
+                 SetAmorphousFieldAsCLR(amrow, elm, targetName, filter);
             }
           }
 
@@ -309,10 +315,10 @@ namespace NFX.DataAccess.MongoDB
           return new BsonElement(name, value);  
         }
 
-        protected virtual bool TrySetFieldAsCLR(Row row, Schema.FieldDef field, BsonValue value, string targetName)
+        protected virtual bool TrySetFieldAsCLR(Row row, Schema.FieldDef field, BsonValue value, string targetName, Func<BsonDocument, BsonElement, bool> filter)
         {
           object clrValue;
-          if (!TryConvertBSONtoCLR(field.NonNullableType, value, targetName, out clrValue)) return false;
+          if (!TryConvertBSONtoCLR(field.NonNullableType, value, targetName, out clrValue, filter)) return false;
           row.SetFieldValue(field, clrValue);
           return true;
         }
@@ -323,10 +329,10 @@ namespace NFX.DataAccess.MongoDB
           return new BsonElement( field.Key, value );  
         }
 
-        protected virtual bool SetAmorphousFieldAsCLR(IAmorphousData amorph, BsonElement bsonElement, string targetName)
+        protected virtual bool SetAmorphousFieldAsCLR(IAmorphousData amorph, BsonElement bsonElement, string targetName, Func<BsonDocument, BsonElement, bool> filter)
         {
           object clrValue;
-          if (!TryConvertBSONtoCLR(typeof(object), bsonElement.Value, targetName, out clrValue)) return false;
+          if (!TryConvertBSONtoCLR(typeof(object), bsonElement.Value, targetName, out clrValue, filter)) return false;
           amorph.AmorphousData[bsonElement.Name] = clrValue;   
           return true;
         }
@@ -386,7 +392,7 @@ namespace NFX.DataAccess.MongoDB
         /// <summary>
         /// Tries to convert the BSON value into target CLR type. Returns true if conversion was successfull
         /// </summary>
-        protected virtual bool TryConvertBSONtoCLR(Type target, BsonValue value, string targetName, out object clrValue)
+        protected virtual bool TryConvertBSONtoCLR(Type target, BsonValue value, string targetName, out object clrValue, Func<BsonDocument, BsonElement, bool> filter)
         {
           if (value==null || value is BsonNull) 
           {
@@ -397,7 +403,7 @@ namespace NFX.DataAccess.MongoDB
           if (target == typeof(object))
           {
             //just unwrap Bson:CLR = 1:1, without type conversion
-            clrValue = DirectConvertBSONValue( value );
+            clrValue = DirectConvertBSONValue( value, filter );
             return true;
           }
 
@@ -408,13 +414,15 @@ namespace NFX.DataAccess.MongoDB
             var doc = value as BsonDocument;
             if (doc==null) return false;//not document
             var tr = (TypedRow)Activator.CreateInstance(target);
-            BSONDocumentToRow(doc, tr, targetName);
+            BSONDocumentToRow(doc, tr, targetName, filter: filter);
             clrValue = tr;
             return true; 
           }
 
           //ARRAY
-          if (target.IsArray && target.GetArrayRank()==1)
+          if (target.IsArray && 
+              target.GetArrayRank()==1 && 
+              target!=typeof(byte[]))//exclude byte[] as it is treated with m_BSONtoCLR
           {
             var arr = value as BsonArray;
             if (arr==null) return false;//not array
@@ -423,7 +431,7 @@ namespace NFX.DataAccess.MongoDB
             for(var i=0; i<arr.Count; i++)
             { 
               object clrElement;
-              if (!TryConvertBSONtoCLR(telm, arr[i], targetName, out clrElement))
+              if (!TryConvertBSONtoCLR(telm, arr[i], targetName, out clrElement, filter))
               {
                 return false;//could not convert some element of array
               } 
@@ -445,7 +453,7 @@ namespace NFX.DataAccess.MongoDB
             for(var i=0; i<arr.Count; i++)
             {
               object clrElement;
-              if (!TryConvertBSONtoCLR(telm, arr[i], targetName, out clrElement))
+              if (!TryConvertBSONtoCLR(telm, arr[i], targetName, out clrElement, filter))
               {
                 return false;//could not convert some element of array into element of List<t>
               } 
@@ -461,7 +469,7 @@ namespace NFX.DataAccess.MongoDB
           {
             var doc = value as BsonDocument;
             if (doc==null) return false;//not document
-            clrValue = BSONDocumentToJSONMap(doc);
+            clrValue = BSONDocumentToJSONMap(doc, filter);
             return true;
           }
                        
@@ -489,18 +497,18 @@ namespace NFX.DataAccess.MongoDB
         /// <summary>
         /// Converts BSON to CLR value 1:1, without type change
         /// </summary>
-        protected virtual object DirectConvertBSONValue(BsonValue value)
+        protected virtual object DirectConvertBSONValue(BsonValue value, Func<BsonDocument, BsonElement, bool> filter = null)
         {
           if (value==null || value is BsonNull) return null;
           
-          if (value is BsonDocument) return BSONDocumentToJSONMap((BsonDocument)value);
+          if (value is BsonDocument) return BSONDocumentToJSONMap((BsonDocument)value, filter);
          
           if (value is BsonArray) 
           {
             var arr = (BsonArray)value;
             var lst = new List<object>();
             foreach(var elm in arr)
-             lst.Add( DirectConvertBSONValue(elm) );
+             lst.Add( DirectConvertBSONValue(elm, filter) );
             return lst.ToArray();
           }
 
@@ -580,13 +588,15 @@ namespace NFX.DataAccess.MongoDB
           return new BsonBinaryData( (byte[])buf );
         }
 
+        protected static byte[] ByteBuffer_BSONtoCLR(BsonValue bson)
+        {
+          if (bson==null || bson is BsonNull) return null;
+          return (byte[])bson;//BsonBinaryData explicit cast
+        }
+
 
       #endregion
 
-      
-             
-
-      
   }
 
 }

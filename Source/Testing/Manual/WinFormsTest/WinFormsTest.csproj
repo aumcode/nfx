@@ -165,6 +165,12 @@
     <Compile Include="PatientForm.Designer.cs">
       <DependentUpon>PatientForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PdfTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PdfTestForm.Designer.cs">
+      <DependentUpon>PdfTestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PileForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,6 +256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PatientForm.resx">
       <DependentUpon>PatientForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PdfTestForm.resx">
+      <DependentUpon>PdfTestForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PileForm.resx">
       <DependentUpon>PileForm.cs</DependentUpon>

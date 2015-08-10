@@ -19,10 +19,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.Environment;
+
 namespace NFX.DataAccess.Distributed
 {
+    
     /// <summary>
-    /// Decorates Pacel-derivative classes specifying distributed data store options
+    /// Provides information about targetname->table name(and possibly other) mappings
+    /// </summary>
+    public struct TargetTableMapping : INamed
+    {
+      public TargetTableMapping(IConfigSectionNode node)
+      {
+        m_Name = node.Name;
+        m_TableName = node.Value;
+      }
+      
+      private string m_Name;
+      private string m_TableName;
+      //...more props in future
+
+      public string Name { get { return m_Name;} }
+      public string TableName { get { return m_TableName;} }
+    }
+
+    
+    
+    /// <summary>
+    /// Decorates Pacel-derivative classes specifying distributed data store options.
+    /// Unlike the CRUD family of metadata attributes this attributed is NOT TARGETABLE on purpose
+    /// beacause different sharding definitions would have affected the properties of the parcel which could have been
+    /// very complex to maintain/account for. So, every parcel has ONLY ONE set opf metadata definition.
+    /// In case when different parcel definitions needed a new parcel type should be created which can reuse the payload - this is much 
+    ///  easier to implement (two parcels) than targeting within the same parcel.
+    /// Table mappings are targetable
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
     public sealed class DataParcelAttribute : Attribute, ICachePolicy
@@ -76,7 +106,8 @@ namespace NFX.DataAccess.Distributed
                              string cacheTableName = null,
                              int cacheWriteMaxAgeSec = -1,
                              int cacheReadMaxAgeSec = -1,
-                             int cachePriority = -1)
+                             int cachePriority = -1,
+                             string targetTableMappings = null)
         {
             if (schemaName.IsNullOrWhiteSpace() || 
                 areaName.IsNullOrWhiteSpace())
@@ -96,8 +127,21 @@ namespace NFX.DataAccess.Distributed
             CacheWriteMaxAgeSec = cacheWriteMaxAgeSec <0 ? (int?)null : cacheWriteMaxAgeSec;
             CacheReadMaxAgeSec  = cacheReadMaxAgeSec  <0 ? (int?)null : cacheReadMaxAgeSec;
             CachePriority       = cachePriority       <0 ? (int?)null : cachePriority;    
+
+            if (targetTableMappings.IsNotNullOrWhiteSpace())
+            {
+               var data = ("mappings{"+targetTableMappings+"}").AsLaconicConfig();
+               if (data==null) data = targetTableMappings.AsLaconicConfig();
+               if (data==null)
+                throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(targetTableMappings='"+targetTableMappings+"' Laconic parse error)");
+              
+               foreach(var cn in data.Children)
+                m_TableMappings.Register( new TargetTableMapping( cn ) ); 
+            }
         }
        
+
+        private Registry<TargetTableMapping> m_TableMappings = new Registry<TargetTableMapping>();
 
         /// <summary>
         /// Returns true if parcel supports merge with other versions. 
@@ -174,5 +218,10 @@ namespace NFX.DataAccess.Distributed
         /// This property can not be set on the attribute level and always returns null
         /// </summary>
         public DateTime? CacheAbsoluteExpirationUTC { get {return null; }}
+
+        /// <summary>
+        /// Returns mappins of target->table attributes. Pass in [DataParcel(targetTableMappings = "targetName1=tableName1{atr1=v1 atr2=v2...} targetName2=tableName2{atr1=v1 atr2=v2...}...")];
+        /// </summary>
+        public IRegistry<TargetTableMapping> TableMappings { get{ return m_TableMappings;}}
     }
 }

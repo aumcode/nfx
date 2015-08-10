@@ -76,6 +76,12 @@ namespace WinFormsTest
       new PileForm().Show();
     }
 
+    
+    private void btnPDF_Click(object sender, EventArgs e)
+    {
+     new PdfTestForm().Show();
+    }
+
     private byte[] getGarbageBuffer(int bufferLength)
     {
       var buf = new byte[bufferLength];
@@ -166,5 +172,6 @@ Performance
              time1 / (double)time2
            ));
     }
+
   }
 }

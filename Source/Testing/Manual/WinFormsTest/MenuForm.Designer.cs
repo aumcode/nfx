@@ -36,6 +36,7 @@
       this.btnWaveServer = new System.Windows.Forms.Button();
       this.btnPile = new System.Windows.Forms.Button();
       this.btnSystemSpeed = new System.Windows.Forms.Button();
+      this.btnPDF = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnGlue
@@ -108,7 +109,7 @@
       // 
       this.btnPile.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.btnPile.ForeColor = System.Drawing.Color.Blue;
-      this.btnPile.Location = new System.Drawing.Point(12, 346);
+      this.btnPile.Location = new System.Drawing.Point(12, 382);
       this.btnPile.Name = "btnPile";
       this.btnPile.Size = new System.Drawing.Size(136, 46);
       this.btnPile.TabIndex = 4;
@@ -129,11 +130,24 @@
       this.btnSystemSpeed.UseVisualStyleBackColor = false;
       this.btnSystemSpeed.Click += new System.EventHandler(this.btnSystemSpeed_Click);
       // 
+      // btnPDF
+      // 
+      this.btnPDF.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.btnPDF.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+      this.btnPDF.Location = new System.Drawing.Point(12, 324);
+      this.btnPDF.Name = "btnPDF";
+      this.btnPDF.Size = new System.Drawing.Size(136, 46);
+      this.btnPDF.TabIndex = 6;
+      this.btnPDF.Text = "PDF";
+      this.btnPDF.UseVisualStyleBackColor = true;
+      this.btnPDF.Click += new System.EventHandler(this.btnPDF_Click);
+      // 
       // MenuForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(306, 485);
+      this.Controls.Add(this.btnPDF);
       this.Controls.Add(this.btnSystemSpeed);
       this.Controls.Add(this.btnPile);
       this.Controls.Add(this.btnCache);
@@ -159,5 +173,6 @@
     private System.Windows.Forms.Button btnWaveServer;
     private System.Windows.Forms.Button btnPile;
     private System.Windows.Forms.Button btnSystemSpeed;
+    private System.Windows.Forms.Button btnPDF;
   }
 }

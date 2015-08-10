@@ -69,8 +69,7 @@ namespace NFX.DataAccess.Distributed
             
             /// <summary>
             /// Obtains parcel cache name from either it's associated DataParcelAttribute or 
-            ///  if not defined, from parcel type full name. Keep in mind, that a parcel instance may dynamicaly sypply a
-            ///  different name for CacheTable so the store may need to search in alternative cache tables
+            ///  if not defined, from parcel type full name
             /// </summary>
             public static string GetParcelCacheTableName(Type tparcel)
             {
@@ -112,11 +111,11 @@ namespace NFX.DataAccess.Distributed
             {
                m_GDID = id;
 
-               if (payload==null) 
-                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(payload==null)");
-
                if (versInfo==null) 
                  throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(versInfo==null)");
+               
+               if (payload==null && !versInfo.VersionDeleted) 
+                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(payload==null)");
 
                m_State = ParcelState.Sealed;
                m_Payload = payload;
@@ -194,7 +193,7 @@ namespace NFX.DataAccess.Distributed
 
 
             /// <summary>         
-            /// Returns payload of this parcel.
+            /// Returns payload of this parcel. This may be null for deleted parcels (VersionDeleted).
             /// WARNING!!! Although parcels do not allow to set Payload property if they are sealed, one can still mutate/modify the payload object graph 
             /// even on a sealed parcel instance, i.e. one may write: 
             ///   <code>mySealedParcel.Payload.DueDates.Add(DateTime.Now) (given DueDates of type List(DateTime))</code>.
@@ -346,6 +345,9 @@ namespace NFX.DataAccess.Distributed
                  throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("Open", GetType().FullName, m_State) );
                 if (ReadOnly)
                  throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("Open", GetType().FullName+"(ReadOnly)", m_State) );
+
+                if (ReplicationVersionInfo!=null && ReplicationVersionInfo.VersionDeleted)
+                 throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_INVALID_OPERATION_ERROR.Args("Open", GetType().FullName+"(VersionDeleted)", m_State) );
 
                 DoOpen();
                 m_State = ParcelState.Modifying;  
@@ -567,6 +569,7 @@ namespace NFX.DataAccess.Distributed
            }
         #endregion
     }
+
 
 
 }

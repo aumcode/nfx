@@ -187,9 +187,28 @@ namespace NFX.NUnit
            Assert.AreEqual(5, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(6));
            Assert.AreEqual(7, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(7));
 
-           Assert.AreEqual(107, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(108));
+           Assert.AreEqual(107, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(107));
            Assert.AreEqual(107, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(108));
            Assert.AreEqual(109, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(109));
+           Assert.AreEqual(109, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(110));
+           Assert.AreEqual(109, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(111));
+           Assert.AreEqual(109, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(112));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(113));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(114));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(115));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(116));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(117));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(118));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(119));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(120));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(121));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(122));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(123));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(124));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(125));
+           Assert.AreEqual(113, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(126));
+           Assert.AreEqual(127, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(127));
+
 
            Assert.AreEqual(631, IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(633));
 

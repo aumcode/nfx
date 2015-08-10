@@ -20,6 +20,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using NUnit.Framework;
 
@@ -30,15 +31,33 @@ using NFX.DataAccess.MongoDB;
 using NFX.Serialization.JSON;
 using NFX.Financial;
 
+using global::MongoDB.Bson;
+
 namespace NFX.NUnit.Integration.MongoDB
 {
   [TestFixture]
   public class ConversionTests
   {
 
+                                                      private BsonDocument fullCopy(BsonDocument original)
+                                                      {
+                                                        //note: doc.DeepClone does not work as expected (copies references for byte[])
+                                                        using(var ms = new MemoryStream())
+                                                        {
+                                                          #pragma warning disable 0618
+                                                            original.WriteTo(ms);
+                                                            ms.Position = 0;
+                                                            return BsonDocument.ReadFrom(ms);
+                                                          #pragma warning restore 0618
+                                                        }
+                                                      } 
+
+
     [Test]
     public void T_01_Equals()
     {
+      var BIN = new byte[] {0x00, 0x79, 0x14};
+
       var row = new RowA
       {
         String1 = "Mudaker", String2 = null,
@@ -49,24 +68,52 @@ namespace NFX.NUnit.Integration.MongoDB
         Float1 = 127.0123f, Float2 = null,
         Double1 = 122345.012d, Double2 = null,
         Decimal1 = 1234567.098M, Decimal2 = null,
-        Amount1 = new Amount("din", 123.11M), Amount2 = null
+        Amount1 = new Amount("din", 123.11M), Amount2 = null,
+        Bytes1 = BIN, Bytes2 = null,
+
+        Byte1 = 23,
+        SByte1 = -3,
+        Short1 = -32761,
+        UShort1 = 65535,
+        Int1 = 4324,
+        Uint1 =42345,
+        Long1 = 993,
+        ULong1 = 8829383762,
+
+        Byte2 = null,
+        SByte2 = null,
+        Short2 = null,
+        UShort2 = null,
+        Int2 = null,
+        Uint2 = null,
+        Long2 = null,
+        ULong2 = null
       };
         
       var rc = new RowConverter();
       
-      var doc = rc.RowToBSONDocument( row, "A" );
+      var docOriginal = rc.RowToBSONDocument( row, "A" );
+      var doc = fullCopy( docOriginal );       
 
       Console.WriteLine(doc.ToString());
+
+      Assert.IsTrue( BIN.SequenceEqual( (byte[])doc["Bytes1"] ));
+      Assert.IsTrue( doc["Bytes2"] is global::MongoDB.Bson.BsonNull);
 
       var row2 = new RowA();
       rc.BSONDocumentToRow(doc, row2, "A");
 
       Assert.IsTrue( row.Equals( row2 ) );
+      Assert.IsTrue( BIN.SequenceEqual( row2.Bytes1 ));
+      Assert.IsNull( row2.Bytes2 );
+      Assert.IsFalse( object.ReferenceEquals(BIN, row2.Bytes1) );
     }
 
     [Test]
     public void T_02_Manual()
     {
+      var BYTES1 = new byte[] {0x00, 0x79, 0x14};
+
       var row = new RowA
       {
         String1 = "Mudaker", String2 = null,
@@ -77,12 +124,15 @@ namespace NFX.NUnit.Integration.MongoDB
         Float1 = 127.0123f, Float2 = null,
         Double1 = 122345.012d, Double2 = null,
         Decimal1 = 1234567.098M, Decimal2 = null,
-        Amount1 = new Amount("din", 123.11M), Amount2 = null
+        Amount1 = new Amount("din", 123.11M), Amount2 = null,
+        Bytes1 = BYTES1, Bytes2 = null 
       };
         
       var rc = new RowConverter();
       
-      var doc = rc.RowToBSONDocument( row, "A" );
+      var docOriginal = rc.RowToBSONDocument( row, "A" );
+      
+      var doc = fullCopy( docOriginal );
 
       Console.WriteLine(doc.ToString());
 
@@ -105,12 +155,18 @@ namespace NFX.NUnit.Integration.MongoDB
       Assert.IsNull( row2.Decimal2);
       Assert.AreEqual(new Amount("din", 123.11M), row2.Amount1);
       Assert.IsNull( row2.Amount2);
+      Assert.NotNull( row2.Bytes1);
+      Assert.IsTrue( BYTES1.SequenceEqual( row2.Bytes1) );
+      Assert.IsNull( row2.Bytes2);
     }
 
 
     [Test]
     public void T_03_Manual_wo_NULLs()
     {
+      var BYTES1 = new byte[] {};
+      var BYTES2 = new byte[] {0x00, 0x79, 0x14};
+
       var row = new RowA
       {
         String1 = "Mudaker", String2 = "Kapernik",
@@ -121,7 +177,8 @@ namespace NFX.NUnit.Integration.MongoDB
         Float1 = 127.0123f, Float2 = -0.123f,
         Double1 = 122345.012d, Double2 = -12345.11f,
         Decimal1 = 1234567.098M, Decimal2 = 22m,
-        Amount1 = new Amount("din", 123.11M), Amount2 = new Amount("din", 8901234567890.012M)
+        Amount1 = new Amount("din", 123.11M), Amount2 = new Amount("din", 8901234567890.012M),
+        Bytes1 = BYTES1, Bytes2 = BYTES2 
       };
         
       var rc = new RowConverter();
@@ -149,6 +206,8 @@ namespace NFX.NUnit.Integration.MongoDB
       Assert.AreEqual(22m, row2.Decimal2);
       Assert.AreEqual(new Amount("din", 123.11M), row2.Amount1);
       Assert.AreEqual(new Amount("din", 8901234567890.012M), row2.Amount2);
+      Assert.IsTrue(BYTES1.SequenceEqual(row2.Bytes1));
+      Assert.IsTrue(BYTES2.SequenceEqual(row2.Bytes2));
     }
 
 
@@ -181,6 +240,8 @@ namespace NFX.NUnit.Integration.MongoDB
     [Test]
     public void T_05_WithInnerRows()
     {
+      var BYTES = new byte[] {0x00, 0x79, 0x14};
+
       var row = new RowB
       {
         Row1 = new RowA
@@ -193,7 +254,8 @@ namespace NFX.NUnit.Integration.MongoDB
         Float1 = 127.0123f, Float2 = null,
         Double1 = 122345.012d, Double2 = null,
         Decimal1 = 1234567.098M, Decimal2 = null,
-        Amount1 = new Amount("din", 123.11M), Amount2 = null
+        Amount1 = new Amount("din", 123.11M), Amount2 = null,
+        Bytes1 = BYTES, Bytes2 = null
       },
         Row2= new RowA
       {
@@ -205,7 +267,8 @@ namespace NFX.NUnit.Integration.MongoDB
         Float1 = 127.0123f, Float2 = 123.2f,
         Double1 = 122345.012d, Double2 = -18293f,
         Decimal1 = 1234567.098M, Decimal2 = -2312m,
-        Amount1 = new Amount("usd", 89123M), Amount2 = new Amount("usd", 12398933.123m)
+        Amount1 = new Amount("usd", 89123M), Amount2 = new Amount("usd", 12398933.123m),
+        Bytes1 = null, Bytes2 = BYTES
       }
       };
         
@@ -334,15 +397,19 @@ namespace NFX.NUnit.Integration.MongoDB
     [Test]
     public void T_09_DynamicRow()
     {
+        var BYTES = new byte[] {0x00, 0x79, 0x14};
+
         var schema = new Schema("Dynamic Schema", 
               new Schema.FieldDef("ID", typeof(int), new List<FieldAttribute>{ new FieldAttribute(required: true, key: true)}),
-              new Schema.FieldDef("Description", typeof(string), new List<FieldAttribute>{ new FieldAttribute(required: true)})
+              new Schema.FieldDef("Description", typeof(string), new List<FieldAttribute>{ new FieldAttribute(required: true)}),
+              new Schema.FieldDef("Bytes", typeof(byte[]), new List<FieldAttribute>{ new FieldAttribute(required: true)})
         );
 
         var row = new DynamicRow(schema);
             
         row["ID"] = 123;
         row["Description"] = "T-90 Tank";
+        row["Bytes"] = BYTES;
      
         var rc = new RowConverter();
       
@@ -355,6 +422,7 @@ namespace NFX.NUnit.Integration.MongoDB
 
         Assert.AreEqual(123, row2["ID"]);
         Assert.AreEqual("T-90 Tank", row2["Description"]);
+        Assert.IsTrue(BYTES.SequenceEqual((byte[])row2["Bytes"]));
     }
 
 
@@ -471,6 +539,29 @@ namespace NFX.NUnit.Integration.MongoDB
       Assert.AreEqual(rowA.Age, map["Age"]); 
     }
 
+     [Test]
+    public void T_15_BSONtoJSONDataMapFilter()
+    {
+      var rowA = new RowVersionA
+      {
+         FirstName = "Vladimir",
+         LastName = "Lenin",
+         Age =  DateTime.Now.Year - 1870
+      };
+
+      var rc = new RowConverter();
+
+      var doc = rc.RowToBSONDocument(rowA, "A");
+
+      Console.WriteLine( doc.ToString() );
+
+      var map = rc.BSONDocumentToJSONMap(doc, (d, e) => e.Name!="LastName");
+
+      Assert.AreEqual(rowA.FirstName, map["FirstName"]); 
+      Assert.IsNull( map["LastName"] ); //filter skipped
+      Assert.AreEqual(rowA.Age, map["Age"]); 
+    }
+
 
     [Test]
     public void T_16_VersionChange_AmorphousDisabled()
@@ -498,7 +589,7 @@ namespace NFX.NUnit.Integration.MongoDB
     }
 
     [Test]
-    public void T_17_VersionChange_AmorphousExtra()
+    public void T_16_VersionChange_AmorphousDisabled_WithFilter()
     {
       var rowA = new RowVersionA
       {
@@ -507,7 +598,35 @@ namespace NFX.NUnit.Integration.MongoDB
          Age =  DateTime.Now.Year - 1870
       };
 
+      var rc = new RowConverter();
+
+      var doc = rc.RowToBSONDocument(rowA, "A", useAmorphousData: false);
+
+      Console.WriteLine( doc.ToString() );
+
+      var rowB = new RowVersionB();
+
+      rc.BSONDocumentToRow(doc, rowB, "MyLegacySystem", useAmorphousData: false, filter: (d,e) => e.Name!="LastName");
+
+      Assert.AreEqual("Vladimir", rowB.FirstName);
+      Assert.IsNull( rowB.LastName );
+      Assert.AreEqual(new DateTime(), rowB.DOB);
+    }
+
+    [Test]
+    public void T_17_VersionChange_AmorphousExtra()
+    {
+      var BYTES = new byte[] {0x00, 0x79, 0x14};
+
+      var rowA = new RowVersionA
+      {
+         FirstName = "Vladimir",
+         LastName = "Lenin",
+         Age =  DateTime.Now.Year - 1870
+      };
+
       rowA.AmorphousData["AABB"] = "extra data";
+      rowA.AmorphousData["Bytes"] = BYTES;
 
       var rc = new RowConverter();
 
@@ -523,6 +642,7 @@ namespace NFX.NUnit.Integration.MongoDB
       Assert.AreEqual("Lenin", rowB.LastName);
       Assert.AreEqual(1870, rowB.DOB.Year);
       Assert.AreEqual("extra data", rowB.AmorphousData["AABB"]);
+      Assert.IsTrue( BYTES.SequenceEqual((byte[])rowB.AmorphousData["Bytes"]));
     }
 
 
@@ -538,6 +658,26 @@ namespace NFX.NUnit.Integration.MongoDB
            [Field(targetName: "B", backendName: "STRING-2")] 
            public string String2{get; set;}
            
+           [Field] public byte Byte1{get; set;}
+           [Field] public sbyte SByte1{get; set;}
+           [Field] public short Short1{get; set;}
+           [Field] public ushort UShort1{get; set;}
+           [Field] public int Int1{get; set;}
+           [Field] public uint Uint1{get; set;}
+           [Field] public long Long1{get; set;}
+           [Field] public ulong ULong1{get; set;}
+
+           [Field] public byte?   Byte2{get; set;}
+           [Field] public sbyte?  SByte2{get; set;}
+           [Field] public short?  Short2{get; set;}
+           [Field] public ushort? UShort2{get; set;}
+           [Field] public int?    Int2{get; set;}
+           [Field] public uint?   Uint2{get; set;}
+           [Field] public long?   Long2{get; set;}
+           [Field] public ulong?  ULong2{get; set;}
+
+
+
            [Field] public DateTime Date1{get; set;}
            [Field] public DateTime? Date2{get; set;}
            [Field] public bool Bool1{get; set;}
@@ -555,6 +695,8 @@ namespace NFX.NUnit.Integration.MongoDB
            [Field] public decimal? Decimal2{get; set;}
            [Field] public Amount Amount1{get; set;}
            [Field] public Amount? Amount2{get; set;}
+           [Field] public byte[] Bytes1{get; set;}
+           [Field] public byte[] Bytes2{get; set;}
 
            public override bool Equals(Row other)
            {
@@ -570,6 +712,13 @@ namespace NFX.NUnit.Integration.MongoDB
                {
                 if (v2==null) continue;
                 else return false;
+               }
+               else if (v2 == null)
+                return false;
+
+               if (v1 is byte[])
+               {
+                 return ((byte[])v1).SequenceEqual((byte[])v2);
                }
 
                if (!v1.Equals( v2 )) return false;

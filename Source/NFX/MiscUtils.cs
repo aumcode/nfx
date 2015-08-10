@@ -260,6 +260,19 @@ namespace NFX
     /// </summary>
     public static string ArgsTpl(this string tpl, object args)
     {
+        bool matched; 
+        return tpl.ArgsTpl(args, out matched); 
+    }
+
+
+    /// <summary>
+    /// Interprets template of the form:  Some text {@value_name@:C} by replacing with property/field values.
+    /// Note: this function does not recognize escapes for simplicity (as escapes can be replaced by regular strings instead).
+    /// Matched is set to true if at least one property match was made
+    /// </summary>
+    public static string ArgsTpl(this string tpl, object args, out bool matched)
+    {
+        matched = false;
         if (tpl==null || args==null) return null;
         var result = tpl;
         var t = args.GetType();
@@ -269,7 +282,13 @@ namespace NFX
           var val = pi.GetValue(args);
           if (val==null) val = string.Empty;
           lst.Add(val);
-          result = result.Replace('@'+pi.Name+'@', (lst.Count-1).ToString());
+       
+          var replacedResult = result.Replace('@'+pi.Name+'@', (lst.Count-1).ToString());
+
+          if (!string.Equals(result, replacedResult, StringComparison.Ordinal))
+           matched = true;
+
+          result = replacedResult;
         } 
         return result.Args(lst.ToArray()); 
     }
@@ -720,6 +739,46 @@ namespace NFX
         return sb.ToString();
       }
       return pad + expr.ToString();
+    }
+
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0)
+    {
+      builder.AppendFormat(str, arg0);
+      return builder.AppendLine();
+    }
+     
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1)
+    {
+      builder.AppendFormat(str, arg0, arg1);
+      return builder.AppendLine();
+    }
+    
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1, object arg2)
+    {
+      builder.AppendFormat(str, arg0, arg1, arg2);
+      return builder.AppendLine();
+    }
+     
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, params object[] args)
+    {
+      builder.AppendFormat(str, args);
+      return builder.AppendLine();
     }
 
   }

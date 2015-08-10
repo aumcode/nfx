@@ -52,15 +52,16 @@ namespace WinFormsTest
         }
 
         
-        [Field]public GDID ID { get; set;}
-        [Field]public string FirstName { get; set;}
-        [Field]public string LastName { get; set;}
-        [Field]public DateTime? DOB { get; set;}
-        [Field]public decimal Balance { get; set;}
-        [Field]public object[] Data { get; set;}
+        [Field]public GDID ID { get; set;}               //4+8 = 12
+        [Field]public string FirstName { get; set;}      //16 hdr + 4 + (11*2) = 42
+        [Field]public string LastName { get; set;}       //16 hdr + 4 + (18*2) = 56
+        [Field]public DateTime? DOB { get; set;}         //10
+        [Field]public decimal Balance { get; set;}       //8
+        [Field]public object[] Data { get; set;}         //8
 
-        [Field]public byte[] BinData { get; set;}
-
+        [Field]public byte[] BinData { get; set;}        //8
+                                                         //-------------
+                                                         // around at least 144 bytes in native CLR
         public override string ToString()
         {
           if (BinData==null || BinData.Length<50)

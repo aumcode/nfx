@@ -224,5 +224,31 @@ namespace NFX.DataAccess.Distributed
     }
 
 
+    /// <summary>
+    /// Represents a result of command that is absent. This is needed to distinguish from null reference
+    /// </summary>
+    public sealed class NullCommandResult
+    {
+      public static readonly NullCommandResult Instance = new NullCommandResult();
+
+      private NullCommandResult(){}
+
+      public override bool Equals(object obj)
+      {
+        return obj is NullCommandResult;
+      }
+
+      public override string ToString()
+      {
+        return "[NULL COMMAND RESULT]";
+      }
+
+      public override int GetHashCode()
+      {
+        return 0;
+      }
+    }
+
+
 
 }
