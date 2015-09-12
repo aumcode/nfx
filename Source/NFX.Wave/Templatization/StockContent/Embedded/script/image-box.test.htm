@@ -1,0 +1,85 @@
+<html>
+<head>
+  <script src="jquery-1.11.0.min.js"></script>
+  <script src="wv.js"></script>
+  <script src="image-box.temp.js"></script>
+
+  <style>
+    .wvIBoxMainImageDiv {
+      height: 300px;
+      width: 300px;
+      background: green;
+    }
+
+    .wvIBoxThumbContainerDiv {
+      width: 300px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div style="margin-top:20px">General test</div>
+  <div id="divIBox1"></div>
+  <div id="divImageChangedEventBox"></div>
+
+  <div style="margin-top:20px">Big images test</div>
+  <div id="divIBox2"></div>
+
+  <script>
+
+    $(function () {
+
+      // general test
+
+      var init1 = {
+        defaultImageSrc: "https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
+        defaultThumbSrc: "https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
+        thumbSrc: "https://www.google.ru/images/nav_logo225.png",
+        thumbs: [
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" },
+          { h: '17', w: '16', l: '-13px', t: '-88px', imageSrc: "http://simpleicon.com/wp-content/uploads/phone-symbol-1.png" },
+          { h: '28', w: '29', l: '-138px', t: '-41px', imageSrc: "http://www.cliparthut.com/clip-arts/910/green-play-icon-910267.gif" },
+          { h: '37', w: '95', l: '0', t: '-41px' },
+          { h: '17', w: '16', l: '-13px', t: '-88px' },
+          { h: '28', w: '29', l: '-138px', t: '-41px', imageSrc: "http://www.cliparthut.com/clip-arts/910/green-play-icon-910267.gif" },
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" },
+          { h: '17', w: '16', l: '-13px', t: '-88px', imageSrc: "http://simpleicon.com/wp-content/uploads/phone-symbol-1.png" },
+          { h: '28', w: '29', l: '-138px', t: '-41px' },
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" },
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" },
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" },
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" },
+          { h: '37', w: '95', l: '0', t: '-41px', imageSrc: "https://www.google.ru/images/srpr/logo11w.png" }
+        ]
+      };
+
+      var imageBox1 = new IBox('divIBox1', init1);
+
+      imageBox1.eventBind("image-changed", function (sender, url) {
+        var divImageChangedEventBox = WAVE.id('divImageChangedEventBox');
+        divImageChangedEventBox.innerText = 'EVENT TEST: image changed to ' + url;
+      });
+
+      // big images test
+
+      var init2 =
+      {
+        defaultImageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
+        defaultThumbSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
+        thumbs: [
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://www.colourbox.com/preview/1167198-nature-orange-insect-attractive-garden-butterfly-beautiful-plant-small-spotted-resting-single-close-green-fly-color-bright-macro-flap-beauty-antenna-yellow-wings-background-summer-wild-sunlight-pattern-light-head-open-closeu.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://www.photocase.com/stock-photos/202338-stock-photo-nature-flower-blue-plant-summer-small.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://pixabay.com/static/uploads/photo/2014/10/09/14/58/tit-481988_640.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=file:///E:/test/smth.bmp" }
+        ]
+      };
+
+      var imageBox2 = new IBox('divIBox2', init2);
+
+    });
+
+  </script>
+</body>
+</html>
