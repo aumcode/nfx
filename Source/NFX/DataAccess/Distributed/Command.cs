@@ -138,7 +138,7 @@ namespace NFX.DataAccess.Distributed
             /// </summary>
             public Param this[string name]
             {
-                get {return this.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));}
+                get {return this.FirstOrDefault(p => name.EqualsOrdIgnoreCase(p.Name)); }
             }
 
 

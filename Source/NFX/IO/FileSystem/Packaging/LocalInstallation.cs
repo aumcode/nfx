@@ -75,14 +75,14 @@ namespace NFX.IO.FileSystem.Packaging
 
         public override int GetHashCode()
         {
-          return Name.GetHashCode();
+          return Name.GetHashCodeIgnoreCase();
         }
 
         public override bool Equals(object obj)
         {
           var other = obj as PackageInfo;
           if (other==null) return false;
-          return string.Equals(this.Name, other.Name, StringComparison.InvariantCultureIgnoreCase);
+          return this.Name.EqualsIgnoreCase(other.Name);
         }
 
         public override string ToString()

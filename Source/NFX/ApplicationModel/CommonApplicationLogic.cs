@@ -794,7 +794,8 @@ namespace NFX.ApplicationModel
 
 
         node = m_ConfigRoot[CONFIG_EVENT_TIMER_SECTION];
-        if (node.Exists)
+        //20150827 DKh event timer must allocate even if it is absent in config
+        //// if (node.Exists)
         {
           try
           {

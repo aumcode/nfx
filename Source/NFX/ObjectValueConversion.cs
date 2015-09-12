@@ -86,6 +86,48 @@ namespace NFX
          }
 
 
+
+         public static char AsChar(this object val, char dflt = (char)0, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+           try
+           {
+             if (val == null) return dflt;
+             if (val is string)
+             {
+                  var sval = (string)val;
+                  return (sval.Length>0) ? sval[0] : (char)0;
+             }
+             return Convert.ToChar(val);
+           }
+           catch
+           {
+             if (handling != ConvertErrorHandling.ReturnDefault) throw;
+             return dflt;
+           }
+         }
+
+
+         public static char? AsNullableChar(this object val, char? dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+           try
+           {
+             if (val == null) return null;
+             if (val is string)
+             {
+                  var sval = (string)val;
+                  return (sval.Length>0) ? sval[0] : (char)0;
+             }
+             return Convert.ToChar(val);
+           }
+           catch
+           {
+             if (handling != ConvertErrorHandling.ReturnDefault) throw;
+             return dflt;
+           }
+         }
+
+
+
          public static byte AsByte(this object val, byte dflt = 0, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
            try
@@ -127,7 +169,7 @@ namespace NFX
            }
          }
 
-          public static sbyte AsSByte(this object val, sbyte dflt = 0, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         public static sbyte AsSByte(this object val, sbyte dflt = 0, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
            try
            {

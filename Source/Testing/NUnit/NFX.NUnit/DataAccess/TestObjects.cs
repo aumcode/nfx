@@ -214,7 +214,17 @@ namespace NFX.NUnit.DataAccess
       }
 
 
+      public Parcel Load(Type tParcel, GDID id, object shardingId = null, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null)
+      {
+        throw new NotImplementedException();
+      }
+
       public T Load<T>(GDID id, object shardingId = null, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null) where T : Parcel
+      {
+        throw new NotImplementedException();
+      }
+
+      public System.Threading.Tasks.Task<Parcel> LoadAsync(Type tParcel, GDID id,object shardingId = null, DataVeracity veracity = DataVeracity.Maximum, DataCaching cacheOpt = DataCaching.LatestData, int? cacheMaxAgeSec = null, ISession session = null)
       {
         throw new NotImplementedException();
       }
@@ -244,7 +254,19 @@ namespace NFX.NUnit.DataAccess
         throw new NotImplementedException();
       }
 
+
+      public bool Remove(Type tParcel, GDID id, object shardingId = null, ISession session = null)
+      {
+        throw new NotImplementedException();
+      }
+
       public bool Remove<T>(GDID id, object shardingId = null, ISession session = null) where T : Parcel
+      {
+        throw new NotImplementedException();
+      }
+
+
+      public System.Threading.Tasks.Task<bool> RemoveAsync(Type tParcel, GDID id, object shardingId = null, ISession session = null)
       {
         throw new NotImplementedException();
       }

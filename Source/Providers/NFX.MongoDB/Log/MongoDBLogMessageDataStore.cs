@@ -19,12 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MongoDB.Bson;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver;
-
 using NFX.Log;
 using NFX.Environment;
+using NFX.Serialization.BSON;
 
 namespace NFX.DataAccess.MongoDB
 {
@@ -78,18 +75,43 @@ namespace NFX.DataAccess.MongoDB
 
         #region Public
 
-
            /// <summary>
            /// Inserts log message into MongoDB
            /// </summary>
            public void SendMessage(Message msg)
            {
               var db = GetDatabase();
-              var col = db.GetCollection<BsonDocument>(CollectionName);     
-              col.Insert<Message>(msg);
+              var col = db[CollectionName];
+              col.Insert(docFromMessage(msg));
            }
 
         #endregion
+
+          #region .pvt
+           
+                  private BSONDocument docFromMessage(Message msg)
+                  {
+                    var doc = new BSONDocument();
+
+                    var rc = new RowConverter();
+
+                    doc.Set(new BSONStringElement("Guid", msg.Guid.ToString("N")));
+                    doc.Set(new BSONStringElement("RelatedTo", msg.RelatedTo.ToString("N")));
+                    doc.Set(new BSONStringElement("Type", msg.Type.ToString()));
+                    doc.Set(new BSONInt32Element("Source", msg.Source));
+                    doc.Set(new BSONInt64Element("TimeStamp", msg.TimeStamp.Ticks));
+                    doc.Set(new BSONStringElement("Host", msg.Host));
+                    doc.Set(new BSONStringElement("From", msg.From));
+                    doc.Set(new BSONStringElement("Topic", msg.Topic));
+                    doc.Set(new BSONStringElement("Text", msg.Text));
+                    doc.Set(new BSONStringElement("Parameters", msg.Parameters));
+                    doc.Set(new BSONStringElement("Exception", msg.Exception.ToMessageWithType()));
+                    doc.Set(new BSONInt32Element("ThreadID", msg.ThreadID));
+
+                    return doc;
+                  }
+
+          #endregion
 
     }
 }

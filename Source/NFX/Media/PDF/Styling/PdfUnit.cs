@@ -113,7 +113,7 @@ namespace NFX.Media.PDF.Styling
 
     public override int GetHashCode()
     {
-      return m_Name.GetHashCode() ^ m_Points.GetHashCode();
+      return m_Name.GetHashCodeOrdSenseCase() ^ m_Points.GetHashCode();
     }
 
     public override bool Equals(object obj)
@@ -124,7 +124,7 @@ namespace NFX.Media.PDF.Styling
     public bool Equals(PdfUnit other)
     {
       if (other == null) return false;
-      return string.Equals(this.m_Name, other.m_Name, StringComparison.Ordinal) &&
+      return this.m_Name.EqualsOrdSenseCase(other.m_Name) &&
              this.m_Points == other.m_Points;
     }
   }

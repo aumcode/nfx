@@ -80,6 +80,57 @@ namespace NFX.NUnit.Collections
        Assert.AreEqual(2, reg["Banana"].Data);
     }
 
+
+    [TestCase]
+    public void CaseInsensitiv()
+    {
+       var reg = new Registry<NamedClazz>();//INSENSITIVE
+       Assert.IsTrue(  reg.Register( new NamedClazz("Apple", 1) ) );
+       Assert.IsTrue(  reg.Register( new NamedClazz("Banana", 2) ) );
+       Assert.IsFalse(  reg.Register( new NamedClazz("APPLE", 3) ) );
+
+       Assert.AreEqual(2, reg.Count);
+
+       Assert.AreEqual(1, reg["Apple"].Data);
+       Assert.AreEqual(2, reg["Banana"].Data);
+       Assert.AreEqual(1, reg["APPLE"].Data);
+
+       Assert.IsFalse( reg.Unregister(new NamedClazz("I was never added before", 1)) );
+       Assert.AreEqual(2, reg.Count);
+
+       Assert.IsTrue( reg.Unregister(new NamedClazz("ApPle", 1)) );
+       Assert.AreEqual(1, reg.Count);
+       Assert.AreEqual(null, reg["Apple"]);
+       Assert.AreEqual(2, reg["Banana"].Data);
+    }
+
+    [TestCase]
+    public void CaseSensitive()
+    {
+       var reg = new Registry<NamedClazz>(true);//SENSITIVE!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       Assert.IsTrue(  reg.Register( new NamedClazz("Apple", 1) ) );
+       Assert.IsTrue(  reg.Register( new NamedClazz("Banana", 2) ) );
+       Assert.IsTrue(  reg.Register( new NamedClazz("APPLE", 3) ) );
+
+       Assert.AreEqual(3, reg.Count);
+
+       Assert.AreEqual(1, reg["Apple"].Data);
+       Assert.AreEqual(2, reg["Banana"].Data);
+       Assert.AreEqual(3, reg["APPLE"].Data);
+
+       Assert.IsFalse( reg.Unregister(new NamedClazz("I was never added before", 1)) );
+       Assert.AreEqual(3, reg.Count);
+
+       Assert.IsFalse( reg.Unregister(new NamedClazz("AppLE", 1)) );
+       Assert.AreEqual(3, reg.Count);
+       Assert.IsTrue( reg.Unregister(new NamedClazz("APPLE", 3)) );
+       Assert.AreEqual(2, reg.Count);
+       Assert.AreEqual(1, reg["Apple"].Data);
+       Assert.AreEqual(2, reg["Banana"].Data);
+       Assert.AreEqual(null, reg["APPLE"]);
+    }
+
+
     [TestCase]
     public void Registry_UnregisterByName()
     {

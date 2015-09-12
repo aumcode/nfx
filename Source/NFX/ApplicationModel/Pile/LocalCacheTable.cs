@@ -383,7 +383,7 @@ namespace NFX.ApplicationModel.Pile
       if (!getWriteLock(bucket)) return PutResult.Collision;//Service shutting down
       try
       {
-        var age = maxAgeSec.HasValue ? maxAgeSec.Value : m_Options.DefaultMaxAgeSec;
+        var age = maxAgeSec ?? m_Options.DefaultMaxAgeSec;
         result = putEntry(bucket, key, hashCode, obj, age, priority, absoluteExpirationUTC);
         if (result!=PutResult.Collision)
         {
@@ -621,7 +621,7 @@ namespace NFX.ApplicationModel.Pile
                   entry.MaxAgeSec = maxAgeSec;
                   entry.AgeSec = existingAgeSec;
                   entry.Priority = priority;
-                  entry.ExpirationUTC = absoluteExpirationUTC.HasValue ? absoluteExpirationUTC.Value : new DateTime(0);
+                  entry.ExpirationUTC = absoluteExpirationUTC ?? new DateTime(0);
                   entries[entryIdx] = entry;//swap value type
                   if (secondPass) 
                   {

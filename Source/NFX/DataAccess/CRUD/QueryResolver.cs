@@ -103,7 +103,7 @@ namespace NFX.DataAccess.CRUD
             { 
               checkNotStarted();
               if (location.IsNullOrWhiteSpace()) return false;
-              return m_Locations.RemoveAll((s) => string.Equals(s, location, StringComparison.InvariantCultureIgnoreCase)) > 0;              
+              return m_Locations.RemoveAll((s) => s.EqualsIgnoreCase(location)) > 0;              
             }
 
            
@@ -197,9 +197,7 @@ namespace NFX.DataAccess.CRUD
                   
                 name = name + m_DataStore.ScriptFileSuffix; 
                     
-                var res = resources.FirstOrDefault(r => string.Equals(r, name, StringComparison.InvariantCultureIgnoreCase) ||
-                                                        string.Equals(r, asmname+"."+name, StringComparison.InvariantCultureIgnoreCase)
-                                                  );
+                var res = resources.FirstOrDefault(r => r.EqualsIgnoreCase(name) || r.EqualsIgnoreCase(asmname+"."+name));
 
                 if (res!=null)
                 {

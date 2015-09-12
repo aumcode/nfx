@@ -28,7 +28,7 @@ namespace NFX.Glue
     /// An example of some 'mytest' binding: 'mytest://adr=1.1.1.1,nic=eth001:job,chat,backup'
     /// </summary>
     [Serializable]
-    public struct Node 
+    public struct Node : INamed 
     {
       public const string BINDING_SEPARATOR = "://";
       public const string SERVICE_SEPARATOR = ":";
@@ -60,6 +60,11 @@ namespace NFX.Glue
       /// </summary>
       public string ConnectString { get { return m_ConnectString ?? StringConsts.NULL_STRING; }  }
 
+
+      /// <summary>
+      /// INamed shortcut to ConnectString
+      /// </summary>
+      public string Name { get{ return ConnectString;} }
 
       /// <summary>
       /// Returns true when struct has some data assigned i.e. connect string is specified
@@ -132,7 +137,7 @@ namespace NFX.Glue
 
       public override int GetHashCode()
       {
-          return  m_ConnectString==null ? 0 :  m_ConnectString.GetHashCode();
+          return  m_ConnectString==null ? 0 :  this.m_ConnectString.GetHashCodeOrdIgnoreCase();
       }
 
       public override bool Equals(object obj)
@@ -142,9 +147,9 @@ namespace NFX.Glue
 
           var other = (Node)obj;
 
-          return this.Assigned && other.Assigned &&  string.Equals(m_ConnectString,
-                                                                   other.m_ConnectString,
-                                                                   StringComparison.InvariantCultureIgnoreCase);
+          return this.Assigned && 
+                 other.Assigned &&  
+                 this.m_ConnectString.EqualsOrdIgnoreCase(other.m_ConnectString);
       }
 
 

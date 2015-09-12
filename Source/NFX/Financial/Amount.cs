@@ -28,6 +28,13 @@ namespace NFX.Financial
   [Serializable]
   public struct Amount : IEquatable<Amount>, IComparable<Amount>, IJSONWritable
   {
+    #region Const
+
+      private const decimal EMPTY_AMOUNT = 0;
+      private const string EMPTY_CURRENCY_ISO = "";
+
+    #endregion
+
     public Amount(string currencyISO, decimal value)
     {
       m_CurrencyISO = (currencyISO ?? string.Empty).Trim();
@@ -39,15 +46,17 @@ namespace NFX.Financial
     private string m_CurrencyISO;
     private decimal m_Value;
 
-    public string CurrencyISO { get{ return m_CurrencyISO;} }
+    public string CurrencyISO { get{ return m_CurrencyISO ?? EMPTY_CURRENCY_ISO;} }
     public decimal Value { get{ return m_Value;} }
+
+    public bool IsEmpty { get { return m_CurrencyISO == EMPTY_CURRENCY_ISO && m_Value == EMPTY_AMOUNT; } }
 
     /// <summary>
     /// Perfoms case-insensitive currency equality comparison
     /// </summary>
     public bool IsSameCurrencyAs(Amount other)
     {
-      return string.Equals(CurrencyISO, other.CurrencyISO, StringComparison.OrdinalIgnoreCase);
+      return CurrencyISO.EqualsOrdIgnoreCase(other.CurrencyISO);
     }
 
     

@@ -63,7 +63,9 @@
     <Compile Include="Pages\SocialLogin.htm.auto.cs">
       <DependentUpon>SocialLogin.htm</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SubTopic\Latest.htm.auto.cs" />
+    <Compile Include="Pages\SubTopic\Latest.htm.auto.cs">
+      <DependentUpon>Latest.htm</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Welcome.htm.auto.cs">
       <DependentUpon>Welcome.htm</DependentUpon>
     </Compile>

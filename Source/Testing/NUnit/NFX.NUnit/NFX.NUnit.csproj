@@ -139,6 +139,8 @@
     <Compile Include="OS\NetUtilsTest.cs" />
     <Compile Include="Parsing\NatTxtGen.cs" />
     <Compile Include="Security\PuzzleKeypadTests.cs" />
+    <Compile Include="Serialization\BSON.cs" />
+    <Compile Include="Serialization\RowConverterTest.cs" />
     <Compile Include="Serialization\SlimObjectGraph.cs" />
     <Compile Include="Serialization\SlimBatchTypeMode.cs" />
     <Compile Include="Serialization\JSONDynamism.cs" />

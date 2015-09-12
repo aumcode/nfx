@@ -86,6 +86,12 @@
     <Compile Include="BlankForm.Designer.cs">
       <DependentUpon>BlankForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BSONTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BSONTestForm.Designer.cs">
+      <DependentUpon>BSONTestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CacheTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,12 @@
     </Compile>
     <Compile Include="MenuForm.Designer.cs">
       <DependentUpon>MenuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MongoConnectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MongoConnectorForm.Designer.cs">
+      <DependentUpon>MongoConnectorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MongoDBForm.cs">
       <SubType>Form</SubType>
@@ -218,6 +230,9 @@
     <EmbeddedResource Include="BlankForm.resx">
       <DependentUpon>BlankForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BSONTestForm.resx">
+      <DependentUpon>BSONTestForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CacheTest.resx">
       <DependentUpon>CacheTest.cs</DependentUpon>
     </EmbeddedResource>
@@ -247,6 +262,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MongoConnectorForm.resx">
+      <DependentUpon>MongoConnectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MongoDBForm.resx">
       <DependentUpon>MongoDBForm.cs</DependentUpon>
@@ -321,6 +339,10 @@
     <ProjectReference Include="..\..\..\NFX\NFX.csproj">
       <Project>{E6BFA4D5-D2BE-4BE1-80FE-4536A22F5C45}</Project>
       <Name>NFX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Providers\NFX.MongoDB\NFX.MongoDB.csproj">
+      <Project>{a7a57929-f847-4e9d-8354-d2318d2e2617}</Project>
+      <Name>NFX.MongoDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\BusinessLogic\BusinessLogic.csproj">
       <Project>{8e86d57d-6c9f-491c-aaef-75b9e96840d4}</Project>

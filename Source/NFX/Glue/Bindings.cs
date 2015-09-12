@@ -210,10 +210,7 @@ namespace NFX.Glue
               {
                 return  ComponentDirector
                         .BindingConfigurations
-                        .FirstOrDefault(n => string.Equals(
-                                                   n.AttrByName(Service.CONFIG_NAME_ATTR).Value,
-                                                   Name,
-                                                   StringComparison.InvariantCultureIgnoreCase) 
+                        .FirstOrDefault(n => Name.EqualsIgnoreCase(n.AttrByName(Service.CONFIG_NAME_ATTR).Value)
                                        ) ?? App.ConfigRoot.Configuration.EmptySection;
               }
             }

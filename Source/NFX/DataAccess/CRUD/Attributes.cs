@@ -125,14 +125,14 @@ namespace NFX.DataAccess.CRUD
 
         public override int GetHashCode()
         {
-            return TargetName.GetHashCode() + Name.GetHashCode();
+            return TargetName.GetHashCodeSenseCase() + Name.GetHashCodeSenseCase();
         }
 
         public override bool Equals(object obj)
         {
             var other = obj as TableAttribute;
             if (other==null) return false;
-            return this.TargetName==other.TargetName && this.Name==other.Name && this.MetadataContent==other.MetadataContent;
+            return this.TargetName.EqualsSenseCase(other.TargetName) && this.Name.EqualsSenseCase(other.Name) && this.MetadataContent.EqualsSenseCase(other.MetadataContent);
         }
     }
 
@@ -399,7 +399,7 @@ namespace NFX.DataAccess.CRUD
 
         public override int GetHashCode()
         {
-            return TargetName.GetHashCode();
+            return TargetName.GetHashCodeSenseCase();
         }
 
         public override bool Equals(object obj)
@@ -407,9 +407,9 @@ namespace NFX.DataAccess.CRUD
             var other = obj as FieldAttribute;
             if (other==null) return false;
             var equ = 
-                this.TargetName  == other.TargetName &&
+                this.TargetName.EqualsSenseCase(other.TargetName) &&
                 this.StoreFlag   == other.StoreFlag &&
-                this.BackendName == other.BackendName &&
+                this.BackendName.EqualsSenseCase(other.BackendName) &&
                 this.Key         == other.Key &&
                 this.Kind        == other.Kind &&
                 this.Required    == other.Required &&

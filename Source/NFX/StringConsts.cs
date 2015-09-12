@@ -984,7 +984,68 @@ namespace NFX
         "PDF Color '{0}' does not exist";
              
     public const string PDF_COLOR_INCONSISTENCY_ERROR =
-        "PDF Color '{0}' is inconsistently defined";
+        "PDF Color '{0}' is inconsistently defined"; 
+  
+  
+             
+    public const string BSON_DOCUMENT_SIZE_EXCEEDED_ERROR =
+        "Size '{0}' exceeds BSON default document size {1}";
+
+    public const string BSON_ELEMENT_OBJECT_VALUE_SET_ERROR =
+        "Can not set the '{0}' value of BSON element '{1}'. Error: {2}";
+    
+    public const string BSON_READ_PREMATURE_EOF_ERROR =
+        "Premature EOF while doing '{0}' over BSON stream";
+                   
+    public const string BSON_NAMED_ELEMENT_ADDED_ERROR =
+        "The element with name '{0}' has already been added";
+
+    public const string BSON_TYPE_NOT_SUPORTED_ERROR =
+        "BSON type '{0}' is not supported. BSON source is likely corrupted";
+
+    public const string BSON_DOCUMENT_RECURSION_ERROR =
+        "BSONDocument recursion detected";
+
+    public const string BSON_ARRAY_ELM_NAME_ERROR =
+        "BSONElement.Name can not be accessed because it is an array element. Check IsArrayElement";
+
+    public const string BSON_TEMPLATE_COMPILE_ERROR =
+        "BSONDocument template compilation error: {0}. Template source: ' {1} '";
+   
+    public const string BSON_ARRAY_ELM_DOC_ERROR =
+        "BSONElement '{0}' is an array element and can not be used in document directly";
+     
+    public const string BSON_OBJECTID_LENGTH_ERROR =
+        "Byte array length must be equal to 12";
+
+    public const string BSON_THREE_BYTES_UINT_ERROR =
+        "The value of {0} should be less than 2^24 to be correctly encoded as 3-bytes";  
+
+    public const string BSON_UNEXPECTED_END_OF_STRING_ERROR =
+        "Unexpected end of string. Expected: 0x00"; 
+
+    public const string BSON_INCORRECT_STRING_LENGTH_ERROR =
+        "BSON source is corrupted. String length '{0}' should be positive integer";
+
+    public const string BSON_READ_BOOLEAN_ERROR =
+        "BSON source is corrupted. Unexpected boolean value '{0}'"; 
+
+    public const string BSON_EOD_ERROR =
+        "BSON source is corrupted. Incorrect end of document/array";
+
+    public const string CLR_BSON_CONVERSION_TYPE_NOT_SUPPORTED_ERROR =
+        "CLR type '{0}' conversion into BSON is not supported";
+
+    public const string CLR_BSON_CONVERSION_REFERENCE_CYCLE_ERROR =
+        "CLR value of type '{0}' could not be converted into BSON as there is a reference cycle";
+
+    public const string DECIMAL_OUT_OF_RANGE_ERROR =
+        "Decimal value of {0} is outside of to-int64 convertable range of {1}..{2}";
+
+    public const string BUFFER_LONGER_THAN_ALLOWED_ERROR =
+        "Byte[] buffer has a length of {0} bytes which is over the allowed maximum of {1} bytes";
+
+    public const string GDID_BUFFER_ERROR =
+        "Error converting GDID data buffer: {0}";
   }
 }
-

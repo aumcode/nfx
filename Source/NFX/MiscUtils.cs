@@ -62,6 +62,17 @@ namespace NFX
       return obj;
     } 
 
+    /// <summary>
+    /// Takes first X chars from a string. If string is null returns null. If string does not have enough
+    /// the function returns what the string has
+    /// </summary>
+    public static string TakeFirstChars(this string str, int count)
+    {
+      if (str==null) return null;
+      if (str.Length<=count) return str;
+      return str.Substring(0, count);
+    }
+
 
     /// <summary>
     /// Gets number of seconds since Unix epoch start (1970/1/1 0:0:0)
@@ -77,6 +88,14 @@ namespace NFX
     public static DateTime FromSecondsSinceUnixEpochStart(this long when)
     {
       return UNIX_EPOCH_START_DATE.AddSeconds(when);
+    }
+
+    /// <summary>
+    /// Gets UTC DateTime from number of milliseconds since Unix epoch start (1970/1/1 0:0:0)
+    /// </summary>
+    public static DateTime FromMillisecondsSinceUnixEpochStart(this long when)
+    {
+      return UNIX_EPOCH_START_DATE.AddMilliseconds(when);
     }
 
     /// <summary>
@@ -98,6 +117,7 @@ namespace NFX
     /// <summary>
     /// Writes exception message with exception type
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static string ToMessageWithType(this Exception error)
     {
       return string.Format("[{0}] {1}", error.GetType().FullName, error.Message);
@@ -248,6 +268,7 @@ namespace NFX
     /// <summary>
     /// Shortcut helper for string.Format(tpl, params object[] args)
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static string Args(this string tpl, params object[] args)
     {
         return string.Format(tpl, args);
@@ -258,6 +279,7 @@ namespace NFX
     /// Interprets template of the form:  Some text {@value_name@:C} by replacing with property/field values.
     /// Note: this function does not recognize escapes for simplicity (as escapes can be replaced by regular strings instead)
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static string ArgsTpl(this string tpl, object args)
     {
         bool matched; 
@@ -270,6 +292,7 @@ namespace NFX
     /// Note: this function does not recognize escapes for simplicity (as escapes can be replaced by regular strings instead).
     /// Matched is set to true if at least one property match was made
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static string ArgsTpl(this string tpl, object args, out bool matched)
     {
         matched = false;
@@ -476,26 +499,96 @@ namespace NFX
     }
 
     /// <summary>
-    /// Helper function that performs case-insensitive comparison between strings using invariant comparison.
-    /// Either lhs and rhs can be null
+    /// Helper function that performs GetHashcode for string using invariant comparison.
+    /// Use this in conjunction with EqualsSenseCase
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCodeSenseCase(this string str)
+    {
+        return StringComparer.InvariantCulture.GetHashCode(str);
+    }
+
+    /// <summary>
+    /// Helper function that performs comparison between strings using invariant comparison.
+    /// Either lhs and rhs can be null.
+    /// Use this in conjunction with GetHashCodeSenseCase
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static bool EqualsSenseCase(this string lhs, string rhs)
+    {
+        return StringComparer.InvariantCulture.Equals(lhs, rhs);
+    }
+
+
+    /// <summary>
+    /// Helper function that performs case-insensitive GetHashcode for string using invariant comparison.
+    /// Use this in conjunction with EqualsIgnoreCase
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCodeIgnoreCase(this string str)
+    {
+        return StringComparer.InvariantCultureIgnoreCase.GetHashCode(str);
+    }
+
+    /// <summary>
+    /// Helper function that performs case-insensitive comparison between strings using invariant comparison.
+    /// Either lhs and rhs can be null.
+    /// Use this in conjunction with GetHashCodeIgnoreCase
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool EqualsIgnoreCase(this string lhs, string rhs)
     {
-        return string.Equals(lhs, rhs, StringComparison.InvariantCultureIgnoreCase);
+        return StringComparer.InvariantCultureIgnoreCase.Equals(lhs, rhs);
+    }
+
+
+    /// <summary>
+    /// Helper function that performs case-insensitive GetHashcode for string using ordinal comparison.
+    /// Use this in conjunction with EqualsOrdSenseCase
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCodeOrdSenseCase(this string str)
+    {
+        return StringComparer.Ordinal.GetHashCode(str);
     }
 
     /// <summary>
     /// Helper function that performs case-insensitive comparison between strings using ordinal comparison.
-    /// Either lhs and rhs can be null
+    /// Either lhs and rhs can be null.
+    /// Use this in conjunction with GetHashCodeOrdSenseCase
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static bool EqualsOrdSenseCase(this string lhs, string rhs)
+    {
+        return StringComparer.Ordinal.Equals(lhs, rhs);
+    }
+
+
+    /// <summary>
+    /// Helper function that performs case-insensitive GetHashcode for string using ordinal comparison.
+    /// Use this in conjunction with EqualsOrdIgnoreCase
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCodeOrdIgnoreCase(this string str)
+    {
+        return StringComparer.OrdinalIgnoreCase.GetHashCode(str);
+    }
+
+    /// <summary>
+    /// Helper function that performs case-insensitive comparison between strings using ordinal comparison.
+    /// Either lhs and rhs can be null.
+    /// Use this in conjunction with GetHashCodeOrdIgnoreCase
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool EqualsOrdIgnoreCase(this string lhs, string rhs)
     {
-        return string.Equals(lhs, rhs, StringComparison.OrdinalIgnoreCase);
+        return StringComparer.OrdinalIgnoreCase.Equals(lhs, rhs);
     }
 
     /// <summary>
     /// Helper function that calls string.IsNullOrEmpty()
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsNullOrEmpty(this string s)
     {
         return string.IsNullOrEmpty(s);
@@ -504,6 +597,7 @@ namespace NFX
     /// <summary>
     /// Helper function that calls !string.IsNullOrEmpty()
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsNotNullOrEmpty(this string s)
     {
         return !string.IsNullOrEmpty(s);
@@ -512,6 +606,7 @@ namespace NFX
     /// <summary>
     /// Helper function that calls string.IsNullOrWhiteSpace()
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsNullOrWhiteSpace(this string s)
     {
         return string.IsNullOrWhiteSpace(s);
@@ -520,6 +615,7 @@ namespace NFX
     /// <summary>
     /// Helper function that calls !string.IsNullOrWhiteSpace()
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsNotNullOrWhiteSpace(this string s)
     {
         return !string.IsNullOrWhiteSpace(s);

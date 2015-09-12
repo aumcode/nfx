@@ -254,6 +254,52 @@ namespace NFX.DataAccess.Distributed
         /// <summary>
         /// Loads parcel by fetching it from the bank backened by its primary id
         /// </summary>
+        /// <param name="tParcel">Parcel type to load</param>
+        /// <param name="id">The unique GDID of the parcel</param>
+        /// <param name="shardingID">
+        /// The ID of the entity used for sharding, 
+        /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
+        /// The parcel type T specifies the DataParcelAttirbute.GetParcelAttr(typeof(T)).ShardingParcel
+        /// </param>
+        /// <param name="veracity">The level of data veracity</param>
+        /// <param name="cacheOpt">The cache control options</param>
+        /// <param name="cacheMaxAgeSec">The maximum acceptable age of cached instance, cached data will be re-queried from backend if it is older</param>
+        /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
+        Parcel Load(Type tParcel,
+                      GDID id, 
+                      object shardingID = null,
+                      DataVeracity veracity = DataVeracity.Maximum,
+                      DataCaching cacheOpt = DataCaching.LatestData,
+                      int? cacheMaxAgeSec = null,
+                      ISession session = null);
+
+
+        /// <summary>
+        /// Async version: Loads parcel by fetching it from the bank backened by its primary id
+        /// </summary>
+        /// <param name="tParcel">Parcel type to load</param>
+        /// <param name="id">The unique GDID of the parcel</param>
+        /// <param name="shardingID">
+        /// The ID of the entity used for sharding, 
+        /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
+        /// The parcel type T specifies the DataParcelAttirbute.GetParcelAttr(typeof(T)).ShardingParcel
+        /// </param>
+        /// <param name="veracity">The level of data veracity</param>
+        /// <param name="cacheOpt">The cache control options</param>
+        /// <param name="cacheMaxAgeSec">The maximum acceptable age of cached instance, cached data will be re-queried from backend if it is older</param>
+        /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
+        Task<Parcel> LoadAsync(Type tParcel,
+                                 GDID id, 
+                                 object shardingID = null,
+                                 DataVeracity veracity = DataVeracity.Maximum,
+                                 DataCaching cacheOpt = DataCaching.LatestData,
+                                 int? cacheMaxAgeSec = null,
+                                 ISession session = null);
+
+
+        /// <summary>
+        /// Loads parcel by fetching it from the bank backened by its primary id
+        /// </summary>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
         /// The ID of the entity used for sharding, 
@@ -374,6 +420,38 @@ namespace NFX.DataAccess.Distributed
                        DateTime? cacheAbsoluteExpirationUTC = null,
                        ISession session = null);
 
+
+        /// <summary>
+        /// Removes the parcel from the bank returning true if parcel was found and removed
+        /// </summary>
+        /// <param name="tParcel">Type of parcel to remove</param>
+        /// <param name="id">The unique GDID of the parcel</param>
+        /// <param name="shardingID">
+        /// The ID of the entity used for sharding, 
+        /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
+        /// The parcel type T specifies the DataParcelAttirbute.ShardingParcel
+        /// </param>
+        /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
+        bool Remove(Type tParcel,
+                       GDID id, 
+                       object shardingID = null,
+                       ISession session = null);
+
+        /// <summary>
+        /// Async version: Removes the parcel from the bank returning true if parcel was found and removed
+        /// </summary>
+        /// <param name="tParcel">Type of parcel to remove</param>
+        /// <param name="id">The unique GDID of the parcel</param>
+        /// <param name="shardingID">
+        /// The ID of the entity used for sharding, 
+        /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
+        /// The parcel type T specifies the DataParcelAttirbute.ShardingParcel
+        /// </param>
+        /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
+        Task<bool> RemoveAsync(Type tParcel,
+                                  GDID id, 
+                                  object shardingID = null,
+                                  ISession session = null);
 
         /// <summary>
         /// Removes the parcel from the bank returning true if parcel was found and removed

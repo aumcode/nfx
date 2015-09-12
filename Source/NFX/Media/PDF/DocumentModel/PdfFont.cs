@@ -156,7 +156,7 @@ namespace NFX.Media.PDF.DocumentModel
 
     public override int GetHashCode()
     {
-      return m_Name.GetHashCode();
+      return m_Name.GetHashCodeOrdSenseCase();
     }
 
     public override bool Equals(object obj)
@@ -167,7 +167,7 @@ namespace NFX.Media.PDF.DocumentModel
     public bool Equals(PdfFont other)
     {
       if (other == null) return false;
-      return string.Equals(this.m_Name, other.m_Name, StringComparison.Ordinal);
+      return m_Name.EqualsOrdSenseCase(other.m_Name);
     }
   }
 }

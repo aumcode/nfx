@@ -100,6 +100,8 @@
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.default.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.modern.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-1.11.0.min.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\image-box.temp.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\image-box.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.objectinspector.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.ruler.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.tree.test.htm" />

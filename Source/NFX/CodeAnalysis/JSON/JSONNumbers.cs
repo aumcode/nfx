@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace NFX.CodeAnalysis.JSON
 {
@@ -35,9 +36,15 @@ namespace NFX.CodeAnalysis.JSON
       if (strToInt(str, out inum))
       {
         if (inum > UInt32.MaxValue)
+        {
           type = JSONTokenType.tLongIntLiteral;
+        }
         else
+        {
           type = JSONTokenType.tIntLiteral;
+          if (inum<Int32.MaxValue)
+           return (Int32)inum;
+        }
         return inum;
       }
 
@@ -89,13 +96,15 @@ namespace NFX.CodeAnalysis.JSON
 
     private static bool strToFloat(string str, out double num)
     {
-      return Double.TryParse(str, out num);
+      return Double.TryParse(str, 
+                             NumberStyles.Float, 
+                             CultureInfo.InvariantCulture,  out num);
     }
 
-    private static bool strToDecimal(string str, out decimal num)
-    {
-      return Decimal.TryParse(str, out num);
-    }
+    //private static bool strToDecimal(string str, out decimal num)
+    //{
+    //  return Decimal.TryParse(str, out num);
+    //}
 
 
 

@@ -57,13 +57,13 @@ namespace NFX.NUnit.Serialization
         [TestCase]
         public void ReadSimpleNameWithSpace()
         {
-            var obj = @"{a: -2, 'b or \'': 'yes, ok', c: false, d: 'hello'}".JSONToDynamic();
+            var obj = @"{a: -2, 'b or \'': 'yes, ok', c: false, d: 'hello' }".JSONToDynamic();
 
             Assert.AreEqual(-2, obj.a);
             Assert.AreEqual("yes, ok", obj["b or '"]);
             Assert.AreEqual(false, obj.c);
             Assert.AreEqual("hello", obj.d);
-         
+            //Assert.AreEqual(2147483650, obj.e);
         }
 
 
@@ -185,7 +185,15 @@ this \r\n is not escape'
                               );
         }
 
-
+        [TestCase]
+        public void JSONDoubleTest()
+        {
+            var map = JSONReader.DeserializeDataObject( "{ pi: 3.14159265359, exp1: 123e4, exp2: 2e-5 }" ) as JSONDataMap;
+            Assert.AreEqual(3, map.Count);
+            Assert.AreEqual(3.14159265359D, map["pi"]);
+            Assert.AreEqual(123e4D, map["exp1"]);
+            Assert.AreEqual(2e-5D, map["exp2"]);
+        }
 
 
     }

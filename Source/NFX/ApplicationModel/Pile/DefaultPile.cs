@@ -16,8 +16,7 @@ using NFX.Environment;
 namespace NFX.ApplicationModel.Pile
 {
   /// <summary>
-  /// Provides default implementation of IPile which stores objects on a local machine.
-  /// Use Instance static property to lazily allocated the default instance
+  /// Provides default implementation of IPile which stores objects on a local machine
   /// </summary>
   public sealed class DefaultPile : ServiceWithInstrumentationBase<object>, IPileImplementation
   {

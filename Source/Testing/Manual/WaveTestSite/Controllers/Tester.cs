@@ -16,9 +16,13 @@
 </FILE_LICENSE>*/
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Threading;
 
 using NFX;
 using NFX.Wave.MVC;
@@ -35,6 +39,35 @@ namespace WaveTestSite.Controllers
   public class Tester : Controller
   {
 
+      [Action]
+      public void SlowImage(string url, int dbDelayMs = 100, int netDelayMs = 0)
+      {
+        WorkContext.Response.ContentType = NFX.Web.ContentType.JPEG;
+      
+        // emulate a pause accessing DB
+        Thread.Sleep(dbDelayMs); 
+      
+        // get image from url or make random image
+        var stream = WorkContext.Response.GetDirectOutputStreamForWriting();
+        using (var image = string.IsNullOrWhiteSpace(url) ? MakeRandomImage() : DownloadImage(url))
+        {
+          var buffer = new byte[255];
+          while (image.CanRead)
+          {
+            var count = image.Read(buffer, 0, buffer.Length);
+            if (count == 0)
+              break;
+             
+            stream.Write(buffer, 0, count);
+            
+            // emulate slow network
+            Thread.Sleep(ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, netDelayMs));
+          }
+        }
+      }
+      
+      
+      
       [Action]
       public object Zekret()
       {
@@ -248,6 +281,33 @@ namespace WaveTestSite.Controllers
           return val;
         };
       }
+
+     #region .pvt
+
+     private Stream MakeRandomImage()
+     {
+       // make image
+       var image = new Bitmap(200, 200);
+       var imageFormat = ImageFormat.Jpeg;
+     
+       //todo: ...
+     
+       // save it to memory stream
+       var stream = new MemoryStream();
+       image.Save(stream, imageFormat);
+       stream.Position = 0;
+     
+       return stream;
+     }
+     
+     private Stream DownloadImage(string url)
+     {
+       var webClient = new WebClient();
+       byte[] imageBytes = webClient.DownloadData(url);
+       return new MemoryStream(imageBytes);
+     }
+     
+     #endregion .pvt
 
   }
 

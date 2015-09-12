@@ -1272,12 +1272,20 @@ WAVE.GUI = (function(){
                     return walkable;
                   }
 
-                  this.getChildIdx = function(id) {
-                    return WAVE.arrayWalkable(fChildren).wFirstIdx(function(c) { return WAVE.strSame(c.id(), id); });
+                  this.getChildIdx = function (id, recursive) {
+                    if (!recursive)
+                      return WAVE.arrayWalkable(fChildren).wFirstIdx(function (c) { return WAVE.strSame(c.id(), id); });
+                    else
+                      return node.getDescendants(0).wFirstIdx(function (d) { return WAVE.strSame(d.node.id(), id); });
                   }
 
-                  this.getChild = function(id) {
-                    return WAVE.arrayWalkable(fChildren).wFirst(function(c) { return WAVE.strSame(c.id(), id); });
+                  this.getChild = function (id, recursive) {
+                    if (!recursive)
+                      return WAVE.arrayWalkable(fChildren).wFirst(function (c) { return WAVE.strSame(c.id(), id); });
+                    else {
+                      var descendant = node.getDescendants(0).wFirst(function (d) { return WAVE.strSame(d.node.id(), id); });
+                      return descendant ? descendant.node : null;
+                    }
                   }
 
                   this.navigate = function(path) {

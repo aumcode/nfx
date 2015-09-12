@@ -25,22 +25,27 @@ namespace NFX.DataAccess.Distributed
 {
     
     /// <summary>
-    /// Provides information about targetname->table name(and possibly other) mappings
+    /// Provides information about targetname->table name, sequence name(and possibly other) mappings
     /// </summary>
     public struct TargetTableMapping : INamed
     {
+      public const string CONFIG_GDID_SEQUENCE_NAME_ATTR = "gdid-sequence";
+
       public TargetTableMapping(IConfigSectionNode node)
       {
         m_Name = node.Name;
         m_TableName = node.Value;
+        m_GDIDSequenceName = node.AttrByName(CONFIG_GDID_SEQUENCE_NAME_ATTR).Value;
       }
       
       private string m_Name;
       private string m_TableName;
+      private string m_GDIDSequenceName;
       //...more props in future
 
       public string Name { get { return m_Name;} }
       public string TableName { get { return m_TableName;} }
+      public string GDIDSequenceName { get { return m_GDIDSequenceName;} }
     }
 
     
@@ -110,7 +115,8 @@ namespace NFX.DataAccess.Distributed
                              string targetTableMappings = null)
         {
             if (schemaName.IsNullOrWhiteSpace() || 
-                areaName.IsNullOrWhiteSpace())
+                areaName.IsNullOrWhiteSpace()
+                )
              throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(schemaName|areaName=null|empty)");    
 
             SchemaName = schemaName;

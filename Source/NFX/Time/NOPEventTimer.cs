@@ -23,11 +23,14 @@ using NFX.ApplicationModel;
 
 namespace NFX.Time
 {
+  /// <summary>
+  /// Normally this class should never be used as the dafult EventTimer is always present instead of nop
+  /// </summary>
   public sealed class NOPEventTimer : ApplicationComponent, IEventTimerImplementation
   {
     private static NOPEventTimer s_Instance = new NOPEventTimer();
 
-    private NOPEventTimer() {}
+    public NOPEventTimer() {}
 
     public static NOPEventTimer Instance { get { return s_Instance;}}
     

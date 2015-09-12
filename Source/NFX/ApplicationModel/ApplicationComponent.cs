@@ -151,7 +151,7 @@ namespace NFX.ApplicationModel
             ApplicationComponent result;
            
             lock(s_Instances)
-             result = s_Instances.Values.FirstOrDefault( c => c.ComponentCommonName!=null &&  string.Equals(c.ComponentCommonName.Trim(), name, StringComparison.InvariantCultureIgnoreCase));
+             result = s_Instances.Values.FirstOrDefault( c => c.ComponentCommonName!=null && name.EqualsIgnoreCase(c.ComponentCommonName.Trim()));
 
             return result;
           }

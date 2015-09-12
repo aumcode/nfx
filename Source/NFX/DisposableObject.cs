@@ -57,6 +57,8 @@ namespace NFX
       ~DisposableObject()
       {
         if (!m_Disposed)
+        {
+          m_DisposeStarted = true;
           try
           {
             Destructor();
@@ -65,18 +67,28 @@ namespace NFX
           {
             m_Disposed = true;
           }
+        }
       }
 
     #endregion
 
     #region Private Fields
+      private volatile bool m_DisposeStarted;
       private volatile bool m_Disposed;
     #endregion
 
     #region Properties
     
       /// <summary>
-      /// Indicates whether this object was already disposed
+      /// Indicates whether this object Dispose() has been called and dispose started but not finished yet
+      /// </summary>
+      public bool DisposeStarted
+      {
+        get { return m_DisposeStarted; }
+      }
+
+      /// <summary>
+      /// Indicates whether this object was already disposed - the Dispose() has finished
       /// </summary>
       public bool Disposed
       {
@@ -95,11 +107,11 @@ namespace NFX
     }
 
     /// <summary>
-    /// Checks to see whether object has been disposed and throws an exception if it has
+    /// Checks to see whether object dispose started or has already been disposed and throws an exception if Dispose() was called
     /// </summary>
     public void EnsureObjectNotDisposed()
     {
-      if (m_Disposed)
+      if (m_DisposeStarted || m_Disposed)
         throw new DisposedObjectException(StringConsts.OBJECT_DISPOSED_ERROR+" {0}".Args(this.GetType().FullName));
     }
 
@@ -115,6 +127,7 @@ namespace NFX
         {
             if (!m_Disposed)
             {
+                m_DisposeStarted = true;
                 try
                 {
                     Destructor();

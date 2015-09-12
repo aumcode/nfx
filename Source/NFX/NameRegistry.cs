@@ -58,6 +58,11 @@ namespace NFX
         T this[string name] { get;}
 
         /// <summary>
+        /// Returns true if the instance differentiates names by case
+        /// </summary>
+        bool IsCaseSensitive{ get;}
+
+        /// <summary>
         /// Returns true if when this registry contains the specified name
         /// </summary>
         bool ContainsName(string name);
@@ -72,44 +77,21 @@ namespace NFX
     
     
     /// <summary>
-    /// Represents a dictionary of string-named objects. Name search is case-insensitive
+    /// Internal dictionary of string-named objects
     /// </summary>
     [Serializable]
-    internal class RegistryDictionary<T> : Dictionary<string, T> , IRegistry<T> where T : INamed
+    internal class RegistryDictionary<T> : Dictionary<string, T> where T : INamed
     {
-       public RegistryDictionary() : base(StringComparer.OrdinalIgnoreCase)
+       public RegistryDictionary(bool caseSensitive) : base(caseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase)
        {
-
        }
        
-       public RegistryDictionary(IDictionary<string, T> other) : base(other, StringComparer.OrdinalIgnoreCase)
+       public RegistryDictionary(bool caseSensitive, IDictionary<string, T> other) : base(other, caseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase)
        {
-
        }
 
        protected RegistryDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
        {
-
-       }
-
-       public IEnumerable<string> Names
-       {
-           get { return this.Keys; }
-       }
-
-       public new IEnumerable<T> Values
-       {
-           get { return base.Values; }
-       }
-
-       public bool ContainsName(string name)
-       {
-           return ContainsKey(name);
-       }
-
-       public new IEnumerator<T> GetEnumerator()
-       {
-           return Values.GetEnumerator();
        }
     }
 
@@ -123,20 +105,43 @@ namespace NFX
     [Serializable]
     public class Registry<T> : IRegistry<T> where T : INamed
     {
-          public Registry()
+          public Registry() : this(false)
           {
 
           }
 
-          public Registry(IEnumerable<T> other)
+          public Registry(bool caseSensitive)
           {
-            foreach(var i in other) m_Data[i.Name] = i;
+            m_CaseSensitive = caseSensitive;
+            m_Data = new RegistryDictionary<T>(caseSensitive);
           }
+
+          public Registry(IEnumerable<T> other) : this(other, false)
+          {
+
+          }
+
+          public Registry(IEnumerable<T> other, bool caseSensitive) : this(caseSensitive)
+          {
+            foreach(var i in other)
+              m_Data[i.Name] = i;
+          }
+
+
           
+          [NonSerialized]
           protected object m_Sync = new object();
-          private volatile RegistryDictionary<T> m_Data = new RegistryDictionary<T>();
+
+          private bool m_CaseSensitive;
+          private volatile RegistryDictionary<T> m_Data;
          
-         
+          
+          
+          /// <summary>
+          /// Returns true if the instance differentiates names by case
+          /// </summary>
+          public bool IsCaseSensitive{ get{ return m_CaseSensitive;} }
+
           /// <summary>
           /// Returns a value by name or null if not found
           /// </summary>
@@ -170,7 +175,7 @@ namespace NFX
             {
                 if (m_Data.ContainsKey(item.Name)) return false;
 
-                var data = new RegistryDictionary<T>(m_Data);
+                var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 data.Add(item.Name, item);
                 
                 JustRegistered(item);
@@ -197,7 +202,7 @@ namespace NFX
           {
             lock(m_Sync)
             {
-                var data = new RegistryDictionary<T>(m_Data);
+                var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 
                 if (data.TryGetValue(item.Name, out existing))
                 {
@@ -226,7 +231,7 @@ namespace NFX
             {
                 if (!m_Data.ContainsKey(item.Name)) return false;
 
-                var data = new RegistryDictionary<T>(m_Data);
+                var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 data.Remove(item.Name);
                 
                 JustUnregistered(item);
@@ -247,7 +252,7 @@ namespace NFX
                 T item;
                 if (!m_Data.TryGetValue(name, out item)) return false;
 
-                var data = new RegistryDictionary<T>(m_Data);
+                var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 data.Remove(name);
                 
                 JustUnregistered(item);
@@ -263,7 +268,7 @@ namespace NFX
           /// </summary>
           public virtual void Clear()
           {  
-             m_Data = new RegistryDictionary<T>(); //atomic
+             m_Data = new RegistryDictionary<T>(m_CaseSensitive); //atomic
           }
 
 
@@ -381,12 +386,18 @@ namespace NFX
     [Serializable]
     public class OrderedRegistry<T> : Registry<T> where T : INamed, IOrdered
     {
-          public OrderedRegistry()
+          public OrderedRegistry() : this(false)
           {
 
           }
 
-          private List<T> m_OrderedValues = new List<T>();
+          public OrderedRegistry(bool caseSensitive) : base(caseSensitive)
+          {
+            m_OrderedValues = new List<T>();
+          }
+
+
+          private List<T> m_OrderedValues;
 
           /// <summary>
           /// Returns items that registry contains ordered by their Order property.

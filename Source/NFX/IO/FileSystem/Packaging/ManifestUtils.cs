@@ -127,7 +127,7 @@ namespace NFX.IO.FileSystem.Packaging
             buildDirLevel(dnode, sdir);
           }
 
-        foreach(var fn in directory.FileNames.Where(fn => !string.Equals(fn, MANIFEST_FILE_NAME, StringComparison.InvariantCultureIgnoreCase)))
+        foreach(var fn in directory.FileNames.Where(fn => !MANIFEST_FILE_NAME.EqualsIgnoreCase(fn)))
           using(var file = directory.GetFile(fn))
           {
             var fnode = pNode.AddChildNode(CONFIG_FILE_SECTION);

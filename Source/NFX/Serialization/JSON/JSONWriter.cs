@@ -31,7 +31,7 @@ namespace NFX.Serialization.JSON
     /// </summary>
     public static class JSONWriter
     {
-        
+
         /// <summary>
         /// Writes JSON data to the stream
         /// </summary>
@@ -73,6 +73,26 @@ namespace NFX.Serialization.JSON
         /// Appends JSON representation of a map(IDictionary)
         /// </summary>
         public static void WriteMap(TextWriter wri, IDictionary data, int level, JSONWritingOptions options = null)
+        {
+            if (options==null) options = JSONWritingOptions.Compact;
+
+            writeMap(wri, data, level, options);
+        }
+
+        /// <summary>
+        /// Appends JSON representation of a map(IEnumerable(DictionaryEntry))
+        /// </summary>
+        public static void WriteMap(TextWriter wri, IEnumerable<DictionaryEntry> data, int level, JSONWritingOptions options = null)
+        {
+            if (options==null) options = JSONWritingOptions.Compact;
+
+            writeMap(wri, data, level, options);
+        }
+
+        /// <summary>
+        /// Appends JSON representation of a map(IEnumerable(DictionaryEntry))
+        /// </summary>
+        public static void WriteMap(TextWriter wri, int level, JSONWritingOptions options, params DictionaryEntry[] data)
         {
             if (options==null) options = JSONWritingOptions.Compact;
 

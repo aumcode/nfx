@@ -207,13 +207,13 @@ namespace NFX.DataAccess.CRUD
 
             private void parseLine(int no, string line, string name, string value)
             {
-                if (string.Equals(TABLE_MODIFY_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (TABLE_MODIFY_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     m_ModifyTarget = value;   
                     return;
                 } 
 
-                if (string.Equals(COLUMN_KEY_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (COLUMN_KEY_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var keys = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var key in keys)
@@ -222,7 +222,7 @@ namespace NFX.DataAccess.CRUD
                     return;
                 }
                 
-                if (string.Equals(COLUMN_REQUIRED_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (COLUMN_REQUIRED_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var keys = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var key in keys)
@@ -231,7 +231,7 @@ namespace NFX.DataAccess.CRUD
                     return;
                 } 
                 
-                if (string.Equals(COLUMN_INVISIBLE_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (COLUMN_INVISIBLE_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var keys = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var key in keys)
@@ -240,7 +240,7 @@ namespace NFX.DataAccess.CRUD
                     return;
                 }  
 
-                if (string.Equals(COLUMN_LOAD_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (COLUMN_LOAD_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var columns = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var column in columns)
@@ -248,7 +248,7 @@ namespace NFX.DataAccess.CRUD
                     return;
                 }
                 
-                if (string.Equals(COLUMN_STORE_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (COLUMN_STORE_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var columns = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var column in columns)
@@ -256,7 +256,7 @@ namespace NFX.DataAccess.CRUD
                     return;
                 }
                 
-                if (string.Equals(COLUMN_IGNORE_SECTION, name, StringComparison.OrdinalIgnoreCase))
+                if (COLUMN_IGNORE_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var columns = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var column in columns)

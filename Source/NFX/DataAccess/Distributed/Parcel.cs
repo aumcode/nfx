@@ -83,11 +83,30 @@ namespace NFX.DataAccess.Distributed
                result = attr.CacheTableName;
 
               if (result.IsNullOrWhiteSpace())
-               result = tparcel.GetType().FullName;
+               result = tparcel.FullName;
 
               return result;
             }
             
+
+            /// <summary>
+            /// Used for serialization
+            /// </summary>
+            protected Parcel(){ }
+
+            /// <summary>
+            /// This ctor is never public, used with __ctor__injectID
+            /// </summary>
+            protected Parcel(object payload)
+            {
+               if (payload==null) 
+                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(payload==null)");
+
+               m_State = ParcelState.Creating;
+               m_Payload = payload;
+            }
+
+
             /// <summary>
             /// Called when creating new Parcel instances by the original author.
             /// The new instance is in 'ParcelState.Creating' state
@@ -129,7 +148,12 @@ namespace NFX.DataAccess.Distributed
         #region Fields
             
 
-            private GDID m_GDID;
+            private GDID m_GDID;  
+               /// <summary>
+               /// Internal framework method, developers: never call
+               /// </summary>
+               protected void __ctor__injectID(GDID id){ m_GDID = id;}
+
 
             private IReplicationVersionInfo m_ReplicationVersionInfo;//created by Seal()
 
@@ -548,7 +572,21 @@ namespace NFX.DataAccess.Distributed
     {
         #region .ctor
 
-            protected Parcel(GDID id, TPayload payload = null) : base(id, payload)
+            
+            /// <summary>
+            /// Used for serialization
+            /// </summary>
+            protected Parcel():base(){ }
+            
+            /// <summary>
+            /// This ctor is never public, used with __ctor__injectID
+            /// </summary>
+            protected Parcel(TPayload payload) : base(payload)
+            {
+
+            }
+            
+            protected Parcel(GDID id, TPayload payload) : base(id, payload)
             {
             }
 
@@ -561,7 +599,7 @@ namespace NFX.DataAccess.Distributed
         
         #region Properties
            /// <summary>
-           /// Returns payload of this parcel
+           /// Returns payload of this parcel. May be null for deleted parcels (VersionDeleted)
            /// </summary>
            public new TPayload Payload
            {

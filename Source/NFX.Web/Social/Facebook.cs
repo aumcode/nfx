@@ -312,7 +312,7 @@ namespace NFX.Web.Social
 
       public override int GetHashCode()
       {
-        return base.GetHashCode();
+        return UserName.GetHashCode();
       }
 
     #endregion

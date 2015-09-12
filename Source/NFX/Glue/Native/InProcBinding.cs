@@ -70,7 +70,7 @@ namespace NFX.Glue.Native
         #region Public
             public override bool AreNodesIdentical(Node left, Node right)
             {
-               return  left.Assigned && right.Assigned && string.Equals(left.ConnectString, right.ConnectString, StringComparison.InvariantCultureIgnoreCase);
+               return  left.Assigned && right.Assigned && left.ConnectString.EqualsIgnoreCase(right.ConnectString);
             }
         #endregion
 

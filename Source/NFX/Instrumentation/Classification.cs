@@ -121,6 +121,12 @@ namespace NFX.Instrumentation
             [InstrumentViewGroup]
             public interface ILockingInstrument : IOperationClass { }
 
+            /// <summary>
+            /// DB-related operations
+            /// </summary>
+            [InstrumentViewGroup]
+            public interface IDatabaseInstrument : IOperationClass { }
+
 
             /// <summary>
             /// Web-related operations

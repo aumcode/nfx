@@ -41,14 +41,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=1.7.0.4714, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>MongoDBDriver\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.7.0.4714, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>MongoDBDriver\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,14 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connector\MongoClient.cs" />
+    <Compile Include="Connector\Collection.cs" />
+    <Compile Include="Connector\Connection.cs" />
+    <Compile Include="Connector\Cursor.cs" />
+    <Compile Include="Connector\Update.cs" />
+    <Compile Include="Connector\CRUDObjects.cs" />
+    <Compile Include="Connector\ServerNode.cs" />
+    <Compile Include="Connector\Database.cs" />
+    <Compile Include="Connector\Enums.cs" />
+    <Compile Include="Connector\Exceptions.cs" />
+    <Compile Include="Connector\Protocol.cs" />
+    <Compile Include="Connector\Query.cs" />
     <Compile Include="Log\MongoDBDestination.cs" />
     <Compile Include="Log\MongoDBLogMessageDataStore.cs" />
     <Compile Include="MongoDBDataAccessException.cs" />
     <Compile Include="MongoDBDataStoreBase.cs" />
-    <Compile Include="MongoDBModelDataStore.cs" />
-    <Compile Include="MongoDBBSONGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RowConverter.cs" />
     <Compile Include="StringConsts.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,24 +73,6 @@
       <Project>{E6BFA4D5-D2BE-4BE1-80FE-4536A22F5C45}</Project>
       <Name>NFX</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MongoDBDriver\LICENSE" />
-    <None Include="MongoDBDriver\MongoDB-Licensing.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="MongoDBDriver\MongoDB.Bson.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="MongoDBDriver\MongoDB.Bson.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="MongoDBDriver\MongoDB.Driver.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="MongoDBDriver\MongoDB.Driver.XML">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

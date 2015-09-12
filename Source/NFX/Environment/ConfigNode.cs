@@ -572,7 +572,7 @@ namespace NFX.Environment
     public bool IsSameName(string other)
     {
       if (other==null) return false;
-      return string.Equals(this.Name, other, StringComparison.InvariantCultureIgnoreCase);
+      return this.Name.EqualsIgnoreCase(other);
     }
 
 
@@ -1014,9 +1014,8 @@ namespace NFX.Environment
             var matches = children.Where(child => child.IsSameName(osect)).ToList();
             if (matches.Count>1)
             {
-              matches = matches.Where(child => string.Equals(child.AttrByName(rules.SectionMatchAttrName).ValueAsString(), 
-                                                              osect.AttrByName(rules.SectionMatchAttrName).ValueAsString(),
-                                                              StringComparison.InvariantCultureIgnoreCase)).ToList();
+              matches = matches.Where(child => child.AttrByName( rules.SectionMatchAttrName).ValueAsString()
+                                                                  .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).ValueAsString())).ToList();
             }
 
             if (matches.Count>0)
@@ -1336,7 +1335,7 @@ namespace NFX.Environment
         public bool IsSameNameAttr(string other)
         {
           if (other==null) return false;
-          return string.Equals(this.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, other, StringComparison.InvariantCultureIgnoreCase);
+          return this.AttrByName(Configuration.CONFIG_NAME_ATTR).Value.EqualsIgnoreCase( other);
         }
 
         /// <summary>
@@ -1636,7 +1635,7 @@ namespace NFX.Environment
                     if (ieq<0 || ieq==0 || ieq==vstr.Length-1)
                       result = section.Children.FirstOrDefault(c =>  
                                         c.IsSameName(name) &&
-                                        string.Equals(c.Value, vstr, StringComparison.InvariantCultureIgnoreCase) ) 
+                                        vstr.EqualsIgnoreCase( c.Value) ) 
                                      ?? m_Configuration.m_EmptySectionNode;
                     else
                     {
@@ -1645,7 +1644,7 @@ namespace NFX.Environment
 
                         result = section.Children.FirstOrDefault(c =>  
                                         c.IsSameName(name) &&
-                                        string.Equals(c.AttrByName(atr).Value, val, StringComparison.InvariantCultureIgnoreCase) ) 
+                                        val.EqualsIgnoreCase(c.AttrByName(atr).Value) ) 
                                      ?? m_Configuration.m_EmptySectionNode;
                          
                     }

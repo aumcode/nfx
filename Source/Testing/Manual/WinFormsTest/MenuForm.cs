@@ -173,5 +173,14 @@ Performance
            ));
     }
 
+    private void btnBSON_Click(object sender, EventArgs e)
+    {
+      new BSONTestForm().Show();
+    }
+
+    private void btnMONGOCONNECTOR_Click(object sender, EventArgs e)
+    {
+      new MongoConnectorForm().Show();
+    }
   }
 }

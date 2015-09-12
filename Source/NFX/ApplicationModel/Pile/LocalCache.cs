@@ -37,18 +37,15 @@ namespace NFX.ApplicationModel.Pile
       {
       }
 
-      public LocalCache(object director):base(director)
+      public LocalCache(string name, object director):base(director)
       {
+        Name = name;
       }
 
-      public LocalCache(IPileImplementation pile):base()
+      public LocalCache(IPileImplementation pile, object director, string name):base(director)
       {
         m_Pile = pile;
-      }
-
-      public LocalCache(IPileImplementation pile, object director):base(director)
-      {
-        m_Pile = pile;
+        Name = name;
       }
 
       protected override void Destructor()

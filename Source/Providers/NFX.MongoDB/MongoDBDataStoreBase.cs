@@ -29,10 +29,6 @@ using System.Data.SqlClient;
 using NFX.Environment;
 using NFX.ApplicationModel;
 
-using MongoDB.Bson;
-using MongoDB.Driver;
-
-
 namespace NFX.DataAccess.MongoDB
 {
   /// <summary>
@@ -44,6 +40,12 @@ namespace NFX.DataAccess.MongoDB
   /// </summary>
   public abstract class MongoDBDataStoreBase : ApplicationComponent, IDataStoreImplementation
   {
+    #region CONST
+
+      
+
+    #endregion
+
     #region .ctor/.dctor
      
       protected MongoDBDataStoreBase():base()
@@ -168,11 +170,7 @@ namespace NFX.DataAccess.MongoDB
         try
         {
           var db = GetDatabase();
-          
-          if (db.Server
-              .GetDatabaseNames()
-              .Count(dbn => string.Equals(dbn, m_DatabaseName, StringComparison.InvariantCultureIgnoreCase))
-              <1) throw new Exception("DB Not found in server collection");
+          db.Ping();
         }
         catch (Exception error)
         {
@@ -193,25 +191,14 @@ namespace NFX.DataAccess.MongoDB
     
     #region Protected
 
-      /// <summary>
-      /// Allocates MySQL connection
-      /// </summary>
-      protected MongoDatabase GetDatabase()
+      protected NFX.DataAccess.MongoDB.Connector.Database GetDatabase()
       {
-        var client = new MongoClient(m_ConnectString);
-        var server = client.GetServer();      
-        return server.GetDatabase(m_DatabaseName);
+        var client= new NFX.DataAccess.MongoDB.Connector.MongoClient(this.Name);
+        var server = client.Servers[m_ConnectString] ?? client.DefaultLocalServer;
+        var db = server[m_DatabaseName];
+        return db;
       }
 
     #endregion
-
-
-    #region .pvt impl.
-
-      
-    
-    
-    #endregion
-  
   }
 }

@@ -262,7 +262,7 @@ namespace NFX.Media.PDF.Styling
 
     public override int GetHashCode()
     {
-      return m_Name.GetHashCode() ^ 
+      return m_Name.GetHashCodeOrdSenseCase() ^ 
              m_R.GetHashCode() ^ 
              m_G.GetHashCode() ^ 
              m_B.GetHashCode();
@@ -276,7 +276,7 @@ namespace NFX.Media.PDF.Styling
     public bool Equals(PdfColor other)
     {
       if (other == null) return false;
-      return string.Equals(this.m_Name, other.m_Name, StringComparison.Ordinal) &&
+      return this.m_Name.EqualsOrdSenseCase(other.m_Name) &&
              this.m_R == other.m_R &&
              this.m_G == other.m_G &&
              this.m_B == other.m_B;

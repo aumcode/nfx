@@ -236,11 +236,11 @@ namespace NFX.DataAccess.CRUD
                       {  
                         if (targetName.IsNotNullOrWhiteSpace())
                         {
-                            result = m_Attrs.FirstOrDefault(a => string.Equals(a.TargetName, targetName, StringComparison.InvariantCultureIgnoreCase));
+                            result = m_Attrs.FirstOrDefault(a => targetName.EqualsIgnoreCase(a.TargetName));
                         }
 
                         if (result==null)
-                         result = m_Attrs.FirstOrDefault(a => a.TargetName == TargetedAttribute.ANY_TARGET);
+                         result = m_Attrs.FirstOrDefault(a => TargetedAttribute.ANY_TARGET.EqualsIgnoreCase(a.TargetName) );
 
                         var dict = new Dictionary<string, FieldAttribute>(m_TargetAttrsCache); 
                         dict[targetName] = result;
@@ -270,7 +270,7 @@ namespace NFX.DataAccess.CRUD
 
                 public override int GetHashCode()
                 {
-                    return m_Name.GetHashCode() ^ m_Order;
+                    return m_Name.GetHashCodeOrdIgnoreCase() ^ m_Order;
                 }
 
                 public override bool Equals(object obj)
@@ -278,7 +278,7 @@ namespace NFX.DataAccess.CRUD
                     var other = obj as FieldDef;
                     if (other==null) return false;
                     return
-                       this.m_Name == other.m_Name  &&
+                       this.m_Name.EqualsOrdIgnoreCase(other.m_Name) &&
                        this.m_Order==other.m_Order &&
                        this.m_Type == other.m_Type &&
                        this.m_Attrs.SequenceEqual(other.m_Attrs);
@@ -617,10 +617,10 @@ namespace NFX.DataAccess.CRUD
             {
                 if (targetName.IsNotNullOrWhiteSpace())
                 {
-                    var atr = m_TableAttrs.FirstOrDefault(a => string.Equals(a.TargetName, targetName, StringComparison.InvariantCultureIgnoreCase));
+                    var atr = m_TableAttrs.FirstOrDefault(a => targetName.EqualsIgnoreCase(a.TargetName));
                     if (atr!=null) return atr;
                 }
-                return m_TableAttrs.FirstOrDefault(a => a.TargetName == TargetedAttribute.ANY_TARGET);
+                return m_TableAttrs.FirstOrDefault(a => TargetedAttribute.ANY_TARGET.EqualsIgnoreCase(a.TargetName));
             }
 
 
@@ -638,7 +638,7 @@ namespace NFX.DataAccess.CRUD
                 if (other==null) return false;
                 if (object.ReferenceEquals(this, other)) return true;
 
-                if (!string.Equals(Name, other.Name, StringComparison.InvariantCultureIgnoreCase)) return false;
+                if (!Name.EqualsIgnoreCase(other.Name)) return false;
                 
                 if (this.m_TableAttrs.Count != other.m_TableAttrs.Count ||
                     this.m_FieldDefs.Count != other.m_FieldDefs.Count) return false;
@@ -697,7 +697,7 @@ namespace NFX.DataAccess.CRUD
               public int GetHashCode(Schema obj)
               {
                 if (obj==null) return 0;
-                return StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.Name) ^ obj.FieldCount;
+                return obj.Name.GetHashCodeIgnoreCase() ^ obj.FieldCount;
               }
             }
         #endregion

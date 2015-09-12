@@ -209,7 +209,7 @@ namespace NFX.OS
 
                                   public override int GetHashCode()
                                   {
-                                    return m_Name.GetHashCode();
+                                    return m_Name.GetHashCodeIgnoreCase();
                                   }
 
                                   public override bool Equals(object obj)

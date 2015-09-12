@@ -131,7 +131,7 @@ namespace NFX.Glue.Protocol
         {
           if (!(obj is TypeSpec)) return false;
           var other = (TypeSpec)obj;
-          return  string.Equals(this.m_Name, other.m_Name, StringComparison.Ordinal);
+          return this.m_Name.EqualsOrdSenseCase(other.m_Name);
         }
 
         public override string ToString()
@@ -184,9 +184,7 @@ namespace NFX.Glue.Protocol
 
         public static bool operator ==(MethodSpec left, MethodSpec right)
         {
-          if (!string.Equals(left.m_MethodName, 
-                             right.m_MethodName,
-                             StringComparison.Ordinal)) return false;
+          if (!left.m_MethodName.EqualsOrdSenseCase(right.m_MethodName)) return false;
 
           if (left.m_ReturnType != right.m_ReturnType ) return false;
 

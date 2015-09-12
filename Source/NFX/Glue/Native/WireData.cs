@@ -512,13 +512,13 @@ namespace NFX.Glue.Native
       /// </summary>
       public Guid AppInstanceID { get{ return m_AppInstanceID; }}
 
-      public override int GetHashCode() { return m_Name!=null ? m_Name.GetHashCode() : 0;  }
+      public override int GetHashCode() { return m_Name.GetHashCodeSenseCase();  }
 
       public override bool Equals(object obj)
       {
         if (!(obj is ClientSite)) return false;
         var other = (ClientSite)obj;
-        return string.Equals(this.m_Name, other.m_Name, StringComparison.InvariantCulture);
+        return this.m_Name.EqualsSenseCase(other.m_Name);
       }
 
       public override string ToString() { return m_Name; }

@@ -82,9 +82,12 @@ namespace NFX.CodeAnalysis.JSON
                   if (!token.IsNumericLiteral)  errorAndAbort(JSONMsgCode.eNumericLiteralExpectedAfterSignOperator);
                   if (token.Value is double)
                          return -(double)token.Value;
+
+                  if (token.Value is ulong)
+                         return -(long)(ulong)token.Value;
                  
-                  var v = (ulong)token.Value;
-                  return -(long)v;
+                  var v = (Int32)token.Value;
+                  return -v;
                 }
 
 

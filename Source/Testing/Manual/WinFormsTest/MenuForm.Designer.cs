@@ -37,6 +37,8 @@
       this.btnPile = new System.Windows.Forms.Button();
       this.btnSystemSpeed = new System.Windows.Forms.Button();
       this.btnPDF = new System.Windows.Forms.Button();
+      this.btnBSON = new System.Windows.Forms.Button();
+      this.btnMONGOCONNECTOR = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnGlue
@@ -122,7 +124,7 @@
       this.btnSystemSpeed.BackColor = System.Drawing.Color.Black;
       this.btnSystemSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.btnSystemSpeed.ForeColor = System.Drawing.Color.White;
-      this.btnSystemSpeed.Location = new System.Drawing.Point(80, 444);
+      this.btnSystemSpeed.Location = new System.Drawing.Point(84, 541);
       this.btnSystemSpeed.Name = "btnSystemSpeed";
       this.btnSystemSpeed.Size = new System.Drawing.Size(136, 29);
       this.btnSystemSpeed.TabIndex = 5;
@@ -142,11 +144,39 @@
       this.btnPDF.UseVisualStyleBackColor = true;
       this.btnPDF.Click += new System.EventHandler(this.btnPDF_Click);
       // 
+      // btnBSON
+      // 
+      this.btnBSON.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold);
+      this.btnBSON.ForeColor = System.Drawing.SystemColors.HotTrack;
+      this.btnBSON.Location = new System.Drawing.Point(10, 471);
+      this.btnBSON.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.btnBSON.Name = "btnBSON";
+      this.btnBSON.Size = new System.Drawing.Size(136, 46);
+      this.btnBSON.TabIndex = 7;
+      this.btnBSON.Text = "BSON";
+      this.btnBSON.UseVisualStyleBackColor = true;
+      this.btnBSON.Click += new System.EventHandler(this.btnBSON_Click);
+      // 
+      // btnMONGOCONNECTOR
+      // 
+      this.btnMONGOCONNECTOR.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold);
+      this.btnMONGOCONNECTOR.ForeColor = System.Drawing.Color.Fuchsia;
+      this.btnMONGOCONNECTOR.Location = new System.Drawing.Point(154, 471);
+      this.btnMONGOCONNECTOR.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.btnMONGOCONNECTOR.Name = "btnMONGOCONNECTOR";
+      this.btnMONGOCONNECTOR.Size = new System.Drawing.Size(136, 46);
+      this.btnMONGOCONNECTOR.TabIndex = 8;
+      this.btnMONGOCONNECTOR.Text = "Mongo";
+      this.btnMONGOCONNECTOR.UseVisualStyleBackColor = true;
+      this.btnMONGOCONNECTOR.Click += new System.EventHandler(this.btnMONGOCONNECTOR_Click);
+      // 
       // MenuForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(306, 485);
+      this.ClientSize = new System.Drawing.Size(306, 582);
+      this.Controls.Add(this.btnMONGOCONNECTOR);
+      this.Controls.Add(this.btnBSON);
       this.Controls.Add(this.btnPDF);
       this.Controls.Add(this.btnSystemSpeed);
       this.Controls.Add(this.btnPile);
@@ -157,6 +187,7 @@
       this.Controls.Add(this.btnGlueServer);
       this.Controls.Add(this.btnGlue);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+      this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.Name = "MenuForm";
       this.Text = "NFX Test Menu";
       this.ResumeLayout(false);
@@ -174,5 +205,7 @@
     private System.Windows.Forms.Button btnPile;
     private System.Windows.Forms.Button btnSystemSpeed;
     private System.Windows.Forms.Button btnPDF;
+    private System.Windows.Forms.Button btnBSON;
+    private System.Windows.Forms.Button btnMONGOCONNECTOR;
   }
 }

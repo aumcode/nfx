@@ -308,6 +308,14 @@
     <Compile Include="Security\GDIDCredentials.cs" />
     <Compile Include="Security\PasswordUtils.cs" />
     <Compile Include="Security\SocialNetTokenCredentials.cs" />
+    <Compile Include="Serialization\BSON\BinUtils.cs" />
+    <Compile Include="Serialization\BSON\BSONDocument.cs" />
+    <Compile Include="Serialization\BSON\BSONElement.cs" />
+    <Compile Include="Serialization\BSON\Elements.cs" />
+    <Compile Include="Serialization\BSON\Enums.cs" />
+    <Compile Include="Serialization\BSON\Exceptions.cs" />
+    <Compile Include="Serialization\BSON\BSONSpecialValues.cs" />
+    <Compile Include="Serialization\BSON\RowConverter.cs" />
     <Compile Include="Serialization\JSON\JSONExtensions.cs" />
     <Compile Include="Serialization\JSON\JSONReadableWritableIntfs.cs" />
     <Compile Include="CodeAnalysis\JSON\JSONPatternMatchAttribute.cs" />

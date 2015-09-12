@@ -31,6 +31,9 @@ namespace NFX.DataAccess.MongoDB
     public const string CONNECTION_TEST_FAILED_ERROR =
         "MongoDB connection test failed with message: {0}";
 
+    public const string CONNECTION_EXISTING_ACQUISITION_ERROR =
+        "Could not obtain a connection to '{0}' as the connection limit of {1} is set and {2} ms existing acquisition timeout has passed";
+
     public const string MODEL_TYPE_NOT_RECORD_ERROR =
         "Model is not of a 'Record' type. Passed type: {0}. Check provider implementation";
 
@@ -64,7 +67,55 @@ namespace NFX.DataAccess.MongoDB
     public const string GDID_BUFFER_ERROR =
         "Error converting GDID data buffer: {0}";
 
+    public const string PROTO_SOCKET_READ_EXCEED_LIMIT_ERROR =
+        "MongoDB connector can not read payload as its size of {0} bytes exceeds the limit of {1} bytes. Socket connection may be corrupted";
 
+    public const string PROTO_SOCKET_WRITE_EXCEED_LIMIT_ERROR =
+        "MongoDB connector can not write payload as its size of {0} bytes exceeds the limit of {1} bytes. Reduce the doc size or reduce the number of docs in the batch operation";
+
+    public const string PROTO_READ_CRUD_RESPONSE_ERROR =
+        "Error reading CRUD operation response: ";
+
+    public const string PROTO_READ_OP_REPLY_ERROR =
+        "Error reading OP_REPLY: ";
+
+    public const string PROTO_PING_REPLY_ERROR =
+        "Server PING command did not return expected OK: 1";
+
+    public const string PROTO_LIST_COLLECTIONS_REPLY_ERROR =
+        "Server ListCollections command did not return expected structure";
+
+    public const string PROTO_COUNT_REPLY_ERROR =
+        "Server Count command did not return OK: 1";
+
+    public const string PROTO_RUN_COMMAND_REPLY_ERROR =
+        "Server RunCommand did not return OK: 1. Command document: ";
+
+    public const string SERVER_CURSOR_NOT_FOUND_ERROR =
+        "Cursor not found by the server";
+
+    public const string SERVER_QUERY_FAILURE_ERROR =
+        "Server query failure: ";
+
+    public const string PROTO_SERVER_REPLIED_WITH_NO_DOCUMENTS_ERROR =
+        "Server replied with no documents";
+    
+    public const string PROTO_REPLY_DOC_COUNT_EXCEED_LIMIT_ERROR =
+        "Can not process OP_REPLY as it contains {0} documents which exceeds the limit of {1} documents. Socket connection is most likely corrupted";
+
+
+    public const string SERVER_OPERATION_RETURNED_ERROR =
+        "Server returned failure executing '{0}'. Code: '{1}' Message: '{2}'";
+
+    public const string CURSOR_ENUM_ALREADY_STARTED_ERROR =
+        "Cursor can be enumerated only once and can not be Reset() again";
+
+    
+    public const string QUERY_FINISH_STATEMENT_COMPILE_ERROR =
+        "Current query statement should be finished with one of the following statements: Equals(), NotEquals(), GreaterThan(), NotGreaterThan(), LessThan(), NotLessThan(), Exists()";
+
+    public const string QUERY_START_STATEMENT_COMPILE_ERROR =
+        "Current query statement should start with element name. Use Add(string) method";
   }
 }
 

@@ -158,12 +158,12 @@ namespace NFX.DataAccess.CRUD
 
             public IParameter ParamByName(string name)
             {
-                return this.First(p => string.Equals(p.Name, name, StringComparison.InvariantCultureIgnoreCase));
+                return this.First(p => name.EqualsIgnoreCase(p.Name));
             }
 
             public IParameter FindParamByName(string name)
             {
-                return this.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.InvariantCultureIgnoreCase));
+                return this.FirstOrDefault(p => name.EqualsIgnoreCase(p.Name));
             }
        #endregion
 

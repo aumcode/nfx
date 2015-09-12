@@ -220,10 +220,6 @@ namespace NFX.Glue.Implementation
             public bool AuthenticationSupport;
             public bool SupportsGlueCtor;
             
-            // Tuple peredelat na class
-            // {miCon,miImpl,Func}
-            //Func<object, RequestMsg, object>
-
             public struct mapping
             {
               public mapping(MethodInfo c, MethodInfo i, Func<object, RequestMsg, object> f)
@@ -327,14 +323,34 @@ namespace NFX.Glue.Implementation
 
                try
                {
-                 return Expression.Lambda<Func<object, RequestMsg, object>>(
-                                    Expression.Block(  
-                                             new ParameterExpression[]{pCastMsg},
-                                             Expression.Assign(pCastMsg, Expression.Convert( pMsg, tReqMsg ) ),
-                                             Expression.Call( Expression.Convert( pInstance, Contract), miContract, exprArgs.ToArray())
-                                     ),//block
-                                     pInstance, pMsg)
-                                  .Compile();
+                 var isVoid = miContract.ReturnType==typeof(void);
+
+                 if (isVoid)
+                 {
+                     return Expression.Lambda<Func<object, RequestMsg, object>>(
+                                        Expression.Block(  
+                                                 new ParameterExpression[]{pCastMsg},
+                                                 Expression.Assign(pCastMsg, Expression.Convert( pMsg, tReqMsg ) ),
+                                                 Expression.Call( Expression.Convert( pInstance, Contract), miContract, exprArgs.ToArray()),
+                                                 Expression.Constant(null, typeof(object))
+                                         ),//block
+                                         pInstance, pMsg)
+                                      .Compile();
+                 }
+                 else
+                 {
+                     return Expression.Lambda<Func<object, RequestMsg, object>>(
+                                        Expression.Block(  
+                                                 new ParameterExpression[]{pCastMsg},
+                                                 Expression.Assign(pCastMsg, Expression.Convert( pMsg, tReqMsg ) ),
+                                                 Expression.Convert(
+                                                    Expression.Call( Expression.Convert( pInstance, Contract), miContract, exprArgs.ToArray()),
+                                                    typeof(object)
+                                                 )
+                                         ),//block
+                                         pInstance, pMsg)
+                                      .Compile();
+                 }
                }
                catch(Exception error)
                {
