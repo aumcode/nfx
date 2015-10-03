@@ -66,6 +66,7 @@
     <Compile Include="Glue\JokeContracts.cs" />
     <Compile Include="Glue\JokeHelper.cs" />
     <Compile Include="Glue\JokeTestBase.cs" />
+    <Compile Include="IO\FileSystem\GoogleDrive\V2\GoogleDriveTests.cs" />
     <Compile Include="IO\FileSystem\S3\V4\S3V4FileSystemTests.cs" />
     <Compile Include="IO\FileSystem\S3\V4\S3V4Tests.cs" />
     <Compile Include="IO\FileSystem\SVN\SVNFileSystemTest.cs" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <EmbeddedResource Include="CRUD\Types.Load.mys.sql" />
     <Content Include="CRUD\CreateTables.txt" />
+    <None Include="IO\FileSystem\GoogleDrive\GDRIVE_README.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\Escape.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\NestedFolder\Escape.txt" />
   </ItemGroup>

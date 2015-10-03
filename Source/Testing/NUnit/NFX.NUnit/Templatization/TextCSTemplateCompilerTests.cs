@@ -30,7 +30,7 @@ namespace NFX.NUnit.Templatization
   [TestFixture]
   public class TextCSTemplateCompilerTests
   {
-    public const string NFX_NUNIT_DLL = "NFX.NUnit.dll";
+    public static readonly string NFX_NUNIT_DLL = "NFX.NUnit.dll";
 
 
     #region Public
@@ -128,7 +128,7 @@ namespace NFX.NUnit.Templatization
 
         CompileUnit unit = compiler.First();
 
-        CSharpCodeProvider provider = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v4.0" } });
+        CSharpCodeProvider provider = new CSharpCodeProvider();//new Dictionary<string, string>() { { "CompilerVersion", "v4.0" } });
 
         CompilerParameters compilerParams = new CompilerParameters() { GenerateInMemory = true, GenerateExecutable = false };
 

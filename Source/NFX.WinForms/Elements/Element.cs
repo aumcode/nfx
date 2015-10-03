@@ -60,7 +60,7 @@ namespace NFX.WinForms.Elements
         private bool m_MouseTransparent; 
         private Rectangle m_Region;
         
-        private ElementList m_OwnedElements = new ElementList();
+        private ElementList m_OwnedElements;
         
         private IFieldControlContext m_FieldControlContext;
      #endregion
@@ -84,7 +84,13 @@ namespace NFX.WinForms.Elements
         /// </summary>
         public ElementList OwnedElements
         {
-          get { return m_OwnedElements; }
+          get 
+          {
+            if (m_OwnedElements==null)
+              m_OwnedElements = new ElementList();
+            
+            return m_OwnedElements; 
+          }
         }
 
 
@@ -353,8 +359,9 @@ namespace NFX.WinForms.Elements
            if (m_Host != null)
             m_Host.RemoveElement(this);
             
-           foreach(Element elm in m_OwnedElements)
-            elm.Dispose(); 
+           if (m_OwnedElements!=null)
+            foreach(Element elm in m_OwnedElements)
+             elm.Dispose(); 
             
            base.Destructor();
          }

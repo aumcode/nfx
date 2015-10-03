@@ -38,7 +38,7 @@ using System.Xml.Linq;
 
 namespace NFX.Web
 {
-  public enum HTTPRequestMethod { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE };
+  public enum HTTPRequestMethod { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH};
 
   /// <summary>
   /// Stipulates contract for an entity that executes calls via WebClient

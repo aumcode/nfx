@@ -222,7 +222,7 @@ namespace NFX.WinForms.Elements
         
         foreach(var elm in m_ElementList)
         {
-          elm.m_Host = null;//prevent elemnts from unregistering with host because it is slower than host.list.Clear()
+          elm.m_Host = null;//prevent elements from unregistering with host because it is slower than host.list.Clear()
           elm.Dispose();
         }  
         

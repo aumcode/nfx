@@ -78,6 +78,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="ConsoleLog.cs" />
     <Compile Include="CSTemplate.cs" />
+    <Compile Include="GoogleDrive\GoogleDriveFileSystem.cs" />
     <Compile Include="JokeServer.cs" />
     <Compile Include="Markup.cs" />
     <Compile Include="Program.cs" />

@@ -98,6 +98,12 @@
     <Compile Include="CacheTest.Designer.cs">
       <DependentUpon>CacheTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChartForm.Designer.cs">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConsoleUtils\ConsoleUtilsFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CacheTest.resx">
       <DependentUpon>CacheTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConsoleUtils\ConsoleUtilsFrm.resx">
       <DependentUpon>ConsoleUtilsFrm.cs</DependentUpon>

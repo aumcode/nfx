@@ -29,6 +29,9 @@ namespace NFX.WinForms
     public const string INTERACTIONS_CATEGORY = "Interactions";
     public const string VIEW_CATEGORY = "View Properties";
 
+     public const string ARGUMENT_ERROR = "Argument error: ";
+
+
     public const string SURROGATE_CREATE_ERROR = "Could not create record surrogate type \"{0}\" \n Exception: \n\n {1}";
 
     public const string THEME_CREATION_ERROR =

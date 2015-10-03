@@ -73,6 +73,27 @@ namespace NFX
         int Count{ get;}
     }
     
+    /// <summary>
+    /// Provides read-only named ordered object lookup capabilities
+    /// </summary>
+    public interface IOrderedRegistry<out T> : IRegistry<T> where T : INamed, IOrdered
+    {
+          /// <summary>
+          /// Returns items that registry contains ordered by their Order property.
+          /// The returned sequence is pre-sorted during alteration of registry, so this property access is efficient.
+          /// Note: since registry does reading in a lock-free manner, it is possible to have an inconsistent read snapshot
+          ///  of ordered items which may capture items that have already/not yet been added to the registry
+          /// </summary>
+          IEnumerable<T> OrderedValues{ get;}
+
+          /// <summary>
+          /// Tries to return an item by its position index in ordered set of items that this registry keeps.
+          /// Null is returned when index is out of bounds.
+          /// Note: since registry does reading in a lock-free manner, it is possible to have an inconsistent read snapshot
+          ///  of ordered items which may capture items that have already/not yet been added to the registry
+          /// </summary>
+          T this[int index] { get;}
+    }
     
     
     
@@ -384,7 +405,7 @@ namespace NFX
     ///  of ordered items which may capture items that have already/not yet been added to the registry
     /// </summary>
     [Serializable]
-    public class OrderedRegistry<T> : Registry<T> where T : INamed, IOrdered
+    public class OrderedRegistry<T> : Registry<T>, IOrderedRegistry<T> where T : INamed, IOrdered
     {
           public OrderedRegistry() : this(false)
           {
