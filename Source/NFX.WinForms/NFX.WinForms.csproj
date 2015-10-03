@@ -82,6 +82,19 @@
     <Compile Include="Controls\Balloon.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\ChartKit\Enums.cs" />
+    <Compile Include="Controls\ChartKit\Series.cs" />
+    <Compile Include="Controls\ChartKit\PlotPane.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ChartKit\Chart.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ChartKit\SeriesView.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\CandleView.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\MarketSample.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\TimeSeries.cs" />
+    <Compile Include="Controls\Enums.cs" />
     <Compile Include="Controls\GridKit\CellElement.cs" />
     <Compile Include="Controls\GridKit\CellView.cs">
       <SubType>Component</SubType>
@@ -89,13 +102,12 @@
     <Compile Include="Controls\GridKit\Column.cs" />
     <Compile Include="Controls\GridKit\ColumnResizeElement.cs" />
     <Compile Include="Controls\GridKit\CommentElement.cs" />
-    <Compile Include="Controls\GridKit\Enums.cs" />
     <Compile Include="Controls\GridKit\Events.cs" />
     <Compile Include="Controls\GridKit\Grid.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\GridKit\RowMap.cs" />
-    <Compile Include="Controls\GridKit\Style.cs" />
+    <Compile Include="Controls\Style.cs" />
     <Compile Include="Elements\CheckableElement.cs" />
     <Compile Include="Elements\CheckBoxElement.cs" />
     <Compile Include="Elements\ComboBoxElement.cs" />

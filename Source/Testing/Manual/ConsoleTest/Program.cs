@@ -50,8 +50,9 @@ namespace ConsoleTest
 
       //Social.SocialTest.Test01();
 
-      CacheTest.Run(16, 20, 150000, 40);
+      //CacheTest.Run(16, 20, 150000, 40);
 
+      GoogleDrive.GoogleDriveFileSystemTests.Run();
 
       Console.WriteLine("done"); Console.ReadKey();
 

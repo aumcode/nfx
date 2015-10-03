@@ -24,7 +24,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using NFX;
+using NFX.WinForms.Controls;
 using NFX.WinForms.Controls.GridKit;
 
 namespace WinFormsTest

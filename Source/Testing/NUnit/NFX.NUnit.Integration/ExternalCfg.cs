@@ -23,6 +23,7 @@ using System.Text;
 using NFX.Web;
 using NFX.Environment;
 using NFX.IO.FileSystem.S3.V4;
+using NFX.IO.FileSystem.GoogleDrive;
 using SVN_CONN_PARAMS = NFX.IO.FileSystem.SVN.SVNFileSystemSessionConnectParams;
 using STRIPE_CONN_PARAMS = NFX.Web.Pay.Stripe.StripeConnectionParameters;
 
@@ -88,6 +89,17 @@ namespace NFX.NUnit.Integration
         region='[S3_REGION]' 
         access-key='[S3_ACCESSKEY]' 
         secret-key='[S3_SECRETKEY]'
+      }
+    }
+
+    file-system 
+    { 
+      name='NFX_GOOGLE_DRIVE' type='NFX.IO.FileSystem.GoogleDrive.V2.GoogleDriveFileSystem, NFX.Web' auto-start=true
+
+      default-session-connect-params
+      {
+        email='[GOOGLE_DRIVE_EMAIL]' 
+        cert-path=$'[GOOGLE_DRIVE_CERT_PATH]' 
       }
     }
   }
@@ -363,6 +375,15 @@ namespace NFX.NUnit.Integration
 
     #endregion
 
+    #region Google Drive
+
+      protected const string NFX_GOOGLE_DRIVE = "NFX_GOOGLE_DRIVE";
+
+      protected string GOOGLE_DRIVE_EMAIL;
+      protected string GOOGLE_DRIVE_CERT_PATH;
+      
+    #endregion
+
     protected const string NFX_STRIPE = "NFX_STRIPE";
 
     protected string STRIPE_SECRET_KEY;
@@ -373,6 +394,7 @@ namespace NFX.NUnit.Integration
       initSocial();
       initSVNConsts();
       initS3V4Consts();
+      initGoogleDriveConsts();
       initStripeConsts();
     }
 
@@ -457,6 +479,33 @@ namespace NFX.NUnit.Integration
               NFX_S3, 
               "s3{ bucket='bucket01' region='us-west-2' access-key='XXXXXXXXXXXXXXXXXXXX' secret-key='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'}"), 
           ex);
+      }
+    }
+
+    private void initGoogleDriveConsts()
+    {
+      try
+      {
+        string envVarsStr = System.Environment.GetEnvironmentVariable(NFX_GOOGLE_DRIVE);
+
+        var cfg = Configuration.ProviderLoadFromString(envVarsStr, Configuration.CONFIG_LACONIC_FORMAT).Root;
+
+        GOOGLE_DRIVE_EMAIL = cfg.AttrByName(GoogleDriveParameters.CONFIG_EMAIL_ATTR).Value;
+        GOOGLE_DRIVE_CERT_PATH = cfg.AttrByName(GoogleDriveParameters.CONFIG_CERT_PATH_ATTR).Value;
+        
+        LACONF = LACONF
+          .Replace("[CONFIG_EMAIL_ATTR]", GOOGLE_DRIVE_EMAIL)
+          .Replace("[CONFIG_CERT_PATH_ATTR]", GOOGLE_DRIVE_CERT_PATH);
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(string.Format(
+          "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
+            NFX_GOOGLE_DRIVE,
+            "google-drive{ email='<value>' cert-path=$'<value>' }"
+          ),
+          ex
+        );
       }
     }
 

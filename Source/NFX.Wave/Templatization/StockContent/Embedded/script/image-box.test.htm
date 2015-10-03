@@ -4,15 +4,15 @@
   <script src="wv.js"></script>
   <script src="image-box.temp.js"></script>
 
-  <style>
+  <style>  
+    .wvIBoxFrameDiv {
+      width: 300px;
+    }
+
     .wvIBoxMainImageDiv {
       height: 300px;
       width: 300px;
-      background: green;
-    }
-
-    .wvIBoxThumbContainerDiv {
-      width: 300px;
+      border: 1px solid black;
     }
   </style>
 
@@ -65,12 +65,22 @@
 
       var init2 =
       {
+        thumbsPosition: "left",
         defaultImageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
         defaultThumbSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
         thumbs: [
           { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://www.colourbox.com/preview/1167198-nature-orange-insect-attractive-garden-butterfly-beautiful-plant-small-spotted-resting-single-close-green-fly-color-bright-macro-flap-beauty-antenna-yellow-wings-background-summer-wild-sunlight-pattern-light-head-open-closeu.jpg" },
           { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://www.photocase.com/stock-photos/202338-stock-photo-nature-flower-blue-plant-summer-small.jpg" },
           { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://pixabay.com/static/uploads/photo/2014/10/09/14/58/tit-481988_640.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
+          { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
           { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg" },
           { imageSrc: "http://localhost:8080/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=file:///E:/test/smth.bmp" }
         ]

@@ -1,5 +1,6 @@
 // constants
 
+// classes               
 var IBOX_FRAMEDIV = "wvIBoxFrameDiv";
 var IBOX_MAINIMAGEDIV = "wvIBoxMainImageDiv";
 var IBOX_THUMBCONTAINERDIV = "wvIBoxThumbContainerDiv";
@@ -7,8 +8,10 @@ var IBOX_THUMBNAVIGATIONDIV = "wvIBoxThumbNavigationDiv";
 var IBOX_THUMBIMAGESCONTAINERDIV = "wvIBoxThumbImagesContainerDiv";
 var IBOX_THUMBIMAGEDIV = "wvIBoxThumbImageDiv";
 
+// events
 var EVT_IMAGE_CHANGED = 'image-changed';
 
+// defaults
 var DEFAULT_THUMB_IMG =
   "data:image/png;base64," +
   "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJQ" +
@@ -32,7 +35,6 @@ var DEFAULT_THUMB_IMG =
   "AIcCgEMBwKEA4FAAcMoLYHG7VuUWUGAHAAdCAM0VW2n1C+wA4MAIoLFyq61+AaoDvBNgxfAFuFPAnSCrhi" +
   "9AXgOsBFo5fAH2IvBKsNXDF2AFEM4CRghfgBZAGAWNEr4AL4DQBo4UvlD+V8LIOewA4FAAcCgAOBQAHAoA" +
   "DgUAhwKAQwGgeTz+AsZuM9oZmv+HAAAAAElFTkSuQmCC";
-
 var DEFAULT_MAIN_IMG =
   "data:image/png;base64," +
   "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJQ" +
@@ -74,17 +76,57 @@ var DEFAULT_MAIN_IMG =
   "gGBbgiz8vSiAcM8EWvj7UQCsCrbw96QA+NdSwIW/LwXA/24FXfh7UwB8cxl44e/v5+fn5++vz4EwTgAQTA" +
   "FAMAUAwRQABFMAEEwBQDAFAMEUAARTABBMAUAwBQDBFAAEUwAQTAFAMAUAwRQABFMAEEwBQDAFAMEUAART" +
   "ABBMAUCsHz/+Bl9F0uTx0fb0AAAAAElFTkSuQmCC";
-
+var DEFAULT_UP_NAVIGATION_IMG = 
+  "data:image/png;base64," +
+  "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJQ" +
+  "AAFiUBSVIk8AAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIxJREFUSEu9lUkSgCAM" +
+  "BMF3wet5mAvlWKgsybD0JRwk3eUFu58YEu99nCGEOBm2e6qB/CI9a6ECckI2Qh1QEzERqgCJQBshDtAs1n" +
+  "wrCmB+rfROM4CRA8ndakCPHLR2FANGyEFtVzZgpByUdv4CZshBbvcrYKYcfB1PwAo5SF0xYKUcwGmdc/Rz" +
+  "3I8xB5oJHNIbxwoIAAAAAElFTkSuQmCC";
+var DEFAULT_DOWN_NAVIGATION_IMG =
+  "data:image/png;base64," +
+  "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJQ" +
+  "AAFiUBSVIk8AAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIhJREFUSEvF0EsOgCAM" +
+  "RdHqutg9C9NcIwaVT4uAd+RA+05cnHOb/NjqvT8f58f2Gh5mFzYPAM1ExFsXgGYgnhs3AI1EpG6/ADQCkb" +
+  "uZBFBPROlWFkA9ELUbRQB9QWi+rQKoBaH9RgUgC8LyrhpAmsPWv2UCUGnAOk5mAKWGWsapCUDxYOu4iMgO" +
+  "f8tGYUzt9Q4AAAAASUVORK5CYII=";
+var DEFAULT_LEFT_NAVIGATION_IMG =
+  "data:image/png;base64," +
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJQ" +
+  "AAFiUBSVIk8AAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAKVJREFUSEul00ESgyAQ" +
+  "RFH0XHB6Dhb9xlioA0xP/opNv1Ipl89eClZKSet5lmNMIeA3JhloxyQBzzG5AWtMLqA3pikwGtMQmI2pC3" +
+  "jGZALeMb0AZUw3QB3TBUTGdADRMS055/DvTOYtKK211vMY63iCf5DrFaLI7RtEkNdHVBHzFhTEBMiLdAHy" +
+  "IEOAZsgUoBHiAqiHuAGyEAmgJyID1CIhgL5IShv3UTLuo8WxkgAAAABJRU5ErkJggg==";
+ var DEFAULT_RIGHT_NAVIGATION_IMG =
+  "data:image/png;base64," +
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJQ" +
+  "AAFiUBSVIk8AAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAKBJREFUSEul00kOxCAQ" +
+  "BMEevwtez8PsSSQsLyzd5bzApUJcsJTS/qXN/uWcOaQqQCpyAqQgN4CiyAugCNIFyIsMAfIgU4BWyBKgGe" +
+  "ICaIS4AeohIYCeSBigKyIB1JAf37nexOQXtD4BpRQdYEwS0MYUBq5jCgHPMbmB3phcwGhMS2A2pimwGtMQ" +
+  "8IypC3jH9AIiY7oB0TGdgDKmCqhjM7MD3BprseyuvCAAAAAASUVORK5CYII=";
+var DEFAULT_FRAME_STYLE = "display: flex; flex-flow: column;";
+var DEFAULT_DIV_MAIN_IMAGE_STYLE = "flex: 1 0 auto; order: 0;";
+var DEFAULT_THUMB_CONTAINER_STYLE = "flex: 0 0 auto; display: flex; flex-flow: row; order: 1;";
+var DEFAULT_THUMB_IMAGE_CONTAINER_STYLE = "flex: 1; display: flex; flex-flow: row; overflow: hidden;";
+var DEFAULT_THUMB_SCROLL_LR_STYLE = "flex: 0 0 auto; width: 16px; height: 32px;";
+var DEFAULT_THUMB_SCROLL_UD_STYLE = "flex: 0 0 auto; height: 16px; width: 32px;";
+var DEFAULT_THUMB_IMAGEDIV_STYLE = "flex: 0 0 auto; overflow: hidden;";
+var DEFAULT_THUMB_IMAGE_STYLE = "position: relative;";
 var DEFAULT_FIT_IMAGE_STYLE = "width: 100%; height: 100%; object-fit: contain;";
-var DEFAULT_THUMB_CONTAINER_STYLE = "display: flex; overflow: auto; overflow-x: hidden; text-align:center;";
-var DEFAULT_THUMB_SCROLL_LEFT_STYLE = "height: 20px; width: 20px; float: left; background: green; flex-shrink: 0;";
-var DEFAULT_THUMB_SCROLL_RIGHT_STYLE = "height: 20px; width: 20px; float: left; background: green; flex-shrink: 0;";
-var DEFAULT_THUMB_IMAGE_CONTAINER_STYLE = "display: flex; overflow: auto; float: left; overflow-x: hidden; text-align:center;";
-var DEFAULT_THUMB_IMAGEDIV_STYLE = "overflow: hidden; position: relative; flex-shrink: 0;";
-var DEFAULT_THUMB_IMAGE_STYLE = "position: absolute;";
 var DEFAULT_SCROLL_SPEED = 300;
+var DEFAULT_THUMBS_POSITION = "bottom";
 
-
+// json data parameter names
+var PARAM_THUMBS_POSITION = "thumbsPosition";
+var PARAM_DEF_IMG_SRC = "defaultImageSrc";
+var PARAM_DEF_THUMB_SRC = "defaultThumbSrc";
+var PARAM_THUMB_SRC = "thumbSrc";
+var PARAM_THUMBS = "thumbs";
+var PARAM_IMG_SRC = "imageSrc";
+var PARAM_HEIGHT = "h";
+var PARAM_WIDTH = "w";
+var PARAM_LEFT = "l";
+var PARAM_TOP = "t";
 
 
 
@@ -110,9 +152,9 @@ var IBox = function (container, init) {
   var divMainImage;
   var imgMainImage;
   var divThumbContainer;
-  var divThumbsScrollLeft;
+  var divThumbsScrollBack;
   var divThumbsImagesContainer;
-  var divThumbsScrollRight;
+  var divThumbsScrollForth;
 
   // public
 
@@ -125,26 +167,6 @@ var IBox = function (container, init) {
   }
 
   // private
-
-  var getNextThumb = function () {
-    if (typeof (selectedThumb) == WAVE.UNDEFINED ||
-        typeof (allThumbs) == WAVE.UNDEFINED)
-      return WAVE.UNDEFINED;
-    var i = allThumbs.indexOf(selectedThumb);
-    if (i < 0 || i >= allThumbs.length - 1)
-      return WAVE.UNDEFINED;
-    return allThumbs[i + 1];
-  }
-
-  var getPrevThumb = function () {
-    if (typeof (selectedThumb) == WAVE.UNDEFINED ||
-        typeof (allThumbs) == WAVE.UNDEFINED)
-      return WAVE.UNDEFINED;
-    var i = allThumbs.indexOf(selectedThumb);
-    if (i <= 0)
-      return WAVE.UNDEFINED;
-    return allThumbs[i - 1];
-  }
 
   var loadImage = function (element, imageSrc, defaultImgSource, loadedEventName) {
     var prevSrc = element.src;
@@ -182,32 +204,36 @@ var IBox = function (container, init) {
 
   // parse init json
 
-  var defaultImageSrc = WAVE.strDefault(init['defaultImageSrc'], DEFAULT_MAIN_IMG);
-  var defaultThumbSrc = WAVE.strDefault(init['defaultThumbSrc'], DEFAULT_THUMB_IMG);
-  var thumbSrc = init['thumbSrc'];
-  var thumbs = init['thumbs'];
+  var defaultImageSrc = WAVE.strDefault(init[PARAM_DEF_IMG_SRC], DEFAULT_MAIN_IMG);
+  var defaultThumbSrc = WAVE.strDefault(init[PARAM_DEF_THUMB_SRC], DEFAULT_THUMB_IMG);
+  var thumbSrc = init[PARAM_THUMB_SRC];
+  var thumbs = init[PARAM_THUMBS];
+  var thumbsOrientation = WAVE.strDefault(init[PARAM_THUMBS_POSITION], DEFAULT_THUMBS_POSITION);
 
   // initialize control UI
 
   divFrame = document.createElement('div');
+  divFrame.style.cssText = DEFAULT_FRAME_STYLE;
   divFrame.className = IBOX_FRAMEDIV;
 
   divMainImage = document.createElement('div');
+  divMainImage.style.cssText = DEFAULT_DIV_MAIN_IMAGE_STYLE;
   divMainImage.className = IBOX_MAINIMAGEDIV;
-  divFrame.appendChild(divMainImage);
 
   imgMainImage = document.createElement('img');
   imgMainImage.style.cssText = DEFAULT_FIT_IMAGE_STYLE;
   imgMainImage.src = DEFAULT_MAIN_IMG;
-  divMainImage.appendChild(imgMainImage);
 
   divThumbContainer = document.createElement('div');
   divThumbContainer.className = IBOX_THUMBCONTAINERDIV;
   divThumbContainer.style.cssText = DEFAULT_THUMB_CONTAINER_STYLE;
-  divFrame.appendChild(divThumbContainer);
 
   divThumbsImagesContainer = document.createElement('div');
+  divThumbsImagesContainer.className = IBOX_THUMBIMAGESCONTAINERDIV;
   divThumbsImagesContainer.style.cssText = DEFAULT_THUMB_IMAGE_CONTAINER_STYLE;
+  divFrame.appendChild(divMainImage);
+  divMainImage.appendChild(imgMainImage);
+  divFrame.appendChild(divThumbContainer);
   divThumbContainer.appendChild(divThumbsImagesContainer);
 
   if (typeof (thumbs) != WAVE.UNDEFINED) {
@@ -221,15 +247,14 @@ var IBox = function (container, init) {
       var imgThumbImage = document.createElement('img');
       imgThumbImage.style.cssText = DEFAULT_THUMB_IMAGE_STYLE;
       imgThumbImage.src = DEFAULT_THUMB_IMG;
-      divThumbImage.appendChild(imgThumbImage);
+      divThumbImage.appendChild(imgThumbImage); 
 
       var src;
       if (typeof (thumbSrc) !== WAVE.UNDEFINED) {
-        divThumbImage.style.height = WAVE.strDefault(thumb['h'], '0');
-        divThumbImage.style.width = WAVE.strDefault(thumb['w'], '0');
-        imgThumbImage.style.top = WAVE.strDefault(thumb['t'], '0');
-        imgThumbImage.style.left = WAVE.strDefault(thumb['l'], '0');
-        imgThumbImage.style.objectFit = 'contain';
+        divThumbImage.style.height = WAVE.strDefault(thumb[PARAM_HEIGHT], '0');
+        divThumbImage.style.width = WAVE.strDefault(thumb[PARAM_WIDTH], '0');
+        imgThumbImage.style.top = WAVE.strDefault(thumb[PARAM_TOP], '0');
+        imgThumbImage.style.left = WAVE.strDefault(thumb[PARAM_LEFT], '0');
         src = thumbSrc;
       } else {
         divThumbImage.style.height = '50px';
@@ -240,7 +265,7 @@ var IBox = function (container, init) {
 
       thumbLoadImageFactory(imgThumbImage, src)();
 
-      var mainImageSrc = WAVE.strDefault(thumb['imageSrc'], defaultImageSrc);
+      var mainImageSrc = WAVE.strDefault(thumb[PARAM_IMG_SRC], defaultImageSrc);
       $(divThumbImage).click(thumbClickFactory(divThumbImage, mainImageSrc));
 
       $(divThumbImage).mouseenter(function () {
@@ -258,23 +283,62 @@ var IBox = function (container, init) {
     container.appendChild(divFrame);
 
     // load the 1st image
-    var imageSrc = WAVE.strDefault(thumbs[0]['imageSrc'], defaultImageSrc);
+    var imageSrc = WAVE.strDefault(thumbs[0][PARAM_IMG_SRC], defaultImageSrc);
     thumbClickFactory(allThumbs[0], imageSrc)();
   };
+
+  // set thumb container orientation
+  switch (thumbsOrientation) {
+    case "left":
+      divMainImage.style.order = 1;
+      divThumbContainer.style.order = 0;
+      divFrame.style.flexFlow = "row"; 
+      divThumbContainer.style.flexFlow = "column"; 
+      divThumbsImagesContainer.style.flexFlow = "column";
+      break;
+    case "right": 
+      divMainImage.style.order = 0;
+      divThumbContainer.style.order = 1;
+      divFrame.style.flexFlow = "row"; 
+      divThumbContainer.style.flexFlow = "column"; 
+      divThumbsImagesContainer.style.flexFlow = "column";
+      break;
+    case "top": 
+      divMainImage.style.order = 1;
+      divThumbContainer.style.order = 0;
+      divFrame.style.flexFlow = "column"; 
+      divThumbContainer.style.flexFlow = "row"; 
+      divThumbsImagesContainer.style.flexFlow = "row";
+      break;
+    case "bottom":     
+      divMainImage.style.order = 0;
+      divThumbContainer.style.order = 1;
+      divFrame.style.flexFlow = "column"; 
+      divThumbContainer.style.flexFlow = "row"; 
+      divThumbsImagesContainer.style.flexFlow = "row";
+      break;
+  }
 
   // on loaded
   $(document).ready(function () {
 
     // calculate displayed characteristics
-    thumbsLength = WAVE.arrayWalkable(allThumbs).wSelect(function (t) { return t.offsetWidth; }).wSum();
+    if (thumbsOrientation === "top" || thumbsOrientation === "bottom") {
+      thumbsLength = WAVE.arrayWalkable(allThumbs).wSelect(function(t) { return t.offsetWidth; }).wSum();
+    } else {
+      thumbsLength = WAVE.arrayWalkable(allThumbs).wSelect(function(t) { return t.offsetHeight; }).wSum();
+    }
 
     // if thumbs are overflowed add navigation arrows
     var needNavigation = isOverflowed(divThumbsImagesContainer);
-    if (needNavigation) {
-      divThumbsScrollLeft = document.createElement('div');
-      divThumbsScrollLeft.className = IBOX_THUMBNAVIGATIONDIV;
-      divThumbsScrollLeft.style.cssText = DEFAULT_THUMB_SCROLL_LEFT_STYLE;
-      $(divThumbsScrollLeft).click(function () {
+    if (!needNavigation) {
+      divThumbsImagesContainer.style.justifyContent = "center";
+    }
+    else {
+      divThumbsScrollBack = document.createElement('div');
+      divThumbsScrollBack.className = IBOX_THUMBNAVIGATIONDIV;
+
+      $(divThumbsScrollBack).click(function () {
         var left = divThumbsImagesContainer.scrollLeft;
         var summ = 0;
         for (var i = 0; i < allThumbs.length; i++) {
@@ -286,12 +350,15 @@ var IBox = function (container, init) {
           scrollLeft: "-=" + delta
         }, DEFAULT_SCROLL_SPEED);
       });
-      divThumbContainer.insertBefore(divThumbsScrollLeft, divThumbContainer.firstChild);
+      divThumbContainer.insertBefore(divThumbsScrollBack, divThumbContainer.firstChild);
 
-      divThumbsScrollRight = document.createElement('div');
-      divThumbsScrollRight.className = IBOX_THUMBNAVIGATIONDIV;
-      divThumbsScrollRight.style.cssText = DEFAULT_THUMB_SCROLL_RIGHT_STYLE;
-      $(divThumbsScrollRight).click(function () {
+      var imgBackImage = document.createElement('img');
+      imgBackImage.style.cssText = DEFAULT_FIT_IMAGE_STYLE;
+      divThumbsScrollBack.appendChild(imgBackImage); 
+
+      divThumbsScrollForth = document.createElement('div');
+      divThumbsScrollForth.className = IBOX_THUMBNAVIGATIONDIV;
+      $(divThumbsScrollForth).click(function () {
         var right = divThumbsImagesContainer.scrollLeft + divThumbsImagesContainer.offsetWidth;
         var summ = 0;
         for (var i = 0; i < allThumbs.length; i++) {
@@ -303,7 +370,23 @@ var IBox = function (container, init) {
           scrollLeft: "+=" + delta
         }, DEFAULT_SCROLL_SPEED);
       });
-      divThumbContainer.appendChild(divThumbsScrollRight);
+      divThumbContainer.appendChild(divThumbsScrollForth);
+
+      var imgForthImage = document.createElement('img');
+      imgForthImage.style.cssText = DEFAULT_FIT_IMAGE_STYLE;
+      divThumbsScrollForth.appendChild(imgForthImage); 
+
+      if (thumbsOrientation === "top" || thumbsOrientation === "bottom") {
+        divThumbsScrollBack.style.cssText = DEFAULT_THUMB_SCROLL_LR_STYLE;
+        divThumbsScrollForth.style.cssText = DEFAULT_THUMB_SCROLL_LR_STYLE;
+        imgBackImage.src = DEFAULT_LEFT_NAVIGATION_IMG;
+        imgForthImage.src = DEFAULT_RIGHT_NAVIGATION_IMG;
+      } else {                       
+        divThumbsScrollBack.style.cssText = DEFAULT_THUMB_SCROLL_UD_STYLE;
+        divThumbsScrollForth.style.cssText = DEFAULT_THUMB_SCROLL_UD_STYLE;
+        imgBackImage.src = DEFAULT_UP_NAVIGATION_IMG;
+        imgForthImage.src = DEFAULT_DOWN_NAVIGATION_IMG;
+      }
     }
   });
 };

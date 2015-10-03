@@ -40,7 +40,8 @@ namespace WinFormsTest
         Application.EnableVisualStyles();
        // Application.SetCompatibleTextRenderingDefault(false);
 
-        Application.Run(new MenuForm());
+    //    Application.Run(new MenuForm());
+        Application.Run( new ChartForm());
 
         //Application.Run(new PatientForm());
         //Application.Run(new GridForm());
