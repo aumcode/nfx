@@ -129,6 +129,22 @@ namespace NFX
         get { return ((uint)NextRandomInteger) / ((double)uint.MaxValue); }
       } 
 
+
+      /// <summary>
+      /// Generates random double number in min..max range
+      /// </summary>
+      public double NextScaledRandomDouble(double bound1, double bound2 = 0)
+      {
+        var min = bound1<bound2 ? bound1 : bound2;
+        var max = bound1>bound2 ? bound1 : bound2;
+
+        var val = NextRandomInteger;
+        
+        var ratio = (UInt32)val / (double)UInt32.MaxValue;
+
+        return min + ((max - min) * ratio);
+      }
+
       /// <summary>
       /// Introduces external entropy into the generation sequence by adding a sample into the ring buffer.
       /// Call this method from places that have true entropy values, i.e.

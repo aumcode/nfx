@@ -30,6 +30,7 @@ using NFX.Security.CAPTCHA;
 using NFX.Serialization.JSON;
 using NFX.DataAccess;
 using NFX.DataAccess.CRUD;
+using WaveTestSite.Pages;
 
 namespace WaveTestSite.Controllers
 {
@@ -43,7 +44,8 @@ namespace WaveTestSite.Controllers
       public void SlowImage(string url, int dbDelayMs = 100, int netDelayMs = 0)
       {
         WorkContext.Response.ContentType = NFX.Web.ContentType.JPEG;
-      
+        WorkContext.Response.SetPrivateMaxAgeCacheHeader(2);
+
         // emulate a pause accessing DB
         Thread.Sleep(dbDelayMs); 
       
@@ -142,6 +144,12 @@ namespace WaveTestSite.Controllers
       public object Yahoo()
       {
          return new Redirect("http://yahoo.com");
+      }
+
+      [Action]
+      public object IBoxTestPage()
+      {
+         return new ImageBoxTest();
       }
 
       [Action("download", 0, "match{is-local=true}")]//notice that this action is only allowed for local requestors

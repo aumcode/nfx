@@ -47,7 +47,7 @@ namespace NFX.IO.FileSystem.Local
        {
        }
 
-       public LocalFileSystem(string name) : base(name)
+       public LocalFileSystem(string name, IConfigSectionNode node = null) : base(name, node)
        {
        }
       

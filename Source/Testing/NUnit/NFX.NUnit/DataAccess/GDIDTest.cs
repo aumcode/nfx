@@ -118,7 +118,7 @@ namespace NFX.NUnit.DataAccess
         var gdid = new GDID(2, 3, 57);
         var s = gdid.ToJSON();
         Console.WriteLine(s);
-        Assert.AreEqual("\"2:3458764513820540985\"", s);
+        Assert.AreEqual("\"2:3:57\"", s);
       }
 
       [TestCase]
@@ -127,7 +127,54 @@ namespace NFX.NUnit.DataAccess
         var obj = new{ id = new GDID(22, 3, 57), Name = "Tezter"};
         var s = obj.ToJSON();
         Console.WriteLine(s);
-        Assert.AreEqual("{\"id\":\"22:3458764513820540985\",\"Name\":\"Tezter\"}", s);
+        Assert.AreEqual("{\"id\":\"22:3:57\",\"Name\":\"Tezter\"}", s);
       }
+
+      [TestCase()]
+      public void GDID_TryParse()
+      {
+        GDID parsed;
+        Assert.IsTrue( GDID.TryParse("1:2:3", out parsed) );
+        Assert.AreEqual(1, parsed.Era);
+        Assert.AreEqual(2, parsed.Authority);
+        Assert.AreEqual(3, parsed.Counter);
+
+        Assert.IsTrue( GDID.TryParse("231:2:3123", out parsed) );
+        Assert.AreEqual(231, parsed.Era);
+        Assert.AreEqual(2, parsed.Authority);
+        Assert.AreEqual(3123, parsed.Counter);
+
+        Assert.IsTrue( GDID.TryParse("31 : 2:  3123", out parsed) );
+        Assert.AreEqual(31, parsed.Era);
+        Assert.AreEqual(2, parsed.Authority);
+        Assert.AreEqual(3123, parsed.Counter);
+
+        Assert.IsFalse( GDID.TryParse("-1:2:3123", out parsed) );
+        Assert.IsFalse( GDID.TryParse("1:18:3123", out parsed) );
+        Assert.IsFalse( GDID.TryParse(":18:3123", out parsed) );
+        Assert.IsFalse( GDID.TryParse("::3123", out parsed) );
+        Assert.IsFalse( GDID.TryParse("1::3", out parsed) );
+        Assert.IsFalse( GDID.TryParse("1::", out parsed) );
+        Assert.IsFalse( GDID.TryParse("1:-:-", out parsed) );
+        Assert.IsFalse( GDID.TryParse("1: : ", out parsed) );
+      }
+
+
+      [TestCase()]
+      public void GDID_RangeComparer()
+      {
+        Assert.AreEqual(-1, GDIDRangeComparer.Instance.Compare( new GDID(0, 1, 2), new GDID(1,1,2)));
+        Assert.AreEqual(+1, GDIDRangeComparer.Instance.Compare( new GDID(1, 1, 2), new GDID(0,1,2)));
+
+        Assert.AreEqual(-1, GDIDRangeComparer.Instance.Compare( new GDID(0, 1, 2), new GDID(0,1,3)));
+        Assert.AreEqual(+1, GDIDRangeComparer.Instance.Compare( new GDID(1, 1, 2), new GDID(1,1,0)));
+
+        Assert.AreEqual(0, GDIDRangeComparer.Instance.Compare( new GDID(1, 1, 2), new GDID(1,1,2)));
+
+        //notice: Authority is ignored
+        Assert.AreEqual(0, GDIDRangeComparer.Instance.Compare( new GDID(1, 13, 2), new GDID(1,8,2)));
+
+      }
+
   }
 }

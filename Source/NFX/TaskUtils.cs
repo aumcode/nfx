@@ -349,7 +349,7 @@ namespace NFX
     }
 
     /// <summary>
-    /// Returns task completed from synchronous functor
+    /// Returns task completed from a synchronous functor
     /// </summary>
     public static Task<T> AsCompletedTask<T>(this Func<T> func)
     {

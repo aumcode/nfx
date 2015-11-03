@@ -64,3 +64,11 @@ create table TBL_TYPES
 	PRIMARY KEY (GDID)
 );
 
+create table TBL_FULLGDID
+(
+	GDID        BINARY(12) not null,
+	VARGDID     VARBINARY(12) not null,
+	STRING_NAME   varchar(25) not null,
+	PRIMARY KEY (GDID)
+);
+

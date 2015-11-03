@@ -74,7 +74,7 @@ namespace NFX.DataAccess.MySQL
             where = "T1.GDID = ?CTR";
             var par = new MySqlParameter();
             par.ParameterName = "?CTR";
-            par.Value = ((GDID)key).ID;
+            par.Value = key;
 
             parameters.Add(par);
           }

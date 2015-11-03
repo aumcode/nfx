@@ -69,6 +69,9 @@
     <Compile Include="Pages\Welcome.htm.auto.cs">
       <DependentUpon>Welcome.htm</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ImageBoxTest.htm.auto.cs">
+      <DependentUpon>ImageBoxTest.htm</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -116,6 +119,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Pages\RecordTest.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pages\ImageBoxTest.htm" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Pages\SocialLogin.htm" />

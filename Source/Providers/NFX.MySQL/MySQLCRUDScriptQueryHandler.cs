@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using MySql.Data.MySqlClient;
 
@@ -120,6 +121,11 @@ namespace NFX.DataAccess.MySQL
                           return schema;
                         }
 
+            public Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
+            {
+              return TaskUtils.AsCompletedTask( () => this.GetSchema(context, query));
+            }
+
 
             public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
@@ -184,6 +190,11 @@ namespace NFX.DataAccess.MySQL
                return result;
             }
 
+            public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            {
+              return TaskUtils.AsCompletedTask( () => this.Execute(context, query, oneRow));
+            }
+
 
             public int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
             {
@@ -213,7 +224,10 @@ namespace NFX.DataAccess.MySQL
                 }//using command
             }
 
-
+            public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
+            {
+               return TaskUtils.AsCompletedTask( () => this.ExecuteWithoutFetch(context, query));
+            }
 
 
 
@@ -245,7 +259,7 @@ namespace NFX.DataAccess.MySQL
 
             /// <summary>
             /// Gets CRUD schema from MySqlReader per particular QuerySource.
-            /// If source is null then all columns form reader are copied.
+            /// If source is null then all columns from reader are copied.
             /// Note: this code was purposely made provider specific because other providers may treat some nuances differently
             /// </summary>
             public static Schema GetSchemaFromReader(string name, QuerySource source, MySqlDataReader reader)

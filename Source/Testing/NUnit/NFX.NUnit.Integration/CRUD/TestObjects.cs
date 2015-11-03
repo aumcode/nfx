@@ -125,4 +125,18 @@ namespace NFX.NUnit.Integration.CRUD
     }
 
 
+    public class FullGDID : TypedRow
+    {
+      [Field]
+      public GDID GDID{ get; set;} 
+ 
+      [Field]
+      public GDID VARGDID{ get; set;} 
+
+
+      [Field]
+      public string String_Name{ get; set;}
+    }
+
+
 }

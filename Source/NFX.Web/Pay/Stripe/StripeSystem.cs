@@ -276,7 +276,7 @@ namespace NFX.Web.Pay.Stripe
 
           dynamic obj = WebClient.GetJson(prms);
 
-          dynamic lastRefund = ((NFX.Serialization.JSON.JSONDataArray)obj.refunds.Data).First();
+          dynamic lastRefund = ((NFX.Serialization.JSON.JSONDataArray)obj.refunds.data.Data).First();
 
           var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
 

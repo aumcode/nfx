@@ -53,6 +53,23 @@ namespace NFX.Web.Pay
   };
 
   /// <summary>
+  /// Denotes processing fee types, such as: included in amount and surcharged.
+  /// </summary>
+  public enum ProcessingFeeKind
+  {
+      /// <summary>
+      /// Fees are included in amount charged from customers. 
+      /// Net amount = amount charged - fees. 
+      /// </summary>
+      IncludedInAmount,
+
+      /// <summary>
+      /// Fees are added to amount charged from customers.
+      /// </summary>
+      Surcharged
+  }
+
+  /// <summary>
   /// Represents an abstraction of financial operation performed with pay system
   /// </summary>
   [Serializable]

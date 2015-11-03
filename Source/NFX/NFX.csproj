@@ -110,6 +110,7 @@
     <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
     <Compile Include="Collections\NamedInterlocked.cs" />
     <Compile Include="CoreConsts.cs" />
+    <Compile Include="DataAccess\CRUD\CRUDOperationCallContext.cs" />
     <Compile Include="ExternalParameterAttribute.cs" />
     <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
     <Compile Include="CodeAnalysis\XML\XMLLanguage.cs" />
@@ -166,6 +167,12 @@
     <Compile Include="ExternalRandomGenerator.cs" />
     <Compile Include="Financial\Amount.cs" />
     <Compile Include="Financial\Exceptions.cs" />
+    <Compile Include="Financial\Market\CandleSample.cs" />
+    <Compile Include="Financial\Market\ITimeSeriesSample.cs" />
+    <Compile Include="Financial\Market\SamplingUtils.cs" />
+    <Compile Include="Financial\Market\SecDb\SecDBFileReader.SubTypes.cs" />
+    <Compile Include="Financial\Market\SecDb\SecDBFileReader.cs" />
+    <Compile Include="Financial\Market\SecDb\SecDBPrimitives.cs" />
     <Compile Include="Geometry\GeometryExtensions.cs" />
     <Compile Include="Geometry\LatLng.cs" />
     <Compile Include="Glue\Native\MpxBinding.cs" />
@@ -204,6 +211,7 @@
     <Compile Include="IO\FileSystem\Local\LocalFileSystemStream.cs" />
     <Compile Include="IO\FileSystem\Packaging\LocalInstallation.cs" />
     <Compile Include="IO\FileSystem\Packaging\ManifestUtils.cs" />
+    <Compile Include="IO\LEB128.cs" />
     <Compile Include="IO\Net\Gate\Exceptions.cs" />
     <Compile Include="IO\Net\Gate\Intfs.cs" />
     <Compile Include="IO\Net\Gate\NetGate.cs" />
@@ -213,6 +221,7 @@
     <Compile Include="IO\Net\Gate\Rule.cs" />
     <Compile Include="IO\Net\Gate\VarDef.cs" />
     <Compile Include="IO\NonClosingStreamWrap.cs" />
+    <Compile Include="IO\SlimFormat.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
     <Compile Include="Media\PDF\Constants.cs" />

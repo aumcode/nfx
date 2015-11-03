@@ -189,7 +189,9 @@ namespace NFX.DataAccess.Distributed
           wri.Write('"');
           wri.Write(Era);
           wri.Write(':');
-          wri.Write(ID);
+          wri.Write(Authority);
+          wri.Write(':');
+          wri.Write(Counter);
           wri.Write('"');
         }
 
@@ -204,33 +206,65 @@ namespace NFX.DataAccess.Distributed
 
         public static bool TryParse(string str, out GDID gdid)
         {
+          const int MIN_LEN = 5;// "0:0:0"
           gdid = GDID.Zero;
-          if (str.IsNullOrWhiteSpace()) return false;
+          if (str.IsNullOrWhiteSpace() || str.Length<MIN_LEN) return false;
 
-          string sera, sid;
-          var i = str.IndexOf(':');
-          if (i==0 || i==str.Length-1) return false;
-          if (i<0)
-          {
-            sera = null;
-            sid = str;
-          } 
-          else
-          {
-            sera = str.Substring(0, i);
-            sid = str.Substring(i+1);
-          }
+          string sera, sau, sctr;
+          var i1 = str.IndexOf(':', 0);
+          if (i1==0 || i1==str.Length-1) return false;
+         
+          sera = str.Substring(0, i1);
+
+          var i2 = str.IndexOf(':', i1+1);
+          if (i2<0 || i2==str.Length-1 || i2==i1+1) return false;
+
+          sau = str.Substring(i1+1, i2-i1-1);
+
+          sctr = str.Substring(i2+1); 
+
+
 
           uint era=0;
-          if (sera!=null)
-           if (!uint.TryParse(sera, out era)) return false;
+          if (!uint.TryParse(sera, out era)) return false;
 
-          ulong id;
-           if (!ulong.TryParse(sid, out id)) return false;
+          byte au=0;
+          if (!byte.TryParse(sau, out au)) return false;
 
-          gdid = new GDID(era, id);
+          ulong ctr;
+          if (!ulong.TryParse(sctr, out ctr)) return false;
+
+          if (au>AUTHORITY_MAX || ctr>COUNTER_MAX) return false;
+
+          gdid = new GDID(era, au, ctr);
           return true;
         }
 
   }
+
+
+
+  /// <summary>
+  /// Compares GDID regardless of authority. This is useful for range checking, when authorities generating GDIDs in the same
+  ///  range should be disregarded. Use GDIDRangeComparer.Instance.
+  ///  Only relative range comparison can be made. 
+  ///  The Equality returned by this comparer can not be relied upon for GDID comparison as it disregards authority.
+  ///  Equality can only be tested for range comparison.
+  /// </summary>
+  public class GDIDRangeComparer : IComparer<GDID>
+  {
+    public static readonly GDIDRangeComparer Instance = new GDIDRangeComparer();
+
+    private GDIDRangeComparer() {}
+
+
+    public int Compare(GDID x, GDID y)
+    {
+      var result = x.Era.CompareTo(y.Era);
+      if (result!=0) return result;
+      return x.Counter.CompareTo(y.Counter);//Authority is disregarded
+    }
+  }
+
+
 }

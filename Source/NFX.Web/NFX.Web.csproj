@@ -97,6 +97,8 @@
     <Compile Include="MultiPartContent.cs" />
     <Compile Include="Pay\Account.cs" />
     <Compile Include="Pay\ActualAccountData.cs" />
+    <Compile Include="Pay\ConfigBasedCurrencyMarket.cs" />
+    <Compile Include="Pay\ICurrencyMarket.cs" />
     <Compile Include="Pay\Instrumentation\Gauges.cs" />
     <Compile Include="Pay\Intfs.cs" />
     <Compile Include="Pay\Mock\MockActualAccountData.cs" />

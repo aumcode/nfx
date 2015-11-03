@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NFX.DataAccess.CRUD
 {
@@ -100,6 +101,12 @@ namespace NFX.DataAccess.CRUD
             /// </summary>
             public TransactionDisposeBehavior DisposeBehavior { get{ return m_DisposeBahavior; } } 
 
+
+            /// <summary>
+            /// Returns true when backend supports true asynchronous operations, such as the ones that do not create extra threads/empty tasks
+            /// </summary>
+            public bool SupportsTrueAsynchrony{ get{ return m_Store.SupportsTrueAsynchrony;}}
+
         #endregion
 
         #region Public
@@ -111,6 +118,12 @@ namespace NFX.DataAccess.CRUD
                    CheckOpenStatus("GetSchema");
                    return DoGetSchema(query);
                 }
+
+                public Task<Schema> GetSchemaAsync(Query query)
+                {
+                   CheckOpenStatus("GetSchema");
+                   return DoGetSchemaAsync(query);
+                }
                 
                 public List<RowsetBase> Load(params Query[] queries)
                 {
@@ -118,15 +131,33 @@ namespace NFX.DataAccess.CRUD
                     return DoLoad(false, queries);
                 }
 
+                public Task<List<RowsetBase>> LoadAsync(params Query[] queries)
+                {
+                    CheckOpenStatus("Load");
+                    return DoLoadAsync(false, queries);
+                }
+
+
                 public int ExecuteWithoutFetch(params Query[] queries)
                 {
                     CheckOpenStatus("ExecuteWithoutFetch");
                     return DoExecuteWithoutFetch(queries);
                 }
 
+                public Task<int> ExecuteWithoutFetchAsync(params Query[] queries)
+                {
+                    CheckOpenStatus("ExecuteWithoutFetch");
+                    return DoExecuteWithoutFetchAsync(queries);
+                }
+
                 public RowsetBase LoadOneRowset(Query query)
                 {
                     return Load(query).FirstOrDefault();
+                }
+
+                public Task<RowsetBase> LoadOneRowsetAsync(Query query)
+                {
+                    return LoadAsync(query).ContinueWith( antecedent => antecedent.Result.FirstOrDefault());
                 }
 
                 public Row LoadOneRow(Query query)
@@ -136,6 +167,17 @@ namespace NFX.DataAccess.CRUD
                     return null;
                 }
 
+                public Task<Row> LoadOneRowAsync(Query query)
+                {
+                    return DoLoadAsync(true, query).ContinueWith( 
+                         antecedent => 
+                         {
+                           var rset = antecedent.Result.FirstOrDefault();
+                           if (rset!=null) return rset.FirstOrDefault();
+                            return null;
+                         });
+                }
+
 
                 public int Save(params RowsetBase[] tables)
                 {
@@ -143,10 +185,22 @@ namespace NFX.DataAccess.CRUD
                     return DoSave(tables);
                 }
 
+                public Task<int> SaveAsync(params RowsetBase[] tables)
+                {
+                    CheckOpenStatus("Save");
+                    return DoSaveAsync(tables);
+                }
+
                 public int Insert(Row row)
                 {
                     CheckOpenStatus("Insert");
                     return DoInsert(row);
+                }
+
+                public Task<int> InsertAsync(Row row)
+                {
+                    CheckOpenStatus("Insert");
+                    return DoInsertAsync(row);
                 }
 
 
@@ -156,6 +210,12 @@ namespace NFX.DataAccess.CRUD
                     return DoUpsert(row);
                 }
 
+                public Task<int> UpsertAsync(Row row)
+                {
+                    CheckOpenStatus("Upsert");
+                    return DoUpsertAsync(row);
+                }
+
 
                 public int Update(Row row, IDataStoreKey key = null)
                 {
@@ -163,11 +223,23 @@ namespace NFX.DataAccess.CRUD
                     return DoUpdate(row, key);
                 }
 
+                public Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
+                {
+                    CheckOpenStatus("Update");
+                    return DoUpdateAsync(row, key);
+                }
+
 
                 public int Delete(Row row, IDataStoreKey key = null)
                 {
                     CheckOpenStatus("Delete");
                     return DoDelete(row, key);
+                }
+
+                public Task<int> DeleteAsync(Row row, IDataStoreKey key = null)
+                {
+                    CheckOpenStatus("Delete");
+                    return DoDeleteAsync(row, key);
                 }
 
 
@@ -199,20 +271,28 @@ namespace NFX.DataAccess.CRUD
             
             
             protected abstract Schema DoGetSchema(Query query);
+            protected abstract Task<Schema> DoGetSchemaAsync(Query query);
 
             protected abstract List<RowsetBase> DoLoad(bool oneRow, params Query[] queries);
+            protected abstract Task<List<RowsetBase>> DoLoadAsync(bool oneRow, params Query[] queries);
 
             protected abstract int DoExecuteWithoutFetch(params Query[] queries);
+            protected abstract Task<int> DoExecuteWithoutFetchAsync(params Query[] queries);
 
             protected abstract int  DoSave(params RowsetBase[] tables);
+            protected abstract Task<int>  DoSaveAsync(params RowsetBase[] tables);
 
             protected abstract int  DoInsert(Row row);
+            protected abstract Task<int>  DoInsertAsync(Row row);
 
             protected abstract int  DoUpsert(Row row);
+            protected abstract Task<int>  DoUpsertAsync(Row row);
 
             protected abstract int  DoUpdate(Row row, IDataStoreKey key);
+            protected abstract Task<int>  DoUpdateAsync(Row row, IDataStoreKey key);
 
             protected abstract int  DoDelete(Row row, IDataStoreKey key);
+            protected abstract Task<int>  DoDeleteAsync(Row row, IDataStoreKey key);
 
             protected abstract void  DoCommit();
 

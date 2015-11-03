@@ -59,6 +59,217 @@ WAVE.GUI = (function(){
         TREE_SELECTION_MULTI: 2,
         // } Tree
 
+        // ImageBox {   
+        // classes               
+        IBOX_DIV_FRAME: "wvIBoxDivFrame",
+        IBOX_DIV_MAINIMAGE: "wvIBoxDivMainImage",
+        IBOX_IMG_MAINIMAGE: "wvIBoxImgMainImage",
+        IBOX_DIV_THUMBSCONTAINER: "wvIBoxDivThumbsContainer",
+        IBOX_DIV_THUMBSNAVIGATION: "wvIBoxDivThumbsNavigation",
+        IBOX_DIV_THUMBSIMAGESCONTAINER: "wvIBoxDivThumbsImagesContainer",
+        IBOX_DIV_THUMB: "wvIBoxDivThumb",
+        IBOX_DIV_THUMB_CROP: "wvIBoxDivThumbCrop",
+        IBOX_DIV_THUMB_IMAGE: "wvIBoxDivThumbImage",
+
+        // default styles
+        STYLE_DIV_FRAME: "",
+        STYLE_IMG_MAINIMAGE: "position: relative;",
+        STYLE_DIV_MAINIMAGE_V: "width: 72%;" +
+                               "height: 100%;" +
+                               "margin: 0 1%;" +
+                               "overflow: hidden;",
+        STYLE_DIV_MAINIMAGE_H: "width: 100%;" +
+                               "height: 74%;" +
+                               "margin: 1% 0;" +
+                               "overflow: hidden;",
+        STYLE_DIV_THUMBSCONTAINER_V: "width: 25%;" +
+                                     "height: 100%;",
+        STYLE_DIV_THUMBSCONTAINER_H: "width: 100%;" +
+                                     "height: 25%;",
+        STYLE_DIV_THUMBSNAV_V: "width: 100%;" +
+                               "height: 5%;" +
+                               "display: none;",
+        STYLE_DIV_THUMBSNAV_H: "width: 5%;" +
+                               "height: 100%;" +
+                               "display: none;",
+        STYLE_IMG_THUMBSNAV: "display: block;" +
+                             "position: relative;",
+        STYLE_DIV_THUMBSIMAGESCONTAINER_V: "width: 100%;" +
+                                           "height: 100%;" +
+                                           "overflow: hidden;",
+        STYLE_DIV_THUMBSIMAGESCONTAINER_H: "width: 100%;" +
+                                           "height: 100%;" +
+                                           "overflow: hidden;" +
+                                           "display: inline-block;" +
+                                           "white-space: nowrap; " +
+                                           "vertical-align: top;",
+        STYLE_DIV_THUMB_V: "width: 100%;" +
+                           "margin: 3px 0;",
+        STYLE_DIV_THUMB_H: "height: 100%;" +
+                           "margin: 0 3px;" +
+                           "display: inline-block;" +
+                           "vertical-align: top;",
+        STYLE_DIV_THUMB_CROP: "overflow: hidden;" +
+                              "position:relative;",
+        STYLE_DIV_THUMB_IMAGE: "position: relative;",
+        STYLE_DISABLE_MOBILE_HANDLING: "-webkit-touch-callout: none;" +
+                                       "-webkit-user-select: none;" +
+                                       "-khtml-user-select: none;" +
+                                       "-moz-user-select: none;" +
+                                       "-ms-user-select: none;" +
+                                       "user-select: none;", 
+
+        // events
+        EVT_IMAGE_CHANGED: "image-changed",
+        
+        // constants
+        POS_LEFT: "left",
+        POS_RIGHT: "right",
+        POS_TOP: "top",
+        POS_BOTTOM: "bottom",
+
+        // default values
+        DEFAULT_THUMBS_POSITION: "left",
+        DEFAULT_IMAGE_FADEIN_TIME: 500,
+        DEFAULT_IMAGE_FADEOUT_TIME: 0, 
+        DEFAULT_THUMBS_SCROLL_DELTA: 0.5,
+        DEFAULT_ARROWS_OPACITY: 0.3,
+        DEFAULT_IMAGE:
+          "data:image/png;base64," +
+          "iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAMAAADDpiTIAAAABGdBTUEAALGPC/xhBQAAAwBQTFRFAAAAPD" +
+          "w8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL+bwigAAAQB0Uk5T////////////////////////////////" +
+          "//////////////////////////////////////////////////////////////////////////////////" +
+          "//////////////////////////////////////////////////////////////////////////////////" +
+          "//////////////////////////////////////////////////////////////////////////////////" +
+          "//////////////////////////////////////////////////////////////AFP3ByUAAAAJcEhZcwAA" +
+          "FiQAABYkAZsVxhQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNvyMY98AABAiSURBVHhe7dfreu" +
+          "M6rkXR7vd/6NqOM1NlJ76QEgAyWGv86sgSUKLm6a/P//6YNAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4B" +
+          "iHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgD" +
+          "gHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhz" +
+          "AOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4By" +
+          "BOO4D/f+A/i5IO4Pr9xQtQDoDvr12AcAB8/Q9cUSQbAJ/+C1f1qAbAd/+H63JEA+Cr3+IXNZoB8M3v8ZsY" +
+          "yQD44t/xqxbFAPjeP/G7FMEA+NqPcIcSvQD41o9xjxC5APjSz3CXDrEA+MyvcKcKrQD4xq9xrwipAPjC73" +
+          "C3BqUA+L7vcb8EoQD4uiN4QoFOAHzbMTwjQCYAvuwonupPJQC+6ziea08kAL7qDJ7sTiMAvukcnm1OIgC+" +
+          "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" +
+          "0c2+VmqfPgAAAABJRU5ErkJggg==",
+        DEFAULT_UP_NAVIGATION_IMAGE:
+          "data:image/png;base64," +
+          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJA" +
+          "AAFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIlJREFUSEu9zlsOgCAQ" +
+          "Q1EXxv63NQaTSYZ6QV7ycT6s0HKZ2bSUkmWaj8Cwh4+vPgLDLzru9FwPDFtoONLzXzCsoUGi91owJDTUov" +
+          "drMFQ00EN7CIYRFY/QPoWho8IZ2hthmFHRCu13GFLBDrqTvQK6uJPuFR904Q9x8/i4Kx5AB054HkA/zkl2" +
+          "A3fzm51wX0ZlAAAAAElFTkSuQmCC",
+        DEFAULT_DOWN_NAVIGATION_IMAGE:
+          "data:image/png;base64," +
+          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJA" +
+          "AAFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIxJREFUSEvFzkEOgCAM" +
+          "RFEOxv2vVVOTGhi/gIJh8RZMaKcp52w7JTPbdoR3nwfsOCJ6rwMcffxD2Vkd4GhgJe2rHoEGV9AedwsCLZ" +
+          "ih+wOGgRZ9oXtLGJZo4Ru6T2GoaPEI3UMwJFTQovNPMHxCRUTnWjBsocKS/u/BsIeKnf4bgeGIFeUOw1Gz" +
+          "5WaWDtsHm52ye7DmAAAAAElFTkSuQmCC",
+        DEFAULT_LEFT_NAVIGATION_IMAGE:
+          "data:image/png;base64," +
+          "iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJA" +
+          "AAFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIZJREFUSEut0EEKxEAI" +
+          "RNE5mPe/lqEWgjE/kLZm8VbtL0h+mbkWEfzwheL1QMWrgR4fD8z4aIBiweOJwoJBR1GHUaFgwlDomFixWL" +
+          "FYsVixWLFYsfgD9if85Sc6I7eBzchj4HQEB4SOCcaFggnDjqIOo4nCggGhWPD4jT0g9oDYA2IPSETkBTnK" +
+          "m53Tz5HlAAAAAElFTkSuQmCC",
+        DEFAULT_RIGHT_NAVIGATION_IMAGE:
+         "data:image/png;base64," +
+         "iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJAA" +
+         "AFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAJVJREFUSEvFz0sOgCAQBF" +
+         "EOxv2vpbYJBEo+w8xCk9ro9EtMOefreZK3F4ggFfAiHeBBPsApMgQUD2dNAcXjUUtAccC2gOKozQQoDktmQ" +
+         "HGsjgAVBlQYUGFAhQH1LxD6BY3dQBm7gHZ8DHCszACHJRPAUdsW4IAtAR6PmgI8nDUEeLTqA/BgVwfwo6UK" +
+         "8IO1F+BLe1e6AdOmm5054q0eAAAAAElFTkSuQmCC",
+        
+        // json data parameter names
+        PARAM_THUMBS_POSITION: "thumbsPosition",
+        PARAM_DEF_IMG_SRC: "defaultImageSrc",
+        PARAM_DEF_THUMB_SRC: "defaultThumbSrc",
+        PARAM_THUMBS: "thumbs",
+        PARAM_BIG_IMG_SRC: "bigSrc",
+        PARAM_THUMB_IMG_SRC: "thumbSrc",
+        PARAM_HEIGHT: "h",
+        PARAM_WIDTH: "w",
+        PARAM_LEFT: "l",
+        PARAM_TOP: "t",  
+        PARAM_THUMB_IMAGE_HEIGHT: "thumbImageHeight",
+        PARAM_THUMB_IMAGE_WIDTH: "thumbImageWidth",
+        PARAM_IMAGES_LIST: "images",
+        PARAM_THUMB_TITLE: "title", 
+        PARAM_THUMBS_SCROLL_DELTA: "thumbsScrollDelta",
+        //}               
+
         //ObjectInspector {
         CLS_OBJECTINSPECTOR_EDITOR: 'wvObjectInspectorEditor'
         // { ObjectInspector
@@ -1579,6 +1790,682 @@ WAVE.GUI = (function(){
 
       build(fTree.root(), obj, "");
     }//ObjectInspector
+
+
+    // ImageBox {
+    published.IBox = function (container, init) {
+    
+      // fields
+    
+      if (WAVE.isStringType(typeof (container)))
+        container = WAVE.id(container);
+    
+      if (!WAVE.isObject(init))
+        init = {};
+    
+      var ibox = this;
+      WAVE.extend(ibox, WAVE.EventManager);
+    
+      var seed = "ibox_"+WAVE.genRndKey(4);
+      var ids = {
+        divFrameId: "divFrame_"+seed,
+        divThumbsContainerId: "divThumbsContainer_"+seed,
+        divNavBackId: "divNavBack_" + seed,
+        imgNavBackId: "imgNavBack_" + seed,
+        divThumbsImagesContainerId: "divThumbsImagesContainer_" + seed,
+        divNavForthId: "divNavForth_" + seed,
+        imgNavForthId: "imgNavForth_" + seed,
+        divMainImageId: "divMainImage_" + seed,
+        imgMainImageId: "imgMainImage_" + seed
+      };
+      var isMainImageMouseDown = false;
+      var isNavAnimationInProgress = false;
+      var navTouchStartPosition = null;
+      var scrollInfo;
+      var thumbsOrientation;
+      var thumbsScrollDelta;
+      var thumbsData;
+      var imagesNaturalSizeCache = {};
+
+      // public
+    
+      this.visible = function (val) {
+        var vis = WAVE.id(ids.divFrameId).style.visibility;
+        if (vis === "") vis = "visible";
+        var isv = vis === "visible";
+
+        if (typeof(val)===WAVE.UNDEFINED || val===isv) return val;
+
+        WAVE.id(ids.divFrameId).style.visibility = val ? "visible" : "hidden";
+        ibox.eventInvoke(published.EVT_INTERACTION_CHANGE, "visible", val);
+        return val;
+      }
+
+      // private
+      function getPos(e) {
+        return { 
+                 x: (isNaN(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX),
+                 y: (isNaN(e.pageY) ? e.originalEvent.touches[0].pageY : e.pageY)
+               }
+      }
+
+      function isVerticalOrientation() {
+        return thumbsOrientation === published.POS_LEFT  || 
+               thumbsOrientation === published.POS_RIGHT;
+      }
+
+      function getNaturalImageSize(imageElement) {
+        var size = imagesNaturalSizeCache[imageElement.src];
+        if (!size) {
+          var height = imageElement.naturalHeight;
+          var width = imageElement.naturalWidth;
+          if (height == 0 || width == 0) {
+            // get real image's size via temporary Image element.
+            // imageElement.natural* is not enough for Safari at startup
+            var tmp = new Image();
+            tmp.src = imageElement.src;
+            width = tmp.width;
+            height = tmp.height;
+          }
+          size = { width: width, height: height };
+          imagesNaturalSizeCache[imageElement.src] = size;
+        }
+
+        return size;
+      }
+
+      function fitImageToContainer(imageElementId) {
+
+        var imageElement = WAVE.id(imageElementId);
+        var size = getNaturalImageSize(imageElement);
+        var iw = size.width;
+        var ih = size.height;
+        var w = imageElement.parentElement.clientWidth;
+        var h = imageElement.parentElement.clientHeight;
+
+        if ((w * ih) / (iw * h) > 1) {
+          var width = h * iw / ih;
+          imageElement.style.width = width + "px";
+          imageElement.style.height = h + "px";
+          imageElement.style.left = (w - width) / 2 + "px";
+          imageElement.style.top = "0";
+        } else {
+          var height = w * ih / iw;
+          imageElement.style.width = w + "px";
+          imageElement.style.height = height + "px";
+          imageElement.style.left = "0";
+          imageElement.style.top = (h - height) / 2 + "px";
+        }
+      }
+
+      function fitThumbToContainer(thumb) {
+        
+        var divThumb = WAVE.id(thumb.id);
+        var divCrop = WAVE.id(thumb.cropId);
+        var imgImage = WAVE.id(thumb.imageId);
+        
+        if (isVerticalOrientation()) {
+          divThumb.style.height = divThumb.clientWidth + "px";
+        } else {
+           divThumb.style.width = divThumb.clientHeight + "px";
+        }
+
+        var size = getNaturalImageSize(imgImage);
+        var naturalWidth = size.width;
+        var naturalHeight = size.height;
+
+        var imageHeight = (typeof (thumb.imageHeight) == WAVE.UNDEFINED) || isNaN(thumb.imageHeight) ? naturalHeight : thumb.imageHeight;
+        var imageWidth = (typeof (thumb.imageWidth) == WAVE.UNDEFINED) || isNaN(thumb.imageWidth) ? naturalWidth : thumb.imageWidth;
+        var imageLeft = (typeof (thumb.imageLeft) == WAVE.UNDEFINED) || isNaN(thumb.imageLeft) ? 0 : thumb.imageLeft; 
+        var imageTop = (typeof (thumb.imageTop) == WAVE.UNDEFINED) || isNaN(thumb.imageTop) ? 0 : thumb.imageTop; 
+
+        var delta = Math.min(divThumb.clientHeight / imageHeight, divThumb.clientWidth / imageWidth);
+
+        divCrop.style.height = (imageHeight * delta) + "px";
+        divCrop.style.width = (imageWidth * delta) + "px";
+        divCrop.style.top = (divThumb.clientHeight - imageHeight * delta)/2 + "px";
+        divCrop.style.left = (divThumb.clientWidth - imageWidth * delta)/2 + "px";
+        imgImage.style.height = (imgImage.naturalHeight * delta) + "px";
+        imgImage.style.width = (imgImage.naturalWidth * delta) + "px";
+        imgImage.style.left = (imageLeft * delta) + "px";
+        imgImage.style.top = (imageTop * delta) + "px";
+      }
+      
+      function loadMainImage(imageSrc) {
+        
+        var imageElement = WAVE.id(ids.imgMainImageId);
+        if (imageSrc === imageElement.src)
+          return;
+
+        var downloadingImage = new Image();
+        downloadingImage.onload = function () {
+          var src = this.src;
+          $(imageElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
+            imageElement.src = src;
+            fitImageToContainer(ids.imgMainImageId);
+          }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME, function () {
+              ibox.eventInvoke(published.EVT_IMAGE_CHANGED, imageSrc);
+          });
+        };
+        downloadingImage.onerror = function () {
+          imageElement.src = published.DEFAULT_IMAGE;
+          fitImageToContainer(ids.imgMainImageId);
+        };
+        downloadingImage.src = imageSrc;
+      } 
+    
+      function areAllThumbsLoaded() {
+        for (var i = 0; i < thumbsData.length; i++) {
+          if (!thumbsData[i].imageLoaded)
+             return false;
+        }
+        return true;
+      }
+    
+      function areThumbsOverflowed() {
+        var thumbsImagesContainer = WAVE.id(ids.divThumbsImagesContainerId); 
+        return thumbsImagesContainer.scrollHeight > thumbsImagesContainer.clientHeight || 
+               thumbsImagesContainer.scrollWidth > thumbsImagesContainer.clientWidth;
+      } 
+
+      function alignThumbContainer(){
+        if (thumbsData.length < 1)
+          return;
+
+        var first = WAVE.id(thumbsData[0].id);
+        var thumbsContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        var parent = thumbsContainer.parentElement;
+        var thumbsFullWidth = 0;
+        var thumbsFullHeight = 0;
+        for (var i = 0; i < thumbsData.length; i++) {
+          var thumb = WAVE.id(thumbsData[i].id);
+          thumbsFullWidth += thumb.clientWidth;
+          thumbsFullHeight += thumb.clientHeight;
+        }
+
+        if (isVerticalOrientation())
+          first.style.marginTop = (parent.clientHeight - thumbsFullHeight)/2 + "px";
+        else
+          first.style.marginLeft = (parent.clientWidth - thumbsFullWidth)/2 + "px";
+      }
+    
+      function showNavigation() {
+        if (thumbsData.length < 1)
+          return;
+              
+        var first = WAVE.id(thumbsData[0].id);
+        first.style.marginTop = "";
+        first.style.marginLeft = "";
+
+        var divThumbsImagesContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        var divNavBack = WAVE.id(ids.divNavBackId);
+        var divNavForth = WAVE.id(ids.divNavForthId);
+
+        if (isVerticalOrientation()) {
+          divThumbsImagesContainer.style.height = "90%";
+          divNavBack.style.height = "5%";
+          divNavBack.style.width = "100%";
+          divNavBack.style.display = "";
+          divNavForth.style.height = "5%";
+          divNavForth.style.width = "100%";
+          divNavForth.style.display = "";
+        } else {
+          divThumbsImagesContainer.style.width = "90%";
+          divNavBack.style.height = "100%";
+          divNavBack.style.width = "5%";
+          divNavBack.style.display = "inline-block";
+          divNavForth.style.height = "100%";
+          divNavForth.style.width = "5%";
+          divNavForth.style.display = "inline-block";
+        }
+      }
+
+      function hideNavigation() {
+        WAVE.id(ids.divNavBackId).style.display = "none";
+        WAVE.id(ids.divNavForthId).style.display = "none";
+      }
+      
+      function refreshNavigation() {
+        var needNavigation = areThumbsOverflowed();
+        if (needNavigation) {
+          showNavigation();
+          fitImageToContainer(ids.imgNavBackId);
+          fitImageToContainer(ids.imgNavForthId);
+        } else { 
+          hideNavigation();
+          alignThumbContainer();
+        } 
+      }
+ 
+      function initializeScrollInfo() {
+        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        
+        var scrollBackFactory; 
+        var scrollForthFactory; 
+        var canScrollBack;
+        var canScrollForth;
+        if (isVerticalOrientation()) {
+          scrollBackFactory = function() { return { scrollTop: scrollContainer.scrollTop - thumbsScrollDelta * scrollContainer.clientHeight } };
+          scrollForthFactory = function() { return { scrollTop: scrollContainer.scrollTop + thumbsScrollDelta * scrollContainer.clientHeight } };
+          canScrollBack = function() { return scrollContainer.scrollTop > 0; };
+          canScrollForth = function() { return scrollContainer.scrollTop + scrollContainer.clientHeight < scrollContainer.scrollHeight - 1; };
+        } else {
+          scrollBackFactory = function() { return { scrollLeft: scrollContainer.scrollLeft - thumbsScrollDelta * scrollContainer.clientWidth } };
+          scrollForthFactory = function() { return { scrollLeft: scrollContainer.scrollLeft + thumbsScrollDelta * scrollContainer.clientWidth } };
+          canScrollBack = function() { return scrollContainer.scrollLeft > 0; };
+          canScrollForth = function() { return scrollContainer.scrollLeft + scrollContainer.clientWidth < scrollContainer.scrollWidth - 1; };
+        }
+
+        scrollInfo = { scrollBackFactory: scrollBackFactory, 
+                       scrollForthFactory: scrollForthFactory, 
+                       canScrollBack: canScrollBack, 
+                       canScrollForth: canScrollForth };
+      }
+
+      function refreshScrolling() {
+        var divNavBack = WAVE.id(ids.divNavBackId);
+        var divNavForth = WAVE.id(ids.divNavForthId);
+        var navBackOpacity = scrollInfo.canScrollBack() ? 1 : published.DEFAULT_ARROWS_OPACITY;
+        var navForthOpacity =  scrollInfo.canScrollForth() ? 1 : published.DEFAULT_ARROWS_OPACITY;
+        divNavBack.style.opacity = navBackOpacity;
+        divNavForth.style.opacity = navForthOpacity;
+      }
+
+      function initializeScrolling() { 
+        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        var divNavBack = WAVE.id(ids.divNavBackId);
+        var divNavForth = WAVE.id(ids.divNavForthId);
+
+        $(divNavBack).on("click touchend", function () {
+          if (isNavAnimationInProgress) return;
+          isNavAnimationInProgress = true;
+          $(scrollContainer).animate(scrollInfo.scrollBackFactory(), 
+                                  function() {
+                                    refreshScrolling();
+                                    isNavAnimationInProgress = false;
+                                  });
+        });
+
+        $(divNavForth).on("click touchend", function () {
+          if (isNavAnimationInProgress) return;
+          isNavAnimationInProgress = true;
+          $(scrollContainer).animate(scrollInfo.scrollForthFactory(), 
+                                  function() {
+                                    refreshScrolling();
+                                    isNavAnimationInProgress = false;
+                                  });
+        });
+      }
+      
+      function refreshMarkup() {
+        
+        // refresh main image
+        fitImageToContainer(ids.imgMainImageId);
+        
+        // refresh thumb images
+        for (var i = 0; i < thumbsData.length; i++) {
+          fitThumbToContainer(thumbsData[i]);
+        }
+        
+        // refresh scrollers
+        refreshNavigation();  
+      }
+
+      function onThumbImageLoaded(thumb, thumbImageSrc) {
+        thumb.imageLoaded = true;
+        var thumbElement = WAVE.id(thumb.imageId);
+        thumbElement.src = thumbImageSrc;
+        fitThumbToContainer(thumb);
+        if (areAllThumbsLoaded())
+          refreshMarkup();
+        else
+          refreshNavigation();
+      }
+       
+      function loadThumbImage(thumb) {
+        
+        var thumbElement = WAVE.id(thumb.imageId);
+        if (thumb.thumbImageSrc === thumbElement.src)
+          return;
+
+        var downloadingImage = new Image();
+        downloadingImage.onload = function () {
+          var src = this.src;
+          $(thumbElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
+            onThumbImageLoaded(thumb, src);
+          }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME);
+        };
+        downloadingImage.onerror = function () {
+          onThumbImageLoaded(thumb, published.DEFAULT_IMAGE);
+        };
+        downloadingImage.src = thumb.thumbImageSrc;
+      }
+
+      function thumbClickFactory(imageSrc) {
+        return function () { loadMainImage(imageSrc); };
+      }
+      
+      function calculateImageZoomOffsets(ih, iw, h, w, x, y) {
+        var delta, X, Y;
+        var aspect = iw * h / (ih * w);
+        if (aspect > 1) {
+          delta = w * ih / iw;
+          y = Math.min(Math.max(y, (h - delta) / 2), (h + delta) / 2);
+          X = iw * x / w;
+          Y = (y - (h - delta) / 2) * iw / w;
+        } else {
+          delta = h * iw / ih;
+          x = Math.min(Math.max(x, (w - delta) / 2), (w + delta) / 2);
+          X = (x - (w - delta) / 2) * ih / h;
+          Y = ih * y / h;
+        }
+        var left = iw > w ? Math.min(Math.max(X - w / 2, 0), iw - w) : (iw - w) / 2;
+        var top = ih > h ? Math.min(Math.max(Y - h / 2, 0), ih - h) : (ih - h) / 2;
+        
+        return { left: left, top: top };
+      }
+    
+      function adjustMainImage(e) {
+        var img = WAVE.id(ids.imgMainImageId);
+        var div = WAVE.id(ids.divMainImageId);
+        var size = getNaturalImageSize(img);
+        var iw = size.width;
+        var ih = size.height;
+        var w = div.clientWidth;
+        var h = div.clientHeight;
+    
+        if (iw <= w && ih <= h)
+          return false;
+
+        var pos = getPos(e);
+        var ex = pos.x - div.offsetLeft;
+        var ey = pos.y - div.offsetTop;
+        var offset = calculateImageZoomOffsets(ih, iw, h, w, ex, ey);
+        img.style.width = "";
+        img.style.height = "";
+        img.style.left = (-offset.left) + "px";
+        img.style.top = (-offset.top) + "px";
+
+        return true;
+      }
+
+      function cancelBubbleAndDefault(e) {
+        if (e.stopPropagation) e.stopPropagation();
+        if (e.cancelBubble) e.cancelBubble = true;
+        if (e.preventDefault) e.preventDefault();
+        e.returnValue = false;
+        return false;
+      }
+
+      function divMainImageMouseDown(e) {
+        if (!adjustMainImage(e))
+          return cancelBubbleAndDefault(e);
+        isMainImageMouseDown = true;
+        return cancelBubbleAndDefault(e);
+      }
+    
+      function divMainImageMouseMove(e) {
+        if (isMainImageMouseDown) {
+          adjustMainImage(e);
+        }
+        return cancelBubbleAndDefault(e);
+      }
+    
+      function onMouseUp(e) {
+        // if thumb navigation in progress
+        if (navTouchStartPosition != null) {
+          refreshNavigation();
+          navTouchStartPosition = null;
+        }
+
+        // if main image zooming finished 
+        if (isMainImageMouseDown) {
+          fitImageToContainer(ids.imgMainImageId);
+          isMainImageMouseDown = false;
+        } 
+
+        return cancelBubbleAndDefault(e);
+      }
+    
+      function divThumbsContainerMouseDown(e) {
+        navTouchStartPosition = getPos(e);
+        return cancelBubbleAndDefault(e);
+      }
+    
+      function divThumbsContainerMouseMove(e) {
+        if (navTouchStartPosition != null) {
+          var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+          var delta;
+          var pos = getPos(e);
+          if (isVerticalOrientation()) {
+            delta = pos.y - navTouchStartPosition.y;
+            scrollContainer.scrollTop += - delta;
+          } else {
+            delta = pos.x - navTouchStartPosition.x;
+            scrollContainer.scrollLeft += - delta;
+          }
+          navTouchStartPosition = pos;
+          refreshScrolling();
+        }
+        return cancelBubbleAndDefault(e);
+      }
+
+      // parse init json
+      
+      var imagesList = init[published.PARAM_IMAGES_LIST];
+      var defaultImageSrcKey = init[published.PARAM_DEF_IMG_SRC];
+      var defaultImageSrc = (typeof (defaultImageSrcKey) == WAVE.UNDEFINED) ? 
+                            published.DEFAULT_IMAGE :
+                            WAVE.strDefault(imagesList[defaultImageSrcKey], published.DEFAULT_IMAGE);
+      var defaultThumbSrcKey = init[published.PARAM_DEF_THUMB_SRC];
+      var defaultThumbSrc = (typeof (defaultThumbSrcKey) == WAVE.UNDEFINED) ? 
+                            published.DEFAULT_IMAGE :
+                            WAVE.strDefault(imagesList[defaultThumbSrcKey], published.DEFAULT_IMAGE);
+      thumbsData = init[published.PARAM_THUMBS];
+      thumbsScrollDelta = WAVE.strDefault(init[published.PARAM_THUMBS_SCROLL_DELTA], published.DEFAULT_THUMBS_SCROLL_DELTA);
+      thumbsOrientation = WAVE.strDefault(init[published.PARAM_THUMBS_POSITION], published.DEFAULT_THUMBS_POSITION);
+    
+      // UI initialization
+
+      var imgMainImage = document.createElement("img");
+      imgMainImage.id = ids.imgMainImageId;
+      imgMainImage.className = published.IBOX_IMG_MAINIMAGE;
+      imgMainImage.src = published.DEFAULT_IMAGE;
+      imgMainImage.style.cssText = published.STYLE_IMG_MAINIMAGE + published.STYLE_DISABLE_MOBILE_HANDLING;
+      imgMainImage.ondragstart = function() { return false; };
+
+      var divThumbsImagesContainer = document.createElement("div");
+      divThumbsImagesContainer.id = ids.divThumbsImagesContainerId;
+      divThumbsImagesContainer.className = published.IBOX_DIV_THUMBSIMAGESCONTAINER;
+    
+      if (typeof (thumbsData) != WAVE.UNDEFINED) {
+        for (var i = 0; i < thumbsData.length; ++i) {
+          
+          var thumb = thumbsData[i];
+    
+          var id = "divThumbId_ibox_" + i + "_" + WAVE.genRndKey(4);
+          var cropId = "divThumbCropId_ibox_" + i + "_" + WAVE.genRndKey(4);
+          var imageId = "imgThumbImageId_ibox_" + i + "_" + WAVE.genRndKey(4);
+          var title = WAVE.strDefault(thumb[published.PARAM_THUMB_TITLE], "");
+          var bigImageSrcKey = thumb[published.PARAM_BIG_IMG_SRC];
+          var bigImageSrc = (typeof (bigImageSrcKey) == WAVE.UNDEFINED) ? 
+                            published.DEFAULT_IMAGE :
+                            WAVE.strDefault(imagesList[bigImageSrcKey], defaultImageSrc);
+          var thumbImageSrcKey = thumb[published.PARAM_THUMB_IMG_SRC];
+          var thumbImageSrc = (typeof (thumbImageSrcKey) == WAVE.UNDEFINED) ? 
+                              published.DEFAULT_IMAGE :
+                              WAVE.strDefault(imagesList[thumbImageSrcKey], defaultThumbSrc);
+          
+          if (thumbImageSrc !== published.DEFAULT_IMAGE && thumbImageSrc !== defaultThumbSrc) {
+            thumb.imageHeight = parseFloat(thumb[published.PARAM_HEIGHT]);
+            thumb.imageWidth = parseFloat(thumb[published.PARAM_WIDTH]);
+            thumb.imageLeft = parseFloat(thumb[published.PARAM_LEFT]);
+            thumb.imageTop = parseFloat(thumb[published.PARAM_TOP]);
+          }
+          
+          thumb.imageLoaded = false;
+          thumb.bigImageSrc = bigImageSrc;
+          thumb.thumbImageSrc = thumbImageSrc;
+          thumb.id = id;
+          thumb.cropId = cropId;
+          thumb.imageId = imageId;
+          thumb.title = title;
+
+          // thumbnails UI templatization
+
+          var divThumbStyle;
+          if (isVerticalOrientation()) {
+            divThumbStyle = published.STYLE_DIV_THUMB_V;
+          } else {
+            divThumbStyle = published.STYLE_DIV_THUMB_H;
+          }
+
+          var divThumbTemplate = 
+                "<div id='@divThumbId@' class='@divThumbClass@' style='@divThumbStyle@'>" +
+                  "<div id='@divThumbCropId@' class='@divThumbCropClass@' style='@divThumbCropStyle@'>" +
+                    "<img id='@divThumbImageId@' " +
+                         "class='@divThumbImageClass@' " +
+                         "style='@divThumbImageStyle@' " +
+                         "src='@initialSrc@' " +
+                         "ondragstart='return false;'>" +
+                  "</div>" +
+                "</div>";
+          divThumbsImagesContainer.innerHTML += WAVE.strHTMLTemplate(divThumbTemplate,
+                {           
+                  divThumbId: id,
+                  divThumbClass: published.IBOX_DIV_THUMB,
+                  divThumbStyle: divThumbStyle,  
+                  divThumbCropId: cropId,
+                  divThumbCropClass: published.IBOX_DIV_THUMB_CROP,
+                  divThumbCropStyle: published.STYLE_DIV_THUMB_CROP,
+                  divThumbImageId: imageId,
+                  initialSrc: published.DEFAULT_IMAGE,
+                  divThumbImageClass: published.IBOX_DIV_THUMB_IMAGE,
+                  divThumbImageStyle: published.STYLE_DIV_THUMB_IMAGE + published.STYLE_DISABLE_MOBILE_HANDLING
+                });
+        }
+      };
+    
+      // main UI templatization 
+
+      var imageFloat;
+      var divThumbsContainerStyle;
+      var divNavStyle;
+      var divMainImageStyle;
+      var imgNavBackSrc;
+      var imgNavForthSrc;
+
+      if (isVerticalOrientation()) {
+        divThumbsImagesContainer.style.cssText = published.STYLE_DIV_THUMBSIMAGESCONTAINER_V;
+        divThumbsContainerStyle = published.STYLE_DIV_THUMBSCONTAINER_V;
+        divNavStyle = published.STYLE_DIV_THUMBSNAV_V;
+        divMainImageStyle = published.STYLE_DIV_MAINIMAGE_V;
+        imgNavBackSrc = published.DEFAULT_UP_NAVIGATION_IMAGE;
+        imgNavForthSrc = published.DEFAULT_DOWN_NAVIGATION_IMAGE; 
+        imageFloat = thumbsOrientation === published.POS_LEFT ? "right" : "left";
+      } else {
+        divThumbsImagesContainer.style.cssText = published.STYLE_DIV_THUMBSIMAGESCONTAINER_H;
+        divThumbsContainerStyle = published.STYLE_DIV_THUMBSCONTAINER_H;
+        divNavStyle = published.STYLE_DIV_THUMBSNAV_H;
+        divMainImageStyle = published.STYLE_DIV_MAINIMAGE_H;
+        imgNavBackSrc = published.DEFAULT_LEFT_NAVIGATION_IMAGE;
+        imgNavForthSrc = published.DEFAULT_RIGHT_NAVIGATION_IMAGE;
+        imageFloat = "";
+      }
+
+      var imageBlockTemplate = 
+        "<div id='@divMainImageId@' class='@divMainImageClass@' style='@divMainImageStyle@ float: @imageFloat@'>" +
+            imgMainImage.outerHTML +
+        "</div>";
+      var thumbsContainerBlockTemplate =
+        "<div id='@divThumbsContainerId@' class='@divThumbsContainerClass@' style='@divThumbsContainerStyle@'>" +
+          "<div id='@divNavBackId@' class='@divNavBackClass@' style='@divNavStyle@ opacity: @defaultOpacity@'>" +
+            "<img id='@imgNavBackId@' style='@imgNavBackStyle@' src='@imgNavBackSrc@'>" +
+          "</div>" +
+          divThumbsImagesContainer.outerHTML +
+          "<div id='@divNavForthId@' class='@divNavForthClass@' style='@divNavStyle@'>" +
+            "<img id='@imgNavForthId@' style='@imgNavForthStyle@' src='@imgNavForthSrc@'>" +
+          "</div>" +
+        "</div>";
+
+      var divFrameTemplate;
+      if (isVerticalOrientation() || thumbsOrientation === published.POS_BOTTOM) {
+        divFrameTemplate =
+          "<div id='@divFrameId@' class='@divFrameClass@' style='@divFrameStyle@'>" +
+            imageBlockTemplate +
+            thumbsContainerBlockTemplate +
+          "</div>";
+      } else {
+        divFrameTemplate =
+          "<div id='@divFrameId@' class='@divFrameClass@' style='@divFrameStyle@'>" +
+            thumbsContainerBlockTemplate +
+            imageBlockTemplate +
+          "</div>";
+      }
+
+      container.innerHTML = WAVE.strHTMLTemplate(divFrameTemplate,
+            {
+              divFrameId: ids.divFrameId,
+              divFrameClass: published.IBOX_DIV_FRAME,
+              divFrameStyle: published.STYLE_DIV_FRAME,
+                        
+              divMainImageId: ids.divMainImageId,
+              divMainImageClass: published.IBOX_DIV_MAINIMAGE,
+              divMainImageStyle: divMainImageStyle,
+              imageFloat: imageFloat,
+
+              divThumbsContainerId: ids.divThumbsContainerId,
+              divThumbsContainerClass: published.IBOX_DIV_THUMBSCONTAINER,
+              divThumbsContainerStyle: divThumbsContainerStyle,
+              
+              divNavBackId: ids.divNavBackId,
+              defaultOpacity: published.DEFAULT_ARROWS_OPACITY,
+              divNavBackClass: published.IBOX_DIV_THUMBSNAVIGATION,
+              imgNavBackId: ids.imgNavBackId,
+              imgNavBackStyle: published.STYLE_IMG_THUMBSNAV,
+              imgNavBackSrc: imgNavBackSrc,
+              divNavStyle: divNavStyle,
+              
+              divNavForthId: ids.divNavForthId,
+              divNavForthClass: published.IBOX_DIV_THUMBSNAVIGATION,
+              imgNavForthId: ids.imgNavForthId,
+              imgNavForthStyle: published.STYLE_IMG_THUMBSNAV,
+              imgNavForthSrc: imgNavForthSrc
+            });
+    
+      // initialize scrolling data context
+      initializeScrollInfo();
+      
+      // apply handlers
+      var divMainImage = WAVE.id(ids.divMainImageId);
+      var divThumbsContainer = WAVE.id(ids.divThumbsContainerId);
+      $(divMainImage).on("mousedown touchstart", divMainImageMouseDown);
+      $(divMainImage).on("mousemove touchmove", divMainImageMouseMove);   
+      $(divThumbsContainer).on("mousedown touchstart", divThumbsContainerMouseDown);
+      $(divThumbsContainer).on("mousemove touchmove", divThumbsContainerMouseMove);
+      initializeScrolling();
+      
+      // load the 1st image
+      fitImageToContainer(ids.imgMainImageId);
+      if (thumbsData.length > 0) {
+        thumbClickFactory(thumbsData[0].bigImageSrc)();
+      }
+      
+      // load thumb images
+      for (var i = 0; i < thumbsData.length; i++) {
+        var thumb = thumbsData[i];
+        fitThumbToContainer(thumb);
+        var thumbImage = WAVE.id(thumb.imageId);
+        $(thumbImage).on("click touchend", thumbClickFactory(thumb.bigImageSrc));
+        loadThumbImage(thumb);
+      }
+
+      // global events
+      
+      $(window).resize(function() { refreshMarkup(); });
+      
+      $(document).on("mouseup touchend", onMouseUp);
+    };
 
     return published;
 }());//WAVE.GUI

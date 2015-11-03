@@ -38,9 +38,15 @@ namespace NFX.Web.Pay
     #region CONSTS
 
       public const string CONFIG_PAYMENT_PROCESSING_SECTION = "payment-processing";
+      public const string CONFIG_CURRENCY_MARKET_SECTION = "currency-market";
+      public const string CONFIG_CURRENCIES_SECTION = "currencies";
       public const string CONFIG_PAY_SYSTEM_HOST_SECTION = "pay-system-host";
       public const string CONFIG_PAY_SYSTEM_SECTION = "pay-system";
       public const string CONFIG_AUTO_START_ATTR = "auto-start";
+      public const string CONFIG_FEE_FLAT_ATTR = "fee-flat";
+      public const string CONFIG_FEE_PCT_ATTR = "fee-pct";
+      public const string CONFIG_FEE_TRAN_TYPE_ATTR = "tran-type";
+
 
       private static readonly TimeSpan INSTR_INTERVAL = TimeSpan.FromMilliseconds(4015);
 
@@ -157,6 +163,12 @@ namespace NFX.Web.Pay
         public void ApplicationFinishAfterCleanup(IApplication application) {}
       }
 
+      private struct Fee
+      {
+        public decimal Flat;
+        public decimal Pct;
+      }
+
     #endregion
 
     #region ctor
@@ -214,9 +226,21 @@ namespace NFX.Web.Pay
       private long m_stat_TransferCount, m_stat_TransferErrorCount;
       private ConcurrentDictionary<string, decimal> m_stat_TransferAmounts = new ConcurrentDictionary<string,decimal>();
 
+      private Dictionary<string, Fee> m_Fees = new Dictionary<string, Fee>(StringComparer.OrdinalIgnoreCase);
+
     #endregion
 
     #region Public properties
+
+      public virtual ProcessingFeeKind FeeKind 
+      { 
+        get { return ProcessingFeeKind.IncludedInAmount; } 
+      }
+
+      public virtual IEnumerable<string> SupportedCurrencies 
+      { 
+        get { return CurrenciesCfg.Children.Select(c => c.Name).Distinct().ToList(); }
+      }
 
       /// <summary>
       /// Implements IInstrumentable
@@ -254,6 +278,8 @@ namespace NFX.Web.Pay
         }
       }
 
+      [Config(CONFIG_CURRENCIES_SECTION)]
+      public IConfigSectionNode CurrenciesCfg { get; set; }
    
     #endregion
 
@@ -279,6 +305,34 @@ namespace NFX.Web.Pay
 
       public abstract Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null);
 
+      public virtual bool IsTransactionTypeSupported(TransactionType type, string currencyISO = null)
+      {
+        // 1. Get currencies.
+        var currencies = currencyISO.IsNotNullOrEmpty() ? 
+          CurrenciesCfg.Children.Where(c => c.IsSameName(currencyISO)) :
+          CurrenciesCfg.Children;
+
+        // 2. Get all tran-type attributes.
+        var types = currencies.Select(c => c.AttrByName(CONFIG_FEE_TRAN_TYPE_ATTR));
+
+        // 3. Check explicit tran-types first then implicit ones.
+        return 
+          types.Any(t => t.Exists && t.Value.EqualsOrdIgnoreCase(type.ToString())) ||
+          types.Any(t => !t.Exists);
+      }
+
+      public virtual Amount GetTransactionFee(string currencyISO, TransactionType type)
+      {
+        var fee = getCurrencyFee(currencyISO, type);
+        return new Amount(currencyISO, fee.Flat);
+      }
+
+      public virtual int GetTransactionPct(string currencyISO, TransactionType type)
+      {
+        var fee = getCurrencyFee(currencyISO, type);
+        return (fee.Pct * 10000).AsInt();        
+      }    
+      
     #endregion
 
     #region IWebClientCaller
@@ -325,6 +379,8 @@ namespace NFX.Web.Pay
         }
 
         ConfigAttribute.Apply(this, node);
+
+        configureCurrencies(node);        
       }
 
       protected override void DoStart()
@@ -394,6 +450,26 @@ namespace NFX.Web.Pay
         }
 
       #endregion
+
+      private void configureCurrencies(IConfigSectionNode paySection)
+      {
+        m_Fees = new Dictionary<string, Fee>();
+
+        var node = paySection[CONFIG_CURRENCIES_SECTION];
+
+        foreach (var currency in node.Children)
+        {
+          var flat = currency.AttrByName(CONFIG_FEE_FLAT_ATTR);
+          var pct  = currency.AttrByName(CONFIG_FEE_PCT_ATTR);
+          var type = currency.AttrByName(CONFIG_FEE_TRAN_TYPE_ATTR);
+
+          var fee = new Fee();
+          fee.Flat = flat.ValueAsDecimal();
+          fee.Pct = pct.ValueAsDecimal();
+
+          m_Fees[currency.Name + type.Value] = fee;
+        }
+      }
 
     #endregion
 
@@ -515,6 +591,23 @@ namespace NFX.Web.Pay
                       m_stat_TransferAmounts.Clear();
                     }
 
+        /// <summary>
+        /// Returns fee for specified currency and transaction type.
+        /// </summary>
+        private Fee getCurrencyFee(string currencyISO, TransactionType type)
+        {
+          // 1. Look for specific transaction type.
+          var key = currencyISO + type;
+          if (m_Fees.ContainsKey(key))
+            return m_Fees[key];
+
+          // 2. Look for general settings.
+          if (m_Fees.ContainsKey(currencyISO))
+            return m_Fees[currencyISO];
+
+          throw new PaymentException(StringConsts.PAYMENT_CURRENCY_NOT_SUPPORTED_ERROR.Args(currencyISO,GetType().FullName));
+
+        }
       #endregion
 
   }

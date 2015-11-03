@@ -39,6 +39,8 @@
       this.btnPDF = new System.Windows.Forms.Button();
       this.btnBSON = new System.Windows.Forms.Button();
       this.btnMONGOCONNECTOR = new System.Windows.Forms.Button();
+      this.btnChart = new System.Windows.Forms.Button();
+      this.btnChartDemo = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnGlue
@@ -170,11 +172,39 @@
       this.btnMONGOCONNECTOR.UseVisualStyleBackColor = true;
       this.btnMONGOCONNECTOR.Click += new System.EventHandler(this.btnMONGOCONNECTOR_Click);
       // 
+      // btnChart
+      // 
+      this.btnChart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.btnChart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+      this.btnChart.Location = new System.Drawing.Point(155, 382);
+      this.btnChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.btnChart.Name = "btnChart";
+      this.btnChart.Size = new System.Drawing.Size(65, 45);
+      this.btnChart.TabIndex = 9;
+      this.btnChart.Text = "Chart";
+      this.btnChart.UseVisualStyleBackColor = true;
+      this.btnChart.Click += new System.EventHandler(this.btnChart_Click);
+      // 
+      // btnChartDemo
+      // 
+      this.btnChartDemo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.btnChartDemo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+      this.btnChartDemo.Location = new System.Drawing.Point(228, 382);
+      this.btnChartDemo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.btnChartDemo.Name = "btnChartDemo";
+      this.btnChartDemo.Size = new System.Drawing.Size(65, 45);
+      this.btnChartDemo.TabIndex = 10;
+      this.btnChartDemo.Text = "Chart";
+      this.btnChartDemo.UseVisualStyleBackColor = true;
+      this.btnChartDemo.Click += new System.EventHandler(this.btnChartDemo_Click);
+      // 
       // MenuForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(306, 582);
+      this.Controls.Add(this.btnChartDemo);
+      this.Controls.Add(this.btnChart);
       this.Controls.Add(this.btnMONGOCONNECTOR);
       this.Controls.Add(this.btnBSON);
       this.Controls.Add(this.btnPDF);
@@ -207,5 +237,7 @@
     private System.Windows.Forms.Button btnPDF;
     private System.Windows.Forms.Button btnBSON;
     private System.Windows.Forms.Button btnMONGOCONNECTOR;
+    private System.Windows.Forms.Button btnChart;
+    private System.Windows.Forms.Button btnChartDemo;
   }
 }

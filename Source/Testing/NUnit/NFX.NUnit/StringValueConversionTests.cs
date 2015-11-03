@@ -34,10 +34,10 @@ namespace NFX.NUnit
         [TestCase]
         public void GDID()
         {
-           Assert.AreEqual( new GDID(5, 7000000000000),  "5:7000000000000".AsGDID());
-           Assert.AreEqual( new GDID(5, 7000000000000),  "5:7000000000000".AsType(typeof(GDID)));
-           Assert.AreEqual( new GDID(0, 7000000000000),  "7000000000000".AsGDID());
-           Assert.AreEqual( new GDID(0, 7000000000000),  "7000000000000".AsType(typeof(GDID)));
+           Assert.AreEqual( new GDID(5, 1, 2),  "5:1:2".AsGDID());
+           Assert.AreEqual( new GDID(5, 1, 2),  "5:1:2".AsType(typeof(GDID)));
+           Assert.AreEqual( new GDID(0, 1, 2),  "0:1:2".AsGDID());
+           Assert.AreEqual( new GDID(0, 1, 2),  "0:1:2".AsType(typeof(GDID)));
         }
 
          [TestCase]

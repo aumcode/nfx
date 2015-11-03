@@ -120,6 +120,7 @@
     <Compile Include="Glue\TestObjects_A.cs" />
     <Compile Include="IO\ChecksumsTests.cs" />
     <Compile Include="IO\BufferSegRStreamTests.cs" />
+    <Compile Include="IO\LEB128Tests.cs" />
     <Compile Include="IO\FileSystem\S3\V4\SeparateLocalPathTest.cs" />
     <Compile Include="IO\LocalInstallationTests.cs" />
     <Compile Include="IO\DeepCopyTests.cs" />
@@ -203,6 +204,8 @@
     <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />
     <Compile Include="Web\MultiPart\SplitTest.cs" />
     <Compile Include="Web\ParseQueryStringTest.cs" />
+    <Compile Include="Web\Pay\ConfigBasedCurrencyMarketTests.cs" />
+    <Compile Include="Web\Pay\FeeTests.cs" />
     <Compile Include="Web\WebSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +266,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UTEZT_DATA\SubDir1\Bitmap1.bmp">

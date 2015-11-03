@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Threading.Tasks;
 
 
 using NFX.Environment;
@@ -75,10 +76,6 @@ namespace NFX.DataAccess.MySQL
        
     #endregion
 
-
-    
-
-
     #region IModelDataStore
 
       public void Load(ModelBase instance, IDataStoreKey key, params object[] extra)
@@ -102,15 +99,37 @@ namespace NFX.DataAccess.MySQL
     #endregion
 
     #region ICRUDDataStore
-        public CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
+        
+        //WARNING!!!
+        //The ASYNC versions of sync call now call TaskUtils.AsCompletedTask( sync_version )
+        // which executes synchronously. Because of it CRUDOperationCallContext does not need to be captured
+        // and passed along the async task chain.
+        // Keep in mind: In future implementations, the true ASYNC versions of methods would need to capture
+        // CRUDOperationCallContext and pass it along the call chain
+
+
+        
+        public CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, 
+                                                TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
         {
             var cnn = GetConnection();
             return new MySQLCRUDTransaction(this, cnn, iso, behavior);
         }
 
+        public Task<CRUDTransaction> BeginTransactionAsync(IsolationLevel iso = IsolationLevel.ReadCommitted,
+                                                           TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
+        {
+            return TaskUtils.AsCompletedTask( () => this.BeginTransaction(iso, behavior) );
+        }
+
         public bool SupportsTransactions
         {
             get { return true; }
+        }
+
+        public bool SupportsTrueAsynchrony
+        {
+            get { return false; }
         }
 
         public string ScriptFileSuffix
@@ -130,15 +149,31 @@ namespace NFX.DataAccess.MySQL
               return DoGetSchema(cnn, null, query);
         }
 
+        public Task<Schema> GetSchemaAsync(Query query)
+        {
+            return TaskUtils.AsCompletedTask( () => this.GetSchema(query) ); 
+        }
+
         public List<RowsetBase> Load(params Query[] queries)
         {
             using (var cnn = GetConnection())
               return DoLoad(cnn, null, queries);
         }
 
+        public Task<List<RowsetBase>> LoadAsync(params Query[] queries)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Load(queries) );
+        }
+
         public RowsetBase LoadOneRowset(Query query)
         {
             return Load(query).FirstOrDefault();
+        }
+
+        public Task<RowsetBase> LoadOneRowsetAsync(Query query)
+        {
+            return this.LoadAsync(query)
+                       .ContinueWith( antecedent => antecedent.Result.FirstOrDefault());
         }
 
         public Row LoadOneRow(Query query)
@@ -151,10 +186,26 @@ namespace NFX.DataAccess.MySQL
             return null;
         }
 
+        public Task<Row> LoadOneRowAsync(Query query)
+        {
+            return this.LoadAsync(query)
+                       .ContinueWith( antecedent =>
+                        {
+                          RowsetBase rset = antecedent.Result.FirstOrDefault();
+                          if (rset!=null) return rset.FirstOrDefault();
+                          return null;
+                        });
+        }
+
         public int Save(params RowsetBase[] rowsets)
         {
-            using (var cnn = GetConnection()) 
+           using (var cnn = GetConnection()) 
               return DoSave(cnn,  null, rowsets);
+        }
+
+        public Task<int> SaveAsync(params RowsetBase[] rowsets)
+        {
+           return TaskUtils.AsCompletedTask( () => this.Save(rowsets) ); 
         }
 
         public int Insert(Row row)
@@ -163,10 +214,20 @@ namespace NFX.DataAccess.MySQL
               return DoInsert(cnn,  null, row);
         }
 
+        public Task<int> InsertAsync(Row row)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Insert(row) ); 
+        }
+
         public int Upsert(Row row)
         {
             using (var cnn = GetConnection())
               return DoUpsert(cnn,  null, row);
+        }
+
+        public Task<int> UpsertAsync(Row row)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Upsert(row) );
         }
 
         public int Update(Row row, IDataStoreKey key = null)
@@ -175,16 +236,31 @@ namespace NFX.DataAccess.MySQL
               return DoUpdate(cnn,  null, row);
         }
 
+        public Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Update(row, key) );
+        }
+
         public int Delete(Row row, IDataStoreKey key = null)
         {
             using (var cnn = GetConnection())
               return DoDelete(cnn,  null, row);
         }
 
+        public Task<int> DeleteAsync(Row row, IDataStoreKey key = null)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Delete(row, key) );
+        }
+
         public int ExecuteWithoutFetch(params Query[] queries)
         {
             using (var cnn = GetConnection())
               return DoExecuteWithoutFetch(cnn, null, queries);
+        }
+
+        public Task<int> ExecuteWithoutFetchAsync(params Query[] queries)
+        {
+            return TaskUtils.AsCompletedTask( () => this.ExecuteWithoutFetch(queries) );
         }
 
 

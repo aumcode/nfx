@@ -54,6 +54,17 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
         [Test]
+        public void ManualDS_ASYNC_QueryInsertQuery()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_QueryInsertQuery( store );
+            }   
+        }
+
+        [Test]
         public void ManualDS_QueryInsertQuery_TypedRow()
         {
             using(var store = new MySQLDataStore(getConnectString()))
@@ -87,6 +98,17 @@ namespace NFX.NUnit.Integration.CRUD
             }   
         }
 
+        [Test]
+        public void ManualDS_ASYNC_InsertManyUsingLogChanges_TypedRow()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_InsertManyUsingLogChanges_TypedRow( store );
+            }   
+        }
+
 
         [Test]
         public void ManualDS_InsertInTransaction_Commit_TypedRow()
@@ -96,6 +118,17 @@ namespace NFX.NUnit.Integration.CRUD
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.InsertInTransaction_Commit_TypedRow( store );
+            }   
+        }
+
+        [Test]
+        public void ManualDS_ASYNC_InsertInTransaction_Commit_TypedRow()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_InsertInTransaction_Commit_TypedRow( store );
             }   
         }
 
@@ -122,6 +155,18 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
         [Test]
+        public void ManualDS_ASYNC_InsertThenUpdate_TypedRow()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_InsertThenUpdate_TypedRow( store );
+            }   
+        }
+
+
+        [Test]
         public void ManualDS_InsertThenDelete_TypedRow()
         {
             using(var store = new MySQLDataStore(getConnectString()))
@@ -129,6 +174,17 @@ namespace NFX.NUnit.Integration.CRUD
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.InsertThenDelete_TypedRow( store );
+            }   
+        }
+
+        [Test]
+        public void ManualDS_ASYNC_InsertThenDelete_TypedRow()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_InsertThenDelete_TypedRow( store );
             }   
         }
 
@@ -144,14 +200,39 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
         [Test]
+        public void ManualDS_ASYNC_InsertThenUpsert_TypedRow()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_InsertThenUpsert_TypedRow( store );
+            }   
+        }
+
+        [Test]
         public void ManualDS_GetSchemaAndTestVariousTypes()
         {
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
+                store.FullGDIDs = false;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.GetSchemaAndTestVariousTypes( store );
+            }   
+        }
+
+        [Test]
+        public void ManualDS_ASYNC_GetSchemaAndTestVariousTypes()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.StringBool = false;
+                store.FullGDIDs = false;
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.ASYNC_GetSchemaAndTestVariousTypes( store );
             }   
         }
 
@@ -162,9 +243,37 @@ namespace NFX.NUnit.Integration.CRUD
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
+                store.FullGDIDs = false;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.TypedRowTestVariousTypes( store );
+            }   
+        }
+
+        [Test]
+        public void ManualDS_TypedRowTest_FullGDID()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.StringBool = false;
+                store.FullGDIDs = true;
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.TypedRowTest_FullGDID( store );
+            }   
+        }
+
+
+        [Test]
+        public void ManualDS_GetSchemaAndTestFullGDID()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.StringBool = false;
+                store.FullGDIDs = true;
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.GetSchemaAndTestFullGDID( store );
             }   
         }
 
@@ -189,7 +298,7 @@ namespace NFX.NUnit.Integration.CRUD
                                                         cnn.Open();
                                                         using(var cmd = cnn.CreateCommand())
                                                         {  
-                                                          cmd.CommandText = "TRUNCATE TBL_PATIENT; TRUNCATE TBL_DOCTOR; TRUNCATE TBL_TYPES;";
+                                                          cmd.CommandText = "TRUNCATE TBL_PATIENT; TRUNCATE TBL_DOCTOR; TRUNCATE TBL_TYPES; TRUNCATE TBL_FULLGDID;";
                                                           cmd.ExecuteNonQuery();
                                                         }
                                                     }

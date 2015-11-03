@@ -150,6 +150,11 @@ namespace NFX.Web
 
     public const string SOCIAL_NETWORK_DUPLICATE_NAME = "Can not have social network instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
+
+    public const string PAYMENT_CURRENCY_CONVERSION_MAPPING_ERROR = "Currency mapping for '{0}' -> '{1}' is not found by provider '{2}' or rate attr missing";
+    
+    public const string PAYMENT_CURRENCY_NOT_SUPPORTED_ERROR = "Currency '{0}' is not supported by provider '{1}' or currency attr missing";
+
     public const string PAYMENT_SYSTEM_HOST_NULL_ERROR = "Payment system host is not set";
     public const string PAYMENT_UNKNOWN_ACCOUNT_ERROR = "Unknown account '{0}'";
     public const string PAYMENT_SYSTEM_DUPLICATE_NAME_ERROR = "Can not have payment system instance of type '{0}' with the name '{1}' as this name is already registered. ";

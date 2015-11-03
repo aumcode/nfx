@@ -28,6 +28,7 @@ using System.Data.SqlClient;
 
 using NFX.Environment;
 using NFX.ApplicationModel;
+using NFX.DataAccess.CRUD;
 
 using MySql.Data.MySqlClient;
 
@@ -72,6 +73,8 @@ namespace NFX.DataAccess.MySQL
 
       private string m_StringForTrue = STR_FOR_TRUE;
       private string m_StringForFalse = STR_FOR_FALSE;
+
+      private bool m_FullGDIDs = true;
 
       private bool m_InstrumentationEnabled;
     #endregion
@@ -143,7 +146,7 @@ namespace NFX.DataAccess.MySQL
          set{ m_TargetName = value;}
       }
 
-      /// <summary>
+    /// <summary>
     /// When true commits boolean values as StringForTrue/StringForFalse instead of bool values. True by default
     /// </summary>
     [Config(Default=true)] public bool StringBool{ get { return m_StringBool; } set {m_StringBool = value;}}
@@ -152,6 +155,11 @@ namespace NFX.DataAccess.MySQL
 
     [Config(Default=STR_FOR_FALSE)] public string StringForFalse{ get { return m_StringForFalse; } set {m_StringForFalse = value;}}
 
+
+    /// <summary>
+    /// When true (default) writes gdid as byte[](era+id), false - uses ulong ID only
+    /// </summary>
+    [Config(Default=true)] public bool FullGDIDs{ get { return m_FullGDIDs; } set {m_FullGDIDs = value;}}
     
     #endregion
 
@@ -195,7 +203,14 @@ namespace NFX.DataAccess.MySQL
       /// </summary>
       protected MySqlConnection GetConnection()
       {
-        var cnn = new MySqlConnection(this.ConnectString);
+        var connectString = this.ConnectString;
+
+        //Try to override from the context
+        var ctx = CRUDOperationCallContext.Current;
+        if (ctx!=null && ctx.ConnectString.IsNotNullOrWhiteSpace())
+          connectString = ctx.ConnectString;
+
+        var cnn = new MySqlConnection(connectString);
         cnn.Open();
         return cnn;
       }
