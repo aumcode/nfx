@@ -15,6 +15,7 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 
+using System.Collections.Generic;
 using NFX.Environment;
 using NFX.Financial;
 using NFX.Instrumentation;
@@ -32,6 +33,22 @@ namespace NFX.Web.Pay
     /// </summary>
     IConfigSectionNode DefaultSesssionConnectParamsCfg { get; set; }
 
+    /// <summary>
+    /// Processing fee types, such as: included in amount and surcharged.
+    /// </summary>
+    ProcessingFeeKind FeeKind { get; }
+
+    /// <summary>
+    /// Returns currency ISOs that are supported by this isntance. The processing of charges/transafers may be done
+    /// only in these currencies
+    /// </summary>
+    IEnumerable<string> SupportedCurrencies{ get; }
+
+    /// <summary>
+    /// Returns true if this system supports transaction type in the specified currency (optional)
+    /// </summary>
+    bool IsTransactionTypeSupported(TransactionType type, string currencyISO = null);
+    
     /// <summary>
     /// Starts new pay session of system-specific type.
     /// If cParams parameter is null <see cref="DefaultSesssionConnectParamsCfg"/> is used
@@ -59,6 +76,16 @@ namespace NFX.Web.Pay
     /// 
     /// </summary>
     Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null);
+
+    /// <summary>
+    /// Returns a fee for transaction regardless of its size.
+    /// </summary>
+    Amount GetTransactionFee(string currencyISO, TransactionType type);
+
+    /// <summary>
+    /// Returns transaction percent as N * 10000, e.g. 75% = 750000.
+    /// </summary>
+    int GetTransactionPct(string currencyISO, TransactionType type);
   }
 
   /// <summary>

@@ -12,6 +12,10 @@
 var WAVE = (function(){
 
     var undefined = "undefined";
+        
+    if (!Date.now) {
+      Date.now = function() { return new Date().getTime(); }
+    }
 
     var published = { 
         UNDEFINED: undefined

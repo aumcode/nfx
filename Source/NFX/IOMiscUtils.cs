@@ -26,6 +26,9 @@ using System.Drawing.Imaging;
 
 namespace NFX
 {
+    /// <summary>
+    /// Misc utils for I/O
+    /// </summary>
     public static class IOMiscUtils
     {
         public const int IO_WAIT_GRANULARITY_MS = 200;
@@ -581,4 +584,6 @@ namespace NFX
        }
 
     }
+
+
 }

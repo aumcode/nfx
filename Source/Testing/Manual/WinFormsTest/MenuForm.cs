@@ -182,5 +182,15 @@ Performance
     {
       new MongoConnectorForm().Show();
     }
+
+    private void btnChart_Click(object sender, EventArgs e)
+    {
+      new ChartForm().Show();
+    }
+
+    private void btnChartDemo_Click(object sender, EventArgs e)
+    {
+      new ChartFormDemo().Show();
+    }
   }
 }

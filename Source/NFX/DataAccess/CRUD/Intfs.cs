@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+
+using System.Threading.Tasks;
+
 using NFX.Environment;
 
 namespace NFX.DataAccess.CRUD
@@ -39,23 +42,71 @@ namespace NFX.DataAccess.CRUD
     /// </summary>
     public interface ICRUDOperations
     {
+        /// <summary>
+        /// Returns true when backend supports true asynchronous operations, such as the ones that do not create extra threads/empty tasks
+        /// </summary>
+        bool SupportsTrueAsynchrony { get;}
+
         Schema GetSchema(Query query);
+        Task<Schema> GetSchemaAsync(Query query);
+
         List<RowsetBase> Load(params Query[] queries);
+        Task<List<RowsetBase>> LoadAsync(params Query[] queries);
+
         RowsetBase LoadOneRowset(Query query);
+        Task<RowsetBase> LoadOneRowsetAsync(Query query);
+
         Row        LoadOneRow(Query query);
+        Task<Row>  LoadOneRowAsync(Query query);
+
         int Save(params RowsetBase[] rowsets);
+        Task<int> SaveAsync(params RowsetBase[] rowsets);
+
         int ExecuteWithoutFetch(params Query[] queries);
+        Task<int> ExecuteWithoutFetchAsync(params Query[] queries);
             
         int Insert(Row row);
+        Task<int> InsertAsync(Row row);
+
         int Upsert(Row row);
+        Task<int> UpsertAsync(Row row);
+
         int Update(Row row, IDataStoreKey key = null);
+        Task<int> UpdateAsync(Row row, IDataStoreKey key = null);
+
         int Delete(Row row, IDataStoreKey key = null);
+        Task<int> DeleteAsync(Row row, IDataStoreKey key = null);
     }
+
+    /// <summary>
+    /// Describes an entity that performs single (not in transaction/batch)CRUD operations
+    /// </summary>
+    public interface ICRUDTransactionOperations
+    {
+       /// <summary>
+        /// Returns true when backend supports transactions. Even if false returned, CRUDDatastore supports CRUDTransaction return from BeginTransaction()
+        ///  in which case statements may not be sent to destination until a call to Commit()
+        /// </summary>
+        bool SupportsTransactions { get;}
+       
+       /// <summary>
+       /// Returns a transaction object for backend. Even if backend does not support transactions internally, CRUDTransactions save changes
+       ///  into the store on commit only
+       /// </summary>
+       CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose); 
+        
+       /// <summary>
+       /// Returns a transaction object for backend. Even if backend does not support transactions internally, CRUDTransactions save changes
+       ///  into the store on commit only
+       /// </summary>
+       Task<CRUDTransaction> BeginTransactionAsync(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose); 
+    }
+
     
     /// <summary>
     /// Represents a DataStore that supports CRUD operations
     /// </summary>
-    public interface ICRUDDataStore : ICRUDOperations
+    public interface ICRUDDataStore : ICRUDOperations, ICRUDTransactionOperations
     {
         /// <summary>
         /// Returns default script file suffix, which some providers may use to locate script files
@@ -63,20 +114,7 @@ namespace NFX.DataAccess.CRUD
         /// This name should uniquely identify the provider
         /// </summary>
         string ScriptFileSuffix { get; }
-        
-        
-        /// <summary>
-        /// Returns a transaction object for backend. Even if backend does not support transactions internally, CRUDTransactions save changes
-        ///  into the store on commit only
-        /// </summary>
-        CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose); 
-        
-        /// <summary>
-        /// Returns true when backend supports transactions. Even if false returned, CRUDDatastore supports CRUDTransaction return from BeginTransaction()
-        ///  in which case statements may not be sent to destination until a call to Commit()
-        /// </summary>
-        bool SupportsTransactions { get;}
-        
+
         /// <summary>
         /// Provides classification for the underlying store
         /// </summary>
@@ -140,6 +178,10 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         Schema GetSchema(ICRUDQueryExecutionContext context, Query query);
 
+        /// <summary>
+        /// Executes query without fetching any data but schema. The implementation may be called by multiple threads and must be safe
+        /// </summary>
+        Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query);
 
         /// <summary>
         /// Executes query. The implementation may be called by multiple threads and must be safe
@@ -147,10 +189,21 @@ namespace NFX.DataAccess.CRUD
         RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false);
 
         /// <summary>
+        /// Executes query. The implementation may be called by multiple threads and must be safe
+        /// </summary>
+        Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false);
+
+        /// <summary>
         /// Executes query that dows not return results. The implementation may be called by multiple threads and must be safe.
         /// Returns rows affected
         /// </summary>
         int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query);
+
+        /// <summary>
+        /// Executes query that dows not return results. The implementation may be called by multiple threads and must be safe.
+        /// Returns rows affected
+        /// </summary>
+        Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query);
     }
 
     /// <summary>

@@ -212,7 +212,7 @@ namespace NFX.WinForms.Elements
       /// <summary>
       /// Deletes all elements efficiently. Calls Dispose() for each element 
       /// </summary>
-      public void DeleteAllElements()
+      public void DeleteAllElements(Func<Element, bool> keepFilter = null)
       {
         releaseMouseDragElement(null);
         releaseMouseEnteredElement();
@@ -220,13 +220,24 @@ namespace NFX.WinForms.Elements
         
         m_LastMouseDownElement = null;
         
+        ElementList kept = null;
+
         foreach(var elm in m_ElementList)
         {
+          if (keepFilter!=null && keepFilter(elm))
+          {
+            if (kept==null) kept = new ElementList();
+            kept.Add(elm);
+            continue;
+          } 
           elm.m_Host = null;//prevent elements from unregistering with host because it is slower than host.list.Clear()
           elm.Dispose();
         }  
         
         m_ElementList.Clear();
+
+        if (kept!=null)
+         m_ElementList = kept;
         
         Invalidate();
       }

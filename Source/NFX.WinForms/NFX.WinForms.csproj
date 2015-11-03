@@ -82,18 +82,27 @@
     <Compile Include="Controls\Balloon.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\ChartKit\Temporal\CandleMidLineView.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\CandleBuySellView.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\Enums.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\Events.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\TimeScalePane.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ChartKit\Enums.cs" />
-    <Compile Include="Controls\ChartKit\Series.cs" />
-    <Compile Include="Controls\ChartKit\PlotPane.cs">
+    <Compile Include="Controls\ChartKit\Temporal\Series.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\PlotPane.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ChartKit\Chart.cs">
+    <Compile Include="Controls\ChartKit\Temporal\TimeSeriesChart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ChartKit\SeriesView.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\SeriesView.cs" />
     <Compile Include="Controls\ChartKit\Temporal\CandleView.cs" />
-    <Compile Include="Controls\ChartKit\Temporal\MarketSample.cs" />
-    <Compile Include="Controls\ChartKit\Temporal\TimeSeries.cs" />
+    <Compile Include="Controls\ChartKit\Temporal\CandleTimeSeries.cs" />
+    <Compile Include="Controls\ComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Enums.cs" />
     <Compile Include="Controls\GridKit\CellElement.cs" />
     <Compile Include="Controls\GridKit\CellView.cs">

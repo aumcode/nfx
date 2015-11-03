@@ -178,6 +178,8 @@ namespace NFX
     
     
     public const string SLIM_STREAM_CORRUPTED_ERROR = "Slim data stream is corrupted: ";  
+
+    public const string SECDB_STREAM_CORRUPTED_ERROR = "SecDB data stream is corrupted: ";  
              
 
     public const string SECURITY_AUTHROIZATION_ERROR =
@@ -796,6 +798,8 @@ namespace NFX
 
     public const string CRUD_CONFIG_EMPTY_LOCATIONS_WARNING = "CRUD configuration contains empty location entries which are ignored";
 
+    public const string CRUD_OPERATION_CALL_CONTEXT_SCOPE_MISMATCH_ERROR = "CRUDOperationCallContext scope mismatch error";
+
     public const string DISTRIBUTED_DATA_GDID_CTOR_ERROR = "GDID can not be created from the supplied: 'authority={0}>{1},counter={2}>{3}'";
 
     public const string DISTRIBUTED_DATA_GDID_PARSE_ERROR = "String value '{0}' can not be parsed as GDID";
@@ -1047,5 +1051,14 @@ namespace NFX
 
     public const string GDID_BUFFER_ERROR =
         "Error converting GDID data buffer: {0}";
+
+
+    public const string SECDB_FILE_HEADER_ERROR = "Eror while parsing the SecDB file header: ";  
+
+    public const string SECDB_FS_SEEK_STREAM_ERROR = 
+       "SecDB requires a file system that supports random file access with content stream seek. Passed '{0}' does not";  
+    
+    public const string SECDB_FILE_NOT_FOUND_ERROR = 
+       "SecDB file '{0}' could not be read as it was not found by the file system '{1}'"; 
   }
 }

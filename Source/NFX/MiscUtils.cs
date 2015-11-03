@@ -91,9 +91,42 @@ namespace NFX
     }
 
     /// <summary>
+    /// Gets UTC DateTime from number of seconds since Unix epoch start (1970/1/1 0:0:0)
+    /// </summary>
+    public static DateTime FromSecondsSinceUnixEpochStart(this ulong when)
+    {
+      return UNIX_EPOCH_START_DATE.AddSeconds(when);
+    }
+
+    /// <summary>
     /// Gets UTC DateTime from number of milliseconds since Unix epoch start (1970/1/1 0:0:0)
     /// </summary>
     public static DateTime FromMillisecondsSinceUnixEpochStart(this long when)
+    {
+      return UNIX_EPOCH_START_DATE.AddMilliseconds(when);
+    }
+
+    /// <summary>
+    /// Gets UTC DateTime from number of microseconds since Unix epoch start (1970/1/1 0:0:0)
+    /// </summary>
+    public static DateTime FromMicrosecondsSinceUnixEpochStart(this long when)
+    {
+      return UNIX_EPOCH_START_DATE.AddTicks(when * 10);
+    }
+
+    /// <summary>
+    /// Gets UTC DateTime from number of microseconds since Unix epoch start (1970/1/1 0:0:0)
+    /// </summary>
+    public static DateTime FromMicrosecondsSinceUnixEpochStart(this ulong when)
+    {
+      return UNIX_EPOCH_START_DATE.AddTicks((long)when * 10);
+    }
+
+
+    /// <summary>
+    /// Gets UTC DateTime from number of milliseconds since Unix epoch start (1970/1/1 0:0:0)
+    /// </summary>
+    public static DateTime FromMillisecondsSinceUnixEpochStart(this ulong when)
     {
       return UNIX_EPOCH_START_DATE.AddMilliseconds(when);
     }

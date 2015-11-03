@@ -53,6 +53,26 @@ namespace NFX
               }
          }
 
+         public static string AsNonNullOrEmptyString(this object val)
+         {
+              try
+              {
+                if (val==null) throw new NFXException("arg = null");
+                
+                var result = Convert.ToString(val);
+                
+                if (result.IsNullOrWhiteSpace())
+                  throw new NFXException("result = null|empty");
+                
+                return result;
+              }
+              catch(Exception error)
+              {
+                throw new NFXException("AsNonNullOrEmptyString({0})".Args(error.ToMessageWithType()));
+              }
+         }
+
+
          public static ConfigSectionNode AsLaconicConfig(this object val, ConfigSectionNode dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
               try

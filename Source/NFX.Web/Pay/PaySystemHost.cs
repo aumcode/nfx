@@ -49,6 +49,12 @@ namespace NFX.Web.Pay
     /// Returns actual data for supplied account object
     /// </summary>
     IActualAccountData AccountToActualData(ITransactionContext context, Account account);
+
+
+    /// <summary>
+    /// Currency market
+    /// </summary>
+    ICurrencyMarket CurrencyMarket { get; }
   }
 
   /// <summary>

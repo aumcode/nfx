@@ -19,9 +19,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using MySql.Data.MySqlClient;
 
+using NFX;
 using NFX.DataAccess.CRUD;
 
 namespace NFX.DataAccess.MySQL
@@ -79,10 +81,20 @@ namespace NFX.DataAccess.MySQL
         {
             return Store.DoGetSchema(m_Connection, m_Transaction, query);
         }
+
+        protected override Task<Schema> DoGetSchemaAsync(Query query)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoGetSchema(query) );
+        }
         
         protected override List<RowsetBase> DoLoad(bool oneRow, params Query[] queries)
         {
             return Store.DoLoad(m_Connection, m_Transaction, queries, oneRow);
+        }
+
+        protected override Task<List<RowsetBase>> DoLoadAsync(bool oneRow, params Query[] queries)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoLoad(oneRow, queries) );
         }
 
         protected override int DoExecuteWithoutFetch(params Query[] queries)
@@ -90,9 +102,19 @@ namespace NFX.DataAccess.MySQL
             return Store.DoExecuteWithoutFetch(m_Connection, m_Transaction, queries);
         }
 
+        protected override Task<int> DoExecuteWithoutFetchAsync(params Query[] queries)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoExecuteWithoutFetch(queries) );
+        }
+
         protected override int DoSave(params RowsetBase[] rowsets)
         {
             return Store.DoSave(m_Connection, m_Transaction, rowsets);
+        }
+
+        protected override Task<int> DoSaveAsync(params RowsetBase[] rowsets)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoSave(rowsets) );
         }
 
         protected override int DoInsert(Row row)
@@ -100,9 +122,19 @@ namespace NFX.DataAccess.MySQL
             return Store.DoInsert(m_Connection, m_Transaction, row);
         }
 
+        protected override Task<int> DoInsertAsync(Row row)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoInsert(row) );
+        }
+
         protected override int DoUpsert(Row row)
         {
             return Store.DoUpsert(m_Connection, m_Transaction, row);
+        }
+
+        protected override Task<int> DoUpsertAsync(Row row)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoUpsert(row) );
         }
 
         protected override int DoUpdate(Row row, IDataStoreKey key)
@@ -110,9 +142,19 @@ namespace NFX.DataAccess.MySQL
             return Store.DoUpdate(m_Connection, m_Transaction, row, key);
         }
 
+        protected override Task<int> DoUpdateAsync(Row row, IDataStoreKey key)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoUpdate(row, key) );
+        }
+
         protected override int DoDelete(Row row, IDataStoreKey key)
         {
             return Store.DoDelete(m_Connection, m_Transaction, row, key);
+        }
+
+        protected override Task<int> DoDeleteAsync(Row row, IDataStoreKey key)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoDelete(row, key) );
         }
 
         protected override void DoCommit()

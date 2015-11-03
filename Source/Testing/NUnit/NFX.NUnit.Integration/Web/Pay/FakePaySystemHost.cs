@@ -227,6 +227,7 @@ namespace NFX.NUnit.Integration.Web.Pay
     #region Pvt. fields
 
       private static List<Transaction> m_TransactionList = new List<Transaction>();
+      private ICurrencyMarket m_Market = new ConfigBasedCurrencyMarket();
 
     #endregion
 
@@ -269,6 +270,8 @@ namespace NFX.NUnit.Integration.Web.Pay
       }
 
       public string Name { get { return this.GetType().Name; } }
+
+      public ICurrencyMarket CurrencyMarket { get{ return m_Market;}}
 
     #endregion
 

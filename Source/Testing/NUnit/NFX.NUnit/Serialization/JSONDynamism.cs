@@ -300,11 +300,11 @@ namespace NFX.NUnit.Serialization
         [TestCase]
         public void ToTypedRowWithGDID_FromString()
         {
-            var str = @"{ id: ""12:7000000000"", name: ""Orlov""}";
+            var str = @"{ id: ""12:4:5"", name: ""Orlov""}";
 
             DataWithGDID row = str.JSONToDynamic();
 
-            Assert.AreEqual(new NFX.DataAccess.Distributed.GDID(12, 7000000000), row.ID);
+            Assert.AreEqual(new NFX.DataAccess.Distributed.GDID(12, 4, 5), row.ID);
             Assert.AreEqual("Orlov", row.Name);
         }
 

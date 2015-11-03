@@ -104,6 +104,12 @@
     <Compile Include="ChartForm.Designer.cs">
       <DependentUpon>ChartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChartFormDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChartFormDemo.Designer.cs">
+      <DependentUpon>ChartFormDemo.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConsoleUtils\ConsoleUtilsFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChartForm.resx">
       <DependentUpon>ChartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartFormDemo.resx">
+      <DependentUpon>ChartFormDemo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConsoleUtils\ConsoleUtilsFrm.resx">
       <DependentUpon>ConsoleUtilsFrm.cs</DependentUpon>

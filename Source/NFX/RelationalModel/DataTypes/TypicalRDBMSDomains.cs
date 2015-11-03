@@ -233,16 +233,46 @@ namespace NFX.RelationalModel.DataTypes
     }
 
 
-    public class TGDID : NonInteligentKey
+
+    public class NonInteligentGDIDKey : NonInteligentKey
     {
+        [Config]
+        public  bool Required;
+        
+        
+        public NonInteligentGDIDKey() {}
+        
+        public NonInteligentGDIDKey(bool required) 
+        {
+          Required = required;
+        }
+        
+        
         public override bool? GetColumnRequirement(RDBMSCompiler compiler)
         {
-            return true;
+            return Required;
+        }
+
+        public override string GetTypeName(RDBMSCompiler compiler)
+        {
+            return Required ? "BINARY(12)" : "VARBINARY(12)";
         }
     }
 
-    public class TGDIDRef : NonInteligentKey
+
+
+
+    public class TGDID : NonInteligentGDIDKey
     {
+        public TGDID():base(true){}
+        public TGDID(bool required):base(required){}
+    }
+
+    public class TGDIDRef : NonInteligentGDIDKey
+    {
+        public TGDIDRef():base(true){}
+        public TGDIDRef(bool required):base(required){}
+
         public override void TransformColumnName(RDBMSCompiler compiler, RDBMSEntity column)
         {
             column.TransformedName = "G_{0}".Args(column.TransformedName);
@@ -391,7 +421,7 @@ namespace NFX.RelationalModel.DataTypes
     {
         public override string GetTypeName(RDBMSCompiler compiler)
         {
-            return "varchar(25)";
+            return "varchar(32)";
         }
     }
 
@@ -399,9 +429,27 @@ namespace NFX.RelationalModel.DataTypes
     {
         public override string GetTypeName(RDBMSCompiler compiler)
         {
+            return "varchar(32)";
+        }
+    }
+
+
+    public class TAddrInternationalStateTerritory : PostalAttribute
+    {
+        public override string GetTypeName(RDBMSCompiler compiler)
+        {
+            return "varchar(32)";
+        }
+    }
+
+    public class TAddrInternationalZipPostal : PostalAttribute
+    {
+        public override string GetTypeName(RDBMSCompiler compiler)
+        {
             return "varchar(25)";
         }
     }
+
 
     public class TAddrUSState : PostalAttribute
     {
