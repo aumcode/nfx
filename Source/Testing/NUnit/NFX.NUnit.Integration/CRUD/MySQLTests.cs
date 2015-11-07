@@ -216,7 +216,7 @@ namespace NFX.NUnit.Integration.CRUD
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
-                store.FullGDIDs = false;
+                store.FullGDIDS = false;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.GetSchemaAndTestVariousTypes( store );
@@ -229,7 +229,7 @@ namespace NFX.NUnit.Integration.CRUD
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
-                store.FullGDIDs = false;
+                store.FullGDIDS = false;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.ASYNC_GetSchemaAndTestVariousTypes( store );
@@ -243,7 +243,7 @@ namespace NFX.NUnit.Integration.CRUD
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
-                store.FullGDIDs = false;
+                store.FullGDIDS = false;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.TypedRowTestVariousTypes( store );
@@ -256,7 +256,7 @@ namespace NFX.NUnit.Integration.CRUD
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
-                store.FullGDIDs = true;
+                store.FullGDIDS = true;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.TypedRowTest_FullGDID( store );
@@ -270,7 +270,7 @@ namespace NFX.NUnit.Integration.CRUD
             using(var store = new MySQLDataStore(getConnectString()))
             {
                 store.StringBool = false;
-                store.FullGDIDs = true;
+                store.FullGDIDS = true;
                 store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
                 clearAllTables();
                 TestLogic.GetSchemaAndTestFullGDID( store );

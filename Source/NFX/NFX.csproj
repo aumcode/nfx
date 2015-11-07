@@ -111,6 +111,11 @@
     <Compile Include="Collections\NamedInterlocked.cs" />
     <Compile Include="CoreConsts.cs" />
     <Compile Include="DataAccess\CRUD\CRUDOperationCallContext.cs" />
+    <Compile Include="DataAccess\CRUD\Subscriptions\ICRUDSubscriptionStore.cs" />
+    <Compile Include="DataAccess\CRUD\Subscriptions\Recipient.cs" />
+    <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
+    <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
+    <Compile Include="DataAccess\CRUD\Subscriptions\RowTypeMapping.cs" />
     <Compile Include="ExternalParameterAttribute.cs" />
     <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
     <Compile Include="CodeAnalysis\XML\XMLLanguage.cs" />

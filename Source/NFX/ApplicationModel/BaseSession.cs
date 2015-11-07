@@ -39,6 +39,7 @@ namespace NFX.ApplicationModel
             public BaseSession(Guid id)
             {
               m_ID = id;
+              m_IDSecret = ExternalRandomGenerator.Instance.NextRandomUnsignedLong;
               m_IsNew = true;
             }
         #endregion
@@ -47,6 +48,7 @@ namespace NFX.ApplicationModel
         #region Fields
         
             private Guid m_ID;
+            private ulong m_IDSecret;
 
             [NonSerialized]
             private Guid? m_OldID;
@@ -80,6 +82,16 @@ namespace NFX.ApplicationModel
             public Guid ID
             {
                 get { return m_ID; }
+            }
+
+            /// <summary>
+            /// Returns Session ID secret - the ulong that identifies this session.
+            /// This property is needed for cross-check upon GUID id lookup, so that
+            /// Session ID GUID can not be forged by the client - a form of a "password"
+            /// </summary>
+            public ulong IDSecret
+            {
+                get { return m_IDSecret; }
             }
             
             /// <summary>
@@ -198,6 +210,7 @@ namespace NFX.ApplicationModel
               if (m_OldID.HasValue) return;
               m_OldID = m_ID;
               m_ID = Guid.NewGuid();
+              m_IDSecret = ExternalRandomGenerator.Instance.NextRandomUnsignedLong;
             }
 
 
