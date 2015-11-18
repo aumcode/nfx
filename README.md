@@ -5,12 +5,16 @@ License: Apache 2.0
 
 This framework is written in C# from scratch and runs on Windows and Linux/Mono servers.
 
-NUGET:
+**NUGET**:
  https://www.nuget.org/packages/NFX/
- pm> install-package NFX
+ 
+ `pm> install-package NFX`
 
+**Various Demo Projects**:
+ https://github.com/aumcode/nfx-demos
 
-IMPORTANT!
+**IMPORTANT!**
+
 This is NOT a typical .NET system.
 Actually, the NFX framework has very little to do with Microsoft software stack, and the purpose
 of this project is to provide an alternative unified stack of software that uses core CLR functions
@@ -53,7 +57,7 @@ UNISTACK = all base components needed to create solutions/applications.
 NFX UNISTACK includes:
 * Application Container + Dependency Injection facilities
 * Configuration engine
-* Local/Distributed piles/heaps, ability to store hundreds of millions of objects
+* Local/Distributed piles/heaps (**BigMemory**), ability to store hundreds of millions of objects
   resident in memory for long times without killing GC
 * Logging with 8+ destinations/sinks(text, email, flood filter etc.)
 * Distributed contact-oriented communication framework NFX.Glue (replaces WCF)
