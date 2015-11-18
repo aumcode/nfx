@@ -48,11 +48,7 @@ namespace NFX.DataAccess.MySQL
   public class MySQLDataStore : MySQLDataStoreBase, IModelDataStoreImplementation, ICRUDDataStoreImplementation
   {
     #region CONSTS
-
         public const string SCRIPT_FILE_SUFFIX = ".mys.sql";
-
-       
-
     #endregion
     
     #region .ctor/.dctor
@@ -70,10 +66,9 @@ namespace NFX.DataAccess.MySQL
     #endregion
 
     #region Fields
-        
+
         private QueryResolver m_QueryResolver;
 
-       
     #endregion
 
     #region IModelDataStore
@@ -233,7 +228,7 @@ namespace NFX.DataAccess.MySQL
         public int Update(Row row, IDataStoreKey key = null)
         {
             using (var cnn = GetConnection())
-              return DoUpdate(cnn,  null, row);
+              return DoUpdate(cnn,  null, row, key);
         }
 
         public Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
@@ -244,7 +239,7 @@ namespace NFX.DataAccess.MySQL
         public int Delete(Row row, IDataStoreKey key = null)
         {
             using (var cnn = GetConnection())
-              return DoDelete(cnn,  null, row);
+              return DoDelete(cnn,  null, row, key);
         }
 
         public Task<int> DeleteAsync(Row row, IDataStoreKey key = null)

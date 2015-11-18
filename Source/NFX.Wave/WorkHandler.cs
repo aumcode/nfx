@@ -31,9 +31,6 @@ namespace NFX.Wave
   public abstract class WorkHandler : DisposableObject, INamed, IOrdered
   {
       public const string CONFIG_HANDLER_SECTION = "handler";
-      public const string CONFIG_ORDER_ATTR = "order";
-
-
       
       protected WorkHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
       {
@@ -60,7 +57,7 @@ namespace NFX.Wave
         m_Dispatcher = dispatcher;
         m_Server = dispatcher.ComponentDirector;
         m_Name = confNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
-        m_Order = confNode.AttrByName(CONFIG_ORDER_ATTR).ValueAsInt(0);
+        m_Order = confNode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0);
         if (m_Name.IsNullOrWhiteSpace())
          m_Name = "{0}({1})".Args(GetType().FullName, Guid.NewGuid());
 

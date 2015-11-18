@@ -492,6 +492,7 @@ namespace NFX.DataAccess.CRUD
             private List<TableAttribute> m_TableAttrs;
             private OrderedRegistry<FieldDef> m_FieldDefs;
 
+            private JSONDataMap m_ExtraData;
         #endregion
 
         #region Properties
@@ -558,6 +559,22 @@ namespace NFX.DataAccess.CRUD
             /// Returns field count
             /// </summary>
             public int FieldCount {get { return m_FieldDefs.Count;}}
+
+
+            /// <summary>
+            /// Returns Extra data that may be associated with schema by various providers.
+            /// The field is lazily allocated
+            /// </summary>
+            public JSONDataMap ExtraData
+            {
+              get
+              {
+                if (m_ExtraData==null)
+                  m_ExtraData = new JSONDataMap(false);
+                
+                return m_ExtraData;
+              }
+            }
 
         #endregion
 
@@ -633,12 +650,13 @@ namespace NFX.DataAccess.CRUD
             /// <summary>
             /// Performs logical equivalence testing of two schemas
             /// </summary>
-            public bool IsEquivalentTo(Schema other)
+            public bool IsEquivalentTo(Schema other, bool compareNames = true)
             {
                 if (other==null) return false;
                 if (object.ReferenceEquals(this, other)) return true;
 
-                if (!Name.EqualsIgnoreCase(other.Name)) return false;
+                if (compareNames)
+                 if (!Name.EqualsIgnoreCase(other.Name)) return false;
                 
                 if (this.m_TableAttrs.Count != other.m_TableAttrs.Count ||
                     this.m_FieldDefs.Count != other.m_FieldDefs.Count) return false;

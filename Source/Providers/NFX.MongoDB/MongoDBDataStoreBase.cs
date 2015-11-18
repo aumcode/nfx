@@ -26,8 +26,11 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 
+using NFX.DataAccess;
+using NFX.DataAccess.CRUD;
 using NFX.Environment;
 using NFX.ApplicationModel;
+using NFX.DataAccess.MongoDB.Connector;
 
 namespace NFX.DataAccess.MongoDB
 {
@@ -174,7 +177,7 @@ namespace NFX.DataAccess.MongoDB
         }
         catch (Exception error)
         {
-          throw new MongoDBDataAccessException(string.Format(StringConsts.CONNECTION_TEST_FAILED_ERROR, error.Message), error);
+          throw new MongoDBDataAccessException(StringConsts.CONNECTION_TEST_FAILED_ERROR.Args(error.ToMessageWithType()), error);
         }
       }
 
@@ -182,7 +185,7 @@ namespace NFX.DataAccess.MongoDB
 
     #region IConfigurable Members
 
-      public void Configure(IConfigSectionNode node)
+      public virtual void Configure(IConfigSectionNode node)
       {
         ConfigAttribute.Apply(this, node);
       }
@@ -191,13 +194,28 @@ namespace NFX.DataAccess.MongoDB
     
     #region Protected
 
-      protected NFX.DataAccess.MongoDB.Connector.Database GetDatabase()
+      /// <summary>
+      /// Gets appropriate database. It does not need to be disposed
+      /// </summary>
+      protected Database GetDatabase()
       {
-        var client= new NFX.DataAccess.MongoDB.Connector.MongoClient(this.Name);
-        var server = client.Servers[m_ConnectString] ?? client.DefaultLocalServer;
-        var db = server[m_DatabaseName];
-        return db;
+        var cstring = m_ConnectString;
+        var dbn = m_DatabaseName;
+        
+        //Try to override from the context
+        var ctx = CRUDOperationCallContext.Current;
+        if (ctx!=null)
+        {
+          if (ctx.ConnectString.IsNotNullOrWhiteSpace()) cstring = ctx.ConnectString;
+          if (ctx.DatabaseName.IsNotNullOrWhiteSpace()) dbn = ctx.DatabaseName;
+        }
+
+        
+        var server = MongoClient.Instance[ new NFX.Glue.Node(cstring)];
+        var database = server[dbn];
+        return database;
       }
+
 
     #endregion
   }

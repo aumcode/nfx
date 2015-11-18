@@ -341,6 +341,56 @@ namespace NFX.NUnit.DataAccess
             Assert.AreEqual("234234",  row2[row1.Schema["History1"].Order][1][0]);
         }
 
+        [TestCase] 
+        public void JSON_SerializeRow_ComplexTypedRow_WithSchema()
+        {
+            var row1 =  new PersonWithNesting{
+                                    ID = "A1",
+                                    FirstName = "Joseph",
+                                    LastName = "Mc'Cloud",
+                                    DOB = new DateTime(1953, 12, 10),
+                                    YearsInSpace = 12,
+                                    LatestHistory = new HistoryItem{ ID = "111", StartDate = DateTime.Now, Description="Chaplin" },
+                                    History1  = new List<HistoryItem>
+                                    {
+                                      new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
+                                      new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
+                                    },
+                                    History2  = new HistoryItem[2] 
+                                   };
+            
+            
+            var tbl1 = new Rowset(row1.Schema);
+            tbl1.Add(row1);
+            
+            
+            var json = tbl1.ToJSON( new NFX.Serialization.JSON.JSONWritingOptions
+                                   {
+                                     RowsetMetadata = true,
+                                      SpaceSymbols = true,
+                                       IndentWidth = 2,
+                                        MemberLineBreak = true,
+                                         ObjectLineBreak = true,
+                                          RowsAsMap = true, 
+                                           Purpose = JSONSerializationPurpose.Marshalling
+                                   });//AS MAP
+           
+            Console.WriteLine(json);
+
+            var tbl2 = json.JSONToDynamic();
+
+            var row2 = tbl2.Rows[0];
+
+            Assert.AreEqual("A1",      row2.ID);
+            Assert.AreEqual("Joseph",  row2.FirstName);
+            Assert.AreEqual("Mc'Cloud",row2.LastName);
+            Assert.AreEqual("111",     row2.LatestHistory.ID);
+            Assert.AreEqual(2,         row2.History1.Count);
+            Assert.AreEqual("234234",  row2.History1[1].ID);
+        }
+
+
+
 
 
     }

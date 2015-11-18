@@ -35,9 +35,10 @@ namespace NFX.Erlang
         internal const string ERLANG_NODE_SECTION       = "node";
         internal const string ERLANG_SHORT_NAME_ATTR    = "short-name";
 
-        public const string ANY    = "_";
-        public const string TRUE   = "true";
-        public const string FALSE  = "false";
+        public const string ANY       = "_";
+        public const string TRUE      = "true";
+        public const string FALSE     = "false";
+        public const string UNDEFINED = "undefined";
 
         /// <summary>
         /// The largest value that can be encoded as an integer

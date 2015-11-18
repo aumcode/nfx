@@ -1,0 +1,215 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using NFX;
+using NFX.DataAccess.CRUD;
+using NFX.Erlang;
+
+namespace NFX.DataAccess.Erlang
+{
+  /// <summary>
+  /// Executes Erlang CRUD script-based queries
+  /// </summary>
+  public sealed class ErlCRUDScriptQueryHandler : ICRUDQueryHandler
+  {
+    #region CONSTS
+
+       public static readonly IErlObject EXECUTE_OK_PATTERN    = ErlObject.Parse("{ReqID::int(), {ok, SchemaID::atom(), Rows::list()}}");
+       public static readonly IErlObject EXECUTE_ERROR_PATTERN = ErlObject.Parse("{ReqID::int(), {error, Code::int(), Msg}}");
+
+       public static readonly ErlAtom ATOM_ReqID    = new ErlAtom("ReqID");
+       public static readonly ErlAtom ATOM_SchemaID = new ErlAtom("SchemaID");
+       public static readonly ErlAtom ATOM_Rows     = new ErlAtom("Rows");
+       public static readonly ErlAtom ATOM_Code     = new ErlAtom("Code");
+       public static readonly ErlAtom ATOM_Msg      = new ErlAtom("Msg");
+
+    
+    //public static readonly IErlObject EXECUTE_OK_PATTERN =
+    //new ErlPatternMatcher {
+    //    {"stop", (p, t, b, _args) => { active = false; return null; } },
+    //    {"Msg",  (p, t, b, _args) => { Console.WriteLine(b["Msg"].ToString()); return null; } },
+    //};
+
+
+    #endregion
+    
+    #region .ctor
+        public ErlCRUDScriptQueryHandler(ErlDataStore store, QuerySource source)
+        {
+          m_Store = store;
+          m_Source = source;
+        }
+    #endregion
+
+    #region Fields
+        private ErlDataStore m_Store;
+        private QuerySource m_Source;
+    #endregion
+
+    #region ICRUDQueryHandler
+    
+
+      public string Name{ get { return m_Source.Name; }}
+
+      public ICRUDDataStore Store{ get { return m_Store;}}
+
+
+      public Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
+      {
+        return m_Store.Map.GetCRUDSchemaForName(m_Source.OriginalSource);
+      }
+
+      public Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
+      {
+        return TaskUtils.AsCompletedTask(() => GetSchema(context, query) );
+      }
+
+      public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+      {
+        var store = ((ErlCRUDQueryExecutionContext)context).DataStore;
+
+        var parsed = prepareQuery(m_Source);
+
+        var reqID = m_Store.NextRequestID;
+        
+        var bind = new ErlVarBind();
+
+        foreach(var erlVar in parsed.ArgVars)
+        {
+           var name = erlVar.Name.Value;
+
+           var clrPar = query[name];
+           if (clrPar==null)
+            throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR.Args(parsed.Source, name));
+
+           bind.Add(erlVar, clrPar.Value);
+        }
+
+        var request = parsed.ArgTerm.Subst(bind);
+
+        var args = new ErlList
+        {
+          reqID.ToErlObject(),
+          parsed.Module,
+          parsed.Function,
+          request
+        };
+
+
+        var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD, 
+                                       ErlDataStore.NFX_RPC_FUN, args);
+                                        
+        var response = rawResp as ErlTuple; 
+
+        // {ReqID, {ok, SchemaID, [{row},{row}...]}}
+        // {ReqID, {error, Reason}}
+
+        if (response==null)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response==null");
+
+
+        bind = response.Match(EXECUTE_OK_PATTERN);
+        if (bind==null)
+        {
+          bind = response.Match(EXECUTE_ERROR_PATTERN);
+          if (bind==null || bind[ATOM_ReqID].ValueAsLong != reqID)
+            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response wrong error");
+
+          throw new ErlDataAccessException("Remote error code {0}. Message: '{1}'".Args(bind[ATOM_Code], bind[ATOM_Msg]));
+        }
+
+        if (bind[ATOM_ReqID].ValueAsLong != reqID)
+            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response.ReqID mismatch");
+
+        //{ReqID::int(), {ok, SchemaID::atom(), Rows::list()}}
+
+        var schema = bind[ATOM_SchemaID].ValueAsString;
+        var rows = bind[ATOM_Rows] as ErlList;
+
+        //{ok, "tca_jaba",
+        //[
+        //  {tca_jaba, 1234, tav, "User is cool", true},
+        //  {tca_jaba, 2344, zap, "Zaplya xochet pit", false}, 
+        //  {tca_jaba, 8944, tav, "User is not good", false} 
+        //]};
+        return m_Store.Map.ErlCRUDResponseToRowset(schema, rows);
+      }
+
+      public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+      {
+        return TaskUtils.AsCompletedTask(() => Execute(context, query, oneRow) );
+      }
+
+      public int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
+      {
+        throw new NotImplementedException();
+      }
+
+      public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
+      {
+        throw new NotImplementedException();
+      }
+
+    #endregion
+
+
+    #region .pvt
+
+      private struct parsedQuery
+      {
+        public string Source;
+        public ErlAtom Module;
+        public ErlAtom Function;
+        public ErlList ArgTerm;
+        public HashSet<ErlVar> ArgVars;
+      }
+
+      private static volatile Dictionary<string, parsedQuery> s_ParsedQueryCache = new Dictionary<string, parsedQuery>(StringComparer.Ordinal);
+
+
+      // Args := {trade_ctrl, stop_strat,[StratID::atom(), OpDescr::string(), User::int()]}
+      // nfx_crud:rpc(ReqID, Mod, Fun, Args)
+      private static parsedQuery prepareQuery(QuerySource qSource)
+      {
+
+         var src = qSource.StatementSource;
+
+         parsedQuery result;
+
+         if (s_ParsedQueryCache.TryGetValue(src, out result)) return result;
+
+         try
+         {
+           var mfa = NFX.Erlang.ErlObject.ParseMFA(src);
+
+           var argsTerm = mfa.Item3;
+           var vars = argsTerm.Visit(new HashSet<ErlVar>(), (a, o) => { if (o is ErlVar) a.Add((ErlVar)o); return a; });
+
+           result = new parsedQuery()
+           {
+             Source = src,
+             Module = mfa.Item1,
+             Function = mfa.Item2,
+             ArgTerm = argsTerm,
+             ArgVars = vars
+           };
+         }
+         catch(Exception error)
+         {
+            throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_SCRIPT_PARSE_ERROR.Args(src, error.ToMessageWithType()), error);
+         }
+
+         var dict = new Dictionary<string, parsedQuery>(s_ParsedQueryCache, StringComparer.Ordinal);
+         dict[src] = result;
+         s_ParsedQueryCache = dict;//atomic
+
+         return result;
+      }
+
+
+    #endregion
+  }
+}

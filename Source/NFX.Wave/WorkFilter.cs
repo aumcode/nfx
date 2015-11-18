@@ -31,9 +31,6 @@ namespace NFX.Wave
   public abstract class WorkFilter : DisposableObject, INamed, IOrdered
   {
       public const string CONFIG_FILTER_SECTION = "filter";
-      public const string CONFIG_ORDER_ATTR = "order";
-
-
       
       protected WorkFilter(WorkDispatcher dispatcher, string name, int order)
       {
@@ -60,7 +57,7 @@ namespace NFX.Wave
         m_Dispatcher = dispatcher;
         m_Server = dispatcher.ComponentDirector;
         m_Name = confNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
-        m_Order = confNode.AttrByName(CONFIG_ORDER_ATTR).ValueAsInt(0);
+        m_Order = confNode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0);
 
         if (m_Name.IsNullOrWhiteSpace())
          throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(confNode$name==null|empty)");

@@ -160,7 +160,7 @@ namespace NFX.Serialization.JSON
         public bool RowsAsMap;
 
         /// <summary>
-        /// When true, writes rowset metadata (i.e. schema, intsnace id etc.)
+        /// When true, writes rowset metadata (i.e. schema, instance id etc.)
         /// </summary>
         [Config]
         public bool RowsetMetadata;

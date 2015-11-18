@@ -78,7 +78,13 @@ namespace NFX.Wave
             
       internal Filters.SessionFilter m_SessionFilter;
       internal WaveSession m_Session;    
-      
+
+      internal Filters.PortalFilter m_PortalFilter;
+      internal Portal m_Portal;
+      internal WorkMatch m_PortalMatch;
+      internal JSONDataMap m_PortalMatchedVars;
+
+
       private object m_ItemsLock = new object();
       private ConcurrentDictionary<object, object> m_Items;
      
@@ -142,6 +148,34 @@ namespace NFX.Wave
       /// Returns true when the context was configured to support SessionFilter so Session can be injected
       /// </summary>
       public bool SupportsSession { get{ return m_SessionFilter!=null;}}
+
+      /// <summary>
+      /// Returns portal object for this request or null if no portal was injected
+      /// </summary>
+      public Portal Portal { get { return m_Portal;} }
+
+      /// <summary>
+      /// Returns the first portal filter which was injected in the processing line.
+      /// It is the filter that manages the portals for this context
+      /// </summary>
+      public Filters.PortalFilter PortalFilter {get{ return m_PortalFilter;}}
+
+      /// <summary>
+      /// Returns matched that was made by portal filter or null
+      /// </summary>
+      public WorkMatch PortalMatch {get{ return m_PortalMatch;}}
+
+      /// <summary>
+      /// Gets/sets portal theme. This may be null as this is just a holder variable
+      /// </summary>
+      public Theme PortalTheme { get; set;}
+
+
+      /// <summary>
+      /// Returns variables that have been extracted by WorkMatch when PortalFilter assigned portal.
+      /// Returns null if no portal was matched
+      /// </summary>
+      public JSONDataMap PortalMatchedVars{  get { return m_PortalMatchedVars;}}
 
 
       /// <summary>

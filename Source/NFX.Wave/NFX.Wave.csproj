@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Client\RecordModelGenerator.cs" />
     <Compile Include="Filters\BeforeAfterFilterBase.cs" />
+    <Compile Include="Filters\PortalFilter.cs" />
     <Compile Include="Filters\SecurityFilter.cs" />
     <Compile Include="Filters\GeoLookupFilter.cs" />
     <Compile Include="Filters\SessionFilter.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="MVC\Attributes.cs" />
     <Compile Include="MVC\Controller.cs" />
     <Compile Include="MVC\Reflection.cs" />
+    <Compile Include="Portal.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="SysConsts.cs" />
     <Compile Include="Templatization\ResponseRenderingTarget.cs" />

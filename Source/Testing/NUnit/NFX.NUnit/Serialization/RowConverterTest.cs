@@ -650,6 +650,46 @@ namespace NFX.NUnit.Serialization
         Assert.IsTrue( BYTES.SequenceEqual((byte[])rowB.AmorphousData["Bytes"]));
       }
 
+
+    #region Infer Schema
+    
+      [Test]
+      public void InferSchema()
+      {
+        var doc = new BSONDocument();
+        doc.Set( new BSONStringElement("FullName", "Alex Bobby") );
+        doc.Set( new BSONInt32Element("Age", 123) );
+        doc.Set( new BSONBooleanElement("IsGood", true) );
+
+        var c = new RowConverter();
+
+        var schema = c.InferSchemaFromBSONDocument(doc);
+
+        Assert.AreEqual(3, schema.FieldCount);
+        
+        Assert.AreEqual(0, schema["FullName"].Order);
+        Assert.AreEqual(1, schema["Age"].Order);
+        Assert.AreEqual(2, schema["IsGood"].Order);
+
+        Assert.AreEqual(typeof(object), schema["FullName"].NonNullableType);
+        Assert.AreEqual(typeof(object), schema["Age"].NonNullableType);
+        Assert.AreEqual(typeof(object), schema["IsGood"].NonNullableType);
+
+        var row = new DynamicRow(schema);
+        c.BSONDocumentToRow(doc, row, null);
+
+        Assert.AreEqual("Alex Bobby", row[0]);
+        Assert.AreEqual(123,          row[1]);
+        Assert.AreEqual(true,         row[2]);
+
+        Assert.AreEqual("Alex Bobby", row["FullName"]);
+        Assert.AreEqual(123,          row["Age"]);
+        Assert.AreEqual(true,         row["IsGood"]);
+      }
+
+    #endregion
+
+
     #endregion
 
     #region pvt.

@@ -41,7 +41,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
 
   }
 
-  public interface ICRUDSubscriptionStoreImplementation : IDataStoreImplementation
+  public interface ICRUDSubscriptionStoreImplementation : ICRUDSubscriptionStore, IDataStoreImplementation
   {
 
   }

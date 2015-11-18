@@ -104,6 +104,9 @@ namespace NFX.Wave
       public const string CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR = 
         "Match '{0}' is specified more than once in {1} config";
 
+      public const string CONFIG_OTHER_DUPLICATE_PORTAL_NAME_ERROR = 
+        "Portal '{0}' is specified more than once in {1} config";
+
       public const string SERVER_DEFAULT_ERROR_WC_NULL_ERROR = 
         "Server exception could not be responded to as WorkContext is null. Error: ";
 

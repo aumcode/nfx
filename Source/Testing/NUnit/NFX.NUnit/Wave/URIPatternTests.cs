@@ -198,6 +198,51 @@ namespace NFX.NUnit.Wave
           Assert.IsNull(match);
         }
 
+        [TestCase]
+        public void MakeURI_T1_noprefix()
+        {
+            var pattern = new URIPattern("/news/{year}/{month}/{title}");
+            var map = new JSONDataMap { { "year", "1981" }, { "month", 12 }, { "title", "some_title" } };
+
+            var uri = pattern.MakeURI(map);
+
+            Assert.AreEqual(new Uri("/news/1981/12/some_title", UriKind.RelativeOrAbsolute), uri);
+        }
+
+        [TestCase]
+        public void MakeURI_T1_prefix()
+        {
+            var pattern = new URIPattern("{year}/{month}/{title}");
+            var prefix = new Uri("http://test.com");
+            var map = new JSONDataMap { { "year", "1981" }, { "month", 12 }, { "title", "some_title" } };
+
+            var uri = pattern.MakeURI(map, prefix);
+
+            Assert.AreEqual(new Uri(prefix, "http://test.com/1981/12/some_title"), uri);
+        }
+
+        [TestCase]
+        public void MakeURI_T2_params()
+        {
+            var pattern = new URIPattern("{year}/values?{p1}={v1}&par2={v2}");
+            var map = new JSONDataMap { { "year", "1980" }, { "p1", "par1" }, { "v1", 10 }, { "v2", "val2" } };
+
+            var uri = pattern.MakeURI(map);
+
+            Assert.AreEqual(new Uri("1980/values?par1%3D10%26par2%3Dval2", UriKind.RelativeOrAbsolute), uri);
+        } 
+
+        [TestCase]
+        public void MakeURI_T2_params_prefix()
+        {
+            var pattern = new URIPattern("{year}/values?{p1}={v1}&par2={v2}");
+            var map = new JSONDataMap { { "year", "1980" }, { "p1", "par1" }, { "v1", 10 }, { "v2", "val2" } };
+            var prefix = new Uri("http://test.org/");
+
+            var uri = pattern.MakeURI(map, prefix);
+
+            Assert.AreEqual(new Uri("http://test.org/1980/values?par1%3D10%26par2%3Dval2", UriKind.RelativeOrAbsolute), uri);
+        }
 
     }
 }

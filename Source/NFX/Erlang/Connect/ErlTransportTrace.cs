@@ -14,57 +14,53 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NFX.Erlang
 {
-    public enum Direction
-    {
-        Inbound,
-        Outbound
-    }
+  public enum Direction
+  {
+    Inbound,
+    Outbound
+  }
 
-    public enum ErlTraceLevel
-    {
-        /// <summary>
-        /// Tracing is off
-        /// </summary>
-        Off         = 0,
-
-        /// <summary>
-        /// Trace ordinary send and receive messages
-        /// </summary>
-        Send        = 1,
-
-        /// <summary>
-        /// Trace control messages (e.g. link/unlink)
-        /// </summary>
-        Ctrl        = 2,
-
-        /// <summary>
-        /// Trace handshaking at connection startup
-        /// </summary>
-        Handshake   = 3,
-
-        /// <summary>
-        /// Trace Epmd connectivity
-        /// </summary>
-        Epmd        = 4,
-
-        /// <summary>
-        /// Trace wire-level message content
-        /// </summary>
-        Wire        = 5
-    }
+  public enum ErlTraceLevel
+  {
+    /// <summary>
+    /// Tracing is off
+    /// </summary>
+    Off         = 0,
 
     /// <summary>
-    /// Debugging delegate called to be able to record transport-related events
+    /// Trace ordinary send and receive messages
     /// </summary>
-    /// <param name="type">Type of trace event</param>
-    /// <param name="dir">Event direction (in/out-bound)</param>
-    /// <param name="message">Event detail</param>
-    public delegate void TraceCallback(ErlTraceLevel type, Direction dir, string message);
+    Send        = 1,
+
+    /// <summary>
+    /// Trace control messages (e.g. link/unlink)
+    /// </summary>
+    Ctrl        = 2,
+
+    /// <summary>
+    /// Trace handshaking at connection startup
+    /// </summary>
+    Handshake   = 3,
+
+    /// <summary>
+    /// Trace Epmd connectivity
+    /// </summary>
+    Epmd        = 4,
+
+    /// <summary>
+    /// Trace wire-level message content
+    /// </summary>
+    Wire        = 5
+  }
+
+  /// <summary>
+  /// Debugging delegate called to be able to record transport-related events
+  /// </summary>
+  /// <param name="type">Type of trace event</param>
+  /// <param name="dir">Event direction (in/out-bound)</param>
+  /// <param name="message">Event detail</param>
+  public delegate void TraceCallback(ErlTraceLevel type, Direction dir, string message);
 }

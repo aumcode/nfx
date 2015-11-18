@@ -28,6 +28,18 @@ namespace NFX.DataAccess.MongoDB
     public const string ARGUMENT_ERROR =
             "Argument error: ";
 
+    public const string OP_NOT_SUPPORTED_ERROR =
+        "Operation '{0}' is not supported by the {1}";
+
+    public const string OP_ROW_NO_PK_ID_ERROR =
+        "MongoDBDataStore requires the row '{0}' to have a primary key '{1}' field for operation '{2}'";
+
+    public const string OP_CRUD_ERROR =
+        "MongoDBDataStore CRUD operation '{0}' error on row '{1}': {2}";
+
+    public const string QUERY_MODIFY_TARGET_MISSING_ERROR =
+        "MongoDBDataStore query is missing modify target collection name: ";
+
     public const string CONNECTION_TEST_FAILED_ERROR =
         "MongoDB connection test failed with message: {0}";
 

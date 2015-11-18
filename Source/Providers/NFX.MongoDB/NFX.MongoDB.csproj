@@ -61,10 +61,14 @@
     <Compile Include="Connector\Exceptions.cs" />
     <Compile Include="Connector\Protocol.cs" />
     <Compile Include="Connector\Query.cs" />
+    <Compile Include="MongoDBCRUDQueryHandlerBase.cs" />
     <Compile Include="Log\MongoDBDestination.cs" />
     <Compile Include="Log\MongoDBLogMessageDataStore.cs" />
     <Compile Include="MongoDBDataAccessException.cs" />
+    <Compile Include="MongoDBDataStore.cs" />
     <Compile Include="MongoDBDataStoreBase.cs" />
+    <Compile Include="MongoDBCRUDScriptQueryHandler.cs" />
+    <Compile Include="MongoDBCRUDQueryExecutionContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringConsts.cs" />
   </ItemGroup>

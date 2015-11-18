@@ -1,0 +1,6 @@
+﻿#pragma
+modify=MyPerzon
+
+{ 
+  '$query': {'Age': {'$gt': '$$fromAge', '$lt': '$$toAge'}} , '$orderby': {'Age': -1} 
+}

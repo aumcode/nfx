@@ -100,8 +100,10 @@ namespace NFX.Environment
         /// <summary>
         /// Invokes a constructor for type feeding it the specified args: 
         ///  node{type="NS.Type, Assembly" arg0=1 arg1=true....}
+        /// If the typePattern is passed, then the '*' in pattern is replaced with 'type' attr content.
+        /// This is needed for security, as this method allows to inject any type with any ctor params when typePattern is null
         /// </summary>
-        public static T MakeUsingCtor<T>(IConfigSectionNode node)
+        public static T MakeUsingCtor<T>(IConfigSectionNode node, string typePattern = null)
         {
            string tpn = CoreConsts.UNKNOWN;
            try
@@ -113,6 +115,9 @@ namespace NFX.Environment
               
               if (tpn.IsNullOrWhiteSpace()) 
                 tpn = typeof(T).AssemblyQualifiedName;
+              else
+                if (typePattern.IsNotNullOrWhiteSpace())
+                  tpn = typePattern.Replace("*", tpn);
 
               var tp = Type.GetType(tpn, true);
 

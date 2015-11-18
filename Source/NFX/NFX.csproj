@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -116,6 +116,11 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\RowTypeMapping.cs" />
+    <Compile Include="Erlang\DataAccess\ErlCRUDQueryExecutionContext.cs" />
+    <Compile Include="Erlang\DataAccess\ErlCRUDScriptQueryHandler.cs" />
+    <Compile Include="Erlang\DataAccess\ErlDataStore.cs" />
+    <Compile Include="Erlang\DataAccess\ErlDataAccessException.cs" />
+    <Compile Include="Erlang\DataAccess\SchemaMap.cs" />
     <Compile Include="ExternalParameterAttribute.cs" />
     <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
     <Compile Include="CodeAnalysis\XML\XMLLanguage.cs" />

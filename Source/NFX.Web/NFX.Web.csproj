@@ -101,6 +101,7 @@
     <Compile Include="Pay\ICurrencyMarket.cs" />
     <Compile Include="Pay\Instrumentation\Gauges.cs" />
     <Compile Include="Pay\Intfs.cs" />
+    <Compile Include="Pay\ITaxCalc.cs" />
     <Compile Include="Pay\Mock\MockActualAccountData.cs" />
     <Compile Include="Pay\Mock\MockConnectionParameters.cs" />
     <Compile Include="Pay\Mock\MockCredentials.cs" />

@@ -287,9 +287,8 @@ namespace NFX.NUnit.Parsing
           var elapsed = sw.ElapsedMilliseconds;
           var ops = CNT / (elapsed / 1000d);
 
-          Assert.IsTrue( ops > 250000);//250,000 ops/sec
-
           Console.WriteLine("Genereated {0} full infos, in {1:n0} ms at {2:n0} ops/sec", CNT, elapsed, ops);
+          Assert.IsTrue( ops > 210000);//210,000 ops/sec
         }
 
 

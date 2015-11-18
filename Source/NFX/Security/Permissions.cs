@@ -149,12 +149,18 @@ namespace NFX.Security
            /// <summary>
            /// Makes multiple permissions from conf node
            /// </summary>
-           public static IEnumerable<Permission> MultipleFromConf(IConfigSectionNode node)
+           public static IEnumerable<Permission> MultipleFromConf(IConfigSectionNode node,
+                                                                  string shortNodeName = null, 
+                                                                  string typePattern = null
+                                                                  )
            {
               if (node==null || !node.Exists) return Enumerable.Empty<Permission>();
               var result = new List<Permission>();
-              foreach(var pnode in node.Children.Where(cn => cn.IsSameName(CONFIG_PERMISSION_SECTION)))
-                 result.Add( FactoryUtils.MakeUsingCtor<Permission>(pnode) );
+              foreach(var pnode in node.Children
+                                       .Where(cn => cn.IsSameName(CONFIG_PERMISSION_SECTION) ||
+                                                                  (shortNodeName.IsNotNullOrWhiteSpace() && cn.IsSameName(shortNodeName) )
+                                             )) 
+                 result.Add( FactoryUtils.MakeUsingCtor<Permission>(pnode, typePattern) );
               return result;
            }
 

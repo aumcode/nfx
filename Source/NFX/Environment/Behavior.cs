@@ -38,7 +38,6 @@ namespace NFX.Environment
         #region CONSTS
           public const string CONFIG_BEHAVIORS_SECTION = "behaviors";
           public const string CONFIG_BEHAVIOR_SECTION = "behavior";
-          public const string CONFIG_ORDER_ATTR = "order";
           public const string CONFIG_CASCADE_ATTR = "cascade";
         #endregion
 
@@ -62,7 +61,7 @@ namespace NFX.Environment
                         var bnodes = node[CONFIG_BEHAVIORS_SECTION]
                                           .Children
                                           .Where(c=> c.IsSameName(CONFIG_BEHAVIOR_SECTION) && (firstLevel || c.AttrByName(CONFIG_CASCADE_ATTR).ValueAsBool(false)) )
-                                          .OrderBy(c=> c.AttrByName(CONFIG_ORDER_ATTR).ValueAsInt());
+                                          .OrderBy(c=> c.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt());
                         foreach(var bnode in bnodes)
                         {
                             descr = " config path: '{0}', type: '{1}'".Args(bnode.RootPath, bnode.AttrByName(FactoryUtils.CONFIG_TYPE_ATTR).ValueAsString(StringConsts.NULL_STRING));

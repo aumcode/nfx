@@ -28,13 +28,16 @@ namespace NFX.Wave.Handlers
     /// <summary>
     /// Represents a location used for dynamic type searches
     /// </summary>
-    public sealed class TypeLocation : INamed
+    public sealed class TypeLocation : INamed, IOrdered
     {
        public const string CONFIG_TYPE_LOCATION_SECTION = "type-location";
        public const string CONFIG_ASSEMBLY_NAME_ATTR = "assembly";
        public const string CONFIG_NAMESPACE_SECTION = "ns";
+
+       public const string CONFIG_PORTAL_ATTR = "portal";
        
        private string m_Name;
+       private int m_Order;
        
        /// <summary>
        /// Location name
@@ -42,6 +45,14 @@ namespace NFX.Wave.Handlers
        public string Name
        {
           get { return m_Name;}
+       }
+
+       /// <summary>
+       /// Location order
+       /// </summary>
+       public int Order
+       {
+          get { return m_Order;}
        }
        
        /// <summary>
@@ -55,29 +66,39 @@ namespace NFX.Wave.Handlers
        public readonly Assembly Assembly;
 
        /// <summary>
+       /// Name of portal. When this property is set then this location will only be matched if
+       ///  WorkContext.Portal.Name matches for given request. NUll by default 
+       /// </summary>
+       public readonly string Portal;
+
+       /// <summary>
        /// A list of namespaces
        /// </summary>
        public readonly IEnumerable<string> Namespaces; 
 
 
-       public TypeLocation(string name, string assemblyName, params string[] namespaces)
+       public TypeLocation(string name, int order, string portal, string assemblyName, params string[] namespaces)
        {
          if (assemblyName.IsNullOrWhiteSpace())
           throw new WaveException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(assemblyName==null|empty)");
 
          if (name.IsNullOrWhiteSpace()) name = Guid.NewGuid().ToString();
          m_Name = name;
+         m_Order = order;
+         Portal = portal;
          AssemblyName = assemblyName;
          Namespaces = namespaces;
        }
 
-       public TypeLocation(string name, Assembly assembly, params string[] namespaces)
+       public TypeLocation(string name, int order, string portal, Assembly assembly, params string[] namespaces)
        {
          if (assembly==null)
           throw new WaveException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(assembly==null|empty)");
 
          if (name.IsNullOrWhiteSpace()) name = Guid.NewGuid().ToString();
          m_Name = name;
+         m_Order = order;
+         Portal = portal;
          Assembly = assembly;
          Namespaces = namespaces;
        }
@@ -88,6 +109,8 @@ namespace NFX.Wave.Handlers
           throw new WaveException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(confNode==null)");
 
          m_Name = confNode.AttrByName(Configuration.CONFIG_NAME_ATTR).ValueAsString( Guid.NewGuid().ToString() );
+         m_Order = confNode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt();
+         Portal = confNode.AttrByName(CONFIG_PORTAL_ATTR).Value;
          AssemblyName = confNode.AttrByName(CONFIG_ASSEMBLY_NAME_ATTR).Value;
          
          if (AssemblyName.IsNullOrWhiteSpace())
@@ -112,7 +135,7 @@ namespace NFX.Wave.Handlers
     /// <summary>
     /// A list of type search locations used for dynamic type searches
     /// </summary>
-    public sealed class TypeLocations : Registry<TypeLocation>
+    public sealed class TypeLocations : OrderedRegistry<TypeLocation>
     {
        public TypeLocations(): base() { }
     }
@@ -123,12 +146,12 @@ namespace NFX.Wave.Handlers
     /// </summary>
     internal sealed class TypeLookup : Dictionary<string, Type>
     {
-      public TypeLookup()
+      public TypeLookup() : base(StringComparer.Ordinal) 
       {
 
       }
       
-      public TypeLookup(TypeLookup clone) : base(clone)
+      public TypeLookup(TypeLookup clone) : base(clone, StringComparer.Ordinal)
       {
 
       }

@@ -756,6 +756,8 @@ namespace NFX
 
     public const string CRUD_FIELD_VALUE_SCREEN_NAME_ERROR = "Field value is not a valid screen name ID";
 
+    public const string CRUD_FIELD_VALUE_REGEXP_ERROR = "Field value is not valid per defined format: {0}";
+
     public const string CRUD_FIELD_VALUE_MIN_BOUND_ERROR = "Field value is below the permitted min bound";
 
     public const string CRUD_FIELD_VALUE_MAX_BOUND_ERROR = "Field value is above the permitted max bound";
@@ -822,10 +824,27 @@ namespace NFX
     public const string ELINK_CHAR_LENGTH_ERROR = "ELink '{0}' could not be read as it contains an invalid character data length";
     public const string ELINK_CSUM_MISMATCH_ERROR = "ELink '{0}' could not be read as its checksum does not match";
     
+
+    public const string ERL_DS_RPC_EXEC_ERROR = "ErlDataStore could not execute RPC call '{0}'. Error: {1}";
+
+    public const string ERL_DS_START_REQ_ERROR = "ErlDataStore could not start as required remote and module names are missing";
+    public const string ERL_DS_QUERY_SCRIPT_PARSE_ERROR       = "ErlDataStore could not parse script query source '{0}'. Error: {1}";
+    public const string ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR    = "ErlDataStore could not bind script query source '{0}' as param '{1}' was not found";
+    
+    public const string ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR     = "ErlSchema name '{0}' is not known in the map set";
+    public const string ERL_DS_SCHEMA_MAP_ERL_TYPE_ERROR      = "ErlSchema mapping does not handle '{0}' erl type";
+    public const string ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR = "ErlDataStore received an invalid protocol response: ";
+    public const string ERL_DS_CRUD_WRITE_FAILED_ERROR         = "ErlDataStore CRUD write failed: ";
+    public const string ERL_DS_CRUD_RESPONSE_SCHEMA_MISMATCH_ERROR = "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied schema name '{1}'";
+    public const string ERL_DS_CRUD_RESPONSE_SCHEMA_FLD_COUNT_MISMATCH_ERROR = 
+           "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied CRUD schema name '{1}' as field count differ";
+    public const string ERL_DS_INTERNAL_MAPPING_ERROR          = "ErlDataStore internal mapping error: ";
+
     public const string ERL_ATOM_SIZE_TOO_LONG_ERROR          = "Atom size is too long!";
     public const string ERL_ATOM_TABLE_IS_FULL_ERROR          = "Atom table is full!";
     public const string ERL_BIG_INTEGER_OVERFLOW_ERROR        = "Big integer overflow";
     public const string ERL_CANNOT_CONVERT_TYPES_ERROR        = "Cannot convert type {0} to {1}";
+    public const string ERL_CANNOT_CONVERT_TYPES_CYCLE_ERROR  = "Cannot convert type {0} to {1} as there is a reference cycle";
     public const string ERL_CANNOT_CLONE_INSTANCE_ERROR       = "Cannot clone instance of type {0}";
     public const string ERL_CANNOT_READ_FROM_STREAM_ERROR     = "Cannot read from input stream";
     public const string ERL_CONFIG_SINGLE_NODE_ERROR          = "Configuration must contain a single local node (found: {0} local nodes)";

@@ -247,11 +247,13 @@ namespace NFX.Wave.Handlers
            /// </summary>
            protected virtual Type GetTargetType(WorkContext work)
            {
-             var result = getTargetType(GetTargetTypeNameFromWorkContext(work)); 
+             var tname = GetTargetTypeNameFromWorkContext(work);
+
+             var result = getTargetType(work, tname); 
              if(result!=null && !result.IsAbstract) return result;
 
              if (m_CloakTypeName.IsNotNullOrWhiteSpace())
-              result = getTargetType(m_CloakTypeName);
+              result = getTargetType(work, m_CloakTypeName);
             
              return result;
            }
@@ -271,7 +273,7 @@ namespace NFX.Wave.Handlers
 
        
            /// <summary>
-           /// Factory method - Override to create and init more particular template implementattion (i.e. based on model)
+           /// Factory method - Override to create and init more particular template implementation (i.e. based on model)
            /// </summary>
            protected virtual TTarget CreateTargetInstance(WorkContext work, Type tt)
            {
@@ -347,27 +349,30 @@ namespace NFX.Wave.Handlers
             }
 
 
-            private Type getTargetType(string typeName)
+            private Type getTargetType(WorkContext work, string typeName)
             {
+              const string PORTAL_PREFIX = @"!#PORTAL\";
+
               if (typeName.IsNullOrWhiteSpace()) return null;
               Type result = null;
-              string key = typeName;
+              string key;
+              
+              if (work.Portal==null)
+                key = typeName;
+              else
+                key = PORTAL_PREFIX+work.Portal.Name+typeName;
 
            
               //1 Lookup in cache
               if (m_Lookup.TryGetValue(key, out result)) return result;
    
               //2 Lookup in locations
-              result = lookupTargetInLocations(key);
+              result = lookupTargetInLocations(work, typeName);
               if (result!=null)
               {
                 var lookup = new TypeLookup(m_Lookup);//thread safe copy
                 
-                //dbl check as other thread may have added to m_Lookup where this istance is cloned from
-                Type existing;
-                if (lookup.TryGetValue(key, out existing)) return existing;
-
-                lookup.Add(key, result);
+                lookup[key] =  result;//other thread may have added already
                 m_Lookup = lookup;//atomic
                 return result;
               }
@@ -376,35 +381,50 @@ namespace NFX.Wave.Handlers
             }
 
 
-            private Type lookupTargetInLocations(string key)
+            private Type lookupTargetInLocations(WorkContext work, string typeName)
             {
-              if (!isValidTypeNameKey(key)) return null;
+              if (!isValidTypeNameKey(typeName)) return null;
               
-              var tname = getTypeName(key);
+              string portal = null;
+              if (work.Portal!=null)
+               portal = work.Portal.Name;
 
-              foreach(var loc in m_TypeLocations)
+              var clrTName = getCLRTypeName(typeName);
+              
+              while(true)
               {
-                var asm = loc.Assembly;
-                if (asm==null)
-                  asm = Assembly.LoadFrom(loc.AssemblyName);
-               
-                var namespaces = loc.Namespaces;
-                if (namespaces!=null && namespaces.Any())
-                {
-                  foreach(var ns in loc.Namespaces)
+                  foreach(var loc in  m_TypeLocations.OrderedValues)
                   {
-                    var nsn = ns.Trim();
-                    if (!nsn.EndsWith("."))
-                      nsn+='.';
-                    var result = asm.GetType(nsn + tname, false, true);
-                    if (result!=null) return result;
+                      if (portal!=null)
+                       if (!portal.EqualsOrdIgnoreCase(loc.Portal)) continue;
+                      else
+                       if (loc.Portal.IsNotNullOrWhiteSpace()) continue;
+
+                      var asm = loc.Assembly;
+                      if (asm==null)
+                        asm = Assembly.LoadFrom(loc.AssemblyName);
+               
+                      var namespaces = loc.Namespaces;
+                      if (namespaces!=null && namespaces.Any())
+                      {
+                        foreach(var ns in loc.Namespaces)
+                        {
+                          var nsn = ns.Trim();
+                          if (!nsn.EndsWith("."))
+                            nsn+='.';
+                          var result = asm.GetType(nsn + clrTName, false, true);
+                          if (result!=null) return result;
+                        }
+                      }
+                      else
+                      {
+                          return asm.GetType(clrTName, false, true); 
+                      }
                   }
-                }
-                else
-                {
-                    return asm.GetType(tname, false, true); 
-                }
-              }
+
+                  if (portal == null) break;
+                  portal = null;
+              }//while
 
               return null;
             }
@@ -426,7 +446,7 @@ namespace NFX.Wave.Handlers
               return true;
             }
                        
-            private string getTypeName(string key)
+            private string getCLRTypeName(string key)
             {
               var cname = Path.GetFileNameWithoutExtension(key);
               var ns = Path.GetDirectoryName(key);
