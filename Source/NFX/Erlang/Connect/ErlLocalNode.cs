@@ -510,6 +510,7 @@ namespace NFX.Erlang
               msg.Msg));
 
       mbox.Deliver(msg);
+
       return true;
     }
 

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace NFX.Erlang.Internal
 {
-  internal class ErlMonitors : IEnumerable, IEnumerable<KeyValuePair<ErlRef, ErlPid>>
+  internal class ErlMonitors : IEnumerable<KeyValuePair<ErlRef, ErlPid>>
   {
     public ErlMonitors(ErlMbox owner)
     {
@@ -62,13 +62,14 @@ namespace NFX.Erlang.Internal
     }
 
 
-    public IEnumerator GetEnumerator()
+
+
+    public IEnumerator<KeyValuePair<ErlRef, ErlPid>> GetEnumerator()
     {
       return m_Monitors.GetEnumerator();
     }
 
-    IEnumerator<KeyValuePair<ErlRef, ErlPid>>
-    IEnumerable<KeyValuePair<ErlRef, ErlPid>>.GetEnumerator()
+    IEnumerator IEnumerable.GetEnumerator()
     {
       return m_Monitors.GetEnumerator();
     }

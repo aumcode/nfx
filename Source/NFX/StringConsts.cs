@@ -830,6 +830,8 @@ namespace NFX
     public const string ERL_DS_START_REQ_ERROR = "ErlDataStore could not start as required remote and module names are missing";
     public const string ERL_DS_QUERY_SCRIPT_PARSE_ERROR       = "ErlDataStore could not parse script query source '{0}'. Error: {1}";
     public const string ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR    = "ErlDataStore could not bind script query source '{0}' as param '{1}' was not found";
+
+    public const string ERL_DS_QUERY_SUBSCRIBER_NOT_FOUND_ERROR = "ErlDataStore subscription query must include Subscriber::pid() parameter";
     
     public const string ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR     = "ErlSchema name '{0}' is not known in the map set";
     public const string ERL_DS_SCHEMA_MAP_ERL_TYPE_ERROR      = "ErlSchema mapping does not handle '{0}' erl type";

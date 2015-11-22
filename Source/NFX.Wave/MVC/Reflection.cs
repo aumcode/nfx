@@ -84,7 +84,7 @@ namespace NFX.Wave.MVC
       {
         return Type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                    .Where(mi => Attribute.IsDefined(mi, typeof(ActionAttribute), false) &&
-                                !mi.ContainsGenericParameters &&
+                                !mi.ContainsGenericParameters &&  
                                 !mi.GetParameters().Any(mp=>mp.IsOut || mp.ParameterType.IsByRef)
                                  );
       }
@@ -130,7 +130,7 @@ namespace NFX.Wave.MVC
       public readonly ControllerInfo Controller;
 
       /// <summary>
-      /// Returns the actions in the order suitable for mathch making
+      /// Returns the actions in the order suitable for match making
       /// </summary>
       public IEnumerable<ActionInfo> Actions; 
     }

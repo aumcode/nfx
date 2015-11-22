@@ -22,14 +22,14 @@ using NFX.Erlang.Internal;
 namespace NFX.Erlang
 {
   /// <summary>
-  /// Indicates arrival of a message to a given mailbox
+  /// Indicates arrival of a message to a given mailbox.
+  /// The msg is of type ErlMsg, ErlExit, ErlDown, or ErlException.
+  /// <returns>
+  /// If returns true, the message is handled, and will not be put in the mailbox's queue.
+  /// Otherwise, the message will be enqueued in the mailbox's queue.
+  /// </returns>
   /// </summary>
-  public delegate void OnMessageDelegate(ErlMbox mbox, IErlObject msg);
-
-  /// <summary>
-  /// Indicates arrival of an exception in a given mailbox
-  /// </summary>
-  public delegate void OnErrorDelegate(ErlMbox mbox, ErlConnectionException e);
+  public delegate bool MailboxMsgEventHandler(ErlMbox mailbox, IQueable msg);
 
   /// <summary>
   /// Provides a simple mechanism for exchanging messages with Erlang
@@ -74,13 +74,13 @@ namespace NFX.Erlang
   /// </remarks>
   public class ErlMbox : DisposableObject
   {
-    #region CONSTS
+  #region CONSTS
 
     private const int SLEEP_GRANULARITY_MSEC = 5000;
 
-    #endregion
+  #endregion
 
-    #region .ctor
+  #region .ctor
 
     /// <summary>
     /// Create a mailbox with optional name
@@ -106,9 +106,9 @@ namespace NFX.Erlang
       m_Queue.Dispose();
     }
 
-    #endregion
+  #endregion
 
-    #region Fields
+  #region Fields
 
     private ErlLocalNode m_Node;
     private ErlPid m_Self;
@@ -117,9 +117,19 @@ namespace NFX.Erlang
     private ErlLinks m_Links;
     private ErlMonitors m_Monitors;
 
-    #endregion
+  #endregion
 
-    #region Proterties
+  #region Events
+
+    /// <summary>
+    /// If this event is assigned, it will be called on arrival of a message, but
+    /// the messages will not be put in the queue
+    /// </summary>
+    public event MailboxMsgEventHandler MailboxMessage;
+
+  #endregion
+
+  #region Proterties
 
     /// <summary>
     /// Get the Pid identifying associated with this mailbox
@@ -158,9 +168,9 @@ namespace NFX.Erlang
     /// </summary>
     internal DateTime LastUsed { get; set; }
 
-    #endregion
+  #endregion
 
-    #region Public
+  #region Public
 
     public void Clear()
     {
@@ -399,11 +409,12 @@ namespace NFX.Erlang
 
     #endregion
 
-    #region Protected / Internal
+  #region Protected / Internal
 
     protected void Enqueue(IQueable data)
     {
-      m_Queue.Enqueue(data);
+      if (!OnMailboxMessage(data))
+        m_Queue.Enqueue(data);
     }
 
     protected IQueable Dequeue(int timeout = -1)
@@ -425,6 +436,12 @@ namespace NFX.Erlang
     /// </remarks>
     internal void Close()
     {
+      // Notify all registered monitors that this pid is closing
+      foreach (var monitor in m_Monitors)
+      {
+        var msg = ErlMsg.MonitorPexit(m_Self, monitor.Value, monitor.Key, ErlAtom.Normal);
+        m_Node.Deliver(monitor.Value.Node, msg);
+      }
       m_Node.CloseMbox(this);
     }
 
@@ -438,7 +455,7 @@ namespace NFX.Erlang
     /// </summary>
     internal void Deliver(ErlMsg m)
     {
-      Debug.Assert((m.Recipient is ErlPid && m.RecipientPid == m_Self)
+      Debug.Assert((m.Recipient is ErlPid  && m.RecipientPid == m_Self)
                 || (m.Recipient is ErlAtom && m.RecipientName == m_RegName));
 
       switch (m.Type)
@@ -453,32 +470,33 @@ namespace NFX.Erlang
 
         case ErlMsg.Tag.Exit:
         case ErlMsg.Tag.Exit2:
-          {
-            m_Monitors.Remove(m.Ref);
-            if (m_Links.Remove(m.SenderPid))
-              Enqueue(m);
-            break;
-          }
+          m_Monitors.Remove(m.Ref);
+          if (m_Links.Remove(m.SenderPid))
+            Enqueue(m);
+          break;
+
         case ErlMsg.Tag.MonitorP:
           m_Monitors.Add(m.Ref, m.SenderPid);
           break;
 
         case ErlMsg.Tag.DemonitorP:
-          {
-            m_Monitors.Remove(m.Ref);
-            break;
-          }
+          m_Monitors.Remove(m.Ref);
+          break;
+
         case ErlMsg.Tag.MonitorPexit:
-          {
-            m_Links.Remove(m.SenderPid);
-            if (m_Monitors.Remove(m.Ref))
-              Enqueue(new ErlDown(m.Ref, m.SenderPid, m.Reason));
-            break;
-          }
+          m_Links.Remove(m.SenderPid);
+          if (m_Monitors.Remove(m.Ref))
+            Enqueue(new ErlDown(m.Ref, m.SenderPid, m.Reason));
+          break;
+
+        case ErlMsg.Tag.Undefined:
+          break;
+
         default:
           Enqueue(m);
           break;
       }
+
     }
 
     /// <summary>
@@ -494,11 +512,9 @@ namespace NFX.Erlang
         else
           m_Node.Deliver(new ErlConnectionException(fromNode, reason));
 
-      foreach (var m in m_Monitors.Where(o => o.Value.Node == fromNode))
-      {
-        if (m_Monitors.Remove(m.Key))
-          Deliver(new ErlConnectionException(fromNode, reason));
-      }
+      foreach (var m in m_Monitors.Where(o => o.Value.Node == fromNode)
+                                  .Where(m => m_Monitors.Remove(m.Key)))
+        Deliver(new ErlConnectionException(fromNode, reason));
     }
 
     /// <summary>
@@ -510,9 +526,14 @@ namespace NFX.Erlang
         m_Node.Deliver(ErlMsg.Exit(m_Self, l.Pid, reason));
     }
 
-    #endregion
+    protected virtual bool OnMailboxMessage(IQueable msg)
+    {
+      return MailboxMessage != null && MailboxMessage(this, msg);
+    }
 
-    #region .pvt
+  #endregion
+
+  #region .pvt
 
     /// <summary>
     /// Block until a message arrives for this mailbox
@@ -590,6 +611,6 @@ namespace NFX.Erlang
         throw new ErlException(StringConsts.ERL_INVALID_VALUE_ERROR.Args(msg.ToString()));
     }
 
-    #endregion
+  #endregion
   }
 }

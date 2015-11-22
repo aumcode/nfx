@@ -79,6 +79,7 @@ namespace NFX
       public const string ASSERT_TOPIC = "Assert";
       public const string TIME_TOPIC = "Time";
       public const string GLUE_TOPIC = "Glue";
+      public const string ERLANG_TOPIC = "Erlang";
 
       public const string CACHE_TOPIC = "Data.Cache";
 

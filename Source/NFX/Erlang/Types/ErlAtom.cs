@@ -27,11 +27,12 @@ namespace NFX.Erlang
   {
   #region Static
 
-    public static readonly ErlAtom Null = new ErlAtom(AtomTable.EMPTY_INDEX);
-    public static readonly ErlAtom True = new ErlAtom(AtomTable.TRUE_INDEX);
-    public static readonly ErlAtom False = new ErlAtom(AtomTable.FALSE_INDEX);
+    public static readonly ErlAtom Null      = new ErlAtom(AtomTable.EMPTY_INDEX);
+    public static readonly ErlAtom True      = new ErlAtom(AtomTable.TRUE_INDEX);
+    public static readonly ErlAtom False     = new ErlAtom(AtomTable.FALSE_INDEX);
     public static readonly ErlAtom Undefined = new ErlAtom(AtomTable.UNDEFINED_INDEX);
-
+    public static readonly ErlAtom Normal    = new ErlAtom("normal");
+  
   #endregion
 
   #region .ctor

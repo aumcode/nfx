@@ -140,6 +140,7 @@
     <EmbeddedResource Include="CRUD\Echo.erl.qry" />
     <EmbeddedResource Include="CRUD\SECDEF.erl.qry" />
     <EmbeddedResource Include="CRUD\SecDef.ByExchange.erl.qry" />
+    <EmbeddedResource Include="CRUD\WorldNews.erl.qry" />
     <None Include="CRUD\ErlSpecific\nfx_crud.erl" />
     <None Include="CRUD\ErlSpecific\nfx_test.erl" />
     <None Include="CRUD\ErlSpecific\StartErlNode.bat" />

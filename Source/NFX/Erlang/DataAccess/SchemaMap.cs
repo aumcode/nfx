@@ -339,17 +339,17 @@ namespace NFX.DataAccess.Erlang
     
       private static readonly Dictionary<string, Tuple<Type, Func<IErlObject, object>>> ERL_TO_CLR_TYPEMAP = new Dictionary<string,Tuple<Type,Func<IErlObject,object>>>
       {
-        {"atom",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null : erl.ValueAsString)},
-        {"string",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null : erl.ValueAsString)},
-        {"char",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null : erl.ValueAsString)},
-        {"long",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(long?),    (erl) => erl.IsNull() ? (long?)null     :erl.ValueAsLong)},
-        {"double",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(double?),  (erl) => erl.IsNull() ? (double?)null   :erl.ValueAsDouble)},
-        {"datetime", Tuple.Create<Type, Func<IErlObject, object>>(typeof(DateTime?),(erl) => erl.IsNull() ? (DateTime?)null :erl.ValueAsDateTime)},
-        {"pid",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null :erl.ValueAsString)},
-        {"bool",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(bool?),    (erl) => erl.IsNull() ? (bool?)null  :erl.ValueAsBool)},
-        {"bin",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(byte[]),   (erl) => erl.IsNull() ? (byte[])null :erl.ValueAsByteArray)},
-        {"binstr",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null : Encoding.UTF8.GetString(erl.ValueAsByteArray))},
-        {"ref",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null :erl.ValueAsString)}
+        {"atom",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)},
+        {"string",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)},
+        {"char",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)},
+        {"long",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(long?),    (erl) => erl.IsNull() ? (long?)null     : erl.ValueAsLong)},
+        {"double",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(double?),  (erl) => erl.IsNull() ? (double?)null   : erl.ValueAsDouble)},
+        {"datetime", Tuple.Create<Type, Func<IErlObject, object>>(typeof(DateTime?),(erl) => erl.IsNull() ? (DateTime?)null : erl.ValueAsDateTime)},
+        {"pid",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)},
+        {"bool",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(bool?),    (erl) => erl.IsNull() ? (bool?)null     : erl.ValueAsBool)},
+        {"bin",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(byte[]),   (erl) => erl.IsNull() ? (byte[])null    : erl.ValueAsByteArray)},
+        {"binstr",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : Encoding.UTF8.GetString(erl.ValueAsByteArray))},
+        {"ref",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)}
       };
 
 

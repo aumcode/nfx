@@ -29,24 +29,22 @@ namespace NFX.Erlang
     public ErlLink(ErlAtom remoteNode)
     {
       Node = remoteNode;
-      Pid = ErlPid.Null;
+      Pid  = ErlPid.Null;
     }
 
     public ErlLink(ErlPid remote)
     {
       Node = remote.Node;
-      Pid = remote;
+      Pid  = remote;
     }
 
     /// <summary>
     /// Returns true if this link points to a pid rather than to a node
     /// </summary>
-    public bool HasPid { get { return Pid != ErlPid.Null; } }
+    public bool HasPid     { get { return Pid != ErlPid.Null; } }
+    public bool IsNodeLink { get { return Pid == ErlPid.Null; } }
 
-    public bool Contains(ErlPid pid)
-    {
-      return Pid.Equals(pid);
-    }
+    public bool Contains(ErlPid pid) { return pid.Equals(Pid); }
 
     public override bool Equals(object obj)
     {
@@ -68,16 +66,12 @@ namespace NFX.Erlang
       return Node == rhs.Node && Equals(((ErlLink)rhs).Pid);
     }
 
-    public bool Equals(ErlPid remote)
-    {
-      return Pid.Equals(remote);
-    }
+    public bool Equals(ErlPid remote) { return remote.Equals(Pid); }
 
     public int CompareTo(ErlLink other)
     {
-      int n = Node.CompareTo(other.Node);
-      if (n != 0) return n;
-      return Pid.CompareTo(other.Pid);
+      var n = Node.CompareTo(other.Node);
+      return n != 0 ? n : Pid.CompareTo(other.Pid);
     }
   }
 
@@ -93,6 +87,7 @@ namespace NFX.Erlang
     private SortedSet<ErlLink> m_Links;
 
     public SortedSet<ErlLink> Links { get { return m_Links; } }
+
     public int Count { get { return m_Links.Count; } }
 
     public bool Add(ErlPid to)
@@ -109,7 +104,7 @@ namespace NFX.Erlang
     {
       lock (m_Links)
       {
-        bool res = !m_Links.Contains(link);
+        var res = !m_Links.Contains(link);
         if (res)
           m_Links.Add(link);
         return res;

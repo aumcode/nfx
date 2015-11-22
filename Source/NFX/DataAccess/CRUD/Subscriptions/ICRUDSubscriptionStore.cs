@@ -22,7 +22,12 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     /// <param name="query">The query that informs the remote store what data to send back</param>
     /// <param name="recipient">The local Recipient which will receive remote data</param>
     /// <returns>The subscription. It may be ended by calling .Dispose()</returns>
-    Subscription Subscribe(string name, Query query, Recipient recipient);
+    Subscription Subscribe(string name, Query query, Mailbox recipient);
+
+    /// <summary>
+    /// Returns existing mailbox by name (case-insensitive) or creates a new named mailbox 
+    /// </summary>
+    Mailbox OpenMailbox(string name);
 
     /// <summary>
     /// Returns registry of all active subscriptions
@@ -30,14 +35,9 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     IRegistry<Subscription> Subscriptions { get;}
 
     /// <summary>
-    /// Returns registry of all recipients
+    /// Returns registry of all mailboxes
     /// </summary>
-    IRegistry<Recipient> Recipients { get;}
-
-    /// <summary>
-    /// Returns registry of type mappings that map remote data to CLR row types
-    /// </summary>
-    IRegistry<RowTypeMapping> TypeMappings{ get; }
+    IRegistry<Mailbox> Mailboxes { get;}
 
   }
 

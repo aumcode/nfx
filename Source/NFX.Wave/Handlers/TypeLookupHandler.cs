@@ -396,9 +396,13 @@ namespace NFX.Wave.Handlers
                   foreach(var loc in  m_TypeLocations.OrderedValues)
                   {
                       if (portal!=null)
-                       if (!portal.EqualsOrdIgnoreCase(loc.Portal)) continue;
+                      {
+                        if (!portal.EqualsOrdIgnoreCase(loc.Portal)) continue;
+                      }
                       else
-                       if (loc.Portal.IsNotNullOrWhiteSpace()) continue;
+                      {
+                        if (loc.Portal.IsNotNullOrWhiteSpace()) continue;
+                      }
 
                       var asm = loc.Assembly;
                       if (asm==null)
@@ -426,6 +430,7 @@ namespace NFX.Wave.Handlers
                   portal = null;
               }//while
 
+              
               return null;
             }
 

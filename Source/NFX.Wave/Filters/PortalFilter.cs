@@ -63,7 +63,7 @@ namespace NFX.Wave.Filters
     #region Fields
 
      private Registry<Portal> m_Portals = new Registry<Portal>();
-     private OrderedRegistry<WorkMatch> m_PortalMatches { get{ return m_PortalMatches;}}
+     private OrderedRegistry<WorkMatch> m_PortalMatches = new OrderedRegistry<WorkMatch>();
 
     #endregion
 
@@ -118,6 +118,13 @@ namespace NFX.Wave.Filters
               {
                  work.m_Portal = defaultPortal;
               } 
+            }
+
+            if (Server.m_InstrumentationEnabled &&
+                work.m_Portal!=null && 
+                work.m_Portal.InstrumentationEnabled)
+            {
+              Server.m_Stat_PortalRequest.IncrementLong(work.m_Portal.Name);
             }
 
             this.InvokeNextWorker(work, filters, thisFilterIndex);

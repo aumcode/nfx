@@ -20,11 +20,16 @@ namespace NFX.DataAccess.Erlang
        public static readonly IErlObject EXECUTE_OK_PATTERN    = ErlObject.Parse("{ReqID::int(), {ok, SchemaID::atom(), Rows::list()}}");
        public static readonly IErlObject EXECUTE_ERROR_PATTERN = ErlObject.Parse("{ReqID::int(), {error, Code::int(), Msg}}");
 
+       public static readonly IErlObject EXECUTE_SUBSCRIBE_OK_PATTERN = ErlObject.Parse("{ReqID::int(), ok}");
+       public static readonly IErlObject EXECUTE_SUBSCRIBE_ERROR_PATTERN = ErlObject.Parse("{ReqID::int(), {error, Code::int(), Msg}}");
+
        public static readonly ErlAtom ATOM_ReqID    = new ErlAtom("ReqID");
        public static readonly ErlAtom ATOM_SchemaID = new ErlAtom("SchemaID");
        public static readonly ErlAtom ATOM_Rows     = new ErlAtom("Rows");
        public static readonly ErlAtom ATOM_Code     = new ErlAtom("Code");
        public static readonly ErlAtom ATOM_Msg      = new ErlAtom("Msg");
+
+       public static readonly ErlAtom ATOM_Subscriber = new ErlAtom("Subscriber");
 
     
     //public static readonly IErlObject EXECUTE_OK_PATTERN =
@@ -70,6 +75,7 @@ namespace NFX.DataAccess.Erlang
       public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
       {
         var store = ((ErlCRUDQueryExecutionContext)context).DataStore;
+        var mbox = ((ErlCRUDQueryExecutionContext)context).ErlMailBox;
 
         var parsed = prepareQuery(m_Source);
 
@@ -98,9 +104,8 @@ namespace NFX.DataAccess.Erlang
           request
         };
 
-
         var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD, 
-                                       ErlDataStore.NFX_RPC_FUN, args);
+                                       ErlDataStore.NFX_RPC_FUN, args, mbox);
                                         
         var response = rawResp as ErlTuple; 
 
@@ -143,14 +148,83 @@ namespace NFX.DataAccess.Erlang
         return TaskUtils.AsCompletedTask(() => Execute(context, query, oneRow) );
       }
 
+      //used for subscription
       public int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
       {
-        throw new NotImplementedException();
+        var store = ((ErlCRUDQueryExecutionContext)context).DataStore;
+        var mbox = ((ErlCRUDQueryExecutionContext)context).ErlMailBox;
+
+        var parsed = prepareQuery(m_Source);
+
+        var reqID = m_Store.NextRequestID;
+        
+        var bind = new ErlVarBind();
+
+        var wass = false;
+        foreach(var erlVar in parsed.ArgVars)
+        {
+           var name = erlVar.Name.Value;
+
+           if (erlVar.Name==ATOM_Subscriber && 
+               erlVar.ValueType==ErlTypeOrder.ErlPid)
+           {
+             bind.Add(ATOM_Subscriber, mbox.Self);
+             wass = true;
+             continue;
+           }
+
+           var clrPar = query[name];
+           if (clrPar==null)
+            throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR.Args(parsed.Source, name));
+
+           bind.Add(erlVar, clrPar.Value);
+        }
+
+        if (!wass)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_SUBSCRIBER_NOT_FOUND_ERROR);
+
+        var request = parsed.ArgTerm.Subst(bind);
+
+        var args = new ErlList
+        {
+          reqID.ToErlObject(),
+          parsed.Module,
+          parsed.Function,
+          request
+        };
+
+        var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD, 
+                                       ErlDataStore.NFX_SUBSCRIBE_FUN, args, null);
+                                        
+        var response = rawResp as ErlTuple; 
+
+        // {ReqID, {ok, SchemaID, [{row},{row}...]}}
+        // {ReqID, {error, Reason}}
+
+        if (response==null)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response==null");
+
+
+        bind = response.Match(EXECUTE_SUBSCRIBE_OK_PATTERN);
+        if (bind==null)
+        {
+          bind = response.Match(EXECUTE_SUBSCRIBE_ERROR_PATTERN);
+          if (bind==null || bind[ATOM_ReqID].ValueAsLong != reqID)
+            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response wrong error");
+
+          throw new ErlDataAccessException("Remote error code {0}. Message: '{1}'".Args(bind[ATOM_Code], bind[ATOM_Msg]));
+        }
+
+        if (bind[ATOM_ReqID].ValueAsLong != reqID)
+            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response.ReqID mismatch");
+
+        //{ReqID::int(), ok}
+        return 0;
       }
 
       public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
       {
-        throw new NotImplementedException();
+        return TaskUtils.AsCompletedTask(() => ExecuteWithoutFetch(context, query) );
       }
 
     #endregion

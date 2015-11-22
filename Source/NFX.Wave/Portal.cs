@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
 
 using NFX.Instrumentation;
 using NFX.Environment;
@@ -13,37 +12,79 @@ namespace NFX.Wave
   /// Represents a web portal that controls the mapping of types and themes within the site.
   /// Portals allow to host differently-looking/behaving sites in the same web application
   /// </summary>
-  public class Portal : INamed, IInstrumentable
+  public abstract class Portal : INamed, IInstrumentable
   {
-    public const string DEFAULT_STATIC_PATH =  "/static";
-    public const string DEFAULT_IMG_PATH    =  "img";
-    public const string DEFAULT_STL_PATH    =  "stl";
-    public const string DEFAULT_FNT_PATH    =  "fnt";
-    public const string DEFAULT_ELM_PATH    =  "elm";
-    public const string DEFAULT_SCR_PATH    =  "scr";
-    public const string DEFAULT_STOCK_PATH  =  "stock/site";
+    public const string CONFIG_THEME_SECTION = "theme";
+    
 
+    public const string CONFIG_DESCR_ATTR = "description";
+    public const string CONFIG_OFFLINE_ATTR = "offline";
+    public const string CONFIG_DEFAULT_ATTR = "default";
+    public const string CONFIG_PRIMARY_ROOT_URI_ATTR = "primary-root-uri";
+
+
+    /// <summary>
+    /// Makes portal from config.
+    /// Due to the nature of Portal object there is no need to create other parametrized ctors
+    /// </summary>
+    protected Portal(IConfigSectionNode conf)
+    {
+      const string PORTAL = "portal";
+
+      m_Name = conf.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
+      if (m_Name.IsNullOrWhiteSpace())
+      {
+        m_Name = this.GetType().Name;
+        if (m_Name.EndsWith(PORTAL, StringComparison.OrdinalIgnoreCase) && m_Name.Length>PORTAL.Length)
+         m_Name = m_Name.Substring(0, m_Name.Length-PORTAL.Length);
+      }
+
+      m_Description = conf.AttrByName(CONFIG_DESCR_ATTR).ValueAsString(m_Name);
+      m_Offline = conf.AttrByName(CONFIG_OFFLINE_ATTR).ValueAsBool(false);
+      m_Default = conf.AttrByName(CONFIG_DEFAULT_ATTR).ValueAsBool(false);
+
+      var puri = conf.AttrByName(CONFIG_PRIMARY_ROOT_URI_ATTR).Value;
+
+      try{ m_PrimaryRootUri = new Uri(puri, UriKind.Absolute); }
+      catch(Exception error)
+      {
+        throw new WaveException(StringConsts.CONFIG_PORTAL_ROOT_URI_ERROR.Args(m_Name, error.ToMessageWithType()), error);
+      }
+
+      m_Themes = new Registry<Theme>();
+      var nthemes = conf.Children.Where(c => c.IsSameName(CONFIG_THEME_SECTION));
+      foreach(var ntheme in nthemes)
+      {
+        var theme = FactoryUtils.Make<Theme>(ntheme, args: new object[]{this, ntheme});
+        if(!m_Themes.Register(theme))
+          throw new WaveException(StringConsts.CONFIG_PORTAL_DUPLICATE_THEME_NAME_ERROR.Args(theme.Name, m_Name)); 
+      }
+
+      if (m_Themes.Count==0)
+        throw new WaveException(StringConsts.CONFIG_PORTAL_NO_THEMES_ERROR.Args(m_Name)); 
+
+      m_DefaultTheme = m_Themes.FirstOrDefault(t => t.Default);
+      if (m_DefaultTheme==null)
+        throw new WaveException(StringConsts.CONFIG_PORTAL_NO_DEFAULT_THEME_ERROR.Args(m_Name)); 
+
+      ConfigAttribute.Apply(this, conf);
+    }//.ctor
+    
+     
 
     private string m_Name;
     private string m_Description;
+    private bool m_InstrumentationEnabled;
 
     private bool m_Offline;
     private bool m_Default;
 
+    private Uri m_PrimaryRootUri;
+
     private Theme m_DefaultTheme;
     private Registry<Theme> m_Themes;
 
-    private Uri m_PrimaryRootUri;
-
-    private string m_StaticRootPath;
-    private string m_ImagePath;
-    private string m_StylePath;
-    private string m_FontPath;
-    private string m_ElementPath;
-    private string m_ScriptPath;
-    private string m_StockPath;
-
-
+   
 
     /// <summary>
     /// Globally-unique portal name/ID
@@ -66,6 +107,7 @@ namespace NFX.Wave
     /// <summary>
     /// If true, does not get matched per request
     /// </summary>
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)] 
     public bool Offline
     {
       get { return m_Offline;  } 
@@ -73,8 +115,9 @@ namespace NFX.Wave
     }
 
     /// <summary>
-    /// If true, gets matched when no othe suites
+    /// If true, matches this portal when no other suites
     /// </summary>
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)] 
     public bool Default
     {
       get { return m_Default;  } 
@@ -92,128 +135,83 @@ namespace NFX.Wave
     /// </summary>
     public IRegistry<Theme> Themes{ get{ return m_Themes;} }
 
-    [Config]
-    public string StaticRootPath
-    {
-      get{ return m_StaticRootPath ?? DEFAULT_STATIC_PATH;}
-      set { m_StaticRootPath = value;}
-    }
 
-    [Config]
-    public string StaticImagePath
+    public override string ToString()
     {
-      get{ return m_ImagePath ?? DEFAULT_IMG_PATH;}
-      set { m_ImagePath = value;}
+      return "{0}('{1}')".Args(GetType().Name, m_Name);
     }
-
-    [Config]
-    public string StaticStylePath
-    {
-      get{ return m_StylePath ?? DEFAULT_STL_PATH;}
-      set { m_StylePath = value;}
-    }
-
-    [Config]
-    public string StaticFontPath
-    {
-      get{ return m_FontPath ?? DEFAULT_FNT_PATH;}
-      set { m_FontPath = value;}
-    }
-
-    [Config]
-    public string StaticElementPath
-    {
-      get{ return m_ElementPath ?? DEFAULT_ELM_PATH;}
-      set { m_ElementPath = value;}
-    }
-
-    [Config]
-    public string StaticScriptPath
-    {
-      get{ return m_ScriptPath ?? DEFAULT_SCR_PATH;}
-      set { m_ScriptPath = value;}
-    }
-
-    [Config]
-    public string StaticStockPath
-    {
-      get{ return m_StockPath ?? DEFAULT_STOCK_PATH;}
-      set { m_StockPath = value;}
-    }
-
 
 
     #region IInstrumentable
-    public bool InstrumentationEnabled
-    {
-      get
+      /// <summary>
+      /// Implements IInstrumentable
+      /// </summary>
+      [Config(Default=false)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
+      public bool InstrumentationEnabled
       {
-        throw new NotImplementedException();
+        get { return m_InstrumentationEnabled;}
+        set { m_InstrumentationEnabled = value;}
       }
-      set
+
+      /// <summary>
+      /// Returns named parameters that can be used to control this component
+      /// </summary>
+      public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
+
+      /// <summary>
+      /// Returns named parameters that can be used to control this component
+      /// </summary>
+      public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
+      { 
+        return ExternalParameterAttribute.GetParameters(this, groups); 
+      }
+
+      /// <summary>
+      /// Gets external parameter value returning true if parameter was found
+      /// </summary>
+      public virtual bool ExternalGetParameter(string name, out object value, params string[] groups)
       {
-        throw new NotImplementedException();
+          return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
       }
-    }
-
-    public IEnumerable<KeyValuePair<string, Type>> ExternalParameters
-    {
-      get { throw new NotImplementedException(); }
-    }
-
-    public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool ExternalGetParameter(string name, out object value, params string[] groups)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool ExternalSetParameter(string name, object value, params string[] groups)
-    {
-      throw new NotImplementedException();
-    }
+          
+      /// <summary>
+      /// Sets external parameter value returning true if parameter was found and set
+      /// </summary>
+      public virtual bool ExternalSetParameter(string name, object value, params string[] groups)
+      {
+        return ExternalParameterAttribute.SetParameter(this, name, value, groups);
+      }
     #endregion
   }
 
   /// <summary>
-  /// Represents a portal theme. Theme resources are located in the thema-named subfolder i.e.: /static/bees/stl/main.css
+  /// Represents a portal theme. Theme groups various resources (such as css, scripts etc..)
+  /// whitin a portal. Do not inherit your themes from this class directly, instead use Theme(TPortal)
   /// </summary>
-  /// <remarks>
-  /// /static
-  ///   /elm - common elements
-  ///   /stock/site - stock resources
-  ///   
-  ///   /bees  - theme name
-  ///      /img
-  ///      /stl
-  ///      /fnt
-  ///      /scr
-  ///    
-  ///   /sunny - theme name
-  ///      /img
-  ///      /stl
-  ///      /fnt
-  ///      /scr
-  ///  ...  
-  /// </remarks>
-  public class Theme : INamed
+  public abstract class Theme : INamed
   {
     
+    protected Theme(Portal portal, IConfigSectionNode conf)
+    {
+      m_Portal = portal;
+      m_Name = conf.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
+      if (m_Name.IsNullOrWhiteSpace())
+       throw new WaveException(StringConsts.CONFIG_PORTAL_THEME_NO_NAME_ERROR.Args(portal.Name)); 
+
+
+      m_Description = conf.AttrByName(Portal.CONFIG_DESCR_ATTR).ValueAsString(m_Name);
+      m_Default = conf.AttrByName(Portal.CONFIG_DEFAULT_ATTR).ValueAsBool(false);
+
+      ConfigAttribute.Apply(this, conf);
+    }
+
+
     private Portal m_Portal;
     private string m_Name;
     private string m_Description;
+    private bool m_Default;
     
-    private string m_StaticRootPath;
-    private string m_ImagePath;
-    private string m_StylePath;
-    private string m_FontPath;
-    private string m_ElementPath;
-    private string m_ScriptPath;
-    private string m_StockPath;
-
     /// <summary>
     /// Parent portal that this theme is under
     /// </summary>
@@ -229,109 +227,30 @@ namespace NFX.Wave
     /// </summary>
     public string Description{ get { return m_Description;  } }
 
-
-    [Config]
-    public string StaticRootPath
-    {
-      get{ return m_StaticRootPath ?? Portal.StaticRootPath;}
-      set { m_StaticRootPath = value;}
-    }
-
-    [Config]
-    public string StaticImagePath
-    {
-      get{ return m_ImagePath ?? Portal.StaticImagePath;}
-      set { m_ImagePath = value;}
-    }
-
-    [Config]
-    public string StaticStylePath
-    {
-      get{ return m_StylePath ?? Portal.StaticStylePath;}
-      set { m_StylePath = value;}
-    }
-
-    [Config]
-    public string StaticFontPath
-    {
-      get{ return m_FontPath ?? Portal.StaticFontPath;}
-      set { m_FontPath = value;}
-    }
-
-    [Config]
-    public string StaticElementPath
-    {
-      get{ return m_ElementPath ?? Portal.StaticElementPath;}
-      set { m_ElementPath = value;}
-    }
-
-    [Config]
-    public string StaticScriptPath
-    {
-      get{ return m_ScriptPath ?? Portal.StaticScriptPath;}
-      set { m_ScriptPath = value;}
-    }
-
-    [Config]
-    public string StaticStockPath
-    {
-      get{ return m_StockPath ?? Portal.StaticStockPath;}
-      set { m_StockPath = value;}
-    }
-
-
-
     /// <summary>
-    /// Returns the rooted static image path
+    /// If true, gets matched when no other suites
     /// </summary>
-    public virtual string Image(string path)
-    {
-      return Path.Combine(StaticRootPath, m_Name, StaticImagePath, path);
-    }
+    public bool Default { get { return m_Default;  } }
 
-    /// <summary>
-    /// Returns the rooted static style path
-    /// </summary>
-    public virtual string Style(string path)
+    public override string ToString()
     {
-      return Path.Combine(StaticRootPath, m_Name, StaticStylePath, path);
-    }
-
-
-    /// <summary>
-    /// Returns the rooted static font path
-    /// </summary>
-    public virtual string Font(string path)
-    {
-      return Path.Combine(StaticRootPath, m_Name, StaticFontPath, path);
-    }
-
-    /// <summary>
-    /// Returns the rooted static element (arbitrary files) path
-    /// Unlike other path accessors the default implemntation does not prepend theme name
-    /// </summary>
-    public virtual string Element(string path)
-    {
-      return Path.Combine(StaticRootPath, StaticElementPath, path);
-    }
-
-    /// <summary>
-    /// Returns the rooted static script path
-    /// </summary>
-    public virtual string Script(string path)
-    {
-      return Path.Combine(StaticRootPath, m_Name, StaticScriptPath, path);
-    }
-
-    /// <summary>
-    /// Returns the rooted static stock (usually pre-compiled DLL resource) path.
-    /// Unlike other path accessors the default implemntation does not prepend theme name
-    /// </summary>
-    public virtual string Stock(string path)
-    {
-      return Path.Combine(StaticRootPath, StaticStockPath, path);
+      return "{0}('{1}', '{2}')".Args(GetType().Name, m_Portal.Name, m_Name);
     }
   }
 
+
+  /// <summary>
+  /// Represents a portal theme. Theme groups various resources (such as css, scripts etc..)
+  /// whitin a portal. Inherit your themes from this class
+  /// </summary>
+  public abstract class Theme<TPortal> : Theme where TPortal : Portal
+  {
+    protected Theme(TPortal portal, IConfigSectionNode conf) : base(portal, conf){ }
+    
+    /// <summary>
+    /// Parent portal that this theme is under
+    /// </summary>
+    public new TPortal Portal{ get{ return (TPortal)base.Portal;}}
+  }
 
 }

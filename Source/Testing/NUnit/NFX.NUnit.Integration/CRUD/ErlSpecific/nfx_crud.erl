@@ -1,6 +1,9 @@
 -module(nfx_crud).
--export([bonjour/3, rpc/4, schema_content/0, write/1, delete/2, select_all/1, select/2]).
+-export([bonjour/3, rpc/4, subscribe/4, schema_content/0, write/1, delete/1, select_all/1, select/2]).
+
 -include("tfx_schema.hrl").
+
+-define(GEN_ERROR, -1).
 
 bonjour(InstID, AppName, UserName) when is_integer(InstID), is_list(AppName), is_list(UserName) ->
     mnesia:start(),
@@ -30,21 +33,33 @@ bonjour(InstID, AppName, UserName) when is_integer(InstID), is_list(AppName), is
                           px_hi_lim]}]),
     {bonjour, InstID, {ok, schema_content()}}.
 
-rpc(ReqID, Mod, Fun, Args) when is_integer(ReqID), is_atom(Mod), is_atom(Fun), is_list(Args) ->
+rpc(ReqID, Mod, Fun, Args)
+  when is_integer(ReqID), is_atom(Mod), is_atom(Fun), is_list(Args) ->
     try
         {Schema, Res} = erlang:apply(Mod, Fun, Args),
         {ReqID, {ok, Schema, Res}}
     catch _:Reason ->
-        {ReqID, {error, Reason}}
+        {ReqID, {error, ?GEN_ERROR, Reason}}
     end.
 
+subscribe(ReqID, Mod, Fun, Args)
+  when is_integer(ReqID), is_atom(Mod), is_atom(Fun), is_list(Args) ->
+    try
+        ok = erlang:apply(Mod, Fun, Args),
+        {ReqID, ok}
+    catch _:Reason ->
+        {ReqID, {error, ?GEN_ERROR, Reason}}
+    end.
+
+%% Example: Row = {secdef, Key, Field, ...}
+-spec write(Row::tuple()) -> {ok, integer()} | {error, any()}.
 write(Row) when is_tuple(Row) ->
     case mnesia:dirty_write(Row) of
     ok    -> {ok, 1};
     Error -> {error, Error}
     end.
 
-delete(Tab, Key) ->
+delete({Tab, Key}) ->
     ok = mnesia:dirty_delete(Tab, Key),
     {ok, 1}.
 
@@ -62,6 +77,10 @@ schema_content() ->
           <field name=\"echoed_msg\" type=\"string\"/>
           <field name=\"ts\" type=\"datetime\"/>
       </schema>
+      <schema name=\"world_news\">
+          <field name=\"time\" type=\"datetime\"/>
+          <field name=\"news\" type=\"string\"/>
+      </schema>
       <schema name=\"secdef\" descr=\"Security Definition\" insert=\"true\" update=\"true\" delete=\"true\">
         <field name=\"xchg\" type=\"atom\" len=\"10\" title=\"Exchange\" descr=\"Exchange name\" key=\"true\" required=\"true\"/>
         <field name=\"symbol\" type=\"atom\" len=\"12\" title=\"Symbol\" descr=\"Internal name of the security\" key=\"true\" required=\"true\"/>
@@ -73,8 +92,8 @@ schema_content() ->
         <field name=\"ccy\" type=\"atom\" len=\"3\" title=\"Ccy\" descr=\"Base currency\" required=\"true\"/>
         <field name=\"settl_ccy\" type=\"atom\" len=\"3\" title=\"SettlCcy\" descr=\"Settlement currency\" required=\"true\"/>
         <field name=\"contr_mult\" type=\"double\" title=\"ContractMult\" descr=\"Contract multiplier\" required=\"true\" display-format=\"{0:F2}\"/>
-        <field name=\"und_symbol\" type=\"atom\" len=\"12\" title=\"UndSymbol\" descr=\"Underlying Internal name of the security\" default=\"undefined\"/>
-        <field name=\"und_instr\" type=\"binstr\" len=\"12\" title=\"UndInstr\" descr=\"Underlying Exch-specific instrument name\" default=\"undefined\"/>
+        <field name=\"und_symbol\" type=\"atom\" len=\"12\" title=\"UndSymbol\" descr=\"Underlying Internal name of the security\"/>
+        <field name=\"und_instr\" type=\"binstr\" len=\"12\" title=\"UndInstr\" descr=\"Underlying Exch-specific instrument name\"/>
         <field name=\"und_secid\" type=\"long\" title=\"UndSecID\" descr=\"Underlying Security ID\" default=\"0\"/>
         <field name=\"und_xchg_secid\" type=\"long\" title=\"UndExchSecID\" descr=\"Underlying Exch-specific Security ID\" default=\"0\"/>
         <field name=\"maturity\" type=\"datetime\" title=\"Maturity\" descr=\"Maturity Date\" default=\"0\"/>

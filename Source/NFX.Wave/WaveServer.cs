@@ -172,6 +172,8 @@ namespace NFX.Wave
           internal long m_Stat_GeoLookup;
           internal long m_Stat_GeoLookupHit;
 
+          internal NamedInterlocked m_Stat_PortalRequest = new NamedInterlocked();
+
     #endregion
 
 
@@ -750,6 +752,8 @@ namespace NFX.Wave
 
         m_Stat_GeoLookup                            = 0;
         m_Stat_GeoLookupHit                         = 0;
+
+        m_Stat_PortalRequest.Clear();
      }
 
      private void dumpStats()
@@ -783,9 +787,10 @@ namespace NFX.Wave
         i.Record( new Instrumentation.GeoLookup                          (Name, m_Stat_GeoLookup                          ));
         i.Record( new Instrumentation.GeoLookupHit                       (Name, m_Stat_GeoLookupHit                       ));
     
+        foreach(var kvp in m_Stat_PortalRequest.AllLongs)
+            i.Record( new Instrumentation.ServerPortalRequest(Name+"."+kvp.Key, kvp.Value) );
      }
-                            
-                            
+
     #endregion
 
   }

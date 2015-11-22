@@ -25,11 +25,12 @@ namespace NFX.DataAccess.Erlang
       public const string ERL_FILE_SUFFIX = ".erl.qry";
       public const string DEFAULT_TARGET_NAME = "ERLANG";
 
-      public static readonly ErlAtom NFX_CRUD_MOD     = new ErlAtom("nfx_crud");
-      public static readonly ErlAtom NFX_RPC_FUN      = new ErlAtom("rpc");
-      public static readonly ErlAtom NFX_WRITE_FUN    = new ErlAtom("write");
-      public static readonly ErlAtom NFX_DELETE_FUN   = new ErlAtom("delete");
-      public static readonly ErlAtom NFX_BONJOUR_FUN  = new ErlAtom("bonjour");
+      public static readonly ErlAtom NFX_CRUD_MOD      = new ErlAtom("nfx_crud");
+      public static readonly ErlAtom NFX_RPC_FUN       = new ErlAtom("rpc");
+      public static readonly ErlAtom NFX_SUBSCRIBE_FUN = new ErlAtom("subscribe");
+      public static readonly ErlAtom NFX_WRITE_FUN     = new ErlAtom("write");
+      public static readonly ErlAtom NFX_DELETE_FUN    = new ErlAtom("delete");
+      public static readonly ErlAtom NFX_BONJOUR_FUN   = new ErlAtom("bonjour");
 
       public static readonly IErlObject BONJOUR_OK_PATTERN =
            ErlObject.Parse("{bonjour, InstanceID::int(), {ok, SchemaContent::binary()}}");
@@ -65,7 +66,7 @@ namespace NFX.DataAccess.Erlang
 
       private QueryResolver m_QueryResolver;
 
-      private ErlLocalNode m_ErlNode;
+      internal ErlLocalNode m_ErlNode;
       
       
       private object m_MapSync = new object();
@@ -73,6 +74,10 @@ namespace NFX.DataAccess.Erlang
 
       private ErlAtom m_RemoteName;
       private ErlAtom m_RemoteCookie;
+
+
+      private Registry<Subscription> m_Subscriptions = new Registry<Subscription>();
+      private Registry<Mailbox> m_Mailboxes = new Registry<Mailbox>();
 
     #endregion
 
@@ -133,17 +138,12 @@ namespace NFX.DataAccess.Erlang
 
       public IRegistry<Subscription> Subscriptions
       {
-        get { throw new NotImplementedException(); }
+        get { return m_Subscriptions; }
       }
 
-      public IRegistry<Recipient> Recipients
+      public IRegistry<Mailbox> Mailboxes
       {
-        get { throw new NotImplementedException(); }
-      }
-
-      public IRegistry<RowTypeMapping> TypeMappings
-      {
-        get { throw new NotImplementedException(); }
+        get { return m_Mailboxes; }
       }
 
       public ICRUDQueryResolver QueryResolver
@@ -163,10 +163,16 @@ namespace NFX.DataAccess.Erlang
         throw new NotImplementedException();
       }
 
-      public Subscription Subscribe(string name, Query query, Recipient recipient)
+      public Subscription Subscribe(string name, Query query, Mailbox recipient)
       {
         CheckServiceActive();
-        throw new NotImplementedException();
+        return new ErlCRUDSubscription(this, name, query, recipient);
+      }
+
+      public Mailbox OpenMailbox(string name)
+      {
+        CheckServiceActive();
+        return new ErlCRUDMailbox(this, name);
       }
 
       public ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
@@ -366,6 +372,12 @@ namespace NFX.DataAccess.Erlang
 
       protected override void DoWaitForCompleteStop()
       {
+        foreach(var mbox in m_Mailboxes) mbox.Dispose();
+        foreach(var subs in m_Subscriptions) subs.Dispose();
+
+        m_Mailboxes.Clear();
+        m_Subscriptions.Clear();
+        
         if (m_ErlNode!=ErlApp.Node) 
           DisposableObject.DisposeAndNull(ref m_ErlNode);
         
@@ -428,10 +440,10 @@ namespace NFX.DataAccess.Erlang
         }
       }
 
-      protected internal IErlObject ExecuteRPC(ErlAtom module, ErlAtom func, ErlList args)
+      protected internal IErlObject ExecuteRPC(ErlAtom module, ErlAtom func, ErlList args, ErlMbox mbox = null)
       {
          var map = Map;
-         return executeRPC(module, func, args);
+         return executeRPC(module, func, args, mbox);
       }
      
 
@@ -461,9 +473,10 @@ namespace NFX.DataAccess.Erlang
 
     #region .pvt
 
-      private IErlObject executeRPC(ErlAtom module, ErlAtom func, ErlList args)
+      private IErlObject executeRPC(ErlAtom module, ErlAtom func, ErlList args, ErlMbox mbox = null)
       {
-        var mbox = m_ErlNode.CreateMbox();
+        var mowner = mbox==null;
+        if (mowner) mbox = m_ErlNode.CreateMbox();
         try
         {
           return mbox.RPC(m_RemoteName, module, func, args);
@@ -476,11 +489,13 @@ namespace NFX.DataAccess.Erlang
         }
         finally
         {
-          mbox.Dispose();
+          if (mowner) mbox.Dispose();
         }
       }
-
     #endregion  
 
+  
+
+      
   }
 }
