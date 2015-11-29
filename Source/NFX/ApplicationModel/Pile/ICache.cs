@@ -139,6 +139,13 @@ namespace NFX.ApplicationModel.Pile
     IEqualityComparer<TKey> KeyComparer{ get ;}
    
     
+
+    /// <summary>
+    /// Returns true if cache has object with the key, optionally filtering-out objects older than ageSec param if it is &gt; zero.
+    /// Returns false if there is no object with the specified key or it is older than ageSec limit.
+    /// </summary>
+    bool ContainsKey(TKey key, int ageSec = 0);
+
     /// <summary>
     /// Gets cache object by key, optionally filtering-out objects older than ageSec param if it is &gt; zero.
     /// Returns null if there is no object with the specified key or it is older than ageSec limit.
@@ -164,7 +171,7 @@ namespace NFX.ApplicationModel.Pile
     bool Remove(TKey key);
 
     /// <summary>
-    /// Resets inetrnal object age returning true of object was foubd and rejuvenated
+    /// Resets inetrnal object age returning true of object was found and rejuvenated
     /// </summary>
     bool Rejuvenate(TKey key);
    

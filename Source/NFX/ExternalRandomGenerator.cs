@@ -102,6 +102,25 @@ namespace NFX
       }
 
       /// <summary>
+      /// Generates next random integer in the Uint32.MinValue..Uint32.MaxValue diapason
+      /// </summary>
+      public uint NextRandomUnsignedInteger
+      {
+        get { return (uint)NextRandomInteger;}
+      }
+
+      /// <summary>
+      /// Generates next random ulong in the Uint64.MinValue..Uint64.MaxValue range
+      /// </summary>
+      public ulong NextRandomUnsignedLong
+      {
+        get
+        {
+          return (((ulong)NextRandomUnsignedInteger) << 32) + (ulong)NextRandomUnsignedInteger;
+        }
+      }
+
+      /// <summary>
       /// Generates random byte[16] buffer
       /// </summary>
       public byte[] NextRandom16Bytes

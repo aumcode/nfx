@@ -67,7 +67,6 @@ namespace NFX.ServiceModel
       #region CONSTS
          public const string CONFIG_SERVICE_HOST_SECTION = "service-host";
          public const string CONFIG_SERVICE_SECTION = "service";
-         public const string CONFIG_ORDER_ATTR = "order";
          public const string CONFIG_ABORT_START_ATTR = "abort-start";
       #endregion
 
@@ -131,12 +130,12 @@ namespace NFX.ServiceModel
            
            foreach( var snode in node.Children
                                      .Where(cn=> cn.IsSameName(CONFIG_SERVICE_SECTION))
-                                     .OrderBy(cn=>cn.AttrByName(CONFIG_ORDER_ATTR).ValueAsInt(0)))//the order here is needed so that child services get CREATED in order,
+                                     .OrderBy(cn=>cn.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0)))//the order here is needed so that child services get CREATED in order,
                                                                                                   // not only launched in order
            {
               var svc = FactoryUtils.MakeAndConfigure<Service>(snode, args: new object[]{this});
               var abort = snode.AttrByName(CONFIG_ABORT_START_ATTR).ValueAsBool(true);
-              RegisterService(svc, snode.AttrByName(CONFIG_ORDER_ATTR).ValueAsInt(0), abort);
+              RegisterService(svc, snode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0), abort);
            }
          }
 

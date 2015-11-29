@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\InheritB.cs" />
+    <Compile Include="Controllers\InheritA.cs" />
+    <Compile Include="Controllers\InheritBase.cs" />
     <Compile Include="Controllers\LoadTester.cs" />
     <Compile Include="Controllers\Tester.cs" />
     <Compile Include="Controllers\IntegrationTester.cs" />

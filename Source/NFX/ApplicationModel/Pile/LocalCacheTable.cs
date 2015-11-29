@@ -340,6 +340,34 @@ namespace NFX.ApplicationModel.Pile
     /// </summary>
     public override double LoadFactor {  get { return m_Buckets.Sum( b => b.LoadFactor) / (double)BUCKETS; } }
     
+
+    public bool ContainsKey(TKey key, int ageSec = 0)
+    {
+      if (!m_Cache.Running) return false;
+      int hashCode;
+      var bucket = getBucket(key, out hashCode);
+
+      if (!getReadLock(bucket)) return false;//Service shutting down
+      try
+      {
+        int idx;
+        var entry = fetchExistingEntry(bucket, key, hashCode, out idx);
+        var ptr = entry.DataPointer;
+        if (ptr.Valid)
+        {
+           if (ageSec==0 || entry.AgeSec < ageSec)
+           {
+             return true;
+           }
+        } 
+      }
+      finally
+      {
+        releaseReadLock(bucket);
+      }
+
+      return false;
+    }
     
     public object Get(TKey key, int ageSec = 0)
     {

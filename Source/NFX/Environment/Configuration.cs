@@ -53,6 +53,7 @@ namespace NFX.Environment
           public const  string  DEFAULT_VAR_MACRO_START = "::";
 
           public const  string  CONFIG_NAME_ATTR = "name";
+          public const  string  CONFIG_ORDER_ATTR = "order";
 
 
           public const  string  CONFIG_LACONIC_FORMAT = "laconf";

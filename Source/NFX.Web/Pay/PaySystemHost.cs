@@ -55,6 +55,12 @@ namespace NFX.Web.Pay
     /// Currency market
     /// </summary>
     ICurrencyMarket CurrencyMarket { get; }
+
+
+    /// <summary>
+    /// Returns tax calculation logic
+    /// </summary>
+    //ITaxCalc TaxCalc{ get;}
   }
 
   /// <summary>

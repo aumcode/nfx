@@ -66,6 +66,14 @@ namespace NFX.NUnit.AppModel.Pile
           Assert.AreEqual( 2, tA.Count);
           Assert.AreEqual( 1, tB.Count);
 
+          Assert.IsTrue( tA.ContainsKey("key1") );
+          Assert.IsTrue( tA.ContainsKey("key2") );
+          Assert.IsFalse( tA.ContainsKey("key3 that was never put") );
+
+          Assert.IsTrue( tB.ContainsKey("key1") );
+          Assert.IsFalse( tB.ContainsKey("key2") );
+
+
           Assert.AreEqual("avalue1", tA.Get("key1"));
           Assert.AreEqual("avalue2", tA.Get("key2"));
           Assert.AreEqual(null, tA.Get("key3"));

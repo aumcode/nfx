@@ -182,13 +182,18 @@ namespace NFX.DataAccess.CRUD
                         int maxLength       = 0,
                         CharCase charCase   = CharCase.AsIs,
                         string backendName  = null,
+                        string backendType  = null,
                         string description  = null,
                         string metadata = null,
-                        bool nonUI = false
+                        bool nonUI = false,
+                        string formatRegExp = null,
+                        string formatDescr  = null,
+                        string displayFormat = null
                     ) : base(targetName, metadata)
         {
               StoreFlag = storeFlag;
               BackendName = backendName;
+              BackendType = backendType;
               Key = key;
               Kind = kind;
               Required = required;
@@ -202,6 +207,9 @@ namespace NFX.DataAccess.CRUD
               ValueList = valueList;
               Description = description;
               NonUI = nonUI;
+              FormatRegExp = formatRegExp;
+              FormatDescription = formatDescr;
+              DisplayFormat = displayFormat;
         }
 
         public FieldAttribute(
@@ -221,9 +229,13 @@ namespace NFX.DataAccess.CRUD
                         object maxLength    = null,
                         object charCase     = null,
                         string backendName  = null,
+                        string backendType  = null,
                         string description  = null,
                         string metadata     = null,
-                        object nonUI        = null
+                        object nonUI        = null,
+                        string formatRegExp = null,
+                        string formatDescr  = null,
+                        string displayFormat = null
                     ) : base(targetName, null)
         {
             if (protoType==null || protoFieldName.IsNullOrWhiteSpace()) throw new CRUDException(StringConsts.ARGUMENT_ERROR+"FieldAttr.ctor(protoType|protoFieldName=null|empty)");
@@ -246,21 +258,27 @@ namespace NFX.DataAccess.CRUD
             
               try
               {
-                StoreFlag        = storeFlag    == null? protoAttr.StoreFlag   : (StoreFlag)storeFlag     ;
-                BackendName      = backendName  == null? protoAttr.BackendName : backendName   ;
-                Key              = key          == null? protoAttr.Key         : (bool)key           ;
-                Kind             = kind         == null? protoAttr.Kind        : (DataKind)kind          ;
-                Required         = required     == null? protoAttr.Required    : (bool)required      ;
-                Visible          = visible      == null? protoAttr.Visible     : (bool)visible       ;
-                Min              = min          == null? protoAttr.Min         : min           ;
-                Max              = max          == null? protoAttr.Max         : max           ;
-                Default          = dflt         == null? protoAttr.Default     : dflt          ;
-                MinLength        = minLength    == null? protoAttr.MinLength   : (int)minLength     ;
-                MaxLength        = maxLength    == null? protoAttr.MaxLength   : (int)maxLength     ;
-                CharCase         = charCase     == null? protoAttr.CharCase    : (CharCase)charCase      ;
-                ValueList        = valueList    == null? protoAttr.ValueList   : valueList     ;
-                Description      = description  == null? protoAttr.Description : description   ;
-                NonUI            = nonUI        == null? protoAttr.NonUI       : (bool)nonUI         ;
+                StoreFlag        = storeFlag    == null? protoAttr.StoreFlag   : (StoreFlag)storeFlag;
+                BackendName      = backendName  == null? protoAttr.BackendName : backendName;
+                BackendType      = backendType  == null? protoAttr.BackendType : backendType;
+                Key              = key          == null? protoAttr.Key         : (bool)key;
+                Kind             = kind         == null? protoAttr.Kind        : (DataKind)kind;
+                Required         = required     == null? protoAttr.Required    : (bool)required;
+                Visible          = visible      == null? protoAttr.Visible     : (bool)visible;
+                Min              = min          == null? protoAttr.Min         : min;
+                Max              = max          == null? protoAttr.Max         : max;
+                Default          = dflt         == null? protoAttr.Default     : dflt;
+                MinLength        = minLength    == null? protoAttr.MinLength   : (int)minLength;
+                MaxLength        = maxLength    == null? protoAttr.MaxLength   : (int)maxLength;
+                CharCase         = charCase     == null? protoAttr.CharCase    : (CharCase)charCase;
+                ValueList        = valueList    == null? protoAttr.ValueList   : valueList;
+                Description      = description  == null? protoAttr.Description : description;
+                NonUI            = nonUI        == null? protoAttr.NonUI       : (bool)nonUI;
+                FormatRegExp     = formatRegExp == null? protoAttr.FormatRegExp: formatRegExp;
+                FormatDescription= formatDescr  == null? protoAttr.FormatDescription: formatDescr;
+                DisplayFormat    = displayFormat== null? protoAttr.DisplayFormat    : displayFormat;
+                
+
                 
                 if (metadata.IsNullOrWhiteSpace())
                  m_MetadataContent = protoAttr.m_MetadataContent;
@@ -297,6 +315,12 @@ namespace NFX.DataAccess.CRUD
         /// Provides an overriden name for this field
         /// </summary>
         public readonly string BackendName;
+
+        /// <summary>
+        /// Provides an overriden type for this field in backend,
+        /// i.e. CLR string may be stored as ErlPid in erlang
+        /// </summary>
+        public readonly string BackendType;
 
         /// <summary>
         /// Determines whether this field is a part of the primary key
@@ -384,6 +408,25 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         public readonly CharCase CharCase;
 
+
+        /// <summary>
+        /// Regular expression used for field format validation if set
+        /// </summary>
+        public readonly string FormatRegExp;
+
+
+        /// <summary>
+        /// Description for regular expression used for field format validation if set
+        /// </summary>
+        public readonly string FormatDescription;
+
+
+        /// <summary>
+        /// Display format string or null
+        /// </summary>
+        public readonly string DisplayFormat;
+
+
         /// <summary>
         /// Provides description
         /// </summary>
@@ -399,7 +442,7 @@ namespace NFX.DataAccess.CRUD
 
         public override int GetHashCode()
         {
-            return TargetName.GetHashCodeSenseCase();
+            return TargetName.GetHashCodeOrdSenseCase();
         }
 
         public override bool Equals(object obj)
@@ -407,9 +450,10 @@ namespace NFX.DataAccess.CRUD
             var other = obj as FieldAttribute;
             if (other==null) return false;
             var equ = 
-                this.TargetName.EqualsSenseCase(other.TargetName) &&
+                this.TargetName.EqualsOrdSenseCase(other.TargetName) &&
                 this.StoreFlag   == other.StoreFlag &&
-                this.BackendName.EqualsSenseCase(other.BackendName) &&
+                this.BackendName.EqualsOrdSenseCase(other.BackendName) &&
+                this.BackendType.EqualsOrdSenseCase(other.BackendType) &&
                 this.Key         == other.Key &&
                 this.Kind        == other.Kind &&
                 this.Required    == other.Required &&
@@ -433,10 +477,13 @@ namespace NFX.DataAccess.CRUD
                 this.MinLength   == other.MinLength &&
                 this.MaxLength   == other.MaxLength &&
                 this.CharCase    == other.CharCase &&
-                this.ValueList   == other.ValueList &&
-                this.Description == other.Description &&
-                this.MetadataContent==other.MetadataContent &&
-                this.NonUI == other.NonUI;
+                this.ValueList.EqualsOrdSenseCase(other.ValueList) &&
+                this.Description.EqualsOrdSenseCase(other.Description) &&
+                this.MetadataContent.EqualsOrdSenseCase(other.MetadataContent) &&
+                this.NonUI == other.NonUI &&
+                this.FormatRegExp.EqualsOrdSenseCase(other.FormatRegExp) && 
+                this.FormatDescription.EqualsOrdSenseCase(other.FormatDescription)&&
+                this.DisplayFormat.EqualsOrdSenseCase(other.DisplayFormat);
 
             return equ;
         }

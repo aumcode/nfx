@@ -421,7 +421,7 @@ namespace NFX.DataAccess.MySQL
 
       if (value is GDID)
       {
-        value = store.FullGDIDs ? (object)((GDID)value).Bytes
+        value = store.FullGDIDS ? (object)((GDID)value).Bytes
                                 : (object)((GDID)value).ID;
       }
       else

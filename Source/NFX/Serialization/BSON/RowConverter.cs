@@ -124,6 +124,30 @@ namespace NFX.Serialization.BSON
 
     public virtual void Configure(IConfigSectionNode node) {}
 
+
+    /// <summary>
+    /// Makes CRUD Schema out of BSON document. The types of all fields are object as documents do not have 
+    ///  a predictable type of every field (they are dynamic and can change form doc to doc)
+    /// </summary>
+    public virtual Schema InferSchemaFromBSONDocument(BSONDocument doc, string schemaName = null)
+    {
+      var defs = new List<Schema.FieldDef>();
+
+      foreach(var elm in doc)
+      {
+          var clrv = elm.ObjectValue;
+          var tv = typeof(object);
+          var def = new Schema.FieldDef(elm.Name, tv, new FieldAttribute[]{ new FieldAttribute(backendName: elm.Name) });
+          defs.Add( def );
+      }
+
+      return  new Schema(schemaName.IsNotNullOrWhiteSpace() ? schemaName : Guid.NewGuid().ToString(),
+                         true,
+                         defs.ToArray());
+    } 
+
+
+
     #region BSONDocumentToRow
     
     /// <summary>

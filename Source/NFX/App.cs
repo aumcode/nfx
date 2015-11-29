@@ -36,6 +36,14 @@ namespace NFX
 
 
      /// <summary>
+     /// Returns current session, this is a shortuct to ExecutionContext.Session
+     /// </summary>
+     public static ISession Session
+     {
+        get { return ExecutionContext.Session; }
+     }
+
+     /// <summary>
      /// Returns unique identifier of this running instance
      /// </summary>
      public static Guid InstanceID

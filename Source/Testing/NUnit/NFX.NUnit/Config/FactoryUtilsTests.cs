@@ -88,6 +88,19 @@ namespace NFX.NUnit.Config
           Assert.AreEqual("bbb", ((CTORClassDerived)made).Data2);
         }
 
+
+        [TestCase]
+        public void MakeUsingCtor_7_typePattern()
+        {
+          var made = FactoryUtils.MakeUsingCtor<CTORClass>(
+              "node{type='CTORClassDerived' arg0='12' arg1='234'}".AsLaconicConfig(), typePattern: "NFX.NUnit.Config.*, NFX.NUnit");
+          
+          Assert.IsTrue( made is CTORClassDerived);
+          Assert.AreEqual(12, made.A);
+          Assert.AreEqual(234, made.B);
+        }
+
+
     }
 
 

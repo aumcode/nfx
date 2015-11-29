@@ -54,6 +54,11 @@ namespace NFX.DataAccess.CRUD
       /// Used to override store's default database connection string
       /// </summary>
       public string ConnectString{ get; set;}
+
+      /// <summary>
+      /// Used to override store's default database name - used by some stores, others take db name form connect string
+      /// </summary>
+      public string DatabaseName{ get; set;}
   }
 
 }

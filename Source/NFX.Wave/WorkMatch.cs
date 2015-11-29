@@ -35,7 +35,6 @@ namespace NFX.Wave
   {
       public const string CONFIG_MATCH_SECTION = "match";
       public const string CONFIG_VAR_SECTION = "var";
-      public const string CONFIG_ORDER_ATTR = "order";
       public const string CONFIG_PATH_ATTR = "path"; 
       public const string CONFIG_NOT_PATH_ATTR = "not-path"; 
 
@@ -163,7 +162,7 @@ namespace NFX.Wave
           throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(node==null)");
        
         m_Name = confNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
-        m_Order = confNode.AttrByName(CONFIG_ORDER_ATTR).ValueAsInt(0);
+        m_Order = confNode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0);
         
         if (m_Name.IsNullOrWhiteSpace())
           m_Name = "{0}({1})".Args(GetType().FullName, Guid.NewGuid());

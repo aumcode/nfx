@@ -54,8 +54,8 @@ namespace NFX.DataAccess.CRUD
                 if (tRow!=null)
                 {
                     if (typeof(TypedRow).IsAssignableFrom(tRow))
-                        return Activator.CreateInstance(tRow) as Row;
-                    else
+                        return Activator.CreateInstance(tRow) as Row;  
+                    else                                         //todo Compile do dynamic functors for speed
                         return Activator.CreateInstance(tRow, schema) as Row;
                 }
                 
@@ -429,6 +429,36 @@ namespace NFX.DataAccess.CRUD
             }
 
 
+            /// <summary>
+            /// Returns field value as string formatted per target DisplayFormat attribute
+            /// </summary>
+            public string GetDisplayFieldValue(string targetName, string fieldName)
+            {
+              return getDisplayFieldValue(targetName, Schema[fieldName]);
+            }
+
+            /// <summary>
+            /// Returns field value as string formatted per target DisplayFormat attribute
+            /// </summary>
+            public string GetDisplayFieldValue(string targetName, int fieldIndex)
+            {
+              return getDisplayFieldValue(targetName, Schema[fieldIndex]);
+            }
+
+                  /// <summary>
+                  /// Returns field value as string formatted per target DisplayFormat attribute
+                  /// </summary>
+                  private string getDisplayFieldValue(string targetName, Schema.FieldDef fdef)
+                  {
+                      var value = GetFieldValue(fdef);
+
+                      var atr = fdef[targetName];
+                      if (atr==null || atr.DisplayFormat.IsNullOrWhiteSpace())
+                        return value.ToString();
+                
+                      return atr.DisplayFormat.Args(value);
+                  }
+
         #endregion
 
          #region IJSONWritable
@@ -463,8 +493,6 @@ namespace NFX.DataAccess.CRUD
 
                 JSONWriter.WriteMap(wri, map, nestingLevel, options);
             } 
-
-
         #endregion
 
         #region Protected
@@ -543,6 +571,11 @@ namespace NFX.DataAccess.CRUD
                     var error = CheckMinMax(atr, fdef.Name, (IComparable)value);
                     if (error!=null) return error;
                 }
+
+                 if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
+                   if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription));
+
                      
                 return null;
             }

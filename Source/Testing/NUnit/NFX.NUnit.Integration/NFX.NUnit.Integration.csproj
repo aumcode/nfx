@@ -59,6 +59,9 @@
   <ItemGroup>
     <Compile Include="AppModel\Pile\PileTest.cs" />
     <Compile Include="AppModel\Pile\TRow.cs" />
+    <Compile Include="CRUD\ErlangTests.cs" />
+    <Compile Include="CRUD\MongoSpecific\CountPerzons.cs" />
+    <Compile Include="CRUD\MongoTests.cs" />
     <Compile Include="CRUD\MySQLTests.cs" />
     <Compile Include="CRUD\TestLogic.cs" />
     <Compile Include="CRUD\TestObjects.cs" />
@@ -131,7 +134,18 @@
   <ItemGroup>
     <EmbeddedResource Include="CRUD\Types.Load.mys.sql" />
     <EmbeddedResource Include="CRUD\FullGDID.Load.mys.sql" />
+    <EmbeddedResource Include="CRUD\LoadPerzon.mon.json" />
     <Content Include="CRUD\CreateTables.txt" />
+    <EmbeddedResource Include="CRUD\LoadPerzonsInAgeSpan.mon.json" />
+    <EmbeddedResource Include="CRUD\Echo.erl.qry" />
+    <EmbeddedResource Include="CRUD\SECDEF.erl.qry" />
+    <EmbeddedResource Include="CRUD\SecDef.ByExchange.erl.qry" />
+    <EmbeddedResource Include="CRUD\WorldNews.erl.qry" />
+    <None Include="CRUD\ErlSpecific\nfx_crud.erl" />
+    <None Include="CRUD\ErlSpecific\nfx_test.erl" />
+    <None Include="CRUD\ErlSpecific\StartErlNode.bat" />
+    <None Include="CRUD\ErlSpecific\tfx_schema.erl" />
+    <None Include="CRUD\ErlSpecific\tfx_schema.hrl" />
     <None Include="IO\FileSystem\GoogleDrive\GDRIVE_README.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\Escape.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\NestedFolder\Escape.txt" />

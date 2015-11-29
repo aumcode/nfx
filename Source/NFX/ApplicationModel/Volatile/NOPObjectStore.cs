@@ -52,6 +52,17 @@ namespace NFX.ApplicationModel.Volatile
     }
 
     /// <summary>
+    /// Reverts object state to Normal after the call to Checkout. This way the changes (if any) are not going to be persisted.
+    /// Returns true if object was found and checkout canceled. Keep in mind: this method CAN NOT revert inner object state
+    ///  to its original state if it was changed, it only unmarks object as changed.
+    /// This method is reentrant just like the Checkout is
+    /// </summary>
+    public bool UndoCheckout(Guid key)
+    {
+      return false;
+    }
+
+    /// <summary>
     /// Puts an object reference "value" into store identified by the "key"
     /// </summary>
     public void CheckIn(Guid key, object value, int msTimeout = 0)

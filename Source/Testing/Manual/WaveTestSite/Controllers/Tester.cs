@@ -39,7 +39,6 @@ namespace WaveTestSite.Controllers
   /// </summary>
   public class Tester : Controller
   {
-
       [Action]
       public void SlowImage(string url, int dbDelayMs = 100, int netDelayMs = 0)
       {

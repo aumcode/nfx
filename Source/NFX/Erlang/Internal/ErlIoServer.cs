@@ -15,156 +15,153 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace NFX.Erlang.Internal
 {
-    /// <summary>
-    /// I/O server processing distributed I/O operations from remote
-    /// Erlang nodes
-    /// </summary>
-    /// <remarks>
-    /// <see href="http://erlang.org/doc/apps/stdlib/io_protocol.html"/>
-    /// </remarks>
-    internal class ErlIoServer : DisposableObject
+  /// <summary>
+  /// I/O server processing distributed I/O operations from remote
+  /// Erlang nodes
+  /// </summary>
+  /// <remarks>
+  /// <see href="http://erlang.org/doc/apps/stdlib/io_protocol.html"/>
+  /// </remarks>
+  internal class ErlIoServer : DisposableObject
+  {
+  #region CONSTS
+
+    private static readonly ErlAtom A = new ErlAtom("A");
+    private static readonly ErlAtom C = new ErlAtom("C");
+    private static readonly ErlAtom E = new ErlAtom("E");
+    private static readonly ErlAtom F = new ErlAtom("F");
+    private static readonly ErlAtom M = new ErlAtom("M");
+    private static readonly ErlAtom N = new ErlAtom("N");
+    private static readonly ErlAtom P = new ErlAtom("P");
+    private static readonly ErlAtom R = new ErlAtom("R");
+    private static readonly ErlAtom RA = new ErlAtom("RA");
+
+  #endregion
+
+  #region .ctor
+
+    public ErlIoServer(ErlLocalNode owner)
     {
-        #region CONSTS
+      m_Active = true;
+      Node = owner;
+      Self = Node.CreateMbox(ConstAtoms.User);
+      m_Thread = new Thread(startIO);
+      m_Thread.Name = "{0} I/O".Args(owner.NodeName);
+      m_Thread.IsBackground = true;
+      m_Thread.Start();
+    }
 
-            private static readonly ErlAtom A = new ErlAtom("A");
-            private static readonly ErlAtom C = new ErlAtom("C");
-            private static readonly ErlAtom E = new ErlAtom("E");
-            private static readonly ErlAtom F = new ErlAtom("F");
-            private static readonly ErlAtom M = new ErlAtom("M");
-            private static readonly ErlAtom N = new ErlAtom("N");
-            private static readonly ErlAtom P = new ErlAtom("P");
-            private static readonly ErlAtom R = new ErlAtom("R");
-            private static readonly ErlAtom RA= new ErlAtom("RA");
+    protected override void Destructor()
+    {
+      base.Destructor();
+      if (m_Thread != null)
+      {
+        m_Active = false;
+        m_Thread.Join();
+        m_Thread = null;
+      }
+      Node.CloseMbox(Self);
+    }
 
-        #endregion
+  #endregion
 
-        #region .ctor
+  #region Fields
 
-            public ErlIoServer(ErlLocalNode owner)
-            {
-                m_Active = true;
-                Node     = owner;
-                Self     = Node.CreateMbox(ConstAtoms.User);
-                m_Thread = new Thread(startIO);
-                m_Thread.Name = "{0} I/O".Args(owner.NodeName);
-                m_Thread.IsBackground = true;
-                m_Thread.Start();
-            }
+    public readonly ErlLocalNode   Node;
+    public  readonly ErlMbox       Self;
 
-            protected override void Destructor()
-            {
- 	            base.Destructor();
-                if (m_Thread != null)
-                {
-                    m_Active = false;
-                    m_Thread.Join();
-                    m_Thread = null;
-                }
-                Node.CloseMbox(Self);
-            }
+    private bool                   m_Active;
+    private Thread                 m_Thread;
 
-        #endregion
+  #endregion
 
-        #region Fields
+  #region .pvt
 
-            public  readonly ErlLocalNode   Node;
-            public  readonly ErlMbox        Self;
+    private static readonly IErlObject s_RequestPattern =
+        ErlObject.Parse("{io_request, F::pid(), RA, R::tuple()}");
+    private static readonly IErlObject s_ReplyPattern =
+        ErlObject.Parse("{io_reply, RA, R}");
 
-            private bool                    m_Active;
-            private Thread                  m_Thread;
+    private IErlObject ioProcessPutChars(ErlAtom encoding,
+        ErlString str, IErlObject replyAs)
+    {
+      Node.IoOutput(encoding, str);
+      return s_ReplyPattern.Subst(
+          new ErlVarBind { { RA, replyAs }, { R, ConstAtoms.Ok } });
+    }
 
-        #endregion
+    private IErlObject ioProcessPutChars(ErlAtom encoding,
+        ErlAtom mod, ErlAtom fun, ErlList args, IErlObject replyAs)
+    {
+      string term;
+      if (mod == ConstAtoms.Io_Lib && fun == ConstAtoms.Format && args.Count == 2)
+        try { term = ErlObject.Format(args); }
+        catch { term = "{0}:{1}({2})".Args(mod, fun, args.ToString(true)); }
+      else
+        term = "{0}:{1}({2})".Args(mod, fun, args.ToString(true));
+      Node.IoOutput(encoding, new ErlString(term));
+      return s_ReplyPattern.Subst(
+          new ErlVarBind { { RA, replyAs }, { R, ConstAtoms.Ok } });
+    }
 
-        #region .pvt
-
-            private static readonly IErlObject s_RequestPattern =
-                ErlObject.Parse("{io_request, F::pid(), RA, R::tuple()}");
-            private static readonly IErlObject s_ReplyPattern =
-                ErlObject.Parse("{io_reply, RA, R}");
-
-            private IErlObject ioProcessPutChars(ErlAtom encoding,
-                ErlString str, IErlObject replyAs)
-            {
-                Node.IoOutput(encoding, str);
-                return s_ReplyPattern.Subst(
-                    new ErlVarBind{ {RA, replyAs}, {R, ConstAtoms.Ok} });
-            }
-
-            private IErlObject ioProcessPutChars(ErlAtom encoding,
-                ErlAtom mod, ErlAtom fun, ErlList args, IErlObject replyAs)
-            {
-                string term;
-                if (mod == ConstAtoms.Io_Lib && fun == ConstAtoms.Format && args.Count == 2)
-                    try   { term = ErlObject.Format(args); }
-                    catch { term = "{0}:{1}({2})".Args(mod, fun, args.ToString(true)); }
-                else
-                    term = "{0}:{1}({2})".Args(mod, fun, args.ToString(true));
-                Node.IoOutput(encoding, new ErlString(term));
-                return s_ReplyPattern.Subst(
-                    new ErlVarBind{ {RA, replyAs}, {R, ConstAtoms.Ok} });
-            }
-
-            private IErlObject ioProcessGetUntil(ErlAtom encoding,
-                IErlObject prompt, ErlAtom mod, ErlAtom fun, ErlList args,
-                IErlObject replyAs)
-            {
-                return s_ReplyPattern.Subst(
-                    new ErlVarBind{
+    private IErlObject ioProcessGetUntil(ErlAtom encoding,
+        IErlObject prompt, ErlAtom mod, ErlAtom fun, ErlList args,
+        IErlObject replyAs)
+    {
+      return s_ReplyPattern.Subst(
+          new ErlVarBind{
                         {RA, replyAs},
                         {R, (IErlObject)Tuple.Create(ConstAtoms.Error, ConstAtoms.Request)}
-                    });
-            }
+          });
+    }
 
-            private IErlObject ioProcessGetChars(
-                ErlAtom encoding, IErlObject prompt, IErlObject n, IErlObject replyAs)
-            {
-                return s_ReplyPattern.Subst(
-                    new ErlVarBind{
+    private IErlObject ioProcessGetChars(
+        ErlAtom encoding, IErlObject prompt, IErlObject n, IErlObject replyAs)
+    {
+      return s_ReplyPattern.Subst(
+          new ErlVarBind{
                         {RA, replyAs},
                         {R, (IErlObject)Tuple.Create(ConstAtoms.Error, ConstAtoms.Request)}
-                    });
-            }
- 
-            private IErlObject ioProcessGetLine(
-                ErlAtom encoding, IErlObject prompt, IErlObject replyAs)
-            {
-                return s_ReplyPattern.Subst(
-                    new ErlVarBind{
+          });
+    }
+
+    private IErlObject ioProcessGetLine(
+        ErlAtom encoding, IErlObject prompt, IErlObject replyAs)
+    {
+      return s_ReplyPattern.Subst(
+          new ErlVarBind{
                         {RA, replyAs},
                         {R, (IErlObject)Tuple.Create(ConstAtoms.Error, ConstAtoms.Request)}
-                    });
-            }
- 
-            private IErlObject ioProcessRequests(
-                ErlPatternMatcher pm, ErlList requests, IErlObject replyAs)
-            {
-                
-                foreach (var r in requests)
-                {
-                    IErlObject term = r;
-                    if (pm.Match(ref term, replyAs) < 0)
-                        return term;
-                }
-                return s_ReplyPattern.Subst(
-                    new ErlVarBind{
+          });
+    }
+
+    private IErlObject ioProcessRequests(
+        ErlPatternMatcher pm, ErlList requests, IErlObject replyAs)
+    {
+
+      foreach (var r in requests)
+      {
+        IErlObject term = r;
+        if (pm.Match(ref term, replyAs) < 0)
+          return term;
+      }
+      return s_ReplyPattern.Subst(
+          new ErlVarBind{
                         {RA, replyAs},
                         {R, (IErlObject)Tuple.Create(ConstAtoms.Error, ConstAtoms.Request)
                     }});
-            }
- 
-            private void startIO(object obj)
-            {
-                // For Erlang I/O protocol see:
-                // http://erlang.org/doc/apps/stdlib/io_protocol.html
+    }
 
-                var patterns = new ErlPatternMatcher
+    private void startIO(object obj)
+    {
+      // For Erlang I/O protocol see:
+      // http://erlang.org/doc/apps/stdlib/io_protocol.html
+
+      var patterns = new ErlPatternMatcher
                 {
                     {"{put_chars, ~v::atom(), ~v::string()}".ErlArgs(E, C),
                         (_p, _t, b, a) => ioProcessPutChars(
@@ -207,38 +204,38 @@ namespace NFX.Erlang.Internal
                             (ErlPatternMatcher)a[0], b.Cast<ErlList>(R), (IErlObject)a[1]) },
                 };
 
-                while (m_Active)
-                {
-                    Tuple<IErlObject, ErlVarBind> res = Node.GroupLeader.ReceiveMatch(s_RequestPattern, 1500);
+      while (m_Active)
+      {
+        Tuple<IErlObject, ErlVarBind> res = Node.GroupLeader.ReceiveMatch(s_RequestPattern, 1500);
 
-                    if (res.Item1 == null) // Timeout
-                        continue;
-                    else if (res.Item2 == null) // No match
-                        App.Log.Write(Log.MessageType.Error,
-                            StringConsts.ERL_INVALID_IO_REQUEST + res.Item1.ToString(), from: GetType().Name);
+        if (res.Item1 == null) // Timeout
+          continue;
+        else if (res.Item2 == null) // No match
+          App.Log.Write(Log.MessageType.Error,
+              StringConsts.ERL_INVALID_IO_REQUEST + res.Item1.ToString(), from: GetType().Name);
 
-                    var from    = res.Item2.Cast<ErlPid>(F);
-                    var replyAs = res.Item2[RA];
-                    var request = res.Item2.Cast<ErlTuple>(R);
-                    var req     = (IErlObject)request;
+        var from = res.Item2.Cast<ErlPid>(F);
+        var replyAs = res.Item2[RA];
+        var request = res.Item2.Cast<ErlTuple>(R);
+        var req = (IErlObject)request;
 
-                    if (patterns.Match(ref req, patterns, replyAs) >= 0)
-                    {
-                        Node.Send(from, req);
-                        continue;
-                    }
+        if (patterns.Match(ref req, patterns, replyAs) >= 0)
+        {
+          Node.Send(from, req);
+          continue;
+        }
 
-                    var reply = s_ReplyPattern.Subst(new ErlVarBind{ {RA, replyAs}, {R, ConstAtoms.Request} });
+        var reply = s_ReplyPattern.Subst(new ErlVarBind { { RA, replyAs }, { R, ConstAtoms.Request } });
 
-                    Debug.Assert(reply != null);
-                    Node.Send(from, reply);
-                }
+        Debug.Assert(reply != null);
+        Node.Send(from, reply);
+      }
 
-                App.Log.Write(Log.MessageType.Info, StringConsts.ERL_STOPPING_SERVER.Args(Node.NodeLongName, "I/O"));
+      App.Log.Write(Log.MessageType.Info, StringConsts.ERL_STOPPING_SERVER.Args(Node.NodeLongName, "I/O"));
 
-                m_Thread = null;
-            }
-
-        #endregion
+      m_Thread = null;
     }
+
+  #endregion
+  }
 }

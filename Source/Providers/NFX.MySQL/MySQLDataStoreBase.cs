@@ -74,7 +74,7 @@ namespace NFX.DataAccess.MySQL
       private string m_StringForTrue = STR_FOR_TRUE;
       private string m_StringForFalse = STR_FOR_FALSE;
 
-      private bool m_FullGDIDs = true;
+      private bool m_FullGDIDS = true;
 
       private bool m_InstrumentationEnabled;
     #endregion
@@ -159,7 +159,7 @@ namespace NFX.DataAccess.MySQL
     /// <summary>
     /// When true (default) writes gdid as byte[](era+id), false - uses ulong ID only
     /// </summary>
-    [Config(Default=true)] public bool FullGDIDs{ get { return m_FullGDIDs; } set {m_FullGDIDs = value;}}
+    [Config(Default=true)] public bool FullGDIDS{ get { return m_FullGDIDS; } set {m_FullGDIDS = value;}}
     
     #endregion
 

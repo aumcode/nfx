@@ -56,6 +56,21 @@ namespace NFX.Wave.Instrumentation
         protected override Datum MakeAggregateInstance() { return new ServerRequest(this.Source, 0); }
     }
 
+    /// <summary>
+    /// Provides request count received by server portal
+    /// </summary>
+    [Serializable]
+    public class ServerPortalRequest : WaveLongGauge, INetInstrument
+    {
+        internal ServerPortalRequest(string src, long value) : base(src, value) {}
+
+        public override string Description { get{ return "Provides request count received by server portal";} }
+
+        public override string ValueUnitName  { get { return NFX.CoreConsts.UNIT_NAME_REQUEST; } }
+
+        protected override Datum MakeAggregateInstance() { return new ServerPortalRequest(this.Source, 0); }
+    }
+
 
     /// <summary>
     /// Provides request count that were denied by the server gate

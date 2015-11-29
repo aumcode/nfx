@@ -271,5 +271,4 @@ namespace NFX.DataAccess.CRUD
         void AfterLoad(string targetName);
     }
 
-    
 }

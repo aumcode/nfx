@@ -104,6 +104,9 @@ namespace NFX.Wave
       public const string CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR = 
         "Match '{0}' is specified more than once in {1} config";
 
+      public const string CONFIG_OTHER_DUPLICATE_PORTAL_NAME_ERROR = 
+        "Portal '{0}' is specified more than once in {1} config";
+
       public const string SERVER_DEFAULT_ERROR_WC_NULL_ERROR = 
         "Server exception could not be responded to as WorkContext is null. Error: ";
 
@@ -131,5 +134,16 @@ namespace NFX.Wave
 
       public const string CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR = 
         "The total length of client vars with cookie name is {0} chars, which is over the limit of {1} chars. Reduce the amount of information stored in client vars";
+
+      
+      public const string CONFIG_PORTAL_ROOT_URI_ERROR = 
+        "Portal '{0}' has invalid root uri attribute: {1}";
+     
+      public const string CONFIG_PORTAL_DUPLICATE_THEME_NAME_ERROR = 
+        "Theme '{0}' is specified more than once in portal '{1}' config";
+
+      public const string CONFIG_PORTAL_NO_THEMES_ERROR =  "Portal '{0}' does not have any themes specified";
+      public const string CONFIG_PORTAL_NO_DEFAULT_THEME_ERROR =  "Portal '{0}' does not have any theme marked as DEFAULT. At least one theme should be a default one";
+      public const string CONFIG_PORTAL_THEME_NO_NAME_ERROR =  "Portal '{0}' configures a theme that has no name defined";
   }
 }

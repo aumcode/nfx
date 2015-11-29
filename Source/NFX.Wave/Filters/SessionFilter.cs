@@ -122,9 +122,21 @@ namespace NFX.Wave.Filters
       {
         if (work.Session!=null) return;
         WaveSession session = null; 
-        var sid = ExtractSessionID(work);
+        ulong sidSecret = 0;
+        var sid = ExtractSessionID(work, out sidSecret);
+        
         if (sid.HasValue)
+        {
           session = App.ObjectStore.CheckOut(sid.Value) as WaveSession; 
+
+          if (session!=null && session.IDSecret!=sidSecret)
+          {
+            App.ObjectStore.UndoCheckout(sid.Value);
+            session = null;//The secret password does not match
+            if (Server.m_InstrumentationEnabled)
+              Interlocked.Increment(ref Server.m_Stat_SessionInvalidID);
+          }
+        }
        
         if (session==null)
         {
@@ -170,7 +182,7 @@ namespace NFX.Wave.Filters
            
             if (session.IsNew || regenerated)
             {
-              work.Response.SetClientVar(m_CookieName, EncodeSessionID( session.ID ));
+              work.Response.SetClientVar(m_CookieName, EncodeSessionID( session ));
             }
           }
           else
@@ -195,53 +207,55 @@ namespace NFX.Wave.Filters
       /// <summary>
       /// Extracts session ID from work request. The default implementation uses cookie
       /// </summary>
-      protected virtual Guid? ExtractSessionID(WorkContext work)
+      protected virtual Guid? ExtractSessionID(WorkContext work, out ulong idSecret)
       {
         var cv = work.Response.GetClientVar(m_CookieName);// work.Request.Cookies[m_CookieName];
 
         if (cv.IsNotNullOrWhiteSpace())
         {
-          var guid = DecodeSessionID(cv);
+          var guid = DecodeSessionID(cv, out idSecret);
           if (guid.HasValue) return guid.Value;
 
           if (Server.m_InstrumentationEnabled)
               Interlocked.Increment(ref Server.m_Stat_SessionInvalidID);
         }
 
+        idSecret = 0;
         return null;
       }
       
       /// <summary>
       /// Override to encode session ID GUID into string representation
       /// </summary>
-      protected virtual string EncodeSessionID(Guid id)
+      protected virtual string EncodeSessionID(WaveSession session)
       {
-        ulong csum = ((ulong)id.GetHashCode() << 32) | (uint)ExternalRandomGenerator.Instance.NextRandomInteger;
-        var encoded = new ELink(csum, id.ToByteArray());
+        var encoded = new ELink(session.IDSecret, session.ID.ToByteArray());
         return encoded.Link;
       }
 
       /// <summary>
       /// Override to decode session ID GUID from string representation. Return null if conversion not possible
       /// </summary>
-      protected virtual Guid? DecodeSessionID(string id)
+      protected virtual Guid? DecodeSessionID(string id, out ulong idSecret)
       {
         ELink encoded;
         Guid guid; 
+        ulong secret;
        
         try
         {
           encoded = new ELink(id);
+          secret = encoded.ID;
           guid = new Guid(encoded.Metadata);
         }
         catch
         {
+          idSecret = 0;
           return null;
         }      
-         
-        var csum = (int)(encoded.ID >> 32);
-        if (guid.GetHashCode()==csum) return guid;
-        return null;
+
+        idSecret = secret;
+        return guid;
       }
       
 

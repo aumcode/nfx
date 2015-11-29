@@ -1,0 +1,7 @@
+﻿%% (string()) -> 
+%%   {ok, Schema,[{Schema, Msg::string(), Time::long()}]}
+%% <schema>
+%%  <field name="echoed_msg" type="string"/>
+%%  <field name="ts" type="datetime"/>
+%% </schema>
+nfx_test:echo(Msg::string())

@@ -174,7 +174,8 @@ namespace NFX.Wave
         result.Append( chunk.Portion==chunkPortion.Query ? Uri.EscapeDataString(chunk.Name) : chunk.Name);
       }  
               
-      return prefix!=null ? new Uri(prefix, result.ToString()) : new Uri(result.ToString());
+      return prefix!=null ? new Uri(prefix, result.ToString()) : 
+                            new Uri(result.ToString(), UriKind.RelativeOrAbsolute);
     } 
 
  internal string _____Chunks

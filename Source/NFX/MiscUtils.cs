@@ -36,6 +36,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 
 using NFX.Environment;
+using NFX.DataAccess.CRUD;
 
 namespace NFX
 {
@@ -45,6 +46,16 @@ namespace NFX
     public static readonly string[] WIN_UNIX_LINE_BRAKES = new string[]{ "\r\n", "\n" };
 
     
+    /// <summary>
+    /// Casts rowset's rows to the specified type, returning empty enumerable if rowset is null
+    /// </summary>
+    public static IEnumerable<TRow> AsEnumerableOf<TRow>(this RowsetBase rowset) where TRow : Row
+    {
+      if (rowset==null) yield break;
+
+      foreach(var row in rowset)
+       yield return (TRow)row;
+    }
 
     /// <summary>
     /// Checks the value for null and throws exception if it is.
