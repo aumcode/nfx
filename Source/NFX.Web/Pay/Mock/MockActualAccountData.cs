@@ -55,7 +55,39 @@ namespace NFX.Web.Pay.Mock
 
       [Config] public Account Account { get; set; }
 
-      [Config] public AccountData AccountData { get; set; }
+      [Config]
+      public AccountData AccountData
+      {
+        get
+        {
+          return m_AccountData;
+        }
+        set
+        {
+          m_AccountData = value;
+
+          m_BillingAddress.Address1 = m_AccountData.BillingAddress1;
+          m_BillingAddress.Address2 = m_AccountData.BillingAddress2;
+
+          m_BillingAddress.City = m_AccountData.BillingCity;
+          m_BillingAddress.Region = m_AccountData.BillingRegion;
+          m_BillingAddress.PostalCode = m_AccountData.BillingPostalCode;
+          m_BillingAddress.Country = m_AccountData.BillingCountry;
+          m_BillingAddress.Phone = m_AccountData.BillingPhone;
+          m_BillingAddress.Email = m_AccountData.BillingEmail;
+
+          m_ShippingAddress.Address1 = m_AccountData.ShippingAddress1;
+          m_ShippingAddress.Address2 = m_AccountData.ShippingAddress2;
+
+          m_ShippingAddress.City = m_AccountData.ShippingCity;
+          m_ShippingAddress.Region = m_AccountData.ShippingRegion;
+          m_ShippingAddress.PostalCode = m_AccountData.ShippingPostalCode;
+          m_ShippingAddress.Country = m_AccountData.ShippingCountry;
+          m_ShippingAddress.Phone = m_AccountData.ShippingPhone;
+          m_ShippingAddress.Email = m_AccountData.ShippingEmail;
+        }
+      }
+
 
       public string FirstName { get { return AccountData.FirstName; } set { AccountData.FirstName = value; } }
       public string MiddleName { get { return AccountData.MiddleName; } set { AccountData.MiddleName = value; } }
@@ -78,24 +110,9 @@ namespace NFX.Web.Pay.Mock
 
       public bool IsCard { get { return AccountData.IsCard; } }
 
-      public string BillingAddress1 { get { return AccountData.BillingAddress1; } set { AccountData.BillingAddress1 = value; } }
-      public string BillingAddress2 { get { return AccountData.BillingAddress2; } set { AccountData.BillingAddress2 = value; } }
-      public string BillingCity { get { return AccountData.BillingCity; } set { AccountData.BillingCity = value; } }
-      public string BillingRegion { get { return AccountData.BillingRegion; } set { AccountData.BillingRegion = value; } }
-      public string BillingPostalCode { get { return AccountData.BillingPostalCode; } set { AccountData.BillingPostalCode = value; } }
-      public string BillingCountry { get { return AccountData.BillingCountry; } set { AccountData.BillingCountry = value; } }
+      public IAddress BillingAddress { get { return m_BillingAddress; } }
 
-      public string BillingPhone { get { return AccountData.BillingPhone; } set { AccountData.BillingPhone = value; } }
-      public string BillingEmail { get { return AccountData.BillingEmail; } set { AccountData.BillingEmail = value; } }
-
-
-      public string ShippingAddress1 { get { return AccountData.ShippingAddress1; } set { AccountData.ShippingAddress1 = value; } }
-      public string ShippingAddress2 { get { return AccountData.ShippingAddress2; } set { AccountData.ShippingAddress2 = value; } }
-      public string ShippingCity { get { return AccountData.ShippingCity; } set { AccountData.ShippingCity = value; } }
-      public string ShippingRegion { get { return AccountData.ShippingRegion; } set { AccountData.ShippingRegion = value; } }
-      public string ShippingPostalCode { get { return AccountData.ShippingPostalCode; } set { AccountData.ShippingPostalCode = value; } }
-      public string ShippingPhone { get { return AccountData.ShippingPhone; } set { AccountData.ShippingPhone = value; } }
-      public string ShippingEmail { get { return AccountData.ShippingEmail; } set { AccountData.ShippingEmail = value; } } 
+      public IAddress ShippingAddress { get { return m_ShippingAddress; } }
 
     #endregion
 
@@ -113,6 +130,15 @@ namespace NFX.Web.Pay.Mock
 
         Account = new Account(identity, identityID, accountID);
       }
+
+    #endregion
+
+    #region .pvt
+
+    private AccountData m_AccountData;
+
+      private readonly Address m_BillingAddress = new Address();
+      private readonly Address m_ShippingAddress = new Address();
 
     #endregion
   }
@@ -156,6 +182,8 @@ namespace NFX.Web.Pay.Mock
     [Config] public string ShippingCity { get; set; }
     [Config] public string ShippingRegion { get; set; }
     [Config] public string ShippingPostalCode { get; set; }
+    [Config] public string ShippingCountry { get; set; }
+
     [Config] public string ShippingPhone { get; set; }
     [Config] public string ShippingEmail { get; set; }
 

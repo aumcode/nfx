@@ -150,6 +150,7 @@ namespace NFX.Web
 
     public const string SOCIAL_NETWORK_DUPLICATE_NAME = "Can not have social network instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
+    public const string TAX_CALCULATOR_DUPLICATE_NAME = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
     public const string PAYMENT_CURRENCY_CONVERSION_MAPPING_ERROR = "Currency mapping for '{0}' -> '{1}' is not found by provider '{2}' or rate attr missing";
     

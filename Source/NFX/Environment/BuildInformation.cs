@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Globalization;
 
 namespace NFX.Environment
 {
@@ -94,7 +95,8 @@ namespace NFX.Environment
       private string m_Computer;
       private string m_User;
       private string m_OS;
-      private DateTime m_DateStamp;
+      private string m_OSVer;
+      private DateTime m_DateStampUTC;
     #endregion
 
     #region Properties
@@ -141,16 +143,21 @@ namespace NFX.Environment
         public string OS { get { return m_OS ?? string.Empty; } }
 
         /// <summary>
+        /// OS version name
+        /// </summary>
+        public string OSVer { get { return m_OSVer ?? string.Empty; } }
+
+        /// <summary>
         /// Date and time stamp when build was performed
         /// </summary>
-        public DateTime DateStamp { get { return m_DateStamp; } }
+        public DateTime DateStampUTC { get { return m_DateStampUTC; } }
     #endregion
 
     #region Public
 
         public override string ToString()
         {
-            return "[{0}] by {1}@{2}:{3} on {4}".Args(BuildSeed, User, Computer, OS, DateStamp);
+            return "[{0}] by {1}@{2}:{3} on {4} UTC".Args(BuildSeed, User, Computer, OS, DateStampUTC);
         }
 
     #endregion
@@ -175,7 +182,8 @@ namespace NFX.Environment
            m_Computer = val(lines[1]).Trim();
            m_User = val(lines[2]).Trim();
            m_OS = val(lines[3]).Trim();
-           m_DateStamp = DateTime.Parse(val(lines[4]) + " " + val(lines[5]));
+           m_OSVer = val(lines[4]).Trim();
+           m_DateStampUTC = DateTime.Parse(val(lines[5]), null, DateTimeStyles.RoundtripKind);
         }
 
         private string val(string line)

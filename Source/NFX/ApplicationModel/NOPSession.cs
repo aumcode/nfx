@@ -80,6 +80,11 @@ namespace NFX.ApplicationModel
             set {}
         }
 
+        public string LanguageISOCode
+        {
+            get { return CoreConsts.ISO_LANG_ENGLISH;} 
+        }
+
 
         public IDictionary<object, object> Items
         {

@@ -65,6 +65,15 @@ namespace NFX.Serialization.JSON
                                                                                    SpaceSymbols = true,
                                                                                    ASCIITarget = false
                                                                                  };
+
+        private static JSONWritingOptions s_PrettyPrintASCII =  new JSONWritingOptions{
+                                                                                   IndentWidth = 2,
+                                                                                   ObjectLineBreak = true,
+                                                                                   MemberLineBreak = true,
+                                                                                   SpaceSymbols = true,
+                                                                                   ASCIITarget = true
+                                                                                 };
+
         private static JSONWritingOptions s_PrettyPrintRowsAsMap =  new JSONWritingOptions{
                                                                                    IndentWidth = 2,
                                                                                    ObjectLineBreak = true,
@@ -85,7 +94,7 @@ namespace NFX.Serialization.JSON
         /// </summary>
         public static JSONWritingOptions CompactRowsAsMap { get { return s_CompacRowsAsMap;} }
 
-         /// <summary>
+        /// <summary>
         /// Writes JSON without line breaks between members and no indenting escaping any characters 
         ///  with codes above 127 suitable for ASCII transmission
         /// </summary>
@@ -95,6 +104,12 @@ namespace NFX.Serialization.JSON
         /// Writes JSON suitable for printing/screen display
         /// </summary>
         public static JSONWritingOptions PrettyPrint { get { return s_PrettyPrint;} }
+
+        /// <summary>
+        /// Writes JSON suitable for printing/screen display 
+        ///  with codes above 127 suitable for ASCII transmission
+        /// </summary>
+        public static JSONWritingOptions PrettyPrintASCII { get { return s_PrettyPrintASCII;} }
 
         /// <summary>
         /// Writes JSON suitable for printing/screen display writing rows as maps(key:values) instead of arrays

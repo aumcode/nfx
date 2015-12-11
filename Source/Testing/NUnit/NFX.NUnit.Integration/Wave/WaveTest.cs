@@ -376,6 +376,8 @@ namespace NFX.NUnit.Integration.Wave
           };
 
           var str = initalRow.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+ 
+ Console.WriteLine(str);
 
           using (var wc = CreateWebClient())
           {

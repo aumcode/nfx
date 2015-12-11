@@ -115,14 +115,14 @@ namespace NFX.NUnit.Erlang
         var es4 = new ErlInputStream(b4);
         Assert.AreEqual(t4, es4.Read());
 
-        var b5 = new byte[] { 131, 110, 8, 0, 0, 0, 0, 0, 0, 0, 0, 128 };
+        var b5 = new byte[] { 131, 110, 8, 1, 0, 0, 0, 0, 0, 0, 0, 128 };
         var t5 = new ErlLong(1L << 63);
         var os5 = new ErlOutputStream(t5);
         Assert.AreEqual(b5, os5.GetBuffer().TakeWhile((_, i) => i < b5.Length).ToArray());
         var es5 = new ErlInputStream(b5);
         Assert.AreEqual(t5, es5.Read());
 
-        var b6 = new byte[] { 131, 110, 8, 0, 0, 0, 0, 0, 0, 0, 0, 128 };
+        var b6 = new byte[] { 131, 110, 8, 1, 0, 0, 0, 0, 0, 0, 0, 128 };
         var t6 = new ErlLong(-1L << 63);
         var os6 = new ErlOutputStream(t6);
         Assert.AreEqual(b6, os6.GetBuffer().TakeWhile((_, i) => i < b6.Length).ToArray());

@@ -145,5 +145,21 @@ namespace NFX.Wave
       public const string CONFIG_PORTAL_NO_THEMES_ERROR =  "Portal '{0}' does not have any themes specified";
       public const string CONFIG_PORTAL_NO_DEFAULT_THEME_ERROR =  "Portal '{0}' does not have any theme marked as DEFAULT. At least one theme should be a default one";
       public const string CONFIG_PORTAL_THEME_NO_NAME_ERROR =  "Portal '{0}' configures a theme that has no name defined";
+
+
+      public const string PORTAL_HUB_INSTANCE_IS_NOT_AVAILABLE_ERROR = "Portal hub instance is not available";
+      public const string PORTAL_HUB_INSTANCE_IS_ALREADY_AVAILABLE_ERROR = "Portal hub instance is already available";
+
+      public const string CONFIG_PORTAL_HUB_NODE_ERROR = "Portal hub config node is null or !exists";
+
+      public const string CONFIG_PORTAL_HUB_FS_ROOT_PATH_ERROR = "Portal hub content file system '{0}' section root path attribute '{1}' is required";
+
+      public const string PORTAL_HUB_INSTANCE_ALREADY_CONTAINS_PORTAL_ERROR = "Portal hub instance already has portal '{0}' registered";
+
+      public const string PORTAL_PARENT_DEPTH_ERROR = "Portal '{0}' point to parent portal '{1}' which exceeds max depths of {2}";
+
+      public const string PORTAL_PARENT_INVALID_ERROR = "Portal '{0}' point to parent portal '{1}' which does not exist";
+
+      public const string CONFIG_PORTAL_LOCALIZATION_FILE_ERROR =  "Portal '{0}' points to localization message file '{1}' which could not be read: {2}";
   }
 }

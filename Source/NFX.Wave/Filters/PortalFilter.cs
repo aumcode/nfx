@@ -32,7 +32,6 @@ namespace NFX.Wave.Filters
   public class PortalFilter : WorkFilter
   {
     #region CONSTS
-      public const string CONFIG_PORTAL_SECTION = "portal"; 
       public const string VAR_PORTAL_NAME = "portal-name";
     #endregion
 
@@ -44,14 +43,6 @@ namespace NFX.Wave.Filters
 
       private void ctor(IConfigSectionNode confNode)
       {
-      //  m_CookieName = confNode.AttrByName(CONF_COOKIE_NAME_ATTR).ValueAsString(DEFAULT_COOKIE_NAME);
-      //  m_SessionTimeoutMs = confNode.AttrByName(CONF_SESSION_TIMEOUT_MS_ATTR).ValueAsInt(DEFAULT_SESSION_TIMEOUT_MS);
-       
-        //read portals
-        foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(CONFIG_PORTAL_SECTION)))
-          if(!m_Portals.Register( FactoryUtils.Make<Portal>(cn, typeof(Portal), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_PORTAL_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName))); 
-
         //read matches
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_PortalMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
@@ -62,18 +53,12 @@ namespace NFX.Wave.Filters
 
     #region Fields
 
-     private Registry<Portal> m_Portals = new Registry<Portal>();
      private OrderedRegistry<WorkMatch> m_PortalMatches = new OrderedRegistry<WorkMatch>();
 
     #endregion
 
     #region Properties
-    
-      /// <summary>
-      /// Registry of named portals
-      /// </summary>
-      public Registry<Portal> Portals{ get{ return m_Portals;}}
-     
+
       /// <summary>
       /// OrderedRegistry of matches used by the filter to determine whether work should match a portal
       /// </summary>
@@ -99,7 +84,7 @@ namespace NFX.Wave.Filters
                 var portalName = matched[VAR_PORTAL_NAME].AsString();
                 if (portalName.IsNotNullOrWhiteSpace())
                 {
-                  var portal = m_Portals[portalName];
+                  var portal = PortalHub.Instance.Portals[portalName];
                   if (portal!=null && !portal.Offline)
                   {
                     work.m_Portal = portal;
@@ -113,7 +98,7 @@ namespace NFX.Wave.Filters
 
             if (work.m_Portal==null)
             {
-              var defaultPortal = m_Portals.FirstOrDefault(p => !p.Offline && p.Default);
+              var defaultPortal = PortalHub.Instance.DefaultOnline;
               if (defaultPortal!=null)
               {
                  work.m_Portal = defaultPortal;
@@ -135,6 +120,7 @@ namespace NFX.Wave.Filters
             work.m_Portal = null;
             work.m_PortalMatch = null;
             work.m_PortalMatchedVars = null;
+            work.PortalTheme = null;
           }
         }
         else this.InvokeNextWorker(work, filters, thisFilterIndex);

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <title>WV Data/RecordModel Unit Test</title>
+    <script src="../wv.all.min.js" ></script>
+    <script src="../jquery-2.1.4.min.js" ></script>
+
+    <style>
+        body {  padding: 0;  margin: 0; font-family: Tahoma, Verdana; font-size: 10px; }
+        pre { font-family: 'Courier New'; font-size: 10px; display: block; border: 1px dotted #e0e0e0; 
+              padding: 2px; margin: 2px 2px 2px 2px; background-color: rgba(220,220,220,0.4); white-space: pre-wrap;}
+        .wvUTestArea { width: 100%; display: block;  border: 1px solid #004080; background-color: #0094ff; }
+        .wvUTestTitle { font-weight: bold; display: block; }
+        .wvUTestOK { margin-left: auto;  margin-right: auto; width: 99%; padding: 1px; background-color: #b6ff00; border: 1px dotted #202020; }
+        .wvUTestError { margin-left: auto; margin-right: auto; width: 99%; padding: 1px; background-color: #ff8080;  border: 2px solid red; }
+        .wvUTestTableError { background-color: #ffa0a0; }
+        .wvUTestTableTotal * { font-size: 1.5em; border-top: 2px solid #404040; }
+    </style>
+
+</head>
+<body>
+
+   <h1>WAVE Data / RecordModel Lib Tests</h1>
+
+    <div id="div_wv_utest_summary"></div>
+
+
+     <form data-wv-rid="V1">
+
+        <div data-wv-fname="FirstName"></div>
+        <div data-wv-fname="LastName"></div>
+        <div data-wv-fname="LastName"></div>
+        <div data-wv-fname="Age"></div>
+        <div data-wv-fname="Helper"></div>
+        <div data-wv-fname="Registered"></div>
+        <div data-wv-fname="Registered"></div>
+        <div data-wv-fname="MusicType"></div>
+        <div data-wv-fname="MusicType" data-wv-ctl="text"></div>
+        <div data-wv-fname="Various"></div>
+        <div data-wv-fname="Various" data-wv-ctl="radio"></div>
+
+    </form>
+
+    <script src="wv.data.tests.js" ></script>
+
+   
+
+</body>
+</html>

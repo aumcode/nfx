@@ -65,6 +65,8 @@ NFX UNISTACK includes:
 * JSON parsing, ser/deser support
 * Ultra efficient Binary serialization support
 * Erlang CLR support with native types: tuples, lists, pattern matching
+    - [Overview blog](http://blog.aumcode.com/2013/10/nfx-native-interoperability-of-net-with.html)
+    - [Interop with Erlang/Mnesia and RPC abstraction](https://www.youtube.com/watch?v=o9utCAMLydA)
 * Text lexing/parsing and processing pipeline: C# lexer, JSON lexer/Parser
 * RelationalSchema language compiler - generate DDL for different targets
 * Templatization engine (for web, emails and not only textual content)

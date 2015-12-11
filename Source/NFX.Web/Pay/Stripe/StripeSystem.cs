@@ -276,7 +276,7 @@ namespace NFX.Web.Pay.Stripe
 
           dynamic obj = WebClient.GetJson(prms);
 
-          dynamic lastRefund = ((NFX.Serialization.JSON.JSONDataArray)obj.refunds.data.Data).First();
+          dynamic lastRefund = ((NFX.Serialization.JSON.JSONDataArray)obj.refunds.Data).First();
 
           var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
 
@@ -416,7 +416,7 @@ namespace NFX.Web.Pay.Stripe
           {
             {PRM_NAME, recipientActualAccountData.AccountTitle},
             {PRM_TYPE, recipientActualAccountData.AccountType == AccountType.Corporation ? "corporation" : "individual"},
-            {PRM_EMAIL, recipientActualAccountData.BillingEmail}
+            {PRM_EMAIL, recipientActualAccountData.BillingAddress.Email}
           };
 
           fillBodyParametersFromAccount(bodyPrms, recipientActualAccountData);
@@ -452,8 +452,6 @@ namespace NFX.Web.Pay.Stripe
           throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_CREATE_RECIPIENT_ERROR + this.GetType()
             + " .Refund(customerAccout='{0}')".Args(recipientActualAccountData), ex);
         }
-
-        throw new NotImplementedException();
       }
 
       /// <summary>
@@ -500,7 +498,7 @@ namespace NFX.Web.Pay.Stripe
       {
         if (!accountData.IsCard) // bank account
         {
-          bodyPrms.Add(PRM_COUNTRY, accountData.BillingCountry);
+          bodyPrms.Add(PRM_COUNTRY, accountData.BillingAddress.Country);
           bodyPrms.Add(PRM_ACCOUNT_NUMBER, accountData.AccountNumber);
           bodyPrms.Add(PRM_ROUTING_NUMBER, accountData.RoutingNumber);
         }
@@ -513,23 +511,23 @@ namespace NFX.Web.Pay.Stripe
           if (accountData.CardVC.IsNotNullOrWhiteSpace())
             bodyPrms.Add(PRM_CARD_CVC, accountData.CardVC);
 
-          if (accountData.BillingAddress1.IsNotNullOrWhiteSpace())
-            bodyPrms.Add(PRM_CARD_ADDRESS_LINE_1, accountData.BillingAddress1);
+          if (accountData.BillingAddress.Address1.IsNotNullOrWhiteSpace())
+            bodyPrms.Add(PRM_CARD_ADDRESS_LINE_1, accountData.BillingAddress.Address1);
 
-          if (accountData.BillingAddress2.IsNotNullOrWhiteSpace())
-            bodyPrms.Add(PRM_CARD_ADDRESS_LINE_2, accountData.BillingAddress2);
+          if (accountData.BillingAddress.Address2.IsNotNullOrWhiteSpace())
+            bodyPrms.Add(PRM_CARD_ADDRESS_LINE_2, accountData.BillingAddress.Address2);
 
-          if (accountData.BillingCity.IsNotNullOrWhiteSpace())
-            bodyPrms.Add(PRM_CARD_ADDRESS_CITY, accountData.BillingCity);
+          if (accountData.BillingAddress.City.IsNotNullOrWhiteSpace())
+            bodyPrms.Add(PRM_CARD_ADDRESS_CITY, accountData.BillingAddress.City);
 
-          if (accountData.BillingPostalCode.IsNotNullOrWhiteSpace())
-            bodyPrms.Add(PRM_CARD_ADDRESS_ZIP, accountData.BillingPostalCode);
+          if (accountData.BillingAddress.PostalCode.IsNotNullOrWhiteSpace())
+            bodyPrms.Add(PRM_CARD_ADDRESS_ZIP, accountData.BillingAddress.PostalCode);
 
-          if (accountData.BillingRegion.IsNotNullOrWhiteSpace())
-            bodyPrms.Add(PRM_CARD_ADDRESS_STATE, accountData.BillingRegion);
+          if (accountData.BillingAddress.Region.IsNotNullOrWhiteSpace())
+            bodyPrms.Add(PRM_CARD_ADDRESS_STATE, accountData.BillingAddress.Region);
 
-          if (accountData.BillingCountry.IsNotNullOrWhiteSpace())
-            bodyPrms.Add(PRM_CARD_ADDRESS_COUNTRY, accountData.BillingCountry);
+          if (accountData.BillingAddress.Country.IsNotNullOrWhiteSpace())
+            bodyPrms.Add(PRM_CARD_ADDRESS_COUNTRY, accountData.BillingAddress.Country);
         }
       }
 

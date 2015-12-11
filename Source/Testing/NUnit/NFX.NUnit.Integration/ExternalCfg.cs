@@ -315,6 +315,11 @@ namespace NFX.NUnit.Integration
 
       provider {name='VKontakteTest' type='NFX.Web.Social.VKontakte, NFX.Web' auto-start=true 
                   client-code='[SN_VK_CLIENT_CODE]' client-secret='[SN_VK_CLIENT_SECRET]'} 
+    }                                    
+
+    tax
+    {
+      calculator {name='NOPCalculator' type='NFX.Web.Pay.Tax.NOPTaxCalculator, NFX.Web'}
     }
 
     web-dav
@@ -488,14 +493,16 @@ namespace NFX.NUnit.Integration
       {
         string envVarsStr = System.Environment.GetEnvironmentVariable(NFX_GOOGLE_DRIVE);
 
-        var cfg = Configuration.ProviderLoadFromString(envVarsStr, Configuration.CONFIG_LACONIC_FORMAT).Root;
+        if (envVarsStr.IsNotNullOrWhiteSpace())
+        {
+          var cfg = Configuration.ProviderLoadFromString(envVarsStr, Configuration.CONFIG_LACONIC_FORMAT).Root;
 
-        GOOGLE_DRIVE_EMAIL = cfg.AttrByName(GoogleDriveParameters.CONFIG_EMAIL_ATTR).Value;
-        GOOGLE_DRIVE_CERT_PATH = cfg.AttrByName(GoogleDriveParameters.CONFIG_CERT_PATH_ATTR).Value;
-        
-        LACONF = LACONF
-          .Replace("[CONFIG_EMAIL_ATTR]", GOOGLE_DRIVE_EMAIL)
-          .Replace("[CONFIG_CERT_PATH_ATTR]", GOOGLE_DRIVE_CERT_PATH);
+          GOOGLE_DRIVE_EMAIL = cfg.AttrByName(GoogleDriveParameters.CONFIG_EMAIL_ATTR).Value;
+          GOOGLE_DRIVE_CERT_PATH = cfg.AttrByName(GoogleDriveParameters.CONFIG_CERT_PATH_ATTR).Value;
+
+          LACONF = LACONF.Replace("[CONFIG_EMAIL_ATTR]", GOOGLE_DRIVE_EMAIL)
+            .Replace("[CONFIG_CERT_PATH_ATTR]", GOOGLE_DRIVE_CERT_PATH);
+        }
       }
       catch (Exception ex)
       {

@@ -33,6 +33,9 @@ namespace NFX.Erlang
 
     private static ErlLocalNode s_Node;
 
+    /// <summary>
+    /// Global nopde from config
+    /// </summary>
     public static ErlLocalNode Node { get { return s_Node; } internal set { s_Node = value; } }
 
     public static bool TraceEnabled(ErlTraceLevel level, ErlTraceLevel minLevel)

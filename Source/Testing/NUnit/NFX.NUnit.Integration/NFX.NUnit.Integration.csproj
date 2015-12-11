@@ -93,6 +93,7 @@
     <Compile Include="Web\Pay\PayTestCommon.cs" />
     <Compile Include="Web\Pay\StripeTest.cs" />
     <Compile Include="Web\Social\AutostarterTest.cs" />
+    <Compile Include="Web\Tax\TaxRegistryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
@@ -152,6 +153,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Web\Pay\Tax\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,14 +15,12 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 
 using NFX.ApplicationModel;
 using NFX.Environment;
-using NFX.Instrumentation;
 using NFX.Serialization.JSON;
 using NFX.ServiceModel;
 

@@ -23,6 +23,8 @@ using NFX.Web.Social;
 
 namespace NFX.Web
 {
+  using NFX.Web.Pay.Tax;
+
   /// <summary>
   /// Facilitates fast access to important web-related config settings that update their values when underlying config changes
   /// </summary>
@@ -34,6 +36,9 @@ namespace NFX.Web
 
       public const string CONFIG_SOCIAL_SECTION = "social";
       public const string CONFIG_SOCIAL_PROVIDER_SECTION = "provider";
+
+      public const string CONFIG_TAX_SECTION = "tax";
+      public const string CONFIG_TAX_CALCULATOR_SECTION = "calculator";
 
       public const string CONFIG_LOGTYPE_ATTR = "log-type";
       public const string CONFIG_DEFAULT_TIMEOUT_MS_ATTR = "default-timeout-ms";
@@ -81,6 +86,8 @@ namespace NFX.Web
 
       private IRegistry<SocialNetwork> m_SocialNetworks;
 
+      private IRegistry<TaxCalculator> m_TaxCalculators;
+
       private MessageType? m_WebDavLogType;
       private int m_WebDavDefaultTimeoutMs = WEBDAV_DEFAULT_TIMEOUT_MS_DEFAULT;
 
@@ -88,7 +95,15 @@ namespace NFX.Web
 
     #region Settings Properties
 
+      /// <summary>
+      /// Social network providers currently present in the system
+      /// </summary>
       public static IRegistry<SocialNetwork> SocialNetworks { get { return Instance.m_SocialNetworks ?? new Registry<SocialNetwork>(); }}
+
+      /// <summary>
+      /// Social network providers currently present in the system
+      /// </summary>
+      public static IRegistry<TaxCalculator> TaxCalculators { get { return Instance.m_TaxCalculators ?? new Registry<TaxCalculator>(); }}
 
       /// <summary>
       /// When set turns on WebDAV logging
@@ -127,8 +142,6 @@ namespace NFX.Web
         var i = Instance;
       }
 
-
-
       public static void ChangeConfig(IConfigSectionNode atNode)
       {
         Instance.ConfigChanged(atNode);
@@ -140,6 +153,9 @@ namespace NFX.Web
 
         var nSocial = webSettingsSection[CONFIG_SOCIAL_SECTION];
         configSocial(nSocial);
+
+        var nTax = webSettingsSection[CONFIG_TAX_SECTION];
+        configTaxCalculators(nTax);
 
         var webDavSection = webSettingsSection[CONFIG_WEBDAV_SECTION];
         m_WebDavLogType = webDavSection.AttrByName(CONFIG_LOGTYPE_ATTR).ValueAsNullableEnum<MessageType>();
@@ -166,6 +182,20 @@ namespace NFX.Web
         }
 
         m_SocialNetworks = networks;
+      }
+
+      private void configTaxCalculators(IConfigSectionNode nTax)
+      {
+        var calculators = new Registry<TaxCalculator>();
+        var nCalculators = nTax.Children.Where(n => n.IsSameName(CONFIG_TAX_CALCULATOR_SECTION));
+
+        foreach (var nCalculator in nCalculators)
+        {
+          var calculator = FactoryUtils.MakeAndConfigure<TaxCalculator>(nCalculator, typeof(TaxCalculator), new object[] { null, nCalculator});
+          calculators.Register(calculator);
+        }
+
+        m_TaxCalculators = calculators;
       }
 
     #endregion

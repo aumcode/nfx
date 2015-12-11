@@ -81,6 +81,7 @@ namespace NFX.Wave
 
       internal Filters.PortalFilter m_PortalFilter;
       internal Portal m_Portal;
+      internal Theme m_PortalTheme;
       internal WorkMatch m_PortalMatch;
       internal JSONDataMap m_PortalMatchedVars;
 
@@ -168,7 +169,11 @@ namespace NFX.Wave
       /// <summary>
       /// Gets/sets portal theme. This may be null as this is just a holder variable
       /// </summary>
-      public Theme PortalTheme { get; set;}
+      public Theme PortalTheme 
+      {
+        get{ return m_PortalTheme ?? (m_Portal!=null ? m_Portal.DefaultTheme :  null);}
+        set{ m_PortalTheme = value;}
+      }
 
 
       /// <summary>

@@ -141,23 +141,28 @@ namespace NFX.Wave.MVC
   /// </summary>
   public struct ClientRecord : IActionResult
   {
-    public ClientRecord(Row row, Exception validationError, string recID = null, string target = null)
+    public ClientRecord(Row row, Exception validationError, string recID = null, string target = null, string isoLang = null)
     {
       RecID = recID;
       Row = row;
       ValidationError = validationError;
       Target = target;
+      IsoLang = isoLang;
     }
     
     public readonly string RecID;
     public readonly Row Row;
     public readonly Exception ValidationError;
     public readonly string Target;
+    public readonly string IsoLang;
 
 
     public void Execute(Controller controller, WorkContext work)
     {
-      work.Response.WriteJSON( Client.RecordModelGenerator.RowToRecordInitJSON(Row, ValidationError, RecID, Target));
+      var gen = (work.Portal!=null) ? work.Portal.RecordModelGenerator
+                                    : Client.RecordModelGenerator.DefaultInstance;
+
+      work.Response.WriteJSON( gen.RowToRecordInitJSON(Row, ValidationError, RecID, Target, IsoLang) );
     }
   }
 

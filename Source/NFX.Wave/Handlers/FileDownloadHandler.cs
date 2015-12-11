@@ -23,11 +23,13 @@ using System.Net;
 
 using NFX.Web;
 using NFX.Environment;
+using NFX.IO.FileSystem;
 
 namespace NFX.Wave.Handlers
 {
   /// <summary>
-  /// Downloads local files. Be carefull with this handler as the incorrect root setup may allow users to download system-internal files
+  /// Downloads local files or files from portal content file system.
+  /// Be carefull with this handler as the incorrect root setup may allow users to download system-internal files
   /// </summary>
   public class FileDownloadHandler : WorkHandler
   {
@@ -57,6 +59,9 @@ namespace NFX.Wave.Handlers
      [Config]
      private int m_CacheMaxAgeSec;
 
+     [Config]
+     private bool m_UsePortalHub;
+
      /// <summary>
      /// Specifies local root path
      /// </summary>
@@ -84,6 +89,15 @@ namespace NFX.Wave.Handlers
         set {m_CacheMaxAgeSec = value<0 ? 0 : value;}
      }
 
+     /// <summary>
+     /// When true, downloads files from PortalHub.ContentFileSystem for selected portal
+     /// </summary>
+     public bool UsePortalHub
+     {
+       get { return m_UsePortalHub;}
+       set { m_UsePortalHub = value;}
+     }
+
     
      protected override void DoHandleWork(WorkContext work)
      {
@@ -97,29 +111,62 @@ namespace NFX.Wave.Handlers
                 .Replace(@"\\", @"\");
 
 
-         var fn = Path.Combine(RootPath, fp);
-         if (!File.Exists(fn))
+         string fileName = null;
+         IFileSystem fs = null;
+         FileSystemSession fsSession = null;
+         FileSystemFile fsFile = null;
+         bool exists = false;
+
+         if (m_UsePortalHub)
          {
-           var text = StringConsts.FILE_DL_HANDLER_NOT_FOUND_INFO.Args(fn);
-           if (m_Throw)
-            throw new HTTPStatusException(SysConsts.STATUS_404, SysConsts.STATUS_404_DESCRIPTION, text);  
-           
-           work.Response.ContentType = ContentType.TEXT;
-           work.Response.Write( text );
-           work.Response.StatusCode = SysConsts.STATUS_404;
-           work.Response.StatusDescription = SysConsts.STATUS_404_DESCRIPTION;
-           return;
+            var hub = PortalHub.Instance;
+            fs = hub.ContentFileSystem;
+            fileName = m_RootPath!=null ? fs.CombinePaths(hub.ContentFileSystemRootPath, m_RootPath, fp)
+                                        : fs.CombinePaths(hub.ContentFileSystemRootPath, fp);
+            fsSession = fs.StartSession(hub.ContentFileSystemConnectParams);
+            fsFile = fsSession[fileName] as FileSystemFile;
+            exists = fsFile!=null;
+         }
+         else
+         {
+            fileName = Path.Combine(RootPath, fp);
+            exists = File.Exists(fileName);
          }
 
-         if (!work.Response.WasWrittenTo)
-           work.Response.Buffered = !chunked;
-    
-         if (m_CacheMaxAgeSec>0)
-          work.Response.Headers[HttpResponseHeader.CacheControl] = "private, max-age={0}, must-revalidate".Args(m_CacheMaxAgeSec);
-         else
-          work.Response.Headers[HttpResponseHeader.CacheControl] = "no-cache";
+         try
+         {
+             if (!exists)
+             {
+               var text = StringConsts.FILE_DL_HANDLER_NOT_FOUND_INFO.Args(fileName);
+               if (m_Throw)
+                throw new HTTPStatusException(SysConsts.STATUS_404, SysConsts.STATUS_404_DESCRIPTION, text);  
+           
+               work.Response.ContentType = ContentType.TEXT;
+               work.Response.Write( text );
+               work.Response.StatusCode = SysConsts.STATUS_404;
+               work.Response.StatusDescription = SysConsts.STATUS_404_DESCRIPTION;
+               return;
+             }
 
-         work.Response.WriteFile(fn, attachment: attachment);
+             if (!work.Response.WasWrittenTo)
+               work.Response.Buffered = !chunked;
+    
+             if (m_CacheMaxAgeSec>0)
+              work.Response.Headers[HttpResponseHeader.CacheControl] = "private, max-age={0}, must-revalidate".Args(m_CacheMaxAgeSec);
+             else
+              work.Response.Headers[HttpResponseHeader.CacheControl] = "no-cache";
+
+             if (fsFile==null)
+               work.Response.WriteFile(fileName, attachment: attachment);
+             else
+             {
+               work.Response.WriteStream(fsFile.FileStream, attachmentName: attachment ? Path.GetFileName(fileName) : null);
+             }
+         }
+         finally
+         {
+           DisposableObject.DisposeAndNull(ref fsSession);
+         }
      }
   }
 }

@@ -3,6 +3,7 @@
        log-root="c:\nfx\"
        log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
        log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+       log-mongo="NFX.Log.Destinations.MongoDBDestination, NFX.MongoDB"
        application-name="Manual Win Forms Test App(WinFormsTest.exe)"
        log-name="test-client"
        trace-disable="true"
@@ -55,6 +56,13 @@
            filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
            max-level="Trace"
         />
+
+      <destination type="$(/$log-mongo)"
+       name="$(/$log-name)-mongo"
+       db-name="logdb"
+       collection="log"
+       max-level="Trace"
+          />
 
     <!--
     <destination  type="NFX.Log.Destinations.LogServiceDestination, NFX" 

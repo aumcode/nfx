@@ -115,6 +115,7 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Mailbox.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
+    <Compile Include="DataAccess\CRUD\Subscriptions\SynchronizedDataset.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDMailbox.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDQueryExecutionContext.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDScriptQueryHandler.cs" />
@@ -324,6 +325,7 @@
     <Compile Include="OS\NetworkUtils.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
+    <Compile Include="RecordModel\CRUDSchemaRecord.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />
     <Compile Include="Security\PasswordUtils.cs" />
@@ -697,12 +699,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>echo BUILD_SEED=%25random%25  &gt;  "$(ProjectDir)BUILD_INFO.txt"
-echo COMPUTER=%25computername%25  &gt;&gt;  "$(ProjectDir)BUILD_INFO.txt"
-echo USER=%25username%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
-echo OS=%25os%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
-echo DATE=%25date%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
-echo TIME=%25time%25 &gt;&gt; "$(ProjectDir)BUILD_INFO.txt"
-</PreBuildEvent>
+    <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"</PreBuildEvent>
   </PropertyGroup>
 </Project>

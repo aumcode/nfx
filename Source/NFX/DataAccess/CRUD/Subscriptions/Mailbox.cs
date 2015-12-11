@@ -6,11 +6,35 @@ using System.Threading.Tasks;
 
 namespace NFX.DataAccess.CRUD.Subscriptions
 {
+  /// <summary>
+  /// Describes row modification
+  /// </summary>
+  public struct CRUDSubscriptionEvent
+  {
+      /// <summary>
+      /// Describes what kind of modification was done
+      /// </summary>
+      public enum EventType { RowInsert, RowUpsert, RowUpdate, RowDelete, TableCreate, TableClear, TableDrop }
+
+      public CRUDSubscriptionEvent(EventType type, Schema schema, Row row)
+      {
+          Type = type;
+          Schema = schema;
+          Row = row;
+      }
+
+      public readonly EventType Type;
+      public readonly Schema Schema;
+      public readonly Row Row;
+  }
+  
+  
+  
   
   /// <summary>
   /// Describes event handlers that get called when data arrives
   /// </summary>
-  public delegate void SubscriptionReceiptEventHandler(Subscription subscription, Mailbox recipient, RowChange data, Exception error);
+  public delegate void SubscriptionReceiptEventHandler(Subscription subscription, Mailbox recipient, CRUDSubscriptionEvent data, Exception error);
   
   /// <summary>
   /// Represents CRUD row data recipient
@@ -49,7 +73,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
 
       private Registry<Subscription> m_Subscriptions = new Registry<Subscription>();
 
-      private LinkedList<RowChange> m_Buffer = new LinkedList<RowChange>();
+      private LinkedList<CRUDSubscriptionEvent> m_Buffer = new LinkedList<CRUDSubscriptionEvent>();
       private volatile int m_BufferCapacity;
     #endregion
 
@@ -71,7 +95,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       /// <summary>
       /// Returns all buffered data in chronological order
       /// </summary>
-      public RowChange[] Buffered
+      public CRUDSubscriptionEvent[] Buffered
       {
         get
         {
@@ -96,7 +120,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       /// <summary>
       /// Delivers data to the mailbox. This method is called by subscription
       /// </summary>
-      public bool Deliver(Subscription subscription, RowChange data)
+      public bool Deliver(Subscription subscription, CRUDSubscriptionEvent data)
       {
         if (subscription.Store!=this.Store) return false;
 
@@ -118,7 +142,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       {
         if (subscription.Store!=this.Store) return false;
         
-        OnReceipt(subscription, default(RowChange), error);
+        OnReceipt(subscription, default(CRUDSubscriptionEvent), error);
 
         return true;
       }
@@ -130,9 +154,9 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       /// <summary>
       /// Tries to take the specified number of samples in chronological order
       /// </summary>
-      public List<RowChange> FetchBuffered(int count, bool keep = false)
+      public List<CRUDSubscriptionEvent> FetchBuffered(int count, bool keep = false)
       {
-       var result = new List<RowChange>();
+       var result = new List<CRUDSubscriptionEvent>();
 
        if (count<=0) return result;
        
@@ -149,7 +173,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
         return result;
       }
 
-      protected virtual void OnReceipt(Subscription subscription, RowChange data, Exception error)
+      protected virtual void OnReceipt(Subscription subscription, CRUDSubscriptionEvent data, Exception error)
       {
         if (Receipt!=null)
           Receipt(subscription, this, data, error);

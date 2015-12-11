@@ -81,7 +81,7 @@ namespace NFX.Erlang
     /// <summary>
     /// Implicit conversion of byte/char to ErlByte
     /// </summary>
-    public static explicit operator ErlByte(int t) { return new ErlByte((byte)t); }
+    public static explicit operator ErlByte(int  t) { return new ErlByte((byte)t); }
     public static implicit operator ErlByte(byte t) { return new ErlByte(t); }
     public static explicit operator ErlByte(char t) { return new ErlByte(t); }
 

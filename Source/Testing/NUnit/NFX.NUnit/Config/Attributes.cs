@@ -25,6 +25,8 @@ using NUnit.Framework;
 
 using NFX.Time;
 using NFX.Environment;
+using System.Threading;
+using System.Globalization;
 
 namespace NFX.NUnit.Config
 {
@@ -192,6 +194,13 @@ namespace NFX.NUnit.Config
     [TestFixture]   
     public class Attributes
     {
+        [SetUp]
+        public void Setup()
+        {
+             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        }
+
+
         static string xml = 
 @"<root>
 

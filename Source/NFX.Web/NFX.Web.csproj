@@ -101,7 +101,7 @@
     <Compile Include="Pay\ICurrencyMarket.cs" />
     <Compile Include="Pay\Instrumentation\Gauges.cs" />
     <Compile Include="Pay\Intfs.cs" />
-    <Compile Include="Pay\ITaxCalc.cs" />
+    <Compile Include="Pay\Tax\Intfs.cs" />
     <Compile Include="Pay\Mock\MockActualAccountData.cs" />
     <Compile Include="Pay\Mock\MockConnectionParameters.cs" />
     <Compile Include="Pay\Mock\MockCredentials.cs" />
@@ -119,6 +119,13 @@
     <Compile Include="Pay\Stripe\StripeCredentials.cs" />
     <Compile Include="Pay\Stripe\StripeSession.cs" />
     <Compile Include="Pay\Stripe\StripeSystem.cs" />
+    <Compile Include="Pay\Tax\NOPTaxCalculator.cs" />
+    <Compile Include="Pay\Tax\TaxException.cs" />
+    <Compile Include="Pay\Tax\TaxCalculator.cs" />
+    <Compile Include="Pay\Tax\TaxConnectionParameters.cs" />
+    <Compile Include="Pay\Tax\TaxJar\TaxJarConnectionParameters.cs" />
+    <Compile Include="Pay\Tax\TaxJar\TaxJarTaxCalc.cs" />
+    <Compile Include="Pay\Tax\TaxSession.cs" />
     <Compile Include="Pay\Transaction.cs" />
     <Compile Include="GeoLookup\GeoLookupService.cs" />
     <Compile Include="GeoLookup\Rows.cs" />

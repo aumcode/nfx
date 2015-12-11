@@ -41,7 +41,7 @@ namespace NFX.Wave
   {
     #region CONSTS
 
-      public const int DEFAULT_DOWNLOAD_BUFFER_SIZE = 64*1024;
+      public const int DEFAULT_DOWNLOAD_BUFFER_SIZE = 128*1024;
       public const int MIN_DOWNLOAD_BUFFER_SIZE = 1*1024;
       public const int MAX_DOWNLOAD_BUFFER_SIZE = 1024*1024;
 

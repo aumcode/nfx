@@ -126,9 +126,9 @@ namespace NFX.Erlang
     /// <summary>
     /// Implicit conversion of ErlLong to int
     /// </summary>
-    public static implicit operator int  (ErlLong t) { return (int)t.Value; }
+    public static explicit operator int  (ErlLong t) { return (int)t.Value; }
     public static implicit operator long (ErlLong t) { return t.Value; }
-    public static implicit operator ErlLong(int  t)  { return new ErlLong(t); }
+    public static explicit operator ErlLong(int  t)  { return new ErlLong(t); }
     public static implicit operator ErlLong(long t)  { return new ErlLong(t); }
 
     public static bool operator ==(ErlLong lhs, ErlLong rhs) { return lhs.Value == rhs.Value; }

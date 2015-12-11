@@ -269,14 +269,14 @@ namespace NFX.Web.Pay.Mock
             throw new PaymentMockException(StringConsts.PAYMENT_INVALID_CVC_ERROR.Args(fromActualData.CardVC) + this.GetType().Name + ".Charge");
           }
 
-          if (foundAccount.BillingAddress1 != fromActualData.BillingAddress1 ||
-              foundAccount.BillingAddress2 != fromActualData.BillingAddress2 ||
-              foundAccount.BillingCountry != fromActualData.BillingCountry ||
-              foundAccount.BillingCity != fromActualData.BillingCity ||
-              foundAccount.BillingPostalCode != fromActualData.BillingPostalCode ||
-              foundAccount.BillingRegion != fromActualData.BillingRegion ||
-              foundAccount.BillingEmail != fromActualData.BillingEmail ||
-              foundAccount.BillingPhone != fromActualData.BillingPhone)
+          if (foundAccount.BillingAddress1 != fromActualData.BillingAddress.Address1 ||
+              foundAccount.BillingAddress2 != fromActualData.BillingAddress.Address2 ||
+              foundAccount.BillingCountry != fromActualData.BillingAddress.Country ||
+              foundAccount.BillingCity != fromActualData.BillingAddress.City ||
+              foundAccount.BillingPostalCode != fromActualData.BillingAddress.PostalCode ||
+              foundAccount.BillingRegion != fromActualData.BillingAddress.Region ||
+              foundAccount.BillingEmail != fromActualData.BillingAddress.Email ||
+              foundAccount.BillingPhone != fromActualData.BillingAddress.Phone)
           {
             StatChargeError();
             throw new PaymentMockException(StringConsts.PAYMENT_INVALID_ADDR_ERROR + this.GetType().Name + ".Charge");
@@ -368,14 +368,14 @@ namespace NFX.Web.Pay.Mock
                                                 && c.CardExpirationYear == actualAccountData.CardExpirationYear
                                                 && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
                                                 && c.CardVC == actualAccountData.CardVC
-                                                && c.BillingAddress1 != actualAccountData.BillingAddress1
-                                                && c.BillingAddress2 != actualAccountData.BillingAddress2
-                                                && c.BillingCountry != actualAccountData.BillingCountry
-                                                && c.BillingCity != actualAccountData.BillingCity
-                                                && c.BillingPostalCode != actualAccountData.BillingPostalCode
-                                                && c.BillingRegion != actualAccountData.BillingRegion
-                                                && c.BillingEmail != actualAccountData.BillingEmail
-                                                && c.BillingPhone != actualAccountData.BillingPhone);
+                                                && c.BillingAddress1 != actualAccountData.BillingAddress.Address1
+                                                && c.BillingAddress2 != actualAccountData.BillingAddress.Address2
+                                                && c.BillingCountry != actualAccountData.BillingAddress.Country
+                                                && c.BillingCity != actualAccountData.BillingAddress.City
+                                                && c.BillingPostalCode != actualAccountData.BillingAddress.PostalCode
+                                                && c.BillingRegion != actualAccountData.BillingAddress.Region
+                                                && c.BillingEmail != actualAccountData.BillingAddress.Email
+                                                && c.BillingPhone != actualAccountData.BillingAddress.Phone);
 
         if (accountData != null)
         {

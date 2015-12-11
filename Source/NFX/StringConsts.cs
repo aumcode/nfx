@@ -377,7 +377,9 @@ namespace NFX
 
     public const string FIELD_ATTRIBUTES_DEFS_ERROR =
        "Error while applying field definitions BuildAndDefineFields('{0}'). Check attributes";    
-                                                                                            
+
+    public const string FIELD_TYPE_MAP_ERROR =
+       "Error mapping type '{0}' to record model field. No mapping exists";
 
         
     public const string APP_CONFIG_SETTING_NOT_FOUND_ERROR =

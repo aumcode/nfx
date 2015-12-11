@@ -318,7 +318,7 @@ namespace NFX.DataAccess.Erlang
                          valueList: vList==null ? null : string.Join(",", vList),//"CAR: Car Driver,SMK: Smoker, REL: Religious, CNT: Country music lover, GLD: Gold collector"
                          metadata: nodeField.ToLaconicString());
 
-          var def = new Schema.FieldDef(ftitle ?? fname, clrType, new FieldAttribute[]{atr});
+          var def = new Schema.FieldDef(fname ?? ftitle, clrType, new FieldAttribute[]{atr});
           defs.Add( def );
         }//for fields 
 

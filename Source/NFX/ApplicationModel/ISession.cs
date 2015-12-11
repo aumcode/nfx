@@ -46,6 +46,12 @@ namespace NFX.ApplicationModel
      /// </summary>
      User  User { get; set;}
      
+     
+     /// <summary>
+     /// Returns user's language preference or null
+     /// </summary>
+     string LanguageISOCode{ get;}
+
 
      /// <summary>
      /// Indicates that session object was just created with current request processing cycle

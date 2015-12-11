@@ -68,24 +68,43 @@ namespace NFX.DataAccess.Erlang
         var map     = ((ErlDataStore)Store).Map;
         var binding = new ErlVarBind();
 
-        //{Schema, ChangeType :: $d | $w, [{schema, Flds...}]}
+        //{Schema, ChangeType :: $d | $w, [{schema, Flds...}]} %% delete, write(upsert)
+        //{Schema, ChangeType :: $D | $C | $c, []}             %% Drop, Create, Clear
         if (erlMsg.Msg==null ||
            !erlMsg.Msg.Match(SUBSCRIPTION_MSG_PATTERN, binding))
           return;
 
         var schemaName = ((ErlAtom)binding[SCHEMA]).Value;
-        var op         = ((ErlByte)binding[TYPE]).Value;
+        var op         = (char)((ErlByte)binding[TYPE]).Value;
         var rows       = ((ErlList)binding[ROWS]).Value;
 
         var schema = map.GetCRUDSchemaForName(schemaName);
 
-        foreach(var rowTuple in rows.Cast<ErlTuple>())
+        CRUDSubscriptionEvent.EventType etp;
+
+        switch(op)
         {
-          var row  = map.ErlTupleToRow(schemaName, rowTuple, schema);
-          var ctp  = op == 'd' ? RowChangeType.Delete : RowChangeType.Upsert;
-          var data = new RowChange(ctp, row, null);
-          this.Mailbox.Deliver(this, data);
+          case 'd': etp = CRUDSubscriptionEvent.EventType.RowDelete; break;
+          case 'c': etp = CRUDSubscriptionEvent.EventType.TableClear; break;
+          case 'D': etp = CRUDSubscriptionEvent.EventType.TableDrop; break;
+          case 'C': etp = CRUDSubscriptionEvent.EventType.TableCreate; break;
+          default:  etp = CRUDSubscriptionEvent.EventType.RowUpsert; break;
         }
+
+        if (rows.Count>0)
+        {
+          foreach(var rowTuple in rows.Cast<ErlTuple>())
+          {
+            var row  = map.ErlTupleToRow(schemaName, rowTuple, schema);
+            var data = new CRUDSubscriptionEvent(etp, schema, row);
+            this.Mailbox.Deliver(this, data);
+          }
+        }
+        else
+        {
+          var data = new CRUDSubscriptionEvent(etp, schema, null);
+          this.Mailbox.Deliver(this, data);
+        }  
       }
       catch(Exception err)
       {

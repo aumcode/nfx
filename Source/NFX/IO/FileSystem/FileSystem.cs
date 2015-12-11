@@ -179,8 +179,11 @@ namespace NFX.IO.FileSystem
           {
             var result = (first ?? string.Empty).TrimEnd();
             for(var i=0; i<others.Length; i++)
-            {                                      
-                var other = others[i].TrimStart();
+            {
+                var other = others[i];
+                if (other==null) continue;
+
+                other = other.TrimStart();
                 
                 if (other.Length==0) continue;
                 

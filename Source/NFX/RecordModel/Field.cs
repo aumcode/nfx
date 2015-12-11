@@ -41,6 +41,44 @@ namespace NFX.RecordModel
   public abstract class Field : ModelBase, IComparable, IComparable<Field>
   {
     
+    #region STATIC
+
+      public static readonly Dictionary<Type, Func<Field>> TYPE_FIELD_MAP = new Dictionary<Type,Func<Field>>
+      {
+        {typeof(byte), () => new IntField(){ MinMaxChecking = true, MinValue = byte.MinValue, MaxValue = byte.MaxValue}},
+        {typeof(sbyte), () => new IntField(){ MinMaxChecking = true, MinValue = sbyte.MinValue, MaxValue = sbyte.MaxValue}},
+        {typeof(short), () => new ShortField()},
+        {typeof(ushort), () => new IntField(){ MinMaxChecking = true, MinValue = ushort.MinValue, MaxValue = ushort.MaxValue}},
+        {typeof(int), () => new IntField()},
+        {typeof(uint), () => new LongField(){ MinMaxChecking = true, MinValue = uint.MinValue, MaxValue = uint.MaxValue}},
+        {typeof(long), () => new LongField()},
+        {typeof(ulong), () => new LongField()},
+        {typeof(char), () => new StringField()},
+        {typeof(string), () => new StringField()},
+        {typeof(bool), () => new BoolField()},
+        {typeof(decimal), () => new DecimalField()},
+        {typeof(float), () => new DoubleField()},
+        {typeof(double), () => new DoubleField()},
+        {typeof(DateTime), () => new DateTimeField()},
+        {typeof(TimeSpan), () => new TimeSpanField()},
+        {typeof(Guid), () => new GuidField()},
+        {typeof(byte[]), () => new ObjectField<byte[]>()},
+        {typeof(Record), () => new ObjectField<Record>()}
+      };
+
+
+      public static Field MakeFiedOfType(Type type)
+      {
+        Func<Field> f;
+        if (!TYPE_FIELD_MAP.TryGetValue(type, out f))
+         throw new RecordModelException(StringConsts.FIELD_TYPE_MAP_ERROR.Args(type.FullName));
+
+         return f();
+      }
+
+    
+    #endregion
+    
     #region .ctors
       public Field() : base()
       {    

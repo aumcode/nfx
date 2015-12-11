@@ -326,12 +326,12 @@ namespace NFX.Erlang
     /// <summary>
     /// Write an Erlang long to the stream
     /// </summary>
-    public void WriteLong(ErlLong l) { writeLong(l, l < 0); }
+    public void WriteLong(ErlLong l) { writeLong(l, l < 0L); }
 
     /// <summary>
     /// Write a long to stream
     /// </summary>
-    public void WriteLong(long l) { writeLong(l, l < 0); }
+    public void WriteLong(long l) { writeLong(l, l < 0L); }
 
     /// <summary>
     /// Write an integer to the stream

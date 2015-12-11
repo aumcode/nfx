@@ -54,16 +54,18 @@ namespace NFX.Erlang
     /// <summary>
     /// Create a node with the given name and the default cookie
     /// </summary>
-    public ErlLocalNode(string node, bool shortName = true)
-        : this(node, ErlAtom.Null, shortName)
+    public ErlLocalNode(string node, bool shortName = true, bool acceptConns = true)
+        : this(node, ErlAtom.Null, shortName, acceptConns)
     { }
 
     /// <summary>
     /// Create a node with the given name, cookie, and short name indicator
     /// </summary>
-    public ErlLocalNode(string node, ErlAtom cookie, bool shortName = true)
+    public ErlLocalNode(string node, ErlAtom cookie, bool shortName = true, bool acceptConns = true)
         : base(node, cookie, shortName)
-    { }
+    { 
+      m_AcceptConnections = acceptConns;
+    }
 
     internal ErlLocalNode(string node, IConfigSectionNode config)
         : base(node, config)

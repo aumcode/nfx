@@ -59,29 +59,76 @@ namespace NFX.Web.Pay
 
     bool IsCard { get; }
 
-    string BillingAddress1 { get; }
-    string BillingAddress2 { get; }
-    string BillingCity { get; }
-    string BillingRegion { get; }
-    string BillingPostalCode { get; }
-    string BillingCountry { get; }
+    IAddress BillingAddress { get; }
 
-    string BillingPhone { get; }
-    string BillingEmail { get; }
+    IAddress ShippingAddress { get; }
+  }
 
+  /// <summary>
+  /// Represents address
+  /// </summary>
+  public interface IAddress
+  {
+    string Address1 { get; }
+    string Address2 { get; }
+    string City { get; }
+    string Region { get; }
+    string PostalCode { get; }
+    string Country { get; }
 
-    string ShippingAddress1 { get; }
-    string ShippingAddress2 { get; }
-    string ShippingCity { get; }
-    string ShippingRegion { get; }
-    string ShippingPostalCode { get; }
+    string Phone { get; }
+    string Email { get; }
+  }
 
-    string ShippingPhone { get; }
-    string ShippingEmail { get; }
+  /// <summary>
+  /// Primitive (maybe temporary) implementation of IAddress
+  /// </summary>
+  public class Address: IAddress
+  {
+    public string Address1 { get; set; }
+
+    public string Address2 { get; set; }
+
+    public string City { get; set; }
+
+    public string Region { get; set; }
+
+    public string PostalCode { get; set; }
+
+    public string Country { get; set; }
+
+    public string Phone { get; set; }
+
+    public string Email { get; set; }
+
+    public override bool Equals(object obj)
+    {
+      var other = obj as IAddress;
+      if (other == null) return false;
+      
+      return PostalCode.EqualsIgnoreCase(other.PostalCode)
+        && Phone.EqualsIgnoreCase(other.Phone) && Email.EqualsIgnoreCase(other.Email) 
+        && Country.EqualsIgnoreCase(other.Country) && City.EqualsIgnoreCase(other.City) && Region.EqualsIgnoreCase(other.Region) 
+        && Address1.EqualsIgnoreCase(other.Address1) && Address2.EqualsIgnoreCase(other.Address2);
+    }
+
+    public override int GetHashCode()
+    {
+      return PostalCode.GetHashCodeIgnoreCase() ^ Address1.GetHashCodeIgnoreCase() ^ City.GetHashCodeIgnoreCase();
+    }
+
+    public override string ToString()
+    {
+      return "{0} {1} {3}".Args(City, Address1, PostalCode);
+    }
   }
 
   public class ActualAccountData : IActualAccountData
   {
+    private readonly Lazy<Address> m_BillingAddress = new Lazy<Address>();
+
+    private readonly Lazy<Address> m_ShippingAddress = new Lazy<Address>();
+
     public Account Account { get; set; }
 
     public string FirstName { get; set; }
@@ -111,24 +158,14 @@ namespace NFX.Web.Pay
 
     public bool IsCard { get { return RoutingNumber.IsNullOrWhiteSpace(); } }
     
-    public string BillingAddress1 { get; set; }
-    public string BillingAddress2 { get; set; }
-    public string BillingCity { get; set; }
-    public string BillingRegion { get; set; }
-    public string BillingPostalCode { get; set; }
-    public string BillingCountry { get; set; }
-    
-    public string BillingPhone { get; set; }
-    public string BillingEmail { get; set; }
+    public IAddress BillingAddress 
+    { 
+      get { return m_BillingAddress.Value; }
+    }
 
-    
-    public string ShippingAddress1 { get; set; }
-    public string ShippingAddress2 { get; set; }
-    public string ShippingCity { get; set; }
-    public string ShippingRegion { get; set; }
-    public string ShippingPostalCode { get; set; }
-    
-    public string ShippingPhone { get; set; }
-    public string ShippingEmail { get; set; }
+    public IAddress ShippingAddress
+    { 
+      get { return m_ShippingAddress.Value; }
+    }
   }
 }
