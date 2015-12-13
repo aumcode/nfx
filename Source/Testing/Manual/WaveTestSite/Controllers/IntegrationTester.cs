@@ -183,66 +183,66 @@ namespace WaveTestSite.Controllers
     }
 
     [Action("ComplexRowSet", 0, "match{methods=POST}")]
-    public string ComplexRowSet(TestComplexRow row)
+    public object ComplexRowSet(TestComplexRow row)
     {
       row.ID += 1;
       row.Row1.ID += 2;
       row.ErrorRows[2].Date = row.ErrorRows[2].Date.AddDays(-2);
-      return row.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return row;//new JSONResult(row, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string RowAndPrimitive_RowFirst(TestRow row, int n, string s)
+    public object RowAndPrimitive_RowFirst(TestRow row, int n, string s)
     {
       row.ID = n;
       row.Name = s;
-      return row.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return row;//new JSONResult(row, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string RowAndPrimitive_RowLast(int n, string s, TestRow row)
+    public object RowAndPrimitive_RowLast(int n, string s, TestRow row)
     {
       row.ID = n;
       row.Name = s;
-      return row.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return row;//new JSONResult(row, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string RowAndPrimitive_RowMiddle(int n, TestRow row, string s)
+    public object RowAndPrimitive_RowMiddle(int n, TestRow row, string s)
     {
       row.ID = n;
       row.Name = s;
-      return row.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return row;//new JSONResult(row, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string JSONMapAndPrimitive_JSONFirst(JSONDataMap map, int n, string s)
+    public object JSONMapAndPrimitive_JSONFirst(JSONDataMap map, int n, string s)
     {
       map["ID"] = n;
       map["Name"] = s;
-      return map.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return map; // or you could write: new JSONResult(map, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string JSONMapAndPrimitive_JSONLast(int n, string s, JSONDataMap map)
+    public object JSONMapAndPrimitive_JSONLast(int n, string s, JSONDataMap map)
     {
       map["ID"] = n;
       map["Name"] = s;
-      return map.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return map;//new JSONResult(map, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string JSONMapAndPrimitive_JSONMiddle(int n, JSONDataMap map, string s)
+    public object JSONMapAndPrimitive_JSONMiddle(int n, JSONDataMap map, string s)
     {
       map["ID"] = n;
       map["Name"] = s;
-      return map.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return map;//new JSONResult(map, JSONWritingOptions.CompactRowsAsMap);
     }
 
     [Action]
-    public string RowDifferentFieldTypes(TestRow row)
+    public object RowDifferentFieldTypes(TestRow row)
     {
-      return row.ToJSON(JSONWritingOptions.CompactRowsAsMap);
+      return row;// new JSONResult(row, JSONWritingOptions.CompactRowsAsMap);
     }
 
     //[Action]

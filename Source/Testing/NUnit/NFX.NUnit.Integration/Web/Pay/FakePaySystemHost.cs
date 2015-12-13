@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 
 using NFX.Web.Pay;
 using NFX.Web.Pay.Mock;
+using NFX.Web.Pay.Tax;
 
 namespace NFX.NUnit.Integration.Web.Pay
 {
@@ -53,7 +54,7 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #region Accounts hardcoded
 
-    public readonly MockActualAccountData[] MockActualAccountDatas = new MockActualAccountData[] { 
+    public readonly MockActualAccountData[] MockActualAccountDatas = { 
         new MockActualAccountData() {
           Account = CARD_ACCOUNT_STRIPE_CORRECT,
           AccountData = new AccountData()
@@ -231,6 +232,12 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #endregion
 
+    #region Properties
+
+      public ITaxCalculator TaxCalc { get { return NOPTaxCalculator.Instance;} }
+      
+    #endregion
+
     #region Public
 
       /// <summary>
@@ -255,7 +262,7 @@ namespace NFX.NUnit.Integration.Web.Pay
       /// In this implementation returns transaction from memory list by id
       /// </summary>
       public Transaction FetchTransaction(ITransactionContext context, object id)
-      {
+     { 
         return m_TransactionList.FirstOrDefault(ta => ta.ID == id);
       }
 

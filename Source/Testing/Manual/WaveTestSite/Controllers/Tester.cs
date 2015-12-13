@@ -281,7 +281,7 @@ namespace WaveTestSite.Controllers
 
       static Tester()
       {
-        NFX.Wave.Client.RecordModelGenerator.Localization += delegate(string schema, string prop, string val)
+        NFX.Wave.Client.RecordModelGenerator.DefaultInstance.ModelLocalization += (_, schema, prop, val, lang) =>
         {
           if (prop=="Description" && val=="Private Status") return "Частный Статус";
           if (prop=="Description" && val=="Salary") return "Заработная Плата";   

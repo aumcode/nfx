@@ -326,34 +326,36 @@ namespace NFX.DataAccess.CRUD
 
                     if (tv != fdef.NonNullableType && !fdef.NonNullableType.IsAssignableFrom(tv))
                     {
+                
                       // 20150224 DKh, addedEra to GDID. Only GDIDS with ERA=0 can be converted to/from INT64
                       if (fdef.NonNullableType==typeof(NFX.DataAccess.Distributed.GDID))
                       {
-                        if (tv==typeof(byte[]))//20151103 DKh GDID support for byte[]
-                          value = new Distributed.GDID((byte[])value);
-                        else
-                          value = new Distributed.GDID(0, (UInt64)Convert.ChangeType(value, typeof(UInt64)));
+                         if (tv==typeof(byte[]))//20151103 DKh GDID support for byte[]
+                           value = new Distributed.GDID((byte[])value);
+                         else
+                           value = new Distributed.GDID(0, (UInt64)Convert.ChangeType(value, typeof(UInt64)));
                       }
                       else
                       {
-                       if (tv==typeof(Distributed.GDID))
-                       {
-                         if (fdef.NonNullableType==typeof(byte[]))
+                         if (tv==typeof(Distributed.GDID))
                          {
-                           value = ((Distributed.GDID)value).Bytes;
+                             if (fdef.NonNullableType==typeof(byte[]))
+                             {
+                               value = ((Distributed.GDID)value).Bytes;
+                             }
+                             else
+                             {
+                               var gdid = (Distributed.GDID)value;
+                               if (gdid.Era!=0)
+                                 throw new CRUDException(StringConsts.CRUD_GDID_ERA_CONVERSION_ERROR.Args(fdef.Name, fdef.NonNullableType.Name));
+                               value = gdid.ID;
+                             }
                          }
                          else
-                         {
-                           var gdid = (Distributed.GDID)value;
-                           if (gdid.Era!=0)
-                             throw new CRUDException(StringConsts.CRUD_GDID_ERA_CONVERSION_ERROR.Args(fdef.Name, fdef.NonNullableType.Name));
-                           value = gdid.ID;
-                         }
-                       }
+                           value = Convert.ChangeType(value, fdef.NonNullableType); 
                       }
-                      //else
-                      value = Convert.ChangeType(value, fdef.NonNullableType);
-                    }
+                      
+                    }//Types Differ
                 }   
 
               return value;

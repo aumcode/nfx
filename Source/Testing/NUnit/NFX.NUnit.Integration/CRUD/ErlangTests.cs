@@ -109,16 +109,16 @@ namespace NFX.NUnit.Integration.CRUD
 
       row.ApplyDefaultFieldValues(store.TargetName);
 
-      row["Exchange"] = "HS";
-      row["Symbol"] = "EURUSD";
-      row["Instr"] =  "EUR/USD";
-      row["SecID"] = 1;
-      row["ExchSecID"] = 1010;
-      row["Ccy"] = "EUR";
-      row["SettlCcy"] = "USD";
+      row["xchg"]       = "HS";
+      row["symbol"]     = "EURUSD";
+      row["instr"]      = "EUR/USD";
+      row["secid"]      = 1;
+      row["xchg_secid"] = 1010;
+      row["ccy"]        = "EUR";
+      row["settl_ccy"]  = "USD";
 
-      row["ContractMult"] = 1.0d;
-      row["PriceStep"] = 10e-5d;
+      row["contr_mult"] = 1.0d;
+      row["px_step"]    = 10e-5d;
 
       Assert.IsNull(row.Validate());
 
@@ -141,16 +141,16 @@ namespace NFX.NUnit.Integration.CRUD
         var ccy1 = CCY_PAIRS[i].Substring(0, 3);
         var ccy2 = CCY_PAIRS[i].Substring(4, 3);
 
-        row["Exchange"]     = "CLE";
-        row["Symbol"]       = ccy1 + ccy2;
-        row["Instr"]        = CCY_PAIRS[i];
-        row["SecID"]        = i;
-        row["ExchSecID"]    = 1000 + i;
-        row["Ccy"]          = ccy1;
-        row["SettlCcy"]     = ccy2;
+        row["xchg"]       = "CLE";
+        row["symbol"]     = ccy1 + ccy2;
+        row["instr"]      = CCY_PAIRS[i];
+        row["secid"]      = i;
+        row["xchg_secid"] = 1000 + i;
+        row["ccy"]        = ccy1;
+        row["settl_ccy"]  = ccy2;
 
-        row["ContractMult"] = 1.0d;
-        row["PriceStep"]    = 10e-5d;
+        row["contr_mult"] = 1.0d;
+        row["px_step"]    = 10e-5d;
 
         Assert.IsNull(row.Validate());
 
@@ -187,16 +187,16 @@ namespace NFX.NUnit.Integration.CRUD
         var ccy1 = CCY_PAIRS[i].Substring(0, 3);
         var ccy2 = CCY_PAIRS[i].Substring(4, 3);
 
-        row["Exchange"]     = "NYSE";
-        row["Symbol"]       = ccy1 + ccy2;
-        row["Instr"]        = CCY_PAIRS[i];
-        row["SecID"]        = i;
-        row["ExchSecID"]    = 1000 + i;
-        row["Ccy"]          = ccy1;
-        row["SettlCcy"]     = ccy2;
+        row["xchg"]       = "NYSE";
+        row["symbol"]     = ccy1 + ccy2;
+        row["instr"]      = CCY_PAIRS[i];
+        row["secid"]      = i;
+        row["xchg_secid"] = 1000 + i;
+        row["ccy"]        = ccy1;
+        row["settl_ccy"]  = ccy2;
 
-        row["ContractMult"] = 1.0d;
-        row["PriceStep"]    = 10e-5d;
+        row["contr_mult"] = 1.0d;
+        row["px_step"]    = 10e-5d;
 
         Assert.IsNull(row.Validate());
 
@@ -219,8 +219,8 @@ namespace NFX.NUnit.Integration.CRUD
 
       var del = new DynamicRow(schema);
 
-      del["Exchange"]  = "CLE";
-      del["Symbol"]  = "USDMXN";
+      del["xchg"]   = "CLE";
+      del["symbol"] = "USDMXN";
 
       Assert.AreEqual(1, store.Delete(del));
       
@@ -260,7 +260,7 @@ namespace NFX.NUnit.Integration.CRUD
       var callCount = 0;
       var done = 0;
 
-      mail.Receipt += delegate(Subscription subscription, Mailbox recipient, RowChange data, Exception error)
+      mail.Receipt += delegate(Subscription subscription, Mailbox recipient, CRUDSubscriptionEvent data, Exception error)
       {
         if (data.Row!=null)
         {
@@ -307,7 +307,7 @@ namespace NFX.NUnit.Integration.CRUD
 
       Subscription subscribe = null;
 
-      mail.Receipt += delegate(Subscription subscription, Mailbox recipient, RowChange data, Exception error)
+      mail.Receipt += delegate(Subscription subscription, Mailbox recipient, CRUDSubscriptionEvent data, Exception error)
       {
         if (data.Row!=null)
         {

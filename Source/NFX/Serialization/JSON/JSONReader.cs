@@ -181,8 +181,11 @@ namespace NFX.Serialization.JSON
                           else
                            row.SetFieldValue(rfd, fv);//try to set row's field to MAP directly
                     }
-                    else if (rfd.NonNullableType==typeof(TimeSpan) && (fv is ulong || fv is long))
-                         row.SetFieldValue(rfd, TimeSpan.FromTicks(fv is ulong ? (long)(ulong)fv : (long)fv)); 
+                    else if (rfd.NonNullableType==typeof(TimeSpan) && (fv is ulong || fv is long || fv is int || fv is uint))
+                    {
+                         var lt = Convert.ToInt64(fv);
+                         row.SetFieldValue(rfd, TimeSpan.FromTicks(lt)); 
+                    }
                     else if (fv is int || fv is long || fv is ulong || fv is double || fv is bool)
                           row.SetFieldValue(rfd, fv);
                     else if (fv is byte[] && rfd.Type==typeof(byte[]))//optimization byte array assignment without copies

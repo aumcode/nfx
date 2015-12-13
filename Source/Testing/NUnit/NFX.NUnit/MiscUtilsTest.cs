@@ -387,5 +387,21 @@ f
                return true;
              }
 
+
+
+        [TestCase]
+        public void URI_Join()
+        {
+          Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs("static","site","content"));
+          Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs(" static","  site  "," content"));
+          Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs(" static"," \\ site  "," // content"));
+          Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs(" static/","//site  "," // content"));
+          Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs(" static/","/","/site","// content"));
+          Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs("/static/","/","/site","// content"));
+          Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs("      /static/","site","\\content"));
+          Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs(" ", null, "      /static/","site","\\content"));
+          Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs("static", null, "site","", "", "\\content"));
+        }
+
     }
 }

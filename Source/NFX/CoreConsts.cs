@@ -83,6 +83,18 @@ namespace NFX
 
       public const string CACHE_TOPIC = "Data.Cache";
 
+      public const string LOCALIZATION_TOPIC = "Localization";
+
+
+      public const string ISO_LANG_ENGLISH = "eng";
+      public const string ISO_LANG_RUSSIAN = "rus";
+      public const string ISO_LANG_SPANISH = "spa";
+      public const string ISO_LANG_GERMAN  = "deu";
+      public const string ISO_LANG_FRENCH  = "fre";
+
+      public const string ISO_CURRENCY_USD  = "usd";
+      public const string ISO_CURRENCY_EUR  = "eur";
+
       
                   public const string UNIT_NAME_OCCURENCE = "occr.";
                   public const string UNIT_NAME_UNSPECIFIED = "unspc.";

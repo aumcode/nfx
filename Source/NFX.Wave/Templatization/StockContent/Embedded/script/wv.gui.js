@@ -347,7 +347,7 @@ WAVE.GUI = (function(){
         WAVE.arrayDelete(fCurtains, div);
     }
 
-    published.isCurtain = function(){ fCurtains.length>0;}
+    published.isCurtain = function(){ return fCurtains.length>0;}
 
     //Returns currently active dialog or null
     published.currentDialog = function(){

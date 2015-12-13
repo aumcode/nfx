@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NFX.Environment;
+using NFX.Web.Pay.Tax;
 
 namespace NFX.Web.Pay
 {
@@ -60,7 +61,7 @@ namespace NFX.Web.Pay
     /// <summary>
     /// Returns tax calculation logic
     /// </summary>
-    //ITaxCalc TaxCalc{ get;}
+    ITaxCalculator TaxCalc{ get;}
   }
 
   /// <summary>

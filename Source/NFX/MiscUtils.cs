@@ -882,7 +882,7 @@ namespace NFX
     }
 
     /// <summary>
-    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0)
@@ -892,7 +892,7 @@ namespace NFX
     }
      
     /// <summary>
-    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1)
@@ -902,7 +902,7 @@ namespace NFX
     }
     
     /// <summary>
-    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1, object arg2)
@@ -912,7 +912,7 @@ namespace NFX
     }
      
     /// <summary>
-    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, params object[] args)
@@ -920,7 +920,39 @@ namespace NFX
       builder.AppendFormat(str, args);
       return builder.AppendLine();
     }
-
   }
 
+
+  public static class URIUtils
+  {
+    public static readonly char[] PATH_JOIN_TRIM_CHARS = new char[]{'/', ' ', '\\'};
+
+    /// <summary>
+    /// Joins URI path segments with "/". This function just concats strings, it does not evaluate relative paths etc.
+    /// The first segment may or may not start with '/'
+    /// </summary>
+    public static string JoinPathSegs(params string[] segments)
+    {
+      if (segments==null || segments.Length==0) return string.Empty;
+
+      var sb = new StringBuilder();
+
+      var first = true;
+      for(var i=0; i<segments.Length; i++)
+      {
+         var seg = segments[i];
+         if (seg==null) continue;
+
+         seg = (first ? seg.TrimStart(' ') : seg.TrimStart(PATH_JOIN_TRIM_CHARS)).TrimEnd(PATH_JOIN_TRIM_CHARS);
+
+         if (seg.IsNullOrWhiteSpace()) continue;
+
+         if (!first) sb.Append('/');
+         sb.Append(seg);
+         first = false;
+      }
+
+      return sb.ToString();
+    }
+  }
 }

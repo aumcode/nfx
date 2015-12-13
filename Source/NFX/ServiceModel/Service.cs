@@ -148,7 +148,6 @@ namespace NFX.ServiceModel
 
         #endregion
 
-
         #region Public
 
             /// <summary>

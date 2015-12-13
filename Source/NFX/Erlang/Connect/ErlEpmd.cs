@@ -237,12 +237,13 @@ namespace NFX.Erlang
 
       node.Trace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_NO_RESPONSE);
 
-      node.OnEpmdFailedConnectAttempt(node.NodeName, error.Message);
+      if (node.OnEpmdFailedConnectAttempt != null)
+        node.OnEpmdFailedConnectAttempt(node.NodeName, error.Message);
 
       node.Trace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_FAILED_TO_CONNECT_ERROR);
 
       if (!ErlApp.IgnoreLocalEpmdConnectErrors)
-        throw new ErlException(error.Message);
+        throw new ErlException(StringConsts.ERL_EPMD_FAILED_TO_CONNECT_ERROR + ": " + error.Message);
 
       node.Creation = 0;
       return false;

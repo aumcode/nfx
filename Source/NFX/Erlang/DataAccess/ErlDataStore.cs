@@ -72,6 +72,8 @@ namespace NFX.DataAccess.Erlang
       private object m_MapSync = new object();
       private volatile SchemaMap m_Map;
 
+
+      private string  m_LocalName;
       private ErlAtom m_RemoteName;
       private ErlAtom m_RemoteCookie;
 
@@ -113,6 +115,16 @@ namespace NFX.DataAccess.Erlang
       [Config]
       public StoreLogLevel LogLevel{ get; set;}
 
+      [Config]
+      public string LocalName
+      {
+        get { return m_LocalName;}
+        set
+        {
+          CheckServiceInactive();
+          m_LocalName = value;
+        }
+      }
 
       [Config]
       public string RemoteName
@@ -128,7 +140,7 @@ namespace NFX.DataAccess.Erlang
       [Config]
       public string RemoteCookie
       {
-        get { return m_RemoteCookie!=null ? m_RemoteCookie.ToString() : string.Empty;}
+        get { return !m_RemoteCookie.Empty ? m_RemoteCookie.ToString() : string.Empty;}
         set
         {
           CheckServiceInactive();
@@ -353,13 +365,19 @@ namespace NFX.DataAccess.Erlang
         if (m_RemoteName.ValueAsString.IsNullOrWhiteSpace())
           throw new ErlDataAccessException(StringConsts.ERL_DS_START_REQ_ERROR);
         
-        if (ErlApp.Node!=null)
+        if (ErlApp.Node!=null && (m_LocalName.IsNullOrWhiteSpace() || ErlApp.Node.Name==m_LocalName))
         {
           m_ErlNode = ErlApp.Node;
         }
         else
         {
-          m_ErlNode = new ErlLocalNode(ErlLocalNode.MakeLocalNodeForThisAppOnThisHost(), new ErlAtom(m_RemoteCookie));
+          var localName = m_LocalName;
+          if (localName.IsNullOrWhiteSpace())
+            m_LocalName = ErlLocalNode.MakeLocalNodeForThisAppOnThisHost();
+
+          m_ErlNode = new ErlLocalNode(m_LocalName, 
+                                       m_RemoteCookie, 
+                                       acceptConns: false);
           m_ErlNode.Start();
         }
       }
@@ -416,7 +434,7 @@ namespace NFX.DataAccess.Erlang
                                      {
                                        new ErlLong(m_InstanceID), //InstanceID
                                        new ErlString(App.Name),   // Application name from app container config root
-                                       new ErlString(App.Session.User.Name),//Current user name
+                                       new ErlAtom(m_LocalName)   // Local node name
                                      }) as ErlTuple;
 
             if (bonjour==null)

@@ -5,7 +5,8 @@
 
 -define(GEN_ERROR, -1).
 
-bonjour(InstID, AppName, UserName) when is_integer(InstID), is_list(AppName), is_list(UserName) ->
+bonjour(InstID, AppName, NodeName)
+  when is_integer(InstID), is_list(AppName), is_atom(NodeName) ->
     mnesia:start(),
     mnesia:create_table(secdef, [{attributes,
                          [key,

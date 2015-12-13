@@ -2568,7 +2568,7 @@ var WAVE = (function(){
           } else {
             return false;
           }
-          return (++idx < arr.length); 
+          //Dkh1222015  return (++idx < arr.length); 
         },
         this.current = function() { return cur; }
       }

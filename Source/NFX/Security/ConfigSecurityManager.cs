@@ -76,7 +76,6 @@ namespace NFX.Security
 
         #endregion
 
-
         #region Properties
 
             public override string ComponentCommonName { get { return "secman"; }}
@@ -166,14 +165,12 @@ namespace NFX.Security
             }
 
 
-
             public void Configure(IConfigSectionNode node)
             {
                 m_Config = node;
             }
 
         #endregion
-
 
         #region .pvt
 
@@ -208,9 +205,5 @@ namespace NFX.Security
 
 
         #endregion
-
-
-
-            
     }
 }

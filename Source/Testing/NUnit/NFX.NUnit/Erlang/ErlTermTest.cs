@@ -390,7 +390,7 @@ namespace NFX.NUnit.Erlang
       Assert.IsFalse(t.Subst(ref temp, new ErlVarBind()));
       Assert.AreEqual(10, t.Visit(0, (acc, o) => acc + o.ValueAsInt));
 
-      int n = t; Assert.AreEqual(10, n);
+      int n = (int)t; Assert.AreEqual(10, n);
       long m = t; Assert.AreEqual(10, m);
       ErlLong a = 100;        // Implicit conversion
       Assert.AreEqual(100, a.Value);

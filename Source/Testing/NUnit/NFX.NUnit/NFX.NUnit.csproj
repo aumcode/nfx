@@ -98,6 +98,7 @@
     <Compile Include="Config\ValueAccessors.cs" />
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
+    <Compile Include="BuildInfoTest.cs" />
     <Compile Include="DataAccess\SchemaRegExpAndDisplayFormat.cs" />
     <Compile Include="DataAccess\GDIDTest.cs" />
     <Compile Include="DataAccess\SchemaEQU.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="TestLog.cs" />
     <Compile Include="Throttling\ThrottlingTest.cs" />
     <Compile Include="Wave\URIPatternTests.cs" />
+    <Compile Include="Web\PortalHubTests.cs" />
     <Compile Include="Web\MultiPart\CopyToTest.cs" />
     <Compile Include="Web\MultiPart\FindSplitTests.cs" />
     <Compile Include="Web\MultiPart\FindTest.cs" />
