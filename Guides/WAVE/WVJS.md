@@ -12,9 +12,8 @@ the server-side NFX.DataAccess.CRUD.Schema on the client side along with view mo
 Record instances are initialized using server NFX.Wave.Client.RecordModelGenerator class that turns
 Schema into JSON object suitable for record initialization on client.
 ### Record Class
-
-#### new Record(recID, initVector)
-Constructor. Initializes a new instance using initialization vector:
+**new Record(recID, initVector)**  
+Constructor. Initializes a new instance using initialization vector:  
  `var rec = new WAVE.RecordModel.Record({ID: <recId>, fields: [{def: <fieldDef1>, val: <value1>}...]})`.
 Fields will be named as `fld<fieldName>`.
 
