@@ -122,6 +122,7 @@ See NFX.NUnit.Integrations for more use-cases.
 
 `NFX.DataAccess.CRUD.Intfs.cs` contains the definitions of `ICRUDOPerations` which stipulate the contract 
 for working in a CRUD style:
+
     /// <summary>
     /// Describes an entity that performs single (not in transaction/batch)CRUD operations
     /// </summary>
