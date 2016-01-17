@@ -5,9 +5,9 @@ License: Apache 2.0
 
 This framework is written in C# from scratch and runs on Windows and Linux/Mono servers.
 
-** GUIDES **
+**GUIDES**:
 NEW 20160117, we are adding:
- NFX Documentation/[Guides are here](Guides/NFX.md)
+ [NFX Documentation/Guides are here](Guides/NFX.md)
 
 **NUGET**:
  https://www.nuget.org/packages/NFX/
