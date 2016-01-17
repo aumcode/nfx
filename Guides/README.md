@@ -19,13 +19,13 @@ This framework is written in C# from scratch and runs on Windows and Linux/Mono 
 ## NFX Guides Index
 
 * About [UNISTACK](AboutUnistack.md)
-* Application/Service/Component Models [App Container](AppModel/AppModel.md)
-* [Configuration](Config/Config.md)
-* [Logging](Log/Log.md)
+* Application/Service/Component Models [App Container](AppModel/README.md)
+* [Configuration](Config/README.md)
+* [Logging](Log/README.md)
 * Instrumentation and Telemetry
-* Web Development [WAVE](WAVE/WAVE.md)
-* Interprocess Communication [Glue](Glue/Glue.md)
-* [Data Access](DataAccess/Glue.md)
+* Web Development [WAVE](WAVE/README.md)
+* Interprocess Communication [Glue](Glue/README.md)
+* [Data Access](DataAccess/README.md)
 * Serialization
 * Security
 * Virtual File Systems
