@@ -57,6 +57,7 @@ declared in code and tagged with a `[Field]` attribute which defines field's det
 
 This design is very flexible, as both rows stem from `Row` abstract class, which has the following key
 features:
+
     Row person = new DynamicRow(Schema.GetForTypedRow(PersonRow));
     person[0] = 123;
     Assert.AreEqual(123, person["id"]);
@@ -71,6 +72,7 @@ features:
 ### CRUD.Rowset
 
 Rowsets are what their name implies. There two types both inheriting from RowsetBase:
+
 * Rowset
 * Table
 
