@@ -15,8 +15,8 @@ new WAVE.RecordModel.Record(object initVector)
 | Parameter  | Requirement | Description                                                       |
 | ---------- |:-----------:| ----------------------------------------------------------------- |
 | fieldFunc  | optional    | callback-function which contains fields initialization statements |
-| recID      | required    | record id                                                         |
-| initVector | required    | Contains record id and fields' definitions with values            |
+| recID      | required    | unique record id                                                  |
+| initVector | required    | contains record id and fields' definitions with values            |
 
 **Notes**  
 In both cases fields will be named as concatenation string 'fld' and field name from definition.
@@ -29,7 +29,7 @@ var rec = new WAVE.RecordModel.Record("ID-123456");
 var rec = new WAVE.RecordModel.Record("ID-123456", function(){
             new this.Field({Name: "FirstName", Type: "string"});
             new this.Field({Name: "LastName", Type: "string"});
-            new this.Field({Name: "Age", Type: "int"});
+            new this.Field({Name: "Age", Type: "int", Required: true, MinValue: 10, MaxValue: 99});
           });
 ```
 ```js
@@ -42,9 +42,6 @@ var rec = new WAVE.RecordModel.Record({ID: 'REC-1',
             ]});
 ```
 
-
-## allValidationErrorStrings()
-Returns all record and field-level validation errors.
 
 ### Examples
 ```js
@@ -89,7 +86,7 @@ var d = JSON.stringify(rec.data(true));
 
 
 ## eventBind()
-Binds a function to the named event handler.
+Binds a function to the named event handler on record.
 ```js
 eventBind(string evtName, function handler)
 ```
@@ -102,13 +99,57 @@ eventBind(string evtName, function handler)
 var rec = new WAVE.RecordModel.Record("ID-123456", function(){
             new this.Field({Name: "FirstName", Type: "string"});
             new this.Field({Name: "LastName", Type: "string"});
-            new this.Field({Name: "Age", Type: "int"});
           });
 
 var elog = "";
-rec.fldLastName.eventBind(WAVE.RecordModel.EVT_FIELD_DROP, function(field, phase){
+rec.eventBind(WAVE.RecordModel.EVT_FIELD_DROP, function(rec, field, phase){
           elog += "|" + field.name() + phase;
          });
 rec.fldLastName.drop();
 // elog = |LastNamebefore|LastNameafter          
 ```
+
+## fieldByName()
+Returns a field by its case-insensitive name or null.
+```js
+fieldByName(string fieldName)
+```
+### Examples
+```js
+var rec = new WAVE.RecordModel.Record("ID-123456", function(){
+            new this.Field({Name: "FirstName", Type: "string"});
+            new this.Field({Name: "Age", Type: "int"});
+          });
+
+rec.fieldByName("FirstName").value("John");
+var v = rec.fldFirstName.value();
+// v = John        
+```
+
+
+## loaded()
+Returns true when record has finished loading data and constructing fields.
+
+
+##toString()
+Returns string like `Record[RecID]`.
+
+
+## Validation functions
+* allValidationErrorStrings() - returns all record and field-level validation errors.
+* validate() - validates record and returns true is everything is valid.
+### Examples
+```js
+var rec = new WAVE.RecordModel.Record("1", function(){
+            new this.Field({Name: "A", Type: "string"});
+            new this.Field({Name: "B", Type: "string", Required: true});
+            new this.Field({Name: "C", Type: "int", Required: true});
+          });
+          
+rec.validate();
+var all = rec.allValidationErrorStrings();
+// all contains 'B' must have a value
+// all contains 'C' must have a value
+```
+
+
