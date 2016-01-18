@@ -6,23 +6,18 @@ Record instances are initialized using server NFX.Wave.Client.RecordModelGenerat
 Constructor. Initializes a new instance using record id with optional field initialization function
 or complex initialization vector:
 ```js
-new WAVE.RecordModel.Record(recID[, fieldFunc])
+new WAVE.RecordModel.Record(recID, fieldFunc)
 ```
-### Parameters
-| Parameter | Requirement | Description                                                       |
-| --------- |:-----------:| ----------------------------------------------------------------- |
-| fieldFunc | optional    | callback-function which contains fields initialization statements |
-| recID     | required    | record id                                                         |
-
 or
-
 ```js
 new WAVE.RecordModel.Record(initVector)
 ```
 ### Parameters
-| Parameter  | Requirement | Description                                            |
-| -----------|:---------- :| ------------------------------------------------------ |
-| initVector | required    | Contains record id and fields' definitions with values |
+| Parameter  | Requirement | Description                                                       |
+| ---------- |:-----------:| ----------------------------------------------------------------- |
+| fieldFunc  | optional    | callback-function which contains fields initialization statements |
+| recID      | required    | record id                                                         |
+| initVector | required    | Contains record id and fields' definitions with values            |
 
 **Notes**  
 In both cases fields will be named as concatenation string 'fld' and field name from definition.
@@ -48,6 +43,7 @@ var rec = new WAVE.RecordModel.Record({ID: 'REC-1',
             ]});
 ```
 
+
 ## allValidationErrorStrings()
 Returns all record and field-level validation errors.
 
@@ -63,6 +59,7 @@ var allErr = rec.allValidationErrorStrings();
 // allErr contains: 'B' must have a value
 ```
 
+
 ## data()
 Returns a map of fields: `{fieldName:fieldValue,...}`.
 
@@ -70,13 +67,13 @@ Returns a map of fields: `{fieldName:fieldValue,...}`.
 data(modifiedOnly, includeNonStored)
 ```
 
-## Parameters
+### Parameters
 | Parameter        |  Necessity | Description                         |
 | ---------------- |:----------:| ----------------------------------- |
 | modifiedOnly     | optional   | only get fields that have changed   |
 | includeNonStored | optional   |  include fields that are not stored |
 
-## Examples
+### Examples
 ```js
 var rec = new WAVE.RecordModel.Record({ID: 'REC-1', 
             fields: [
