@@ -5,10 +5,10 @@ or complex initialization vector:
 new WAVE.RecordModel.Record(recID, fieldFunc)
 ```
 ## Parameters
-| Parameter     |  Necessity    | Description                                    |
-| ------------- |:-------------:| ---------------------------------------------- |
-| fieldFunc     | optional      | callback-function which contains     |
-| recID         | required      | record id                                      |
+| Parameter |  Necessity | Description                                                       |
+| --------- |:----------:| ----------------------------------------------------------------- |
+| fieldFunc | optional   | callback-function which contains fields initialization statements |
+| recID     | required   | record id                                                         |
 
 or
 
@@ -16,9 +16,9 @@ or
 new WAVE.RecordModel.Record(initVector)
 ```
 ## Parameters
-| Parameter     |  Necessity    | Description                                                |
-| ------------- |:-------------:| ----------------------------------------------             |
-| initVector    | required      | Contains record id and fields' definitions with values     |
+| Parameter  |  Necessity | Description                                            |
+| -----------|:----------:| ------------------------------------------------------ |
+| initVector | required   | Contains record id and fields' definitions with values |
 
 **Notes**  
 In both cases fields will be named as concatenation string 'fld' and field name from definition.

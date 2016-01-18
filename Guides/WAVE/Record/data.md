@@ -6,10 +6,10 @@ data(modifiedOnly, includeNonStored)
 ```
 
 ## Parameters
-| Parameter        |  Necessity    | Description                         |
-| -------------    |:-------------:| ----------------------------------- |
-| modifiedOnly     | optional      | only get fields that have changed   |
-| includeNonStored | optional      |  include fields that are not stored |
+| Parameter        |  Necessity | Description                         |
+| ---------------- |:----------:| ----------------------------------- |
+| modifiedOnly     | optional   | only get fields that have changed   |
+| includeNonStored | optional   |  include fields that are not stored |
 
 ## Examples
 ```js
@@ -20,6 +20,7 @@ var rec = new WAVE.RecordModel.Record({ID: 'REC-1',
               {def: {Name: 'Age', Type: 'int'}, val: 33},
               {def: {Name: 'Helper', Type: 'string', Stored: false}}
             ]});
+
 var d = JSON.stringify(rec.data(false, true));
 // d = {"FirstName":"John","LastName":"Smith","Age":33,"Helper":null}
 
