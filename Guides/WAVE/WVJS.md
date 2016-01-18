@@ -19,7 +19,7 @@ Constructor. Initializes a new instance using just string `recID`.
 
 **Record(recID, fieldFunc)**  
 Constructor. Initializes a new instance using string recID with field initiliazation function fields will be named as `fld<fieldName>`:  
-```
+```javascript
 new WAVE.RecordModel.Record("ID-123456", function(){  
   new this.Field({Name: "FirstName", Type: "string"});    
   new this.Field({Name: "LastName", Type: "string"});
@@ -29,7 +29,9 @@ new WAVE.RecordModel.Record("ID-123456", function(){
 
 **Record(initVector)**  
 Constructor. Initializes a new instance using initialization vector and fields will be named as `fld<fieldName>`:  
-`var rec = new WAVE.RecordModel.Record({ID: <recId>, fields: [{def: <fieldDef1>, val: <value1>}...]});`
+```js
+var rec = new WAVE.RecordModel.Record({ID: <recId>, fields: [{def: <fieldDef1>, val: <value1>}...]});
+```
 
 
 
