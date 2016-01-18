@@ -1,8 +1,10 @@
 # Data()
-Returns a map of {<fieldName>: <fieldValue>...}.
+Returns a map of fields: `{fieldName:fieldValue,...}`.
+
 ```js
 data(modifiedOnly, includeNonStored)
 ```
+
 ## Parameters
 | Parameter        |  Necessity    | Description                         |
 | -------------    |:-------------:| ----------------------------------- |
