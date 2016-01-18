@@ -6,13 +6,12 @@ Record instances are initialized using server NFX.Wave.Client.RecordModelGenerat
 Constructor. Initializes a new instance using record id with optional field initialization function
 or complex initialization vector:
 ```js
-new WAVE.RecordModel.Record(recID, fieldFunc)
+new WAVE.RecordModel.Record(string recID, function fieldFunc)
 ```
 or
 ```js
-new WAVE.RecordModel.Record(initVector)
+new WAVE.RecordModel.Record(object initVector)
 ```
-### Parameters
 | Parameter  | Requirement | Description                                                       |
 | ---------- |:-----------:| ----------------------------------------------------------------- |
 | fieldFunc  | optional    | callback-function which contains fields initialization statements |
@@ -64,15 +63,12 @@ var allErr = rec.allValidationErrorStrings();
 Returns a map of fields: `{fieldName:fieldValue,...}`.
 
 ```js
-data(modifiedOnly, includeNonStored)
+data(bool modifiedOnly, bool includeNonStored)
 ```
-
-### Parameters
-| Parameter        |  Necessity | Description                         |
-| ---------------- |:----------:| ----------------------------------- |
-| modifiedOnly     | optional   | only get fields that have changed   |
-| includeNonStored | optional   |  include fields that are not stored |
-
+| Parameter        | Requirement | Description                         |
+| ---------------- |:-----------:| ----------------------------------- |
+| modifiedOnly     | optional    | only get fields that have changed   |
+| includeNonStored | optional    | include fields that are not stored |
 ### Examples
 ```js
 var rec = new WAVE.RecordModel.Record({ID: 'REC-1', 
@@ -95,10 +91,24 @@ var d = JSON.stringify(rec.data(true));
 ## eventBind()
 Binds a function to the named event handler.
 ```js
-eventBind(evtName, handler)
+eventBind(string evtName, function handler)
 ```
-### Parameters
-| Parameter | Requirement | Description                                                       |
-| --------- |:-----------:| ----------------------------------------------------------------- |
-| evtName   | optional    | callback-function which contains fields initialization statements |
-| recID     | required    | record id                                                         |
+| Parameter | Requirement | Description                                   |
+| --------- |:-----------:| --------------------------------------------- |
+| evtName   | required    | name of event from WAVE.RecordModel namespace |
+| handler   | required    | callback-function which fires on event        |
+### Examples
+```js
+var rec = new WAVE.RecordModel.Record("ID-123456", function(){
+            new this.Field({Name: "FirstName", Type: "string"});
+            new this.Field({Name: "LastName", Type: "string"});
+            new this.Field({Name: "Age", Type: "int"});
+          });
+
+var elog = "";
+rec.fldLastName.eventBind(WAVE.RecordModel.EVT_FIELD_DROP, function(field, phase){
+          elog += "|" + field.name() + phase;
+         });
+rec.fldLastName.drop();
+// elog = |LastNamebefore|LastNameafter          
+```
