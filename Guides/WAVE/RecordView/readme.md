@@ -1,9 +1,11 @@
 # RecordView
 
+Binds Record model (an isntance of Record class) with UI builder/rendering library which dynamically builds the DOM in the attached view components (div placeholders). Thus, changes made to view model/data model in record instance will get automatically represented in the attached UI.
+
 ## RecordView
 Constructor. Initializes a new instance using string field definition and value.
 ```js
-new WAVE.RecordModel.Record(string ID, object record, string gui, bool manualViews)
+new WAVE.RecordModel.Record(string ID, object record, object gui, bool manualViews)
 ```
 | Parameter   | Requirement | Description                                                           |
 | ----------- |:-----------:| --------------------------------------------------------------------- |
