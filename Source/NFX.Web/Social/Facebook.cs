@@ -201,7 +201,7 @@ namespace NFX.Web.Social
             USER_LASTNAME_PARAMNAME, USER_MIDDLENAME_PARAMNAME, USER_GENDER_PARAMNAME, USER_BIRTHDAY_PARAMNAME,
             USER_LOCALE_PARAMNAME, USER_TIMEZONE_PARAMNAME, USER_PICTURE_PARAMNAME);
 
-          dynamic responseObj = WebClient.GetJson(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
+          dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
             {ACCESSTOKEN_PARAMNAME, userInfo.AccessToken},
             {GETUSERINFO_FIELDS_PARAMNAME, fields}
           });
@@ -250,7 +250,7 @@ namespace NFX.Web.Social
         {
           string url = PUBLISH_BASEURL_PATTERN.Args(userId);
 
-          dynamic responseObj = WebClient.GetJson(url, this, HTTPRequestMethod.POST, 
+          dynamic responseObj = WebClient.GetJsonAsDynamic(url, this, HTTPRequestMethod.POST, 
             queryParameters: new Dictionary<string, string>() { 
               {MESSAGE_PARAMNAME, message},
               {ACCESSTOKEN_PARAMNAME, accessToken} 

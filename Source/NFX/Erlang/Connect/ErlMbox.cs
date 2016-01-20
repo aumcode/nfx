@@ -85,11 +85,11 @@ namespace NFX.Erlang
     /// <summary>
     /// Create a mailbox with optional name
     /// </summary>
-    public ErlMbox(ErlLocalNode home, ErlPid self, string name = null)
+    internal ErlMbox(ErlLocalNode home, ErlPid self, string name = null)
         : this(home, self, name == null ? ErlAtom.Null : new ErlAtom(name))
     { }
 
-    public ErlMbox(ErlLocalNode home, ErlPid self, ErlAtom name)
+    internal ErlMbox(ErlLocalNode home, ErlPid self, ErlAtom name)
     {
       m_Self = self;
       m_Node = home;
@@ -167,6 +167,8 @@ namespace NFX.Erlang
     /// by mailbox caching
     /// </summary>
     internal DateTime LastUsed { get; set; }
+
+    public bool QueueActive{ get{ return m_Queue.Active;}}
 
   #endregion
 
@@ -253,24 +255,24 @@ namespace NFX.Erlang
       return m_Node.Deliver(node, ErlMsg.RegSend(m_Self, name, msg));
     }
 
-    public IErlObject RPC(ErlAtom node, string mod, string fun, ErlList args)
+    public IErlObject RPC(ErlAtom node, string mod, string fun, ErlList args, ErlAtom? remoteCookie = null)
     {
-      return RPC(node, mod, fun, args, -1);
+      return RPC(node, mod, fun, args, -1, remoteCookie);
     }
 
-    public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args)
+    public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, ErlAtom? remoteCookie = null)
     {
-      return RPC(node, mod, fun, args, -1);
+      return RPC(node, mod, fun, args, -1, remoteCookie);
     }
 
-    public IErlObject RPC(ErlAtom node, string mod, string fun, ErlList args, int timeout)
+    public IErlObject RPC(ErlAtom node, string mod, string fun, ErlList args, int timeout, ErlAtom? remoteCookie = null)
     {
-      return this.RPC(node, new ErlAtom(mod), new ErlAtom(fun), args, timeout);
+      return this.RPC(node, new ErlAtom(mod), new ErlAtom(fun), args, timeout, remoteCookie);
     }
 
-    public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, int timeout)
+    public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, int timeout, ErlAtom? remoteCookie = null)
     {
-      AsyncRPC(node, mod, fun, args);
+      AsyncRPC(node, mod, fun, args, remoteCookie);
       var r = m_Monitors.Add(node);
       using (Scope.OnExit(() => m_Monitors.Remove(r)))
       {
@@ -278,19 +280,20 @@ namespace NFX.Erlang
       }
     }
 
-    public void AsyncRPC(ErlAtom node, string mod, string fun, ErlList args)
+    public void AsyncRPC(ErlAtom node, string mod, string fun, ErlList args, ErlAtom? remoteCookie = null)
     {
-      AsyncRPC(node, new ErlAtom(mod), new ErlAtom(fun), args);
+      AsyncRPC(node, new ErlAtom(mod), new ErlAtom(fun), args, remoteCookie);
     }
 
-    public void AsyncRPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args)
+    public void AsyncRPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, ErlAtom? remoteCookie = null)
     {
-      AsyncRPC(node, mod, fun, args, (IErlObject)m_Node.GroupLeader.Self);
+      AsyncRPC(node, mod, fun, args, (IErlObject)m_Node.GroupLeader.Self, remoteCookie);
     }
 
-    public void AsyncRPC(ErlAtom node, string mod, string fun, ErlList args, ErlPid ioServer)
+    public void AsyncRPC(ErlAtom node, string mod, string fun, ErlList args, ErlPid ioServer,
+                         ErlAtom? remoteCookie = null)
     {
-      AsyncRPC(node, new ErlAtom(mod), new ErlAtom(fun), args, (IErlObject)ioServer);
+      AsyncRPC(node, new ErlAtom(mod), new ErlAtom(fun), args, (IErlObject)ioServer, remoteCookie);
     }
 
     /// <summary>
@@ -301,7 +304,9 @@ namespace NFX.Erlang
     /// <param name="fun">Function name to call</param>
     /// <param name="args">Function arguments</param>
     /// <param name="ioServer">Either a PID or an Atom containing registered I/O server's name.</param>
-    public void AsyncRPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, IErlObject ioServer)
+    /// <param name="remoteCookie">Remote cookie</param>
+    public void AsyncRPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args,
+                         IErlObject ioServer, ErlAtom? remoteCookie = null)
     {
       if (node.Equals(m_Node.NodeName))
         throw new ErlException(StringConsts.ERL_CONN_LOCAL_RPC_ERROR);
@@ -309,9 +314,9 @@ namespace NFX.Erlang
       {
         IErlObject msg = Internal.ErlRpcServer.EncodeRPC(m_Self, mod, fun, args, ioServer);
 
-        var conn = m_Node.Connection(node);
+        var conn = m_Node.Connection(node, remoteCookie);
         if (conn == null)
-          throw new ErlException(StringConsts.ERL_CONN_CANT_CONNECT_TO_NODE_ERROR.Args(node));
+          throw new ErlConnectionException( node, StringConsts.ERL_CONN_CANT_CONNECT_TO_NODE_ERROR.Args(node));
         conn.Send(m_Self, ConstAtoms.Rex, msg);
       }
     }
@@ -443,6 +448,7 @@ namespace NFX.Erlang
         m_Node.Deliver(monitor.Value.Node, msg);
       }
       m_Node.CloseMbox(this);
+      m_RegName = ErlAtom.Null;
     }
 
     internal void Deliver(ErlConnectionException e)

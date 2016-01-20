@@ -372,6 +372,15 @@ namespace NFX.ServiceModel
                 throw new NFXException(StringConsts.SERVICE_INVALID_STATE + Name);
             }
 
+            /// <summary>
+            /// Checks for service activity and throws exception if service is not in ControlStatus.Active state
+            /// </summary>
+            protected void CheckServiceActiveOrStarting()
+            {
+                if (m_Status!=ControlStatus.Active && m_Status!=ControlStatus.Starting)
+                throw new NFXException(StringConsts.SERVICE_INVALID_STATE + Name);
+            }
+
 
             /// <summary>
             /// Accepts a visit from external manager. Base implementation does nothing. 

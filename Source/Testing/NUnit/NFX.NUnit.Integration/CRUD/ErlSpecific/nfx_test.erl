@@ -1,5 +1,5 @@
 -module(nfx_test).
--export([echo/1, secdef_by_exchange/1, world_news/3]).
+-export([echo/1, secdef_by_exchange/1, world_news/4]).
 -export([start/0, stop/0, subscribe/2, unsubscribe/2,
          subscribers/1, broadcast/2]).
 
@@ -39,8 +39,10 @@ secdef_by_exchange(Exch) ->
 %%  <field name="time" type="datetime"/>
 %%  <field name="news" type="string"/>
 %% </schema>
-world_news(Pid, Count, PeriodMS) when is_pid(Pid), is_integer(Count), is_integer(PeriodMS) ->
+world_news(Pid, TS, Count, PeriodMS)
+  when is_pid(Pid), is_integer(TS), is_integer(Count), is_integer(PeriodMS) ->
     start(),
+	Now = erlang:system_time(micro_seconds),
     Tab = world_news,
     subscribe(Tab, Pid),
     News = ["News" ++ integer_to_list(I) || I <- lists:seq(1, Count)],
@@ -48,7 +50,7 @@ world_news(Pid, Count, PeriodMS) when is_pid(Pid), is_integer(Count), is_integer
         Loop(_Pids, []) ->
             ok;
         Loop(Pids, [Msg | Tail]) ->
-            [P ! {Tab, $w, [{Tab, erlang:system_time(micro_seconds), Msg}]} || P <- Pids],
+            [P ! {Tab, Now, $w, [{Tab, erlang:system_time(micro_seconds), Msg}]} || P <- Pids],
             timer:sleep(PeriodMS),
             Loop(Pids, Tail)
         end,

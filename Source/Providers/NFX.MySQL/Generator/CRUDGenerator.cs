@@ -113,14 +113,14 @@ namespace NFX.DataAccess.MySQL
     }
 
 
-    private static string getTableName(Schema schema)
+    private static string getTableName(Schema schema, string target)
     {
       string tableName = schema.Name;
 
       if (schema.TypedRowType!=null)
         tableName = "tbl_" + schema.TypedRowType.Name;//without namespace
 
-      var tableAttr = schema.GetTableAttrForTarget(StringConsts.MYSQL_CRUD_TARGET);
+      var tableAttr = schema.GetTableAttrForTarget(target);
       if (tableAttr!=null && tableAttr.Name.IsNotNullOrWhiteSpace()) tableName = tableAttr.Name;
       return tableName;
     }
@@ -128,18 +128,19 @@ namespace NFX.DataAccess.MySQL
 
     private static int crudInsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row)
     {
+      var target = store.TargetName;
       var cnames = new StringBuilder();
       var values = new StringBuilder();
       var vparams = new List<MySqlParameter>();
       var vpidx = 0;
       foreach (var fld in row.Schema.FieldDefs)
       {
-        var fattr = fld[StringConsts.MYSQL_CRUD_TARGET];
+        var fattr = fld[target];
         if (fattr==null) continue;
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
-        var fname = fld.GetBackendNameForTarget(StringConsts.MYSQL_CRUD_TARGET);
+        var fname = fld.GetBackendNameForTarget(target);
          
         var fvalue = getFieldValue(row, fld.Order, store);
          
@@ -174,7 +175,7 @@ namespace NFX.DataAccess.MySQL
         return 0;//nothing to do
 
 
-      string tableName = getTableName(row.Schema);
+      string tableName = getTableName(row.Schema, target);
 
       using(var cmd = cnn.CreateCommand())
       {   
@@ -203,12 +204,13 @@ namespace NFX.DataAccess.MySQL
 
     private static int crudUpdate(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, IDataStoreKey key)
     {
+      var target = store.TargetName;
       var values = new StringBuilder();
       var vparams = new List<MySqlParameter>();
       var vpidx = 0;
       foreach (var fld in row.Schema.FieldDefs)
       {
-        var fattr = fld[StringConsts.MYSQL_CRUD_TARGET];
+        var fattr = fld[target];
         if (fattr==null) continue;
 
         //20141008 DKh Skip update of key fields
@@ -216,7 +218,7 @@ namespace NFX.DataAccess.MySQL
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
-        var fname = fld.GetBackendNameForTarget(StringConsts.MYSQL_CRUD_TARGET);
+        var fname = fld.GetBackendNameForTarget(target);
          
         var fvalue = getFieldValue(row, fld.Order, store); 
         
@@ -248,13 +250,13 @@ namespace NFX.DataAccess.MySQL
         return 0;//nothing to do
 
 
-      string tableName = getTableName(row.Schema);
+      string tableName = getTableName(row.Schema, target);
 
       using(var cmd = cnn.CreateCommand())
       {   
         var sql = string.Empty;
         
-        var pk = key ?? row.GetDataStoreKey(StringConsts.MYSQL_CRUD_TARGET);
+        var pk = key ?? row.GetDataStoreKey(target);
 
         if (pk == null)
             throw new MySQLDataAccessException(StringConsts.KEY_UNAVAILABLE_ERROR);
@@ -288,6 +290,7 @@ namespace NFX.DataAccess.MySQL
 
     private static int crudUpsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row)
     {
+      var target = store.TargetName;
       var cnames = new StringBuilder();
       var values = new StringBuilder();
       var upserts = new StringBuilder();
@@ -295,12 +298,12 @@ namespace NFX.DataAccess.MySQL
       var vpidx = 0;
       foreach (var fld in row.Schema.FieldDefs)
       {
-        var fattr = fld[StringConsts.MYSQL_CRUD_TARGET];
+        var fattr = fld[target];
         if (fattr==null) continue;
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
-        var fname = fld.GetBackendNameForTarget(StringConsts.MYSQL_CRUD_TARGET);
+        var fname = fld.GetBackendNameForTarget(target);
          
         var fvalue = getFieldValue(row, fld.Order, store);
         
@@ -340,7 +343,7 @@ namespace NFX.DataAccess.MySQL
         return 0;//nothing to do
 
 
-      string tableName = getTableName(row.Schema);
+      string tableName = getTableName(row.Schema, target);
 
       using(var cmd = cnn.CreateCommand())
       {   
@@ -372,11 +375,12 @@ namespace NFX.DataAccess.MySQL
 
     private static int crudDelete(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, IDataStoreKey key)
     {
-      string tableName = getTableName(row.Schema);
+      var target = store.TargetName;
+      string tableName = getTableName(row.Schema, target);
 
       using (var cmd = cnn.CreateCommand())
       {
-        var pk = key ?? row.GetDataStoreKey(StringConsts.MYSQL_CRUD_TARGET);
+        var pk = key ?? row.GetDataStoreKey(target);
 
         if (pk == null)
             throw new MySQLDataAccessException(StringConsts.KEY_UNAVAILABLE_ERROR);

@@ -74,6 +74,11 @@ namespace NFX.Log
     TraceGlue,
 
     /// <summary>
+    /// Emitted by Erlang code
+    /// </summary>
+    TraceErl,
+
+    /// <summary>
     /// Last trace-related message type for use in trace-related max-level config setting
     /// </summary>
     TraceZ,

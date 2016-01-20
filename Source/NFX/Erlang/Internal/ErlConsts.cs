@@ -26,6 +26,8 @@ namespace NFX.Erlang
     /// </summary>
     public static class ErlConsts
     {
+        internal const string CONFIG_IS_LOCAL_ATTR = "is-local"; 
+
         internal const string ERLANG_ACCEPT_ATTR        = "accept";
         internal const string ERLANG_ADDRESS_ATTR       = "address";
         internal const string ERLANG_CONFIG_SECTION     = "erlang";

@@ -24,9 +24,6 @@ namespace NFX.DataAccess.MySQL
 {
   internal static class StringConsts
   {
-     public const string MYSQL_CRUD_TARGET = "MySQL";
-
-
     public const string MODEL_INVALID_STATE_ERROR =
         "Model is in invalid state. Expected: {0} Actual: {1}";
 

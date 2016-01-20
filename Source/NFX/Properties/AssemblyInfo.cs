@@ -57,4 +57,5 @@ using System.Runtime.InteropServices;
 [assembly:InternalsVisibleTo("NFX.Web")]
 [assembly:InternalsVisibleTo("NFX.Wave")]
 [assembly: InternalsVisibleTo("NFX.NUnit")]
+[assembly: InternalsVisibleTo("NFX.NUnit.Integration")]
 

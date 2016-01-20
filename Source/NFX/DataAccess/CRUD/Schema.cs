@@ -36,6 +36,11 @@ namespace NFX.DataAccess.CRUD
     [Serializable]
     public sealed class Schema : INamed, IEnumerable<Schema.FieldDef>, IJSONWritable
     {
+        public const string EXTRA_SUPPORTS_INSERT_ATTR = "supports-insert";
+        public const string EXTRA_SUPPORTS_UPDATE_ATTR = "supports-update";
+        public const string EXTRA_SUPPORTS_DELETE_ATTR = "supports-delete";
+        
+        
         #region Inner Classes
             
             /// <summary>
@@ -87,7 +92,11 @@ namespace NFX.DataAccess.CRUD
 
                     //add ANY_TARGET attribute
                     if (!m_Attrs.Any(a => a.TargetName == TargetedAttribute.ANY_TARGET))
-                      m_Attrs.Add( new FieldAttribute(FieldAttribute.ANY_TARGET));
+                    {
+                      var isAnyKey = m_Attrs.Any( a => a.Key );
+                      var ata = new FieldAttribute(FieldAttribute.ANY_TARGET, key: isAnyKey);
+                      m_Attrs.Add( ata );
+                    }
 
                     m_MemberInfo = memberInfo;
 
@@ -219,7 +228,7 @@ namespace NFX.DataAccess.CRUD
                 }
 
                 
-                       private Dictionary<string, FieldAttribute> m_TargetAttrsCache = new Dictionary<string, FieldAttribute>();
+                       private volatile Dictionary<string, FieldAttribute> m_TargetAttrsCache = new Dictionary<string, FieldAttribute>();
                 
                 /// <summary>
                 /// Returns a FieldAttribute that matches the supplied targetName, or if one was not defined then
@@ -533,7 +542,7 @@ namespace NFX.DataAccess.CRUD
 
 
             /// <summary>
-            /// Returns FieldDefs in their order within rows that are declared as key fields in any target
+            /// Returns FieldDefs in their order within rows that are declared as key fields in ANY_TARGET
             /// </summary>
             public IEnumerable<FieldDef> AnyTargetKeyFieldDefs { get { return m_FieldDefs.Where(fd => fd.AnyTargetKey);}}
 

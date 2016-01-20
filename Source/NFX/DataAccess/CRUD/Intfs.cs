@@ -271,4 +271,31 @@ namespace NFX.DataAccess.CRUD
         void AfterLoad(string targetName);
     }
 
+
+
+    /// <summary>
+    /// Supplies caching params
+    /// </summary>
+    public interface ICacheParams
+    {
+        /// <summary>
+        /// If greater than 0 then would allow reading a cached result for up-to the specified number of seconds.
+        /// If =0 uses cache's default span.
+        /// Less than 0 does not try to read from cache
+        /// </summary>
+        int ReadCacheMaxAgeSec{ get; }
+
+        /// <summary>
+        /// If greater than 0 then writes to cache with the expiration.
+        /// If =0 uses cache's default life span.
+        /// Less than 0 does not write to cache
+        /// </summary>
+        int WriteCacheMaxAgeSec{ get; }
+
+        /// <summary>
+        /// Relative cache priority which is used when WriteCacheMaxAgeSec>=0
+        /// </summary>
+        int WriteCachePriority{ get; }
+    }
+
 }

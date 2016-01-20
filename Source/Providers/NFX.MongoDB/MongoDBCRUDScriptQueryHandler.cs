@@ -58,7 +58,8 @@ namespace NFX.DataAccess.MongoDB
           var qry = MakeQuery(ctx.Database, query, out collection );
                             
           Schema schema = null;
-          if (query.ResultRowType!=null)
+          var rtp = query.ResultRowType;
+          if (rtp!=null && typeof(TypedRow).IsAssignableFrom(rtp))
             schema = Schema.GetForTypedRow(query.ResultRowType);
               
 

@@ -77,6 +77,7 @@ namespace NFX.RelationalModel.DataTypes
     public sealed class TInt : UncategorizedNumericValue
     {
         public readonly int Size;
+        public readonly bool Unsigned;
         
         public TInt()
         {
@@ -87,9 +88,27 @@ namespace NFX.RelationalModel.DataTypes
             Size = size;
         }
 
+        public TInt(int size, bool unsigned)
+        {
+            Size = size;
+            Unsigned = unsigned;
+        }
+
         public override string GetTypeName(RDBMSCompiler compiler)
         {
-            return "INT({0})".Args(Size);
+            string t;
+            if (Size<2) t = "TINYINT";
+            else
+            if (Size<4) t = "SMALLINT";
+            else
+            if (Size<8) t = "INT";
+            else
+             t = "BIGINT";
+
+            var u = "";
+            if (Unsigned) u += " UNSIGNED";
+
+            return "{0}({1}){2}".Args(t, Size, u);
         }
     }
 

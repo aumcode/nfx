@@ -41,6 +41,13 @@ app{
          name='PortalHub'
          type='NFX.Wave.PortalHub, NFX.Wave'
          
+         content-file-system
+         {
+            type='NFX.IO.FileSystem.Local.LocalFileSystem, NFX'
+            connect-params{}
+            root-path=$'c:\'
+         }
+
               portal
               {
                 name='Paris' type='NFX.NUnit.Web.MockPortalFrench, NFX.NUnit' 

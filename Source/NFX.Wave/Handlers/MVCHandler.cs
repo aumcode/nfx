@@ -93,6 +93,7 @@ namespace NFX.Wave.Handlers
             }
             finally
             {
+              
               target.m_WorkContext = null;
             }
           }

@@ -29,7 +29,16 @@ namespace NFX.Web.Pay.Tax
 {
   public class TaxConnectionParameters: INamed, IConfigurable
   {
-    #region Static
+    #region ctor
+
+		  public TaxConnectionParameters() {}
+
+      public TaxConnectionParameters(IConfigSectionNode node) { Configure(node); }
+
+      public TaxConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
+      {
+        var conf = Configuration.ProviderLoadFromString(connStr, format).Root;
+      } 
 
       public static TParams Make<TParams>(IConfigSectionNode node) where TParams: TaxConnectionParameters
       {
@@ -43,24 +52,13 @@ namespace NFX.Web.Pay.Tax
         return Make<TParams>(cfg);
       }
 
-    #endregion
-
-    #region ctor
-
-		  public TaxConnectionParameters() {}
-
-      public TaxConnectionParameters(IConfigSectionNode node) { Configure(node); }
-
-      public TaxConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
-      {
-        var conf = Configuration.ProviderLoadFromString(connStr, format).Root;
-      } 
-
 	  #endregion
 
     #region Properties
 
 		  [Config] public string Name { get; set; }
+
+      public User User {get; set;} 
 
 	  #endregion
 
@@ -73,5 +71,4 @@ namespace NFX.Web.Pay.Tax
 
 	  #endregion
   } //TaxConnectionParameters
-
 }

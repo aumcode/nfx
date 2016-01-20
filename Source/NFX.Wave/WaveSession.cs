@@ -32,11 +32,24 @@ namespace NFX.Wave
     public class WaveSession : BaseSession
     {
         protected WaveSession():base(){} //used by serializer
-        public WaveSession(Guid id) : base(id) {}
+        public WaveSession(Guid id) : base(id) 
+        {
+           m_CSRFToken = ExternalRandomGenerator.Instance.NextRandomWebSafeString();
+        }
 
+        private string m_CSRFToken;
+
+        
         /// <summary>
         /// Stores user Geographical/Location information
         /// </summary>
         public GeoEntity GeoEntity;
+
+        /// <summary>
+        /// Unique token assigned at session start used for checking of form posts.
+        /// This is for Cross Site Request Forgery protection.
+        /// </summary>
+        public string CSRFToken { get{ return m_CSRFToken;} }
+
     }
 }

@@ -303,18 +303,18 @@ namespace NFX.ApplicationModel
     
     #region Public
 
-            public  void WriteLog(MessageType type, string from, string msgText)
+            public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
             {
                 if (m_Log==null) return;
         
                 m_Log.Write(new NFX.Log.Message()
-                                    {
-                                      Topic = LogTopic,
-                                      Type = type,
-                                      From = from,
-                                      Text = msgText
-                                    }
-                                   );
+                            {
+                              Topic = LogTopic,
+                              Type = type,
+                              From = from,
+                              Text = msgText,
+                              Exception = error
+                            });
             }
 
             /// <summary>
@@ -515,10 +515,11 @@ namespace NFX.ApplicationModel
                     //log not available at this point
                 }
       
-        
+
+        ExecutionContext.__SetApplicationLevelContext(this, null, null, NOPSession.Instance);
         DoInitApplication(); //<----------------------------------------------
 
-            
+
 
             name = CoreConsts.UNKNOWN;
             breakOnError = true;
@@ -533,12 +534,12 @@ namespace NFX.ApplicationModel
             {
               error = new NFXException(StringConsts.APP_STARTER_AFTER_ERROR.Args(name, error.ToMessageWithType()), error);
               if (breakOnError) throw error;
-              WriteLog(MessageType.Error, "InitApplication().After", error.Message);
+              WriteLog(MessageType.CatastrophicError, "InitApplication().After", error.ToMessageWithType(), error);
             }
 
         if (exceptions.Count>0)
             foreach(var exception in exceptions)
-                WriteLog(MessageType.Error, "InitApplication().Before", exception.ToMessageWithType());
+                WriteLog(MessageType.CatastrophicError, "InitApplication().Before", exception.ToMessageWithType());
 
       }
 
@@ -563,7 +564,14 @@ namespace NFX.ApplicationModel
                 }
             }
 
-        DoCleanupApplication(); //<----------------------------------------------
+        try
+        {
+          DoCleanupApplication(); //<----------------------------------------------
+        }
+        finally
+        {
+          ExecutionContext.__SetApplicationLevelContext(null, null, null, NOPSession.Instance);
+        }
 
             lock(m_FinishNotifiables)
             {
@@ -714,8 +722,6 @@ namespace NFX.ApplicationModel
    
       protected virtual void DoInitApplication()
       {
-        ExecutionContext.__SetApplicationLevelContext(this, null, null, NOPSession.Instance);
-
         const string FROM = "app.init";
         
         ConfigAttribute.Apply(this, m_ConfigRoot);
@@ -748,7 +754,7 @@ namespace NFX.ApplicationModel
           }
           catch(Exception error)
           {
-            throw new NFXException(StringConsts.APP_LOG_INIT_ERROR + error);
+            throw new NFXException(StringConsts.APP_LOG_INIT_ERROR + error.ToMessageWithType(), error);
           }
 
 
@@ -775,21 +781,16 @@ namespace NFX.ApplicationModel
             }
 
             WriteLog(MessageType.Info, FROM, "Log msg time is time source-supplied now");
+
+            m_StartTime = LocalizedTime;
+            WriteLog(MessageType.Info, FROM, "App start time is {0}".Args(m_StartTime));
           }
           catch(Exception error)
           {
-            throw new NFXException(StringConsts.APP_TIMESOURCE_INIT_ERROR + error);
+            var msg = StringConsts.APP_TIMESOURCE_INIT_ERROR + error.ToMessageWithType();
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
-        }
-
-        try
-        {
-          m_StartTime = LocalizedTime;
-          WriteLog(MessageType.Info, FROM, "App start time is {0}".Args(m_StartTime));
-        }
-        catch(Exception error)
-        {
-            throw new NFXException(StringConsts.APP_TIMESOURCE_INIT_ERROR + error);
         }
 
 
@@ -818,7 +819,9 @@ namespace NFX.ApplicationModel
           }
           catch(Exception error)
           {
-            throw new NFXException(StringConsts.APP_EVENT_TIMER_INIT_ERROR + error);
+            var msg = StringConsts.APP_EVENT_TIMER_INIT_ERROR + error.ToMessageWithType();
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
         }
 
@@ -849,8 +852,8 @@ namespace NFX.ApplicationModel
           catch (Exception error)
           {
             var msg = StringConsts.APP_SECURITY_MANAGER_INIT_ERROR + error;
-            WriteLog(MessageType.Error, FROM, msg);
-            throw new NFXException(msg);
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
 
         try
@@ -860,7 +863,7 @@ namespace NFX.ApplicationModel
         catch(Exception error)
         {
            var msg = StringConsts.APP_APPLY_BEHAVIORS_ERROR + error;
-           WriteLog(MessageType.Error, FROM, msg);
+           WriteLog(MessageType.Error, FROM, msg, error);
            throw new NFXException(msg, error);
         }
 
@@ -890,8 +893,8 @@ namespace NFX.ApplicationModel
           catch (Exception error)
           {
             var msg = StringConsts.APP_INSTRUMENTATION_INIT_ERROR + error;
-            WriteLog(MessageType.Error, FROM, msg);
-            throw new NFXException(msg);
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
 
 
@@ -920,8 +923,8 @@ namespace NFX.ApplicationModel
             catch (Exception error)
             {
                 var msg = StringConsts.APP_THROTTLING_INIT_ERROR + error;
-                WriteLog(MessageType.Error, FROM, msg);
-                throw new NFXException(msg);
+                WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+                throw new NFXException(msg, error);
             }
 
 
@@ -951,8 +954,8 @@ namespace NFX.ApplicationModel
           catch (Exception error)
           {
             var msg = StringConsts.APP_DATA_STORE_INIT_ERROR + error;
-            WriteLog(MessageType.Error, FROM, msg);
-            throw new NFXException(msg);
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
 
 
@@ -981,8 +984,8 @@ namespace NFX.ApplicationModel
           catch (Exception error)
           {
             var msg = StringConsts.APP_OBJECT_STORE_INIT_ERROR + error;
-            WriteLog(MessageType.Error, FROM, msg);
-            throw new NFXException(msg);
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
 
         node = m_ConfigRoot[CONFIG_GLUE_SECTION];
@@ -1009,30 +1012,24 @@ namespace NFX.ApplicationModel
           catch (Exception error)
           {
             var msg = StringConsts.APP_GLUE_INIT_ERROR + error;
-            WriteLog(MessageType.Error, FROM, msg);
-            throw new NFXException(msg);
+            WriteLog(MessageType.CatastrophicError, FROM, msg, error);
+            throw new NFXException(msg, error);
           }
 
         
 
 
-        WriteLog(MessageType.Info, FROM, "Common application initialized");
-        WriteLog(MessageType.Info, FROM, "Time localization information follows");
-        WriteLog(MessageType.Info, FROM, "    Application: " + this.TimeLocation.ToString());
-        WriteLog(MessageType.Info, FROM, "    Log: " + this.Log.TimeLocation.ToString());
-        WriteLog(MessageType.Info, FROM, "    Glue: " + this.Glue.TimeLocation.ToString());
-        WriteLog(MessageType.Info, FROM, "    Instrumentation: " + this.Instrumentation.TimeLocation.ToString());
-        WriteLog(MessageType.Info, FROM, "    ObjStore: " + this.ObjectStore.TimeLocation.ToString());
-
-      }                                           
+        WriteLog(MessageType.Info, FROM, "Common application initialized in '{0}' time location".Args(this.TimeLocation));
+        WriteLog(MessageType.Info, FROM, "Component dump:");
+        foreach(var cmp in ApplicationComponent.AllComponents)
+          WriteLog(MessageType.Info, FROM, "  -> Component: {0}  '{1}'  '{2}' ".Args(cmp.ComponentSID, cmp.GetType().FullName, cmp.ComponentCommonName));
+      }
 
 
 
       protected virtual void DoCleanupApplication()
       {
          const string FROM = "app.cleanup";
-
-         
 
 
          if (m_Glue!=null)
@@ -1052,7 +1049,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing Glue: " + error.Message);
+             WriteLog(MessageType.CatastrophicError, FROM, "Error finalizing Glue: " + error.ToMessageWithType(), error);
            }
          }
          
@@ -1074,7 +1071,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing ObjectStore: " + error.Message);
+             WriteLog(MessageType.Error, FROM, "Error finalizing ObjectStore: " + error.ToMessageWithType(), error);
            }
          }
 
@@ -1095,7 +1092,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing DataStore: " + error.Message);
+             WriteLog(MessageType.Error, FROM, "Error finalizing DataStore: " + error.ToMessageWithType(), error);
            }
          }
 
@@ -1117,7 +1114,7 @@ namespace NFX.ApplicationModel
              }
              catch (Exception error)
              {
-                 WriteLog(MessageType.Error, FROM, "Error finalizing Throttling: " + error.Message);
+                 WriteLog(MessageType.Error, FROM, "Error finalizing Throttling: " + error.ToMessageWithType(), error);
              }
          }
 
@@ -1139,7 +1136,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing Instrumentation: " + error.Message);
+             WriteLog(MessageType.Error, FROM, "Error finalizing Instrumentation: " + error.ToMessageWithType(), error);
            }
          }
 
@@ -1161,7 +1158,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing Security Manager: " + error.Message);
+             WriteLog(MessageType.Error, FROM, "Error finalizing Security Manager: " + error.ToMessageWithType(), error);
            }
          }
 
@@ -1183,7 +1180,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing EventTimer: " + error.Message);
+             WriteLog(MessageType.Error, FROM, "Error finalizing EventTimer: " + error.ToMessageWithType(), error);
            }
          }
 
@@ -1206,7 +1203,7 @@ namespace NFX.ApplicationModel
            }
            catch(Exception error)
            {
-             WriteLog(MessageType.Error, FROM, "Error finalizing TimeSource: " + error.Message);
+             WriteLog(MessageType.Error, FROM, "Error finalizing TimeSource: " + error.ToMessageWithType(), error);
            }
          }
          
@@ -1214,20 +1211,22 @@ namespace NFX.ApplicationModel
          if (m_Log!=null)
          {
              WriteLog(MessageType.Info, FROM, "Stopping logger. This is the last message");
-             if (m_Log is Service)
+             try
              {
-                 ((Service)m_Log).SignalStop();
-                 ((Service)m_Log).WaitForCompleteStop();
+               if (m_Log is Service)
+               {
+                   ((Service)m_Log).SignalStop();
+                   ((Service)m_Log).WaitForCompleteStop();
+               }
+               m_Log.Dispose();
              }
-             m_Log.Dispose();
+             catch
+             {
+               //nowhere to log
+             }
          } 
 
-
-         ExecutionContext.__SetApplicationLevelContext(null, null, null, NOPSession.Instance);
       }
-
-      
-
 
     #endregion
   }

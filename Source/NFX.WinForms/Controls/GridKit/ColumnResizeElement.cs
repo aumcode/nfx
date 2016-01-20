@@ -99,13 +99,15 @@ namespace NFX.WinForms.Controls.GridKit
          base.OnMouseDrag(e);
          if (m_Grid.m_ResizingColumn==null) return;
          
-           var rect = DisplayRegion;
-           rect.Offset(e.X - m_GrabX, 0);
-           rect.Y = 1;
-           rect.Height = m_Host.Height -1;
-           invert();
-           m_InvertRect = m_Host.RectangleToScreen(rect);
-           ControlPaint.FillReversibleRectangle(m_InvertRect, Color.Beige);
+         var rect = DisplayRegion;
+         rect.Offset(e.X - m_GrabX, 0);
+         rect.X = Math.Max(0, rect.X);
+         rect.X = Math.Min(m_Grid.CellView.Right, rect.X);
+         rect.Y = 1;
+         rect.Height = m_Host.Height -1;
+         invert();
+         m_InvertRect = m_Host.RectangleToScreen(rect);
+         ControlPaint.FillReversibleRectangle(m_InvertRect, Color.Beige);
        }
        
        protected internal override void OnMouseDragRelease(MouseEventArgs e)
@@ -115,19 +117,22 @@ namespace NFX.WinForms.Controls.GridKit
          if (m_Grid.m_ResizingColumn!=null)
          {
            m_Grid.m_ResizingColumn = null;
-           var elm = m_Host.GetClickableElementAt(new Point(e.X, e.Y)) as CellElement;
-           if (elm!=null)
            {
-             var w = m_HeaderCell.Column.Width;
-             m_HeaderCell.Column.Width += (int) ( (e.X - m_GrabX) / m_Host.Zoom );
+             var oldW = m_HeaderCell.Column.Width;
+             var newW = oldW + (int)((e.X - m_GrabX) / m_Host.Zoom);
+             newW = Math.Max(5, newW);
+             var maxW = m_Grid.Width - m_HeaderCell.Left - m_Grid.m_VScrollBar.Width - 2;
+
+             if (newW>maxW) newW = maxW;
              
-             
-             if (m_HeaderCell.Column.Width==w) 
-              m_Host.Invalidate();//refresh artifacts in case width did not change becaus of constraints
+             if (oldW!=newW) 
+               m_HeaderCell.Column.Width = newW;
+             else
+               m_Host.Invalidate();//refresh artifacts in case width did not change becaus of constraints
            }
-           else
-            invert();
+           //else
            
+           //invert();
          }
        }
        

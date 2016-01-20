@@ -160,6 +160,8 @@ namespace NFX.Wave.Handlers
                work.Response.WriteFile(fileName, attachment: attachment);
              else
              {
+               var ext = Path.GetExtension(fsFile.Name);
+               work.Response.ContentType = NFX.Web.ContentType.ExtensionToContentType(ext, NFX.Web.ContentType.BINARY);
                work.Response.WriteStream(fsFile.FileStream, attachmentName: attachment ? Path.GetFileName(fileName) : null);
              }
          }

@@ -78,6 +78,7 @@
     <Compile Include="Logging\SQLServerLogging.cs" />
     <Compile Include="MongoDB\BasicConnectorFunctionality.cs" />
     <Compile Include="MongoDB\CRUDwithRowConverter.cs" />
+    <Compile Include="NUnitRootSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\JSON.cs" />
     <Compile Include="Serialization\TestObjects.cs" />
@@ -90,10 +91,11 @@
     <Compile Include="Web\Pay\AutostarterTest.cs" />
     <Compile Include="Web\Pay\FakePaySystemHost.cs" />
     <Compile Include="Web\Pay\MockTest.cs" />
+    <Compile Include="Web\Pay\PayPalTest.cs" />
     <Compile Include="Web\Pay\PayTestCommon.cs" />
     <Compile Include="Web\Pay\StripeTest.cs" />
     <Compile Include="Web\Social\AutostarterTest.cs" />
-    <Compile Include="Web\Tax\TaxRegistryTest.cs" />
+    <Compile Include="Web\Tax\TaxTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">

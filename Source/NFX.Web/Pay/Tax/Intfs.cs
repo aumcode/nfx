@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using NFX.Environment;
 using NFX.Instrumentation;
+using NFX.Financial;
 
 namespace NFX.Web.Pay.Tax
 {
@@ -15,14 +16,39 @@ namespace NFX.Web.Pay.Tax
   public interface ITaxCalculation
   {
     /// <summary>
-    /// Who must pay tax to Recipient 
-    /// </summary>
-    TaxCollector Collector { get; }
-
-    /// <summary>
-    /// Tax recipient (state in US or contry in Europe).
+    /// Tax recipient (state in US or country in Europe).
     /// </summary>
     string Recipient { get; }
+
+    /// <summary>
+    /// Paid to state by retailer
+    /// </summary>
+    ITaxStructured RetailerTax { get; }
+
+    /// <summary>
+    /// Paid to state by wholeseller
+    /// </summary>
+    ITaxStructured WholesellerTax { get; }
+
+    /// <summary>
+    /// Is this none instance (so no tax must be paid)
+    /// </summary>
+    bool IsNone { get; }
+  }
+
+  public interface ITaxStructured
+  {
+    /// <summary>
+    /// Currency of fields above
+    /// </summary>
+    string CurrencyISO { get; }
+
+    /// <summary>
+    /// Returns total tax if present.
+    /// Represents sum of State, County, City and Special properties if they are known.
+    /// Otherwise State, County, City and Special properties are zero.
+    /// </summary>
+    decimal Total { get; }
 
     /// <summary>
     /// Returns state tax if present
@@ -43,24 +69,53 @@ namespace NFX.Web.Pay.Tax
     /// Returns special tax if present
     /// </summary>
     decimal Special { get; }
+
+    /// <summary>
+    /// Is this none instance (so no tax must be paid)
+    /// </summary>
+    bool IsNone { get; }
   }
 
-  /// <summary>
-  /// Who pays collected money to state
-  /// </summary>
-  public enum TaxCollector
+  public struct TaxStructured: ITaxStructured
   {
-    None = 0x00,
+    private bool m_IsNone;
+
+    public bool IsNone { get { return m_IsNone; } }
+
+    public static readonly TaxStructured NoneInstance = new TaxStructured() { m_IsNone = true };
+
 
     /// <summary>
-    /// Wholeseller (retailer must collect tax from byuer and then transfer it to wholesaler which must pay its nexus state)
+    /// Currency of fields above
     /// </summary>
-    Wholeseller = 0x01,
+    public string CurrencyISO { get; set; }
 
     /// <summary>
-    /// Retailer (retailer collects tax from buyer and then pays it to its nexus state)
+    /// Returns total tax if present.
+    /// Represents sum of State, County, City and Special properties if they are known.
+    /// Otherwise State, County, City and Special properties are zero.
     /// </summary>
-    Retailer = 0x02
+    public decimal Total { get; set; }
+
+    /// <summary>
+    /// Returns state tax if present
+    /// </summary>
+    public decimal State { get; set; }
+
+    /// <summary>
+    /// Returns county tax if present
+    /// </summary>
+    public decimal County { get; set; }
+
+    /// <summary>
+    /// Returns city tax if present
+    /// </summary>
+    public decimal City { get; set; }
+
+    /// <summary>
+    /// Returns special tax if present
+    /// </summary>
+    public decimal Special { get; set; }
   }
 
   /// <summary>
@@ -68,35 +123,19 @@ namespace NFX.Web.Pay.Tax
   /// </summary>
   public struct TaxCalculation: ITaxCalculation
   {
-    /// <summary>
-    /// Who must pay tax to Recipient 
-    /// </summary>
-    public TaxCollector Collector { get; set; }
+    private bool m_IsNone;
 
-    /// <summary>
-    /// Tax recipient (state in US or contry in Europe).
-    /// </summary>
+    public bool IsNone { get { return m_IsNone; } }
+
+    public static readonly TaxCalculation NoneInstance = new TaxCalculation() { m_IsNone = true };
+
     public string Recipient { get; set; }
 
-    /// <summary>
-    /// Gets/sets state tax if present
-    /// </summary>
-    public decimal State { get; set; }
+    public string CurrencyISO { get; set; }
 
-    /// <summary>
-    /// Gets/sets county tax if present
-    /// </summary>
-    public decimal County { get; set; }
+    public ITaxStructured RetailerTax { get; set; }
 
-    /// <summary>
-    /// Gets/sets city tax if present
-    /// </summary>
-    public decimal City { get; set; }
-
-    /// <summary>
-    /// Gets/sets special tax if present
-    /// </summary>
-    public decimal Special { get; set; }
+    public ITaxStructured WholesellerTax { get; set; }
   }
 
   /// <summary>
@@ -104,7 +143,16 @@ namespace NFX.Web.Pay.Tax
   /// </summary>
   public interface ITaxCalculator
   {
-    ITaxCalculation Calc(IAddress wholesellerAddress, IAddress retailerAddress, IAddress shippingAddress);
+    ITaxCalculation Calc(TaxSession session, 
+      IAddress wholesellerAddress, 
+      string[] wholesellerNexusStates,
+      IAddress retailerAddress, 
+      string[] retailerNexusStates,
+      string[] retailerCertificateStates,
+      IAddress shippingAddress, 
+      Amount wholesalePrice, 
+      Amount retailPrice, 
+      Amount shippingPrice);
   }
 
   public interface ITaxCalculatorImplementation: ITaxCalculator, IConfigurable, IInstrumentable {}

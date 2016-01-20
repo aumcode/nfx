@@ -85,15 +85,10 @@ namespace NFX.Web.GeoLookup
         catch(Exception error)
         {
           s_Instance = null;
-          var msg = new Message
-          {
-            Type = MessageType.CatastrophicError,
-            Topic = StringConsts.WEB_LOG_TOPIC,
-            From = typeof(GeoLookupService).FullName+".Instance.get(){svc.start()}",
-            Text = error.ToMessageWithType(),
-            Exception = error
-          };
-          App.Log.Write( msg ); 
+
+          log(MessageType.CatastrophicError,
+              "Instance.get(){svc.start()}",
+              error.ToMessageWithType(), error); 
         }
       }
 
@@ -237,19 +232,19 @@ namespace NFX.Web.GeoLookup
       protected override void DoStart()
       {
         if (m_Resolution!= LookupResolution.Country && m_Resolution!= LookupResolution.City)
-          throw new NFXException(StringConsts.GEO_LOOKUP_SVC_RESOLUTION_ERROR.Args(m_Resolution));
+          throw new GeoException(StringConsts.GEO_LOOKUP_SVC_RESOLUTION_ERROR.Args(m_Resolution));
         
         if (!Directory.Exists(m_DataPath))
-          throw new NFXException(StringConsts.GEO_LOOKUP_SVC_PATH_ERROR.Args(m_DataPath ?? StringConsts.UNKNOWN));
+          throw new GeoException(StringConsts.GEO_LOOKUP_SVC_PATH_ERROR.Args(m_DataPath ?? StringConsts.UNKNOWN));
 
         var fnBlocks    = Path.Combine(m_DataPath, "GeoLite2-{0}-Blocks.csv".Args(m_Resolution));
         var fnLocations = Path.Combine(m_DataPath, "GeoLite2-{0}-Locations.csv".Args(m_Resolution));
 
         if (!File.Exists(fnBlocks))
-            throw new NFXException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnBlocks));
+            throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnBlocks));
 
         if (!File.Exists(fnLocations))
-            throw new NFXException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnLocations));
+            throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnLocations));
 
         m_CancelStart = false;
         m_Blocks    = new Dictionary<string, IPAddressBlock>();
@@ -257,23 +252,59 @@ namespace NFX.Web.GeoLookup
 
         try
         {
+            const int MAX_PARSE_ERRORS = 8;
+
             using(var fr = new StreamReader(new FileStream(fnBlocks, FileMode.Open, FileAccess.Read, FileShare.Read, 1024*1024)))
             {
               fr.ReadLine();//skip header
+              var line = 1;
+              var errors = 0;
               while(!fr.EndOfStream && !m_CancelStart && App.Active)
-              {                      
-                var row = parseBlock( fr.ReadLine());
-                m_Blocks.Add( row.IPBlockStart, row );
+              {
+                IPAddressBlock row;
+                try
+                {
+                  row = parseBlock( fr.ReadLine());
+                  m_Blocks.Add( row.IPBlockStart, row );
+                }
+                catch(Exception error)
+                {
+                  log(MessageType.Error, "DoStart('{0}')".Args(fnBlocks), "Line: {0} {1}".Args(line, error.ToMessageWithType()), error);
+                  errors++;
+                  if (errors>MAX_PARSE_ERRORS)
+                  {
+                    log(MessageType.CatastrophicError, "DoStart('{0}')".Args(fnBlocks), "Errors > {0}. Aborting file '{1}' import".Args(MAX_PARSE_ERRORS, fnBlocks));
+                    break;
+                  }
+                }
+                line++;
               }
             } 
         
             using(var fr = new StreamReader(fnLocations))
             {
               fr.ReadLine();//skip header
+              var line = 1;
+              var errors = 0;
               while(!fr.EndOfStream && !m_CancelStart && App.Active)
               {
-                var row =  parseLocation( fr.ReadLine()); 
-                m_Locations.Add( row.ID, row );
+                Location row;
+                try
+                {
+                  row =  parseLocation( fr.ReadLine()); 
+                  m_Locations.Add( row.ID, row );
+                }
+                catch(Exception error)
+                {
+                  log(MessageType.Error, "DoStart('{0}')".Args(fnLocations), "Line: {0} {1}".Args(line, error.ToMessageWithType()), error);
+                  errors++;
+                  if (errors>MAX_PARSE_ERRORS)
+                  {
+                    log(MessageType.CatastrophicError, "DoStart('{0}')".Args(fnLocations), "Errors > {0}. Aborting file '{1}' import".Args(MAX_PARSE_ERRORS, fnLocations));
+                    break;
+                  }
+                }
+                line++;
               }
             }  
         }
@@ -284,7 +315,7 @@ namespace NFX.Web.GeoLookup
           throw;
         }
 
-        if (m_CancelStart) throw new NFXException(StringConsts.GEO_LOOKUP_SVC_CANCELED_ERROR);
+        if (m_CancelStart) throw new GeoException(StringConsts.GEO_LOOKUP_SVC_CANCELED_ERROR);
       }
 
       protected override void DoWaitForCompleteStop()
@@ -316,7 +347,19 @@ namespace NFX.Web.GeoLookup
           }  
 
           if (row.Schema[i].Type==typeof(Boolean)) v = v=="1"?"true":"false";
-          row[i] = v;
+          try
+          {
+            row[i] = v;
+          }
+          catch(Exception error)
+          {
+            throw new GeoException("Block {0}.{1}[{2}] = '{3}' error: {4} ".Args(
+                                   row.Schema.Name,
+                                   row.Schema[i].Name,
+                                   i,
+                                   v,
+                                   error.ToMessageWithType()), error); 
+          }
           i++;
         }
         return row;
@@ -335,7 +378,19 @@ namespace NFX.Web.GeoLookup
           var v = seg;
 
           if (row.Schema[i].Type==typeof(Boolean)) v = v=="1"?"true":"false";
-          row[i] = v;
+          try
+          {
+            row[i] = v;
+          }
+          catch(Exception error)
+          {
+            throw new GeoException("Location {0}.{1}[{2}] = '{3}' error: {4} ".Args(
+                                   row.Schema.Name,
+                                   row.Schema[i].Name,
+                                   i,
+                                   v,
+                                   error.ToMessageWithType()), error); 
+          }
           i++;
         }
         return row;
@@ -375,6 +430,19 @@ namespace NFX.Web.GeoLookup
           }
 
         }
+
+      private static void log(MessageType type, string from, string text, Exception error = null)
+      {
+         var msg = new Message
+          {
+            Type = MessageType.CatastrophicError,
+            Topic = StringConsts.WEB_LOG_TOPIC,
+            From = "{0}.{1}".Args(typeof(GeoLookupService).FullName, from),
+            Text = text,
+            Exception = error
+          };
+          App.Log.Write( msg ); 
+      }
 
     #endregion
    

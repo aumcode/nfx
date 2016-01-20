@@ -30,7 +30,7 @@ namespace NFX.Erlang
     /// Create a peer node
     /// </summary>
     public ErlRemoteNode(ErlLocalNode home, string toNode, ErlAtom? cookie = null)
-        : base(toNode, cookie.HasValue ? cookie.Value : home.Cookie, home.UseShortName)
+        : base(toNode, cookie ?? home.Cookie, home.UseShortName)
     {
       ctor(home);
     }
@@ -39,7 +39,7 @@ namespace NFX.Erlang
     /// Create a peer node
     /// </summary>
     public ErlRemoteNode(ErlLocalNode home, ErlAtom toNode, ErlAtom? cookie = null)
-        : base(toNode, cookie.HasValue ? cookie.Value : home.Cookie, home.UseShortName)
+        : base(toNode, cookie ?? home.Cookie, home.UseShortName)
     {
       ctor(home);
     }

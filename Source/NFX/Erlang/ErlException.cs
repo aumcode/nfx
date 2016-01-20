@@ -54,14 +54,14 @@ namespace NFX.Erlang
   /// Exception thrown when decoding an Erlang term if there's not enough
   /// data in the buffer to construct the term
   /// </summary>
-  public class NotEnoughDataException : Exception
+  public class NotEnoughDataException : ErlException
   {
     public NotEnoughDataException() : base(StringConsts.ERL_CANNOT_READ_FROM_STREAM_ERROR) { }
     public NotEnoughDataException(string reason) : base(reason) { }
   }
 
   /// <summary>
-  /// Exception thrown when he connection with a given node gets broken
+  /// Exception thrown when the connection with a given node gets broken
   /// </summary>
   public class ErlConnectionException : ErlException
   {

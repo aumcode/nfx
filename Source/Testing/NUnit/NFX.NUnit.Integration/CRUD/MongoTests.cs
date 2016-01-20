@@ -110,6 +110,29 @@ namespace NFX.NUnit.Integration.CRUD
           Assert.AreEqual(row.Age,  row2.Age);
       }
 
+      [Test]
+      public void InsertAndLoadRowIntoDynamicRow()
+      {
+          var row = new MyPerzon
+          {
+             GDID = new GDID(2, 2, 200),
+             Name = "Zalup Marsoedov",
+             Age = 89
+          }; 
+
+          store.Insert(row);
+                                  
+          var row2 = store.LoadRow(new Query<DynamicRow>("CRUD.LoadPerzon")
+                           {
+                             new Query.Param("id", row.GDID)
+                           }); 
+          Assert.IsNotNull( row2 );
+
+          Assert.AreEqual(row.GDID, row2["_id"].AsGDID());
+          Assert.AreEqual(row.Name, row2["Name"]);
+          Assert.AreEqual(row.Age,  row2["Age"]);
+      }
+
 
       [Test]
       public void InsertManyAndLoadMany()

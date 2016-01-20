@@ -177,7 +177,7 @@ namespace NFX.Web.Social
 
       private string getAccessToken(string code, string redirectURI)
       {
-        dynamic responseObj = WebClient.GetJson(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.POST, 
+        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.POST, 
           bodyParameters: new Dictionary<string, string>() {
           {ACCESSTOKEN_CODE_PARAMNAME, code},
           {ACCESSTOKEN_CLIENTID_PARAMNAME, ClientCode},
@@ -191,7 +191,7 @@ namespace NFX.Web.Social
 
       private void getUserInfo(GooglePlusSocialUserInfo userInfo)
       {
-        dynamic responseObj = WebClient.GetJson(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET,
+        dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET,
           headers: getAuthorizationHeader(userInfo.AccessToken)
         );
 

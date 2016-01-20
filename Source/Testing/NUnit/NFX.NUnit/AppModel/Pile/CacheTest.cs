@@ -38,7 +38,7 @@ using NFX.Environment;
 namespace NFX.NUnit.AppModel.Pile
 {
   [TestFixture]
-  public class CacheTest
+  public class CacheTest : HighMemoryLoadTest
   {
     #region Tests
 

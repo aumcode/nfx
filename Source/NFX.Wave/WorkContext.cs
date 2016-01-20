@@ -301,7 +301,7 @@ namespace NFX.Wave
       /// </summary>
       public bool RequestedJSON
       {
-        get { return Request.AcceptTypes.Any(at=>ContentType.JSON.Equals(at, StringComparison.InvariantCultureIgnoreCase)); }
+        get { return Request.AcceptTypes.Any(at => ContentType.JSON.EqualsOrdIgnoreCase(at)); }
       }
 
       /// <summary>
@@ -323,6 +323,11 @@ namespace NFX.Wave
       /// Indicates that request method id DELETE
       /// </summary>
       public bool IsDELETE { get{ return Request.HttpMethod.EqualsOrdIgnoreCase("DELETE");}}
+
+      /// <summary>
+      /// Indicates that request method id PATCH
+      /// </summary>
+      public bool IsPATCH { get{ return Request.HttpMethod.EqualsOrdIgnoreCase("PATCH");}}
 
 
     #endregion

@@ -161,6 +161,7 @@ namespace NFX.NUnit.Serialization
         [TestCase]
         public void WithSubDocumentsAndConversionAccessors()
         {
+          // http://stackoverflow.com/questions/2954531/lots-of-first-chance-microsoft-csharp-runtimebinderexceptions-thrown-when-dealin
           dynamic obj = new JSONDynamicObject(JSONDynamicObjectKind.Map);
           obj.type = "abc";
           obj.startDate = "5/15/2001 6:00pm";

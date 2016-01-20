@@ -157,6 +157,8 @@ namespace NFX.NUnit.DataAccess
         Assert.IsFalse( GDID.TryParse("1::", out parsed) );
         Assert.IsFalse( GDID.TryParse("1:-:-", out parsed) );
         Assert.IsFalse( GDID.TryParse("1: : ", out parsed) );
+
+        Assert.IsFalse( GDID.TryParse("FTGEJK-IR", out parsed) );
       }
 
 

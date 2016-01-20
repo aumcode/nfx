@@ -24,10 +24,7 @@ using NFX.ServiceModel;
 
 namespace NFX.Erlang
 {
-  /// <summary>
-  /// Callback related to failed EPMD connectivity attempts
-  /// </summary>
-  public delegate void EpmdFailedConnAttemptCallback(ErlAtom node, object info);
+
 
   /// <summary>
   /// Represents an OTP node
@@ -240,8 +237,6 @@ namespace NFX.Erlang
     /// Get/Set the Epmd socket after publishing this nodes listen port to Epmd
     /// </summary>
     internal TcpClient Epmd { get; set; }
-
-    public EpmdFailedConnAttemptCallback OnEpmdFailedConnectAttempt;
 
     /// <summary>
     /// Get the port number used by this node.

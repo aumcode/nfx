@@ -211,6 +211,11 @@ namespace NFX.ApplicationModel
 
         }
 
+        public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
+        {
+
+        }
+
 
     #endregion
 

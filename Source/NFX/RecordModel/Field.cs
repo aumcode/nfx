@@ -69,11 +69,15 @@ namespace NFX.RecordModel
 
       public static Field MakeFiedOfType(Type type)
       {
+        //Take care of Nullable<T>
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+         type = type.GetGenericArguments()[0];
+
         Func<Field> f;
         if (!TYPE_FIELD_MAP.TryGetValue(type, out f))
          throw new RecordModelException(StringConsts.FIELD_TYPE_MAP_ERROR.Args(type.FullName));
 
-         return f();
+        return f();
       }
 
     
@@ -374,6 +378,8 @@ namespace NFX.RecordModel
        get { return m_DisplayFormat ?? string.Empty; }
        set
        {
+         if (value!=null) value = value.Trim();
+         
          if (!Constructed)
          {
            m_DisplayFormat = value;
@@ -1176,7 +1182,21 @@ namespace NFX.RecordModel
          if (!HasValue) return string.Empty;
          
          object v = GetValue();
-         return v != null ? string.Format("{0:"+m_DisplayFormat+"}", v) : string.Empty;
+
+         if (v==null) return string.Empty;
+         if (m_DisplayFormat.IsNullOrWhiteSpace()) return v.ToString();
+
+         try
+         {
+           if (m_DisplayFormat.StartsWith("{0"))
+            return m_DisplayFormat.Args(v);
+           else
+            return "{0:"+m_DisplayFormat+"}".Args(v);
+         }
+         catch(Exception error)
+         {
+           return "Error in DisplayFormat('{0}'): {1}".Args(m_DisplayFormat, error.ToMessageWithType());
+         }
        }
      }
 

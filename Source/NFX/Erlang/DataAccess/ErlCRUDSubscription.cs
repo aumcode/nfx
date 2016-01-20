@@ -19,9 +19,11 @@ namespace NFX.DataAccess.Erlang
     internal ErlCRUDSubscription(ErlDataStore store,
                                  string name,
                                  Query query,
-                                 Mailbox recipient) : base(store, name, query, recipient)
+                                 Mailbox recipient,
+                                 object correlate = null
+                                 ) : base(store, name, query, recipient, correlate)
     {
-       m_ErlBox = store.m_ErlNode.CreateMbox(name);
+       m_ErlBox = store.MakeMailbox(name);
 
        m_ErlBox.MailboxMessage += (_, msg) => 
                                   {
@@ -29,11 +31,39 @@ namespace NFX.DataAccess.Erlang
                                     return true;
                                   };
 
-       var handler = store.QueryResolver.Resolve(query);
-       var result = handler.ExecuteWithoutFetch( new ErlCRUDQueryExecutionContext(store, m_ErlBox), query);
+       m_Store = store;
+       m_Query = query;
+       subscribeCore();
+       HasLoaded();
     }
 
-    
+    internal void Subscribe()
+    {
+      if (!IsLoaded || !IsValid)
+        return;
+      subscribeCore();
+    }
+
+    private void subscribeCore()
+    {
+      try
+      {
+         var handler = m_Store.QueryResolver.Resolve(m_Query);
+         var result = handler.ExecuteWithoutFetch( new ErlCRUDQueryExecutionContext(m_Store, m_ErlBox, m_LastTimeStamp), m_Query);
+      }
+      catch(Exception error)
+      {
+         var invalid = error as InvalidSubscriptionRequestException;
+         if (invalid!=null)
+           Invalidate(invalid);
+         else
+          if (error is ErlConnectionException)
+          {
+            //eat as it may reconnect
+          }
+          else throw;
+      }
+    }
 
     protected override void Destructor()
     {
@@ -41,13 +71,17 @@ namespace NFX.DataAccess.Erlang
  	     base.Destructor();
     }
 
+    private DataTimeStamp m_LastTimeStamp = new DataTimeStamp(0);
+    private ErlDataStore m_Store;
+    private Query m_Query;
     internal ErlMbox m_ErlBox;
 
 
     private static readonly IErlObject SUBSCRIPTION_MSG_PATTERN = 
-                   "{Schema::atom(), Type, Rows::list()}".ToErlObject();
+                   "{Schema::atom(), Timestamp::long(), Type, Rows::list()}".ToErlObject();
 
     private static readonly ErlAtom SCHEMA = new ErlAtom("Schema");
+    private static readonly ErlAtom TIMESTAMP = new ErlAtom("Timestamp");
     private static readonly ErlAtom TYPE   = new ErlAtom("Type");
     private static readonly ErlAtom ROWS   = new ErlAtom("Rows");
 
@@ -68,17 +102,21 @@ namespace NFX.DataAccess.Erlang
         var map     = ((ErlDataStore)Store).Map;
         var binding = new ErlVarBind();
 
-        //{Schema, ChangeType :: $d | $w, [{schema, Flds...}]} %% delete, write(upsert)
-        //{Schema, ChangeType :: $D | $C | $c, []}             %% Drop, Create, Clear
+        //{Schema, TS, ChangeType :: $d | $w, [{schema, Flds...}]} %% delete, write(upsert)
+        //{Schema, TS, ChangeType :: $D | $C | $c, []}             %% Drop, Create, Clear
         if (erlMsg.Msg==null ||
            !erlMsg.Msg.Match(SUBSCRIPTION_MSG_PATTERN, binding))
           return;
 
         var schemaName = ((ErlAtom)binding[SCHEMA]).Value;
+        var ts         = binding[TIMESTAMP].ValueAsLong;
         var op         = (char)((ErlByte)binding[TYPE]).Value;
         var rows       = ((ErlList)binding[ROWS]).Value;
 
         var schema = map.GetCRUDSchemaForName(schemaName);
+
+
+        m_LastTimeStamp = new DataTimeStamp(ts);
 
         CRUDSubscriptionEvent.EventType etp;
 
@@ -96,13 +134,13 @@ namespace NFX.DataAccess.Erlang
           foreach(var rowTuple in rows.Cast<ErlTuple>())
           {
             var row  = map.ErlTupleToRow(schemaName, rowTuple, schema);
-            var data = new CRUDSubscriptionEvent(etp, schema, row);
+            var data = new CRUDSubscriptionEvent(etp, schema, row, new DataTimeStamp(ts));
             this.Mailbox.Deliver(this, data);
           }
         }
         else
-        {
-          var data = new CRUDSubscriptionEvent(etp, schema, null);
+        {  //used to clear data, no rows are fetched
+          var data = new CRUDSubscriptionEvent(etp, schema, null, new DataTimeStamp(ts));
           this.Mailbox.Deliver(this, data);
         }  
       }

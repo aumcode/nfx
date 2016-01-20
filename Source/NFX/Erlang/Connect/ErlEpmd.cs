@@ -94,7 +94,7 @@ namespace NFX.Erlang
         // send request
         obuf.WriteTo(s.GetStream());
 
-        home.Trace(ErlTraceLevel.Epmd, Direction.Outbound,
+        home.OnTrace(ErlTraceLevel.Epmd, Direction.Outbound,
                 StringConsts.ERL_EPMD_LOOKUP_R4.Args(node.NodeName.Value));
 
         // receive and decode reply
@@ -132,7 +132,7 @@ namespace NFX.Erlang
       }
       catch (Exception)
       {
-        home.Trace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_INVALID_RESPONSE_ERROR);
+        home.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_INVALID_RESPONSE_ERROR);
         throw new ErlException(StringConsts.ERL_EPMD_NOT_RESPONDING.Args(node.Host, node.AliveName));
       }
       finally
@@ -142,7 +142,7 @@ namespace NFX.Erlang
         s = null;
       }
 
-      home.Trace(ErlTraceLevel.Epmd, Direction.Inbound, () =>
+      home.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, () =>
           node.Port == 0 ? StringConsts.ERL_EPMD_NOT_FOUND : StringConsts.ERL_EPMD_PORT.Args(node.Port));
 
       return node.Port;
@@ -197,7 +197,7 @@ namespace NFX.Erlang
         // send request
         obuf.WriteTo(s.GetStream());
 
-        node.Trace(ErlTraceLevel.Epmd, Direction.Outbound, () =>
+        node.OnTrace(ErlTraceLevel.Epmd, Direction.Outbound, () =>
                 StringConsts.ERL_EPMD_PUBLISH.Args(node.AliveName, node.Port, "r4"));
 
         // get reply
@@ -216,7 +216,7 @@ namespace NFX.Erlang
           if (result == 0)
           {
             node.Creation = (byte)ibuf.Read2BE();
-            node.Trace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_OK);
+            node.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_OK);
 
             node.Epmd = s;
             return true; // success
@@ -235,12 +235,12 @@ namespace NFX.Erlang
 
       node.Epmd = null;
 
-      node.Trace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_NO_RESPONSE);
+      node.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_NO_RESPONSE);
 
-      if (node.OnEpmdFailedConnectAttempt != null)
-        node.OnEpmdFailedConnectAttempt(node.NodeName, error.Message);
+      
+      node.OnEpmdFailedConnectAttempt(node.NodeName, error.Message);
 
-      node.Trace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_FAILED_TO_CONNECT_ERROR);
+      node.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_FAILED_TO_CONNECT_ERROR);
 
       if (!ErlApp.IgnoreLocalEpmdConnectErrors)
         throw new ErlException(StringConsts.ERL_EPMD_FAILED_TO_CONNECT_ERROR + ": " + error.Message);
@@ -268,7 +268,7 @@ namespace NFX.Erlang
         obuf.Write(buf);
         obuf.WriteTo(s.GetStream());
 
-        node.Trace(ErlTraceLevel.Epmd, Direction.Outbound, () =>
+        node.OnTrace(ErlTraceLevel.Epmd, Direction.Outbound, () =>
                 StringConsts.ERL_EPMD_UNPUBLISH.Args(node.NodeName.Value, node.Port));
       }
       catch

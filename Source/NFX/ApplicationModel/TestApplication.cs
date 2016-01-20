@@ -212,5 +212,19 @@ namespace NFX.ApplicationModel
         {
 
         }
+
+        public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
+        {
+            if (Log==null) return;
+        
+            Log.Write(new NFX.Log.Message()
+                        {
+                          Topic = GetType().Name,
+                          Type = type,
+                          From = from,
+                          Text = msgText,
+                          Exception = error
+                        });
+        }
     }
 }

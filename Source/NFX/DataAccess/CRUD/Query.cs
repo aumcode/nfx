@@ -41,7 +41,7 @@ namespace NFX.DataAccess.CRUD
     /// Also, a provider may elect to SELECT * from a table named like Query object, when a hand-written script with such name is not found
     /// </remarks>
     [Serializable]
-    public sealed class Query : List<Query.Param>, IParameters, INamed
+    public class Query : List<Query.Param>, IParameters, INamed, ICacheParams
     {
             #region Inner Classes
                 
@@ -193,17 +193,21 @@ namespace NFX.DataAccess.CRUD
 
 
             /// <summary>
-            /// If >0 then would allow reading a cached result for up-to the specified number of seconds
+            /// If greater than 0 then would allow reading a cached result for up-to the specified number of seconds.
+            /// If =0 uses cache's default span.
+            /// Less than 0 does not try to read from cache
             /// </summary>
             public int ReadCacheMaxAgeSec{ get; set;}
 
             /// <summary>
-            /// If >0 then would allow caching of result for up-to the specified number of seconds
+            /// If greater than 0 then writes to cache with the expiration.
+            /// If =0 uses cache's default life span.
+            /// Less than 0 does not write to cache
             /// </summary>
             public int WriteCacheMaxAgeSec{ get; set;}
 
             /// <summary>
-            /// Relative cache priority which is used when WriteCacheMaxAgeSec>0
+            /// Relative cache priority which is used when WriteCacheMaxAgeSec>=0
             /// </summary>
             public int WriteCachePriority{ get; set;}
 
@@ -246,6 +250,26 @@ namespace NFX.DataAccess.CRUD
     }
 
    
+
+    /// <summary>
+    /// Generic version of Query
+    /// </summary>
+    /// <typeparam name="TResultRow">Type of resulting rows</typeparam>
+    [Serializable]
+    public sealed class Query<TResultRow> : Query where TResultRow : Row
+    {
+        public Query(string name, Dictionary<string, object> extra = null)
+          : base(name, typeof(TResultRow), extra) { }
+
+        public Query(Guid? identity, string name, Dictionary<string, object> extra = null) 
+          : base(identity, name, typeof(TResultRow), extra) { }
+
+        public Query(string name, IDataStoreKey key) 
+          : base(name, key, typeof(TResultRow))  { }
+        
+        public Query(Guid? identity, string name, IDataStoreKey key) 
+          : base(identity, name, key, typeof(TResultRow)) { }
+    }
 
 
 }

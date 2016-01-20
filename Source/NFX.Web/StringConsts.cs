@@ -150,8 +150,6 @@ namespace NFX.Web
 
     public const string SOCIAL_NETWORK_DUPLICATE_NAME = "Can not have social network instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
-    public const string TAX_CALCULATOR_DUPLICATE_NAME = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
-
     public const string PAYMENT_CURRENCY_CONVERSION_MAPPING_ERROR = "Currency mapping for '{0}' -> '{1}' is not found by provider '{2}' or rate attr missing";
     
     public const string PAYMENT_CURRENCY_NOT_SUPPORTED_ERROR = "Currency '{0}' is not supported by provider '{1}' or currency attr missing";
@@ -180,6 +178,33 @@ namespace NFX.Web
     public const string PAYMENT_STRIPE_50X_ERROR = "{0} Server error - something went wrong on Stripe's end. ";
 
     public const string PAYMENT_STRIPE_ERR_MSG_ERROR = "Stripe reported error: \"{0}\". ";
+
+    public const string PAYMENT_PAYPAL_200_STATUSCODE = "Request OK";
+    public const string PAYMENT_PAYPAL_201_STATUSCODE = "Resource created";
+    public const string PAYMENT_PAYPAL_400_STATUSCODE = "Bad request";
+    public const string PAYMENT_PAYPAL_401_STATUSCODE = "Unauthorized request";
+    public const string PAYMENT_PAYPAL_402_STATUSCODE = "Failed request";
+    public const string PAYMENT_PAYPAL_403_STATUSCODE = "Forbidden";
+    public const string PAYMENT_PAYPAL_404_STATUSCODE = "Resource was not found";
+    public const string PAYMENT_PAYPAL_405_STATUSCODE = "Method not allowed";
+    public const string PAYMENT_PAYPAL_415_STATUSCODE = "Unsupported media type";
+    public const string PAYMENT_PAYPAL_422_STATUSCODE = "Unprocessable entity";
+    public const string PAYMENT_PAYPAL_429_STATUSCODE = "Too many requests";
+    public const string PAYMENT_PAYPAL_50x_STATUSCODE = "PayPal server error";
+    public const string PAYMENT_PAYPAL_UNKNOWN_STATUSCODE = "PayPal unknown error";
+
+    public const string PAYPAL_UNAUTHORIZED_MESSAGE = "Unauthorized payment. Trying to refresh OAuth token.";
+    public const string PAYPAL_REFRESH_TOKEN_MESSAGE = "Refreshing OAuth token";
+    public const string PAYPAL_TOKEN_REFRESHED_MESSAGE = "OAuth token successfully refreshed.";
+    public const string PAYPAL_REFRESH_TOKEN_ERROR = "Critical error while refreshing OAuth token: {0}";
+    public const string PAYPAL_PAYOUT_MESSAGE = "Performing payout (account: {0}, amount: {1}).";
+    public const string PAYPAL_PAYOUT_ERROR = "Critical error while transaction (account: {0}, amount: {1}) processing: {2}";
+    public const string PAYPAL_PAYOUT_DENIED_MESSAGE = "Payout was DENIED. Error: {0}, Message: {1}, Description: {2}";
+
+    public const string TAX_CALCULATOR_DUPLICATE_NAME_ERROR = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
+    public const string TAX_TAXJAR_TOADDRESS_ISNT_SUPPLIED_ERROR = "Either retailerAddress or wholesellerAddress must be provided. ";
+    public const string TAX_CALC_ERROR = "Calculation failed. ";
+    public const string TAX_CALC_DIFFERENT_CURRENCIES_ERROR = "Prices and shipping must be represented in the same currency. ";
    
     public const string MULTIPART_DOUBLE_EOL_ISNT_FOUND_AFTER_HEADER_ERROR = "Double \\r\\n isn't found after header. ";
     public const string MULTIPARTPARTS_COULDNT_BE_EMPTY_ERROR = "Parts couldn't be empty. ";

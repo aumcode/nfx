@@ -74,7 +74,7 @@ namespace NFX.Web.Pay.Mock
           m_BillingAddress.PostalCode = m_AccountData.BillingPostalCode;
           m_BillingAddress.Country = m_AccountData.BillingCountry;
           m_BillingAddress.Phone = m_AccountData.BillingPhone;
-          m_BillingAddress.Email = m_AccountData.BillingEmail;
+          m_BillingAddress.EMail = m_AccountData.BillingEmail;
 
           m_ShippingAddress.Address1 = m_AccountData.ShippingAddress1;
           m_ShippingAddress.Address2 = m_AccountData.ShippingAddress2;
@@ -84,7 +84,7 @@ namespace NFX.Web.Pay.Mock
           m_ShippingAddress.PostalCode = m_AccountData.ShippingPostalCode;
           m_ShippingAddress.Country = m_AccountData.ShippingCountry;
           m_ShippingAddress.Phone = m_AccountData.ShippingPhone;
-          m_ShippingAddress.Email = m_AccountData.ShippingEmail;
+          m_ShippingAddress.EMail = m_AccountData.ShippingEmail;
         }
       }
 
@@ -109,6 +109,8 @@ namespace NFX.Web.Pay.Mock
       public string CardVC { get { return AccountData.CardVC; } set { AccountData.CardVC = value; } }
 
       public bool IsCard { get { return AccountData.IsCard; } }
+
+      public string PrimaryEMail { get; set; }
 
       public IAddress BillingAddress { get { return m_BillingAddress; } }
 

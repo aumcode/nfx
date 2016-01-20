@@ -93,7 +93,9 @@ namespace NFX.Erlang.Internal
       DateTime wakeupTime = DateTime.UtcNow.AddMilliseconds(timeout);
       bool timedout = false;
 
-      while (true)
+      var wasActive = NFX.App.Active;
+
+      while ((!wasActive || NFX.App.Active) && !DisposeStarted && !Disposed)
       {
         do
         {
@@ -111,6 +113,7 @@ namespace NFX.Erlang.Internal
             return m_Queue.Dequeue();
         }
       }
+      return default(T);
     }
 
     public void Clear()

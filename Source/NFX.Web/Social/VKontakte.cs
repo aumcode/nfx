@@ -172,7 +172,7 @@ namespace NFX.Web.Social
 
       private dynamic getAccessTokenObj(string code, string redirectURI)
       {
-        return WebClient.GetJson( ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
+        return WebClient.GetJsonAsDynamic( ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
           new Dictionary<string, string>() {
             {ACCESSTOKEN_CLIENTID_PARAMNAME, ClientCode},
             {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
@@ -183,7 +183,7 @@ namespace NFX.Web.Social
 
       private void getUserInfo(VKontakteSocialUserInfo vkUserInfo)
       {
-        dynamic responseCommon = WebClient.GetJson(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
+        dynamic responseCommon = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
           {USERINFO_USERID_PARAMNAME, vkUserInfo.ID.ToString()},
           {USERINFO_FIELDS_PARAMNAME, USERINFO_FIELDS_PARAMVALUE},
           {ACCESSTOKEN_PARAMNAME, vkUserInfo.AccessToken}
@@ -200,7 +200,7 @@ namespace NFX.Web.Social
 
       private void wallGet(string accessToken)
       {
-        dynamic responseCommon = WebClient.GetJson(WALL_GET_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
+        dynamic responseCommon = WebClient.GetJsonAsDynamic(WALL_GET_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
           {ACCESSTOKEN_PARAMNAME, accessToken}
         });
 
@@ -209,7 +209,7 @@ namespace NFX.Web.Social
 
       private void wallPost(string accessToken, string text)
       {
-        dynamic responseCommon = WebClient.GetJson(WALL_POST_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
+        dynamic responseCommon = WebClient.GetJsonAsDynamic(WALL_POST_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
           {ACCESSTOKEN_PARAMNAME, accessToken},
           {MESSAGE_PARAMNAME, text}
         });

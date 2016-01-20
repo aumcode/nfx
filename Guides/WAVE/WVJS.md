@@ -183,7 +183,7 @@ convertScalarType(false, 13, "string", "<unconvertible>");
 
 
 ## Event manager mixin
-Implementation of event-handler mechanism that can be added to any class.
+Implements the event-handler mechanism and can be added to any class.
 For examples of using look at [Record](Record/readme.md) class description. 
 
 ##### eventInvocationSuspendCount: 0
@@ -200,6 +200,18 @@ Clears all functions from the named event handler.
 
 ##### eventInvoke(evtName)
 Invokes all functions bound to the named event handler.
+
+##### eventSinkBind(sink)
+Binds a sink instance (an object) that will receive all events dispatched by this manager. The `sink` must have a function called `eventNotify(evtName, sender, args)` that will be invoked.
+    
+##### eventSinkUnbind(sink)
+Un-Binds an object that received all events from this manager.
+
+##### eventSinkClear()
+Clears all objects that cat as event sinks bound to this instance.
+
+##### eventSinks()
+Returns a list of sink object that receive event notifications from this manager.
 
 
 ## Record Model

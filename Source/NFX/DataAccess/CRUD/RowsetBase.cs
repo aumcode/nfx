@@ -73,6 +73,12 @@ namespace NFX.DataAccess.CRUD
             /// </summary>
             public int Count { get { return m_List.Count; }}
 
+
+            /// <summary>
+            /// Returns data as non-generic readonly IList
+            /// </summary>
+            public System.Collections.IList AsReadonlyIList{ get{ return new iListReadOnly(m_List);}}
+
             /// <summary>
             /// Gets/Sets whether this rowset keeps track of all modifications done to it. 
             /// This property must be set to true to be able to save changes into ICRUDDataStore

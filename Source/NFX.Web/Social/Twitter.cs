@@ -279,7 +279,7 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        dynamic response = WebClient.GetJson(USER_SHOW_URL, this, HTTPRequestMethod.GET,
+        dynamic response = WebClient.GetJsonAsDynamic(USER_SHOW_URL, this, HTTPRequestMethod.GET,
           queryParameters: new Dictionary<string, string>() { { USER_ID_PARAMNAME, twUserInfo.ID } },
           headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr } }
         );
@@ -323,7 +323,7 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        dynamic response = WebClient.GetJson(UPDATE_STATUS_INFO_URL, this, HTTPRequestMethod.POST, 
+        dynamic response = WebClient.GetJsonAsDynamic(UPDATE_STATUS_INFO_URL, this, HTTPRequestMethod.POST, 
           bodyParameters: new Dictionary<string, string>() { { STATUS_PARAMNAME, RFC3986.Encode( text)}},
           headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
         );

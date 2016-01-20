@@ -1,4 +1,8 @@
-﻿/*!
+﻿"use strict";
+/*jshint devel: true,browser: true, sub: true */ 
+/*global WAVE: true,$: true */
+
+/*!
  * Wave Java Script Library Default UI v2.0.0 
  *
  * Based on IT Adapter JS Library 2002-2011 
@@ -11,19 +15,23 @@
 
 WAVE.GUI = (function(){
 
-    var undefined = "undefined";
+    var tUNDEFINED = "undefined";
 
     var published = { 
-        UNDEFINED: undefined,
+        TUNDEFINED: tUNDEFINED,
         CLS_TOAST: "wvToast",
         CLS_CURTAIN: "wvCurtain",
         CLS_DIALOG_BASE: "wvDialogBase",
         CLS_DIALOG_TITLE: "wvDialogTitle",
         CLS_DIALOG_CONTENT: "wvDialogContent",
+        CLS_DIALOG_FOOTER: "wvConfirmDialogFooter",
+        CLS_DIALOG_BUTTON: "wvConfirmDialogButton",
 
         DLG_UNDEFINED: '',
         DLG_CANCEL: 'cancel',
         DLG_OK: 'ok',
+        DLG_YES: 'yes',
+        DLG_NO: 'no',
 
         EVT_DIALOG_CLOSE: 'dlg-close',
         EVT_PUZZLE_KEYPAD_CHANGE: 'puzzle-change',
@@ -308,16 +316,17 @@ WAVE.GUI = (function(){
         fToastCount--;
         fClosed = true;
         return true;
-      }
+      };
 
-      self.closed = function() { return fClosed;}
+      self.closed = function() { return fClosed;};
 
       setTimeout(function(){ self.close(); }, duration);
       return self;
-    }
+    };
 
 
     var fCurtains = [];
+    var fCurtainDIV = null;
 
     published.curtainOn = function(){
         var div = document.createElement("div");
@@ -333,30 +342,31 @@ WAVE.GUI = (function(){
         fCurtainDIV = div;
 
         fCurtains.push(div);
-    }
+    };
 
     published.curtainOff = function(){
         if (fCurtains.length===0) return;
         var div = fCurtains[fCurtains.length-1];
-        if (typeof(div.__DIALOG)!==undefined){
+        if (typeof(div.__DIALOG)!==tUNDEFINED){
             div.__DIALOG.cancel();
             return;
         }
                 
         document.body.removeChild(div);
         WAVE.arrayDelete(fCurtains, div);
-    }
+    };
 
-    published.isCurtain = function(){ return fCurtains.length>0;}
+    published.isCurtain = function(){ return fCurtains.length>0;};
 
     //Returns currently active dialog or null
     published.currentDialog = function(){
         for(var i=fCurtains.length-1; i>=0; i--)
-         if (typeof(fCurtains[i].__DIALOG)!==undefined) return fCurtains[i].__DIALOG;
+         if (typeof(fCurtains[i].__DIALOG)!==tUNDEFINED) return fCurtains[i].__DIALOG;
         return null;
-    }
+    };
 
-    //Dialog window:   {title: 'Title', content: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
+    //Dialog window:   
+    //   {title: 'Title', content: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
     published.Dialog = function(init)
     {
         if (!WAVE.isObject(init)) init = {};
@@ -403,16 +413,16 @@ WAVE.GUI = (function(){
           var cx = sw / 2;
           var cy = sh / 2;
 
-          var w = fWidthPct==0 ? fdivBase.offsetWidth : Math.round( sw * (fWidthPct/100)); 
-          var h = fHeightPct==0 ? fdivBase.offsetHeight : Math.round( sh * (fHeightPct/100)); 
+          var w = fWidthPct===0 ? fdivBase.offsetWidth : Math.round( sw * (fWidthPct/100)); 
+          var h = fHeightPct===0 ? fdivBase.offsetHeight : Math.round( sh * (fHeightPct/100)); 
           
           fdivBase.style.left = Math.round(cx - (w / 2)) + "px";
           fdivBase.style.top = Math.round(cy - (h / 2)) + "px";
-          fdivBase.style.width  = fWidthPct==0  ? "auto" : w + "px";
-          fdivBase.style.height = fHeightPct==0 ? "auto" : h + "px";
+          fdivBase.style.width  = fWidthPct===0  ? "auto" : w + "px";
+          fdivBase.style.height = fHeightPct===0 ? "auto" : h + "px";
 
-        //  fdivContent.style.width  = fWidthPct==0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
-          fdivContent.style.height  = fWidthPct==0  ? "auto" :
+        //  fdivContent.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
+          fdivContent.style.height  = fWidthPct===0  ? "auto" :
                                                       h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px";//todo This may need to be put as published.OFFSETY that depends on style
         }
         
@@ -420,12 +430,13 @@ WAVE.GUI = (function(){
         var fResult = published.DLG_UNDEFINED;
 
         //returns dialog result or DLG_UNDEFINED
-        this.result = function(){ return fResult; }
+        this.result = function(){ return fResult; };
 
+        this.setContent = function(content){ fdivContent.innerHTML=content; };
 
         //closes dialog with the specified result and returns the result
         this.close = function(result){
-            if (typeof(result)===undefined) result = published.DLG_CANCEL;
+            if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
             if (fResult!==published.DLG_UNDEFINED) return fResult;
 
             if (!fOnClose(this, result)) return published.DLG_UNDEFINED;//aka CloseQuery
@@ -437,41 +448,41 @@ WAVE.GUI = (function(){
             published.curtainOff();
             this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
             return result;
-        }
+        };
 
         //closes dialog with OK result
-        this.ok = function(){ this.close(published.DLG_OK); }
+        this.ok = function(){ this.close(published.DLG_OK); };
         
         //closes dialog with CANCEL result
-        this.cancel = function(){ this.close(published.DLG_CANCEL); }
+        this.cancel = function(){ this.close(published.DLG_CANCEL); };
 
         //get/set title
         this.title = function(val){
-          if (typeof(val)===undefined || val===null) return fdivTitle.innerHTML;
+          if (typeof(val)===tUNDEFINED || val===null) return fdivTitle.innerHTML;
           fdivTitle.innerHTML = val;
           adjustBounds();
-        }
+        };
 
         //get/set content
         this.content = function(val){
-          if (typeof(val)===undefined || val===null) return fdivContent.innerHTML;
+          if (typeof(val)===tUNDEFINED || val===null) return fdivContent.innerHTML;
           fdivContent.innerHTML = val;
           adjustBounds();
-        }
+        };
 
         //gets/sets width in screen size pct 0..100, where 0 = auto
         this.widthpct = function(val){
-          if (typeof(val)===undefined || val===fWidthPct) return fWidthPct;
+          if (typeof(val)===tUNDEFINED || val===fWidthPct) return fWidthPct;
           fWidthPct = val;
           adjustBounds();
-        }
+        };
 
         //gets/sets height in screen size pct 0..100, where 0 = auto
         this.widthpct = function(val){
-          if (typeof(val)===undefined || val===fHeightPct) return fHeightPct;
+          if (typeof(val)===tUNDEFINED || val===fHeightPct) return fHeightPct;
           fHeightPct = val;
           adjustBounds();
-        }
+        };
 
         adjustBounds();
         
@@ -482,20 +493,69 @@ WAVE.GUI = (function(){
         });
         
         fOnShow(this);
-    }//dialog
+    };//dialog
+    
+    published.showConfirmationDialog = function (title, content, buttons, callback, options) {
+      if (!WAVE.isObject(options)) options = {};
+      if (!WAVE.isArray(buttons)) buttons = [];
 
+      var fContent = WAVE.strDefault(content, 'Please confirm');
+      var btnCls = WAVE.strDefault(options['btnCls']);
+
+      function addButton(parent, caption, onClick) {
+          var btn = document.createElement('button');
+          btn.style.margin = '0 5px';
+          btn.className = published.CLS_DIALOG_BUTTON + ' ' + btnCls;
+          btn.setAttribute('onclick', onClick);
+          btn.innerHTML = caption;
+          parent.appendChild(btn);
+      }
+
+      function nodeToString (node) {
+        var tmpNode = document.createElement("div");
+        tmpNode.appendChild(node.cloneNode(true));
+        var str = tmpNode.innerHTML;
+        tmpNode = node = null; // prevent memory leaks in IE
+        return str;
+      }
+      
+      var dialog = new WAVE.GUI.Dialog(
+        {
+          title: WAVE.strDefault(title, 'Confirmation'), 
+          cls: WAVE.strDefault(options['cls']), 
+          onShow: function(dlg){}, 
+          onClose: callback
+        });
+
+      var fdivFooter = document.createElement('div');
+      fdivFooter.style.textAlign = 'center';
+      fdivFooter.style.padding = '5px 0 0 0';
+      fdivFooter.className = published.CLS_DIALOG_FOOTER;
+      var handler = "WAVE.GUI.currentDialog().close('@result@');";
+      if ($.inArray(WAVE.GUI.DLG_OK, buttons) > -1)
+         addButton(fdivFooter, 'OK', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_OK }));
+      if ($.inArray(WAVE.GUI.DLG_YES, buttons) > -1)
+         addButton(fdivFooter, 'Yes', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_YES }));
+      if ($.inArray(WAVE.GUI.DLG_NO, buttons) > -1)
+         addButton(fdivFooter, 'No', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_NO }));
+      if ($.inArray(WAVE.GUI.DLG_CANCEL, buttons) > -1)
+         addButton(fdivFooter, 'Cancel', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_CANCEL }));
+      
+      dialog.setContent(content + nodeToString(fdivFooter));
+    };
+    
     var fDirty = false;
 
     //gets/sets dirty flag
     published.dirty = function(val){
-      if (typeof(val)===undefined) return fDirty;
+      if (typeof(val)===tUNDEFINED) return fDirty;
       fDirty = val;
-    }
+    };
 
     //Returns true if dirty flag is set or dialog shown
     published.isDirty = function(){
-      return fDirty || published.currentDialog()!=null;
-    }
+      return fDirty || published.currentDialog()!==null;
+    };
     
     //Set to true to bypass check on page unload
     published.SUPPRESS_UNLOAD_CHECK = false;
@@ -510,7 +570,7 @@ WAVE.GUI = (function(){
     //Puzzle keypad class: new PuzzleKeypad({DIV: divPuzzle, Image: '/security/captcha?for=login', Question: 'Your first name spelled backwards'});
     published.PuzzleKeypad = function(init)
     {
-        if (typeof(init)===undefined || init===null || typeof(init.DIV)===undefined || WAVE.strEmpty(init.Image)) throw "PuzzleKeypad.ctor(init.DIV, init.Image)";
+        if (typeof(init)===tUNDEFINED || init===null || typeof(init.DIV)===tUNDEFINED || WAVE.strEmpty(init.Image)) throw "PuzzleKeypad.ctor(init.DIV, init.Image)";
         
         var keypad = this;
         WAVE.extend(keypad, WAVE.EventManager);
@@ -575,27 +635,27 @@ WAVE.GUI = (function(){
         }
 
         //Returns value as an array of points where user clicked
-        this.value = function(){ return fValue;}
+        this.value = function(){ return fValue;};
 
         //Returns value as a JSON array of points where user clicked
-        this.jsonValue = function(){ return JSON.stringify(fValue);}
+        this.jsonValue = function(){ return JSON.stringify(fValue);};
 
         this.help = function(val){
-           if (typeof(val)===undefined) return fHelp;
+           if (typeof(val)===tUNDEFINED) return fHelp;
            if (WAVE.strEmpty(val)) fHelp = PUZZLE_DFLT_HELP;
            else fHelp = val;
            fdivHelp.innerHTML = fHelp;
-        }
+        };
 
         this.question = function(val){
-           if (typeof(val)===undefined) return fQuestion;
+           if (typeof(val)===tUNDEFINED) return fQuestion;
            if (WAVE.strEmpty(val)) fQuestion = "";
            else fQuestion = val;
            fdivQuestion.innerHTML = fQuestion;
-        }
+        };
 
         rebuild();
-    }//keypad
+    };//keypad
 
     // Manages all ruler logic
     var RulerManager = function (cfg) {
@@ -616,7 +676,7 @@ WAVE.GUI = (function(){
       }
 
       function getScopeInfo(scopeName) {
-        return fScopeInfosWlk.wFirst(function(s) { return s.name === scopeName });
+        return fScopeInfosWlk.wFirst(function(s) { return s.name === scopeName; });
       }
 
       function ensureScopeInfo(scopeName, cfg) {
@@ -668,7 +728,7 @@ WAVE.GUI = (function(){
         var cfg = e.cfg;
 
         ensureElementInScope(element, elementCfg, scopeName, scopeCfg, cfg);
-      }
+      };
 
       this.unset = function (e) {
         var element = e.element;
@@ -692,26 +752,26 @@ WAVE.GUI = (function(){
           jElement.unbind("mousemove", onMouseMove);
           WAVE.arrayDelete(fElementInfos, elementInfo);
         }
-      }
+      };
 
       this.setScope = function (scopeName, cfg) {
         ensureScopeInfo(scopeName, cfg);
-      }
+      };
 
       this.mouseMove = function(masterRes, scopeNames) {
-        var scopeInfos = fScopeInfosWlk.wWhere(function(si) { return scopeNames.indexOf(si.name) !== -1}).wToArray();
+        var scopeInfos = fScopeInfosWlk.wWhere(function(si) { return scopeNames.indexOf(si.name) !== -1;}).wToArray();
         moveSlaves(null, scopeInfos, masterRes);
-      }
+      };
 
       this.mouseEnter = function (scopeNames) {
-        var scopeInfos = fScopeInfosWlk.wWhere(function (si) { return scopeNames.indexOf(si.name) !== -1 }).wToArray();
+        var scopeInfos = fScopeInfosWlk.wWhere(function (si) { return scopeNames.indexOf(si.name) !== -1; }).wToArray();
         enterSlaves(null, scopeInfos);
-      }
+      };
 
       this.mouseLeave = function (scopeNames) {
-        var scopeInfos = fScopeInfosWlk.wWhere(function (si) { return scopeNames.indexOf(si.name) !== -1 }).wToArray();
+        var scopeInfos = fScopeInfosWlk.wWhere(function (si) { return scopeNames.indexOf(si.name) !== -1; }).wToArray();
         leaveSlaves(null, scopeInfos);
-      }
+      };
 
       function onMouseMove(e) {
         var el = e.currentTarget;
@@ -724,7 +784,7 @@ WAVE.GUI = (function(){
 
         moveSlaves(el, elementInfo.scopeInfos, masterRes);
 
-        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function(si) { return si.name }).wToArray();
+        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function(si) { return si.name; }).wToArray();
         self.eventInvoke(published.EVT_RULER_MOUSE_MOVE, masterRes, scopeNames);
       }
 
@@ -737,7 +797,7 @@ WAVE.GUI = (function(){
 
         enterSlaves(el, elementInfo.scopeInfos);
 
-        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function (si) { return si.name }).wToArray();
+        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function (si) { return si.name; }).wToArray();
         self.eventInvoke(published.EVT_RULER_MOUSE_ENTER, scopeNames);
       }
 
@@ -750,7 +810,7 @@ WAVE.GUI = (function(){
 
         leaveSlaves(el, elementInfo.scopeInfos);
 
-        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function (si) { return si.name }).wToArray();
+        var scopeNames = WAVE.arrayWalkable(elementInfo.scopeInfos).wSelect(function (si) { return si.name; }).wToArray();
         self.eventInvoke(published.EVT_RULER_MOUSE_LEAVE, scopeNames);
       }
 
@@ -792,7 +852,7 @@ WAVE.GUI = (function(){
 
       //function fireMouseMove(masterRes, scopeNames) { self.eventInvoke(published.EVT_RULER_MOUSE_MOVE, masterRes, scopeNames); }
 
-    }//RulerManager
+    };//RulerManager
 
     var ElementRuler = function(element, cfg) {
       var self = this;
@@ -800,11 +860,11 @@ WAVE.GUI = (function(){
       var fElement = element;
       var fCfg = cfg || {};
       this.cfg = function (val) {
-        if (typeof(val) !== undefined && val !== cfg) {
+        if (typeof(val) !== tUNDEFINED && val !== cfg) {
           fCfg = val;
         }
         return fCfg;
-      }
+      };
 
       var fRulerHintCls = fCfg.hintCls || "wvRulerHint";
       var fRulerSightCls = fCfg.sightCls || "wvRulerSight";
@@ -819,11 +879,11 @@ WAVE.GUI = (function(){
 
       this.onMouseEnter = function(e) {
         ensureMasterElements();
-      }
+      };
 
       this.onMouseLeave = function(e) {
         ensureNoMasterElements();
-      }
+      };
 
       this.onMouseMove = function (e) {
         ensureNoSlaveElements();
@@ -874,7 +934,7 @@ WAVE.GUI = (function(){
         ensureDivsVisibility(e.clientX, e.clientY, r.isInParentRc);
 
         return r;
-      }
+      };
 
           function locateSight(clientX, clientY, parentRc) {
             var left = clientX - fSigntSize;
@@ -947,11 +1007,11 @@ WAVE.GUI = (function(){
 
       this.onScopeMouseEnter = function (scope) {
         ensureSlaveElements();
-      }
+      };
 
       this.onScopeMouseLeave = function (scope) {
         ensureNoSlaveElements();
-      }
+      };
 
       this.onScopeMouseMove = function (e) { // {scope: scopeInfo, masterRes: masterRes, event: e}
         ensureNoMasterElements();
@@ -963,7 +1023,6 @@ WAVE.GUI = (function(){
         var clientY;
 
         var elementRcPoint;
-        var clientX, clientY;
         var slaveIsInParentRc;
         if (fCfg.getSlaveInfo) {
           var slaveInfo = fCfg.getSlaveInfo({ masterRes: e.masterRes });
@@ -985,7 +1044,7 @@ WAVE.GUI = (function(){
         divSlave.style.top = slaveParentRc.top() + "px";
         divSlave.style.height = slaveParentRc.height() + "px";
         divSlave.style.left = clientX + "px";
-      }
+      };
 
       this.getParentRc = function () {
         var parentRc;
@@ -998,7 +1057,7 @@ WAVE.GUI = (function(){
         }
 
         return parentRc;
-      }
+      };
 
       function ensureMasterElements() {
         if (fMasterElementsCreated) return;
@@ -1077,7 +1136,7 @@ WAVE.GUI = (function(){
 
             var penalty = hintSquare - visibleSquare;
 
-            if (penalty == 0) {
+            if (penalty === 0) {
               resultRc = rc;
               break;
             }
@@ -1090,44 +1149,44 @@ WAVE.GUI = (function(){
 
           return resultRc.topLeft();
         }
-    }//ElementRuler
+    };//ElementRuler
 
     var fRulerManager = null;
 
     published.rulerSet = function (e) { // {element: , elementCfg: , scopeName: , scopeCfg: , cfg: {}}
       if (fRulerManager === null) fRulerManager = new RulerManager();
       fRulerManager.set(e);
-    }
+    };
 
     published.rulerUnset = function(e) { // {element: , scope: }}
       if (fRulerManager === null) return;
       fRulerManager.unset(e);
-    }
+    };
 
     published.rulerSetScope = function (scopeName, cfg) { 
       if (fRulerManager === null) fRulerManager = new RulerManager();
       fRulerManager.setScope(scopeName, cfg);
-    }
+    };
 
     published.rulerMouseMove = function(masterRes, scopeNames) {
       if (fRulerManager === null) return;
       fRulerManager.mouseMove(masterRes, scopeNames);
-    }
+    };
 
     published.rulerMouseEnter = function (scopeNames) {
       if (fRulerManager === null) return;
       fRulerManager.mouseEnter(scopeNames);
-    }
+    };
 
     published.rulerMouseLeave = function (scopeNames) {
       if (fRulerManager === null) return;
       fRulerManager.mouseLeave(scopeNames);
-    }
+    };
 
     published.rulerEventBind = function(e, handler) {
       if (fRulerManager === null) fRulerManager = new RulerManager();
       fRulerManager.eventBind(e, handler);
-    }
+    };
 
     // Implements inter-window browser commenication
     published.WindowConnector = function (cfg) {
@@ -1140,7 +1199,7 @@ WAVE.GUI = (function(){
       var fDomain = fWnd.location.protocol + "//" + fWnd.location.host;
 
       var fConnectedWindows = [], fConnectedWindowsWlk = WAVE.arrayWalkable(fConnectedWindows);
-      this.connectedWindows = function () { return WAVE.arrayShallowCopy(fConnectedWindows); }
+      this.connectedWindows = function () { return WAVE.arrayShallowCopy(fConnectedWindows); };
 
       this.openWindow = function (href) {
         var win = window.open(href || window.location.href);
@@ -1148,19 +1207,19 @@ WAVE.GUI = (function(){
           w.Connector.addWindow(win);
         });
         self.addWindow(win);
-      },
+      };
 
       this.closeCurrentWindow = function () {
-        fConnectedWindowsWlk.wEach(function (w) { w.Connector.removeWindow(win); });
-      },
+        fConnectedWindowsWlk.wEach(function (w) { w.Connector.removeWindow(fWnd); });
+      };
 
       this.addWindow = function (e) {
         fConnectedWindows.push(e.window);
-      },
+      };
 
       this.removeWindow = function (w) {
         WAVE.arrayDelete(fConnectedWindows, w);
-      },
+      };
 
       this.callWindowFunc = function (func) { // func is callback of type function(w) { }
         var closedWindows;
@@ -1184,11 +1243,11 @@ WAVE.GUI = (function(){
             });
           });
         }
-      },
+      };
 
       this.logMsg = function (msg) {
         console.log(msg);
-      }
+      };
 
       if (fWnd.opener && fWnd.opener.Connector) {
         self.addWindow(fWnd.opener);
@@ -1200,14 +1259,14 @@ WAVE.GUI = (function(){
           self.addWindow({ window: cw });
         }
       }
-    }//WindowConnector
+    };//WindowConnector
 
     // Ensures that wnd (window by default) has Connector property of type WindowConnector.
     // Call this prior to first call to window.Connector
     published.connectorEnsure = function (wnd) {
       wnd = wnd || window;
       if (!wnd.Connector) wnd.Connector = new published.WindowConnector({ wnd: wnd });
-    }
+    };
 
     var fTreeNodeIDSeed = 0;
 
@@ -1230,53 +1289,53 @@ WAVE.GUI = (function(){
 
                   var fParent = nodeInit.parent || null;
                   if (fParent !== null && fParent.tree() !== tree) throw "Tree.Node.ctor(wrong parent tree)";
-                  this.parent = function() { return fParent; }
+                  this.parent = function() { return fParent; };
 
                   var fDIV;
                   var fExpander;
                   var fDIVContent;
                   var fDIVOwn;
                   var fDIVChildren;
-                  this.__divChildren = function() { return fParent !== null ? fDIVChildren : fTreeDIV; }
+                  this.__divChildren = function() { return fParent !== null ? fDIVChildren : fTreeDIV; };
 
-                  var fID = typeof(nodeInit.id) !== undefined ? nodeInit.id.toString() : fTreeNodeIDSeed.toString();
-                  this.id = function() { return fID };
+                  var fID = typeof(nodeInit.id) !== tUNDEFINED ? nodeInit.id.toString() : fTreeNodeIDSeed.toString();
+                  this.id = function() { return fID; };
 
                           function updateExpansionContent() {
                             if (!fExpander) return;
                             fExpander.innerHTML = fExpanded ? fExpandedContent : fCollapsedContent;
                           }
 
-                  var fExpandedContent = typeof(nodeInit.expandedContent) === undefined ? tree.DEFAULT_NODE_EXPANDED_CONTENT : nodeInit.expandedContent;
+                  var fExpandedContent = typeof(nodeInit.expandedContent) === tUNDEFINED ? tree.DEFAULT_NODE_EXPANDED_CONTENT : nodeInit.expandedContent;
                   this.expandedContent = function(val) {
-                    if (typeof(val) === undefined) return fExpandedContent;
+                    if (typeof(val) === tUNDEFINED) return fExpandedContent;
                     fExpandedContent = val;
                     updateExpansionContent();
-                  }
+                  };
 
-                  var fCollapsedContent = typeof(nodeInit.collapsedContent) === undefined ? tree.DEFAULT_NODE_COLLAPSED_CONTENT : nodeInit.collapsedContent;
+                  var fCollapsedContent = typeof(nodeInit.collapsedContent) === tUNDEFINED ? tree.DEFAULT_NODE_COLLAPSED_CONTENT : nodeInit.collapsedContent;
                   this.collapsedContent = function(val) {
-                    if (typeof(val) === undefined) return fCollapsedContent;
+                    if (typeof(val) === tUNDEFINED) return fCollapsedContent;
                     fCollapsedContent = val;
                     updateExpansionContent();
-                  }
+                  };
 
                   this.path = function() {
                     if (fParent === null) return "";
                     if (fParent === fRootNode) return fID;
                     return fParent.path() + "/" + fID;
-                  }
+                  };
 
                   // returns integer nesting level from root
                   this.level = function() {
                     if (fParent === null) return -1;
                     if (fParent === fRootNode) return 0;
                     return fParent.level() + 1;
-                  }
+                  };
 
                   this.html = function(val) { 
                     if (fParent === null) return null;
-                    if (typeof(val) === undefined) return fDIVOwn.innerHTML;
+                    if (typeof(val) === tUNDEFINED) return fDIVOwn.innerHTML;
 
                     var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, node: node, oldContent: fDIVOwn.innerHTML, newContent: val, abort: false};
                     treeEventInvoke(published.EVT_TREE_NODE_CONTENT, evtArgsBefore);
@@ -1286,20 +1345,20 @@ WAVE.GUI = (function(){
 
                     var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, oldContent: fDIVOwn.innerHTML, newContent: val};
                     treeEventInvoke(published.EVT_TREE_NODE_CONTENT, evtArgsAfter);
-                  }
+                  };
 
                   var fSelectable = nodeInit.selectable !== false;
                   this.selectable = function(val) {
-                    if (typeof(val) === undefined) return fSelectable;
+                    if (typeof(val) === tUNDEFINED) return fSelectable;
                     fSelectable = val;
                     if (fSelected && !val) node.selected(false);
-                  }
+                  };
 
                   var fSelected = nodeInit.selected === true;
                   this.selected = function(val, supressEvents) {
                     if (fTreeSelectionType === published.TREE_SELECTION_NONE) return false;
 
-                    if (typeof(val) === undefined) return fSelected;
+                    if (typeof(val) === tUNDEFINED) return fSelected;
                     if (val === fSelected) return;
 
                     if (fSelectable || (!fSelectable && !val)) {
@@ -1315,73 +1374,73 @@ WAVE.GUI = (function(){
 
                       if (supressEvents !== true) onNodeSelectionChanged(node, val);
                     }
-                  }
+                  };
 
                   this.wvTreeNode = function(val) {
-                    if (typeof(val) === undefined) return fDIV.className;
+                    if (typeof(val) === tUNDEFINED) return fDIV.className;
                     fDIV.className = val;
-                  }
+                  };
 
                   this.wvTreeNodeButton = function(val) {
-                    if (typeof(val) === undefined) return fExpander.className;
+                    if (typeof(val) === tUNDEFINED) return fExpander.className;
                     fExpander.className = val;
-                  }
+                  };
 
                   this.wvTreeNodeContent = function(val) {
-                    if (typeof(val) === undefined) return fDIVContent.className;
+                    if (typeof(val) === tUNDEFINED) return fDIVContent.className;
                     fDIVContent.className = val;
-                  }
+                  };
 
 
                   var fWVTreeNodeButtonExpanded = nodeInit.wvTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded;
                   this.wvTreeNodeButtonExpanded = function(val) {
-                    if (typeof(val) === undefined) return (fWVTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded);
+                    if (typeof(val) === tUNDEFINED) return (fWVTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded);
                     if (val === fWVTreeNodeButtonExpanded) return;
                     fWVTreeNodeButtonExpanded = val;
                     fExpander.className = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
-                  }
+                  };
 
                   var fWVTreeNodeButtonCollapsed = nodeInit.wvTreeNodeButtonCollapsed || fNodeTemplateClsArgs.wvTreeNodeButtonCollapsed;
                   this.wvTreeNodeButtonCollapsed = function(val) {
-                    if (typeof(val) === undefined) return (fWVTreeNodeButtonCollapsed || fNodeTemplateClsArgs.wvTreeNodeButtonCollapsed);
+                    if (typeof(val) === tUNDEFINED) return (fWVTreeNodeButtonCollapsed || fNodeTemplateClsArgs.wvTreeNodeButtonCollapsed);
                     if (val === fWVTreeNodeButtonCollapsed) return;
                     fWVTreeNodeButtonCollapsed = val;
                     fExpander.className = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
-                  }
+                  };
 
 
                   var fWVTreeNodeOwn = nodeInit.wvTreeNodeOwn || fNodeTemplateClsArgs.wvTreeNodeOwn;
                   this.wvTreeNodeOwn = function(val) {
-                    if (typeof(val) === undefined) return (fWVTreeNodeOwn || fNodeTemplateClsArgs.wvTreeNodeOwn);
+                    if (typeof(val) === tUNDEFINED) return (fWVTreeNodeOwn || fNodeTemplateClsArgs.wvTreeNodeOwn);
                     if (val === fWVTreeNodeOwn) return;
                     fWVTreeNodeOwn = val;
                     fDIVOwn.className = fSelected ? node.wvTreeNodeOwnSelected() : node.wvTreeNodeOwn();
-                  }
+                  };
 
                   var fWVTreeNodeOwnSelected = nodeInit.wvTreeNodeOwnSelected || fNodeTemplateClsArgs.wvTreeNodeOwnSelected;
                   this.wvTreeNodeOwnSelected = function(val) {
-                    if (typeof(val) === undefined) return (fWVTreeNodeOwnSelected || fNodeTemplateClsArgs.wvTreeNodeOwnSelected);
+                    if (typeof(val) === tUNDEFINED) return (fWVTreeNodeOwnSelected || fNodeTemplateClsArgs.wvTreeNodeOwnSelected);
                     if (val === fWVTreeNodeOwnSelected) return;
                     fWVTreeNodeOwnSelected = val;
                     fDIVOwn.className = fSelected ? node.wvTreeNodeOwnSelected() : node.wvTreeNodeOwn();
-                  }
+                  };
 
                   this.wvTreeNodeChildren = function(val) {
-                    if (typeof(val) === undefined) return fDIVChildren.className;
+                    if (typeof(val) === tUNDEFINED) return fDIVChildren.className;
                     fDIVChildren.className = val;
-                  }
+                  };
 
                   var fChildrenDisplayVisible = nodeInit.childrenDisplayVisible || fNodeChildrenDisplayVisible;
                   this.childrenDisplayVisible = function(val) {
-                    if (typeof(val) === undefined) return fChildrenDisplayVisible;
+                    if (typeof(val) === tUNDEFINED) return fChildrenDisplayVisible;
                     if (val === fChildrenDisplayVisible) return;
                     fChildrenDisplayVisible = val;
                     if (fExpanded) fDIVChildren.style.display = fChildrenDisplayVisible;
-                  }
+                  };
 
                   var fData = nodeInit.data;
                   this.data = function(val) { 
-                    if (typeof(val) === undefined) return fData;
+                    if (typeof(val) === tUNDEFINED) return fData;
                     if (fData === val) return;
 
                     var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, node: node, oldData: fData, newData: val, abort: false};
@@ -1392,11 +1451,11 @@ WAVE.GUI = (function(){
 
                     var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, oldData: fData, newData: val};
                     treeEventInvoke(published.EVT_TREE_NODE_DATA, evtArgsAfter);
-                  }
+                  };
 
                   var fExpanded = nodeInit.expanded === true;
                   this.expanded = function(val) {
-                    if (typeof(val) === undefined) return fExpanded;
+                    if (typeof(val) === tUNDEFINED) return fExpanded;
                     if (fParent === null) return; // fake root node coudn't be expanded/collapsed
                     if (fExpanded === val) return;
 
@@ -1411,13 +1470,13 @@ WAVE.GUI = (function(){
                       
                     var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, value: val};
                     treeEventInvoke(published.EVT_TREE_NODE_EXPANSION, evtArgsAfter);
-                  }
+                  };
 
                   var fChildren = [];
-                  this.children = function() { return WAVE.arrayShallowCopy(fChildren); }
-                  this.__children = function() { return fChildren; }
+                  this.children = function() { return WAVE.arrayShallowCopy(fChildren); };
+                  this.__children = function() { return fChildren; };
 
-                  this.tree = function() { return tree; }
+                  this.tree = function() { return tree; };
 
                   // public {
 
@@ -1476,19 +1535,19 @@ WAVE.GUI = (function(){
                         if (currentType === 1) return {level: level, nodeNum: nodeNum, node: childrenWalker.current()};
                         if (currentType === 2) return childWalker.current();
                       };
-                    }
+                    };
 
                     var walkable = {getWalker: function() { return new walker(); }, tree: tree};
                     WAVE.extend(walkable, WAVE.Walkable);
                     return walkable;
-                  }
+                  };
 
                   this.getChildIdx = function (id, recursive) {
                     if (!recursive)
                       return WAVE.arrayWalkable(fChildren).wFirstIdx(function (c) { return WAVE.strSame(c.id(), id); });
                     else
                       return node.getDescendants(0).wFirstIdx(function (d) { return WAVE.strSame(d.node.id(), id); });
-                  }
+                  };
 
                   this.getChild = function (id, recursive) {
                     if (!recursive)
@@ -1497,10 +1556,10 @@ WAVE.GUI = (function(){
                       var descendant = node.getDescendants(0).wFirst(function (d) { return WAVE.strSame(d.node.id(), id); });
                       return descendant ? descendant.node : null;
                     }
-                  }
+                  };
 
                   this.navigate = function(path) {
-                    if (typeof(path)===undefined || path===null) return null;
+                    if (typeof(path)===tUNDEFINED || path===null) return null;
 
                     var segments;
                     if (WAVE.isArray(path)) {
@@ -1515,12 +1574,12 @@ WAVE.GUI = (function(){
                     var childrenWalkable = WAVE.arrayWalkable(fChildren);
                     for(var i in segments) {
                       var segment = segments[i];
-                      var node = childrenWalkable.wFirst(function(n) { return n.id() == segment });
+                      node = childrenWalkable.wFirst(function(n) { return n.id() === segment; });
                       if (node===null) return null;
                       childrenWalkable = WAVE.arrayWalkable(node.__children());
                     }
                     return node;
-                  }
+                  };
 
                   // Expands all parent nodes
                   this.unveil = function() {
@@ -1532,10 +1591,10 @@ WAVE.GUI = (function(){
                       if (parentParent !== null) parent.expanded(true);
                       parent = parentParent;
                     }
-                  }
+                  };
 
                   this.addChild = function(childNodeInit) {
-                    if (typeof(childNodeInit) === undefined) childNodeInit = {};
+                    if (typeof(childNodeInit) === tUNDEFINED) childNodeInit = {};
 
                     var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, parentNode: node, childNodeInit: childNodeInit, abort: false};
                     treeEventInvoke(published.EVT_TREE_NODE_ADD, evtArgsBefore);
@@ -1551,13 +1610,13 @@ WAVE.GUI = (function(){
                     treeEventInvoke(published.EVT_TREE_NODE_ADD, evtArgsAfter);
 
                     return childNode;
-                  }
+                  };
 
                   this.__removeChild = function(childNode) {
                     WAVE.arrayDelete(fChildren, childNode);
                     if (fChildren.length === 0 && fParent !== null)
                       fExpander.style.visibility = "hidden";
-                  }
+                  };
 
                   this.remove = function() {
                     if (fParent === null) {
@@ -1574,7 +1633,7 @@ WAVE.GUI = (function(){
 
                     var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, parentNode: fParent, childNode: node};
                     treeEventInvoke(published.EVT_TREE_NODE_REMOVE, evtArgsAfter);
-                  }
+                  };
 
                   this.removeAllChildren = function() {
                     var children = WAVE.arrayShallowCopy(fChildren);
@@ -1582,7 +1641,7 @@ WAVE.GUI = (function(){
                       var child = children[i];
                       child.remove();
                     }
-                  }
+                  };
                   
                   // public }
 
@@ -1623,7 +1682,7 @@ WAVE.GUI = (function(){
                       node.selected(!fSelected);
                     });
 
-                    var exp = nodeInit.expanded == true;
+                    var exp = nodeInit.expanded === true;
                     fExpander = WAVE.id("exp_" + fElmID);
                     fExpander.innerHTML = fExpanded ? fExpandedContent : fCollapsedContent;
                     fExpander.style.visibility = "hidden";
@@ -1635,10 +1694,10 @@ WAVE.GUI = (function(){
                     fDIVChildren.style.display = exp ? fChildrenDisplayVisible : "none";
                   }
 
-                } //Node class 
+                }; //Node class 
 
 
-      if (typeof(init)===undefined || init===null || typeof(init.DIV)===undefined || init.DIV===null) throw "Tree.ctor(init.DIV)";
+      if (typeof(init)===tUNDEFINED || init===null || typeof(init.DIV)===tUNDEFINED || init.DIV===null) throw "Tree.ctor(init.DIV)";
 
       var tree = this;
       WAVE.extend(tree, WAVE.EventManager);
@@ -1662,11 +1721,13 @@ WAVE.GUI = (function(){
 
       var fTreeSelectionType = init.treeSelectionType || published.TREE_SELECTION_NONE;
       this.treeSelectionType = function(val) {
-        if (typeof(fTreeSelectionType) === undefined) return fTreeSelectionType;
+        if (typeof(fTreeSelectionType) === tUNDEFINED) return fTreeSelectionType;
         fTreeSelectionType = val;
-      }
+      };
 
       function onNodeSelectionChanged(node, val) {
+        var evtArgsAfter;
+
         if (fTreeSelectionType === published.TREE_SELECTION_SINGLE) {
           
           if (val === true) {
@@ -1684,18 +1745,18 @@ WAVE.GUI = (function(){
             });
           }
 
-          var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, value: val};
+          evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, value: val};
           treeEventInvoke(published.EVT_TREE_NODE_SELECTION, evtArgsAfter);
 
         } else if (fTreeSelectionType === published.TREE_SELECTION_MULTI) {
-          var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, value: val};
+          evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, value: val};
           treeEventInvoke(published.EVT_TREE_NODE_SELECTION, evtArgsAfter);
         }
       }
 
       this.selectedNodes = function(val) {
-        if (typeof(val) === undefined)
-          return fRootNode.getDescendants().wWhere(function(n) { return n.node.selected() === true});
+        if (typeof(val) === tUNDEFINED)
+          return fRootNode.getDescendants().wWhere(function(n) { return n.node.selected() === true;});
 
         if (val === null) throw "val couldn't be null";
 
@@ -1709,23 +1770,23 @@ WAVE.GUI = (function(){
         }
 
         fRootNode.getDescendants().wEach(function(n) {
-          n.node.selected(selectedWalkable.wAny(function(nodeId){ return nodeId == n.node.id()}), true);
+          n.node.selected(selectedWalkable.wAny(function(nodeId){ return nodeId === n.node.id();}), true);
         });
-      }
+      };
 
       var fSupressEvents = init.supressEvents === true;
       this.supressEvents = function(val) { 
-        if (typeof(val) === undefined) return fSupressEvents;
+        if (typeof(val) === tUNDEFINED) return fSupressEvents;
         fSupressEvents = val;
-      }
+      };
 
       function treeEventInvoke(evt, args) {
         if (!fSupressEvents) tree.eventInvoke(evt, args);
       }
 
       var fRootNode = new Node();
-      this.root = function() { return fRootNode; }
-    }//Tree
+      this.root = function() { return fRootNode; };
+    };//Tree
 
     var fObjectInspectorEditorIDSeed = 0, fObjectInspectorEditorIDPrefix = "objinsp_edit_";
     // Visulalizes object properties hierarchy in editable form
@@ -1740,16 +1801,16 @@ WAVE.GUI = (function(){
 
       var fWVObjectInspectorEditor = cfg.wvObjectInspectorEditor || published.CLS_OBJECTINSPECTOR_EDITOR;
       this.wvObjectInspectorEditor = function (val) {
-        if (typeof (val) === undefined) return fWVObjectInspectorEditor;
+        if (typeof (val) === tUNDEFINED) return fWVObjectInspectorEditor;
         fWVObjectInspectorEditor = val;
-      }
+      };
 
       this.wvTreeNodeButtonExpanded = function (val) {
-        if (typeof (val) === undefined) return (fWVTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded);
+        if (typeof (val) === tUNDEFINED) return (fWVTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded);
         if (val === fWVTreeNodeButtonExpanded) return;
         fWVTreeNodeButtonExpanded = val;
         fExpander.className = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
-      }
+      };
 
       var HTML_EDITOR = '<div class="@cls@">' +
                         '  <label for="@id@">@key@</label>' +
@@ -1758,6 +1819,7 @@ WAVE.GUI = (function(){
 
       function build(troot, oroot, orootpath) {
         var keys = Object.keys(oroot);
+        var cn;
         for (var iKey in keys) {
           var key = keys[iKey];
           var val = oroot[key];
@@ -1769,7 +1831,7 @@ WAVE.GUI = (function(){
               cls: fWVObjectInspectorEditor
             });
 
-            var cn = troot.addChild({ html: html });
+            cn = troot.addChild({ html: html });
             
             var input = WAVE.id(editorID);
             input.objpath = cn.path();
@@ -1782,14 +1844,14 @@ WAVE.GUI = (function(){
               objToEdit[keys[keys.length - 1]] = e.target.value;
             });
           } else { //branch
-            var cn = troot.addChild({ html: key });
+            cn = troot.addChild({ html: key });
             build(cn, val, orootpath ? orootpath + "/" + key : key);
           }
         }
       }
 
       build(fTree.root(), obj, "");
-    }//ObjectInspector
+    };//ObjectInspector
 
 
     // ImageBox {
@@ -1839,14 +1901,14 @@ WAVE.GUI = (function(){
         WAVE.id(ids.divFrameId).style.visibility = val ? "visible" : "hidden";
         ibox.eventInvoke(published.EVT_INTERACTION_CHANGE, "visible", val);
         return val;
-      }
+      };
 
       // private
       function getPos(e) {
         return { 
                  x: (isNaN(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX),
                  y: (isNaN(e.pageY) ? e.originalEvent.touches[0].pageY : e.pageY)
-               }
+               };
       }
 
       function isVerticalOrientation() {
@@ -1859,7 +1921,7 @@ WAVE.GUI = (function(){
         if (!size) {
           var height = imageElement.naturalHeight;
           var width = imageElement.naturalWidth;
-          if (height == 0 || width == 0) {
+          if (height === 0 || width === 0) {
             // get real image's size via temporary Image element.
             // imageElement.natural* is not enough for Safari at startup
             var tmp = new Image();
@@ -1914,10 +1976,10 @@ WAVE.GUI = (function(){
         var naturalWidth = size.width;
         var naturalHeight = size.height;
 
-        var imageHeight = (typeof (thumb.imageHeight) == WAVE.UNDEFINED) || isNaN(thumb.imageHeight) ? naturalHeight : thumb.imageHeight;
-        var imageWidth = (typeof (thumb.imageWidth) == WAVE.UNDEFINED) || isNaN(thumb.imageWidth) ? naturalWidth : thumb.imageWidth;
-        var imageLeft = (typeof (thumb.imageLeft) == WAVE.UNDEFINED) || isNaN(thumb.imageLeft) ? 0 : thumb.imageLeft; 
-        var imageTop = (typeof (thumb.imageTop) == WAVE.UNDEFINED) || isNaN(thumb.imageTop) ? 0 : thumb.imageTop; 
+        var imageHeight = (typeof (thumb.imageHeight) === WAVE.UNDEFINED) || isNaN(thumb.imageHeight) ? naturalHeight : thumb.imageHeight;
+        var imageWidth = (typeof (thumb.imageWidth) === WAVE.UNDEFINED) || isNaN(thumb.imageWidth) ? naturalWidth : thumb.imageWidth;
+        var imageLeft = (typeof (thumb.imageLeft) === WAVE.UNDEFINED) || isNaN(thumb.imageLeft) ? 0 : thumb.imageLeft; 
+        var imageTop = (typeof (thumb.imageTop) === WAVE.UNDEFINED) || isNaN(thumb.imageTop) ? 0 : thumb.imageTop; 
 
         var delta = Math.min(divThumb.clientHeight / imageHeight, divThumb.clientWidth / imageWidth);
 
@@ -2045,13 +2107,13 @@ WAVE.GUI = (function(){
         var canScrollBack;
         var canScrollForth;
         if (isVerticalOrientation()) {
-          scrollBackFactory = function() { return { scrollTop: scrollContainer.scrollTop - thumbsScrollDelta * scrollContainer.clientHeight } };
-          scrollForthFactory = function() { return { scrollTop: scrollContainer.scrollTop + thumbsScrollDelta * scrollContainer.clientHeight } };
+          scrollBackFactory = function() { return { scrollTop: scrollContainer.scrollTop - thumbsScrollDelta * scrollContainer.clientHeight }; };
+          scrollForthFactory = function() { return { scrollTop: scrollContainer.scrollTop + thumbsScrollDelta * scrollContainer.clientHeight }; };
           canScrollBack = function() { return scrollContainer.scrollTop > 0; };
           canScrollForth = function() { return scrollContainer.scrollTop + scrollContainer.clientHeight < scrollContainer.scrollHeight - 1; };
         } else {
-          scrollBackFactory = function() { return { scrollLeft: scrollContainer.scrollLeft - thumbsScrollDelta * scrollContainer.clientWidth } };
-          scrollForthFactory = function() { return { scrollLeft: scrollContainer.scrollLeft + thumbsScrollDelta * scrollContainer.clientWidth } };
+          scrollBackFactory = function() { return { scrollLeft: scrollContainer.scrollLeft - thumbsScrollDelta * scrollContainer.clientWidth }; };
+          scrollForthFactory = function() { return { scrollLeft: scrollContainer.scrollLeft + thumbsScrollDelta * scrollContainer.clientWidth }; };
           canScrollBack = function() { return scrollContainer.scrollLeft > 0; };
           canScrollForth = function() { return scrollContainer.scrollLeft + scrollContainer.clientWidth < scrollContainer.scrollWidth - 1; };
         }
@@ -2213,7 +2275,7 @@ WAVE.GUI = (function(){
     
       function onMouseUp(e) {
         // if thumb navigation in progress
-        if (navTouchStartPosition != null) {
+        if (navTouchStartPosition !== null) {
           refreshNavigation();
           navTouchStartPosition = null;
         }
@@ -2233,7 +2295,7 @@ WAVE.GUI = (function(){
       }
     
       function divThumbsContainerMouseMove(e) {
-        if (navTouchStartPosition != null) {
+        if (navTouchStartPosition !== null) {
           var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
           var delta;
           var pos = getPos(e);
@@ -2254,11 +2316,11 @@ WAVE.GUI = (function(){
       
       var imagesList = init[published.PARAM_IMAGES_LIST];
       var defaultImageSrcKey = init[published.PARAM_DEF_IMG_SRC];
-      var defaultImageSrc = (typeof (defaultImageSrcKey) == WAVE.UNDEFINED) ? 
+      var defaultImageSrc = (typeof (defaultImageSrcKey) === WAVE.UNDEFINED) ? 
                             published.DEFAULT_IMAGE :
                             WAVE.strDefault(imagesList[defaultImageSrcKey], published.DEFAULT_IMAGE);
       var defaultThumbSrcKey = init[published.PARAM_DEF_THUMB_SRC];
-      var defaultThumbSrc = (typeof (defaultThumbSrcKey) == WAVE.UNDEFINED) ? 
+      var defaultThumbSrc = (typeof (defaultThumbSrcKey) === WAVE.UNDEFINED) ? 
                             published.DEFAULT_IMAGE :
                             WAVE.strDefault(imagesList[defaultThumbSrcKey], published.DEFAULT_IMAGE);
       thumbsData = init[published.PARAM_THUMBS];
@@ -2278,7 +2340,7 @@ WAVE.GUI = (function(){
       divThumbsImagesContainer.id = ids.divThumbsImagesContainerId;
       divThumbsImagesContainer.className = published.IBOX_DIV_THUMBSIMAGESCONTAINER;
     
-      if (typeof (thumbsData) != WAVE.UNDEFINED) {
+      if (typeof (thumbsData) !== WAVE.UNDEFINED) {
         for (var i = 0; i < thumbsData.length; ++i) {
           
           var thumb = thumbsData[i];
@@ -2288,11 +2350,11 @@ WAVE.GUI = (function(){
           var imageId = "imgThumbImageId_ibox_" + i + "_" + WAVE.genRndKey(4);
           var title = WAVE.strDefault(thumb[published.PARAM_THUMB_TITLE], "");
           var bigImageSrcKey = thumb[published.PARAM_BIG_IMG_SRC];
-          var bigImageSrc = (typeof (bigImageSrcKey) == WAVE.UNDEFINED) ? 
+          var bigImageSrc = (typeof (bigImageSrcKey) === WAVE.UNDEFINED) ? 
                             published.DEFAULT_IMAGE :
                             WAVE.strDefault(imagesList[bigImageSrcKey], defaultImageSrc);
           var thumbImageSrcKey = thumb[published.PARAM_THUMB_IMG_SRC];
-          var thumbImageSrc = (typeof (thumbImageSrcKey) == WAVE.UNDEFINED) ? 
+          var thumbImageSrc = (typeof (thumbImageSrcKey) === WAVE.UNDEFINED) ? 
                               published.DEFAULT_IMAGE :
                               WAVE.strDefault(imagesList[thumbImageSrcKey], defaultThumbSrc);
           
@@ -2344,7 +2406,7 @@ WAVE.GUI = (function(){
                   divThumbImageStyle: published.STYLE_DIV_THUMB_IMAGE + published.STYLE_DISABLE_MOBILE_HANDLING
                 });
         }
-      };
+      }
     
       // main UI templatization 
 
@@ -2452,12 +2514,12 @@ WAVE.GUI = (function(){
       }
       
       // load thumb images
-      for (var i = 0; i < thumbsData.length; i++) {
-        var thumb = thumbsData[i];
-        fitThumbToContainer(thumb);
-        var thumbImage = WAVE.id(thumb.imageId);
-        $(thumbImage).on("click touchend", thumbClickFactory(thumb.bigImageSrc));
-        loadThumbImage(thumb);
+      for (var j = 0; j < thumbsData.length; j++) {
+        var tmb = thumbsData[j];
+        fitThumbToContainer(tmb);
+        var thumbImage = WAVE.id(tmb.imageId);
+        $(thumbImage).on("click touchend", thumbClickFactory(tmb.bigImageSrc));
+        loadThumbImage(tmb);
       }
 
       // global events
@@ -2474,10 +2536,9 @@ WAVE.GUI = (function(){
 
 WAVE.RecordModel.GUI = (function(){
 
-    var undefined = "undefined";
+    var tUNDEFINED = "undefined";
 
     var published = { 
-        UNDEFINED: undefined,
         CLS_ERROR: 'wvError',
         CLS_REQ: 'wvRequired',
         CLS_MOD: 'wvModified',
@@ -2517,7 +2578,7 @@ WAVE.RecordModel.GUI = (function(){
           var itp;
           var fk = field.kind();
           if (field.password()) itp = "password";
-          else if (fk==WAVE.RecordModel.KIND_SCREENNAME) itp = "text";
+          else if (fk===WAVE.RecordModel.KIND_SCREENNAME) itp = "text";
           else itp = fk;
 
           html+= WAVE.strHTMLTemplate("<input id='@id@' type='@tp@' name='@name@' @disabled@ @maxlength@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
@@ -2546,7 +2607,7 @@ WAVE.RecordModel.GUI = (function(){
             {
                 WAVE.GUI.toast("Wrong value for field '"+this.__fieldView.field().about()+"'. Please re-enter or undo", "error");
                 var self = this;
-                if (fErroredInput==self || fErroredInput==null)
+                if (fErroredInput===self || fErroredInput===null)
                 {
                     fErroredInput = self;
                     setTimeout(function() 
@@ -2602,7 +2663,7 @@ WAVE.RecordModel.GUI = (function(){
             {
                 WAVE.GUI.toast("Wrong value for field '"+this.__fieldView.field().about()+"'. Please re-enter or undo", "error");
                 var self = this;
-                if (fErroredInput==self || fErroredInput==null)
+                if (fErroredInput===self || fErroredInput===null)
                 {
                     fErroredInput = self;
                     setTimeout(function() 
@@ -2668,19 +2729,21 @@ WAVE.RecordModel.GUI = (function(){
           divRoot.innerHTML = html;
            
           //bind events
-          for(var i in Object.keys(dict)){ 
-           var idInput = "rbt"+ids+"_"+i;
-           WAVE.id(idInput).__fieldView = fldView;
+          function rbtChange(evt){
+            var val = evt.target.value;
+            var fld = evt.target.__fieldView.field();
+            if (!fld.readonly()) 
+                fld.value(val, true);//from GUI
+            else
+                rebuildControl(evt.target.__fieldView);
+          }
 
-              $("#"+idInput).change(function(){
-                var val = this.value;
-                var fld = this.__fieldView.field();
-                if (!fld.readonly()) 
-                  fld.value(val, true);//from GUI
-                else
-                  rebuildControl(this.__fieldView);
-              });
-          }           
+          for(var j in Object.keys(dict)){ 
+           var idInp = "rbt"+ids+"_"+j;
+           WAVE.id(idInp).__fieldView = fldView;
+
+           $("#"+idInp).change(rbtChange);
+          }
         }
 
         function buildCheck(fldView){
@@ -2848,17 +2911,17 @@ WAVE.RecordModel.GUI = (function(){
     //Gets the appropriate(for this GUI lib) control type if the one is specified in field schema, or infers one from field definition
     published.getControlType = function(fldView){
       return fldView.getOrInferControlType();
-    }
+    };
 
     //Builds control from scratch
     published.buildFieldViewAnew = function(fldView){
      rebuildControl(fldView);
-    }
+    };
 
     //Updates control in response to underlying bound field change
     published.eventNotifyFieldView = function(fldView, evtName, sender, phase){
       rebuildControl(fldView);
-    }
+    };
 
     return published;
 }());//WAVE.RecordModel.GUI

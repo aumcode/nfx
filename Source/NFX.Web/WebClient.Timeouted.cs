@@ -25,9 +25,9 @@ namespace NFX.Web
 {
   public static partial class WebClient
   {
-
-
-
+          /// <summary>
+          /// Provides WebClient functionality with timeout
+          /// </summary>
           private class WebClientTimeouted : System.Net.WebClient
           {
             public WebClientTimeouted(IWebClientCaller caller)
@@ -47,8 +47,6 @@ namespace NFX.Web
               return w;
             }
           }
-
-
 
   }
 }

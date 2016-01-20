@@ -140,7 +140,7 @@ namespace NFX.Web.Pay.Stripe
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJson(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
 
@@ -212,7 +212,7 @@ namespace NFX.Web.Pay.Stripe
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJson(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           StatCapture(charge, amount);
         }
@@ -274,7 +274,7 @@ namespace NFX.Web.Pay.Stripe
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJson(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           dynamic lastRefund = ((NFX.Serialization.JSON.JSONDataArray)obj.refunds.Data).First();
 
@@ -368,7 +368,7 @@ namespace NFX.Web.Pay.Stripe
             }
           };
 
-          dynamic obj = WebClient.GetJson(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
 
@@ -416,7 +416,7 @@ namespace NFX.Web.Pay.Stripe
           {
             {PRM_NAME, recipientActualAccountData.AccountTitle},
             {PRM_TYPE, recipientActualAccountData.AccountType == AccountType.Corporation ? "corporation" : "individual"},
-            {PRM_EMAIL, recipientActualAccountData.BillingAddress.Email}
+            {PRM_EMAIL, recipientActualAccountData.BillingAddress.EMail}
           };
 
           fillBodyParametersFromAccount(bodyPrms, recipientActualAccountData);
@@ -430,7 +430,7 @@ namespace NFX.Web.Pay.Stripe
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJson(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           return obj.id;
         }
@@ -470,7 +470,7 @@ namespace NFX.Web.Pay.Stripe
             Method = HTTPRequestMethod.DELETE
           };
 
-          dynamic obj = WebClient.GetJson(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           return;
         }

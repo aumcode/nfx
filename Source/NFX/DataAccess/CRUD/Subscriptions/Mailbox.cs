@@ -4,8 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NFX;
+
 namespace NFX.DataAccess.CRUD.Subscriptions
 {
+
+  /// <summary>
+  /// Represents a microsecond interval since UNIX epoch start.
+  /// This struct is used to tag incoming subscription data, so upon re-subscription
+  /// the client may tell the server where to start sync from
+  /// </summary>
+  public struct DataTimeStamp
+  {
+      public DataTimeStamp(long microseconds)
+      {
+        this.Microseconds = microseconds;
+      }
+
+      public readonly long Microseconds;
+
+      public DateTime TimeStampUTC
+      {
+        get{ return Microseconds.FromMicrosecondsSinceUnixEpochStart();}
+      }
+  } 
+
   /// <summary>
   /// Describes row modification
   /// </summary>
@@ -16,16 +39,18 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       /// </summary>
       public enum EventType { RowInsert, RowUpsert, RowUpdate, RowDelete, TableCreate, TableClear, TableDrop }
 
-      public CRUDSubscriptionEvent(EventType type, Schema schema, Row row)
+      public CRUDSubscriptionEvent(EventType type, Schema schema, Row row, DataTimeStamp version)
       {
           Type = type;
           Schema = schema;
           Row = row;
+          Version = version;
       }
 
       public readonly EventType Type;
       public readonly Schema Schema;
       public readonly Row Row;
+      public readonly DataTimeStamp Version;
   }
   
   

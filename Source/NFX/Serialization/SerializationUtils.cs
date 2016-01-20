@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Linq.Expressions;
+using NFX.Serialization.JSON;
 
 namespace NFX.Serialization
 {
@@ -219,6 +220,30 @@ namespace NFX.Serialization
 
             var idxs = new int[rank];
             doDimensionSetValue<T>(arr, idxs, 0, each);
+        }
+
+        /// <summary>
+        /// Navigates through JSON datamap by subsequent node names.
+        /// </summary>
+        /// <returns>
+        /// null if navigation path is not exists. 
+        /// JSONDataMap if navigation ends up with non-leaf node. 
+        /// object if navigation ends up with leaf node.</returns>
+        public static object GetNodeByPath(this JSONDataMap json, params string[] nodeNames)
+        {
+            object node = null;
+            for (int i=0; i<nodeNames.Length; i++)
+            {
+                if (json == null || !json.TryGetValue(nodeNames[i], out node))
+                    return null;
+
+                if (i == nodeNames.Length - 1)
+                    return node;
+
+                json = node as JSONDataMap;
+            }
+
+            return null;
         }
 
 

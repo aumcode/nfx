@@ -60,6 +60,7 @@ namespace NFX.DataAccess.MySQL
             public Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
+                var target = ctx.DataStore.TargetName;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
@@ -89,16 +90,18 @@ namespace NFX.DataAccess.MySQL
                     using (reader)
                     {
                       Schema.FieldDef[] toLoad;
-                      return getSchema(query, reader, out toLoad);
+                      return getSchema(target, query, reader, out toLoad);
                     }//using reader
                 }//using command
             }
 
 
-                        private Schema getSchema(Query query, MySqlDataReader reader, out Schema.FieldDef[] toLoad)
+                        private Schema getSchema(string target, Query query, MySqlDataReader reader, out Schema.FieldDef[] toLoad)
                         {
                           Schema schema;
-                          if (query.ResultRowType!=null)
+                          var rtp = query.ResultRowType;
+
+                          if (rtp != null && typeof(TypedRow).IsAssignableFrom(rtp))
                             schema = Schema.GetForTypedRow(query.ResultRowType);
                           else
                             schema = GetSchemaFromReader(query.Name, m_Source, reader); 
@@ -110,7 +113,7 @@ namespace NFX.DataAccess.MySQL
                             var name = reader.GetName(i);
                             var fdef = schema[name];
                             if (fdef==null) continue;
-                            var attr =  fdef[StringConsts.MYSQL_CRUD_TARGET];
+                            var attr =  fdef[target];
                             if (attr!=null)
                             {
                                 if (attr.StoreFlag!=StoreFlag.LoadAndStore && attr.StoreFlag!=StoreFlag.OnlyLoad) continue;
@@ -130,6 +133,7 @@ namespace NFX.DataAccess.MySQL
             public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
+                var target = ctx.DataStore.TargetName;
 
                 Rowset result = null;
 
@@ -161,7 +165,7 @@ namespace NFX.DataAccess.MySQL
                     using (reader)
                     {
                       Schema.FieldDef[] toLoad;
-                      Schema schema = getSchema(query, reader, out toLoad);
+                      Schema schema = getSchema(target, query, reader, out toLoad);
 
                       result = new Rowset(schema);
                       while(reader.Read())

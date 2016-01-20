@@ -87,6 +87,9 @@ namespace NFX.Erlang.Internal
     /// </summary>
     public ErlMbox Create(ErlAtom name)
     {
+      if (name == ErlAtom.Null)
+        throw new NFXException(StringConsts.ERL_VALUE_MUST_NOT_BE_NULL_ERROR);
+
       var mbox = m_ByName.GetOrAdd(name, n =>
       {
         var pid = m_Node.CreatePid();
@@ -102,16 +105,26 @@ namespace NFX.Erlang.Internal
     /// </summary>
     public ErlMbox Create(bool useCache = true)
     {
-      ErlMbox m;
-      if (useCache && m_Node.MboxFreelist.TryPeek(out m) && (DateTime.UtcNow - m.LastUsed).TotalSeconds > 60)
-        if (m_Node.MboxFreelist.TryDequeue(out m))
+      ErlMbox m = null;
+      ErlPid  pid = ErlPid.Null;
+
+      if (useCache && m_Node.MboxFreelist.TryPeek(out m) &&
+          (DateTime.UtcNow - m.LastUsed).TotalSeconds > 60)
+        while (m_Node.MboxFreelist.TryDequeue(out m))
         {
-          m.Clear();
-          return m;
+          if (m.Disposed || m.DisposeStarted)
+            continue;
+
+          pid = m.Self;
+          break;
         }
 
-      ErlPid pid = m_Node.CreatePid();
-      m = new ErlMbox(m_Node, pid);
+      if (pid == ErlPid.Null)
+      {
+        pid = m_Node.CreatePid();
+        m   = new ErlMbox(m_Node, pid);
+      }
+
       m_ByPid[pid] = m;
       return m;
     }
@@ -153,7 +166,8 @@ namespace NFX.Erlang.Internal
       if (m_ByPid.TryRemove(mbox.Self, out m))
       {
         mbox.LastUsed = DateTime.UtcNow;
-        m_Node.MboxFreelist.Enqueue(m);
+        if (!m.Disposed && !m.DisposeStarted)
+          m_Node.MboxFreelist.Enqueue(m);
       }
     }
 

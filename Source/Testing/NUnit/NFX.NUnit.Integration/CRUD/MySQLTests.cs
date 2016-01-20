@@ -88,6 +88,18 @@ namespace NFX.NUnit.Integration.CRUD
 
 
         [Test]
+        public void ManualDS_QueryInsertQuery_DynamicRow()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.QueryInsertQuery_DynamicRow( store );
+            }   
+        }
+
+
+        [Test]
         public void ManualDS_InsertManyUsingLogChanges_TypedRow()
         {
             using(var store = new MySQLDataStore(getConnectString()))
