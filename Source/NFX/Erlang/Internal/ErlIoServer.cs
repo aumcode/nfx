@@ -49,7 +49,7 @@ namespace NFX.Erlang.Internal
       m_Active = true;
       Node = owner;
       Self = Node.CreateMbox(ConstAtoms.User);
-      m_Thread = new Thread(startIO);
+      m_Thread = new Thread(threadSpin);
       m_Thread.Name = "{0} I/O".Args(owner.NodeName);
       m_Thread.IsBackground = true;
       m_Thread.Start();
@@ -89,7 +89,7 @@ namespace NFX.Erlang.Internal
     private IErlObject ioProcessPutChars(ErlAtom encoding,
         ErlString str, IErlObject replyAs)
     {
-      Node.IoOutput(encoding, str);
+      Node.OnIoOutput(encoding, str);
       return s_ReplyPattern.Subst(
           new ErlVarBind { { RA, replyAs }, { R, ConstAtoms.Ok } });
     }
@@ -103,7 +103,7 @@ namespace NFX.Erlang.Internal
         catch { term = "{0}:{1}({2})".Args(mod, fun, args.ToString(true)); }
       else
         term = "{0}:{1}({2})".Args(mod, fun, args.ToString(true));
-      Node.IoOutput(encoding, new ErlString(term));
+      Node.OnIoOutput(encoding, new ErlString(term));
       return s_ReplyPattern.Subst(
           new ErlVarBind { { RA, replyAs }, { R, ConstAtoms.Ok } });
     }
@@ -156,7 +156,27 @@ namespace NFX.Erlang.Internal
                     }});
     }
 
-    private void startIO(object obj)
+    private void threadSpin()
+    {
+      try
+      {
+        threadSpinCore();
+      }
+      catch(Exception error)
+      {
+        var em = new NFX.Log.Message
+        {
+          Type = Log.MessageType.CatastrophicError,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = GetType().Name + "threadSpin()",
+          Text = "threadSpinCore leaked: " + error.ToMessageWithType(),
+          Exception = error
+        };
+        App.Log.Write(em);
+      }
+    }
+
+    private void threadSpinCore()
     {
       // For Erlang I/O protocol see:
       // http://erlang.org/doc/apps/stdlib/io_protocol.html

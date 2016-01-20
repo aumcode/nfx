@@ -61,6 +61,7 @@ namespace NFX.WinForms.Controls.GridKit
          
          SetStyle(ControlStyles.UserMouse, true);
 
+         base.DoubleBuffered = true;
          
          UpdateStyles();
          
@@ -112,8 +113,8 @@ namespace NFX.WinForms.Controls.GridKit
   
       private string m_ID;
       
-      private HScrollBar m_HScrollBar;
-      private VScrollBar m_VScrollBar;
+      internal HScrollBar m_HScrollBar;
+      internal VScrollBar m_VScrollBar;
       
       internal CellView m_CellView;   
       
@@ -303,29 +304,35 @@ namespace NFX.WinForms.Controls.GridKit
       /// <summary>
       /// Returns a style object for all data cells in the grid 
       /// </summary>
-      [Browsable(false)]
+      //[Browsable(false)]
+      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style Style
       {
         get { return m_Style; }
+        set { m_Style = value; }
       }
       
       /// <summary>
       /// Returns a style object for all header cells in the grid
       /// </summary>
-      [Browsable(false)]
+      //[Browsable(false)]
+      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style HeaderStyle
       {
         get { return m_HeaderStyle; }
+        set { m_HeaderStyle = value; }
       }
       
       
       /// <summary>
       /// Returns a style object for all data cells in the grid which are in selected rows
       /// </summary>
-      [Browsable(false)]
+      //[Browsable(false)]
+      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style SelectedStyle
       {
         get { return m_SelectedStyle; }
+        set { m_SelectedStyle = value; }
       }
       
       
@@ -389,7 +396,7 @@ namespace NFX.WinForms.Controls.GridKit
           dataRowSourceChanged();
         }
       }
-      
+
       /// <summary>
       /// Accesses columns
       /// </summary>

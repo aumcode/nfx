@@ -275,7 +275,7 @@ namespace NFX.Web.Pay.Mock
               foundAccount.BillingCity != fromActualData.BillingAddress.City ||
               foundAccount.BillingPostalCode != fromActualData.BillingAddress.PostalCode ||
               foundAccount.BillingRegion != fromActualData.BillingAddress.Region ||
-              foundAccount.BillingEmail != fromActualData.BillingAddress.Email ||
+              foundAccount.BillingEmail != fromActualData.BillingAddress.EMail ||
               foundAccount.BillingPhone != fromActualData.BillingAddress.Phone)
           {
             StatChargeError();
@@ -374,7 +374,7 @@ namespace NFX.Web.Pay.Mock
                                                 && c.BillingCity != actualAccountData.BillingAddress.City
                                                 && c.BillingPostalCode != actualAccountData.BillingAddress.PostalCode
                                                 && c.BillingRegion != actualAccountData.BillingAddress.Region
-                                                && c.BillingEmail != actualAccountData.BillingAddress.Email
+                                                && c.BillingEmail != actualAccountData.BillingAddress.EMail
                                                 && c.BillingPhone != actualAccountData.BillingAddress.Phone);
 
         if (accountData != null)

@@ -18,8 +18,10 @@
 using System;
 using System.Text;
 using System.Diagnostics;
-
+using System.Linq;
 using NUnit.Framework;
+
+using NFX.Erlang;
 
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.CRUD.Subscriptions;
@@ -62,12 +64,18 @@ namespace NFX.NUnit.Integration.CRUD
     [SetUp]
     public void BeforeTest()
     {
+      var node = new ErlLocalNode("test@localhost", true, false);
+      node.Start();
+      ErlApp.Node = node;
+
       store = new ErlDataStore();
+
       store.RemoteName = REMOTE_NAME;
       store.RemoteCookie = REMOTE_COOKIE;
       store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
       //store.QueryResolver.RegisterHandlerLocation("NFX.NUnit.Integration.CRUD.ErlSpecific, NFX.NUnit.Integration");
       store.Start();
+
       clearAll();
     }
 
@@ -75,6 +83,8 @@ namespace NFX.NUnit.Integration.CRUD
     public void AfterTest()
     {
       DisposableObject.DisposeAndNull(ref store);
+      ErlApp.Node.Dispose();
+      ErlApp.Node = null;
     }
 
     private void clearAll()
@@ -98,6 +108,29 @@ namespace NFX.NUnit.Integration.CRUD
       Assert.IsNotNull(row);
       Assert.AreEqual("You said: Lenin!", row["echoed_msg"]);
       Assert.AreEqual(DateTime.UtcNow.Year, row["ts"].AsDateTime().Year);
+    }
+
+
+    [TestCase(20, 50)]
+    public void ErlConnect(int cnt, int msecDelay)
+    {
+      var qry = new Query("CRUD.Echo")
+        {
+          new Query.Param("Msg", "Lenin!")
+        };
+
+      for(var i=0; i<cnt; i++)
+      {
+        var row = store.LoadOneRow(qry);
+
+        Assert.IsNotNull(row);
+        Assert.AreEqual("You said: Lenin!", row["echoed_msg"]);
+        Assert.AreEqual(DateTime.UtcNow.Year, row["ts"].AsDateTime().Year);
+
+        Console.WriteLine("{0}th iteration is ok".Args(i));
+
+        System.Threading.Thread.Sleep(msecDelay);
+      }
     }
 
 
@@ -247,12 +280,20 @@ namespace NFX.NUnit.Integration.CRUD
       const int CNT = 10;
       const int PERIOD_MS = 250;
 
+      /*
+      ErlApp.Node.TraceLevel = ErlTraceLevel.Send;
+      ErlApp.Node.Trace += (object sender, ErlTraceLevel type, Direction dir, string message) =>
+      {
+        if (message.StartsWith("REGSEND"))
+          Console.WriteLine(message);
+      };
+      */
+        
       var qry = new Query("CRUD.WorldNews")
       {
           new Query.Param("Count",  CNT),
           new Query.Param("Period", PERIOD_MS)
       };
-
 
       var mail = store.OpenMailbox("News");
       mail.BufferCapacity = 100;

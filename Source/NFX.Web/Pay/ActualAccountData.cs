@@ -59,6 +59,8 @@ namespace NFX.Web.Pay
 
     bool IsCard { get; }
 
+    string PrimaryEMail { get; }
+
     IAddress BillingAddress { get; }
 
     IAddress ShippingAddress { get; }
@@ -77,7 +79,7 @@ namespace NFX.Web.Pay
     string Country { get; }
 
     string Phone { get; }
-    string Email { get; }
+    string EMail { get; }
   }
 
   /// <summary>
@@ -99,7 +101,7 @@ namespace NFX.Web.Pay
 
     public string Phone { get; set; }
 
-    public string Email { get; set; }
+    public string EMail { get; set; }
 
     public override bool Equals(object obj)
     {
@@ -107,7 +109,7 @@ namespace NFX.Web.Pay
       if (other == null) return false;
       
       return PostalCode.EqualsIgnoreCase(other.PostalCode)
-        && Phone.EqualsIgnoreCase(other.Phone) && Email.EqualsIgnoreCase(other.Email) 
+        && Phone.EqualsIgnoreCase(other.Phone) && EMail.EqualsIgnoreCase(other.EMail) 
         && Country.EqualsIgnoreCase(other.Country) && City.EqualsIgnoreCase(other.City) && Region.EqualsIgnoreCase(other.Region) 
         && Address1.EqualsIgnoreCase(other.Address1) && Address2.EqualsIgnoreCase(other.Address2);
     }
@@ -119,7 +121,7 @@ namespace NFX.Web.Pay
 
     public override string ToString()
     {
-      return "{0} {1} {3}".Args(City, Address1, PostalCode);
+      return "{0} {1} {2}".Args(City, Address1, PostalCode);
     }
   }
 
@@ -158,6 +160,8 @@ namespace NFX.Web.Pay
 
     public bool IsCard { get { return RoutingNumber.IsNullOrWhiteSpace(); } }
     
+    public string PrimaryEMail { get; set; }
+
     public IAddress BillingAddress 
     { 
       get { return m_BillingAddress.Value; }

@@ -46,7 +46,7 @@ namespace NFX.Erlang.Internal
       m_Active = true;
       Node = owner;
       Self = Node.CreateMbox(ConstAtoms.Rex);
-      m_Thread = new Thread(start);
+      m_Thread = new Thread(threadSpin);
       m_Thread.Name = "{0} RPC".Args(owner.NodeName);
       m_Thread.IsBackground = true;
       m_Thread.Start();
@@ -204,7 +204,28 @@ namespace NFX.Erlang.Internal
       return (IErlObject)null;
     }
 
-    private void start(object obj)
+    private void threadSpin()
+    {
+      try
+      {
+        threadSpinCore();
+      }
+      catch(Exception error)
+      {
+        var em = new NFX.Log.Message
+        {
+          Type = Log.MessageType.CatastrophicError,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = GetType().Name + "threadSpin()",
+          Text = "threadSpinCore leaked: " + error.ToMessageWithType(),
+          Exception = error
+        };
+        App.Log.Write(em);
+      }
+    }
+
+
+    private void threadSpinCore()
     {
       // For Erlang I/O protocol see:
       // http://erlang.org/doc/apps/stdlib/io_protocol.html

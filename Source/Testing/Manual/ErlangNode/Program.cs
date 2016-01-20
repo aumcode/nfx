@@ -68,19 +68,25 @@ namespace ErlangNode
 
             var node = hasConfigFile ? ErlApp.Node : new ErlLocalNode(localNodeName, cookie, true);
 
-            node.OnTrace = (t, l, m) =>
+            node.Trace += (_, t, l, m) =>
                 Console.WriteLine("[TRACE {0}]   {1} {2}", t, l == Direction.Inbound ? "<-" : "->", m);
-            node.OnNodeStatus = (n, up, info) =>
+
+            node.NodeStatusChange += (_, n, up, info) =>
                 Console.WriteLine("<NodeStatus>  Node {0} {1} ({2})", n.Value, up ? "up" : "down", info);
-            node.OnConnectAttempt = (n, dir, info) =>
+
+            node.ConnectAttempt += (_, n, dir, info) =>
                 Console.WriteLine("<ConnAttempt> Node {0}: {1} connection {2}", n, dir.ToString().ToLower(), info);
-            node.OnEpmdFailedConnectAttempt = (n, info) =>
+
+            node.EpmdFailedConnectAttempt += (_, n, info) =>
                 Console.WriteLine("<EmpdFailure> Node {0} Epmd connectivity failure: {1}", n, info);
-            node.OnUnhandledMsg = (c, msg) =>
+            
+            node.UnhandledMsg += (_, c, msg) =>
                 Console.WriteLine("<UnhandMsg>   Node {0} unhandled message from node {1}: {2}", c.LocalNode.NodeName, c.RemoteNode.NodeName, msg);
-            node.OnReadWrite = (c, d, n, tn, tm) =>
+
+            node.ReadWrite += (_, c, d, n, tn, tm) =>
                 Console.WriteLine("<ReadWrite>   {0} {1} bytes (total: {2} bytes, {3} msgs)", d == Direction.Inbound ? "Read" : "Written", n, tn, tm);
-            node.OnIoOutput = (_encoding, output) =>
+
+            node.IoOutput += (_, _encoding, output) =>
                 Console.WriteLine("<I/O output>  ==> Received output: {0}", output);
 
             // Create a named mailbox "test"

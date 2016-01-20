@@ -488,4 +488,51 @@ namespace NFX.DataAccess.CRUD
             return equ;
         }
     }
+
+
+    /// <summary>
+    /// Provides information for unique sequence gen: scope and name
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class UniqueSequenceAttribute : Attribute
+    {
+      public UniqueSequenceAttribute(string scope)
+      { 
+        Scope = scope;
+      }
+
+      public UniqueSequenceAttribute(string scope, string sequence)
+      { 
+        Scope = scope;
+        Sequence = sequence;
+      }
+
+      public readonly string Scope;
+      public readonly string Sequence;
+      
+
+      private static volatile Dictionary<Type, UniqueSequenceAttribute> s_ScopeCache = new Dictionary<Type, UniqueSequenceAttribute>();
+
+      /// <summary>
+      /// Returns UniqueSequenceAttribute or null for row type
+      /// </summary>
+      public static UniqueSequenceAttribute GetForRowType(Type tRow)
+      {
+        if (tRow == null || !typeof(Row).IsAssignableFrom(tRow))
+          throw new CRUDException("{0}: {1} is not Row".Args("GetForRowType", tRow.FullName));
+      
+        UniqueSequenceAttribute result;
+
+        if (s_ScopeCache.TryGetValue(tRow, out result)) return result;
+
+        result = tRow.GetCustomAttributes(typeof(UniqueSequenceAttribute), false)
+                     .FirstOrDefault() as UniqueSequenceAttribute;
+        
+        var dict = new Dictionary<Type, UniqueSequenceAttribute>(s_ScopeCache);
+        dict[tRow] = result;
+        s_ScopeCache = dict; // atomic
+
+        return result;
+      }
+    }
 }

@@ -45,7 +45,7 @@ namespace WinFormsTest
 
         //Application.Run(new PatientForm());
         //Application.Run(new GridForm());
-       //Application.Run(new Form2());
+      // Application.Run(new Form2());
        //Application.Run(new Form1());
       //    Application.Run(new MongoDBForm());
       //    Application.Run(new LogForm());

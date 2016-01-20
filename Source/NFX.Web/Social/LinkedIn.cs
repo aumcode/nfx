@@ -191,7 +191,7 @@ namespace NFX.Web.Social
 
       private string getAccessToken(string code, string redirectURI)
       {
-        dynamic responseObj = WebClient.GetJson(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
+        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
           queryParameters: 
           new Dictionary<string, string>() {
             {ACCESSTOKEN_GRANTTYPE_PARAMNAME, ACCESSTOKEN_GRANTTYPE_PARAMVALUE},

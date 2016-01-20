@@ -38,7 +38,7 @@ namespace NFX.Erlang.Internal
       node.Port = this.m_Port;
 
       publishPort();
-      m_Thread = new Thread(new System.Threading.ThreadStart(Start));
+      m_Thread = new Thread(threadSpin);
       m_Thread.IsBackground = true;
       m_Thread.Name = "acceptor " + node.NodeName;
       m_Thread.Start();
@@ -70,57 +70,7 @@ namespace NFX.Erlang.Internal
 
   #region Public
 
-    public void Start()
-    {
-      TcpClient newsock = null;
-      ErlConnection conn;
-
-      m_Node.NodeStatus(m_Node.NodeName, true, null);
-
-      while (m_Active)
-      {
-        conn = null;
-
-        try
-        {
-          newsock = m_Sock.AcceptTcpClient();
-        }
-        catch (System.Exception e)
-        {
-          m_Node.NodeStatus(m_Node.NodeName, false, e);
-          break;
-        }
-
-        try
-        {
-          conn = new ErlConnection(m_Node, newsock);
-          m_Node.Add(conn);
-        }
-        catch (ErlAuthException e)
-        {
-          m_Node.ConnectAttempt(conn != null ? conn.Name : ErlAtom.Null, Direction.Inbound, e);
-          closeSock(newsock);
-        }
-        catch (ErlException e)
-        {
-          m_Node.ConnectAttempt(conn != null ? conn.Name : ErlAtom.Null, Direction.Inbound, e);
-          closeSock(newsock);
-        }
-        catch (Exception e)
-        {
-          closeSock(newsock);
-          closeSock(m_Sock);
-          m_Node.NodeStatus(m_Node.NodeName, false, e);
-          break;
-        }
-      }
-
-      App.Log.Write(Log.MessageType.Info,
-          StringConsts.ERL_STOPPING_SERVER.Args(m_Node.NodeLongName, "Listener"));
-
-      stop();
-      m_Thread = null;
-    }
+    
 
     public void Stop()
     {
@@ -136,6 +86,78 @@ namespace NFX.Erlang.Internal
   #endregion
 
   #region .pvt
+    private void threadSpin()
+    {
+      try
+      {
+        threadSpinCore();
+      }
+      catch(Exception error)
+      {
+        var em = new NFX.Log.Message
+        {
+          Type = Log.MessageType.CatastrophicError,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = GetType().Name + "threadSpin()",
+          Text = "threadSpinCore leaked: " + error.ToMessageWithType(),
+          Exception = error
+        };
+        App.Log.Write(em);
+      }
+    }
+
+    private void threadSpinCore()
+    {
+      TcpClient newsock = null;
+      ErlConnection conn;
+
+      m_Node.OnNodeStatusChange(m_Node.NodeName, true, null);
+
+      while (m_Active)
+      {
+        conn = null;
+
+        try
+        {
+          newsock = m_Sock.AcceptTcpClient();
+        }
+        catch (System.Exception e)
+        {
+          m_Node.OnNodeStatusChange(m_Node.NodeName, false, e);
+          break;
+        }
+
+        try
+        {
+          conn = new ErlConnection(m_Node, newsock);
+          m_Node.Add(conn);
+        }
+        catch (ErlAuthException e)
+        {
+          m_Node.OnConnectAttempt(conn != null ? conn.Name : ErlAtom.Null, Direction.Inbound, e);
+          closeSock(newsock);
+        }
+        catch (ErlException e)
+        {
+          m_Node.OnConnectAttempt(conn != null ? conn.Name : ErlAtom.Null, Direction.Inbound, e);
+          closeSock(newsock);
+        }
+        catch (Exception e)
+        {
+          closeSock(newsock);
+          closeSock(m_Sock);
+          m_Node.OnNodeStatusChange(m_Node.NodeName, false, e);
+          break;
+        }
+      }
+
+      App.Log.Write(Log.MessageType.Info,
+          StringConsts.ERL_STOPPING_SERVER.Args(m_Node.NodeLongName, "Listener"));
+
+      stop();
+      m_Thread = null;
+    }
+
 
     private void stop()
     {

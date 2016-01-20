@@ -28,7 +28,7 @@ using NFX.RecordModel;
 namespace NFX.WinForms.Views
 {
   /// <summary>
-  /// Defines a panel that auto populates with LiteReordModel's field views
+  /// Defines a panel that auto populates with RecordModel's field views
   /// </summary>
   public class GeneratedRecordView : RecordContextPanel
   {

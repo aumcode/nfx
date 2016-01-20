@@ -26,16 +26,16 @@ using NFX.ApplicationModel;
 
 namespace NFX.Erlang
 {
-  public delegate void NodeStatusCallback(ErlAtom node, bool up, object info);
-  public delegate void ConnAttemptCallback(ErlAtom node, Direction dir, object info);
-  public delegate void UnhandledMsgCallback(ErlConnection conn, ErlMsg msg);
-  public delegate void IoOutputCallback(ErlAtom encoding, IErlObject output);
+  public delegate void NodeStatusChangeEventHandler(ErlLocalNode sender, ErlAtom node, bool up, object info);
+  public delegate void ConnAttemptEventHandler     (ErlLocalNode sender, ErlAtom node, Direction dir, object info);
+  public delegate void UnhandledMsgEventHandler    (ErlLocalNode sender, ErlConnection conn, ErlMsg msg);
+  public delegate void IoOutputEventHandler        (ErlLocalNode sender, ErlAtom encoding, IErlObject output);
+  public delegate void EpmdFailedConnAttemptEventHandler(ErlLocalNode sender, ErlAtom node, object info);
 
   /// <summary>
   /// Delegate called on read/write from socket
   /// </summary>
-  public delegate void ReadWriteCallback(
-      ErlAbstractConnection con, Direction op, int lastBytes, long totalBytes, long totalMsgs);
+  public delegate void ReadWriteEventHandler(ErlLocalNode sender, ErlAbstractConnection con, Direction op, int lastBytes, long totalBytes, long totalMsgs);
 
   public class ErlLocalNode : ErlAbstractNode, IApplicationFinishNotifiable
   {
@@ -107,16 +107,10 @@ namespace NFX.Erlang
 
     private ErlMbox m_GroupLeader;
 
-    private TraceCallback        m_OnTrace;
-    private NodeStatusCallback   m_OnNodeStatus;
-    private ConnAttemptCallback  m_OnConnectAttempt;
-    private UnhandledMsgCallback m_OnUnhandledMsg;
-    private IoOutputCallback     m_OnIoOutput;
-
     /// <summary>
     /// Delegate invoked on read/write from socket
     /// </summary>
-    protected ReadWriteCallback m_OnReadWrite;
+    protected ReadWriteEventHandler m_OnReadWrite;
 
   #endregion
 
@@ -168,15 +162,27 @@ namespace NFX.Erlang
     public ErlTraceLevel TraceLevel { get; set; }
 
     /// <summary>
+    /// Save trace events to log
+    /// </summary>
+    [Config]
+    public bool TraceToLog { get; set; }
+
+    /// <summary>
+    /// Record unhandled msgs to log
+    /// </summary>
+    [Config]
+    public bool LogUnhandledMsgs { get; set; }
+
+    /// <summary>
     /// Trace callback executed if connection tracing is enabled
     /// </summary>
-    public TraceCallback        OnTrace         { set { m_OnTrace = value; } }
-
-    public NodeStatusCallback   OnNodeStatus    { set { m_OnNodeStatus = value; } }
-    public ConnAttemptCallback  OnConnectAttempt{ set { m_OnConnectAttempt = value; } }
-    public UnhandledMsgCallback OnUnhandledMsg  { set { m_OnUnhandledMsg = value; } }
-    public ReadWriteCallback    OnReadWrite     { set { m_OnReadWrite = value; } }
-    public IoOutputCallback     OnIoOutput      { set { m_OnIoOutput = value; } }
+    public event TraceEventHandler              Trace         ;
+    public event NodeStatusChangeEventHandler   NodeStatusChange;
+    public event ConnAttemptEventHandler        ConnectAttempt;
+    public event UnhandledMsgEventHandler       UnhandledMsg  ;
+    public event ReadWriteEventHandler          ReadWrite     ;
+    public event IoOutputEventHandler           IoOutput      ;
+    public event EpmdFailedConnAttemptEventHandler EpmdFailedConnectAttempt;
 
   #endregion
 
@@ -240,7 +246,7 @@ namespace NFX.Erlang
     {
       var res = m_Connections.TryAdd(conn.Name, conn);
       if (res)
-        NodeStatus(conn.Name, true, null);
+        OnNodeStatusChange(conn.Name, true, null);
       return res;
     }
 
@@ -256,24 +262,38 @@ namespace NFX.Erlang
     /// <summary>
     /// Create a new mailbox (emulates spawning a new Pid)
     /// </summary>
-    public ErlMbox CreateMbox() { return m_Mailboxes.Create(); }
+    public ErlMbox CreateMbox() 
+    {
+      CheckServiceActiveOrStarting();
+      return m_Mailboxes.Create(); 
+    }
 
     /// <summary>
     /// Create a new named mailbox (emulates spawning a new Pid)
     /// </summary>
-    public ErlMbox CreateMbox(string name) { return CreateMbox(new ErlAtom(name)); }
+    public ErlMbox CreateMbox(string name) 
+    { 
+      CheckServiceActiveOrStarting();
+      return CreateMbox(new ErlAtom(name)); 
+    }
+
 
     /// <summary>
     /// Create a new named mailbox (emulates spawning a new Pid)
     /// </summary>
-    public ErlMbox CreateMbox(ErlAtom name) { return m_Mailboxes.Create(name); }
+    public ErlMbox CreateMbox(ErlAtom name) 
+    {
+      CheckServiceActiveOrStarting();
+      return m_Mailboxes.Create(name); 
+    }
 
     /// <summary>
     /// Close the given mailbox
     /// </summary>
     public void CloseMbox(ErlMbox mbox)
     {
-      m_Mailboxes.Unregister(mbox);
+      if (m_Mailboxes!=null)
+        m_Mailboxes.Unregister(mbox);
     }
 
     /// <summary>
@@ -445,6 +465,78 @@ namespace NFX.Erlang
       }
     }
 
+
+    protected internal virtual void OnNodeStatusChange(ErlAtom node, bool up, object info)
+    {
+      if (NodeStatusChange != null) NodeStatusChange(this, node, up, info);
+    }
+
+    protected internal virtual void OnConnectAttempt(ErlAtom node, Direction dir, object info)
+    {
+      if (ConnectAttempt != null) ConnectAttempt(this, node, dir, info);
+    }
+
+    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg)
+    {
+      if (UnhandledMsg != null) UnhandledMsg(this, conn, msg);
+      if (LogUnhandledMsgs)
+        App.Log.Write(new NFX.Log.Message
+        {
+          Type = Log.MessageType.TraceErl,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = this.ToString(),
+          Text = "Connection {0} couldn't find mbox for: {1}".Args(conn.Name, msg)
+        });
+    }
+
+    protected internal virtual void OnReadWrite(ErlAbstractConnection conn, Direction dir,
+      int lastBytes, long totalBytes, long totalMsgs)
+    {
+      if (ReadWrite != null) ReadWrite(this, conn, dir, lastBytes, totalBytes, totalMsgs);
+    }
+
+    protected internal virtual void OnIoOutput(ErlAtom encoding, IErlObject output)
+    {
+      if (IoOutput != null) IoOutput(this, encoding, output);
+    }
+
+    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir, Func<string> msgFunc)
+    {
+      if (ErlApp.TraceEnabled(type, TraceLevel))
+      {
+        var msg = msgFunc();
+        OnTraceCore(type, dir, msg);
+      }
+    }
+
+    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg)
+    {
+      if (ErlApp.TraceEnabled(type, TraceLevel))
+      {
+        OnTraceCore(type, dir, msg);
+      }
+    }
+
+    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg)
+    {
+      if (Trace!=null) Trace(this, type, dir, msg);
+      if (TraceToLog && ErlApp.TraceEnabled(type, TraceLevel))
+        App.Log.Write(new NFX.Log.Message
+        {
+          Type  = Log.MessageType.TraceErl,
+          Topic = "{0}.{1}".Args(CoreConsts.ERLANG_TOPIC, type),
+          From  = this.ToString(),
+          Text  = msg
+        });
+    }
+
+    protected internal void OnEpmdFailedConnectAttempt(ErlAtom node, object info)
+    {
+      if (EpmdFailedConnectAttempt != null)
+          EpmdFailedConnectAttempt(this, node, info);
+    }
+
+
   #endregion
 
   #region Internal
@@ -463,7 +555,7 @@ namespace NFX.Erlang
     internal bool Deliver(ErlConnectionException e)
     {
       var fromNode = e.Node;
-      NodeStatus(fromNode, false, e.Message);
+      OnNodeStatusChange(fromNode, false, e.Message);
 
       var conn = Connection(fromNode);
       if (conn != null)
@@ -506,7 +598,7 @@ namespace NFX.Erlang
       if (mbox == null)
         return false;
 
-      Trace(ErlTraceLevel.Send, Direction.Inbound, () =>
+      OnTrace(ErlTraceLevel.Send, Direction.Inbound, () =>
           "{0}{1} got: {2}".Args(
               mbox.Self, mbox.Name.Empty ? string.Empty : " ({0})".Args(mbox.Name.ToString()),
               msg.Msg));
@@ -592,48 +684,9 @@ namespace NFX.Erlang
       return new ErlPort(NodeName, n, m_Creation);
     }
 
-    internal void NodeStatus(ErlAtom node, bool up, object info)
-    {
-      if (m_OnNodeStatus != null)
-        m_OnNodeStatus(node, up, info);
-    }
+    
 
-    internal void ConnectAttempt(ErlAtom node, Direction dir, object info)
-    {
-      if (m_OnConnectAttempt != null)
-        m_OnConnectAttempt(node, dir, info);
-    }
-
-    internal void UnhandledMsg(ErlConnection conn, ErlMsg msg)
-    {
-      if (m_OnUnhandledMsg != null)
-        m_OnUnhandledMsg(conn, msg);
-    }
-
-    internal void ReadWrite(ErlAbstractConnection conn, Direction dir,
-        int lastBytes, long totalBytes, long totalMsgs)
-    {
-      if (m_OnReadWrite != null)
-        m_OnReadWrite(conn, dir, lastBytes, totalBytes, totalMsgs);
-    }
-
-    internal void IoOutput(ErlAtom encoding, IErlObject output)
-    {
-      if (m_OnIoOutput != null)
-        m_OnIoOutput(encoding, output);
-    }
-
-    internal void Trace(ErlTraceLevel type, Direction dir, Func<string> msgFunc)
-    {
-      if (m_OnTrace != null && ErlApp.TraceEnabled(type, TraceLevel))
-        m_OnTrace(type, dir, msgFunc());
-    }
-
-    internal void Trace(ErlTraceLevel type, Direction dir, string msg)
-    {
-      if (m_OnTrace != null && ErlApp.TraceEnabled(type, TraceLevel))
-        m_OnTrace(type, dir, msg);
-    }
+    
 
   #endregion
 

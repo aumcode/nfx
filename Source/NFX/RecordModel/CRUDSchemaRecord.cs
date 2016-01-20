@@ -19,7 +19,7 @@ namespace NFX.RecordModel
     /// </summary>
     public CRUDSchemaRecord(Schema schema, Row row, string targetName = null)
     {
-      if (m_Schema==null)
+      if (schema==null)
         throw new RecordModelException(StringConsts.ARGUMENT_ERROR+GetType().Name+".ctor(schema==null)");
 
       if (row!=null && !row.Schema.IsEquivalentTo(schema))
@@ -51,6 +51,16 @@ namespace NFX.RecordModel
     
     public Row Row{ get{ return m_Row;}}
 
+
+    public Row ToRow()
+    {
+      var result = new DynamicRow(m_Schema);
+      foreach(var field in this.Fields)
+       result[field.FieldName] = field.ValueAsObject;
+
+      return result;
+    }
+
     /// <summary>
     /// Returns target name used for schema attr binding
     /// </summary>
@@ -73,8 +83,12 @@ namespace NFX.RecordModel
          fld.Readonly = false;
          fld.KeyField = atr.Key;
          fld.Note = fdef.Description;
-         //fld.DisplayWidth = ;
+         var fw = atr.MaxLength > 0 ? atr.MaxLength : 12;
          
+         var watr = atr.Metadata.Navigate("$width|$display-width|$displayWidth|$display_width");
+         
+         fld.DisplayWidth = watr.ValueAsInt( fw );
+
          fld.DisplayFormat = atr.DisplayFormat;
          
          {
@@ -94,19 +108,17 @@ namespace NFX.RecordModel
              sfld.Size = (int)atr.MaxLength;
               
              sfld.CharCase = atr.CharCase;
-                                                                 
+
              sfld.FormatRegExp = atr.FormatRegExp;
              sfld.FormatRegExpDescription = atr.FormatDescription;
-
-            
-           }   
+           }
          }
          
          {
            var lfld = fld as LongField;
            if (lfld!=null)
            {
-             lfld.MinMaxChecking = true;
+             lfld.MinMaxChecking = atr.Min!=null || atr.Max!=null;
              if (atr.Min!=null) lfld.MinValue = (long)atr.Min.ToString().AsType(typeof(long));
              if (atr.Max!=null) lfld.MaxValue = (long)atr.Max.ToString().AsType(typeof(long));
            }   
@@ -116,7 +128,7 @@ namespace NFX.RecordModel
            var ifld = fld as IntField;
            if (ifld!=null)
            {
-             ifld.MinMaxChecking = true;
+             ifld.MinMaxChecking = atr.Min!=null || atr.Max!=null;
              if (atr.Min!=null) ifld.MinValue = (int)atr.Min.ToString().AsType(typeof(int));
              if (atr.Max!=null) ifld.MaxValue = (int)atr.Max.ToString().AsType(typeof(int));
            }   
@@ -126,7 +138,7 @@ namespace NFX.RecordModel
            var dfld = fld as DoubleField;
            if (dfld!=null)
            {
-             dfld.MinMaxChecking = true;
+             dfld.MinMaxChecking = atr.Min!=null || atr.Max!=null;
              if (atr.Min!=null) dfld.MinValue = (double)atr.Min.ToString().AsType(typeof(double));
              if (atr.Max!=null) dfld.MaxValue = (double)atr.Max.ToString().AsType(typeof(double));
            }   
@@ -147,6 +159,12 @@ namespace NFX.RecordModel
 
          if (sdv!=null)
          {
+           if (fld is StringField)
+           {
+             ((StringField)fld).DefaultValue = sdv;
+             fld.HasDefaultValue = true;
+           }
+
            if (fld is IntField)
            { 
              int val = 0;
@@ -174,6 +192,8 @@ namespace NFX.RecordModel
              if (fld.HasDefaultValue = Boolean.TryParse(sdv, out val))
               ((BoolField)fld).DefaultValue = val;
            }
+
+           
          }
          fld.Owner = this;//registers field with record
        }
@@ -196,7 +216,14 @@ namespace NFX.RecordModel
       }
       finally
       {
-        EndInit();
+        try
+        {
+          EndInit();
+        }
+        catch(Exception error)
+        {
+          throw new ModelValidationException("Error loadRowData(): {0}\n{1}".Args(error.ToMessageWithType(), this.AllValidationExceptionMessages), error);
+        }
       }
     }
     

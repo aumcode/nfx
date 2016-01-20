@@ -193,6 +193,7 @@ namespace NFX.Wave
 
       private string[] m_Schemes;
       private string[] m_AcceptTypes;
+      private bool     m_AcceptJson;
       private string[] m_ContentTypes;
       private string[] m_Hosts;
       private string[] m_Ports;
@@ -254,6 +255,16 @@ namespace NFX.Wave
       {
         get { return m_AcceptTypes==null ? null : string.Join(",", m_AcceptTypes); } 
         set { m_AcceptTypes = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
+      }
+
+      /// <summary>
+      /// Shortcut to AcceptTypes contaioning application/json
+      /// </summary>
+      [Config]
+      public bool AcceptJson
+      {
+        get{ return m_AcceptJson;}
+        set{ m_AcceptJson = value;}
       }
 
       [Config]
@@ -386,6 +397,11 @@ namespace NFX.Wave
 
       protected virtual bool Check_AcceptTypes(WorkContext work)
       {
+        if (m_AcceptJson)
+        {
+          if (!work.RequestedJSON) return false;
+        }
+
         if (m_AcceptTypes==null) return true;
         var atps = work.Request.AcceptTypes;
         if (atps==null || atps.Length==0) return false;

@@ -39,11 +39,10 @@ namespace NFX.NUnit.OS
             Console.WriteLine( sig );
 
             if (System.Environment.MachineName=="SEXTOD")
-             Assert.AreEqual("5-672C21E7-2950C499BF8DFA68", sig);
+             Assert.AreEqual("9-08CC2E06-DD8F620D34473E5E", sig);
             else
              Assert.Inconclusive("This test can only run on SEXTOD");
         }
-
 
         [TestCase]
         public void Computer_UniqueNetworkSignature()
@@ -53,7 +52,7 @@ namespace NFX.NUnit.OS
             Console.WriteLine( sig );
 
             if (System.Environment.MachineName=="SEXTOD")
-             Assert.AreEqual("5-672C21E7-2950C499BF8DFA68", sig);
+             Assert.AreEqual("9-08CC2E06-DD8F620D34473E5E", sig);
             else
              Assert.Inconclusive("This test can only run on SEXTOD");
         }

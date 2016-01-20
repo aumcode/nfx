@@ -109,13 +109,16 @@
     <Compile Include="ApplicationModel\Volatile\ObjectStoreProvider.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
     <Compile Include="Collections\NamedInterlocked.cs" />
+    <Compile Include="DataAccess\CRUD\CacheParams.cs" />
+    <Compile Include="DataAccess\CRUD\iListReadOnly.cs" />
+    <Compile Include="DataAccess\CRUD\RowEqualityComparer.cs" />
+    <Compile Include="DataUtils.cs" />
     <Compile Include="CoreConsts.cs" />
     <Compile Include="DataAccess\CRUD\CRUDOperationCallContext.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\ICRUDSubscriptionStore.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\Mailbox.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
-    <Compile Include="DataAccess\CRUD\Subscriptions\SynchronizedDataset.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDMailbox.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDQueryExecutionContext.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDScriptQueryHandler.cs" />

@@ -829,11 +829,15 @@ namespace NFX
 
     public const string ERL_DS_RPC_EXEC_ERROR = "ErlDataStore could not execute RPC call '{0}'. Error: {1}";
 
-    public const string ERL_DS_START_REQ_ERROR = "ErlDataStore could not start as required remote and module names are missing";
+    public const string ERL_DS_START_REMOTE_ABSENT_ERROR = "ErlDataStore could not start as required remote name is absent";
+    public const string ERL_DS_START_REMOTE_DUPLICATE_ERROR = "ErlDataStore could not start as remote name '{0}' is already used by another instance. An app may only have one ErlDataStore with the same remote node name";
+
     public const string ERL_DS_QUERY_SCRIPT_PARSE_ERROR       = "ErlDataStore could not parse script query source '{0}'. Error: {1}";
     public const string ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR    = "ErlDataStore could not bind script query source '{0}' as param '{1}' was not found";
 
     public const string ERL_DS_QUERY_SUBSCRIBER_NOT_FOUND_ERROR = "ErlDataStore subscription query must include Subscriber::pid() parameter";
+    public const string ERL_DS_QUERY_TIMESTAMP_NOT_FOUND_ERROR = "ErlDataStore subscription query must include Timestamp::long() parameter";
+    public const string ERL_DS_QUERY_TIMESTAMP_CTX_ABSENT_ERROR = "ErlDataStore subscription Timestamp::long() is absent in context";
     
     public const string ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR     = "ErlSchema name '{0}' is not known in the map set";
     public const string ERL_DS_SCHEMA_MAP_ERL_TYPE_ERROR      = "ErlSchema mapping does not handle '{0}' erl type";

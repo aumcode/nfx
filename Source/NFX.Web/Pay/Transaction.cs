@@ -46,7 +46,7 @@ namespace NFX.Web.Pay
     Refund, 
 
     /// <summary>
-    /// Funds were transfersed between accounts.
+    /// Funds were transfered between accounts.
     /// This mode is usually used to transfer funds between system-internal accounts (i.e. from sales GL account to bank account)
     /// </summary>
     Transfer

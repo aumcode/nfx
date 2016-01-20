@@ -497,8 +497,13 @@
        run("Strings", "strDefault", function(){
            var NONE;
            assertTrue( 'something'===WAVE.strDefault('something')  );
+        log("a");
+        log("On vernul: "+WAVE.strDefault(null));
+
            assertTrue( ''===WAVE.strDefault(null)  );
+        log("b");
            assertTrue( ''===WAVE.strDefault(NONE)  );
+        log("c");
        });
 
        run("Strings", "strDefaultWithDefault", function(NOT_EXISTING){
@@ -2090,7 +2095,7 @@
           assertTrue( 3 === result2.length);
      });
 
-     run("Walker", "wTake", function() {
+     run("Walker", "wTake1", function() {
           var a = [1, 2, 3, 4, 5]; 
 
           var aw = WAVE.arrayWalkable(a);
@@ -2105,7 +2110,7 @@
           assertTrue( a[2] === result[2]);
      });
 
-     run("Walker", "wTake", function() {
+     run("Walker", "wTake2", function() {
           var a = [1, 2, 3, 4, 5]; 
 
           var aw = WAVE.arrayWalkable(a);

@@ -168,5 +168,14 @@ namespace NFX
        return Instance.LocalizedTimeToUniversalTime(local);
      }
 
+
+     /// <summary>
+     /// Returns the current call context user
+     /// </summary>
+     public static Security.User CurrentCallUser
+     {
+       get {return NFX.ApplicationModel.ExecutionContext.Session.User; }
+     }
+
     }
 }

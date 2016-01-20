@@ -47,17 +47,6 @@ namespace NFX
 
     
     /// <summary>
-    /// Casts rowset's rows to the specified type, returning empty enumerable if rowset is null
-    /// </summary>
-    public static IEnumerable<TRow> AsEnumerableOf<TRow>(this RowsetBase rowset) where TRow : Row
-    {
-      if (rowset==null) yield break;
-
-      foreach(var row in rowset)
-       yield return (TRow)row;
-    }
-
-    /// <summary>
     /// Checks the value for null and throws exception if it is.
     /// The method is useful for .ctor call chaining to preclude otherwise anonymous NullReferenceException
     /// </summary>
@@ -507,7 +496,7 @@ namespace NFX
     
     
     /// <summary>
-    /// Returns a MD5 hash of a string represented as hex string
+    /// Returns a MD5 hash of a UTF8 string represented as hex string
     /// </summary>
     public static string ToMD5String(this string input)
     {
@@ -526,7 +515,37 @@ namespace NFX
          return result.ToString();
       }
     }
+
+    /// <summary>
+    /// Returns a MD5 hash of a UTF8 string represented as byte[]
+    /// </summary>
+    public static byte[] ToMD5(this string input)
+    {
+      if (string.IsNullOrEmpty(input)) return new byte[16];
+       
+      using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
+      {
+         return md5.ComputeHash(Encoding.UTF8.GetBytes(input));
+      }
+    }
+
+    /// <summary>
+    /// Returns a MD5 hash of a byte array
+    /// </summary>
+    public static byte[] ToMD5(this byte[] input)
+    {
+      if (input==null) return new byte[16];
+
+      using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
+      {
+         return md5.ComputeHash(input);
+      }
+    }
       
+
+
+
+
     /// <summary>
     /// Returns true when supplied name can be used for XML node naming (node names, attribute names)
     /// </summary>
@@ -954,5 +973,34 @@ namespace NFX
 
       return sb.ToString();
     }
+
+
+    /// <summary>
+    /// Performs URI.ExcapeDataString with additional replacement of " and ' chars with their hex equivalents.
+    /// This method is suitable for escaping client-side intelligent keys that may have single/double quotes
+    /// </summary>
+    public static string EscapeURIDataStringWithQuotes(this string uri)
+    {
+      const string SQ = "%27";
+      const string DQ = "%22";
+      
+      if (uri.IsNullOrWhiteSpace()) return string.Empty;
+
+      var ds = Uri.EscapeDataString(uri);
+      var result = new StringBuilder();
+      for(var i=0; i<ds.Length; i++)
+      {
+        var c = ds[i];
+        if (c=='\'') result.Append(SQ);
+        else 
+        if (c=='"') result.Append(DQ);
+        else
+         result.Append(c);
+      }
+
+      return result.ToString();
+    }
+
+
   }
 }

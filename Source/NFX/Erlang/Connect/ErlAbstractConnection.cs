@@ -91,7 +91,7 @@ namespace NFX.Erlang
       setSockOpts();
       //this.socket.ReceiveTimeout = 5000;
 
-      home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
+      home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
               StringConsts.ERL_CONN_ACCEPT_FROM.Args(
                   IPAddress.Parse(s.Client.RemoteEndPoint.ToString()).ToString(),
                   (s.Client.RemoteEndPoint as IPEndPoint).Port.ToString()));
@@ -248,7 +248,7 @@ namespace NFX.Erlang
         {
           if (m_TcpClient != null)
           {
-            m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, "CLOSE");
+            m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, "CLOSE");
             try { m_TcpClient.Close(); }
             catch { }
             finally { m_TcpClient = null; }
@@ -296,7 +296,7 @@ namespace NFX.Erlang
     internal void Send(ErlMsg msg)
     {
       var ctrl = msg.ToCtrlTuple(SendCookie);
-      sendBuf(ctrl, new ErlOutputStream(msg.Payload));
+      sendBuf(ctrl, msg.Payload==null ? null : new ErlOutputStream(msg.Payload));
     }
 
     internal void Connect()
@@ -324,7 +324,7 @@ namespace NFX.Erlang
       {
         var h = header.InputStream(5).Read(true);
 
-        m_Home.Trace(ErlTraceLevel.Wire, Direction.Outbound, () =>
+        m_Home.OnTrace(ErlTraceLevel.Wire, Direction.Outbound, () =>
         {
           var hb = header.ToBinary();
           return "{0} {1} (header_sz={2}{3})\n   Header: {4}{5}"
@@ -334,10 +334,10 @@ namespace NFX.Erlang
                   payload == null ? string.Empty : "\n   Msg:    {0}".Args(payload.ToBinaryString()));
         });
 
-        m_Home.Trace(ErlTraceLevel.Send, Direction.Outbound, () =>
+        m_Home.OnTrace(ErlTraceLevel.Send, Direction.Outbound, () =>
         {
-          var o = payload.InputStream(0).Read(true);
-          return "{0} {1} {2}".Args(HeaderType(h), h.ToString(), o.ToString());
+          var o = payload == null ? "" : payload.InputStream(0).Read(true).ToString();
+          return "{0} {1} {2}".Args(HeaderType(h), h.ToString(), o);
         });
       }
 
@@ -435,7 +435,7 @@ namespace NFX.Erlang
 
     private void onReadWrite(Direction op, int lastBytes, long totalBytes, long totalMsgs)
     {
-      m_Home.ReadWrite(this, op, lastBytes, totalBytes, totalMsgs);
+      m_Home.OnReadWrite(this, op, lastBytes, totalBytes, totalMsgs);
     }
 
     private void sendBuf(ErlTuple ctrl, ErlOutputStream payload = null)
@@ -493,7 +493,7 @@ namespace NFX.Erlang
         throw new ErlException(StringConsts.ERL_CONN_ACCEPT_ERROR.Args(m_Peer.NodeName.Value), e);
       }
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () => "MD5 ACCEPTED " + m_Peer.Host);
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () => "MD5 ACCEPTED " + m_Peer.Host);
     }
 
     private void doConnect(int port)
@@ -519,7 +519,7 @@ namespace NFX.Erlang
 
         thr.Start();
 
-        m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+        m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
                 "MD5 CONNECT TO {0}:{1}".Args(m_Peer.Host, port));
 
         var untilTime = DateTime.Now.AddMilliseconds(ConnectTimeout);
@@ -530,7 +530,7 @@ namespace NFX.Erlang
         if (!connected) // Timeout
           throw new ErlException(StringConsts.ERL_CONN_TIMEOUT_ERROR.Args(m_Peer.Host, port));
 
-        m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+        m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
                 "MD5 CONNECTED TO {0}:{1}".Args(m_Peer.Host, port));
 
         sendName(m_Peer.DistChoose, ErlAbstractNode.NodeCompatibility.Flags);
@@ -599,7 +599,7 @@ namespace NFX.Erlang
 
       obuf.WriteTo(m_TcpClient.GetStream());
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
           "sendName(flags({0:X2})={1}, dist={2}, local={3}".Args(
               (int)flags, flags, dist, m_Home.AliveName));
     }
@@ -617,7 +617,7 @@ namespace NFX.Erlang
 
       obuf.WriteTo(m_TcpClient.GetStream());
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
           "sendChallenge(flags({0:X2})={1}, dist={2}, challenge={3}, local={4}".Args(
               (int)flags, flags, dist, challenge, m_Home.AliveName));
     }
@@ -671,7 +671,7 @@ namespace NFX.Erlang
 
       m_Peer.SetNodeName(hisname);
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
           "ntype({0})={1}, dist={2}, remote={3}".Args(
               (int)m_Peer.Ntype, m_Peer.Ntype, (int)m_Peer.DistHigh, m_Peer));
     }
@@ -694,7 +694,7 @@ namespace NFX.Erlang
       var hisname = ibuf.ReadBytesAsString((int)ibuf.Length - 11);
       m_Peer.SetNodeName(hisname);
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
           "recvChallenge from={0} challenge={1} local={2}".Args(
               m_Peer.NodeName.Value, challenge, m_Home.NodeName.Value));
 
@@ -710,7 +710,7 @@ namespace NFX.Erlang
       obuf.Write(digest);
       obuf.WriteTo(m_TcpClient.GetStream());
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
               "sendChallengeReply(challenge={0}, digest={1}, local={2}".Args(
                   challenge, hex(digest), m_Home.NodeName.Value));
     }
@@ -742,7 +742,7 @@ namespace NFX.Erlang
             Name, StringConsts.ERL_CONN_HANDSHAKE_FAILED_ERROR.Args(e.Message));
       }
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
           "recvChallengeReply(from={0}, challenge={1}, digest={2}, local={3}".Args(
               m_Peer.NodeName.Value, challenge, hex(her_digest), m_Home.NodeName.Value));
 
@@ -758,7 +758,7 @@ namespace NFX.Erlang
 
       obuf.WriteTo(m_TcpClient.GetStream());
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
           "sendChallengeAck(digest={1}, local={1}".Args(
               hex(digest), m_Home.NodeName.Value));
     }
@@ -788,7 +788,7 @@ namespace NFX.Erlang
             Name, StringConsts.ERL_CONN_HANDSHAKE_FAILED_ERROR.Args(e.Message));
       }
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
           "recvChallengeAck(from={0}, digest={1}, local={2}".Args(
               m_Peer.NodeName.Value, hex(her_digest), m_Home.NodeName.Value));
     }
@@ -802,7 +802,7 @@ namespace NFX.Erlang
 
       obuf.WriteTo(m_TcpClient.GetStream());
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Outbound, () =>
           "sendStatus(status={0}, local={1}".Args(status, m_Home.NodeName.Value));
     }
 
@@ -830,7 +830,7 @@ namespace NFX.Erlang
       if (!string.Equals(status, "ok", StringComparison.InvariantCulture))
         throw new ErlConnectionException(Name, StringConsts.ERL_CONN_WRONG_STATUS_ERROR.Args(status));
 
-      m_Home.Trace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
+      m_Home.OnTrace(ErlTraceLevel.Handshake, Direction.Inbound, () =>
           "sendStatus(status={0}, local={1}".Args(status, m_Home.NodeName.Value));
     }
 

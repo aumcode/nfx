@@ -23,9 +23,12 @@ using System.Threading.Tasks;
 using NFX.Web.Pay;
 using NFX.Web.Pay.Mock;
 using NFX.Web.Pay.Tax;
+using NFX.Web.Pay.Tax.NOP;
 
 namespace NFX.NUnit.Integration.Web.Pay
 {
+  
+
   internal class FakePaySystemHost : IPaySystemHostImplementation
   {
     #region Consts
@@ -42,6 +45,8 @@ namespace NFX.NUnit.Integration.Web.Pay
     public readonly static Account CARD_DEBIT_ACCOUNT_STRIPE_CORRECT_WITH_ADDRESS = new Account("user", 111, 1000004);
     public readonly static Account BANK_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 2000001);
 
+    public readonly static Account PAYPAL_CORRECT_ACCOUNT = new Account("user", 211, 3000001);
+
     #endregion
 
     #region Static
@@ -54,7 +59,18 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #region Accounts hardcoded
 
-    public readonly MockActualAccountData[] MockActualAccountDatas = { 
+    public readonly MockActualAccountData[] MockActualAccountDatas = {
+        new MockActualAccountData() {
+          Account = PAYPAL_CORRECT_ACCOUNT, 
+          AccountData = new AccountData()
+          {
+            FirstName = "Pay",
+            LastName = "Pal",
+            AccountNumber = "paypal-001",
+            BillingEmail = null // is taken from configuration
+          }
+        },
+     
         new MockActualAccountData() {
           Account = CARD_ACCOUNT_STRIPE_CORRECT,
           AccountData = new AccountData()
@@ -274,6 +290,10 @@ namespace NFX.NUnit.Integration.Web.Pay
       public void Configure(Environment.IConfigSectionNode node)
       {
         NFX.Environment.ConfigAttribute.Apply(this, node);
+
+        // get specific pay system information
+        var validPayPalAccound = MockActualAccountDatas.First(a => a.AccountData.AccountNumber == "paypal-001");
+        validPayPalAccound.PrimaryEMail = node.AttrByName("paypal-valid-account").Value;
       }
 
       public string Name { get { return this.GetType().Name; } }

@@ -73,6 +73,7 @@
     <Compile Include="MVC\Attributes.cs" />
     <Compile Include="MVC\Controller.cs" />
     <Compile Include="MVC\Reflection.cs" />
+    <Compile Include="MVC\SessionCSRFCheckAttribute.cs" />
     <Compile Include="Portal.cs" />
     <Compile Include="PortalHub.cs" />
     <Compile Include="Response.cs" />
@@ -102,16 +103,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BUILD_INFO.txt" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.all.min.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.braintree.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.stripe.js" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.data.tests.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\payment.providers.test.html" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.data.tests.js" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.tests.js" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.tests.htm" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.all.min.js" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.default.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.modern.css" />
     <None Include="Templatization\StockContent\Embedded\script\image-box.test.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.js" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js" />
     <None Include="Templatization\StockContent\Embedded\script\wv.objectinspector.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.ruler.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.tree.test.htm" />
@@ -400,9 +404,11 @@ java -jar "$(SolutionDir)lib\closure-compiler\compiler.jar" ^
   --js "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.js" ^
          "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.gui.js" ^
          "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.chart.svg.js" ^
+         "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.braintree.js" ^
+         "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.stripe.js" ^
    --js_output_file "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.all.min.js" ^
    --compilation_level SIMPLE_OPTIMIZATIONS ^
-   --language_in ECMASCRIPT5 &gt; "$(ProjectDir)Templatization\StockContent\Embedded\script\CLOSURE_ERROR_OUT.txt" 2&gt;&amp;1
+   --language_in ECMASCRIPT5_STRICT &gt; "$(ProjectDir)Templatization\StockContent\Embedded\script\CLOSURE_ERROR_OUT.txt" 2&gt;&amp;1
 
 :NO_JAVA
 exit 0</PreBuildEvent>

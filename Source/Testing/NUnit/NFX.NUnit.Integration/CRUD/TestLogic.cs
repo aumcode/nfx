@@ -158,6 +158,36 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
 
+        public static void QueryInsertQuery_DynamicRow(ICRUDDataStore store)
+        {
+            var query = new Query<DynamicRow>("CRUD.Patient.List") { new Query.Param("LN", "%ruman") };
+            var result = store.Load( query );  
+
+            Assert.AreEqual(1, result.Count);
+            var rowset = result[0];
+            Assert.AreEqual(0, rowset.Count);
+                
+            var row = new Patient();
+
+            row.SSN = "999-88-9012";
+            row.First_Name = "Mans";
+            row.Last_Name = "Skolopendruman";
+            row.DOB = new DateTime(1970, 1, 12);
+
+            Assert.IsNull( row.Validate());
+
+            store.Insert(row);   
+
+                      
+            var row2 = store.LoadRow( query );  
+
+            Assert.IsNotNull(row2);
+            Assert.IsInstanceOf<DynamicRow>( row2 );
+            Assert.AreEqual("Mans", row2["First_Name"]);
+            
+        }
+
+
         public static void InsertManyUsingLogChanges_TypedRow(ICRUDDataStore store)
         {
             var rowset = new Rowset( Schema.GetForTypedRow(typeof(Patient)));

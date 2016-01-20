@@ -23,10 +23,46 @@ using NFX.Instrumentation;
 namespace NFX.Web.Pay
 {
   /// <summary>
+  /// Represents a web terminal for pay systems that tokenize sensitive CC data via a call to provider
+  /// so that actual CC numbers never touch our servers in a plain form, instead tokens/nonces are supplied 
+  /// back by the provider tokenizer. This is needed for PCI compliance.
+  /// </summary>
+  public interface IPayWebTerminal
+  {
+    /// <summary>
+    /// References pay system that this terminal services
+    /// </summary>
+    IPaySystem PaySystem { get; }
+
+    /// <summary>
+    /// Returns the names of scripts that should be included in client web page in the order of return.
+    /// </summary>
+    IEnumerable<string> GetIncludeScripts(PaySession session);
+
+    /// <summary>
+    /// Returns client script body that initializes WAVE.Pay by calling WAVE.Pay.init(...) to perform operation 
+    /// against the provider.
+    /// </summary>                                                                     
+    string GetPayInitScript(PaySession session);
+
+    /// <summary>
+    /// Performs necessary conversions (if any) of the token returned by IPayWebTerminal to account
+    /// so it can be used by Charge/Refund methods  
+    /// </summary>
+    Account ConvertWebTerminalTokenToAccount(ITransactionContext context, object token);
+  }
+
+
+  /// <summary>
   /// Describes an entity that can perform pay functions (i.e. charge, transfer)
   /// </summary>
   public interface IPaySystem: INamed
   {
+    // /// <summary>
+    // /// Returns a pay terminal is this payment provider supports it or null
+    // /// </summary>
+    //todo: IPayWebTerminal WebTerminal { get; }
+
     /// <summary>
     /// Config node of params used inside <see cref="StartSession(PayConnectionParameters)"/> method
     /// if PayConnectionParameters parameter is null 
@@ -36,7 +72,12 @@ namespace NFX.Web.Pay
     /// <summary>
     /// Processing fee types, such as: included in amount and surcharged.
     /// </summary>
-    ProcessingFeeKind FeeKind { get; }
+    ProcessingFeeKind ChargeFeeKind { get; }
+               
+    /// <summary>
+    /// Processing fee types, such as: included in amount and surcharged.
+    /// </summary>
+    ProcessingFeeKind TransferFeeKind { get; }
 
     /// <summary>
     /// Returns currency ISOs that are supported by this isntance. The processing of charges/transafers may be done
@@ -73,7 +114,6 @@ namespace NFX.Web.Pay
 
     /// <summary>
     /// Transfers funds from one account to another.
-    /// 
     /// </summary>
     Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null);
 
@@ -93,5 +133,9 @@ namespace NFX.Web.Pay
   /// </summary>
   public interface IPaySystemImplementation: IPaySystem, IConfigurable, IInstrumentable
   {
+    /// <summary>
+    /// Specifies the log level for operations performed by Pay System.
+    /// </summary>
+    NFX.Log.MessageType LogLevel { get; set; }
   }
 }

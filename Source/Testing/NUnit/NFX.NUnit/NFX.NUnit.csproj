@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="AppModel\FinishNotifiablesTests.cs" />
     <Compile Include="AppModel\Pile\CacheTest.cs" />
+    <Compile Include="AppModel\Pile\HighMemoryLoadTest.cs" />
     <Compile Include="AppModel\Pile\PileTest.cs" />
     <Compile Include="AppModel\Pile\TRow.cs" />
     <Compile Include="AppModel\StarterTests.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Media\TagCodes\QR\QREncoderTest.cs" />
     <Compile Include="Media\TagCodes\QR\QRImageRendererTest.cs" />
     <Compile Include="Media\TagCodes\QR\QRMatrixTest.cs" />
+    <Compile Include="NUnitRootSetup.cs" />
     <Compile Include="OS\NetUtilsTest.cs" />
     <Compile Include="Parsing\NatTxtGen.cs" />
     <Compile Include="Security\PuzzleKeypadTests.cs" />

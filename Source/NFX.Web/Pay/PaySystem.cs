@@ -25,6 +25,7 @@ using NFX.Environment;
 using NFX.Financial;
 using NFX.ServiceModel;
 using NFX.ApplicationModel;
+using NFX.Log;
 
 namespace NFX.Web.Pay
 {
@@ -47,6 +48,9 @@ namespace NFX.Web.Pay
       public const string CONFIG_FEE_PCT_ATTR = "fee-pct";
       public const string CONFIG_FEE_TRAN_TYPE_ATTR = "tran-type";
 
+      private const string LOG_TOPIC = "Payment.Processing";
+
+      private const MessageType DEFAULT_LOG_LEVEL = MessageType.Warning;
 
       private static readonly TimeSpan INSTR_INTERVAL = TimeSpan.FromMilliseconds(4015);
 
@@ -177,6 +181,7 @@ namespace NFX.Web.Pay
 
       protected PaySystem(string name, IConfigSectionNode node, object director): base(director)
       {
+        LogLevel = DEFAULT_LOG_LEVEL;
         KeepAlive = true;
         Pipelined = true;
 
@@ -232,9 +237,14 @@ namespace NFX.Web.Pay
 
     #region Public properties
 
-      public virtual ProcessingFeeKind FeeKind 
+      public virtual ProcessingFeeKind ChargeFeeKind 
       { 
         get { return ProcessingFeeKind.IncludedInAmount; } 
+      }
+          
+      public virtual ProcessingFeeKind TransferFeeKind 
+      { 
+        get { return ProcessingFeeKind.Surcharged; } 
       }
 
       public virtual IEnumerable<string> SupportedCurrencies 
@@ -281,6 +291,13 @@ namespace NFX.Web.Pay
       [Config(CONFIG_CURRENCIES_SECTION)]
       public IConfigSectionNode CurrenciesCfg { get; set; }
    
+      /// <summary>
+      /// Specifies the log level for operations performed by Pay System.
+      /// </summary>
+      [Config(Default = DEFAULT_LOG_LEVEL)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_PAY)]
+      public MessageType LogLevel { get; set; }
+
     #endregion
 
     #region Public methods
@@ -401,6 +418,31 @@ namespace NFX.Web.Pay
 
       protected abstract PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection);
 
+      protected Guid Log(MessageType type, 
+                         string from, 
+                         string message, 
+                         Exception error = null, 
+                         Guid? relatedMessageID = null,
+                         string parameters = null)
+      {
+          if (type < LogLevel) return Guid.Empty;
+
+          var logMessage = new Message
+                            {
+                                Topic = LOG_TOPIC,
+                                Text = message ?? string.Empty,
+                                Type = type,
+                                From = "{0}.{1}".Args(this.GetType().Name, from),
+                                Exception = error,
+                                Parameters = parameters
+                            };
+          if (relatedMessageID.HasValue) logMessage.RelatedTo = relatedMessageID.Value;
+
+          App.Log.Write(logMessage);
+
+          return logMessage.Guid;
+      }
+
       #region Stat
 
         protected void StatChargeError()
@@ -453,7 +495,7 @@ namespace NFX.Web.Pay
 
       private void configureCurrencies(IConfigSectionNode paySection)
       {
-        m_Fees = new Dictionary<string, Fee>();
+        m_Fees = new Dictionary<string, Fee>(StringComparer.OrdinalIgnoreCase);
 
         var node = paySection[CONFIG_CURRENCIES_SECTION];
 

@@ -34,14 +34,14 @@ namespace NFX.Erlang
     private static ErlLocalNode s_Node;
 
     /// <summary>
-    /// Global nopde from config
+    /// Global node from config
     /// </summary>
     public static ErlLocalNode Node { get { return s_Node; } internal set { s_Node = value; } }
 
     public static bool TraceEnabled(ErlTraceLevel level, ErlTraceLevel minLevel)
     {
       var lv = (ErlTraceLevel)Math.Max((int)MinTraceLevel, (int)level);
-      return level >= minLevel || (MinTraceLevel != ErlTraceLevel.Off && MinTraceLevel >= minLevel);
+      return minLevel >= level || (MinTraceLevel != ErlTraceLevel.Off && MinTraceLevel >= minLevel);
     }
 
   #region Application Startup (Erlang node)
@@ -53,12 +53,7 @@ namespace NFX.Erlang
     public bool ApplicationStartBreakOnException { get { return true; } }
 
     public void ApplicationStartBeforeInit(IApplication application)
-    { }
-
-    private IConfigSectionNode[] m_RemoteNodes;
-
-    public void ApplicationStartAfterInit(IApplication application)
-    {
+    { 
       s_Node.Start();
 
       foreach (var dn in m_RemoteNodes)
@@ -66,6 +61,13 @@ namespace NFX.Erlang
 
       // Ensure proper cleanup of local node's global state
       application.RegisterAppFinishNotifiable(s_Node);
+    }
+
+    private IConfigSectionNode[] m_RemoteNodes;
+
+    public void ApplicationStartAfterInit(IApplication application)
+    {
+      
     }
 
     public void Configure(IConfigSectionNode node)
@@ -97,7 +99,7 @@ namespace NFX.Erlang
           .Where(n => n.Name.EqualsIgnoreCase(ErlConsts.ERLANG_NODE_SECTION))
           .ToArray();
 
-      var localNodes = nodes.Where(n => n.Value.IndexOf('@') < 0).ToArray();
+      var localNodes = nodes.Where(n => n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool()).ToArray();
       if (localNodes.Length != 1)
         throw new ErlException(StringConsts.ERL_CONFIG_SINGLE_NODE_ERROR, localNodes.Length);
 
@@ -109,7 +111,7 @@ namespace NFX.Erlang
 
       // Configure connections to all remote nodes
 
-      m_RemoteNodes = nodes.Where(n => n.Value.IndexOf('@') != -1).ToArray();
+      m_RemoteNodes = nodes.Where(n => !n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool()).ToArray();
     }
 
   #endregion

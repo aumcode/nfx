@@ -514,7 +514,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
             var req = CreateRequest(HTTPRequestMethod.POST, ContentType.FORM_URL_ENCODED, ApiUrls.Token(), stream);
             var res = SendRequest(req);
 
-            m_AccessToken = res.GetJSON().Data[Metadata.ACCESS_TOKEN];
+            m_AccessToken = res.GetJsonAsDynamic().Data[Metadata.ACCESS_TOKEN];
           }
           catch(System.Net.WebException ex)
           {
@@ -528,7 +528,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
             RefreshAccessToken();
 
           var res = TrySend(method, contentType, uri, body);
-          return res.GetJSON();
+          return res.GetJsonAsDynamic();
         }
 
         private dynamic GetItemInfo(string parentId, Queue<string> queue)

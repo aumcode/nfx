@@ -212,7 +212,7 @@ namespace NFX.DataAccess.Distributed
 
           string sera, sau, sctr;
           var i1 = str.IndexOf(':', 0);
-          if (i1==0 || i1==str.Length-1) return false;
+          if (i1<=0 || i1==str.Length-1) return false;
          
           sera = str.Substring(0, i1);
 

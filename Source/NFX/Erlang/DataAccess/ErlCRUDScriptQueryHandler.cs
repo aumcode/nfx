@@ -23,6 +23,8 @@ namespace NFX.DataAccess.Erlang
        public static readonly IErlObject EXECUTE_SUBSCRIBE_OK_PATTERN = ErlObject.Parse("{ReqID::int(), ok}");
        public static readonly IErlObject EXECUTE_SUBSCRIBE_ERROR_PATTERN = ErlObject.Parse("{ReqID::int(), {error, Code::int(), Msg}}");
 
+       public const int INVALID_SUBSCRIPTION_REQUEST_EXCEPTION = -10;
+
        public static readonly ErlAtom ATOM_ReqID    = new ErlAtom("ReqID");
        public static readonly ErlAtom ATOM_SchemaID = new ErlAtom("SchemaID");
        public static readonly ErlAtom ATOM_Rows     = new ErlAtom("Rows");
@@ -30,6 +32,7 @@ namespace NFX.DataAccess.Erlang
        public static readonly ErlAtom ATOM_Msg      = new ErlAtom("Msg");
 
        public static readonly ErlAtom ATOM_Subscriber = new ErlAtom("Subscriber");
+       public static readonly ErlAtom ATOM_Timestamp = new ErlAtom("Timestamp");
 
     
     //public static readonly IErlObject EXECUTE_OK_PATTERN =
@@ -113,7 +116,7 @@ namespace NFX.DataAccess.Erlang
         // {ReqID, {error, Reason}}
 
         if (response==null)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response==null");
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response timeout");
 
 
         bind = response.Match(EXECUTE_OK_PATTERN);
@@ -153,6 +156,10 @@ namespace NFX.DataAccess.Erlang
       {
         var store = ((ErlCRUDQueryExecutionContext)context).DataStore;
         var mbox = ((ErlCRUDQueryExecutionContext)context).ErlMailBox;
+        var ts = ((ErlCRUDQueryExecutionContext)context).SubscriptionTimestamp;
+
+        if (!ts.HasValue)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TIMESTAMP_CTX_ABSENT_ERROR);
 
         var parsed = prepareQuery(m_Source);
 
@@ -161,6 +168,7 @@ namespace NFX.DataAccess.Erlang
         var bind = new ErlVarBind();
 
         var wass = false;
+        var wast = false;
         foreach(var erlVar in parsed.ArgVars)
         {
            var name = erlVar.Name.Value;
@@ -173,6 +181,14 @@ namespace NFX.DataAccess.Erlang
              continue;
            }
 
+           if (erlVar.Name==ATOM_Timestamp && 
+               erlVar.ValueType==ErlTypeOrder.ErlLong)
+           {
+             bind.Add(ATOM_Timestamp, new ErlLong(ts.Value.Microseconds));
+             wast = true;
+             continue;
+           }
+
            var clrPar = query[name];
            if (clrPar==null)
             throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR.Args(parsed.Source, name));
@@ -182,6 +198,9 @@ namespace NFX.DataAccess.Erlang
 
         if (!wass)
           throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_SUBSCRIBER_NOT_FOUND_ERROR);
+        if (!wast)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TIMESTAMP_NOT_FOUND_ERROR);
+
 
         var request = parsed.ArgTerm.Subst(bind);
 
@@ -199,7 +218,7 @@ namespace NFX.DataAccess.Erlang
         var response = rawResp as ErlTuple; 
 
         // {ReqID, {ok, SchemaID, [{row},{row}...]}}
-        // {ReqID, {error, Reason}}
+        // {ReqID, {ReqID::int(), {error, Code::int(), Msg}}}
 
         if (response==null)
           throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response==null");
@@ -212,7 +231,15 @@ namespace NFX.DataAccess.Erlang
           if (bind==null || bind[ATOM_ReqID].ValueAsLong != reqID)
             throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response wrong error");
 
-          throw new ErlDataAccessException("Remote error code {0}. Message: '{1}'".Args(bind[ATOM_Code], bind[ATOM_Msg]));
+          var ecode = bind[ATOM_Code].ValueAsInt;
+          var emsg  = bind[ATOM_Msg].ToString();
+
+          Exception error = new ErlDataAccessException("Remote error code {0}. Message: '{1}'".Args(ecode, emsg));
+
+          if (ecode==INVALID_SUBSCRIPTION_REQUEST_EXCEPTION)
+           error = new NFX.DataAccess.CRUD.Subscriptions.InvalidSubscriptionRequestException(emsg, error);
+
+          throw error;
         }
 
         if (bind[ATOM_ReqID].ValueAsLong != reqID)

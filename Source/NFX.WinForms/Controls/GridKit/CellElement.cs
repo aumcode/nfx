@@ -329,19 +329,21 @@ namespace NFX.WinForms.Controls.GridKit
          base.OnMouseDrag(e);
          if (m_Grid.m_RepositioningColumn==null) return;
          
-           var rect = DisplayRegion;
-           rect.Offset(e.X - m_GrabX, 0);
-           rect.Y = 1;
-           rect.Height = m_Host.Height -1;
-           invert();
-           m_InvertRect = m_Host.RectangleToScreen(rect);
-           ControlPaint.FillReversibleRectangle(m_InvertRect, Color.Beige);
+         var rect = DisplayRegion;
+         rect.Offset(e.X - m_GrabX, 0);
+         rect.X = Math.Max(0, rect.X);
+         rect.X = Math.Min(m_Grid.CellView.Right - (int)(m_Grid.m_RepositioningColumn.Width * m_Host.Zoom), rect.X);
+         rect.Y = 1;
+         rect.Height = m_Host.Height -1;
+         invert();
+         m_InvertRect = m_Host.RectangleToScreen(rect);
+         ControlPaint.FillReversibleRectangle(m_InvertRect, Color.Beige);
        }
        
        protected internal override void OnMouseDragRelease(MouseEventArgs e)
        {
          base.OnMouseDragRelease(e);
-         
+         m_InvertRect = new Rectangle();
          if (m_Grid.m_RepositioningColumn!=null)
          {
            m_Grid.m_RepositioningColumn = null;
@@ -350,9 +352,13 @@ namespace NFX.WinForms.Controls.GridKit
            {
              m_Column.RepositionTo(elm.m_Column);
            }
+           else if (e.X >= m_Host.Elements.Where(c => c is ColumnResizeElement).Max(c => c.DisplayRegion.X + c.DisplayRegion.Width))
+             m_Column.RepositionTo(m_Grid.Columns.LastOrDefault());
+           else if (e.X <= 0)
+             m_Column.RepositionTo(m_Grid.Columns.FirstOrDefault());
            else
-            invert();
-           
+             invert();
+           m_Grid.CellView.Invalidate();
          }
        }
        

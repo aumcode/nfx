@@ -52,7 +52,7 @@ namespace NFX.IO.FileSystem.GoogleDrive
       }
     }
 
-    public static dynamic GetJSON(this HttpWebResponse res)
+    public static dynamic GetJsonAsDynamic(this HttpWebResponse res)
     {
       var str = res.GetString();
       return str.IsNotNullOrEmpty() ? str.JSONToDynamic() : null;

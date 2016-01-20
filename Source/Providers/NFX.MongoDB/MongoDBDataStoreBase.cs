@@ -199,6 +199,7 @@ namespace NFX.DataAccess.MongoDB
       /// </summary>
       protected Database GetDatabase()
       {
+        //cstring may either have server cs, or contain laconic config  mongo{server='' database=''}
         var cstring = m_ConnectString;
         var dbn = m_DatabaseName;
         
@@ -210,6 +211,22 @@ namespace NFX.DataAccess.MongoDB
           if (ctx.DatabaseName.IsNotNullOrWhiteSpace()) dbn = ctx.DatabaseName;
         }
 
+        //2. try to parse as laconic
+        var lactxt = cstring;
+        if (lactxt!=null)
+        { 
+          lactxt = lactxt.Trim();
+          if (lactxt.StartsWith("mongo{"))//quick reject filter
+          {
+            var root = lactxt.AsLaconicConfig();
+            if (root!=null)
+            {
+              cstring = root.AttrByName("server").Value;
+              if (dbn.IsNullOrWhiteSpace())
+                dbn = root.AttrByName("db").Value;
+            }
+          }
+        }
         
         var server = MongoClient.Instance[ new NFX.Glue.Node(cstring)];
         var database = server[dbn];

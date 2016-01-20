@@ -51,17 +51,15 @@ namespace NFX.Web.Pay
     /// </summary>
     IActualAccountData AccountToActualData(ITransactionContext context, Account account);
 
-
     /// <summary>
     /// Currency market
     /// </summary>
     ICurrencyMarket CurrencyMarket { get; }
 
-
     /// <summary>
     /// Returns tax calculation logic
     /// </summary>
-    ITaxCalculator TaxCalc{ get;}
+    ITaxCalculator TaxCalc { get; }
   }
 
   /// <summary>

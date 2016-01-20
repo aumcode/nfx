@@ -59,8 +59,9 @@ namespace NFX.Erlang
   /// <summary>
   /// Debugging delegate called to be able to record transport-related events
   /// </summary>
+  /// <param name="sender">Event sender</param>
   /// <param name="type">Type of trace event</param>
   /// <param name="dir">Event direction (in/out-bound)</param>
   /// <param name="message">Event detail</param>
-  public delegate void TraceCallback(ErlTraceLevel type, Direction dir, string message);
+  public delegate void TraceEventHandler(object sender, ErlTraceLevel type, Direction dir, string message);
 }

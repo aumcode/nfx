@@ -1159,7 +1159,7 @@ namespace NFX.Environment
         ///  [int] for access to subsection or attribute by index,
         ///  section[value] for access using value comparison of named section,
         ///  section[attr=value] for access using value of sections named attr
-        /// Multiple paths may be coalesced using '|' or ';' 
+        /// Multiple paths may be coalesed using '|' or ';' 
         /// </param>
         /// <example>
         ///     Navigate("/vars/[3]"); Navigate("/tables/table[resident]"); Navigate("/vars/var1/$[2]");  Navigate("/tables/table[name=patient]");

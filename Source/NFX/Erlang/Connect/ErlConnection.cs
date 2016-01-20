@@ -34,7 +34,7 @@ namespace NFX.Erlang
 
     private void _ctor(string threadName)
     {
-      m_Thread = new Thread(new ThreadStart(start));
+      m_Thread = new Thread(threadSpin);
       m_Thread.IsBackground = true;
       m_Thread.Name = threadName;
       m_Thread.Start();
@@ -121,14 +121,34 @@ namespace NFX.Erlang
     protected override void Deliver(ErlMsg msg)
     {
       if (!m_Home.Deliver(msg))
-        m_Home.UnhandledMsg(this, msg);
+        m_Home.OnUnhandledMsg(this, msg);
     }
 
   #endregion
 
   #region .pvt
 
-    private void start()
+    private void threadSpin()
+    {
+      try
+      {
+        threadSpinCore();
+      }
+      catch(Exception error)
+      {
+        var em = new NFX.Log.Message
+        {
+          Type = Log.MessageType.CatastrophicError,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = GetType().Name + "threadSpin()",
+          Text = "threadSpinCore leaked: " + error.ToMessageWithType(),
+          Exception = error
+        };
+        App.Log.Write(em);
+      }
+    }
+
+    private void threadSpinCore()
     {
       if (!m_Connected)
       {
@@ -220,7 +240,7 @@ namespace NFX.Erlang
                     m_CookieOk = true;
                   }
 
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                   {
                     long mark = ibuf.Position;
                     var traceobj = ibuf.Read(true);
@@ -255,7 +275,7 @@ namespace NFX.Erlang
                     m_CookieOk = true;
                   }
 
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                   {
                     long mark = ibuf.Position;
                     var traceobj = ibuf.Read(true);
@@ -278,7 +298,7 @@ namespace NFX.Erlang
                   if (!(head[3] is ErlAtom))
                     goto receive_loop_brk;
 
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                       "{0} {1}".Args(HeaderType(head), head.ToString()));
 
                   var from = (ErlPid)head[1];
@@ -296,7 +316,7 @@ namespace NFX.Erlang
                   if (!(head[4] is ErlAtom))
                     goto receive_loop_brk;
 
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                           "{0} {1}".Args(HeaderType(head), head.ToString()));
                   // TODO: print TraceToken
 
@@ -312,7 +332,7 @@ namespace NFX.Erlang
               case ErlMsg.Tag.Unlink:
                 {
                   // {UNLINK, FromPid, ToPid}
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                       "{0} {1}".Args(HeaderType(head), head.ToString()));
 
                   var from = (ErlPid)head[1];
@@ -327,7 +347,7 @@ namespace NFX.Erlang
                   // No idea what to do with these, so we ignore them...
                   // {GROUP_LEADER, FromPid, ToPid},  { NODELINK }
                   // (just show trace)
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                       "{0} {1}".Args(HeaderType(head), head.ToString()));
                   break;
                 }
@@ -336,7 +356,7 @@ namespace NFX.Erlang
                 {
                   // {MONITOR_P, FromPid, ToProc, Ref}
                   // {DEMONITOR_P, FromPid, ToProc, Ref}
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                       "{0} {1}".Args(HeaderType(head), head.ToString()));
                   var from = (ErlPid)head[1];
                   var to = (ErlPid)head[2];
@@ -348,7 +368,7 @@ namespace NFX.Erlang
               case ErlMsg.Tag.MonitorPexit:
                 {
                   // {MONITOR_P_EXIT, FromPid, ToProc, Ref, Reason}
-                  m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                  m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                       "{0} {1}".Args(HeaderType(head), head.ToString()));
                   var from = (ErlPid)head[1];
                   var to = (ErlPid)head[2];
@@ -360,7 +380,7 @@ namespace NFX.Erlang
                 }
               default:
                 // garbage?
-                m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+                m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
                     StringConsts.ERL_CONN_UNKNOWN_TAG_ERROR.Args(
                         HeaderType(head), head.ToString()));
                 goto receive_loop_brk;
@@ -369,7 +389,7 @@ namespace NFX.Erlang
           catch (Exception e)
           {
             // we have received garbage
-            m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, e.ToString());
+            m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, e.ToString());
             Deliver(new ErlBadDataException(
                 Name, /* "Remote has closed connection or sending garbage: " + */
                 e.Message));
@@ -385,12 +405,12 @@ namespace NFX.Erlang
       }
       catch (ErlAuthException e)
       {
-        m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () => e.ToString());
+        m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () => e.ToString());
         Deliver(e);
       }
       catch (Exception e)
       {
-        m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () => e.ToString());
+        m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () => e.ToString());
         Deliver(new ErlConnectionException(
             Name, /* "Remote has closed connection or sending garbage: " + */
             e.Message));
@@ -399,7 +419,7 @@ namespace NFX.Erlang
       {
         m_Thread = null;
         Close();
-        m_Home.Trace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
+        m_Home.OnTrace(ErlTraceLevel.Ctrl, Direction.Inbound, () =>
             "Exiting connection (thread {0})".Args(Thread.CurrentThread.Name));
       }
     }

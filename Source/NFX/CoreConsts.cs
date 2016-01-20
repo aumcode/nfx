@@ -38,6 +38,7 @@ namespace NFX
       public const string EXT_PARAM_GROUP_LOG = "log";
       public const string EXT_PARAM_GROUP_TIME = "time";
       public const string EXT_PARAM_GROUP_PAY = "pay"; 
+      public const string EXT_PARAM_GROUP_TAX = "tax"; 
       public const string EXT_PARAM_GROUP_SOCIAL = "social"; 
     
       public const string CS_LANGUAGE = "C#";

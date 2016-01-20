@@ -1,4 +1,5 @@
-﻿WAVE.Chart = {};
+﻿"use strict";
+WAVE.Chart = {};
 
 WAVE.Chart.SVG = (function () {
   var published = {};
@@ -1572,7 +1573,7 @@ WAVE.Chart.SVG = (function () {
       self.foreachPoint(function (vx, vy, dx, dy, title, series) {
         var cmd;
         if (firstX == null) { 
-          firstX = vx; isFirst = false; cmd = "M";
+          firstX = vx; cmd = "M";
         } else {
           cmd = "L";
           self.chart().sZone().addVLine({x1: prevVx, y1: prevVy, x2: vx, y2: vy});

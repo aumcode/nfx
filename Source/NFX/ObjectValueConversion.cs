@@ -761,15 +761,26 @@ namespace NFX
          {
             if (val is GDID) return (GDID)val;
 
+            if (val is ELink) return ((ELink)val).GDID;
+
             if (val is string)
             {
-                    var sval = ((string)val).Trim();
+                var sval = ((string)val).Trim();
 
-                    GDID gdid;
-                    if (GDID.TryParse(sval, out gdid)) return gdid;
+                GDID gdid;
+                if (GDID.TryParse(sval, out gdid)) return gdid;
+
+                //20160109 DKH also interpret string via ELink
+                try
+                {
+                  var elink = new ELink(sval);
+                  return elink.GDID;
+                }
+                catch{}
             }
             
             if (val is ulong) { return new GDID(0,(ulong)val); }
+            if (val is byte[]) { return new GDID((byte[])val); }
             return new GDID(0, Convert.ToUInt64(val));
          }
 

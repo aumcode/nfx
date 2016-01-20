@@ -1,1 +1,1 @@
-﻿nfx_test:world_news(Subscriber::pid(), Count::int(), Period::int())
+﻿nfx_test:world_news(Subscriber::pid(), Timestamp::long(), Count::int(), Period::int())
