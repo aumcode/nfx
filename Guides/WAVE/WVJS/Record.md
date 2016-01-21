@@ -42,20 +42,6 @@ var rec = new WAVE.RecordModel.Record({ID: 'REC-1',
             ]});
 ```
 
-
-### Examples
-```js
-var rec = new WAVE.RecordModel.Record("1", function(){
-            new this.Field({Name: "A", Type: "string"});
-            new this.Field({Name: "B", Type: "string", Required: true});
-          });
-          
-rec.validate();
-var allErr = rec.allValidationErrorStrings();
-// allErr contains: 'B' must have a value
-```
-
-
 ## data()
 Returns a map of fields: `{fieldName:fieldValue,...}`.
 
@@ -83,7 +69,6 @@ rec.fldLastName.value("Brown");
 var d = JSON.stringify(rec.data(true));
 // d = {"LastName":"Brown"}
 ```
-
 
 ## eventBind()
 Binds a function to the named event handler on record.
@@ -126,14 +111,11 @@ var v = rec.fldFirstName.value();
 // v = John        
 ```
 
-
 ## loaded()
 Returns true when record has finished loading data and constructing fields.
 
-
 ##toString()
 Returns string like `Record[RecID]`.
-
 
 ## Validation functions
 * allValidationErrorStrings() - returns all record and field-level validation errors.
@@ -151,5 +133,3 @@ var all = rec.allValidationErrorStrings();
 // all contains 'B' must have a value
 // all contains 'C' must have a value
 ```
-
-
