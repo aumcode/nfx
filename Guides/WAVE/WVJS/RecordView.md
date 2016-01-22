@@ -24,3 +24,50 @@ var REC =  new WAVE.RecordModel.Record({ID: 'R1',
         );
 var RVIEW = new WAVE.RecordModel.RecordView("V1", REC);
 ```
+
+## buildViews()
+Builds and binds view controls to record fields from declarative page markup: `<...dava-wv-rid='r1'...> <div data-wv-fld='LastName' ... />`. 
+
+## destroyViews()
+Unbinds and deletes all views.
+
+## gui()
+Returns GUI backend that renders controls for the view.
+
+## ID()
+Returns record view instance ID used for Field-View bindings.
+
+## record()
+Returns bound record.
+
+## rootElement()
+Returns root element that this record view is building controls under.
+
+## views()
+Returns copy of view list.
+
+FieldView Class
+Individual field view class.
+
+##### FieldView(element div, Record.Field fld)
+Constructor.
+
+##### destroy()
+Unbinds the view and deletes all internal markup.
+
+##### DIV()
+Returns root element in which the "visual control" gets built.
+
+##### eventNotify(evtName, sender, phase)
+Invoked by control changes.
+
+#### field()
+Returns bound field.
+
+##### getOrInferControlType()
+Gets control type specified on this view or infers from field.
+
+##### recView()
+Returns owner record view.
+
+

@@ -21,7 +21,7 @@ new WAVE.RecordModel.Record(object initVector)
 **Notes**  
 In both cases fields will be named as concatenation string 'fld' and field name from definition.
 
-### Examples
+#### Examples
 ```js
 var rec = new WAVE.RecordModel.Record("ID-123456");
 ```
@@ -42,6 +42,12 @@ var rec = new WAVE.RecordModel.Record({ID: 'REC-1',
             ]});
 ```
 
+## applyDefaultValue(bool force)
+Applies default values to all fields.
+
+## csrfToken()
+Returns CSRF token supplied by server. This property can not be set on client.
+
 ## data()
 Returns a map of fields: `{fieldName:fieldValue,...}`.
 
@@ -52,7 +58,7 @@ data(bool modifiedOnly, bool includeNonStored)
 | ---------------- |:-----------:| ----------------------------------- |
 | modifiedOnly     | optional    | only get fields that have changed   |
 | includeNonStored | optional    | include fields that are not stored |
-### Examples
+#### Examples
 ```js
 var rec = new WAVE.RecordModel.Record({ID: 'REC-1', 
             fields: [
@@ -79,7 +85,7 @@ eventBind(string evtName, function handler)
 | --------- |:-----------:| --------------------------------------------- |
 | evtName   | required    | name of event from WAVE.RecordModel namespace |
 | handler   | required    | callback-function which fires on event        |
-### Examples
+#### Examples
 ```js
 var rec = new WAVE.RecordModel.Record("ID-123456", function(){
             new this.Field({Name: "FirstName", Type: "string"});
@@ -99,7 +105,7 @@ Returns a field by its case-insensitive name or null.
 ```js
 fieldByName(string fieldName)
 ```
-### Examples
+#### Examples
 ```js
 var rec = new WAVE.RecordModel.Record("ID-123456", function(){
             new this.Field({Name: "FirstName", Type: "string"});
@@ -111,25 +117,65 @@ var v = rec.fldFirstName.value();
 // v = John        
 ```
 
+## fields()
+Returns copy of fields list.
+
+## formMode()
+Returns form mode on the server if one was supplied (i.e. insert|edit). This property can not be set on client.
+
+## ID()
+Returns record instance ID.
+
+## isGUIModified()
+Returns true is some field has been modified through GUI-attached views.
+
+## isModified()
+Returns true is some field has been modified.
+
+## ISOLang()
+Returns record ISO language/culture.
+
+## latchAllEvents(int delta)
+Changes all eventInvocationSuspendCount on all fields and this record with `delta`.
+
 ## loaded()
 Returns true when record has finished loading data and constructing fields.
+
+## resetModified()
+Resets all field modification flags.
+
+## resetRecord()
+Re-initializes the record and all of its fields anew - resetting all flags.
+
+## resetSchema()
+Resets all fields schemes.
 
 ##toString()
 Returns string like `Record[RecID]`.
 
 ## Validation functions
-* allValidationErrorStrings() - returns all record and field-level validation errors.
-* validate() - validates record and returns true is everything is valid.
-### Examples
+* allValidationErrors() - returns array of all record and field-level validation errors,
+* allValidationErrorStrings() - returns all record and field-level validation errors,
+* valid() - Returns true if record and all its fields have been validated and valid,
+* validate() - validates record and returns true is everything is valid,
+* validated() - returns true if record has been validated,
+* validationError() - returns rec-level validation error if any.
+#### Examples
 ```js
 var rec = new WAVE.RecordModel.Record("1", function(){
             new this.Field({Name: "A", Type: "string"});
             new this.Field({Name: "B", Type: "string", Required: true});
             new this.Field({Name: "C", Type: "int", Required: true});
           });
-          
+// rec.validated() = false
 rec.validate();
+// rec.validated() = true
+// rec.valid() = false
 var all = rec.allValidationErrorStrings();
 // all contains 'B' must have a value
 // all contains 'C' must have a value
+rec.fldB.value("something");
+rec.flC.value(1);
+// rec.valid() = true
 ```
+

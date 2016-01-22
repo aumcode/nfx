@@ -26,11 +26,8 @@ new rec.Field({Name: "Age", Type: "int", Stored: false});
 Deletes this field from the record.
 
 
-## deferValidation()
+## deferValidation(bool dfrvld)
 Defer or NOT validation event while changing of field’s value.
-```js
-deferValidation(bool flag)
-```
 ### Examples
 ```js
 var rec = ...
@@ -53,6 +50,11 @@ rec.fldLastName.value("Brown");
 // elog = "|data-changeLastNamebeforeSmith|validateLastNameundefinedBrown|validatedLastNameundefinedBrown|data-changeLastNameafterBrown"
 ```
 
+## about()
+Returns field's description from field definition.
+
+## displayValue()
+Returns string value of field for display in attached controls/views.
 
 ## eventBind()
 Binds a function to the named event handler on field.
@@ -74,31 +76,125 @@ rec.fldLastName.drop();
 // elog = |LastNamebefore|LastNameafter          
 ```
 
+## applicable(bool aplcbl)
+Sets or returns applicable flag.
+
+## applyDefaultValue(bool force)
+Applies default value to field and returns it.
+
+## case(string cs)
+Sets or returns string case for texboxes.
+
+## controlType(string tp)
+Sets or returns field's control type in attached view.
+
+## defaultValue(val)
+Sets or returns field's default value.
+
+## description(string desc)
+Sets or returns field's description.
+
+## enabled(bool enbld)
+Sets or returns enabled flag.
+
+## getOrInferControlType()
+Returns control type for the view from schema, or if not available then infers it from field definition.
+
+## hint(val)
+Sets or returns hint for field.
+
+## inferControlType()
+Infers control type for the view from field definition disregarding ControlType set in schema.
+
+## isEnabled()
+Returns true if field is enabled and applicable.
 
 ## isGUIModified()
 Returns true when this field was modified from an attached control.
 
+## isLookupDict()
+Returns true if field has lookup dictionary constraint.
 
 ## isModified()
 Returns true when this field has been modified.
 
+## isNull()
+Returns true if value is null.
+
+## isTypeLogical()
+Returns true if field contains boolean data.
+
+## key()
+Returns true if field is key.
+
+## kind(string knd)
+Sets or returns data kind for textboxes.
 
 ## loaded()
 Returns true when this field has finished loading.
 
+## lookupDict(object val)
+Sets or returns lookup dictionary for field.
+
+## marked(bool mrk)
+Sets or returns marked flag.
+
+## minValue/maxValue(val)
+Sets or returns minValue/maxValue of field.
+
+## name()
+Returns immutable field name.
+
+## password(bool pswrd)
+Sets or returns password flag.
+
+## placeholder(string plc)
+Sets or returns field's placeholder property.
+
+## preProcessValueFromGUI(val)
+Pre-processes value when it is set from GUI, i.e. trim() string field or adjust phone numbers.
+
+## record()
+Returns owner record.
+
+## readonly(bool rdnl)
+Sets or returns readonly flag.
+
+## required()
+Returns true if field is required.
+
+## resetGUIModified()
+Resets field's modification from GUI flag.
+
+## resetModified()
+Resets field's modification flag.
+
+## resetSchema()
+Reverts the field instance to it's original schema definition, firing events.
+
+## setGUIValue(val)
+Sets textual value from control into the field value performing necessary adjustments, i.e. may adjust the format of the phone number etc. 
+
+## size/minSize(int val)
+Sets or returns field's size/minimum size.
 
 ## toString()
 Returns string like `[fieldType]Field(fieldName = 'fieldValue')`.
 
+## type()
+Returns immutable field data type.
+
+## schemaDef()
+Returns the the original schema field def. Do not modify its values, use WAVE.clone() if copy is needed.
 
 ## stored()
 Returns true if field must be stored back in the server (db).
 
-
 ## Validation functions
-* valid()     - returns true if field has not validation error.
-* validate()  - validates field and returns true if it is valid.
-* validated() - returns true if field has been validated.
+* setExternalValidationError(error) - sets external validation error (i.e. from the server side),
+* valid()     - returns true if field has not validation error,
+* validate()  - validates field and returns true if it is valid,
+* validated() - returns true if field has been validated,
 * validationError() - returns error thrown during validation.
 ### Examples
 ```js
@@ -116,10 +212,10 @@ rec.fldB.value("aaaaa");
 rec.fldB.valid();     // true
 ```
 
-
 ## value()
 `value()` - then returns field’s value.  
 `value(object value, bool fromGUI)` - Sets value and modified, validated flags if new value is different from an existing one. `fromGUI` indicates that field is being altered from an attached control.
 
-
+## visible(bool vsbl)
+Sets or returns visible flag.
 

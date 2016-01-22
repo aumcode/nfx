@@ -111,6 +111,17 @@ Set cookie as `name = escape(value) + "; path=/"`.
 ##### deleteCookie(string name)
 Set expires as -1.
 
+##### propStrAsObject(object obj, string prop)
+Checks object property for string value and if it is then converts it to object (map).
+Does nothing if prop does not exist, is null or not a string value.
+```js
+var o1 = {a: 1, b: '{"c": "yes", "d": "no"}'};
+// WAVE.isObject(o1.b)) = false
+
+WAVE.propStrAsObject(o1, "b");
+// WAVE.isObject(o1.b)) = true
+```
+
 ##### Checking types
 Returns true if `tp` is in:
 * **isObjectType(tp)** - ["object", "json", "map", "array"]

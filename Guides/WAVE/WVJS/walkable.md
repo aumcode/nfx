@@ -218,7 +218,7 @@ Outputs {s,a} vectors per SINE/"Saw"/"Square"/Random function.
 * if k == 1 - moving object has infinite weight (hence infinity momentum) and outbound signal will be permanent (equal to first sample amplitude).
 ```js
 var aw = WAVE.arrayWalkable([{s: 0, a: 1}, {s: 1, a: 100}, {s: 2, a: -100}]);
-var wma = aw.wWMA(.1);
+var wma = aw.wWMA(0.1);
 // wma.wAt(0).a = 1
 // wma.wAt(1).a = 90.1
 // wma.wAt(2).a = -80.99

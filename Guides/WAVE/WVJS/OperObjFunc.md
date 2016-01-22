@@ -27,15 +27,4 @@ Overrides existing function by wrapping in new one. May call base like so:
 ```js
 object.about = WAVE.overrideFun(object.about, function(){ return this.baseFunction() + "overridden" });
 ```
-
-##### propStrAsObject(object obj, string prop)
-Checks object property for string value and if it is then converts it to object (map).
-Does nothing if prop does not exist, is null or not a string value.
-```js
-var o1 = {a: 1, b: '{"c": "yes", "d": "no"}'};
-// WAVE.isObject(o1.b)) = false
-
-WAVE.propStrAsObject(o1, "b");
-// WAVE.isObject(o1.b)) = true
-```
  
