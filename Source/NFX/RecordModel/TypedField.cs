@@ -296,12 +296,7 @@ namespace NFX.RecordModel
     }
     
     
-    /// <summary>
-    /// Internal framework method not intended to be called by developers
-    /// </summary>
-    internal virtual void _setValueTypeHasValue()
-    {
-    }
+    
 
     protected internal override void ApplyDefinitionAttributes(IEnumerable<object> attributes)
     {

@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using NFX.ApplicationModel;
@@ -303,19 +304,7 @@ namespace NFX.ApplicationModel
     
     #region Public
 
-            public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
-            {
-                if (m_Log==null) return;
-        
-                m_Log.Write(new NFX.Log.Message()
-                            {
-                              Topic = LogTopic,
-                              Type = type,
-                              From = from,
-                              Text = msgText,
-                              Exception = error
-                            });
-            }
+           
 
             /// <summary>
             /// Converts universal time to local time as of TimeLocation property
@@ -471,13 +460,26 @@ namespace NFX.ApplicationModel
 
     #region Protected
     
-      /// <summary>
-      /// Provides log topic name
-      /// </summary>
-      protected abstract string LogTopic
+
+      protected void WriteLog(MessageType type,
+                            string from, 
+                            string msgText, 
+                            Exception error = null, 
+                            [CallerFilePath]string file = "",
+                            [CallerLineNumber]int line = 0, 
+                            object pars = null)
       {
-       get;
-      } 
+          if (m_Log==null) return;
+        
+          m_Log.Write(new NFX.Log.Message()
+                      {
+                        Topic = CoreConsts.APPLICATION_TOPIC,
+                        Type = type,
+                        From = from, 
+                        Text = msgText,
+                        Exception = error,
+                      }.SetParamsAsObject(NFX.Log.Message.FormatCallerParams(pars, file, line)));
+      }
 
 
       protected IEnumerable<IApplicationStarter> GetStarters()
@@ -957,8 +959,6 @@ namespace NFX.ApplicationModel
             WriteLog(MessageType.CatastrophicError, FROM, msg, error);
             throw new NFXException(msg, error);
           }
-
-
 
         node = m_ConfigRoot[CONFIG_OBJECT_STORE_SECTION];
         if (node.Exists)

@@ -177,8 +177,17 @@ var WAVE = (function(){
     };
 
 
+
     published.strEmpty = function(str){ return ( !str  ||  0 === str.length  ||  /^\s*$/.test(str) ); };
-    
+
+
+    published.strAsBool = function(str, dflt){
+      if (typeof(str)===tUNDEFINED||str===null) return ( (typeof(dflt)===tUNDEFINED) ? false : dflt  );
+      str = str.toString();
+      return published.strOneOf(str, ["true", "t", "yes", "1"]);
+    };
+
+
     published.strDefault = function(str, dflt){ 
      return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str; 
     };
@@ -2774,6 +2783,8 @@ WAVE.RecordModel = (function(){
         CTL_TP_TEXTAREA:"textarea",
         CTL_TP_HIDDEN:  "hidden",
         CTL_TP_PUZZLE:  "puzzle",
+        CTL_TP_ERROR_REC:   "error-rec",
+        CTL_TP_ERROR_SUMMARY:  "error-summary",
 
         KIND_TEXT:  'text',
         KIND_SCREENNAME:  'screenname',
@@ -2825,23 +2836,28 @@ WAVE.RecordModel = (function(){
         var fRecordLoaded = false;
         
         WAVE.extend(record, WAVE.EventManager);
-                                                                                  
+
         this.eventInvoke(published.EVT_RECORD_LOAD, published.EVT_PHASE_BEFORE);//todo How to subscribe to this event?
 
         var id = null;
         var lang = null;
         var fFormMode = "unspecified";
         var fCSRFToken = "";
+        var fRoundtrip = "";
+
         if (WAVE.isObject(init) &&  init.fields)
         {
           id = init.ID;
           lang = init.ISOLang;
-         
+
           if (init.__FormMode)
            fFormMode = init.__FormMode;
 
           if (init.__CSRFToken)
            fCSRFToken = init.__CSRFToken;
+
+          if (init.__Roundtrip)
+           fRoundtrip = init.__Roundtrip;
         }
         else
         {
@@ -2874,6 +2890,9 @@ WAVE.RecordModel = (function(){
         //Returns CSRF token supplied by server. This property can not be set on client
         this.csrfToken = function(){ return fCSRFToken;};
 
+        //Returns Roundtrip bag content supplied by server. This property can not be set on client
+        this.roundtrip = function(){ return fRoundtrip;};
+
         //Returns true when record has finished loading data and constructing fields
         //Field event consumers may reference this flag to exit out of unnecessary event processing
         this.loaded = function() {return fRecordLoaded;};
@@ -2904,6 +2923,9 @@ WAVE.RecordModel = (function(){
             if (!WAVE.strEmpty(fCSRFToken))
              result["__CSRFToken"] = fCSRFToken;
 
+            if (!WAVE.strEmpty(fRoundtrip))
+             result["__Roundtrip"] = fRoundtrip;
+
             return result;
         };
 
@@ -2913,7 +2935,7 @@ WAVE.RecordModel = (function(){
             for(var i in fFields){
               var fld = fFields[i];
               if (WAVE.strSame(fld.name(), name)) return fld;
-            }                      
+            }
             return null;
         };
 
@@ -2977,6 +2999,13 @@ WAVE.RecordModel = (function(){
            return fRecValidated &&  fRecValidationError===null && this.fieldsValid();
         };
 
+
+        //Sets external validation error (i,e, from the server side)
+        this.setExternalValidationError = function(error, errorText){//for now error is ignored
+          if (WAVE.strEmpty(errorText)) return;
+          fRecValidationError = errorText;
+          fRecValidated = false;
+       };
 
         //Returns true if all field have been validated (but some may be invalid)
         this.fieldsValidated = function() { 
@@ -3063,6 +3092,20 @@ WAVE.RecordModel = (function(){
             if (!WAVE.isObject(fieldDef)) throw "Field.ctor(fieldDef must be a map)";
             if (WAVE.strEmpty(fieldDef.Name)) throw "Field def must have a name";
             if (WAVE.strEmpty(fieldDef.Type)) throw "Field def must have a type";
+
+            //Coerce strbools to bools
+            fieldDef.Key      = WAVE.strAsBool(fieldDef.Key, published.FIELDDEF_DEFAULTS.Key);
+            fieldDef.Stored   = WAVE.strAsBool(fieldDef.Stored, published.FIELDDEF_DEFAULTS.Stored);
+            fieldDef.Required = WAVE.strAsBool(fieldDef.Required, published.FIELDDEF_DEFAULTS.Required);
+            fieldDef.Applicable = WAVE.strAsBool(fieldDef.Applicable, published.FIELDDEF_DEFAULTS.Applicable);
+            fieldDef.Enabled    = WAVE.strAsBool(fieldDef.Enabled, published.FIELDDEF_DEFAULTS.Enabled);
+            fieldDef.ReadOnly   = WAVE.strAsBool(fieldDef.ReadOnly, published.FIELDDEF_DEFAULTS.ReadOnly);
+            fieldDef.Visible    = WAVE.strAsBool(fieldDef.Visible, published.FIELDDEF_DEFAULTS.Visible);
+            fieldDef.Password   = WAVE.strAsBool(fieldDef.Password, published.FIELDDEF_DEFAULTS.Password);
+            fieldDef.Marked     = WAVE.strAsBool(fieldDef.Marked, published.FIELDDEF_DEFAULTS.Marked);
+            fieldDef.DeferValidation = WAVE.strAsBool(fieldDef.DeferValidation, published.FIELDDEF_DEFAULTS.DeferValidation);
+
+
 
             var field = this;
             WAVE.extend(field, WAVE.EventManager);
@@ -3262,9 +3305,9 @@ WAVE.RecordModel = (function(){
             this.validationError = function() { return fValidationError;};
 
             //Sets external validation error (i,e, from the server side)
-            this.setExternalValidationError = function(error){
-                if (error===null) return;
-                fValidationError = error;
+            this.setExternalValidationError = function(error, errorText){//for now error is ignored
+                if (WAVE.strEmpty(errorText)) return;
+                fValidationError = errorText;
                 fValidated = false;
             };
 
@@ -3531,9 +3574,13 @@ WAVE.RecordModel = (function(){
             var finit = init.fields[i];
             var fld = new this.Field(finit.def);
             if (finit.hasOwnProperty('val')) fld.value(finit.val);
-            if (finit.hasOwnProperty('errorText')) fld.setExternalValidationError(finit.errorText);
+            if (finit.hasOwnProperty('errorText')) fld.setExternalValidationError(WAVE.strDefault(finit.error), finit.errorText);
             fld.resetModified();
           }
+
+          //Record-level validation
+          if (init.hasOwnProperty('errorText')) this.setExternalValidationError(WAVE.strDefault(init.error), init.errorText);
+
         }else if (WAVE.isFunction(fieldFunc)) fieldFunc.apply(record);
         
         fRecordLoaded = true;
@@ -3628,13 +3675,20 @@ WAVE.RecordModel = (function(){
                 var fname = kdiv.getAttribute(published.DATA_FIELD_NAME_ATTR);
                 if (!WAVE.strEmpty(fname))
                 {
-                    var fld = fRecord.fieldByName(fname);
-                    if (fld!==null) new this.FieldView(kdiv, fld);
+                    if (fname==="#")//whole-record-level binding
+                    {
+                      new this.FieldView(kdiv, null);//bind to whole record
+                    }
+                    else
+                    {
+                      var fld = fRecord.fieldByName(fname);
+                      if (fld!==null) new this.FieldView(kdiv, fld);
+                    }
                 }
           }
 
           
-          if (!WAVE.strEmpty(fRecord.formMode()) || !WAVE.strEmpty(fRecord.csrfToken()))
+          if (!WAVE.strEmpty(fRecord.formMode()) || !WAVE.strEmpty(fRecord.csrfToken()) || !WAVE.strEmpty(fRecord.roundtrip()))
           {
              if (divHiddenFields===null)
              {
@@ -3651,6 +3705,9 @@ WAVE.RecordModel = (function(){
              if (!WAVE.strEmpty(fRecord.csrfToken()))
                 content +=  "<input type='hidden' name='__CSRFToken' value='"+fRecord.csrfToken()+"'>";
 
+             if (!WAVE.strEmpty(fRecord.roundtrip()))
+                content +=  "<input type='hidden' name='__Roundtrip' value='"+fRecord.roundtrip()+"'>";
+
              divHiddenFields.innerHTML = content;
           }
 
@@ -3662,19 +3719,29 @@ WAVE.RecordModel = (function(){
         };
 
 
-        //Individual field view class
+        //Individual field view class, if fld==null binds to whole record context
         this.FieldView = function(div, fld)
         {
             if (!div) throw "FieldView.ctor(div: element must be passed)";
-            if (!WAVE.isObject(fld)) throw "FieldView.ctor(fld: must be Record.Field)";
+            if (fld!==null && !WAVE.isObject(fld)) throw "FieldView.ctor(fld: must be Record.Field)";
             var fField = fld;
             var fieldview = this;
             var fDIV = div;
             fViews.push( fieldview );//register with parent
-            fField.eventSinkBind(this);
-            var recPropertyName = "fld"+fld.name();
-            recview[recPropertyName] = fieldview;//make recview.fldLastName shortcut
+            
+            if (fField!==null)
+              fField.eventSinkBind(this);
+            else
+              fRecord.eventSinkBind(this);
 
+            
+            var recPropertyName = "";
+            
+            if (fld!==null)
+            {
+              recPropertyName = "fld"+fld.name();
+              recview[recPropertyName] = fieldview;//make recview.fldLastName shortcut
+            }
 
             //Invoked by control changes
             this.eventNotify = function(evtName, sender, phase){
@@ -3686,20 +3753,30 @@ WAVE.RecordModel = (function(){
               if (typeof(phase)===tUNDEFINED) phase = "";
               if (phase === WAVE.RecordModel.EVT_PHASE_BEFORE) return;
 
-              fDIV.style.visibility = fField.visible() ? "visible" : "hidden";
+              if (fField!==null)
+                fDIV.style.visibility = fField.visible() ? "visible" : "hidden";
+              
               fGUI.eventNotifyFieldView( fieldview, evtName, sender, phase);
             };
 
             //Unbinds the view and deletes all internal markup
             this.destroy = function(){
                 fDIV.innerHTML = "";//destroy control content
-                fField.eventSinkUnbind(this);
+                if (fField!==null)
+                  fField.eventSinkUnbind(this);
+                else
+                  fRecord.eventSinkUnbind(this);
+                
                 WAVE.arrayDelete(fViews, this);
-                delete recview[recPropertyName];
+                
+                if (fField!==null)
+                  delete recview[recPropertyName];
             };
 
+            this.record = function(){ return fRecord; };
             this.recView = function() { return recview;};
             this.field = function(){ return fField; };
+            
 
             //Returns root element in which the "visual control" gets built
             this.DIV = function(){ return fDIV; };
@@ -3708,10 +3785,10 @@ WAVE.RecordModel = (function(){
             this.getOrInferControlType = function(){
                var ctp = fDIV.getAttribute(published.DATA_CTL_TP_ATTR);
                if (!WAVE.strEmpty(ctp)) return ctp;
-               return fField.getOrInferControlType();
+               return fField===null ? WAVE.RecordModel.CTL_TP_ERROR_REC : fField.getOrInferControlType();
             };
 
-            if (fField.visible())
+            if (fField===null || fField.visible())
                 fGUI.buildFieldViewAnew( this );
         };//FieldView
 
@@ -3853,7 +3930,7 @@ WAVE.Pay = (function () {
 
     published.CardValidationError = function (inner) {
         this.name = "CardValidationError";
-        var message = "Card is invalud";
+        var message = "Card is invalid";
         if (typeof(inner) !== tUNDEFINED && !WAVE.strEmpty(inner.message))
             message += ": " + inner.message;
         this.message = message;

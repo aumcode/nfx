@@ -213,12 +213,14 @@ namespace NFX.DataAccess.MySQL
         var fattr = fld[target];
         if (fattr==null) continue;
 
+        var fname = fld.GetBackendNameForTarget(target);
+        
         //20141008 DKh Skip update of key fields
-        if (fattr.Key) continue;
+        //20160124 DKh add update of keys if IDataStoreKey is present
+        if (fattr.Key && !GeneratorUtils.HasFieldInNamedKey(fname, key)) continue;
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
-        var fname = fld.GetBackendNameForTarget(target);
          
         var fvalue = getFieldValue(row, fld.Order, store); 
         

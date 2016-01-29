@@ -57,9 +57,9 @@ namespace NFX.NUnit.Logging
                 mbd.ClearBuffer();
                 
                 
-                app.WriteLog(Log.MessageType.Info, "test", "Hello1");
+                app.Log.Write( new Message{ Type = Log.MessageType.Info, From = "test", Text = "Hello1"});
                 System.Threading.Thread.Sleep( 1000 );
-                app.WriteLog(Log.MessageType.Info, "test", "Hello2");
+                app.Log.Write( new Message{ Type = Log.MessageType.Info, From = "test", Text = "Hello2"});
 
                 System.Threading.Thread.Sleep( 3000 );
 
@@ -86,7 +86,7 @@ namespace NFX.NUnit.Logging
                 mbd.BufferSize = 10;
                 
                 for(int i=0; i<100; i++)
-                    app.WriteLog(Log.MessageType.Info, "test", "i={0}".Args(i));
+                    app.Log.Write( new Message{Type = Log.MessageType.Info, From = "test", Text = "i={0}".Args(i)} );
                 System.Threading.Thread.Sleep( 3000 );
 
                 Assert.AreEqual(10, mbd.Buffered.Count());

@@ -107,6 +107,13 @@ namespace NFX.DataAccess.MySQL
         }
 
 
+        public static bool HasFieldInNamedKey(string fieldName, IDataStoreKey key)
+        {
+          var nvk = key as NameValueDataStoreKey;
+          if (nvk==null || fieldName.IsNullOrWhiteSpace()) return false;
+          return nvk.ContainsKey(fieldName);
+        }
+
         public static void LogCommand(StoreLogLevel level, string from, MySqlCommand cmd, Exception error)
         {
             if (level==StoreLogLevel.None) return;

@@ -230,12 +230,12 @@ namespace NFX.Erlang
     /// <summary>
     /// Deliver communication exceptions to the recipient
     /// </summary>
-    protected abstract void Deliver(ErlConnectionException e);
+    protected abstract void Deliver(ErlConnectionException e, string file, int line);
 
     /// <summary>
     /// Deliver messages to the recipient
     /// </summary>
-    protected abstract void Deliver(ErlMsg msg);
+    protected abstract void Deliver(ErlMsg msg, string file, int line);
 
     /// <summary>
     /// Close the connection to the remote node

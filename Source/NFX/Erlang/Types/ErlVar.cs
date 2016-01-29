@@ -139,7 +139,7 @@ namespace NFX.Erlang
         return false;
       if (!checkType(term))
         throw new ErlException(StringConsts.ERL_VARIABLE_INVALID_VALUE_TYPE_ERROR,
-            Name, obj.GetType().Name, ValueType);
+            Name, term.GetType().Name, ValueType);
       obj = term;
       return true;
     }
@@ -243,7 +243,9 @@ namespace NFX.Erlang
     private bool checkType(IErlObject value)
     {
       var vt = value.TypeOrder;
-      return ValueType == ErlTypeOrder.ErlObject || sameType(vt, ValueType);
+      return ValueType == ErlTypeOrder.ErlObject || 
+             value.TypeOrder == ErlTypeOrder.ErlAtom && (ErlAtom)value == ErlAtom.Undefined ||
+             sameType(vt, ValueType);
     }
 
     private bool sameType(ErlTypeOrder tp1, ErlTypeOrder tp2)

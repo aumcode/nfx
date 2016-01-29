@@ -90,6 +90,47 @@ namespace NFX.Web.Social
           return Guid.NewGuid().ToString().Replace("-", string.Empty);
         }
 
+
+        /// <summary>
+        /// Returns true if the user agent represents a robot from any known social net
+        /// </summary>
+        public static bool IsAnySocialNetBotUserAgent(string userAgent)
+        {
+          return IsSpecificSocialNetBotUserAgent(SocialNetID.UNS, userAgent);
+        }
+
+        /// <summary>
+        /// Returns true if the user agent represents a robot from the specified social net
+        /// </summary>
+        public static bool IsSpecificSocialNetBotUserAgent(SocialNetID net, string userAgent)
+        {
+          if (userAgent.IsNullOrWhiteSpace()) return false;
+
+          userAgent = userAgent.TrimStart();
+
+          //todo Add more social networks detection
+          //see social net's documentation for a list of BOT names that they use
+          if (net==SocialNetID.UNS || net==SocialNetID.TWT)
+          {
+            if (userAgent.IndexOf("Twitterbot", StringComparison.OrdinalIgnoreCase)==0) return true;
+          }
+
+          //if (net==SocialNetID.UNS || net==SocialNetID.FBK)
+          //{
+          //  if (userAgent.IndexOf("?????", StringComparison.OrdinalIgnoreCase)!=-1) return true;
+          //}
+
+          //if (net==SocialNetID.UNS || net==SocialNetID.GPS)
+          //{
+          //  if (userAgent.IndexOf("????????", StringComparison.OrdinalIgnoreCase)!=-1) return true;
+          //}
+
+
+          return false;
+        }
+
+
+
       #endregion
 
           #region Inner classes

@@ -21,8 +21,11 @@ using System.Linq;
 using System.Threading;
 using System.Net;
 
+
+using NFX.Log;
 using NFX.Environment;
 using NFX.ApplicationModel;
+using System.Runtime.CompilerServices;
 
 namespace NFX.Erlang
 {
@@ -274,7 +277,7 @@ namespace NFX.Erlang
     public ErlMbox CreateMbox(string name) 
     { 
       CheckServiceActiveOrStarting();
-      return CreateMbox(new ErlAtom(name)); 
+      return name.IsNullOrEmpty() ? CreateMbox() : CreateMbox(new ErlAtom(name)); 
     }
 
 
@@ -476,17 +479,14 @@ namespace NFX.Erlang
       if (ConnectAttempt != null) ConnectAttempt(this, node, dir, info);
     }
 
-    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg)
+    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
       if (UnhandledMsg != null) UnhandledMsg(this, conn, msg);
       if (LogUnhandledMsgs)
-        App.Log.Write(new NFX.Log.Message
-        {
-          Type = Log.MessageType.TraceErl,
-          Topic = CoreConsts.ERLANG_TOPIC,
-          From = this.ToString(),
-          Text = "Connection {0} couldn't find mbox for: {1}".Args(conn.Name, msg)
-        });
+        Log(MessageType.TraceErl,
+            "OnUnhandledMsg",
+            "Connection {0} couldn't find mbox for: {1}".Args(conn.Name, msg), 
+            file:file, line:line);
     }
 
     protected internal virtual void OnReadWrite(ErlAbstractConnection conn, Direction dir,
@@ -500,34 +500,34 @@ namespace NFX.Erlang
       if (IoOutput != null) IoOutput(this, encoding, output);
     }
 
-    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir, Func<string> msgFunc)
+    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir, Func<string> msgFunc,
+      [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
       if (ErlApp.TraceEnabled(type, TraceLevel))
       {
         var msg = msgFunc();
-        OnTraceCore(type, dir, msg);
+        OnTraceCore(type, dir, msg, file, line);
       }
     }
 
-    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg)
+    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg,
+      [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
       if (ErlApp.TraceEnabled(type, TraceLevel))
       {
-        OnTraceCore(type, dir, msg);
+        OnTraceCore(type, dir, msg, file, line);
       }
     }
 
-    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg)
+    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
       if (Trace!=null) Trace(this, type, dir, msg);
       if (TraceToLog && ErlApp.TraceEnabled(type, TraceLevel))
-        App.Log.Write(new NFX.Log.Message
-        {
-          Type  = Log.MessageType.TraceErl,
-          Topic = "{0}.{1}".Args(CoreConsts.ERLANG_TOPIC, type),
-          From  = this.ToString(),
-          Text  = msg
-        });
+          Log(MessageType.TraceErl,
+            "OnTraceCore({0},{1})".Args(type, dir),
+            msg, 
+            file: file, 
+            line: line);
     }
 
     protected internal void OnEpmdFailedConnectAttempt(ErlAtom node, object info)
@@ -552,7 +552,7 @@ namespace NFX.Erlang
     public void ApplicationFinishAfterCleanup(IApplication application)
     { }
 
-    internal bool Deliver(ErlConnectionException e)
+    internal bool Deliver(ErlConnectionException e, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
       var fromNode = e.Node;
       OnNodeStatusChange(fromNode, false, e.Message);
@@ -582,7 +582,7 @@ namespace NFX.Erlang
       return true;
     }
 
-    internal bool Deliver(ErlMsg msg)
+    internal bool Deliver(ErlMsg msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
       if (msg.Recipient is ErlPid)
       {
@@ -601,7 +601,7 @@ namespace NFX.Erlang
       OnTrace(ErlTraceLevel.Send, Direction.Inbound, () =>
           "{0}{1} got: {2}".Args(
               mbox.Self, mbox.Name.Empty ? string.Empty : " ({0})".Args(mbox.Name.ToString()),
-              msg.Msg));
+              msg.Msg), file, line);
 
       mbox.Deliver(msg);
 

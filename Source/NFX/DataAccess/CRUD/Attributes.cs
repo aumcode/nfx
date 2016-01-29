@@ -34,7 +34,7 @@ namespace NFX.DataAccess.CRUD
 
         public TargetedAttribute(string targetName, string metadata)
         {
-            TargetName = targetName ?? ANY_TARGET;
+            TargetName = targetName.IsNullOrWhiteSpace() ? ANY_TARGET : targetName;
             m_MetadataContent = metadata;
         }
 

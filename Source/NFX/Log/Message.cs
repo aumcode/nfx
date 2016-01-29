@@ -23,37 +23,39 @@
  
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
 using NFX.Time;
 using NFX.Log.Destinations;
+using NFX.Serialization.JSON;
 
 namespace NFX.Log
 {
   /// <summary>
-  /// Represents an Log message 
+  /// Represents a Log message 
   /// </summary>
   [Serializable]
   public sealed class Message
   {
     
-      public static string DefaultHostName;
+    public static string DefaultHostName;
     
     #region Private Fields
-            private Guid m_Guid;
-            private Guid m_RelatedTo;
-            private MessageType m_Type;
-            private int m_Source;
-            private DateTime m_TimeStamp;
-            private string m_Host;
-            private string m_From;
-            private string m_Topic;
-            private string m_Text;
-            private string m_Parameters;
-            private Exception m_Exception;
-            private int m_ThreadID;
+      private Guid m_Guid;
+      private Guid m_RelatedTo;
+      private MessageType m_Type;
+      private int m_Source;
+      private DateTime m_TimeStamp;
+      private string m_Host;
+      private string m_From;
+      private string m_Topic;
+      private string m_Text;
+      private string m_Parameters;
+      private Exception m_Exception;
     #endregion
 
 
@@ -87,16 +89,13 @@ namespace NFX.Log
         }
 
         /// <summary>
-        /// Gets/Sets message source, particular applications may elect to cast to their enums
+        /// Gets/Sets message source line number/tracepoint#, this is used in conjunction with From
         /// </summary>
         public int Source
         {
           get { return m_Source; }
           set { m_Source = value; }
         }
-
-
-
 
         /// <summary>
         /// Gets/Sets timestamp when message was generated
@@ -107,7 +106,6 @@ namespace NFX.Log
           set { m_TimeStamp = value; }
         }
 
-        
         /// <summary>
         /// Gets/Sets host name that generated the message
         /// </summary>
@@ -119,7 +117,8 @@ namespace NFX.Log
         
         
         /// <summary>
-        /// Gets/Sets instance name/ID/type, such as: class name, method name, process instance, that generated the message
+        /// Gets/Sets logical component ID, such as: class name, method name, process instance, that generated the message.
+        /// This field is used in the scope of Topic
         /// </summary>
         public string From
         {
@@ -128,7 +127,7 @@ namespace NFX.Log
         }
 
         /// <summary>
-        /// Gets/Sets a message type in unstructured textual form - message topic
+        /// Gets/Sets a message topic/relation - the name of software concern within the big app, i.e. "Database" or "Security"
         /// </summary>
         public string Topic
         {
@@ -137,7 +136,8 @@ namespace NFX.Log
         }
 
         /// <summary>
-        /// Gets/Sets an unstructured message text
+        /// Gets/Sets an unstructured message text, the emitting component name must be in From field, not in text.
+        /// Note about logging errors. Use caught exception.ToMessageWithType() method, then attach the caught exception as Exception property
         /// </summary>
         public string Text
         {
@@ -146,7 +146,7 @@ namespace NFX.Log
         }
 
         /// <summary>
-        /// Gets/Sets a structured parameter bag 
+        /// Gets/Sets a structured parameter bag, this may be used for additional debug info like source file name, additional context etc.
         /// </summary>
         public string Parameters 
         {
@@ -155,12 +155,8 @@ namespace NFX.Log
         }
 
         /// <summary>
-        /// Returns the ID of the thread that created the message
-        /// </summary>
-        public int ThreadID { get { return m_ThreadID; } }
-
-        /// <summary>
-        /// Gets/Sets exception
+        /// Gets/Sets exception associated with message.
+        /// Set this property EVEN IF the name/text of exception is already included in Text as log destinations may elect to dump the whole stack trace
         /// </summary>
         public Exception Exception 
         {
@@ -170,40 +166,28 @@ namespace NFX.Log
 
     #endregion
 
-    private Message(DateTime timestamp)
+
+    public Message()
     {
       m_Guid = Guid.NewGuid();
       m_Host = Message.DefaultHostName ?? System.Environment.MachineName;
-      m_TimeStamp = timestamp;
-      m_ThreadID = Thread.CurrentThread.ManagedThreadId;
+      m_TimeStamp = App.Instance.Log.LocalizedTime;
     }
 
-    public Message() : this(App.Instance.Log.LocalizedTime)
-    {}
-
-    public Message(Guid relatedTo,
-                    MessageType type,
-                    int source,
-                    DateTime timeStamp,
-                    string from,
-                    string topic,
-                    string text,
-                    Exception exception)
-      : this(timeStamp)
+    /// <summary>
+    /// Creates message with Parameters supplanted with caller file name and line # 
+    /// </summary>
+    public Message(object pars, [CallerFilePath] string file = null, [CallerLineNumber] int line = 0) : this()
     {
-      m_RelatedTo = relatedTo;
-      m_Type = type;
-      m_Source = source;
-      m_From = from;
-      m_Topic = topic;
-      m_Text = text;
-      m_Exception = exception;
+      SetParamsAsObject( FormatCallerParams(pars, file, line) );
+      Source = line;
     }
+
 
 
     public override string ToString()
     {
-      return string.Format("{0}/{1}, {2}, {3}, {4}, {5}, {6}, {7}",
+      return "{0}/{1}, {2}, {3}, {4}, {5}, {6}, {7}".Args(
                            m_Type,
                            m_Source,
                            m_TimeStamp,
@@ -213,6 +197,39 @@ namespace NFX.Log
                            Text,
                            Exception!=null ? Exception.ToString() : string.Empty);
     }
+
+    /// <summary>
+    /// Supplants the from string with caller as JSON string 
+    /// </summary>
+    public static object FormatCallerParams(object pars, 
+                                            [CallerFilePath]  string file = null, 
+                                            [CallerLineNumber]int line = 0)
+    {
+      if (pars==null)
+        return new 
+          {
+            clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
+            clrL = line,
+          };
+      else
+        return new
+          {
+            clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
+            clrL = line,
+            p = pars
+          };
+    }
+
+    public Message SetParamsAsObject(object p)
+    {
+      if (p==null)
+        m_Parameters = null;
+      else
+        m_Parameters = p.ToJSON(JSONWritingOptions.CompactASCII);
+
+      return this;
+    }
+
   }
 
   internal class MessageList : List<Message>
@@ -220,5 +237,4 @@ namespace NFX.Log
         public MessageList() {}
         public MessageList(IEnumerable<Message> other) : base(other) {}
   }
-
 }

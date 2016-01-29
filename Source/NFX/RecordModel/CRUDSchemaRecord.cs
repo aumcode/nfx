@@ -72,7 +72,7 @@ namespace NFX.RecordModel
        foreach(var fdef in m_Schema)
        {
          var type = fdef.Type;
-         Field fld = Field.MakeFiedOfType(type);
+         Field fld = Field.MakeFieldOfType(type);
 
          var atr = fdef[m_TargetName];
 
@@ -210,8 +210,13 @@ namespace NFX.RecordModel
       {
         for(var i=0; i<m_Row.Schema.FieldCount; i++)
         {
-          var rfld = m_Row[i];
-          this.Fields.ElementAt(i).ValueAsObject = rfld;
+          var fdata = m_Row[i];
+          var fld = this.Fields.ElementAt(i);
+          
+          fld.ValueAsObject = fdata;
+
+          if (fdata!=null && fdata is ValueType)
+             fld._setValueTypeHasValue();
         } 
       }
       finally

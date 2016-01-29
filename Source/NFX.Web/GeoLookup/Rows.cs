@@ -30,31 +30,27 @@ namespace NFX.Web.GeoLookup
   public class IPAddressBlock : TypedRow
   {
     [Field(key:true)] public string IPBlockStart       {get; set;} 
-    [Field] public int              NetMaskLength      {get; set;} 
     [Field] public string           LocationID         {get; set;}  
     [Field] public string           RegisteredLocationID  {get; set;}
     [Field] public string           RepresentedLocationID {get; set;}
+    [Field] public bool             AnonymousProxy     {get; set;}
+    [Field] public bool             SatelliteProvider  {get; set;}
     [Field] public string           PostalCode         {get; set;}
     [Field] public string           Lat                {get; set;}
     [Field] public string           Lng                {get; set;}
-    [Field] public bool             AnonymousProxy     {get; set;}
-    [Field] public bool             SatelliteProvider  {get; set;}
-
     public override string ToString()
     {
       return @" 
 IPBlockStart       {0} 
-NetMaskLength      {1} 
-LocationID         {2}  
-RegisteredLocationID  {3}
-RepresentedLocationID {4}
-PostalCode         {5}
-Lat                {6}
-Lng                {7}
-AnonymousProxy     {8}
-SatelliteProvider  {9}".Args(
+LocationID         {1}  
+RegisteredLocationID  {2}
+RepresentedLocationID {3}
+PostalCode         {4}
+Lat                {5}
+Lng                {6}
+AnonymousProxy     {7}
+SatelliteProvider  {8}".Args(
 IPBlockStart       , 
-NetMaskLength      , 
 LocationID         ,  
 RegisteredLocationID,  
 RepresentedLocationID, 
@@ -72,40 +68,48 @@ SatelliteProvider);
   [Serializable]
   public class Location : TypedRow
   {
-    [Field(key:true)] public string ID                 {get; set;} 
+    [Field(key:true)] public string ID                 {get; set;}
+    [Field] public string           LocaleCode        {get; set;}
     [Field] public string           ContinentID        {get; set;}
     [Field] public string           ContinentName      {get; set;} 
     [Field] public string           CountryISOName     {get; set;}  
     [Field] public string           CountryName        {get; set;}  
     [Field] public string           SubdivisionISOCode {get; set;}
-    [Field] public string           SubdivisionName    {get; set;}
+    [Field] public string           SubdivisionName    {get; set;}  
+    [Field] public string           Subdivision2ISOCode {get; set;}
+    [Field] public string           Subdivision2Name    {get; set;}
     [Field] public string           CityName           {get; set;}
     [Field] public string           MetroCode          {get; set;}
     [Field] public string           TimeZone           {get; set;}
-
    public override string ToString()
     {
       return @" 
-ID                 {0} 
-ContinentID        {1} 
-ContinentName      {2}  
-CountryISOName     {3}
-CountryName        {4}
-SubdivisionISOCode {5}
-SubdivisionName    {6}
-CityName           {7}
-MetroCode          {8}
-TimeZone           {9}".Args(
-ID                 , 
-ContinentID        , 
-ContinentName      ,  
-CountryISOName     ,  
-CountryName        , 
-SubdivisionISOCode ,
-SubdivisionName    ,
-CityName           ,
-MetroCode          ,
-TimeZone           );
+ID                  {0}
+LocaleCode          {1} 
+ContinentID         {2} 
+ContinentName       {3}  
+CountryISOName      {4}
+CountryName         {5}
+SubdivisionISOCode  {6}
+SubdivisionName     {7}
+Subdivision2ISOCode {8}
+Subdivision2Name    {9}
+CityName            {10}
+MetroCode           {11}
+TimeZone            {12}".Args(
+ID                  , 
+LocaleCode          ,
+ContinentID         , 
+ContinentName       ,  
+CountryISOName      ,  
+CountryName         , 
+SubdivisionISOCode  ,
+SubdivisionName     , 
+Subdivision2ISOCode ,
+Subdivision2Name    ,
+CityName            ,
+MetroCode           ,
+TimeZone            );
     }
   }
 

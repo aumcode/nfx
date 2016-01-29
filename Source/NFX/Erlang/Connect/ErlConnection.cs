@@ -16,6 +16,7 @@
 </FILE_LICENSE>*/
 using System;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace NFX.Erlang
@@ -110,18 +111,18 @@ namespace NFX.Erlang
     /// <summary>
     /// Deliver communication exceptions to the recipient
     /// </summary>
-    protected override void Deliver(ErlConnectionException e)
+    protected override void Deliver(ErlConnectionException e, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
-      m_Home.Deliver(e);
+      m_Home.Deliver(e, file, line);
     }
 
     /// <summary>
     /// Deliver messages to the recipient
     /// </summary>
-    protected override void Deliver(ErlMsg msg)
+    protected override void Deliver(ErlMsg msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
     {
-      if (!m_Home.Deliver(msg))
-        m_Home.OnUnhandledMsg(this, msg);
+      if (!m_Home.Deliver(msg, file, line))
+        m_Home.OnUnhandledMsg(this, msg, file, line);
     }
 
   #endregion

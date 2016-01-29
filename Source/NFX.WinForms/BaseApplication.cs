@@ -308,33 +308,6 @@ namespace NFX.WinForms
       }
 
 
-      public static void WriteToLog(string msgText)
-      {
-        WriteToLog(MessageType.Info, null, msgText);
-      }
-
-
-      public static void WriteToLog(MessageType type, string msgText)
-      {
-        WriteToLog(type, null, msgText);
-      }
-
-
-
-      public static void WriteToLog(MessageType type, string from, string msgText)
-      {
-        Instance.Log.Write(new NFX.Log.Message()
-                             {
-                               Topic = StringConsts.APPLICATION_TOPIC,
-                               Type  = type,
-                               From = from,
-                               Text = msgText
-                             }
-                           );
-      }
-
-            
-      
       /// <summary>
       /// Sets application theme, pass null to select default theme
       /// </summary>
@@ -370,11 +343,6 @@ namespace NFX.WinForms
 
 
     #region Protected
-
-      protected override string LogTopic
-      {
-          get { return StringConsts.APPLICATION_TOPIC; }
-      }
 
       protected virtual Configuration GetConfiguration()
       {

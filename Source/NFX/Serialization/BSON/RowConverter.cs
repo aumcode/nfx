@@ -263,7 +263,7 @@ namespace NFX.Serialization.BSON
         /// </summary>
         protected virtual bool TryConvertBSONtoCLR(Type target, BSONElement element, string targetName, out object clrValue, Func<BSONDocument, BSONElement, bool> filter)
         {
-          if (element==null) 
+          if (element==null || element is BSONNullElement) 
           {
             clrValue = null;
             return true;
@@ -366,8 +366,9 @@ namespace NFX.Serialization.BSON
             {
               clrValue = func(element);
             }
-            catch
+            catch(Exception error)
             {
+              Debug.Fail("Error in BSONRowConverter.TryConvertBSONtoCLR(): " + error.ToMessageWithType());
               return false;//functor could not convert
             }
             return true;
@@ -381,7 +382,7 @@ namespace NFX.Serialization.BSON
         /// </summary>
         protected virtual object DirectConvertBSONValue(BSONElement element, Func<BSONDocument, BSONElement, bool> filter = null)
         {
-          if (element==null) return null;
+          if (element==null || element is BSONNullElement) return null;
           
           if (element.ElementType == BSONElementType.Document) return BSONDocumentToJSONMap(((BSONDocumentElement)element).Value, filter);
 

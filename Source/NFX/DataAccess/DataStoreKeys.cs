@@ -72,19 +72,19 @@ namespace NFX.DataAccess
   ///  in storage and value is an object for the key
   /// </summary>
   [Serializable]
-  public class NameValueDataStoreKey : Dictionary<string, object>, IDataStoreKey
+  public sealed class NameValueDataStoreKey : Dictionary<string, object>, IDataStoreKey
   {
-    public NameValueDataStoreKey() : base()
+    public NameValueDataStoreKey() : base(StringComparer.InvariantCultureIgnoreCase)
     {
     
     }
 
-    protected NameValueDataStoreKey(SerializationInfo info, StreamingContext context) : base(info, context) 
+    public NameValueDataStoreKey(SerializationInfo info, StreamingContext context) : base(info, context) 
     {
     
     }
 
-    public NameValueDataStoreKey(params object[] pairs) : base()
+    public NameValueDataStoreKey(params object[] pairs) : base(StringComparer.InvariantCultureIgnoreCase)
     {
       const string CTOR_NAME = " NameValueDataStoreKey.ctor(parms[])";
     

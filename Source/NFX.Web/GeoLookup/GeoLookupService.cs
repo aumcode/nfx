@@ -429,6 +429,7 @@ namespace NFX.Web.GeoLookup
             sb.Append(line[i]);
           }
 
+          yield return sb.ToString();
         }
 
       private static void log(MessageType type, string from, string text, Exception error = null)

@@ -238,18 +238,18 @@ namespace NFX.DataAccess.CRUD
                 {
                     get
                     {
-                      if (targetName==null) targetName = FieldAttribute.ANY_TARGET;
+                      if (targetName.IsNullOrWhiteSpace()) targetName = FieldAttribute.ANY_TARGET;
 
                       FieldAttribute result = null;
                       if (!m_TargetAttrsCache.TryGetValue(targetName, out result))
                       {  
-                        if (targetName.IsNotNullOrWhiteSpace())
+                        if (targetName!=FieldAttribute.ANY_TARGET)
                         {
                             result = m_Attrs.FirstOrDefault(a => targetName.EqualsIgnoreCase(a.TargetName));
                         }
 
                         if (result==null)
-                         result = m_Attrs.FirstOrDefault(a => TargetedAttribute.ANY_TARGET.EqualsIgnoreCase(a.TargetName) );
+                          result = m_Attrs.FirstOrDefault(a => TargetedAttribute.ANY_TARGET.EqualsIgnoreCase(a.TargetName) );
 
                         var dict = new Dictionary<string, FieldAttribute>(m_TargetAttrsCache); 
                         dict[targetName] = result;

@@ -87,6 +87,8 @@ namespace NFX.Templatization
          public const string CONFIG_SUMMARY_ATTR = "summary";
          public const string CONFIG_BASE_RENDER_ATTR = "base-render";
          public const string CONFIG_CLASS_NAME_ATTR = "class-name";
+         public const string CONFIG_CLASS_DECLARATION_ATTR = "class-declaration";
+         public const string CONFIG_CLASS_CONSTRAINT_ATTR = "class-constraint";
          public const string CONFIG_BASE_CLASS_NAME_ATTR = "base-class-name";
          public const string CONFIG_REF_ASSEMBLY_SECTION = "ref-asm";
          public const string CONFIG_REF_ASSEMBLY_NAME_ATTR = "name";
@@ -323,6 +325,8 @@ private class FSM
       int Idx;
       string Namespace;
       string ClassName;
+      string ClassDeclaration;
+      string ClassConstraint;
       string BaseClassName;
       int ClassID;
       bool Abstract;
@@ -430,14 +434,14 @@ private class FSM
         {
           if (string.CompareOrdinal(s, block.Value)==0)
           {
-            Code.AppendFormat("        Target.Write( {0}.{1} );\n", ClassName, block.Key);
+            Code.AppendFormat("        Target.Write( {0}.{1} );\n", ClassDeclaration, block.Key);
             return;
           }
         }
         var bn = getLiteralBlockName();
 
         LiteralBlocks[bn] = s;
-        Code.AppendFormat("        Target.Write( {0}.{1} );\n", ClassName, bn);
+        Code.AppendFormat("        Target.Write( {0}.{1} );\n", ClassDeclaration, bn);
       }
 
 
@@ -465,6 +469,10 @@ private class FSM
                 if (string.IsNullOrWhiteSpace(ClassName)) ClassName = Compiler.BaseTypeName;
                 if (string.IsNullOrWhiteSpace(ClassName)) ClassName = Compiler.GenerateUniqueName(); 
 
+                ClassDeclaration = cnode.AttrByName(CONFIG_CLASS_DECLARATION_ATTR).ValueAsString(ClassName);
+                if (string.IsNullOrWhiteSpace(ClassDeclaration)) ClassDeclaration = ClassName;
+
+                ClassConstraint = cnode.AttrByName(CONFIG_CLASS_CONSTRAINT_ATTR).Value;
 
 
                 ClassID = Math.Abs(ClassName.GetHashCode() % 100);
@@ -568,7 +576,7 @@ private class FSM
                 if (Attributes.Count>0)
                   foreach(var attr in Attributes)
                     Result.AppendFormat(" [{0}] \n", attr);
-                Result.AppendFormat(" public {0} class {1} : {2}\n", Abstract ? "abstract":string.Empty, ClassName, BaseClassName);
+                Result.AppendFormat(" public {0} class {1} : {2} {3}\n", Abstract ? "abstract":string.Empty, ClassDeclaration, BaseClassName, ClassConstraint);
                 Result.AppendLine  (" {");
                 Result.AppendLine(Areas[CLASS_AREA].ToString());
               

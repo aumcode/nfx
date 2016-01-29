@@ -39,11 +39,11 @@ namespace ErlangNode
         private static void run(IConfigSectionNode argsConfig, bool hasConfigFile)
         {
             //try to read from  /config file
-            var localNodeName  = argsConfig.AttrByName("local").Value;
-            var remoteNodeName = argsConfig.AttrByName("remote").Value;
-            var cookie = new ErlAtom(argsConfig.AttrByName("cookie").ValueAsString(string.Empty));
-            var trace = (ErlTraceLevel)Enum.Parse(typeof(ErlTraceLevel), argsConfig.AttrByName("trace").ValueAsString("Off"), true);
-            var timeout = argsConfig.AttrByName("timeout").ValueAsInt(120);
+            var localNodeName  = argsConfig["local"].AttrByIndex(0).Value;
+            var remoteNodeName = argsConfig["remote"].AttrByIndex(0).Value;
+            var cookie = new ErlAtom(argsConfig["cookie"].AttrByIndex(0).ValueAsString(string.Empty));
+            var trace = (ErlTraceLevel)Enum.Parse(typeof(ErlTraceLevel), argsConfig["trace"].AttrByIndex(0).ValueAsString("Off"), true);
+            var timeout = argsConfig["timeout"].AttrByIndex(0).ValueAsInt(120);
 
             if (!hasConfigFile && (localNodeName == null || remoteNodeName == null))
             {
@@ -59,7 +59,7 @@ namespace ErlangNode
                                   "  [Shell A] $ erl -sname a\n" +
                                   "  [Shell B] $ {0} -local b -remote a -trace Send -timeout 60\n\n" +
                                   "  In the Erlang shell send messages to the C# node:\n" +
-                                  "  [Shell A] (a@localhost)1> {test, b@localhost} ! \"Hello World!\".\n"
+                                  "  [Shell A] (a@localhost)1> {{test, b@localhost}} ! \"Hello World!\".\n"
                                   , MiscUtils.ExeName(false));
                 Environment.Exit(1);
             }
@@ -90,10 +90,11 @@ namespace ErlangNode
                 Console.WriteLine("<I/O output>  ==> Received output: {0}", output);
 
             // Create a named mailbox "test"
+            ErlMbox mbox = null;
 
-            var mbox = node.CreateMbox("test");
-
-            if (!hasConfigFile)
+            if (hasConfigFile)
+                mbox = node.CreateMbox("test");
+            else
             {
                 node.TraceLevel = trace;
                 Console.WriteLine("Node = {0}, cookie = {1}", node.NodeName, node.Cookie);
@@ -109,6 +110,8 @@ namespace ErlangNode
                     Console.WriteLine("Error: " + e.Message);
                     goto exit;
                 }
+
+                mbox = node.CreateMbox("test");
 
                 // Connect to remote node
 

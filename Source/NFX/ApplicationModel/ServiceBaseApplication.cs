@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using NFX.ApplicationModel;
@@ -290,44 +291,12 @@ namespace NFX.ApplicationModel
       {
         Instance.Dispose();
       }
-
-
-      public static void WriteToLog(string msgText)
-      {
-        WriteToLog(MessageType.Info, null, msgText);
-      }
-
-
-      public static void WriteToLog(MessageType type, string msgText)
-      {
-        WriteToLog(type, null, msgText);
-      }
-
-
-
-      public static void WriteToLog(MessageType type, string from, string msgText)
-      {
-        Instance.Log.Write(new NFX.Log.Message()
-                             {
-                               Topic = StringConsts.SVCAPPLICATION_TOPIC,
-                               Type  = type,
-                               From = from,
-                               Text = msgText
-                             }
-                           );
-      }
-
     
     #endregion
 
 
     #region Protected
 
-
-      protected override string LogTopic
-      {
-          get { return  StringConsts.SVCAPPLICATION_TOPIC; }
-      }
 
       protected virtual Configuration GetConfiguration()
       {

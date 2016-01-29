@@ -20,6 +20,35 @@ namespace NFX.NUnit.Serialization
     #region Tests
 
       [Test]
+      public void T_Null()
+      {
+        var rowA = new RowWithNulls
+        {
+           FirstName = "Vladimir",
+           LastName = null,
+           Age =  240,
+           G_GDID = null
+        };
+
+        var rc = new RowConverter();
+
+        var doc = rc.RowToBSONDocument(rowA, "A");
+
+        Console.WriteLine(doc["LastName"]);
+        Console.WriteLine(doc["G_GDID"]);
+        Console.WriteLine( doc.ToString() );
+
+        var row2 = new RowWithNulls();
+
+        rc.BSONDocumentToRow(doc, row2, "A");
+
+        Assert.AreEqual("Vladimir", row2.FirstName);
+        Assert.IsNull(row2.LastName);
+        Assert.AreEqual(240, row2.Age);
+        Assert.IsNull(row2.G_GDID);
+      }
+
+      [Test]
       public void T_00_Enum_Equals()
       {
         var row1 = new EnumRow
@@ -710,6 +739,14 @@ namespace NFX.NUnit.Serialization
     #endregion
 
     #region Mocks
+         
+         public class RowWithNulls : AmorphousTypedRow
+         {
+           [Field] public string FirstName{get;set;}
+           [Field] public string LastName{get;set;}
+           [Field] public int Age{get;set;} 
+           [Field] public GDID? G_GDID {get;set;} 
+         }
 
          public enum ETest { Zero = 0x77, One, Two }
 

@@ -1,4 +1,6 @@
 ﻿"use strict";
+/*jshint devel: true,browser: true, sub: true */ 
+/*global WAVE: true,Stripe: true,$: true */
 WAVE.Pay.Providers.Stripe = (function () { 
 
     var provider = { TYPE: "stripe" };
@@ -29,7 +31,7 @@ WAVE.Pay.Providers.Stripe = (function () {
             case "502": return provider.HTTPStatus.STATUS50X;     
             case "503": return provider.HTTPStatus.STATUS50X;     
             case "504": return provider.HTTPStatus.STATUS50X;     
-        };
+        }
         return status;
     }
      
@@ -43,7 +45,7 @@ WAVE.Pay.Providers.Stripe = (function () {
             case "card_error": return WAVE.Pay.ErrorTypes.CARD_ERROR;                   
             case "invalid_request_error": return WAVE.Pay.ErrorTypes.INVALID_REQUEST_ERROR;  
             case "rate_limit_error": return WAVE.Pay.ErrorTypes.RATE_LIMIT_ERROR;       
-        };
+        }
         return WAVE.Pay.ErrorTypes.OK;
     }
     
@@ -62,7 +64,7 @@ WAVE.Pay.Providers.Stripe = (function () {
             case "card_declined": return WAVE.Pay.CardErrors.CARD_DECLINED;        
             case "missing": return WAVE.Pay.CardErrors.MISSING;                   
             case "processing_error": return WAVE.Pay.CardErrors.PROCESSING_ERROR;   
-        };
+        }
         return WAVE.Pay.CardErrors.OK;
     }
   
@@ -160,7 +162,7 @@ WAVE.Pay.Providers.Stripe = (function () {
             }
 
             callback(result);
-        }
+        };
 
         // call stripe.js to obtain card payment token
         Stripe.card.createToken(stripeCardData, responseHandler);   

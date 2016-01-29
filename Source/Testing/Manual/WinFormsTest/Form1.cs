@@ -26,6 +26,7 @@ using System.Text;
 using System.Windows.Forms;
 
 
+using NFX;
 using NFX.WinForms;
 using NFX.WinForms.Controls;
 
@@ -94,7 +95,7 @@ namespace WinFormsTest
     private void button6_Click(object sender, EventArgs e)
     {
       for(int i=0; i<1000; i++)
-             BaseApplication.WriteToLog("Message number: "+ i.ToString());
+             App.Log.Write( new NFX.Log.Message{Text = "Message number: "+ i.ToString()});
              
              
       BaseApplication.Instance.Log.Write(new NFX.Log.Message(){}); 

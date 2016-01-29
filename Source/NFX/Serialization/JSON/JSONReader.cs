@@ -198,11 +198,12 @@ namespace NFX.Serialization.JSON
                     else if (fv is JSONDataArray || fv.GetType().IsArray)
                     {
                           JSONDataArray arr;
-                          if (fv is JSONDataArray)  arr = (JSONDataArray)fv;
+                          if (fv is JSONDataArray) 
+                            arr = (JSONDataArray)fv;
                           else
                           {
-                              arr = new JSONDataArray(((Array)fv).Length);
-                              foreach(var elm in (System.Collections.IEnumerable)fv) arr.Add(elm);
+                            arr = new JSONDataArray(((Array)fv).Length);
+                            foreach(var elm in (System.Collections.IEnumerable)fv) arr.Add(elm);
                           }
                   
                           if (rfd.Type.IsArray)
@@ -225,26 +226,61 @@ namespace NFX.Serialization.JSON
                                   row.SetFieldValue(rfd, narr);
                                 }
                           }
-                          else//List
+                          else if (rfd.Type.IsGenericType && rfd.Type.GetGenericTypeDefinition() == typeof(List<>))//List
                           {
-                                var gargs = rfd.Type.GetGenericArguments();
-                                if (gargs!=null && gargs.Length==1)
+                                var gat = rfd.Type.GetGenericArguments()[0];
+                                
+                                var lst = Activator.CreateInstance(rfd.Type) as System.Collections.IList;
+                                
+                                if (typeof(TypedRow).IsAssignableFrom(gat))
                                 {
-                                  var lst = Activator.CreateInstance(rfd.Type) as System.Collections.IList;
-                                  if (gargs[0].IsPrimitive)
-                                  {
+                                  for(var i=0; i<arr.Count; i++)
+                                    if (arr[i] is JSONDataMap)
+                                      lst.Add( ToRow(gat, arr[i] as JSONDataMap) );
+                                    else
+                                      lst.Add(null);
+                                }
+                                else if (gat==typeof(object))
+                                {
+                                  for(var i=0; i<arr.Count; i++)
+                                      lst.Add( arr[i] );
+                                }
+                                else if (gat==typeof(string))
+                                {
+                                  for(var i=0; i<arr.Count; i++)
+                                    if (arr[i]!=null)
+                                      lst.Add( arr[i].ToString() );
+                                    else
+                                      lst.Add( null );
+                                }
+                                else if (gat.IsPrimitive || 
+                                    gat==typeof(NFX.DataAccess.Distributed.GDID) ||
+                                    gat==typeof(Guid) ||
+                                    gat==typeof(DateTime))
+                                {
+                                  for(var i=0; i<arr.Count; i++)
+                                    if (arr[i]!=null)
+                                      lst.Add( StringValueConversion.AsType(arr[i].ToString(), gat, false) );
+                                }
+                                else if (gat.IsGenericType && gat.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                { 
+                                    var nt = gat.GetGenericArguments()[0];
+                                    if (nt.IsPrimitive ||
+                                        nt==typeof(NFX.DataAccess.Distributed.GDID) ||
+                                        nt==typeof(Guid) ||
+                                        nt==typeof(DateTime))
+                                    {
+                                
                                     for(var i=0; i<arr.Count; i++)
                                       if (arr[i]!=null)
-                                        lst.Add( StringValueConversion.AsType(arr[i].ToString(), gargs[0], false) );
-                                  }
-                                  else
-                                  {
-                                    for(var i=0; i<arr.Count; i++)
-                                      if (arr[i] is JSONDataMap)
-                                        lst.Add( ToRow(gargs[0], arr[i] as JSONDataMap) );
-                                  }
-                                  row.SetFieldValue(rfd, lst);
+                                        lst.Add( StringValueConversion.AsType(arr[i].ToString(), gat, false) );
+                                      else
+                                        lst.Add( null);
+                                    }
                                 }
+                                
+                                row.SetFieldValue(rfd, lst);
+                                
                           }
                     }
                     else
@@ -281,8 +317,11 @@ namespace NFX.Serialization.JSON
               var form = row as FormModel;
               if (form != null)
               {
-                form.FormMode = jsonMap[FormModel.JSON_MODE_PROPERTY].AsEnum<FormMode>(FormMode.Unspecified);
+                form.FormMode  = jsonMap[FormModel.JSON_MODE_PROPERTY].AsEnum<FormMode>(FormMode.Unspecified);
                 form.CSRFToken = jsonMap[FormModel.JSON_CSRF_PROPERTY].AsString();
+                var roundtrip  = jsonMap[FormModel.JSON_ROUNDTRIP_PROPERTY].AsString();
+                if (roundtrip.IsNotNullOrWhiteSpace())
+                 form.SetRoundtripBagFromJSONString(roundtrip);
               }
 
               if (amorph!=null && amorph.AmorphousDataEnabled )

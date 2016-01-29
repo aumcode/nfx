@@ -16,7 +16,9 @@
 </FILE_LICENSE>*/
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using NFX.Time;
@@ -211,20 +213,6 @@ namespace NFX.ApplicationModel
         public void Stop()
         {
 
-        }
-
-        public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
-        {
-            if (Log==null) return;
-        
-            Log.Write(new NFX.Log.Message()
-                        {
-                          Topic = GetType().Name,
-                          Type = type,
-                          From = from,
-                          Text = msgText,
-                          Exception = error
-                        });
         }
     }
 }

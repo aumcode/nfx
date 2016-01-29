@@ -1,4 +1,6 @@
 ﻿"use strict";
+/*jshint devel: true,browser: true, sub: true */ 
+/*global WAVE: true,braintree: true,$: true */
 WAVE.Pay.Providers.Braintree = (function () { 
 
     function mapStatus(status) {

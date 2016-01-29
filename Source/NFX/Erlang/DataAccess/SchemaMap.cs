@@ -100,10 +100,14 @@ namespace NFX.DataAccess.Erlang
     ///    {aaa, 8944, tav, "Have you seen this?", false} 
     /// ]
     /// </remarks>
-    public RowsetBase ErlCRUDResponseToRowset(string schemaName, ErlList erlData)
+    public RowsetBase ErlCRUDResponseToRowset(string schemaName, ErlList erlData, Type tRow = null)
     {
       var crudSchema = GetCRUDSchemaForName(schemaName);
-      var result = new Rowset(crudSchema);
+      var tSchema    = tRow == null
+        ? crudSchema
+        : Schema.GetForTypedRow(tRow);
+
+      var result = new Rowset(tSchema);
 
       foreach(var elm in erlData)
       {
@@ -112,6 +116,12 @@ namespace NFX.DataAccess.Erlang
           throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"ErlCRUDResponseToRowset(list element is not tuple)");
 
         var row = ErlTupleToRow(schemaName, tuple, crudSchema);
+        if (tRow != null)
+        {
+          var trow = Row.MakeRow(tSchema, tRow);
+          row.CopyFields(trow);
+          row = trow;
+        }
         result.Add( row );
       }
 
@@ -165,21 +175,28 @@ namespace NFX.DataAccess.Erlang
           {
             clrValue = mapping.Item2(elm);
           }
-          catch(Exception error)
+          catch (Exception error)
           {
-            App.Log.Write( new Log.Message
+            var err = "Schema '{0}' field '{1}' ({2}) cannot be converted from '{3}' to '{4}' format in record:\n  {5}"
+              .Args(schemaName, fdef.Name, elm.ToString(), elm.GetType(), erlType, tuple.ToString());
+            App.Log.Write(new Log.Message
             {
               Type = Log.MessageType.TraceErl,
               Topic = CoreConsts.ERLANG_TOPIC,
               From = "SchemaMap.ErlTupleToRow({0})".Args(schemaName),
-              Text = "Error converting element '{0}'->'{1}': {2}".Args(erlType, elm.GetType(), error.ToMessageWithType()),
+              Text = err + error.ToMessageWithType(),
               Exception = error
             });
-            throw;
+            throw new ErlDataAccessException(err, inner: error);
           }
           row.SetFieldValue(fdef, clrValue);
         }
-        else throw new ErlDataAccessException(StringConsts.ERL_DS_INTERNAL_MAPPING_ERROR+"erltype'{0}' not matched in the dict".Args(erlType));
+        else
+        {
+          var err = StringConsts.ERL_DS_INTERNAL_MAPPING_ERROR +
+                    "erltype'{0}' not matched in the dict".Args(erlType);
+          throw new ErlDataAccessException(err);
+        }
       }
   
       return row;
@@ -446,7 +463,7 @@ namespace NFX.DataAccess.Erlang
         {"bool",     (clr) => new ErlBoolean(clr.AsBool(handling: ConvertErrorHandling.Throw))},
         {"binary",   (clr) => new ErlBinary((byte[])clr)},
         {"binstr",   (clr) => new ErlBinary(Encoding.UTF8.GetBytes((string)clr))},
-        {"ip",       (clr) => { var a = clr.AsString().Split(new char[] {'.'}).Select(s => int.Parse(s)).ToArray(); return new ErlTuple(a); } },
+        {"ip",       (clr) => ipAddrToErlTuple((string)clr)},
         {"ref",      (clr) => ErlRef.Parse(clr.ToString())}
       };
 
@@ -467,12 +484,20 @@ namespace NFX.DataAccess.Erlang
           return string.Join(".", ((ErlTuple) erl).Value.Select(i => i.ValueAsInt.ToString()).Take(4));
         }
         catch (Exception e)
-        {
+        { 
           throw new ErlException(StringConsts.ERL_INVALID_VALUE_ERROR.Args(erl.ToString()), e);
         }
       }
 
-      private static DateTime erlDate2DateTime(IErlObject erl)
+    private static ErlTuple ipAddrToErlTuple(string addr)
+    {
+      var a = addr.AsString().Split(new char[] { '.' }).Select(s => int.Parse(s)).ToArray();
+      if (a.Length != 4)
+        throw new ErlDataAccessException("Invalid IP address format: " + addr);
+      return new ErlTuple(a[0], a[1], a[2], a[3]);
+    }
+
+    private static DateTime erlDate2DateTime(IErlObject erl)
       {
         try
         {

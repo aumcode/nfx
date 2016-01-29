@@ -164,11 +164,6 @@ namespace NFX.ApplicationModel
      /// </summary>
      /// <returns>True if notifiable instance was found and removed</returns>
      bool UnregisterAppFinishNotifiable(IApplicationFinishNotifiable notifiable);
-
-     /// <summary>
-     /// Writes Application.LogTopic message
-     /// </summary>
-     void WriteLog(Log.MessageType type, string from, string msgText, Exception error = null);
   }
   
   

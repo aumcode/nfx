@@ -30,7 +30,7 @@ namespace NFX.Wave.Templatization
     /// <summary>
     /// Defines a base class for web-related templates
     /// </summary>
-    public abstract class WaveTemplate : Template<WorkContext, ResponseRenderingTarget, object>
+    public abstract class WaveTemplate : Template<WorkContext, IRenderingTarget, object>
     {
 
          public WaveTemplate() : base()
@@ -71,7 +71,7 @@ namespace NFX.Wave.Templatization
         /// <summary>
         /// Renders template by generating content into ResponseRenderingTarget
         /// </summary>
-        public new void Render(ResponseRenderingTarget target, object model)
+        public void Render(ResponseRenderingTarget target, object model)
         {
           Context.Response.ContentType = ContentType;
           base.Render(target, model);
@@ -84,6 +84,27 @@ namespace NFX.Wave.Templatization
         {
           this.BindGlobalContexts(work);
           Render(new ResponseRenderingTarget(work), model);
+        }
+
+        /// <summary>
+        /// Renders template to string
+        /// </summary>
+        public string RenderToString(bool encodeHtml = true, object model = null)
+        {
+          var target = new NFX.Templatization.StringRenderingTarget(encodeHtml);
+          base.Render(target, model);
+          return target.Value;
+        }
+
+        /// <summary>
+        /// Renders template to string in a WorkContext
+        /// </summary>
+        public string RenderToString(WorkContext work, bool encodeHtml = true, object model = null)
+        {
+          this.BindGlobalContexts(work);
+          var target = new NFX.Templatization.StringRenderingTarget(encodeHtml);
+          base.Render(target, model);
+          return target.Value;
         }
 
 

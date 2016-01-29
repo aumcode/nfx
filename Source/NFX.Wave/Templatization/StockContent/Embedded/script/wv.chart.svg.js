@@ -1,4 +1,6 @@
 ﻿"use strict";
+/*jshint devel: true,browser: true, sub: true */ 
+/*global WAVE: true,$: true */
 WAVE.Chart = {};
 
 WAVE.Chart.SVG = (function () {
@@ -6,7 +8,7 @@ WAVE.Chart.SVG = (function () {
 
   var AIKEY = "__wv.chart.svg";
 
-  var undefined = "undefined";
+  var tUNDEFINED = "undefined";
 
   var EVT_CHANGED = "EVT_CHANGED";
 
@@ -84,78 +86,88 @@ WAVE.Chart.SVG = (function () {
   published.dvInfo = function (_d0, _d1, _v0, _v1, _isLinear) {
 
     var fIsDate = _d0 instanceof Date;
-    this.isDate = function() { return fIsDate; }
+    this.isDate = function() { return fIsDate; };
 
     var fd0 = _d0;
     this.d0 = function (val) {
-      if (typeof (val) != undefined) fd0 = val;
+      if (typeof (val) != tUNDEFINED) fd0 = val;
       return fd0;
-    }
+    };
 
     var fd1 = _d1;
     this.d1 = function (val) {
-      if (typeof (val) != undefined) fd1 = val;
+      if (typeof (val) != tUNDEFINED) fd1 = val;
       return fd1;
-    }
+    };
 
     var fv0 = _v0;
     this.v0 = function (val) {
-      if (typeof (val) != undefined) fv0 = val;
+      if (typeof (val) != tUNDEFINED) fv0 = val;
       return fv0;
-    }
+    };
 
     var fv1 = _v1;
     this.v1 = function (val) {
-      if (typeof (val) != undefined) fv1 = val;
+      if (typeof (val) != tUNDEFINED) fv1 = val;
       return fv1;
-    }
+    };
 
     var fIsLinear = _isLinear;
     this.isLinear = function (val) {
-      if (typeof (val) != undefined) fIsLinear = val;
+      if (typeof (val) != tUNDEFINED) fIsLinear = val;
       return fIsLinear;
-    }
+    };
 
+    
     if (_isLinear) {
+      
+      var dPerV;
+      
       if (fIsDate) {
-        var dPerV = (_d1.getTime() - _d0.getTime()) / (_v1 - _v0);
+        dPerV = (_d1.getTime() - _d0.getTime()) / (_v1 - _v0);
 
-        this.d2v = function (d) { return Math.floor(_v0 + (d.getTime() - _d0.getTime()) / dPerV); }
-        this.v2d = function (v) { return new Date(Math.ceil(_d0.getTime() + (v - _v0) * dPerV)); }
+        this.d2v = function (d) { return Math.floor(_v0 + (d.getTime() - _d0.getTime()) / dPerV); };
+        this.v2d = function (v) { return new Date(Math.ceil(_d0.getTime() + (v - _v0) * dPerV)); };
       } else {
-        var dPerV = (_d1 - _d0) / (_v1 - _v0);
+        dPerV = (_d1 - _d0) / (_v1 - _v0);
         this.d2v = function (d) { 
           var v = (_v0 + (d - _d0) / dPerV);
           return v;
-        }
+        };
         this.v2d = function (v) {
           return (_d0 + (v - _v0) * dPerV);
-        }
+        };
       }
     } else {
+
+      var lgd0;
+      var lgd1;
+      var k;
+      var s;
+
       if (fIsDate) {
-        var lgd0 = mathLog10(_d0.getTime());
-        var lgd1 = mathLog10(_d1.getTime());
-        var k = (_v1 - _v0) / (lgd1 - lgd0);
-        var s = _v0 - k * lgd0;
+        lgd0 = mathLog10(_d0.getTime());
+        lgd1 = mathLog10(_d1.getTime());
+        k = (_v1 - _v0) / (lgd1 - lgd0);
+        s = _v0 - k * lgd0;
 
-        this.d2v = function (d) { return Math.floor(d.getTime() <= 1 ? 0 : k * mathLog10(d.getTime()) + s); }
-        this.v2d = function (v) { return new Date(Math.ceil(Math.pow(10, (v - s) / k))); }
+        this.d2v = function (d) { return Math.floor(d.getTime() <= 1 ? 0 : k * mathLog10(d.getTime()) + s); };
+        this.v2d = function (v) { return new Date(Math.ceil(Math.pow(10, (v - s) / k))); };
       } else {
-        var lgd0 = mathLog10(_d0 <= 0 ? 1 : _d0);
-        var lgd1 = mathLog10(_d1 <= 0 ? 1 : _d1);
-        var k = (_v1 - _v0) / (lgd1 - lgd0);
-        var s = _v0 - k * lgd0;
+        lgd0 = mathLog10(_d0 <= 0 ? 1 : _d0);
+        lgd1 = mathLog10(_d1 <= 0 ? 1 : _d1);
+        k = (_v1 - _v0) / (lgd1 - lgd0);
+        s = _v0 - k * lgd0;
 
-        this.d2v = function (d) { return Math.floor(d <= 1 ? 0 : k * mathLog10(d) + s); }
-        this.v2d = function (v) { return Math.ceil(Math.pow(10, (v - s) / k)); }
+        this.d2v = function (d) { return Math.floor(d <= 1 ? 0 : k * mathLog10(d) + s); };
+        this.v2d = function (v) { return Math.ceil(Math.pow(10, (v - s) / k)); };
       }
     }
-  }
+  };
 
   published.dvInfo.prototype.toString = function () {
     return "(d0=" + this.d0() + ",d1=" + this.d1() + ") (v0=" + this.v0() + ",v1=" + this.v1() + ")" + " isLinear=" + this.isLinear();
-  }
+  };
 
   published.Axis = function (chart, cfg) {
     var self = this;
@@ -164,107 +176,107 @@ WAVE.Chart.SVG = (function () {
 
     cfg = cfg || {};
 
-    this.chart = function () { return chart; }
+    this.chart = function () { return chart; };
 
     var fDataType = cfg.dataType || published.DataType.NUMBER;
     this.dataType = function (val) {
-      if (typeof (val) != undefined && val !== fDataType) {
+      if (typeof (val) != tUNDEFINED && val !== fDataType) {
         fDataType = val;
         self.fireChanged();
       }
       return fDataType;
-    }
+    };
 
     var fMin = cfg.min || null;
     this.min = function(val) {
-      if (typeof(val) !== undefined && val !== fMin) {
+      if (typeof(val) !== tUNDEFINED && val !== fMin) {
         fMin = val;
         self.fireChanged();
       }
       return fMin;
-    }
+    };
 
     var fMax = cfg.max || null;
     this.max = function(val) {
-      if (typeof(val) !== undefined && val !== fMax) {
+      if (typeof(val) !== tUNDEFINED && val !== fMax) {
         fMax = val;
         self.fireChanged();
       }
       return fMax;
-    }
+    };
 
     var fMinMargin = cfg.minMargin || 0;
     this.minMargin = function(val) {
-      if (typeof(val) !== undefined && $.isNumeric(val) && val !== fMinMargin) {
+      if (typeof(val) !== tUNDEFINED && $.isNumeric(val) && val !== fMinMargin) {
         fMinMargin = val;
         self.fireChanged();
       }
       return fMinMargin;
-    }
+    };
 
     var fMaxMargin = cfg.maxMargin || 0;
     this.maxMargin = function(val) {
-      if (typeof(val) !== undefined && $.isNumeric(val) && val !== fMaxMargin) {
+      if (typeof(val) !== tUNDEFINED && $.isNumeric(val) && val !== fMaxMargin) {
         fMaxMargin = val;
         self.fireChanged();
       }
       return fMaxMargin;
-    }
+    };
 
     var fIsLinear = cfg.isLinear !== false;
     this.isLinear = function (val) {
-      if (typeof (val) != undefined && val !== fIsLinear) {
+      if (typeof (val) != tUNDEFINED && val !== fIsLinear) {
         fIsLinear = val;
         self.fireChanged();
       }
       return fIsLinear;
-    }
+    };
 
     var fMarkType = cfg.markType || published.AxisMarkType.AUTO;
     this.markType = function(val) {
-      if (typeof (val) !== undefined && val !== fMarkType) {
+      if (typeof (val) !== tUNDEFINED && val !== fMarkType) {
         fMarkType = val;
         self.fireChanged();
       }
       return fMarkType;
-    }
+    };
 
     var fTickLength = 5;
     this.tickLength = function (val) {
-      if (typeof (val) != undefined && val !== fTickLength) {
+      if (typeof (val) != tUNDEFINED && val !== fTickLength) {
         fTickLength = val;
         self.fireChanged();
       }
       return fTickLength;
-    }
+    };
 
     var fTickTextMargin = cfg.tickTextMargin || 3;
     this.tickTextMargin = function (val) {
-      if (typeof (val) != undefined && val !== fVerticalMargin) {
+      if (typeof (val) !== tUNDEFINED && val !== fTickTextMargin) {
         fTickTextMargin = val;
         self.fireChanged();
       }
       return fTickTextMargin;
-    }
+    };
 
     var fDVInfo;
     this.dvInfo = function (val) {
-      if (typeof (val) != undefined) fDVInfo = val;
+      if (typeof (val) != tUNDEFINED) fDVInfo = val;
       return fDVInfo;
-    }
+    };
 
     var fTicks;
     this.ticks = function (val) {
-      if (typeof (val) !== undefined) fTicks = val;
+      if (typeof (val) !== tUNDEFINED) fTicks = val;
       return fTicks;
-    }
+    };
 
-    this.fireChanged = function() { self.eventInvoke(EVT_CHANGED); }
-  }
+    this.fireChanged = function() { self.eventInvoke(EVT_CHANGED); };
+  };
 
-  published.Axis.prototype.toSeconds = function(dt) { return dt.valueOf() / 1000; }
+  published.Axis.prototype.toSeconds = function(dt) { return dt.valueOf() / 1000; };
 
-  published.Axis.prototype.fromSeconds = function (totalSeconds) { return new Date(totalSeconds * 1000); }
+  published.Axis.prototype.fromSeconds = function (totalSeconds) { return new Date(totalSeconds * 1000); };
 
   published.Axis.prototype.getVTimeTicks = function (v0, v1, dt0, dt1, labelLength, labelMargin) {
     var d0 = this.toSeconds(dt0), d1 = this.toSeconds(dt1);
@@ -286,16 +298,16 @@ WAVE.Chart.SVG = (function () {
       vTick += vTickLength;
     }
     return vTicks;
-  }
+  };
 
   published.Axis.prototype.calcTimeTickLength = function (dv, dd, vLblLength, vLblMargin) {
     var dPerV = dd / dv;
     var vTicksMaxQty = Math.floor(dv / (vLblLength + 2 * vLblMargin));
     var dTickMaxLength = dd / vTicksMaxQty;
-    var dThreshhold = secondThresholdsItr.wFirst(function (th) { return dTickMaxLength < th });
+    var dThreshhold = secondThresholdsItr.wFirst(function (th) { return dTickMaxLength < th; });
     var vTickLength = dThreshhold / dPerV;
     return { vTickLength: vTickLength, dThreshhold: dThreshhold };
-  }
+  };
 
   published.Axis.prototype.getVLog10Ticks = function (v0, v1, d0, d1, labelLength, labelMargin) {
     var dd = d1 - d0, dv = v1 - v0;
@@ -314,7 +326,7 @@ WAVE.Chart.SVG = (function () {
     }
 
     return vTicks;
-  }
+  };
 
   published.Axis.prototype.getVTicks = function (v0, v1, d0, d1, labelLength, labelMargin) {
     var vTicks = [];
@@ -336,7 +348,7 @@ WAVE.Chart.SVG = (function () {
     }
 
     return vTicks;
-  }
+  };
 
   published.Axis.prototype.calcTicksLength = function (dv, dd, vLblLength, vLblMargin) {
     var dPerV = dd / dv;
@@ -346,11 +358,11 @@ WAVE.Chart.SVG = (function () {
     var d10Pow = Math.floor(Math.log(dTickMaxLength) / Math.LN10);
     var d10K = Math.pow(10, d10Pow);
     var dNormMinTickLength = dTickMaxLength / d10K;
-    var dThreshhold = threshholds.wFirst(function (th) { return dNormMinTickLength < th });
+    var dThreshhold = threshholds.wFirst(function (th) { return dNormMinTickLength < th; });
     var dTickLength = dThreshhold * d10K;
     var vTickLength = dTickLength / dPerV;
     return { vTickLength: vTickLength, dTickLength: dTickLength };
-  }
+  };
 
   published.Axis.prototype.labelValToStr = function (val) {
     var res;
@@ -360,7 +372,7 @@ WAVE.Chart.SVG = (function () {
       res = WAVE.toUSDateTimeString(val);
     }
     return res;
-  }
+  };
 
   published.Axis.prototype.calcLabelRc = function (svgEl, min, max) {
     var str;
@@ -378,33 +390,33 @@ WAVE.Chart.SVG = (function () {
     var boundingRc = txtEl.getBBox();
     svgEl.removeChild(txtEl);
     return boundingRc;
-  }
+  };
 
   published.XZone = function (chart) {
     var self = this;
 
     WAVE.extend(self, WAVE.EventManager);
 
-    this.chart = function () { return chart; }
+    this.chart = function () { return chart; };
 
     var fEnabled = true;
     this.enabled = function (val) {
-      if (typeof (val) != undefined && val !== fEnabled) { 
+      if (typeof (val) != tUNDEFINED && val !== fEnabled) { 
         fEnabled = val;
         fireChanged();
       }
       return fEnabled;
-    }
+    };
 
     function fireChanged() { self.eventInvoke(EVT_CHANGED); }
-  }
+  };
 
   published.XZone.prototype.getHeight = function (svgEl) {
     var seriesItr = this.chart().seriesListWalkable();
-    var axises = seriesItr.wGroup(function (s) { return s.xAxis() }, function (s) { return s.dataSet() });
-    var axisesNHeights = WAVE.arrayWalkable(axises.wSelect(function (e) { return { axis: e.k, height: e.k.getHeight(svgEl, e.v) } }).wToArray());
-    var zoneHeights = axisesNHeights.wGroup(function (e) { return e.axis.isBottom() }, function (e) { return e.height });
-    var zoneHeight = zoneHeights.wGroupAggregate(function (k, r, e) { return (r || 0) + e });
+    var axises = seriesItr.wGroup(function (s) { return s.xAxis(); }, function (s) { return s.dataSet(); });
+    var axisesNHeights = WAVE.arrayWalkable(axises.wSelect(function (e) { return { axis: e.k, height: e.k.getHeight(svgEl, e.v) }; }).wToArray());
+    var zoneHeights = axisesNHeights.wGroup(function (e) { return e.axis.isBottom(); }, function (e) { return e.height; });
+    var zoneHeight = zoneHeights.wGroupAggregate(function (k, r, e) { return (r || 0) + e; });
 
     var r = { top: 0, bottom: 0 };
 
@@ -417,7 +429,7 @@ WAVE.Chart.SVG = (function () {
     }
 
     return r;
-  }
+  };
 
   published.XZone.prototype.draw = function (svgEl, areas) {
     for (var i in areas) {
@@ -426,7 +438,7 @@ WAVE.Chart.SVG = (function () {
       svgEl.appendChild(bkgrRc);
     }
 
-    var axises = this.chart().seriesListWalkable().wGroup(function (s) { return s.xAxis() }, function (s) { return s.dataSet() });
+    var axises = this.chart().seriesListWalkable().wGroup(function (s) { return s.xAxis(); }, function (s) { return s.dataSet(); });
     var axisesWalker = axises.getWalker();
     var yTop = areas.top.bottom(), yBottom = areas.bottom.top();
 
@@ -435,7 +447,7 @@ WAVE.Chart.SVG = (function () {
 
       var axisHeight = axis.k.getHeight(svgEl, axis.v);
       var axisRect;
-      if (axis.k.isBottom() == true) {
+      if (axis.k.isBottom() === true) {
         axisRect = new geo.Rectangle(new geo.Point(areas.bottom.left(), yBottom), new geo.Point(areas.bottom.right(), yBottom+axisHeight));
         yBottom += axisHeight;
       } else {
@@ -444,7 +456,7 @@ WAVE.Chart.SVG = (function () {
       }
       axis.k.draw(svgEl, axisRect, axis.v);
     }
-  }
+  };
 
   published.XAxis = function (chart, cfg) {
     published.Axis.call(this, chart, cfg);
@@ -455,29 +467,29 @@ WAVE.Chart.SVG = (function () {
 
     var fVerticalMargin = cfg.verticalMargin || 3;
     this.verticalMargin = function (val) {
-      if (typeof (val) != undefined && val !== fVerticalMargin) {
-        fverticalMargin = val;
+      if (typeof (val) !== tUNDEFINED && val !== fVerticalMargin) {
+        fVerticalMargin = val;
         self.fireChanged();
       }
       return fVerticalMargin;
-    }
+    };
 
     var fIsBottom = cfg.isBottom !== false;
     this.isBottom = function (val) {
-      if (typeof (val) != undefined && val !== fIsBottom) {
+      if (typeof (val) !== tUNDEFINED && val !== fIsBottom) {
         fIsBottom = val;
         self.fireChanged();
       }
       return fIsBottom;
-    }
-  }
+    };
+  };
 
   published.XAxis.prototype = Object.create(published.Axis.prototype);
   published.XAxis.prototype.constructor = published.XAxis;
 
-  published.XAxis.prototype.d2v = function (d) { return this.dvInfo().d2v(d); }
+  published.XAxis.prototype.d2v = function (d) { return this.dvInfo().d2v(d); };
 
-  published.XAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(v); }
+  published.XAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(v); };
 
   published.XAxis.prototype.draw = function (svgEl, area, dataSets) {
     var minMax = this.getMinMax(dataSets);
@@ -489,14 +501,14 @@ WAVE.Chart.SVG = (function () {
       axisLine = WAVE.SVG.createLine(area.left(), area.bottom(), area.right(), area.bottom(), { class: UICls.CSS_CLASS_AXIS_LINE });
     svgEl.appendChild(axisLine);
     this.markAxis(svgEl, area, dataSets);
-  }
+  };
 
   published.XAxis.prototype.getHeight = function (svgEl, dataSets) {
     this.minMax = this.getMinMax(dataSets);
 
     var h;
 
-    if ((this.minMax.min || this.minMax.min == 0) && (this.minMax.max || this.minMax.max == 0)) {
+    if ((this.minMax.min || this.minMax.min === 0) && (this.minMax.max || this.minMax.max === 0)) {
       var lblRc = this.calcLabelRc(svgEl, this.minMax.min, this.minMax.max);
       h = Math.ceil(lblRc.height);
     } else {
@@ -504,31 +516,31 @@ WAVE.Chart.SVG = (function () {
     }
 
     return this.tickLength() + this.verticalMargin() + this.tickTextMargin() + h;
-  }
+  };
 
   published.XAxis.prototype.getMinMax = function (dataSets) {
-    var min = this.min() || dataSets.wSelect(function (ds) { return ds.getMinX() }).wWhere(function(m) {return m != null}).wMin();
-    if (min === null) min = (this.dataType() == published.DataType.DATE) ? new Date() : 0;
-    if (this.dataType() == published.DataType.DATE)
+    var min = this.min() || dataSets.wSelect(function (ds) { return ds.getMinX(); }).wWhere(function(m) {return m !== null;}).wMin();
+    if (min === null) min = (this.dataType() === published.DataType.DATE) ? new Date() : 0;
+    if (this.dataType() === published.DataType.DATE)
       min = new Date(min.getTime() - this.minMargin() * 1000);
     else 
       min -= this.minMargin();
 
-    var max = this.max() || dataSets.wSelect(function (ds) { return ds.getMaxX() }).wMax();
+    var max = this.max() || dataSets.wSelect(function (ds) { return ds.getMaxX(); }).wMax();
     if (max === null) max = (this.dataType() == published.DataType.DATE) ? new Date() : 0;
-    if (this.dataType() == published.DataType.DATE)
+    if (this.dataType() === published.DataType.DATE)
       max = new Date(max.getTime() + this.maxMargin() * 1000);
     else 
       max += this.maxMargin();
 
     this.minMax = {min: min, max: max};
     return this.minMax;
-  }
+  };
 
   published.XAxis.prototype.markAxis = function (svgEl, area, dataSets) {
     var _ticks;
     var minMaxs = this.getMinMax(dataSets);
-    if ((!this.minMax.min && this.minMax.min != 0) || (!this.minMax.max && this.minMax.max != 0)) return;
+    if ((!this.minMax.min && this.minMax.min !== 0) || (!this.minMax.max && this.minMax.max !== 0)) return;
 
     var lblRc = this.calcLabelRc(svgEl, minMaxs.min, minMaxs.max);
 
@@ -552,8 +564,8 @@ WAVE.Chart.SVG = (function () {
 
     this.ticks(_ticks);
 
-    for (var i in _ticks) {
-      var tick = _ticks[i];
+    for (var j in _ticks) {
+      var tick = _ticks[j];
 
       var line;
       if (this.isBottom())
@@ -572,32 +584,32 @@ WAVE.Chart.SVG = (function () {
       var txtRc = txtEl.getBBox();
       txtEl.setAttribute("x", tick.vTick - txtRc.width / 2);
     }
-  }
+  };
 
   published.YZone = function (chart) {
     var self = this;
 
     WAVE.extend(self, WAVE.EventManager);
 
-    this.chart = function () { return chart; }
+    this.chart = function () { return chart; };
 
     var fEnabled = true;
     this.enabled = function (val) {
-      if (typeof (val) != undefined && val !== fEnabled) { 
+      if (typeof (val) != tUNDEFINED && val !== fEnabled) { 
         fEnabled = val;
         fireChanged();
       }
       return fEnabled;
-    }
+    };
 
     this.getWidth = function (svgEl) {
       var seriesItr = self.chart().seriesListWalkable();
       
-      var axises = seriesItr.wGroup(function (s) { return s.yAxis() }, function (s) { return s.dataSet() });
-      var axisesNWidths = WAVE.arrayWalkable(axises.wSelect(function (e) { return { axis: e.k, width: e.k.getWidth(svgEl, e.v) } }).wToArray());
-      var zoneWidths = axisesNWidths.wGroup(function (e) { return e.axis.isLeft() }, function (e) { return e.width });
+      var axises = seriesItr.wGroup(function (s) { return s.yAxis(); }, function (s) { return s.dataSet(); });
+      var axisesNWidths = WAVE.arrayWalkable(axises.wSelect(function (e) { return { axis: e.k, width: e.k.getWidth(svgEl, e.v) }; }).wToArray());
+      var zoneWidths = axisesNWidths.wGroup(function (e) { return e.axis.isLeft(); }, function (e) { return e.width; });
       
-      var zoneWidth = zoneWidths.wGroupAggregate(function (k, r, e) { return (r || 0) + e });
+      var zoneWidth = zoneWidths.wGroupAggregate(function (k, r, e) { return (r || 0) + e; });
 
       var r = { left: 0, right: 0 };
 
@@ -611,7 +623,7 @@ WAVE.Chart.SVG = (function () {
       }
 
       return r;
-    }
+    };
 
     this.draw = function (svgEl, areas) {
 
@@ -621,7 +633,7 @@ WAVE.Chart.SVG = (function () {
         svgEl.appendChild(bkgrRc);
       }
 
-      var axises = self.chart().seriesListWalkable().wGroup(function (s) { return s.yAxis() }, function (s) { return s.dataSet() });
+      var axises = self.chart().seriesListWalkable().wGroup(function (s) { return s.yAxis(); }, function (s) { return s.dataSet(); });
       var axisesWalker = axises.getWalker();
       var xLeft = areas.left.right(), xRight = areas.right.left();
 
@@ -629,7 +641,7 @@ WAVE.Chart.SVG = (function () {
         var axis = axisesWalker.current();
         var axisWidth = axis.k.getWidth(svgEl, axis.v);
         var axisRect;
-        if (axis.k.isLeft() == true) {
+        if (axis.k.isLeft() === true) {
           axisRect = new geo.Rectangle(new geo.Point(xLeft - axisWidth, areas.left.top()), new geo.Point(xLeft, areas.left.bottom()));
           xLeft -= axisWidth;
         } else {
@@ -638,10 +650,10 @@ WAVE.Chart.SVG = (function () {
         }
         axis.k.draw(svgEl, axisRect, axis.v);
       }
-    }
+    };
 
     function fireChanged() { self.eventInvoke(EVT_CHANGED); }
-  }
+  };
 
   published.YAxis = function (chart, cfg) {
     published.Axis.call(this, chart, cfg);
@@ -652,31 +664,31 @@ WAVE.Chart.SVG = (function () {
 
     var fHorizontalMargin = cfg.horizontalMargin || 3;
     this.horizontalMargin = function (val) {
-      if (typeof (val) != undefined && val !== fHorizontalMargin) {
+      if (typeof (val) != tUNDEFINED && val !== fHorizontalMargin) {
         fHorizontalMargin = val;
         self.fireChanged();
       }
       return fHorizontalMargin;
-    }
+    };
 
     var fMinWidth = cfg.minWidth || 0;
     this.minWidth = function(val) {
-      if (typeof (val) != undefined && val !== fMinWidth) {
+      if (typeof (val) != tUNDEFINED && val !== fMinWidth) {
         fMinWidth = val;
         self.fireChanged();
       }
       return fMinWidth;
-    }
+    };
 
     var fIsLeft = cfg.isLeft !== false;
     this.isLeft = function (val) {
-      if (typeof (val) != undefined && val !== fIsLeft) {
+      if (typeof (val) != tUNDEFINED && val !== fIsLeft) {
         fIsLeft = val;
         self.fireChanged();
       }
       return fIsLeft;
-    }
-  }
+    };
+  };
 
   published.YAxis.prototype = Object.create(published.Axis.prototype);
   published.YAxis.prototype.constructor = published.YAxis;
@@ -684,9 +696,9 @@ WAVE.Chart.SVG = (function () {
   published.YAxis.prototype.d2v = function (d) { 
     var v = this.dvInfo().v0() + this.dvInfo().v1() - this.dvInfo().d2v(d); 
     return v;
-  }
+  };
 
-  published.YAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(this.dvInfo().v0() + this.dvInfo().v1() - v); }
+  published.YAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(this.dvInfo().v0() + this.dvInfo().v1() - v); };
 
   published.YAxis.prototype.markAxis = function (svgEl, area, dataSets) {
     var _ticks;
@@ -697,7 +709,7 @@ WAVE.Chart.SVG = (function () {
 
       var lblRc = this.calcLabelRc(svgEl, minMax.min, minMax.max);
       var labelLength = lblRc.height;
-      var labelMargin = labelLength * .2;
+      var labelMargin = labelLength * 0.2;
       var labelWidth = lblRc.width;
       //console.log(lblRc, minMax.min, minMax.max);
 
@@ -722,8 +734,8 @@ WAVE.Chart.SVG = (function () {
     var maxTickTxtWidth = 0;
 
     var txtElms = [];
-    for (var i in _ticks) {
-      var tick = _ticks[i];
+    for (var j in _ticks) {
+      var tick = _ticks[j];
       var invVTick = area.top() + area.bottom() - tick.vTick;
 
       var line;
@@ -749,14 +761,14 @@ WAVE.Chart.SVG = (function () {
     }
 
     if (!this.isLeft()) {
-      for (var i in txtElms) {
-        var txtElm = txtElms[i];
+      for (var k in txtElms) {
+        var txtElm = txtElms[k];
         var x = parseFloat( txtElm.getAttribute("x"));
         x += maxTickTxtWidth;
         txtElm.setAttribute("x", x);
       }
     }
-  }
+  };
 
   published.YAxis.prototype.draw = function (svgEl, area, dataSets) {
     var minMax = this.getMinMax(dataSets);
@@ -768,7 +780,7 @@ WAVE.Chart.SVG = (function () {
       axisLine = WAVE.SVG.createLine(area.left(), area.top(), area.left(), area.bottom(), { class: UICls.CSS_CLASS_AXIS_LINE });
     svgEl.appendChild(axisLine);
     this.markAxis(svgEl, area, dataSets);
-  }
+  };
 
   published.YAxis.prototype.getWidth = function (svgEl, itrDataSets) {
     this.minMax = this.getMinMax(itrDataSets);
@@ -777,24 +789,24 @@ WAVE.Chart.SVG = (function () {
     var w = this.tickLength() + this.horizontalMargin() + Math.ceil(lblRc.width);
 
     return Math.max(w, this.minWidth());
-  }
+  };
 
   published.YAxis.prototype.getMinMax = function (dataSets) {
-    var min = this.min() || dataSets.wSelect(function (ds) { return ds.getMinY() }).wWhere(function(m) {return m != null}).wMin();
-    if (this.dataType() == published.DataType.DATE)
+    var min = this.min() || dataSets.wSelect(function (ds) { return ds.getMinY(); }).wWhere(function(m) {return m !== null;}).wMin();
+    if (this.dataType() === published.DataType.DATE)
       min = new Date(min.getTime() - this.minMargin() * 1000);
     else 
       min -= this.minMargin();
 
-    var max = this.max() || dataSets.wSelect(function (ds) { return ds.getMaxY() }).wMax();
-    if (this.dataType() == published.DataType.DATE)
+    var max = this.max() || dataSets.wSelect(function (ds) { return ds.getMaxY(); }).wMax();
+    if (this.dataType() === published.DataType.DATE)
       max = new Date(max.getTime() + this.maxMargin() * 1000);
     else 
       max += this.maxMargin();
 
     this.minMax = {min: min, max: max};
     return this.minMax;
-  }
+  };
 
   published.LZone = function (chart, cfg) {
     cfg = cfg || {};
@@ -805,67 +817,67 @@ WAVE.Chart.SVG = (function () {
 
     this.chart = function () {
       return chart;
-    }
+    };
 
     var fEnabled = cfg.enabled !== false;
     this.enabled = function (val) {
-      if (typeof (val) != undefined && val !== fEnabled) { 
+      if (typeof (val) != tUNDEFINED && val !== fEnabled) { 
         fEnabled = val;
         fireChanged();
       }
       return fEnabled;
-    }
+    };
 
     var fLegendMargin = cfg.legendMargin || 10;
     this.legendMargin = function (val) {
-      if (typeof (val) != undefined && val !== fLegendMargin) { 
+      if (typeof (val) != tUNDEFINED && val !== fLegendMargin) { 
         fLegendMargin = val;
         fireChanged();
       }
       return fLegendMargin;
-    }
+    };
 
     var fSeriesMargin = cfg.seriesMargin || 3;
     this.seriesMargin = function (val) {
-      if (typeof (val) != undefined && val !== fSeriesMargin) {
+      if (typeof (val) != tUNDEFINED && val !== fSeriesMargin) {
         fSeriesMargin = val;
         fireChanged();
       }
       return fSeriesMargin;
-    }
+    };
 
     var fPrefixLength = cfg.prefixLength || 10;
     this.prefixLength = function (val) {
-      if (typeof (val) != undefined && val !== fPrefixLength) {
+      if (typeof (val) != tUNDEFINED && val !== fPrefixLength) {
         fPrefixLength = val;
         fireChanged();
       }
       return fPrefixLength;
-    }
+    };
 
     var fRowSpace = cfg.rowSpace || 3;
     this.rowSpace = function (val) {
-      if (typeof (val) != undefined && val !== fRowSpace) {
+      if (typeof (val) != tUNDEFINED && val !== fRowSpace) {
         fRowSpace = val;
         fireChanged();
       }
       return fRowSpace;
-    }
+    };
 
     var fCorner = cfg.corner || published.RectCorner.RIGHTTOP;
     this.corner = function (val) {
-      if (typeof (val) != undefined && val !== fCorner) {
+      if (typeof (val) != tUNDEFINED && val !== fCorner) {
         fCorner = val;
         fireChanged();
       }
       return fCorner;
-    }
+    };
 
     function fireChanged() { self.eventInvoke(EVT_CHANGED); }
-  }
+  };
 
   published.LZone.prototype.getSize = function (svgEl) {
-    var maxName = this.chart().seriesListWalkable().wSelect(function (e) { return e.title() || "" }).wMax(function (a, b) { return a.length > b.length });
+    var maxName = this.chart().seriesListWalkable().wSelect(function (e) { return e.title() || ""; }).wMax(function (a, b) { return a.length > b.length; });
     
     var txtEl = WAVE.SVG.createText(maxName, 0, 0, { class: UICls.CSS_CLASS_LEGEND_NAME, visibility: "hidden" });
     svgEl.appendChild(txtEl);
@@ -876,13 +888,13 @@ WAVE.Chart.SVG = (function () {
     var height = this.chart().seriesListWalkable().wCount() * (2 * this.seriesMargin() + boundingRc.height);
 
     return {w: width, h: height};
-  }
+  };
 
   published.LZone.prototype.drawLegendPrefix = function (svgEl, area, series) {
     var y = (area.top() + area.bottom()) / 2;
     var pathEl = WAVE.SVG.createPath({ d: "M" + area.left() + "," + y + " L" + (area.left() + this.prefixLength()) + "," + y, class: series.lineClass() });
     svgEl.appendChild(pathEl);
-  }
+  };
 
   published.LZone.prototype.draw = function (svgEl, area) {
     if (!this.enabled()) return;
@@ -912,7 +924,7 @@ WAVE.Chart.SVG = (function () {
 
       y += boundingRc.height + 2 * self.seriesMargin();
     });
-  }
+  };
 
   var seriesIdSeed = 0;
   published.SZone = function (chart, cfg) {
@@ -922,180 +934,180 @@ WAVE.Chart.SVG = (function () {
 
     cfg = cfg || {};
 
-    this.chart = function () { return chart; }
+    this.chart = function () { return chart; };
 
     var fChartType = cfg.chartType || published.ChartType.LINE;
     this.chartType = function (val) {
-      if (typeof (val) !== undefined && val !== fChartType) {
+      if (typeof (val) !== tUNDEFINED && val !== fChartType) {
         fChartType = val;
         fireChanged();        
       }
       return fChartType;
-    }
+    };
 
     var fSquareFillType = cfg.squareFillType || published.SquareFillType.BOTTOM;
     this.squareFillType = function (val) {
-      if (typeof (val) !== undefined && val !== fSquareFillType) {
+      if (typeof (val) !== tUNDEFINED && val !== fSquareFillType) {
         fSquareFillType = val;
         fireChanged();        
       }
       return fSquareFillType;
-    }
+    };
 
     var fPointType = cfg.pointType || published.PointType.CIRCLE;
     this.pointType = function (val) {
-      if (typeof (val) !== undefined && val !== fPointType) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointType) {
         fPointType = val;
         fireChanged();
       }
       return fPointType;
-    }
+    };
 
     var fLineClass = cfg.lineClass || UICls.CSS_CLASS_SERIES_LINE;
     this.lineClass = function (val) {
-      if (typeof (val) !== undefined && val !== fLineClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fLineClass) {
         fLineClass = val;
         fireChanged();
       }
       return fLineClass;
-    }
+    };
 
     var fLineSquareClass = cfg.lineSquareClass || UICls.CSS_CLASS_SERIES_LINE_SQUARE;
     this.lineSquareClass = function (val) {
-      if (typeof (val) !== undefined && val !== fLineSquareClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fLineSquareClass) {
         fLineSquareClass = val;
         fireChanged();
       }
       return fLineSquareClass;
-    }
+    };
 
     var fPointClass = cfg.pointClass || UICls.CSS_CLASS_SERIES_POINT;
     this.pointClass = function (val) {
-      if (typeof (val) !== undefined && val !== fPointClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointClass) {
         fPointClass = val;
         fireChanged();
       }
       return fPointClass;
-    }
+    };
 
     var fPointSize = cfg.pointSize || 5;
     this.pointSize = function (val) {
-      if (typeof (val) !== undefined && val !== fPointSize) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointSize) {
         fPointSize = val;
         fireChanged();
       }
       return fPointSize;
-    }
+    };
 
     var fBarClass = cfg.barClass || UICls.CSS_CLASS_SERIES_RECT;
     this.barClass = function (val) {
-      if (typeof (val) !== undefined && val !== fBarClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fBarClass) {
         fBarClass = val;
         fireChanged();
       }
       return fBarClass;
-    }
+    };
 
     var fBarWidth = cfg.barWidth || 10;
     this.barWidth = function (val) {
-      if (typeof (val) !== undefined && val !== fBarWidth) {
+      if (typeof (val) !== tUNDEFINED && val !== fBarWidth) {
         fBarWidth = val;
         fireChanged();
       }
       return fBarWidth;
-    }
+    };
 
     var fBarGroupMargin = cfg.barGroupMargin || 5;
     this.barGroupMargin = function (val) {
-      if (typeof (val) !== undefined && val !== fBarGroupMargin) {
+      if (typeof (val) !== tUNDEFINED && val !== fBarGroupMargin) {
         fBarGroupMargin = val;
         fireChanged();
       }
       return fBarGroupMargin;
-    }
+    };
 
     var fBarMargin = cfg.barMargin || 3;
     this.barMargin = function (val) {
-      if (typeof (val) !== undefined && val !== fBarGroupMargin) {
+      if (typeof (val) !== tUNDEFINED && val !== fBarGroupMargin) {
         fBarMargin = val;
         fireChanged();
       }
       return fBarMargin;
-    }
+    };
 
     var fShowPointTooltip = cfg.showPointTooltip || false;
     this.showPointTooltip = function (val) {
-      if (typeof (val) !== undefined && val !== fShowPointTooltip) {
+      if (typeof (val) !== tUNDEFINED && val !== fShowPointTooltip) {
         fShowPointTooltip = val;
       }
       return fShowPointTooltip;
-    }
+    };
 
     var fPointTooltipFormat = cfg.pointTooltipFormat || DEFAULT_POINT_TOOLTIP_FORMAT;
     this.pointTooltipFormat = function (val) {
-      if (typeof (val) !== undefined && val !== fPointTooltipFormat) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointTooltipFormat) {
         fPointTooltipFormat = val;
       }
       return fPointTooltipFormat;
-    }
+    };
 
     var fShowPointTitle = cfg.showPointTitle || false;
     this.showPointTitle = function (val) {
-      if (typeof (val) !== undefined && val !== fShowPointTitle) {
+      if (typeof (val) !== tUNDEFINED && val !== fShowPointTitle) {
         fShowPointTitle = val;
         fireChanged();
       }
       return fShowPointTitle;
-    }
+    };
 
     var fPointTitleFormat = cfg.pointTitleFormat || DEFAULT_POINT_TITLE_FORMAT;
     this.pointTitleFormat = function (val) {
-      if (typeof (val) !== undefined && val !== fPointTitleFormat) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointTitleFormat) {
         fPointTitleFormat = val;
         fireChanged();
       }
       return fPointTitleFormat;
-    }
+    };
 
     var fPointTitleClass = cfg.pointTitleClass || UICls.CSS_CLASS_TITLE_TEXT;
     this.pointTitleClass = function(val) {
-      if (typeof(val) !== undefined && val !== fPointTitleClass) {
+      if (typeof(val) !== tUNDEFINED && val !== fPointTitleClass) {
         fPointTitleClass = val;
         fireChanged();
       }
       return fPointTitleClass;
-    }
+    };
 
     var fPointTitleAngle = cfg.pointTitleAngle || 0;
     this.pointTitleAngle = function(val) {
-      if (typeof(val) !== undefined && val !== fPointTitleAngle) {
+      if (typeof(val) !== tUNDEFINED && val !== fPointTitleAngle) {
         fPointTitleAngle = val;
         fireChanged();
       }
       return fPointTitleAngle;
-    }
+    };
 
     var fPointTitleMargin = cfg.pointTitleMargin || 5;
     this.pointTitleMargin = function(val) {
-      if (typeof(val) !== undefined && val !== fPointTitleMargin) {
+      if (typeof(val) !== tUNDEFINED && val !== fPointTitleMargin) {
         fPointTitleMargin = val;
         fireChanged();
       }
       return fPointTitleMargin;
-    }
+    };
 
     var fShowPointTitleLeg = cfg.showPointTitleLeg !== false;
     this.showPointTitleLeg = function(val) {
-      if (typeof(val) !== undefined && val !== fShowPointTitleLeg) {
+      if (typeof(val) !== tUNDEFINED && val !== fShowPointTitleLeg) {
         fShowPointTitleLeg = val;
         fireChanged();
       }
       return fShowPointTitleLeg;
-    }
+    };
 
     this.showDefaultRuler = function (val) {
       var showDefaultRuler = fRulerScopes.length > 0;
-      if (typeof (val) !== undefined && val !== showDefaultRuler) {
+      if (typeof (val) !== tUNDEFINED && val !== showDefaultRuler) {
         if (val) self.attachToRulerScope(""); else self.detachFromRulerScope("");
         if (fRulerScopes.length)
           fireChanged();
@@ -1103,46 +1115,46 @@ WAVE.Chart.SVG = (function () {
       } else {
         return showDefaultRuler;
       }
-    }
+    };
 
     var fRulerScopes = [];
-    this.rulerScopes = function() { return WAVE.arrayShallowCopy(fRulerScopes); }
+    this.rulerScopes = function() { return WAVE.arrayShallowCopy(fRulerScopes); };
 
     this.attachToRulerScope = function(scopeName) {
       if (fRulerScopes.indexOf(scopeName) !== -1) return;
       fRulerScopes.push(scopeName);
       fireChanged();
-    }
+    };
 
     this.detachFromRulerScope = function(scopeName) {
       var idx = fRulerScopes.indexOf(scopeName);
       if (idx === -1) return;
       fRulerScopes.splice(idx, 1);
       fireChanged();
-    }
+    };
 
     // Defines if x-coordinate should be within sZone rect to show ruler (sets isInParentRc in getSlaveInfo chart method)
     var fRulerCheckXContains = cfg.rulerCheckXContains !== false;
     this.rulerCheckXContains = function (val) {
-      if (typeof (val) !== undefined && val !== fRulerCheckXContains) {
+      if (typeof (val) !== tUNDEFINED && val !== fRulerCheckXContains) {
         fRulerCheckXContains = val;
         fireChanged();
       }
       return fRulerCheckXContains;
-    }
+    };
 
     // Defines if y-coordinate should be within sZone rect to show ruler (sets isInParentRc in getSlaveInfo chart method)
     var fRulerCheckYContains = cfg.rulerCheckYContains !== false;
     this.rulerCheckYContains = function (val) {
-      if (typeof (val) !== undefined && val !== fRulerCheckYContains) {
+      if (typeof (val) !== tUNDEFINED && val !== fRulerCheckYContains) {
         fRulerCheckYContains = val;
         fireChanged();
       }
       return fRulerCheckYContains;
-    }
+    };
 
     var fLastArea = null;
-    this.lastArea = function () { return fLastArea; }
+    this.lastArea = function () { return fLastArea; };
 
     var fVTitles = [], fVTitlesWalkable = WAVE.arrayWalkable(fVTitles); // array Geometry.Rectangle
     var fVPoints = [], fVPointsWalkable = WAVE.arrayWalkable(fVPoints); // array Geometry.Rectangle
@@ -1150,15 +1162,15 @@ WAVE.Chart.SVG = (function () {
 
     this.addVTitle = function(t) {
       fVTitles.push(t);
-    }
+    };
 
     this.addVPoint = function(p) {
       fVPoints.push(p);
-    }
+    };
 
     this.addVLine = function(l) {
       fVLines.push(l);
-    }
+    };
 
     this.getTitleRcPenalty = function(titleRc, area) {
       var selfSquare = titleRc.square();
@@ -1167,21 +1179,21 @@ WAVE.Chart.SVG = (function () {
       var invisibleSquare = selfSquare - visibleSquare;
 
       var titleOverlapSquare = fVTitlesWalkable
-        .wWhere(function(tRc) { return !(tRc.right() < titleRc.left() || tRc.left() > titleRc.right() || tRc.bottom() < titleRc.top() || tRc.top() > titleRc.bottom()) })
-        .wSelect(function(tRc) { return WAVE.Geometry.overlapAreaRect(titleRc, tRc) }).wSum();
+        .wWhere(function(tRc) { return !(tRc.right() < titleRc.left() || tRc.left() > titleRc.right() || tRc.bottom() < titleRc.top() || tRc.top() > titleRc.bottom()); })
+        .wSelect(function(tRc) { return WAVE.Geometry.overlapAreaRect(titleRc, tRc); }).wSum();
 
       var pointsOverlap = fVPointsWalkable
-        .wWhere(function(pRc) { return !(pRc.right() < titleRc.left() || pRc.left() > titleRc.right() || pRc.bottom() < titleRc.top() || pRc.top() > titleRc.bottom()) })
-        .wSelect(function(pRc) { return WAVE.Geometry.overlapAreaRect(titleRc, pRc) }).wSum();
+        .wWhere(function(pRc) { return !(pRc.right() < titleRc.left() || pRc.left() > titleRc.right() || pRc.bottom() < titleRc.top() || pRc.top() > titleRc.bottom()); })
+        .wSelect(function(pRc) { return WAVE.Geometry.overlapAreaRect(titleRc, pRc); }).wSum();
 
       var lineOverlap = fVLinesWalkable
-        .wWhere(function(l) { return !(l.x2 < titleRc.left() || l.x1 > titleRc.right()) })
+        .wWhere(function(l) { return !(l.x2 < titleRc.left() || l.x1 > titleRc.right()); })
         .wSelect(function(l) { 
-          return WAVE.Geometry.intersectionLengthRectLineXY(titleRc.left(), titleRc.top(), titleRc.right(), titleRc.bottom(), l.x1, l.y1, l.x2, l.y2) })
+          return WAVE.Geometry.intersectionLengthRectLineXY(titleRc.left(), titleRc.top(), titleRc.right(), titleRc.bottom(), l.x1, l.y1, l.x2, l.y2); })
         .wSum();
 
       return invisibleSquare + titleOverlapSquare + pointsOverlap + 2 * lineOverlap;
-    }
+    };
 
     function fireChanged() { self.eventInvoke(EVT_CHANGED); }
 
@@ -1207,8 +1219,8 @@ WAVE.Chart.SVG = (function () {
 
       var seriesItr = self.chart().seriesListWalkable();
 
-      var xAxises = seriesItr.wSelect( function (s) { return s.xAxis() }).wDistinct();
-      var yAxises = seriesItr.wSelect( function (s) { return s.yAxis() }).wDistinct();
+      var xAxises = seriesItr.wSelect( function (s) { return s.xAxis(); }).wDistinct();
+      var yAxises = seriesItr.wSelect( function (s) { return s.yAxis(); }).wDistinct();
 
       xAxises.wEach(function(xAxis) {
         var ticks = xAxis.ticks();
@@ -1229,7 +1241,7 @@ WAVE.Chart.SVG = (function () {
         }
       });
 
-      var seriesByChartType = seriesItr.wGroup(function (el) { return el.chartType() }, function (el) { return el });
+      var seriesByChartType = seriesItr.wGroup(function (el) { return el.chartType(); }, function (el) { return el; });
 
       seriesByChartType.wEach(function(seriesList) {
         switch (seriesList.k) {
@@ -1242,12 +1254,12 @@ WAVE.Chart.SVG = (function () {
             var seriesQty = seriesList.v.wCount();
             var series1 = seriesList.v.wFirst();
 
-            if (series1.barBase() == published.RectSide.BOTTOM) {
+            if (series1.barBase() === published.RectSide.BOTTOM) {
 
-              var minSeries = seriesList.v.wMin(function(a, b) { return a.dataSet().getMinX() < a.dataSet().getMinX() });
-              if (typeof(minSeries) == undefined) return;
-              var maxSeries = seriesList.v.wMax(function(a, b) { return a.dataSet().getMaxX() > a.dataSet().getMaxX() });
-              if (typeof(maxSeries) == undefined) return;
+              var minSeries = seriesList.v.wMin(function(a, b) { return a.dataSet().getMinX() < a.dataSet().getMinX(); });
+              if (typeof(minSeries) === tUNDEFINED) return;
+              var maxSeries = seriesList.v.wMax(function(a, b) { return a.dataSet().getMaxX() > a.dataSet().getMaxX(); });
+              if (typeof(maxSeries) === tUNDEFINED) return;
 
               var minXD = minSeries.dataSet().getMinX();
               var maxXD = maxSeries.dataSet().getMaxX();
@@ -1302,15 +1314,15 @@ WAVE.Chart.SVG = (function () {
         }
       });
 
-      seriesItr.wWhere(function(s) { return s.chartType() & published.ChartType.POINT }).wEach(function(series) {
+      seriesItr.wWhere(function(s) { return s.chartType() & published.ChartType.POINT; }).wEach(function(series) {
         var g = WAVE.SVG.createGroup({class: series.class()});
         clipGroup.appendChild(g);
 
         series.drawPointTitles(svgEl, g, area);
       });
 
-    }
-  }
+    };
+  };
 
   var Series = function (chart, cfg) {
     var self = this;
@@ -1319,231 +1331,231 @@ WAVE.Chart.SVG = (function () {
 
     cfg = cfg || {};
 
-    this.chart = function () { return chart; }
+    this.chart = function () { return chart; };
 
-    var fID = typeof(cfg.id) !== undefined ? cfg.id : (++seriesIdSeed).toString();
-    this.id = function() { return fID; }
+    var fID = typeof(cfg.id) !== tUNDEFINED ? cfg.id : (++seriesIdSeed).toString();
+    this.id = function() { return fID; };
 
     var fTitle = cfg.title || "";
     this.title = function (val) {
-      if (typeof (val) != undefined && val !== fTitle) { 
+      if (typeof (val) !== tUNDEFINED && val !== fTitle) { 
         fTitle = val;
         fireChanged();
       }
       return fTitle;
-    }
+    };
 
     var fClass = cfg.class || "";
     this.class = function (val) {
-      if (typeof (val) != undefined && val !== fClass) { 
+      if (typeof (val) !== tUNDEFINED && val !== fClass) { 
         fClass = val;
         fireChanged();
       }
       return fClass;
-    }
+    };
 
     var fLineClass = cfg.lineClass;
     this.lineClass = function (val) {
-      if (typeof (val) !== undefined && val !== fLineClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fLineClass) {
         fLineClass = val;
         fireChanged();
       }
       return fLineClass || self.chart().sZone().lineClass();
-    }
+    };
 
     var fLineSquareClass = cfg.lineSquareClass;
     this.lineSquareClass = function (val) {
-      if (typeof (val) !== undefined && val !== fLineSquareClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fLineSquareClass) {
         fLineSquareClass = val;
         fireChanged();
       }
       return fLineSquareClass || self.chart().sZone().lineSquareClass();
-    }
+    };
 
     var fBarClass = cfg.barClass;
     this.barClass = function (val) {
-      if (typeof (val) !== undefined && val !== fBarClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fBarClass) {
         fBarClass = val;
         fireChanged();
       }
       return fBarClass || self.chart().sZone().barClass();
-    }
+    };
 
     var fChartType = cfg.chartType;
     this.chartType = function (val) {
-      if (typeof (val) !== undefined && val !== fChartType) {
+      if (typeof (val) !== tUNDEFINED && val !== fChartType) {
         fChartType = val;
         fireChanged();
       }
       return fChartType || self.chart().sZone().chartType();
-    }
+    };
 
     var fSquareFillType = cfg.squareFillType;
     this.squareFillType = function (val) {
-      if (typeof (val) !== undefined && val !== fSquareFillType) {
+      if (typeof (val) !== tUNDEFINED && val !== fSquareFillType) {
         fSquareFillType = val;
         fireChanged();        
       }
       return fSquareFillType || self.chart().sZone().squareFillType();
-    }
+    };
 
     var fPointType = cfg.pointType;
     this.pointType = function (val) {
-      if (typeof (val) !== undefined && val !== fPointType) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointType) {
         fPointType = val;
         fireChanged();
       }
       return fPointType || self.chart().sZone().pointType();
-    }
+    };
 
     var fPointClass = cfg.pointClass || UICls.CSS_CLASS_SERIES_POINT;
     this.pointClass = function (val) {
-      if (typeof (val) !== undefined && val !== fPointClass) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointClass) {
         fPointClass = val;
         fireChanged();
       }
       return fPointClass || self.chart().sZone().pointClass();
-    }
+    };
 
     var fPointSize = cfg.pointSize;
     this.pointSize = function (val) {
-      if (typeof (val) !== undefined && val !== fPointSize) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointSize) {
         fPointSize = val;
         fireChanged();
       }
       return fPointSize || self.chart().sZone().pointSize();
-    }
+    };
 
     var fBarBase = published.RectSide.BOTTOM;
     this.barBase = function (val) {
-      if (typeof (val) != undefined && val !== fBarBase) {
+      if (typeof (val) !== tUNDEFINED && val !== fBarBase) {
         fBarBase = val;
         fireChanged();
       }
       return fBarBase || self.chart().sZone().barBase();
-    }
+    };
 
     var fDataSet = new published.DataSet();
-    fDataSet.eventBind(EVT_CHANGED, function() { self.eventInvoke(EVT_CHANGED) });
-    this.dataSet = function () { return fDataSet; }
+    fDataSet.eventBind(EVT_CHANGED, function() { self.eventInvoke(EVT_CHANGED); });
+    this.dataSet = function () { return fDataSet; };
 
     var fXAxis = cfg.xAxis;
     this.xAxis = function (val) {
-      if (typeof (val) != undefined && val !== fXAxis) {
+      if (typeof (val) != tUNDEFINED && val !== fXAxis) {
         if (fXAxis) fXAxis.eventUnbind(EVT_CHANGED, fireChanged);
         fXAxis = val;
         fXAxis.eventBind(EVT_CHANGED, fireChanged);
         fireChanged();
       }
       return fXAxis || self.chart().xAxis();
-    }
+    };
 
     var fYAxis = cfg.yAxis;
     this.yAxis = function (val) {
-      if (typeof (val) != undefined && val !== fYAxis) {
+      if (typeof (val) !== tUNDEFINED && val !== fYAxis) {
         if (fYAxis) fYAxis.eventUnbind(EVT_CHANGED, fireChanged);
         fYAxis = val;
         fYAxis.eventBind(EVT_CHANGED, fireChanged);
         fireChanged();
       }
       return fYAxis || self.chart().yAxis();
-    }
+    };
 
     var fShowPointTooltip = cfg.showPointTooltip;
     this.showPointTooltip = function (val) {
-      if (typeof (val) !== undefined && val !== fShowPointTooltip) {
+      if (typeof (val) !== tUNDEFINED && val !== fShowPointTooltip) {
         fShowPointTooltip = val;
       }
       return fShowPointTooltip || self.chart().sZone().showPointTooltip();
-    }
+    };
 
     var fPointTooltipFormat = cfg.pointTooltipFormat;
     this.pointTooltipFormat = function (val) {
-      if (typeof (val) !== undefined && val !== fPointTooltipFormat) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointTooltipFormat) {
         fPointTooltipFormat = val;
       }
       return fPointTooltipFormat || self.chart().sZone().pointTooltipFormat();
-    }
+    };
 
     var fShowPointTitle = cfg.showPointTitle;
     this.showPointTitle = function (val) {
-      if (typeof (val) !== undefined && val !== fShowPointTitle) {
+      if (typeof (val) !== tUNDEFINED && val !== fShowPointTitle) {
         fShowPointTitle = val;
         fireChanged();
       }
       return fShowPointTitle || self.chart().sZone().showPointTitle();
-    }
+    };
 
     var fPointTitleFormat = cfg.pointTitleFormat;
     this.pointTitleFormat = function (val) {
-      if (typeof (val) !== undefined && val !== fPointTitleFormat) {
+      if (typeof (val) !== tUNDEFINED && val !== fPointTitleFormat) {
         fPointTitleFormat = val;
         fireChanged();
       }
       return fPointTitleFormat || self.chart().sZone().pointTitleFormat();
-    }
+    };
 
     var fPointTitleClass = cfg.pointTitleClass;
     this.pointTitleClass = function(val) {
-      if (typeof(val) !== undefined && val !== fPointTitleClass) {
+      if (typeof(val) !== tUNDEFINED && val !== fPointTitleClass) {
         fPointTitleClass = val;
         fireChanged();
       }
       return fPointTitleClass || chart.sZone().pointTitleClass();
-    }
+    };
 
     var fPointTitleAngle = cfg.pointTitleAngle;
     this.pointTitleAngle = function(val) {
-      if (typeof(val) !== undefined && val !== fPointTitleAngle) {
+      if (typeof(val) !== tUNDEFINED && val !== fPointTitleAngle) {
         fPointTitleAngle = val;
         fireChanged();
       }
       return fPointTitleAngle || chart.sZone().pointTitleAngle();
-    }
+    };
 
     var fPointTitleMargin = cfg.pointTitleMargin;
     this.pointTitleMargin = function(val) {
-      if (typeof(val) !== undefined && val !== fPointTitleMargin) {
+      if (typeof(val) !== tUNDEFINED && val !== fPointTitleMargin) {
         fPointTitleMargin = val;
         fireChanged();
       }
       return fPointTitleMargin || chart.sZone().pointTitleMargin();
-    }
+    };
 
     var fShowPointTitleLeg = cfg.showPointTitleLeg !== false;
     this.showPointTitleLeg = function(val) {
-      if (typeof(val) !== undefined && val !== fShowPointTitleLeg) {
+      if (typeof(val) !== tUNDEFINED && val !== fShowPointTitleLeg) {
         fShowPointTitleLeg = val;
         fireChanged();
       }
       return fShowPointTitleLeg === false ? false : fShowPointTitleLeg || chart.sZone().showPointTitleLeg();
-    }
+    };
 
     function fireChanged() { self.invokeEvent(EVT_CHANGED); }
-  }
+  };
 
   Series.prototype.getDY = function(dx) {
     var p = this.dataSet().getPointByX(dx);
-    if (p != null) return p.y;
+    if (p !== null) return p.y;
 
     var neighbours = this.dataSet().getNearestNeighbours(dx);
 
-    if (neighbours == null) return null;
+    if (neighbours === null) return null;
 
-    if (neighbours.left == null) { return neighbours.right.y; }
-    if (neighbours.right == null) return neighbours.left.y;
+    if (neighbours.left === null) { return neighbours.right.y; }
+    if (neighbours.right === null) return neighbours.left.y;
 
     var k = (dx - neighbours.left.x) / (neighbours.right.x - neighbours.left.x);
     var dy = k * (neighbours.right.y - neighbours.left.y) + neighbours.left.y;
 
     return dy;
-  }
+  };
 
   Series.prototype.getVY = function(dx) {
     var dy = this.getDY(dx);
     var vy = this.yAxis().d2v(dy);
     return vy;
-  }
+  };
 
   Series.prototype.foreachPoint = function(func) {
     var self = this;
@@ -1557,22 +1569,26 @@ WAVE.Chart.SVG = (function () {
 
       if (!isNaN(vx) && !isNaN(vy)) func(vx, vy, dp.x, dp.y, dp.title, self);
     });
-  }
+  };
 
   Series.prototype.drawAllButTitle = function (svgEl, parentEl, area, drawTitle) {
 
     var self = this;
 
+    var path;
+    var firstX;
+    var pathEl;
+
     if ((this.chartType() & published.ChartType.LINE) || (this.chartType() & published.ChartType.LINE_SQUARE)) {
 
-      var path = "";
+      path = "";
 
-      var firstX = null;
+      firstX = null;
 
       var prevVx, prevVy;
       self.foreachPoint(function (vx, vy, dx, dy, title, series) {
         var cmd;
-        if (firstX == null) { 
+        if (firstX === null) { 
           firstX = vx; cmd = "M";
         } else {
           cmd = "L";
@@ -1582,34 +1598,41 @@ WAVE.Chart.SVG = (function () {
         prevVx = vx; prevVy = vy;
       });
 
-      if (path != "" && (this.chartType() & published.ChartType.LINE_SQUARE)) {
+      if (path !== "" && (this.chartType() & published.ChartType.LINE_SQUARE)) {
         if(this.squareFillType() == published.SquareFillType.BOTTOM)
           path += "V" + area.bottom() + " H" + firstX + " Z";
         else 
           path += "V" + area.top() + " H" + firstX + " Z";
       }
 
-      var pathEl = WAVE.SVG.createPath({ d: path, class: ((this.chartType() & published.ChartType.LINE_SQUARE)) ? 
+      pathEl = WAVE.SVG.createPath({ d: path, class: ((this.chartType() & published.ChartType.LINE_SQUARE)) ? 
         this.lineSquareClass() : this.lineClass() });
       parentEl.appendChild(pathEl);  
     }
 
     if (this.chartType() & published.ChartType.SPLINE || this.chartType() & published.ChartType.SPLINE_SQUARE) {
-      var path = "", expectedPoint = "M", expectedQty = 0, buf = [];
+      path = "";
+      var expectedPoint = "M", expectedQty = 0, buf = [];
 
-      var firstX = null;
+      firstX = null;
 
       self.foreachPoint(function(vx, vy, dx, dy, title, series) {
-        if (firstX == null) { firstX = vx; }
+        if (firstX === null) { firstX = vx; }
+
+
+         var p1, p2, pTo;
 
         if (expectedPoint == "M") {
           path = "M" + vx + ',' + vy + ' ';
           expectedPoint = "C";
         } else if (expectedPoint == "C") {
+
           buf.unshift({x: vx, y: vy});
           expectedQty++;
           if (expectedQty == 3) {
-            var p1 = buf.pop(), p2 = buf.pop(), pTo = buf.pop();
+            p1 = buf.pop();
+            p2 = buf.pop();
+            pTo = buf.pop();
             path += 'C' + p1.x + ',' + p1.y + ' ' + p2.x + ',' + p2.y + ' ' + pTo.x + ',' + pTo.y + ' ';
             expectedQty = 0;
             expectedPoint = "S";
@@ -1618,16 +1641,18 @@ WAVE.Chart.SVG = (function () {
           buf.unshift({x: vx, y: vy});
           expectedQty++;
           if (expectedQty == 2) {
-            var p2 = buf.pop(), pTo = buf.pop();
+            p2 = buf.pop();
+            pTo = buf.pop();
             path += 'S' + p2.x + ',' + p2.y + ' ' + pTo.x + ',' + pTo.y + ' ';
             expectedQty = 0;
           }
         }
       });
 
+      var p;
       if (expectedPoint == "C") {
         if (expectedQty == 1) {
-          var p = buf.pop();
+          p = buf.pop();
           path += 'L' + p.x + ',' + p.y;
         } else if (expectedQty == 2) {
           var p1 = buf.pop(), pTo = buf.pop();
@@ -1635,16 +1660,16 @@ WAVE.Chart.SVG = (function () {
         } 
       } else if (expectedPoint == "S") {
         if (expectedQty == 1) {
-          var p = buf.pop();
+          p = buf.pop();
           path += "T" + p.x + ',' + p.y;
         }
       }
 
-      if (path != "" && (this.chartType() & published.ChartType.SPLINE_SQUARE)) {
+      if (path !== "" && (this.chartType() & published.ChartType.SPLINE_SQUARE)) {
         path += "V" + area.bottom() + " H" + firstX + " Z";
       }
 
-      var pathEl = WAVE.SVG.createPath({ d: path, class: ((this.chartType() & published.ChartType.SPLINE_SQUARE)) ? 
+      pathEl = WAVE.SVG.createPath({ d: path, class: ((this.chartType() & published.ChartType.SPLINE_SQUARE)) ? 
         this.lineSquareClass() : this.lineClass() });
 
       parentEl.appendChild(pathEl);
@@ -1655,7 +1680,7 @@ WAVE.Chart.SVG = (function () {
         self.drawPoint(svgEl, parentEl, area, vx, vy, dx, dy, title, series);
       });
     }
-  }
+  };
 
   Series.prototype.drawPointTitles = function (svgEl, parentEl, area) {
     var self = this;
@@ -1664,7 +1689,7 @@ WAVE.Chart.SVG = (function () {
         self.drawPointTitle(svgEl, parentEl, area, vx, vy, dx, dy, title);
       });
     }
-  }
+  };
 
   Series.prototype.drawPoint = function (svgEl, parentEl, area, vx, vy, dx, dy, title) {
     var pointEl;
@@ -1682,15 +1707,15 @@ WAVE.Chart.SVG = (function () {
     var self = this;
 
     if (pointEl) {
-      pointEl.addEventListener("mouseover", function(evt) { self.chart().onSeriesMouseOver({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self})} );
-      pointEl.addEventListener("mouseout", function(evt) { self.chart().onSeriesMouseOut({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self})} );
-      pointEl.addEventListener("click", function(evt) { self.chart().onSeriesClick({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self})} );
+      pointEl.addEventListener("mouseover", function(evt) { self.chart().onSeriesMouseOver({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self});} );
+      pointEl.addEventListener("mouseout", function(evt) { self.chart().onSeriesMouseOut({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self});} );
+      pointEl.addEventListener("click", function(evt) { self.chart().onSeriesClick({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self});} );
 
       parentEl.appendChild(pointEl);
     }
 
     //this.drawPointTitle(svgEl, parentEl, area, vx, vy, dx, dy, title);
-  }
+  };
 
   Series.prototype.drawPointTitle = function(svgEl, parentEl, area, vx, vy, dx, dy, title) {
     if (this.showPointTitle() && title) {
@@ -1732,7 +1757,7 @@ WAVE.Chart.SVG = (function () {
 
         var penalty = sZone.getTitleRcPenalty(rc, area);
 
-        if(penalty == 0) {
+        if(penalty === 0) {
           titleRc = rc;
           break;
         }
@@ -1751,9 +1776,9 @@ WAVE.Chart.SVG = (function () {
       pointTxtEl.setAttribute("y", titleRc.top() + dBoxLeftVy);
       
       var self = this;
-      g.addEventListener("mouseover", function(evt) { self.chart().onSeriesPointTitleMouseOver({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self})} );
-      g.addEventListener("mouseout", function(evt) { self.chart().onSeriesPointTitleMouseOut({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self})} );
-      g.addEventListener("click", function(evt) { self.chart().onSeriesPointTitleClick({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self})} );
+      g.addEventListener("mouseover", function(evt) { self.chart().onSeriesPointTitleMouseOver({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self});} );
+      g.addEventListener("mouseout", function(evt) { self.chart().onSeriesPointTitleMouseOut({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self});} );
+      g.addEventListener("click", function(evt) { self.chart().onSeriesPointTitleClick({originalEvt: evt, vx: vx, vy: vy, dx: dx, dy: dy, title: title, series: self});} );
 
       g.insertBefore(rcEl, pointTxtEl);
 
@@ -1766,7 +1791,7 @@ WAVE.Chart.SVG = (function () {
 
       parentEl.appendChild(g);
     }
-  }
+  };
 
   Series.prototype.calcTitlePos = function(vx, vy, txtBox, area) {
     var pointMargin = 5;
@@ -1777,13 +1802,13 @@ WAVE.Chart.SVG = (function () {
     var overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
     if (overlapS != txtBoxS) {
       x = vx - pointMargin - txtBox.width; y = vy - pointMargin - txtBox.height;
-      var overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
+      overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
       if (overlapS != txtBoxS) {
         x = vx + pointMargin; y = vy + pointMargin;
-        var overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
+        overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
         if (overlapS != txtBoxS) {
           x = vx - pointMargin - txtBox.width; y = vy + pointMargin;
-          var overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
+          overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
           if (overlapS == txtBoxS) {
             left = x; top = y;
           }
@@ -1798,7 +1823,7 @@ WAVE.Chart.SVG = (function () {
     }
 
     return new WAVE.Geometry.Point(left, top);
-  }
+  };
 
   Series.prototype.drawPointCircle = function(x, y, dx, dy) {
     var radius = this.pointSize();
@@ -1807,7 +1832,7 @@ WAVE.Chart.SVG = (function () {
     this.chart().sZone().addVPoint( WAVE.Geometry.toRectWH(x-radius, y-radius, 2 *radius, 2 *radius));
 
     return pointEl;
-  }
+  };
 
   Series.prototype.drawPointRect = function(x, y, dx, dy) {
     var rectSide = this.pointSize();
@@ -1816,7 +1841,7 @@ WAVE.Chart.SVG = (function () {
     this.chart().sZone().addVPoint( WAVE.Geometry.toRectWH(x-rectSide, y-rectSide, 2 *rectSide, 2 *rectSide));
 
     return pointEl;
-  }
+  };
 
   Series.prototype.drawPointTriangle = function(x, y, dx, dy) {
     var triSide = this.pointSize();
@@ -1826,11 +1851,11 @@ WAVE.Chart.SVG = (function () {
     this.chart().sZone().addVPoint( WAVE.Geometry.toRectWH(x-triSide, y-triSide, 2 *triSide, 2 *triSide));
 
     return pointEl;
-  }
+  };
 
   Series.prototype.toString = function () {
     return "Series " + this.title();
-  }
+  };
 
   published.DataSet = function () {
     var self = this;
@@ -1850,23 +1875,23 @@ WAVE.Chart.SVG = (function () {
         fPoints.push({x: curr.x, y: curr.y, t: curr.t});  
       }
       self.eventInvoke(EVT_CHANGED);
-    }
+    };
 
     this.addPoint = function (x, y, title) {
       fPoints.push({x: x, y: y, title: title});
       self.eventInvoke(EVT_CHANGED);
-    }
+    };
 
     this.forEach = function(action) {
       fPointWalkable.wEach(action);
-    }
+    };
 
     this.removeAllPoints = function() {
       if (fPoints.length > 0) {
         fPoints.splice(0, fPoints.length);
         self.eventInvoke(EVT_CHANGED);
       }
-    }
+    };
 
     this.removePointIf = function(condition) {
       var deleted;
@@ -1882,7 +1907,7 @@ WAVE.Chart.SVG = (function () {
         }
       } while(deleted);
       self.eventInvoke(EVT_CHANGED);
-    }
+    };
 
     this.removePointByX = function (x) {
       for (var i = 0; i < fPoints.length; i++) {
@@ -1892,15 +1917,15 @@ WAVE.Chart.SVG = (function () {
           break;
         }
       }
-    }
+    };
 
     this.length = function () {
       return fPoints.length;
-    }
+    };
 
     this.getPoint = function (idx) {
       return fPoints[idx];
-    }
+    };
 
     this.getPointByX = function (x) {
       for (var i = 0; i < fPoints.length; i++) {
@@ -1908,27 +1933,27 @@ WAVE.Chart.SVG = (function () {
         if (p.x == x)
           return p;
       }
-    }
+    };
 
     this.getMinX = function () {
-      return fPointWalkable.wSelect(function(p) { return p.x}).wMin();
-    }
+      return fPointWalkable.wSelect(function(p) { return p.x;}).wMin();
+    };
 
     this.getMaxX = function () {
-      return fPointWalkable.wSelect(function(p) { return p.x}).wMax();
-    }
+      return fPointWalkable.wSelect(function(p) { return p.x;}).wMax();
+    };
 
     this.getMinY = function () {
-      return fPointWalkable.wSelect(function(p) { return p.y}).wMin();
-    }
+      return fPointWalkable.wSelect(function(p) { return p.y;}).wMin();
+    };
 
     this.getMaxY = function () {
-      return fPointWalkable.wSelect(function(p) { return p.y}).wMax();
-    }
+      return fPointWalkable.wSelect(function(p) { return p.y;}).wMax();
+    };
 
     this.getNearestNeighbours = function(x) {
       
-      if (fPoints.length == 0) { return null; }
+      if (fPoints.length === 0) { return null; }
 
       var pFirst = fPoints[0], pLast = fPoints[fPoints.length-1];
 
@@ -1936,10 +1961,10 @@ WAVE.Chart.SVG = (function () {
 
       if(x > pLast.x) return {left: pLast, right: null};
 
-      var rightNeighbourIdx = fPointWalkable.wFirstIdx(function(p) { return x < p.x });
+      var rightNeighbourIdx = fPointWalkable.wFirstIdx(function(p) { return x < p.x; });
       return {left: fPoints[rightNeighbourIdx-1], right: fPoints[rightNeighbourIdx]};
-    }
-  }
+    };
+  };
 
   published.DataSet.prototype.MAX_POINTS_QTY = 44100;
 
@@ -1951,80 +1976,80 @@ WAVE.Chart.SVG = (function () {
     WAVE.extend(self, WAVE.EventManager);
 
     var fID = ++chartIdSeed;
-    this.id = function() { return fID; }
+    this.id = function() { return fID; };
 
     var fSvgEl = svgEl;
-    this.svgEl = function() { return fSvgEl; }
+    this.svgEl = function() { return fSvgEl; };
 
     $(window).resize(function(){
       self.draw();
     });
 
     this.svgEl = function(val) {
-      if (typeof(val) != undefined && val !== fSvgEl) { 
+      if (typeof(val) != tUNDEFINED && val !== fSvgEl) { 
         fSvgEl = val;
         
         self.draw();
       }
       return fSvgEl;
-    }
+    };
 
     var fXZone = new published.XZone(this);
     fXZone.eventBind(EVT_CHANGED, onChanged);
-    this.xZone = function () { return fXZone; }
+    this.xZone = function () { return fXZone; };
 
     var fYZone = new published.YZone(this);
     fYZone.eventBind(EVT_CHANGED, onChanged);
-    this.yZone = function () { return fYZone; }
+    this.yZone = function () { return fYZone; };
 
     var fSZone = new published.SZone(this);
     fSZone.eventBind(EVT_CHANGED, onChanged);
-    this.sZone = function () { return fSZone; }
+    this.sZone = function () { return fSZone; };
 
     var fLZone = new published.LZone(this);
     fLZone.eventBind(EVT_CHANGED, onChanged);
-    this.lZone = function () { return fLZone; }
+    this.lZone = function () { return fLZone; };
 
     var fXAxis = new published.XAxis(self);
     fXAxis.eventBind(EVT_CHANGED, onChanged);
     this.xAxis = function (val) {
-      if (typeof (val) != undefined && val !== fXAxis) {
+      if (typeof (val) != tUNDEFINED && val !== fXAxis) {
         fXAxis = val;
         self.draw();
       }
       return fXAxis;
-    }
+    };
 
     var fYAxis = new published.YAxis(self);
     fYAxis.eventBind(EVT_CHANGED, onChanged);
     this.yAxis = function (val) {
-      if (typeof (val) != undefined && val !== fYAxis) {
+      if (typeof (val) != tUNDEFINED && val !== fYAxis) {
         fYAxis = val;
         self.draw();
       }
       return fYAxis;
-    }
+    };
 
     var fUpdateQty = 0;
     var fIsChanged = true;
 
-    this.beginUpdate = function() { fUpdateQty++; }
+    this.beginUpdate = function() { fUpdateQty++; };
 
     this.endUpdate = function() {
       if (fUpdateQty > 0) fUpdateQty--;
       drawIfChanged();
-    }
+    };
 
     this.beginUpdate();
 
     var fSeriesList = [];
     var fSeriesListWalkable = WAVE.arrayWalkable(fSeriesList);
 
-    this.seriesListWalkable = function() { return fSeriesListWalkable; }
+    this.seriesListWalkable = function() { return fSeriesListWalkable; };
 
     this.getSeries = function(id) {
       return fSeriesListWalkable.wFirst(function(s) { return s.id() == id; });
-    }
+    };
 
     this.addSeries = function(seriesCfg) {
       var s = new Series(self, seriesCfg);
@@ -2032,31 +2057,32 @@ WAVE.Chart.SVG = (function () {
       fSeriesList.push(s);
       onChanged();
       return s;
-    }
+    };
 
     this.removeSeries = function(s) {
-      var sIdx = fSeriesListWalkable.wFirstIdx(function(e) { return e == s });
+      var sIdx = fSeriesListWalkable.wFirstIdx(function(e) { return e == s; });
       if (sIdx != -1) {
         fSeriesList.splice(sIdx, 1);
         s.eventUnbind(EVT_CHANGED, onChanged);
         onChanged();
       }
-    }
+    };
 
     this.clearSeries = function() {
-      if (fSeriesList.length == 0) return;
+      if (fSeriesList.length === 0) return;
       for(var i in fSeriesList)
         fSeriesList[i].eventUnbind(EVT_CHANGED, onChanged);
       fSeriesList.splice(0, fSeriesList.length);
       onChanged();
-    }
+    };
 
     this.draw = function () {
       var clientRc = fSvgEl.getBoundingClientRect();
       var width = clientRc.width, height = clientRc.height;
 
+      var zoneAreas;
       try {
-        var zoneAreas = self.splitArea(fSvgEl, width, height);
+        zoneAreas = self.splitArea(fSvgEl, width, height);
       } catch (err) {
         console.error(err.message);
         return;
@@ -2132,8 +2158,7 @@ WAVE.Chart.SVG = (function () {
               var cVX = xAxis.d2v(dataX) + clientRc.left, cVY = yAxis.d2v(dataY) + clientRc.top;
               var r = { clientPoint: new WAVE.Geometry.Point(cVX, cVY) };
               r.isInParentRc =
-                (!sZone.rulerCheckXContains() || (r.clientPoint.x() >= sZoneClientRc.left() && r.clientPoint.x() <= sZoneClientRc.right()))
-                &&
+                (!sZone.rulerCheckXContains() || (r.clientPoint.x() >= sZoneClientRc.left() && r.clientPoint.x() <= sZoneClientRc.right())) &&
                 (!sZone.rulerCheckYContains() || (r.clientPoint.y() >= sZoneClientRc.top() && r.clientPoint.y() <= sZoneClientRc.bottom()));
               return r;
             },
@@ -2145,10 +2170,10 @@ WAVE.Chart.SVG = (function () {
       } else {
         WAVE.GUI.rulerUnset({element: fSvgEl});
       }
-    }
+    };
 
     function drawIfChanged() {
-      if (fIsChanged && fUpdateQty == 0) {
+      if (fIsChanged && fUpdateQty === 0) {
         self.draw();
         fIsChanged = false;
       }
@@ -2251,35 +2276,35 @@ WAVE.Chart.SVG = (function () {
       var r = { xZone: xZone, yZone: yZone, sZone: sZone, lZone: lZone };
 
       return r;
-    }
+    };
 
     this.endUpdate();
     
-  }
+  };
 
   published.Chart.prototype.onSeriesMouseOver = function(seriesEvt) {
     this.eventInvoke(published.EVT_SERIES_POINT_MOUSEOVER, seriesEvt);
-  }
+  };
 
   published.Chart.prototype.onSeriesMouseOut = function(seriesEvt) {
     this.eventInvoke(published.EVT_SERIES_POINT_MOUSEOUT, seriesEvt);
-  }
+  };
 
   published.Chart.prototype.onSeriesClick = function(seriesEvt) {
     this.eventInvoke(published.EVT_SERIES_POINT_CLICK, seriesEvt);
-  }
+  };
 
   published.Chart.prototype.onSeriesPointTitleMouseOver = function(seriesEvt) {
     this.eventInvoke(published.EVT_SERIES_POINT_TITLE_MOUSEOVER, seriesEvt);
-  }
+  };
 
   published.Chart.prototype.onSeriesPointTitleMouseOut = function(seriesEvt) {
     this.eventInvoke(published.EVT_SERIES_POINT_TITLE_MOUSEOUT, seriesEvt);
-  }
+  };
 
   published.Chart.prototype.onSeriesPointTitleClick = function(seriesEvt) {
     this.eventInvoke(published.EVT_SERIES_POINT_TITLE_CLICK, seriesEvt);
-  }
+  };
 
   return published;
 }());

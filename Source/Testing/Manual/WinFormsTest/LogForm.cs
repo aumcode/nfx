@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using NFX;
 using NFX.Log;
 using NFX.WinForms;
 
@@ -47,7 +48,7 @@ namespace WinFormsTest
         private void write(MessageType t)
         {
           for(var i=0; i<CNT; i++)
-             BaseApplication.WriteToLog(t, tbFrom.Text, tbText.Text + i.ToString()); 
+             App.Log.Write( new NFX.Log.Message{Type = t, From = tbFrom.Text, Text = tbText.Text + i.ToString()}); 
         }
 
         private void btnTrace_Click(object sender, EventArgs e)

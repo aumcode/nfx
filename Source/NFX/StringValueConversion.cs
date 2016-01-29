@@ -322,7 +322,7 @@ namespace NFX
               /// When 'strict=true' throws an exception if deterministic conversion is not possible
               /// </summary>
               public static object AsType(this string val, Type tp, bool strict = true)
-              {                                                
+              {
                 try
                 {
                     Func<string, bool, object> func = null;
