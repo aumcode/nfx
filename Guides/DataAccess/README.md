@@ -27,7 +27,7 @@ Every system may select a combination of the following strategies that fit the p
 ## Building Blocks: Rows, Schema, FieldDefs
 
 Any POCO (Plain CLR) class instance may be used to access data, as data stores are just interfaces, 
-for example:  `MyCar car = MyApp.Data.GetCarsByDriver("Frank-123");`, as the function in the proceeding 
+for example:  `MyCar car = MyApp.Data.GetCarsByDriver("Frank-123");`, as the function in the preceding 
 example may return a domain object "MyCar".
 
 NFX.DataAccess.CRUD namespace provides a very convenient base for business logic/domain models
@@ -44,8 +44,8 @@ for every field. Fields may be of complex types (i.e. TypedRow). So Schema basic
 contained in Rows.
 
 ### CRUD.Row
-A row is a string of data, it consists of fields where every field is assigned a FieldDef from Schema.
-A Schema is the property of a Row. FieldDef is a property of a field within the row. There are two 
+A row is a string of data, it consists of fields where every field is defined by a FieldDef from Schema.
+A Schema is a property of a Row. FieldDef is a property of a field within a row. There are two 
 types of rows:
 
 * Dynamic Rows
@@ -71,23 +71,23 @@ features:
     
 ### CRUD.Rowset
 
-Rowsets are what their name implies. There two types both inheriting from RowsetBase:
+Rowsets are what their name implies. There are two types both inheriting from RowsetBase:
 
 * Rowset
 * Table
 
-The difference between the two is the presence of primary key in the `NFX.DataAccess.CRUD.Table`
-which allows for quick in-memory merges/findKey() calls, consequently table is not for sorting. It is
-a pk-organized list of rows of the same schema.
+The difference between the two is the presence of a primary key in the `NFX.DataAccess.CRUD.Table`
+which allows for quick in-memory merges/findKey() calls, consequently table is not for dynamic sorting.
+It is a pk-organized list of rows of the same schema. The findKey() is done via a binary search.
 
 `NFX.DataAccess.CRUD.Rowset` does not have this limit - it allows to sort the data, however the 
-findkey() calls do linear search.
+findkey() calls do linear search (which is slow akin to LINQ's Where(predicate)).
 
-An interesting feature of rowsets is the ability to mix Dynamic and Typed rows instances in one list
+An interesting feature of rowsets is their ability to mix Dynamic and Typed rows instances in one list
 as long as their schemas are the same.
 
 Rowsets can track changes, if `RowsetBase.LogChanges=true`, then RowChange enumerable can be obtained 
-via `Rowset.Changes` property. The concept is somewhat simiar to .NET's DataSet, BUT there is a 
+via `Rowset.Changes` property. The concept is somewhat similar to .NET's DataSet, BUT there is a 
 **key difference** in the approach: **NFX Data Access is for accessing any data, not only relational**.
 
 ### CRUD Virtual Query
