@@ -1,5 +1,5 @@
 # WAVE.Walkable
-Mixin that enables function chaining that facilitates lazy evaluation via lambda-functions. This is analogue of method-based LINQ queries in .NET.
+Mixin that enables function chaining that facilitates lazy evaluation via lambda-functions.
 
 ## Projection Operations
 ##### wSelect(transform)

@@ -46,7 +46,7 @@ Returns root element that this record view is building controls under.
 ## views()
 Returns copy of view list.
 
-FieldView Class
+## FieldView
 Individual field view class.
 
 ##### FieldView(element div, Record.Field fld)
