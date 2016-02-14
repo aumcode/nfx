@@ -57,7 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\CacheTest32Gb.cs" />
+    <Compile Include="AppModel\Pile\CacheTest64Gb.cs" />
+    <Compile Include="AppModel\Pile\HighMemoryLoadTest.cs" />
     <Compile Include="AppModel\Pile\PileTest.cs" />
+    <Compile Include="AppModel\Pile\PileTest64Gb.cs" />
+    <Compile Include="AppModel\Pile\PileTest32Gb.cs" />
     <Compile Include="AppModel\Pile\TRow.cs" />
     <Compile Include="CRUD\ErlangTests.cs" />
     <Compile Include="CRUD\MongoSpecific\CountPerzons.cs" />
@@ -129,6 +134,10 @@
     <ProjectReference Include="..\..\Manual\WaveTestSite\WaveTestSite.csproj">
       <Project>{032e1188-78dd-48ec-8711-792500d7b9e8}</Project>
       <Name>WaveTestSite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NFX.NUnit\NFX.NUnit.csproj">
+      <Project>{4559002e-3388-4d9b-9257-0f75a9a23860}</Project>
+      <Name>NFX.NUnit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

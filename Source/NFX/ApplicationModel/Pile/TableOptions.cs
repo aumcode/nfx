@@ -82,7 +82,7 @@ namespace NFX.ApplicationModel.Pile
         public long MinimumCapacity 
         {
           get{ return m_MinimumCapacity;}
-          set { m_MinimumCapacity = value < 0? value = 0 : value;}
+          set { m_MinimumCapacity = value < 0 ? 0 : value;}
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NFX.ApplicationModel.Pile
         public long MaximumCapacity 
         {
           get{ return m_MaximumCapacity;}
-          set { m_MaximumCapacity = value < 0? value = 0 : value;}
+          set { m_MaximumCapacity = value < 0 ? 0 : value;}
         }
             
         
@@ -104,7 +104,7 @@ namespace NFX.ApplicationModel.Pile
         public long InitialCapacity 
         {
           get{ return m_InitialCapacity;}
-          set { m_InitialCapacity = value < INITIAL_CAPACITY_MIN ? value = INITIAL_CAPACITY_MIN : value;}
+          set { m_InitialCapacity = value < INITIAL_CAPACITY_MIN ? INITIAL_CAPACITY_MIN : value;}
         }
 
 
@@ -115,7 +115,7 @@ namespace NFX.ApplicationModel.Pile
         public double GrowthFactor 
         {
           get{ return m_GrowthFactor;}
-          set { m_GrowthFactor = value < GROWTH_FACTOR_MIN ? value = GROWTH_FACTOR_MIN : value> GROWTH_FACTOR_MAX ? GROWTH_FACTOR_MAX : value;}
+          set { m_GrowthFactor = value < GROWTH_FACTOR_MIN ? GROWTH_FACTOR_MIN : value > GROWTH_FACTOR_MAX ? GROWTH_FACTOR_MAX : value;}
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace NFX.ApplicationModel.Pile
         public double ShrinkFactor 
         {
           get{ return m_ShrinkFactor;}
-          set { m_ShrinkFactor = value < SHRINK_FACTOR_MIN ? value = SHRINK_FACTOR_MIN : value> SHRINK_FACTOR_MAX ? SHRINK_FACTOR_MAX : value;}
+          set { m_ShrinkFactor = value < SHRINK_FACTOR_MIN ? SHRINK_FACTOR_MIN : value > SHRINK_FACTOR_MAX ? SHRINK_FACTOR_MAX : value;}
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NFX.ApplicationModel.Pile
         public double LoadFactorLWM 
         {
           get{ return m_LoadFactorLWM;}
-          set { m_LoadFactorLWM = value < LOAD_FACTOR_LWM_MIN ? value = LOAD_FACTOR_LWM_MIN : value> LOAD_FACTOR_LWM_MAX ? LOAD_FACTOR_LWM_MAX : value;}
+          set { m_LoadFactorLWM = value < LOAD_FACTOR_LWM_MIN ? LOAD_FACTOR_LWM_MIN : value > LOAD_FACTOR_LWM_MAX ? LOAD_FACTOR_LWM_MAX : value;}
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace NFX.ApplicationModel.Pile
         public double LoadFactorHWM 
         {
           get{ return m_LoadFactorHWM;}
-          set { m_LoadFactorHWM = value < LOAD_FACTOR_HWM_MIN ? value = LOAD_FACTOR_HWM_MIN : value> LOAD_FACTOR_HWM_MAX ? LOAD_FACTOR_HWM_MAX : value;}
+          set { m_LoadFactorHWM = value < LOAD_FACTOR_HWM_MIN ? LOAD_FACTOR_HWM_MIN : value > LOAD_FACTOR_HWM_MAX ? LOAD_FACTOR_HWM_MAX : value;}
         }
 
 
@@ -156,7 +156,7 @@ namespace NFX.ApplicationModel.Pile
         public int DefaultMaxAgeSec
         {
           get { return m_DefaultMaxAgeSec;}
-          set { m_DefaultMaxAgeSec = value>0 ? value : 0;}
+          set { m_DefaultMaxAgeSec = value > 0 ? value : 0;}
         }
 
 

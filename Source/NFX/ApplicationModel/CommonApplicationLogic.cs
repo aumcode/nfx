@@ -750,8 +750,8 @@ namespace NFX.ApplicationModel
             
             if (m_Log is Service)
             {
-              ((Service)m_Log).Start();
-              WriteLog(MessageType.Info, FROM, "Log started, msg times are localized of machine-local time until time source starts");
+              if (((Service)m_Log).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Log started, msg times are localized of machine-local time until time source starts");
             }
           }
           catch(Exception error)
@@ -778,8 +778,8 @@ namespace NFX.ApplicationModel
             
             if (m_TimeSource is Service)
             {
-              ((Service)m_TimeSource).Start();
-              WriteLog(MessageType.Info, FROM, "TimeSource started");
+              if (((Service)m_TimeSource).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "TimeSource started");
             }
 
             WriteLog(MessageType.Info, FROM, "Log msg time is time source-supplied now");
@@ -793,6 +793,13 @@ namespace NFX.ApplicationModel
             WriteLog(MessageType.CatastrophicError, FROM, msg, error);
             throw new NFXException(msg, error);
           }
+        }
+        else
+        {
+          WriteLog(MessageType.Info, FROM, "Using default time source");
+
+          m_StartTime = LocalizedTime;
+          WriteLog(MessageType.Info, FROM, "App start time is {0}".Args(m_StartTime));
         }
 
 
@@ -815,8 +822,8 @@ namespace NFX.ApplicationModel
             
             if (m_EventTimer is Service)
             {
-              ((Service)m_EventTimer).Start();
-              WriteLog(MessageType.Info, FROM, "EventTimer started");
+              if (((Service)m_EventTimer).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "EventTimer started");
             }
           }
           catch(Exception error)
@@ -847,8 +854,8 @@ namespace NFX.ApplicationModel
            
             if (m_SecurityManager is Service)
             {
-              ((Service)m_SecurityManager).Start();
-              WriteLog(MessageType.Info, FROM, "Security Manager started");
+              if (((Service)m_SecurityManager).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Security Manager started");
             }
           }
           catch (Exception error)
@@ -887,8 +894,8 @@ namespace NFX.ApplicationModel
 
             if (m_Instrumentation is Service)
             {
-              ((Service)m_Instrumentation).Start();
-              WriteLog(MessageType.Info, FROM, "Instrumentation started");
+              if (((Service)m_Instrumentation).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Instrumentation started");
             }
 
           }
@@ -917,8 +924,8 @@ namespace NFX.ApplicationModel
 
                 if (m_Throttling is Service)
                 {
-                    ((Service)m_Throttling).Start();
-                    WriteLog(MessageType.Info, FROM, "Throttling started");
+                    if (((Service)m_Throttling).StartByApplication())
+                      WriteLog(MessageType.Info, FROM, "Throttling started");
                 }
 
             }
@@ -949,8 +956,8 @@ namespace NFX.ApplicationModel
 
             if (m_DataStore is Service)
             {
-              ((Service)m_DataStore).Start();
-              WriteLog(MessageType.Info, FROM, "DataStore started");
+              if (((Service)m_DataStore).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "DataStore started");
             }
           }
           catch (Exception error)
@@ -977,8 +984,8 @@ namespace NFX.ApplicationModel
            
             if (m_ObjectStore is Service)
             {
-              ((Service)m_ObjectStore).Start();
-              WriteLog(MessageType.Info, FROM, "ObjectStore started");
+              if (((Service)m_ObjectStore).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "ObjectStore started");
             }
           }
           catch (Exception error)
@@ -1005,8 +1012,8 @@ namespace NFX.ApplicationModel
            
             if (m_Glue is Service)
             {
-              ((Service)m_Glue).Start();
-              WriteLog(MessageType.Info, FROM, "Glue started");
+              if (((Service)m_Glue).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Glue started");
             }
           }
           catch (Exception error)

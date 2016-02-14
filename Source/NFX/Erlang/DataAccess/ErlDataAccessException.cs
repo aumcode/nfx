@@ -50,4 +50,18 @@ namespace NFX.DataAccess.Erlang
       : base(info, context) {}
   }
 
+  /// <summary>
+  /// Thrown by Erlang data schema map when server has changed schema. The client needs to restart or
+  ///  kill all cached data and refetch schema
+  /// </summary>
+  [Serializable]
+  public class ErlServerSchemaChangedException : ErlDataAccessException
+  {
+    
+    public ErlServerSchemaChangedException() {}
+
+    protected ErlServerSchemaChangedException(SerializationInfo info, StreamingContext context)
+      : base(info, context) {}
+  }
+
 }

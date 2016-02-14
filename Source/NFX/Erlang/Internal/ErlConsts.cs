@@ -31,11 +31,13 @@ namespace NFX.Erlang
         internal const string ERLANG_ACCEPT_ATTR        = "accept";
         internal const string ERLANG_ADDRESS_ATTR       = "address";
         internal const string ERLANG_CONFIG_SECTION     = "erlang";
+        internal const string ERLANG_CONFIG_TRANSPORT_SECTION = "transport";
         internal const string ERLANG_COOKIE_ATTR        = "cookie";
         internal const string ERLANG_CREATION_FILE_ATTR = "creation-file";
         internal const string ERLANG_CONN_TIMEOUT_ATTR  = "connect-timeout-msec";
         internal const string ERLANG_NODE_SECTION       = "node";
         internal const string ERLANG_SHORT_NAME_ATTR    = "short-name";
+        internal const string ERLANG_CONNECT_ON_STARUP  = "connect-on-startup";
 
         public const string ANY       = "_";
         public const string TRUE      = "true";

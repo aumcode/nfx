@@ -30,6 +30,7 @@ namespace NFX.Web.GeoLookup
   public class IPAddressBlock : TypedRow
   {
     [Field(key:true)] public string IPBlockStart       {get; set;} 
+    [Field] public int              NetMaskLength      {get; set;} 
     [Field] public string           LocationID         {get; set;}  
     [Field] public string           RegisteredLocationID  {get; set;}
     [Field] public string           RepresentedLocationID {get; set;}
@@ -42,15 +43,17 @@ namespace NFX.Web.GeoLookup
     {
       return @" 
 IPBlockStart       {0} 
-LocationID         {1}  
-RegisteredLocationID  {2}
-RepresentedLocationID {3}
-PostalCode         {4}
-Lat                {5}
-Lng                {6}
-AnonymousProxy     {7}
-SatelliteProvider  {8}".Args(
+NetMaskLength      {1} 
+LocationID         {2}  
+RegisteredLocationID  {3}
+RepresentedLocationID {4}
+PostalCode         {5}
+Lat                {6}
+Lng                {7}
+AnonymousProxy     {8}
+SatelliteProvider  {9}".Args(
 IPBlockStart       , 
+NetMaskLength      ,
 LocationID         ,  
 RegisteredLocationID,  
 RepresentedLocationID, 

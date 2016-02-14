@@ -18,8 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
 using NFX.ApplicationModel;
+
 
 namespace NFX.Web.GeoLookup
 {
@@ -27,7 +29,7 @@ namespace NFX.Web.GeoLookup
   public enum LookupResolution{Planet, Continent, Country, City, Street }
   
   /// <summary>
-  /// Looks-up entities by their dns name/ip addr
+  /// Looks-up entities by their ip addr
   /// </summary>
   public interface IGeoLookup : IApplicationComponent
   {
@@ -42,10 +44,10 @@ namespace NFX.Web.GeoLookup
     LookupResolution Resolution{get;}
 
     /// <summary>
-    /// Tries to lookup the geo entitiy by domain name/ip address.
+    /// Tries to lookup the geo entitiy by domain IPAddress.
     /// Returns null when no match could be made
     /// </summary>
-    GeoEntity Lookup(string address);
+    GeoEntity Lookup(IPAddress address);
 
     /// <summary>
     /// Tries to lookup the location by its id and returns it or null if no match could be made
@@ -60,7 +62,7 @@ namespace NFX.Web.GeoLookup
   [Serializable]
   public class GeoEntity
   {
-    protected internal GeoEntity(string query, IPAddressBlock block, Location location)
+    protected internal GeoEntity(IPAddress query, IPAddressBlock block, Location location)
     {
       Query = query;
       Block = block;
@@ -69,7 +71,7 @@ namespace NFX.Web.GeoLookup
     /// <summary>
     /// Returns the address originally requested
     /// </summary>
-    public readonly string Query;
+    public readonly IPAddress Query;
 
     /// <summary>
     /// Information about IP address block

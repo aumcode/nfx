@@ -20,6 +20,8 @@ select
  t1.`State`,
  t1.`Zip`,
  t1.`Phone`,
+ t1.`Amount`,
+ t1.`Note`,
   
  t1.`c_doctor`, 
  t2.`phone` as doctor_phone, 

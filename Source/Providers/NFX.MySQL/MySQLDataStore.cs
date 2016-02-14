@@ -203,37 +203,37 @@ namespace NFX.DataAccess.MySQL
            return TaskUtils.AsCompletedTask( () => this.Save(rowsets) ); 
         }
 
-        public int Insert(Row row)
+        public int Insert(Row row, FieldFilterFunc filter = null)
         {
             using (var cnn = GetConnection())
-              return DoInsert(cnn,  null, row);
+              return DoInsert(cnn,  null, row, filter);
         }
 
-        public Task<int> InsertAsync(Row row)
+        public Task<int> InsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.Insert(row) ); 
+            return TaskUtils.AsCompletedTask( () => this.Insert(row, filter) ); 
         }
 
-        public int Upsert(Row row)
-        {
-            using (var cnn = GetConnection())
-              return DoUpsert(cnn,  null, row);
-        }
-
-        public Task<int> UpsertAsync(Row row)
-        {
-            return TaskUtils.AsCompletedTask( () => this.Upsert(row) );
-        }
-
-        public int Update(Row row, IDataStoreKey key = null)
+        public int Upsert(Row row, FieldFilterFunc filter = null)
         {
             using (var cnn = GetConnection())
-              return DoUpdate(cnn,  null, row, key);
+              return DoUpsert(cnn,  null, row, filter);
         }
 
-        public Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
+        public Task<int> UpsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.Update(row, key) );
+            return TaskUtils.AsCompletedTask( () => this.Upsert(row, filter) );
+        }
+
+        public int Update(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
+        {
+            using (var cnn = GetConnection())
+              return DoUpdate(cnn,  null, row, key, filter);
+        }
+
+        public Task<int> UpdateAsync(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Update(row, key, filter) );
         }
 
         public int Delete(Row row, IDataStoreKey key = null)
@@ -392,28 +392,28 @@ namespace NFX.DataAccess.MySQL
         /// <summary>
         /// Performs CRUD row insert. Override to do custom insertion
         /// </summary>
-        protected internal virtual int DoInsert(MySqlConnection cnn, MySqlTransaction transaction, Row row)
+        protected internal virtual int DoInsert(MySqlConnection cnn, MySqlTransaction transaction, Row row, FieldFilterFunc filter = null)
         {
              checkReadOnly(row.Schema, "insert");
-             return CRUDGenerator.CRUDInsert(this, cnn, transaction, row);
+             return CRUDGenerator.CRUDInsert(this, cnn, transaction, row, filter);
         }
 
         /// <summary>
         /// Performs CRUD row upsert. Override to do custom upsertion
         /// </summary>
-        protected internal virtual int DoUpsert(MySqlConnection cnn, MySqlTransaction transaction, Row row)
+        protected internal virtual int DoUpsert(MySqlConnection cnn, MySqlTransaction transaction, Row row, FieldFilterFunc filter = null)
         {         
             checkReadOnly(row.Schema, "upsert");
-            return CRUDGenerator.CRUDUpsert(this, cnn, transaction, row);
+            return CRUDGenerator.CRUDUpsert(this, cnn, transaction, row, filter);
         }
 
         /// <summary>
         /// Performs CRUD row update. Override to do custom update
         /// </summary>
-        protected internal virtual int DoUpdate(MySqlConnection cnn, MySqlTransaction transaction, Row row, IDataStoreKey key = null)
+        protected internal virtual int DoUpdate(MySqlConnection cnn, MySqlTransaction transaction, Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
         {
             checkReadOnly(row.Schema, "update");
-            return CRUDGenerator.CRUDUpdate(this, cnn, transaction, row, key);
+            return CRUDGenerator.CRUDUpdate(this, cnn, transaction, row, key, filter);
         }
 
         /// <summary>

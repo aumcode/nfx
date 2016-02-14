@@ -236,10 +236,10 @@ namespace NFX.RelationalModel
                 Type dtype = Type.GetType(name, false, true);
                 if (dtype==null)
                 {
-                    var paths = DomainSearchPaths.Split('|', ',', ';');
+                    var paths = DomainSearchPaths.Split('|', ';');
                     foreach(var path in paths)
                     {
-                        var fullName = path + "." + name;
+                        var fullName = path.Replace(".*", "." + name);
                         dtype = Type.GetType(fullName, false, true);
                         if (dtype!=null) break;
                     }

@@ -160,7 +160,7 @@ namespace NFX.DataAccess.CRUD
                Check(row);
                var idx = DoDelete(row, key);
                if (idx>=0 && m_Changes!=null) m_Changes.Add( new RowChange(RowChangeType.Delete, row, null) );
-               return idx;    
+               return idx;
             }
 
             /// <summary>

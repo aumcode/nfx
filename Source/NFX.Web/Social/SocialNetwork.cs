@@ -108,23 +108,51 @@ namespace NFX.Web.Social
 
           userAgent = userAgent.TrimStart();
 
-          //todo Add more social networks detection
-          //see social net's documentation for a list of BOT names that they use
           if (net==SocialNetID.UNS || net==SocialNetID.TWT)
           {
             if (userAgent.IndexOf("Twitterbot", StringComparison.OrdinalIgnoreCase)==0) return true;
           }
 
-          //if (net==SocialNetID.UNS || net==SocialNetID.FBK)
-          //{
-          //  if (userAgent.IndexOf("?????", StringComparison.OrdinalIgnoreCase)!=-1) return true;
-          //}
+          if (net == SocialNetID.UNS || net == SocialNetID.FBK)
+          {
+            if (userAgent.IndexOf("facebookexternalhit", StringComparison.OrdinalIgnoreCase) == 0 ||
+                userAgent.IndexOf("Facebot", StringComparison.OrdinalIgnoreCase) == 0)
+              return true;
+          }
 
-          //if (net==SocialNetID.UNS || net==SocialNetID.GPS)
-          //{
-          //  if (userAgent.IndexOf("????????", StringComparison.OrdinalIgnoreCase)!=-1) return true;
-          //}
+          if (net == SocialNetID.UNS || net == SocialNetID.GPS)
+          {
+            if (userAgent.IndexOf(@"Google (+https://developers.google.com/+/web/snippet/)", StringComparison.OrdinalIgnoreCase) != -1)
+              return true;
+          }
 
+          if (net == SocialNetID.UNS || net == SocialNetID.LIN)
+          {
+            if (userAgent.IndexOf("LinkedInBot", StringComparison.OrdinalIgnoreCase) == 0) return true;
+          }
+
+          if (net == SocialNetID.UNS || net == SocialNetID.IGM)
+          {
+            if (userAgent.IndexOf("Instagram", StringComparison.OrdinalIgnoreCase) == 0) return true;
+          }
+
+          if (net == SocialNetID.UNS || net == SocialNetID.PIN)
+          {
+            if (userAgent.IndexOf(@"Pinterest/", StringComparison.OrdinalIgnoreCase) == 0 &&
+                userAgent.IndexOf(@"+http://www.pinterest.com/", StringComparison.OrdinalIgnoreCase) != -1)
+              return true;
+          }
+
+          if (net == SocialNetID.UNS || net == SocialNetID.VKT)
+          {
+            if (userAgent.IndexOf("vkShare; +vk.com/dev/Share", StringComparison.OrdinalIgnoreCase) != -1)
+              return true;
+          }
+
+          if (net == SocialNetID.UNS || net == SocialNetID.ODN)
+          {
+            if (userAgent.IndexOf("OdklBot", StringComparison.OrdinalIgnoreCase) != -1) return true;
+          }
 
           return false;
         }

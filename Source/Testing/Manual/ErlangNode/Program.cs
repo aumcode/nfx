@@ -60,7 +60,7 @@ namespace ErlangNode
                                   "  [Shell B] $ {0} -local b -remote a -trace Send -timeout 60\n\n" +
                                   "  In the Erlang shell send messages to the C# node:\n" +
                                   "  [Shell A] (a@localhost)1> {{test, b@localhost}} ! \"Hello World!\".\n"
-                                  , MiscUtils.ExeName(false));
+                                  , MiscUtils.EntryExeName(false));
                 Environment.Exit(1);
             }
 

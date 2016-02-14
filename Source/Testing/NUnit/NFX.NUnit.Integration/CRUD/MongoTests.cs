@@ -426,9 +426,81 @@ namespace NFX.NUnit.Integration.CRUD
           Assert.AreEqual(79, rs[0]["Count"]);
       }
 
+        [Test]
+        public void InsertWithPredicate()
+        {
+            var person = new MyPerzon
+            {
+                GDID = new GDID(1, 1, 1),
+                Name = "Jack London",
+                Age = 23
+            };
 
+            var affected = store.Insert(person, (r, k, f) => f.Name != "Age");
+            Assert.AreEqual(1, affected);
 
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon") 
+                           {
+                             new Query.Param("id", person.GDID)
+                           };
+            var persisted = store.LoadRow(query);
+            Assert.AreEqual(person.Name, persisted.Name);
+            Assert.AreEqual(0, persisted.Age);
+        }
 
+        [Test]
+        public void UpdateWithPredicate()
+        {
+            var person = new MyPerzon
+            {
+                GDID = new GDID(1, 1, 1),
+                Name = "Jack London",
+                Age = 23
+            };
+
+            store.Insert(person);
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon") 
+                           {
+                             new Query.Param("id", person.GDID)
+                           };
+            var persisted = store.LoadRow(query);
+            persisted.Name = "Ivan";
+            persisted.Age = 56;
+            
+            var affected = store.Update(persisted, null, (r, k, f) => f.Name != "Name");
+            var updated = store.LoadRow(query);
+
+            Assert.AreEqual(1, affected);
+            Assert.AreEqual(person.Name, updated.Name);
+            Assert.AreEqual(persisted.Age, updated.Age);
+        }
+
+        [Test]
+        public void UpsertWithPredicate()
+        {
+            var person = new MyPerzon
+            {
+                GDID = new GDID(1, 1, 1),
+                Name = "Jack London",
+                Age = 23
+            };
+
+            store.Insert(person);
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon") 
+                           {
+                             new Query.Param("id", person.GDID)
+                           };
+            var persisted = store.LoadRow(query);
+            persisted.Name = "Ivan";
+            persisted.Age = 56;
+            
+            var affected = store.Upsert(persisted, (r, k, f) => f.Name != "Name");
+            var upserted = store.LoadRow(query);
+
+            Assert.AreEqual(1, affected);
+            Assert.AreEqual(null, upserted.Name);
+            Assert.AreEqual(persisted.Age, upserted.Age);
+        }
 
 
         public class MyPerzon : TypedRow

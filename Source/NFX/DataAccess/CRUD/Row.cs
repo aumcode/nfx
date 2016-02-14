@@ -379,7 +379,8 @@ namespace NFX.DataAccess.CRUD
 
 
             /// <summary>
-            /// Copies fields from this row into another row/form
+            /// Copies fields from this row into another row/form.
+            /// Note: this is  shallow copy, as field values for complex types are just copied over
             /// </summary>
             public void CopyFields(Row other,
                                    bool includeAmorphousData = true,
@@ -387,7 +388,7 @@ namespace NFX.DataAccess.CRUD
                                    Func<string, Schema.FieldDef, bool> fieldFilter = null,
                                    Func<string, string, bool> amorphousFieldFilter = null)
             {
-              if (other==null) return;
+              if (other==null || object.ReferenceEquals(this, other)) return;
 
               var target = this is FormModel ? ((FormModel)this).DataStoreTargetName : string.Empty;
 

@@ -48,6 +48,7 @@ namespace NFX.DataAccess.MongoDB.Connector
       public const string COMMAND_COLLECTION = "$cmd";
 
       public const string _ID = "_id";
+      public const string SET = "$set";
 
       public const int BSON_SIZE_LIMIT = 16 * 1024 * 1024;
 

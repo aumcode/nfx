@@ -243,7 +243,7 @@ namespace NFX.Erlang
     private bool checkType(IErlObject value)
     {
       var vt = value.TypeOrder;
-      return ValueType == ErlTypeOrder.ErlObject || 
+      return ValueType == ErlTypeOrder.ErlObject ||
              value.TypeOrder == ErlTypeOrder.ErlAtom && (ErlAtom)value == ErlAtom.Undefined ||
              sameType(vt, ValueType);
     }

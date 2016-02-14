@@ -32,6 +32,7 @@ namespace NFX.Erlang.Internal
     {
       base.Destructor();
       m_Active = false;
+      m_Wakeup.Set();
       Clear();
     }
 
@@ -88,18 +89,17 @@ namespace NFX.Erlang.Internal
 
     public T Dequeue(int timeoutMsec)
     {
-      int timeout = timeoutMsec < 0 ? int.MaxValue : timeoutMsec;
-      int sleepInterval = Math.Min(timeout, SLEEP_GRANULARITY_MSEC);
-      DateTime wakeupTime = DateTime.UtcNow.AddMilliseconds(timeout);
-      bool timedout = false;
-
-      var wasActive = NFX.App.Active;
+      var timeout       = timeoutMsec < 0 ? int.MaxValue : timeoutMsec;
+      var sleepInterval = Math.Min(timeout, SLEEP_GRANULARITY_MSEC);
+      var wakeupTime    = DateTime.UtcNow.AddMilliseconds(timeout);
+      var timedout      = false;
+      var wasActive     = NFX.App.Active;
 
       while ((!wasActive || NFX.App.Active) && !DisposeStarted && !Disposed)
       {
         do
         {
-          if (!m_Active || m_Queue.Count > 0) break;
+          if (!m_Active || m_Queue.Count > 0)  break;
           if (m_Wakeup.WaitOne(sleepInterval)) break;
           timedout = timeoutMsec >= 0 && DateTime.UtcNow > wakeupTime;
         }

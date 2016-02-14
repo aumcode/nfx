@@ -49,15 +49,22 @@ namespace NFX.DataAccess.Erlang
     {
       m_Store = store;
       m_ErlSchema = XMLConfiguration.CreateFromXML(xmlContent);
+      m_OriginalXMLContent = xmlContent;
     }
 
+    private string m_OriginalXMLContent;
     private ErlDataStore m_Store;
     private XMLConfiguration m_ErlSchema;
     private Registry<Schema> m_CRUDSchemas = new Registry<Schema>();
 
 
+    internal volatile bool _NeedReconnect;
+
 
     public ErlDataStore Store{ get{ return m_Store;} }
+
+
+    public string OriginalXMLContent{ get{ return m_OriginalXMLContent;}}
 
     /// <summary>
     /// Enumerates all Erl schemas

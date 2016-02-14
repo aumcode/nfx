@@ -119,6 +119,10 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Mailbox.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
+    <Compile Include="Erlang\Connect\Transport\ErlTcpTransport.cs" />
+    <Compile Include="Erlang\Connect\Transport\ErlTransportFactory.cs" />
+    <Compile Include="Erlang\Connect\Transport\ErlTransportPasswordSource.cs" />
+    <Compile Include="Erlang\Connect\Transport\IErlTransport.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDMailbox.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDQueryExecutionContext.cs" />
     <Compile Include="Erlang\DataAccess\ErlCRUDScriptQueryHandler.cs" />
@@ -235,6 +239,7 @@
     <Compile Include="IO\Net\Gate\Traffic.cs" />
     <Compile Include="IO\Net\Gate\Rule.cs" />
     <Compile Include="IO\Net\Gate\VarDef.cs" />
+    <Compile Include="IO\Net\IPRange.cs" />
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="IO\SlimFormat.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
@@ -616,6 +621,7 @@
     <Compile Include="ServiceModel\CompositeServiceHost.cs" />
     <Compile Include="ServiceModel\Enums.cs" />
     <Compile Include="ServiceModel\IService.cs" />
+    <Compile Include="ServiceModel\ApplicationDontAutoStartServiceAttribute.cs" />
     <Compile Include="ServiceModel\Service.cs" />
     <Compile Include="ServiceModel\ServiceWithInstrumentationBase.cs" />
     <Compile Include="ServiceModel\WorkItem.cs" />

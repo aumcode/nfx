@@ -38,14 +38,14 @@ using NFX.Environment;
 namespace NFX.NUnit.AppModel.Pile
 {
   [TestFixture]
-  public class CacheTest : HighMemoryLoadTest
+  public class CacheTest
   {
     #region Tests
 
       [Test]
       public void T010_MainOperations()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<string>("A");
           var tB = cache.GetOrCreateTable<string>("B");
@@ -104,7 +104,7 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       public void T020_Comparers()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<string>("A", StringComparer.Ordinal);
           var tB = cache.GetOrCreateTable<string>("B", StringComparer.OrdinalIgnoreCase);
@@ -130,7 +130,7 @@ namespace NFX.NUnit.AppModel.Pile
       [ExpectedException(typeof(PileCacheException), ExpectedMessage="comparer mismatch", MatchType=MessageMatch.Contains)]
       public void T030_Comparers()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<string>("A", StringComparer.Ordinal);
           var tB = cache.GetOrCreateTable<string>("A", StringComparer.OrdinalIgnoreCase);
@@ -247,49 +247,10 @@ namespace NFX.NUnit.AppModel.Pile
       }
 
 
-
-      [Test]
-      public void T070_DoesNotSeeAgedOrExpired()
-      {
-        using (var cache = makeCache())
-        {
-          var tA = cache.GetOrCreateTable<string>("A");
-          var tB = cache.GetOrCreateTable<string>("B");
-          var tC = cache.GetOrCreateTable<string>("C");
-          tC.Options.DefaultMaxAgeSec = 4;
-          var tD = cache.GetOrCreateTable<string>("D");
-
-          Assert.AreEqual(PutResult.Inserted, tA.Put("key1", "value1")); //does not expire by itself
-          Assert.AreEqual(PutResult.Inserted, tB.Put("key1", "value1", 7));//will expire in 7 seconds
-          Assert.AreEqual(PutResult.Inserted, tC.Put("key1", "value1"));//will expire in Options.DefaultMaxAgeSec
-          Assert.AreEqual(PutResult.Inserted, tD.Put("key1", "value1", absoluteExpirationUTC: DateTime.UtcNow.AddSeconds(4) ));//will expire at specific time
-
-
-          Assert.AreEqual("value1", tA.Get("key1"));
-          Assert.AreEqual("value1", tA.Get("key1", 3));
-
-          Assert.AreEqual("value1", tB.Get("key1"));
-
-          Assert.AreEqual("value1", tC.Get("key1"));
-          
-          Assert.AreEqual("value1", tD.Get("key1"));
-
-
-          Thread.Sleep(20000);// wait long enough to cover a few swep cycles (that may be 5+sec long)
-
-
-          Assert.AreEqual("value1", tA.Get("key1"));
-          Assert.AreEqual(null, tA.Get("key1", 3)); //did not expire, but aged over get limit
-          Assert.AreEqual(null, tB.Get("key1")); //expired because of put with time limit
-          Assert.AreEqual(null, tC.Get("key1"));//expired because of Options
-          Assert.AreEqual(null, tD.Get("key1"));//expired because of absolute expiration on put
-        }
-      }
-
       [Test]
       public void T080_PutGetWithoutMaxCap()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<int>("A");
        ////   tA.Options.MaximumCapacity = 7;
@@ -314,7 +275,7 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       public void T090_PutGetWithMaxCap()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<int>("A");
           tA.Options.MaximumCapacity = 7;
@@ -346,7 +307,7 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       public void T100_OverwriteWithMaxCap()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<int>("A");
           tA.Options.MaximumCapacity = 7;
@@ -386,7 +347,7 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       public void T110_PriorityCollideWithMaxCap()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<int>("A");
           tA.Options.MaximumCapacity = 7;
@@ -417,121 +378,25 @@ namespace NFX.NUnit.AppModel.Pile
 
 
 
-
-      [Test]
-      public void T120_Rejuvenate()
-      {
-        using (var cache = makeCache())
-        {
-          var tA = cache.GetOrCreateTable<string>("A");
-
-          Assert.AreEqual(PutResult.Inserted, tA.Put("key1", "value1", 12));
-          Assert.AreEqual(PutResult.Inserted, tA.Put("key2", "value2", 12));
-          Assert.AreEqual(PutResult.Inserted, tA.Put("key3", "value3", 12));
-
-
-
-          Assert.AreEqual("value1", tA.Get("key1"));
-          Assert.AreEqual("value2", tA.Get("key2"));
-          Assert.AreEqual("value3", tA.Get("key3"));
-
-          for(var i=0; i<30; i++)
-          {
-            Thread.Sleep(1000);
-            Console.WriteLine("Second {0}   Load Factor {1}", i, tA.LoadFactor);
-            Assert.IsTrue( tA.Rejuvenate("key2") );
-          }
-          
-          Assert.AreEqual(null, tA.Get("key1"));
-          Assert.AreEqual("value2", tA.Get("key2"));//this is still here because it got rejuvenated
-          Assert.AreEqual(null, tA.Get("key3"));
-
-          Thread.Sleep(30000);
-          Assert.AreEqual(null, tA.Get("key2"));//has died too
-          Assert.AreEqual(0, tA.Count);
-        }
-      }
-
       [TestCase(100)]
-      [TestCase(10000)]
-      [TestCase(1000000)]
       public void T130_KeyInt_ManyPutGet(int cnt)
       {
-        using (var cache = makeCache())
-        {
-          var tA = cache.GetOrCreateTable<int>("A");
-
-          for(var i=0 ; i<cnt;i++)
-           tA.Put(i, "value-"+i.ToString());
-
-          for(var i=0 ; i<cnt;i++)
-           Assert.AreEqual( "value-"+i.ToString(), tA.Get( i ));
-        }
+        PileCacheTestCore.KeyInt_ManyPutGet(cnt);
       }
 
 
       [TestCase(100)]
-      [TestCase(10000)]
-      [TestCase(1000000)]
       public void T140_KeyGDID_ManyPutGet(int cnt)
       {
-        using (var cache = makeCache())
-        {
-          var tA = cache.GetOrCreateTable<GDID>("A");
-
-          for(var i=0 ; i<cnt;i++)
-           tA.Put( new GDID(0, (ulong)i), "value-"+i.ToString());
-
-          for(var i=0 ; i<cnt;i++)
-           Assert.AreEqual( "value-"+i.ToString(), tA.Get( new GDID(0, (ulong)i) ));
-        }
+        PileCacheTestCore.KeyGDID_ManyPutGet(cnt);
       }
 
 
       [TestCase(100)]
-      [TestCase(10000)]
-      [TestCase(1000000)]
       public void T150_KeyString_ManyPutGet(int cnt)
       {
-        using (var cache = makeCache())
-        {
-          cache.TableOptions.Register( new TableOptions("A")
-          {
-            InitialCapacity = cnt//*2,
-         //   MaximumCapacity = cnt*2
-          });
-         
-          var tA = cache.GetOrCreateTable<string>("A", StringComparer.Ordinal);
-
-         
-
-          for(var i=0 ; i<cnt;i++)
-          {
-           tA.Put( i.ToString(), "value-"+i.ToString());
-          }
-          
-          var hit = 0;
-          var miss = 0;
-          for(var i=0 ; i<cnt;i++)
-          {
-            var d = tA.Get( i.ToString() );
-            if (d==null) miss++;
-            else
-            {
-              hit++;
-              Assert.AreEqual( "value-"+i.ToString(), d);
-            }
-          }
-          Console.WriteLine("Did {0:n0} ->  hits: {1:n0} ({2:n0}%)  ;  misses: {3:n0} ({4:n0}%)", cnt, hit, (hit/(double)cnt)*100d, miss, (miss/(double)cnt)*100d);
-
-          Assert.IsTrue(hit > miss);
-          Assert.IsTrue((miss/(double)cnt) <= 0.1d);//misses <=10%
-        }
+        PileCacheTestCore.KeyString_ManyPutGet(cnt);
       }
-
-
-
-
 
       [TestCase(25,    10000, 4*1024)]
       [TestCase(10,   300000, 16)]
@@ -539,31 +404,7 @@ namespace NFX.NUnit.AppModel.Pile
       [TestCase(10,   20, 8*1024*1024)]
       public void T160_ResizeTable(int cnt, int rec, int payload)
       {
-        using (var cache = makeCache())
-        {
-          var tA = cache.GetOrCreateTable<int>("A");
-
-          Parallel.For(0, cnt,
-          (c) =>
-          {
-              var put = ExternalRandomGenerator.Instance.NextScaledRandomInteger(1, rec);
-              for(var i=0; i<put; i++)
-               tA.Put(i, new byte[ExternalRandomGenerator.Instance.NextScaledRandomInteger(1, payload)]);
-
-              var remove = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, rec);
-              for(var i=0; i<remove; i++)
-               tA.Remove(i);
-
-              Console.WriteLine("{0}% done", (100*c) / cnt);
-          });
-         
-          for(var i=0; i<rec; i++)
-               tA.Remove(i);
-
-          Assert.AreEqual(0, tA.Count);
-          Assert.AreEqual(0, cache.Pile.UtilizedBytes);
-          Assert.AreEqual(0, cache.Pile.ObjectCount);
-        }
+        PileCacheTestCore.ResizeTable(cnt, rec, payload);
       }
 
       [Test]
@@ -603,7 +444,7 @@ store
 }
 ";
         var c1 = conf1.AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-        using (var cache = makeCache(c1))
+        using (var cache = PileCacheTestCore.MakeCache(c1))
         {
           var tA = cache.GetOrCreateTable<int>("A");
 
@@ -648,7 +489,7 @@ store
       [Test]
       public void T180_GetOrPut()
       {
-        using (var cache = makeCache())
+        using (var cache = PileCacheTestCore.MakeCache())
         {
           var tA = cache.GetOrCreateTable<int>("A");
 
@@ -700,178 +541,24 @@ store
         }
       }
 
-
-
-      [TestCase( 1000000, 1)]
-      [TestCase( 1000000, 16)]
-      [TestCase( 1000000, 512)]
-      [TestCase(10000000, 1)]
-      [TestCase(10000000, 16)]
-      [TestCase(10000000, 512)]
+      [TestCase(100000, 1)]
+      [TestCase(100000, 16)]
+      [TestCase(100000, 512)]
       public void T190_FID_PutGetCorrectness(int cnt, int tbls)
       {
-        
-        var sw = new System.Diagnostics.Stopwatch();
-        var dicts = new ConcurrentDictionary<FID, string>[tbls];
-        for(var i = 0; i<dicts.Length; i++) dicts[i] = new ConcurrentDictionary<FID, string>();
-        var notInserted = 0;
-        using (var cache = makeCache())
-        {
-            sw.Start();
-            Parallel.For(0, cnt, (i) =>
-            {
-               var t = i % tbls;
-               var tbl = cache.GetOrCreateTable<FID>(t.ToString());
-
-               var key = FID.Generate();
-               var data = NFX.Parsing.NaturalTextGenerator.Generate(0);
-
-               var pr = tbl.Put(key, data);
-               dicts[t].TryAdd(key, data);
-               if (pr!=PutResult.Inserted)
-                 Interlocked.Increment(ref notInserted);
-            });
-        
-
-            var elapsed = sw.ElapsedMilliseconds;
-            var inserted = cnt - notInserted;
-            Console.WriteLine("Population of {0:n0} in {1:n0} msec at {2:n0}ops/sec", cnt, elapsed, cnt /  (elapsed / 1000d) );
-            Console.WriteLine("  inserted: {0:n0} ({1:n0}%)", inserted, (int) (100 * (inserted / (double)cnt) ) );
-            Console.WriteLine("  not-inserted: {0:n0} ({1:n0}%)", notInserted, (int) (100 * (notInserted) / (double)cnt));
-            sw.Restart();
-
-             var found = 0;
-             var notfound = 0;
-
-            for(var i=0; i< tbls; i++)
-            {
-             var tbl = cache.GetOrCreateTable<FID>(i.ToString()); 
-             var dict = dicts[i];
-            
-             Parallel.ForEach(dict, (kvp)=>
-             {
-                var data = tbl.Get( kvp.Key );
-                if (data!=null)
-                {
-                  Assert.AreEqual(data, kvp.Value );
-                  Interlocked.Increment(ref found);
-                }
-                else
-                  Interlocked.Increment(ref notfound);
-             });
-            }
-            
-            elapsed = sw.ElapsedMilliseconds;
-            var totalGot = found + notfound;
-            Console.WriteLine("Got of {0:n0} in {1:n0} msec at {2:n0}ops/sec", totalGot, elapsed, totalGot /  (elapsed / 1000d) );
-            Console.WriteLine("  found: {0:n0} ({1:n0}%)", found, (int) (100 * (found / (double)totalGot) ) );
-            Console.WriteLine("  not-found: {0:n0} ({1:n0}%)", notfound, (int) (100 * (notfound) / (double)totalGot));
-
-            Assert.IsTrue( (found / (double)inserted) > 0.9d);
-        }//using cache
+        PileCacheTestCore.FID_PutGetCorrectness(cnt, tbls);
       }
 
+      [TestCase(5,  7,    100,  2)]
+      [TestCase(16, 7,   2500,  4)]
 
-
-
-      [TestCase(5,  7,    1000,  20)]
-      [TestCase(16, 7,   25000,  40)]
-
-      [TestCase(5,  20,  50000, 20)]
-      [TestCase(16, 20, 150000, 40)]
+      [TestCase(5,  20, 50000, 2)]
+      [TestCase(16, 20, 15000, 4)]
       public void T9000000_ParalellGetPutRemove(int workers, int tables, int putCount, int durationSec)
       {
-        var start =DateTime.UtcNow;
-
-        using (var cache = makeCache())
-        {
-          var tasks = new Task[workers];
-
-          var totalGet = 0;
-          var totalPut = 0;
-          var totalRem = 0;
-
-          var getFound = 0;
-          var putInsert = 0;
-          var removed = 0;
-
-          for(var i=0; i<workers; i++)
-             tasks[i] = 
-              Task.Factory.StartNew( 
-               ()=>
-               {
-                 while(true)
-                 {
-                   var now = DateTime.UtcNow;
-                   if ((now-start).TotalSeconds>=durationSec) return;
-
-                   var t = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, tables);
-                   var tbl = cache.GetOrCreateTable<string>("tbl_"+t);
-
-                   var get = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(putCount*2, putCount * 4);
-                   var put = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(putCount / 2, putCount);
-                   var remove = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, putCount);
-
-                   Interlocked.Add(ref totalGet, get);
-                   Interlocked.Add(ref totalPut, put);
-                   Interlocked.Add(ref totalRem, remove);
-
-                   for(var j=0; j<get; j++) 
-                    if (null!=tbl.Get( NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 1000000).ToString() )) Interlocked.Increment(ref getFound);
-
-                   for(var j=0; j<put; j++) 
-                    if (PutResult.Inserted==tbl.Put( 
-                                                     NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 1000000).ToString(),
-                                                     NFX.Parsing.NaturalTextGenerator.Generate()                     
-                                                   )) Interlocked.Increment(ref putInsert);
-                  
-                   for(var j=0; j<remove; j++) 
-                    if (tbl.Remove( 
-                                   NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 1000000).ToString()
-                                  )) Interlocked.Increment(ref removed);
-
-
-                 }
-               }
-              , TaskCreationOptions.LongRunning );
-
-          Task.WaitAll( tasks );
-
-          Console.WriteLine("{0} workers, {1} tables, {2} put, {3} sec duration", workers, tables, putCount, durationSec);
-          Console.WriteLine("-----------------------------------------------------------");
-
-          Console.WriteLine("Total Gets: {0:n0}, found {1:n0}", totalGet, getFound);
-          Console.WriteLine("Total Puts: {0:n0}, inserted {1:n0}", totalPut, putInsert);
-          Console.WriteLine("Total Removes: {0:n0}, removed {1:n0}", totalRem, removed);
-
-          Console.WriteLine("Pile utilized bytes: {0:n0}", cache.Pile.UtilizedBytes);
-          Console.WriteLine("Pile object count: {0:n0}", cache.Pile.ObjectCount);
-
-          cache.PurgeAll();
-
-          Assert.AreEqual(0, cache.Count);
-          Assert.AreEqual(0, cache.Pile.UtilizedBytes);
-          Assert.AreEqual(0, cache.Pile.ObjectCount);
-
-
-          Console.WriteLine();
-        }
+        PileCacheTestCore.ParalellGetPutRemove(workers, tables, putCount, durationSec);
       }
 
-
-
-
     #endregion
-
-        private LocalCache makeCache(IConfigSectionNode conf = null)
-        {
-           var cache = new LocalCache();
-           cache.Pile = new DefaultPile(cache);
-           cache.Configure( conf );
-           cache.Start();
-           return cache;
-        }
-
-
   }
 }

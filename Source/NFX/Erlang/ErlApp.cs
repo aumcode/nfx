@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using NFX.ApplicationModel;
 using NFX.Environment;
@@ -46,6 +47,8 @@ namespace NFX.Erlang
 
   #region Application Startup (Erlang node)
 
+    private IConfigSectionNode[] m_RemoteNodes;
+
     //---------------------------------------------------------------------
     // Application model startup
     //---------------------------------------------------------------------
@@ -57,18 +60,18 @@ namespace NFX.Erlang
       s_Node.Start();
 
       foreach (var dn in m_RemoteNodes)
-        s_Node.Connection(dn.Value, dn);
+        if (dn.AttrByName(ErlConsts.ERLANG_CONNECT_ON_STARUP).ValueAsBool(true))
+          s_Node.Connection(dn.Value, dn);
+
+      //remember configs for remote nodes
+      s_Node.RemoteNodeConfigs = (IConfigSectionNode[])m_RemoteNodes.Clone();
 
       // Ensure proper cleanup of local node's global state
       application.RegisterAppFinishNotifiable(s_Node);
     }
 
-    private IConfigSectionNode[] m_RemoteNodes;
-
     public void ApplicationStartAfterInit(IApplication application)
-    {
-      
-    }
+    {}
 
     public void Configure(IConfigSectionNode node)
     {

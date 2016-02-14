@@ -34,11 +34,11 @@ namespace NFX.DataAccess.MySQL
   internal static class CRUDGenerator
   {
 
-      public static int CRUDInsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row)
+      public static int CRUDInsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, FieldFilterFunc filter)
       {
         try
         {           
-            return crudInsert(store, cnn, trans, row);
+            return crudInsert(store, cnn, trans, row, filter);
         }
         catch(Exception error)
         {          
@@ -50,11 +50,11 @@ namespace NFX.DataAccess.MySQL
         }
       }
 
-      public static int CRUDUpdate(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, IDataStoreKey key)
+      public static int CRUDUpdate(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, IDataStoreKey key, FieldFilterFunc filter)
       {
         try
         {
-            return crudUpdate(store, cnn, trans, row, key);
+            return crudUpdate(store, cnn, trans, row, key, filter);
         }
         catch(Exception error)
         {
@@ -68,11 +68,11 @@ namespace NFX.DataAccess.MySQL
         }
       }
 
-      public static int CRUDUpsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row)
+      public static int CRUDUpsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, FieldFilterFunc filter)
       {
         try
         {
-            return crudUpsert(store, cnn, trans, row);
+            return crudUpsert(store, cnn, trans, row, filter);
         }
         catch(Exception error)
         {
@@ -126,7 +126,7 @@ namespace NFX.DataAccess.MySQL
     }
 
 
-    private static int crudInsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row)
+    private static int crudInsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, FieldFilterFunc filter)
     {
       var target = store.TargetName;
       var cnames = new StringBuilder();
@@ -140,6 +140,11 @@ namespace NFX.DataAccess.MySQL
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
+        if (filter!=null)//20160210 Dkh+SPol
+        {
+          if (!filter(row, null, fld)) continue;
+        }
+
         var fname = fld.GetBackendNameForTarget(target);
          
         var fvalue = getFieldValue(row, fld.Order, store);
@@ -202,7 +207,7 @@ namespace NFX.DataAccess.MySQL
 
 
 
-    private static int crudUpdate(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, IDataStoreKey key)
+    private static int crudUpdate(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, IDataStoreKey key, FieldFilterFunc filter)
     {
       var target = store.TargetName;
       var values = new StringBuilder();
@@ -221,6 +226,11 @@ namespace NFX.DataAccess.MySQL
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
+        if (filter!=null)//20160210 Dkh+SPol
+        {
+          if (!filter(row, key, fld)) continue;
+        }
+
          
         var fvalue = getFieldValue(row, fld.Order, store); 
         
@@ -290,7 +300,7 @@ namespace NFX.DataAccess.MySQL
     }
 
 
-    private static int crudUpsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row)
+    private static int crudUpsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, FieldFilterFunc filter)
     {
       var target = store.TargetName;
       var cnames = new StringBuilder();
@@ -305,6 +315,12 @@ namespace NFX.DataAccess.MySQL
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
         
+
+        if (filter!=null)//20160210 Dkh+SPol
+        {
+          if (!filter(row, null, fld)) continue;
+        }
+
         var fname = fld.GetBackendNameForTarget(target);
          
         var fvalue = getFieldValue(row, fld.Order, store);

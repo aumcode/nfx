@@ -36,7 +36,7 @@ using NFX.Serialization.Slim;
 namespace NFX.NUnit.AppModel.Pile
 {
   [TestFixture]
-  public class PileTest : HighMemoryLoadTest
+  public class PileTest
   {
       [SetUp]
       public void SetUp()
@@ -341,211 +341,77 @@ namespace NFX.NUnit.AppModel.Pile
         }  
       }
 
+      [TestCase(false, 100000, 0, 40, true)]
+      [TestCase(false,  10000, 0, 50000, true)]
+      [TestCase(false,   1000, 70000, 150000, true)]
+      [TestCase(false,   5000, 0, 150000, true)]
 
-           private class dummy
-           {
-             public byte[] bin;
-           }
+      [TestCase(true, 100000, 0, 40, true)]
+      [TestCase(true,  10000, 0, 50000, true)]
+      [TestCase(true,   1000, 70000, 150000, true)]
+      [TestCase(true,   5000, 0, 150000, true)]
 
-      
-      [TestCase(false, 1000000, 0, 40, true)]
-      [TestCase(false,  100000, 0, 50000, true)]
-      [TestCase(false,   10000, 70000, 150000, true)]
-      [TestCase(false,   50000, 0, 150000, true)]
+      [TestCase(false, 100000, 0, 40, false)]
+      [TestCase(false,  10000, 0, 50000, false)]
+      [TestCase(false,   1000, 70000, 150000, false)]
+      [TestCase(false,   5000, 0, 150000, false)]
 
-      [TestCase(true, 1000000, 0, 40, true)]
-      [TestCase(true,  100000, 0, 50000, true)]
-      [TestCase(true,   10000, 70000, 150000, true)]
-      [TestCase(true,   50000, 0, 150000, true)]
-
-      [TestCase(false, 1000000, 0, 40, false)]
-      [TestCase(false,  100000, 0, 50000, false)]
-      [TestCase(false,   10000, 70000, 150000, false)]
-      [TestCase(false,   50000, 0, 150000, false)]
-
-      [TestCase(true, 1000000, 0, 40, false)]
-      [TestCase(true,  100000, 0, 50000, false)]
-      [TestCase(true,   10000, 70000, 150000, false)]
-      [TestCase(true,   50000, 0, 150000, false)]
+      [TestCase(true, 100000, 0, 40, false)]
+      [TestCase(true,  10000, 0, 50000, false)]
+      [TestCase(true,   1000, 70000, 150000, false)]
+      [TestCase(true,   5000, 0, 150000, false)]
       public void VarSizes_Checkboard(bool isParallel, int cnt, int minSz, int maxSz, bool speed)
       {
-        using (var pile = new DefaultPile())
-        {
-          pile.Start();
-          pile.AllocMode = speed ? AllocationMode.FavorSpeed : AllocationMode.ReuseSpace;
-          
-          var tasks = new List<Task>();
-          for(var t=0; t < (isParallel? (System.Environment.ProcessorCount - 1) : 1); t++)
-           tasks.Add(
-                  Task.Run( () =>
-                  {
-                     var dict = new Dictionary<PilePointer, dummy>();
-                     var priorOdd = PilePointer.Invalid;
-                     for(var i=0; i<cnt; i++)
-                     {
-                       var even = (i&0x01)==0;
-                       var data = new dummy{ bin = new byte[12 + NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(minSz, maxSz)]};
-                       data.bin.WriteBEInt32(0, ExternalRandomGenerator.Instance.NextRandomInteger);
-                       data.bin.WriteBEInt32(data.bin.Length-4, ExternalRandomGenerator.Instance.NextRandomInteger);
-                       var ptr = pile.Put(data);
-                       Assert.IsTrue( ptr.Valid );
-               
-                       if (even)
-                        dict.Add(ptr, data);
-                       else
-                       {
-                        if (priorOdd.Valid)
-                         Assert.IsTrue( pile.Delete(priorOdd) );
-                        priorOdd = ptr;
-                       }
-
-
-                       if (i%1000==0)
-                        Console.WriteLine("Thread{0} did {1}; allocated {2} bytes, utilized {3} bytes by {4} objects {5} bytes/obj. ",
-                                          Thread.CurrentThread.ManagedThreadId,
-                                           i,
-                                           pile.AllocatedMemoryBytes,
-                                           pile.UtilizedBytes,
-                                           pile.ObjectCount,
-                                           pile.UtilizedBytes / pile.ObjectCount);
-
-                     }
-                     Console.WriteLine("Thread {0} Population done, now checking the buffers... {1}",Thread.CurrentThread.ManagedThreadId, DateTime.Now);
-
-                     foreach(var entry in dict)
-                       Assert.IsTrue( NFX.IOMiscUtils.MemBufferEquals(entry.Value.bin, (pile.Get(entry.Key) as dummy).bin));
-
-                     Console.WriteLine("Thread {0} DONE. {1}", Thread.CurrentThread.ManagedThreadId, DateTime.Now);
-                  })
-            );//add
-            
-          Task.WaitAll( tasks.ToArray() );            
-        }
-
+        PileCacheTestCore.VarSizes_Checkboard(isParallel, cnt, minSz, maxSz, speed);
       }
 
+      [TestCase(false, 100000, 0, 256, false, true)]
+      [TestCase(false,  25000, 0, 8000, false, true)]
+      [TestCase(false,  15000, 0, 24000, false, true)]
+      [TestCase(false,   2100, 65000, 129000, false, true)]
 
-      [TestCase(false, 1000000, 0, 256, false, true)]
-      [TestCase(false,  250000, 0, 8000, false, true)]
-      [TestCase(false,  150000, 0, 24000, false, true)]
-      [TestCase(false,   21000, 65000, 129000, false, true)]
-
-      [TestCase(true, 1000000, 0, 256, false, true)]
-      [TestCase(true,  250000, 0, 8000, false, true)]
-      [TestCase(true,  150000, 0, 24000, false, true)]
-      [TestCase(true,   21000, 65000, 129000, false, true)]
-
-
-      [TestCase(false, 1000000, 0, 256, true, true)]
-      [TestCase(false,  250000, 0, 8000, true, true)]
-      [TestCase(false,  150000, 0, 24000, true, true)]
-      [TestCase(false,   21000, 65000, 129000, true, true)]
-
-      [TestCase(true, 1000000, 0, 256, true, true)]
-      [TestCase(true,  250000, 0, 8000, true, true)]
-      [TestCase(true,  150000, 0, 24000, true, true)]
-      [TestCase(true,   21000, 65000, 129000, true, true)]
+      [TestCase(true, 100000, 0, 256, false, true)]
+      [TestCase(true,  25000, 0, 8000, false, true)]
+      [TestCase(true,  15000, 0, 24000, false, true)]
+      [TestCase(true,   2100, 65000, 129000, false, true)]
 
 
+      [TestCase(false, 100000, 0, 256, true, true)]
+      [TestCase(false,  25000, 0, 8000, true, true)]
+      [TestCase(false,  15000, 0, 24000, true, true)]
+      [TestCase(false,   2100, 65000, 129000, true, true)]
 
-      [TestCase(false, 1000000, 0, 256, false, false)]
-      [TestCase(false,  250000, 0, 8000, false, false)]
-      [TestCase(false,  150000, 0, 24000, false, false)]
-      [TestCase(false,   12000, 65000, 129000, false, false)]
-
-      [TestCase(true, 1000000, 0, 256, false, false)]
-      [TestCase(true,  250000, 0, 8000, false, false)]
-      [TestCase(true,  150000, 0, 24000, false, false)]
-      [TestCase(true,   12000, 65000, 129000, false, false)]
+      [TestCase(true, 100000, 0, 256, true, true)]
+      [TestCase(true,  25000, 0, 8000, true, true)]
+      [TestCase(true,  15000, 0, 24000, true, true)]
+      [TestCase(true,   2100, 65000, 129000, true, true)]
 
 
-      [TestCase(false, 1000000, 0, 256, true, false)]
-      [TestCase(false,  250000, 0, 8000, true, false)]
-      [TestCase(false,  150000, 0, 24000, true, false)]
-      [TestCase(false,   12000, 65000, 129000, true, false)]
 
-      [TestCase(true, 1000000, 0, 256, true, false)]
-      [TestCase(true,  250000, 0, 8000, true, false)]
-      [TestCase(true,  150000, 0, 24000, true, false)]
-      [TestCase(true,   12000, 65000, 129000, true, false)]
+      [TestCase(false, 100000, 0, 256, false, false)]
+      [TestCase(false,  25000, 0, 8000, false, false)]
+      [TestCase(false,  15000, 0, 24000, false, false)]
+      [TestCase(false,   1200, 65000, 129000, false, false)]
+
+      [TestCase(true, 100000, 0, 256, false, false)]
+      [TestCase(true,  25000, 0, 8000, false, false)]
+      [TestCase(true,  15000, 0, 24000, false, false)]
+      [TestCase(true,   1200, 65000, 129000, false, false)]
+
+
+      [TestCase(false, 100000, 0, 256, true, false)]
+      [TestCase(false,  25000, 0, 8000, true, false)]
+      [TestCase(false,  15000, 0, 24000, true, false)]
+      [TestCase(false,   1200, 65000, 129000, true, false)]
+
+      [TestCase(true, 100000, 0, 256, true, false)]
+      [TestCase(true,  25000, 0, 8000, true, false)]
+      [TestCase(true,  15000, 0, 24000, true, false)]
+      [TestCase(true,   1200, 65000, 129000, true, false)]
       public void VarSizes_Increasing_Random(bool isParallel, int cnt, int minSz, int maxSz, bool speed, bool rnd)
       {
-        using (var pile = new DefaultPile())
-        {
-          pile.Start();
-          pile.AllocMode = speed ? AllocationMode.FavorSpeed : AllocationMode.ReuseSpace;
-
-          var sw = Stopwatch.StartNew();
-          var tasks = new List<Task>();
-          for(var t=0; t < (isParallel? (System.Environment.ProcessorCount - 1) : 1); t++)
-           tasks.Add(
-                  Task.Run( () =>
-                  {
-                     var dict = new Dictionary<PilePointer, dummy>();
-                     var lst = new List<PilePointer>();
-                     var priorOdd = PilePointer.Invalid;
-                     for(var i=0; i<cnt; i++)
-                     {
-                       var buf = new byte[12 + 
-                                          minSz+ 
-                                          (
-                                          rnd
-                                           ? (NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, (int)(maxSz*(i/(double)cnt))))
-                                           : (int)(maxSz*(i/(double)cnt))
-                                          ) 
-                                         ];
-                       var data = new dummy{ bin = buf};
-                       data.bin.WriteBEInt32(0, ExternalRandomGenerator.Instance.NextRandomInteger);
-                       data.bin.WriteBEInt32(data.bin.Length-4, ExternalRandomGenerator.Instance.NextRandomInteger);
-                       var ptr = pile.Put(data);
-                       Assert.IsTrue( ptr.Valid );
-               
-                       dict.Add(ptr, data);
-                       lst.Add(ptr);
-                       
-                       if (i>cnt/3)
-                       {
-                         if (ExternalRandomGenerator.Instance.NextRandomInteger > 0)
-                         {
-                           var ri = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, lst.Count-1);
-                           var pp = lst[ri];
-                           if (!pp.Valid) continue;
-
-                           Assert.IsTrue( pile.Delete(pp) );
-                           dict.Remove( pp );
-                           lst[ri] = PilePointer.Invalid;
-                           
-                         }
-                       }
-
-
-                       if (i%1000==0)
-                        Console.WriteLine("Thread{0} did {1}; allocated {2} bytes, utilized {3} bytes by {4} objects {5} bytes/obj. ",
-                                          Thread.CurrentThread.ManagedThreadId,
-                                           i,
-                                           pile.AllocatedMemoryBytes,
-                                           pile.UtilizedBytes,
-                                           pile.ObjectCount,
-                                           pile.UtilizedBytes / pile.ObjectCount);
-
-                     }
-                     Console.WriteLine("Thread {0} Population done, now checking the buffers... {1}",Thread.CurrentThread.ManagedThreadId, DateTime.Now);
-
-                     foreach(var entry in dict)
-                       Assert.IsTrue( NFX.IOMiscUtils.MemBufferEquals(entry.Value.bin, (pile.Get(entry.Key) as dummy).bin));
-
-                     Console.WriteLine("Thread {0} DONE. {1}", Thread.CurrentThread.ManagedThreadId, DateTime.Now);
-                  })
-            );//add
-            
-          Task.WaitAll( tasks.ToArray() ); 
-          var el = sw.ElapsedMilliseconds;
-          var gt = cnt * tasks.Count;
-          Console.WriteLine("Total objects: {0:n0} in {1:n0} ms at {2:n0} obj/sec".Args(gt, el, gt / (el / 1000d)));
-        }
+        PileCacheTestCore.VarSizes_Increasing_Random(isParallel, cnt, minSz, maxSz, speed, rnd);
       }
-
-
 
       [Test]
       public void Configuration()
@@ -645,9 +511,5 @@ namespace NFX.NUnit.AppModel.Pile
 
         }//using app
       }
-
-
-
-
   }
 }

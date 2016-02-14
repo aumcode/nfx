@@ -26,8 +26,6 @@ namespace NFX.ApplicationModel.Pile
 
       public const string CONFIG_FREE_CHUNK_SIZES_ATTR = "free-chunk-sizes";
       
-      private static readonly int CPU_COUNT = System.Environment.ProcessorCount;
-
       public const int SEG_SIZE_MIN  = 64 * 1024 * 1024; // 64 Mbyte
       public const int SEG_SIZE_DFLT = 256 * 1024 * 1024; // 256 Mbyte
       public const int SEG_SIZE_MAX  = 2147483632; // 2 Gbyte - 16 bytes

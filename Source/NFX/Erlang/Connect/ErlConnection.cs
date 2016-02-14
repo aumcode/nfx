@@ -14,9 +14,9 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
+
 using System;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace NFX.Erlang
@@ -45,7 +45,7 @@ namespace NFX.Erlang
     /// Accept an incoming connection from a remote node
     /// </summary>
     public ErlConnection(ErlLocalNode node, TcpClient peer)
-        : base(node, peer)
+        : base(node, new ErlTcpTransport(peer))
     {
       _ctor(StringConsts.ERL_CONNECTION.Args(m_Home.NodeName.Value, "<-", peer.ToString()));
     }
@@ -111,18 +111,18 @@ namespace NFX.Erlang
     /// <summary>
     /// Deliver communication exceptions to the recipient
     /// </summary>
-    protected override void Deliver(ErlConnectionException e, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    protected override void Deliver(ErlConnectionException e)
     {
-      m_Home.Deliver(e, file, line);
+      m_Home.Deliver(e);
     }
 
     /// <summary>
     /// Deliver messages to the recipient
     /// </summary>
-    protected override void Deliver(ErlMsg msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    protected override void Deliver(ErlMsg msg)
     {
-      if (!m_Home.Deliver(msg, file, line))
-        m_Home.OnUnhandledMsg(this, msg, file, line);
+      if (!m_Home.Deliver(msg))
+        m_Home.OnUnhandledMsg(this, msg);
     }
 
   #endregion
@@ -183,8 +183,8 @@ namespace NFX.Erlang
             if (len == 0)
               lock (this)
               {
-                if (m_TcpClient != null)
-                  (m_TcpClient.GetStream()).Write(tock, 0, tock.Length);
+                if (m_Transport != null)
+                  (m_Transport.GetStream()).Write(tock, 0, tock.Length);
               }
           }
           while (len == 0); // tick_loop

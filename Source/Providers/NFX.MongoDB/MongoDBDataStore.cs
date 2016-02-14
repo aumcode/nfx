@@ -189,37 +189,37 @@ namespace NFX.DataAccess.MongoDB
            return TaskUtils.AsCompletedTask( () => this.Save(rowsets) ); 
         }
 
-        public virtual int Insert(Row row)
+        public virtual int Insert(Row row, FieldFilterFunc filter = null)
         {
             var db = GetDatabase();
-            return DoInsert(db, row);
+            return DoInsert(db, row, filter);
         }
 
-        public virtual Task<int> InsertAsync(Row row)
+        public virtual Task<int> InsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.Insert(row) ); 
+            return TaskUtils.AsCompletedTask( () => this.Insert(row, filter) ); 
         }
 
-        public virtual int Upsert(Row row)
-        {
-            var db = GetDatabase();
-            return DoUpsert(db, row);
-        }
-
-        public virtual Task<int> UpsertAsync(Row row)
-        {
-            return TaskUtils.AsCompletedTask( () => this.Upsert(row) );
-        }
-
-        public virtual int Update(Row row, IDataStoreKey key = null)
+        public virtual int Upsert(Row row, FieldFilterFunc filter = null)
         {
             var db = GetDatabase();
-            return DoUpdate(db, row, key);
+            return DoUpsert(db, row, filter);
         }
 
-        public virtual Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
+        public virtual Task<int> UpsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.Update(row, key) );
+            return TaskUtils.AsCompletedTask( () => this.Upsert(row, filter) );
+        }
+
+        public virtual int Update(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
+        {
+            var db = GetDatabase();
+            return DoUpdate(db, row, key, filter);
+        }
+
+        public virtual Task<int> UpdateAsync(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
+        {
+            return TaskUtils.AsCompletedTask( () => this.Update(row, key, filter) );
         }
 
         public int Delete(Row row, IDataStoreKey key = null)
@@ -293,9 +293,9 @@ namespace NFX.DataAccess.MongoDB
         }
 
         
-        protected virtual int DoInsert(Connector.Database db, Row row)
+        protected virtual int DoInsert(Connector.Database db, Row row, FieldFilterFunc filter = null)
         {
-          var doc = convertRowToBSONDocumentWith_ID(row, "insert");
+          var doc = convertRowToBSONDocumentWith_ID(row, "insert", filter);
           
           var tname = GetCollectionName(row.Schema);
           
@@ -308,9 +308,9 @@ namespace NFX.DataAccess.MongoDB
           return result.TotalDocumentsAffected;
         }
 
-        protected virtual int DoUpsert(Connector.Database db, Row row)
+        protected virtual int DoUpsert(Connector.Database db, Row row, FieldFilterFunc filter = null)
         {
-          var doc = convertRowToBSONDocumentWith_ID(row, "upsert");
+          var doc = convertRowToBSONDocumentWith_ID(row, "upsert", filter);
           
           var tname = GetCollectionName(row.Schema);
           
@@ -323,16 +323,27 @@ namespace NFX.DataAccess.MongoDB
           return result.TotalDocumentsAffected;
         }
 
-        protected virtual int DoUpdate(Connector.Database db, Row row, IDataStoreKey key)
+        protected virtual int DoUpdate(Connector.Database db, Row row, IDataStoreKey key, FieldFilterFunc filter = null)
         {
-          var doc = convertRowToBSONDocumentWith_ID(row, "update");
-          
+          var doc = convertRowToBSONDocumentWith_ID(row, "update", filter);
+          var _id = doc[Connector.Protocol._ID];
+
+          //20160212 spol
+          if (filter != null)
+          {
+            doc.Delete(Connector.Protocol._ID);
+            if (doc.Count == 0) return 0; // nothing to update
+            var wrapDoc = new BSONDocument();
+            wrapDoc.Set(new BSONDocumentElement(Connector.Protocol.SET, doc));
+            doc = wrapDoc; 
+          }
+
           var tname = GetCollectionName(row.Schema);
           
           var collection = db[tname]; 
           
           var qry = new Connector.Query();
-          qry.Set( doc[Connector.Protocol._ID] );
+          qry.Set( _id );
           var upd = new Connector.UpdateEntry(qry, doc, false, false);
 
           var result = collection.Update( upd );
@@ -366,9 +377,9 @@ namespace NFX.DataAccess.MongoDB
 
     #region .pvt
 
-      private BSONDocument convertRowToBSONDocumentWith_ID(Row row, string operation)
+      private BSONDocument convertRowToBSONDocumentWith_ID(Row row, string operation, FieldFilterFunc filter = null)
       {
-        var result = m_Converter.RowToBSONDocument(row, this.TargetName);
+        var result = m_Converter.RowToBSONDocument(row, this.TargetName, filter: filter);
 
         if (result[Connector.Protocol._ID]==null)
          throw new MongoDBDataAccessException(StringConsts.OP_ROW_NO_PK_ID_ERROR.Args(row.Schema.Name, Connector.Protocol._ID, operation));

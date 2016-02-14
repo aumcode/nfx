@@ -289,6 +289,41 @@ namespace NFX.NUnit.Integration.CRUD
             }   
         }
 
+        [Test]
+        public void ManualDS_InsertWithPredicate()
+        {
+            using (var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.InsertWithPredicate(store);
+                clearAllTables();
+            }
+        }
+
+        [Test]
+        public void ManualDS_UpdateWithPredicate()
+        {
+            using (var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.InsertWithPredicate(store);
+                clearAllTables();
+            }
+        }
+         
+        [Test]
+        public void ManualDS_UpsertWithPredicate()
+        {
+            using (var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.UpsertWithPredicate(store);
+                clearAllTables();
+            }
+        }
 
 
         //===============================================================================================================================

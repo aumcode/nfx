@@ -34,7 +34,7 @@ namespace NFX.NUnit.Integration.Web.Pay
         Assert.IsNotNull(sess);
 
         var ta = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
-          new Financial.Amount("usd", 15.75M), true, "test payment");
+          new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
 
         Assert.IsNotNull(ta);
       }
@@ -42,31 +42,31 @@ namespace NFX.NUnit.Integration.Web.Pay
       public static void ChargeCardDeclined(PaySession sess)
       {
         var ta = sess.Charge(null, FakePaySystemHost.CARD_DECLINED, Account.EmptyInstance,
-          new Financial.Amount("usd", 15.75M), true, "test payment");
+          new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
       }
 
       public static void ChargeCardLuhnErr(PaySession sess)
       {
         var ta = sess.Charge(null, FakePaySystemHost.CARD_LUHN_ERR, Account.EmptyInstance,
-          new Financial.Amount("usd", 15.75M), true, "test payment");
+          new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
       }
 
       public static void ChargeCardExpYearErr(PaySession sess)
       {
         var ta = sess.Charge(null, FakePaySystemHost.CARD_EXP_YEAR_ERR, Account.EmptyInstance,
-          new Financial.Amount("usd", 15.75M), true, "test payment");
+          new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
       }
 
       public static void ChargeCardExpMonthErr(PaySession sess)
       {
         var ta = sess.Charge(null, FakePaySystemHost.CARD_EXP_MONTH_ERR, Account.EmptyInstance,
-            new Financial.Amount("usd", 15.75M), true, "test payment");
+            new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
       }
 
       public static void ChargeCardVCErr(PaySession sess)
       {
         var ta = sess.Charge(null, FakePaySystemHost.CARD_CVC_ERR, Account.EmptyInstance,
-            new Financial.Amount("usd", 15.75M), true, "test payment");
+            new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
       }
 
       public static void ChargeWithBillingAddressInfo(PaySession sess)
@@ -74,18 +74,18 @@ namespace NFX.NUnit.Integration.Web.Pay
         Assert.IsNotNull(sess);
 
         var ta = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT_WITH_ADDRESS, Account.EmptyInstance,
-          new Financial.Amount("usd", 15.75M), true, "test payment");
+          new NFX.Financial.Amount("usd", 15.75M), true, "test payment");
 
         Assert.IsNotNull(ta);
       }
 
       public static void CaptureImplicitTotal(PaySession sess)
       {
-        var amount = new Financial.Amount("usd", 17.25M);
+        var amount = new NFX.Financial.Amount("usd", 17.25M);
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT,
           amount, false, "test payment");
 
-        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountCaptured);
+        Assert.AreEqual(new NFX.Financial.Amount("usd", .0M), charge.AmountCaptured);
 
         charge.Capture(null);
 
@@ -94,11 +94,11 @@ namespace NFX.NUnit.Integration.Web.Pay
 
       public static void CaptureExplicitTotal(PaySession sess)
       {
-        var amount = new Financial.Amount("usd", 17.25M);
+        var amount = new NFX.Financial.Amount("usd", 17.25M);
 
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, amount, false, "test payment");
 
-        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountCaptured);
+        Assert.AreEqual(new NFX.Financial.Amount("usd", .0M), charge.AmountCaptured);
 
         charge.Capture(null, amount);
 
@@ -107,14 +107,14 @@ namespace NFX.NUnit.Integration.Web.Pay
 
       public static void CapturePartial(PaySession sess)
       {
-        var chargeAmount = new Financial.Amount("usd", 17.25M);
+        var chargeAmount = new NFX.Financial.Amount("usd", 17.25M);
 
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT,
           chargeAmount, false, "test payment");
 
-        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountCaptured);
+        Assert.AreEqual(new NFX.Financial.Amount("usd", .0M), charge.AmountCaptured);
 
-        var captureAmount = new Financial.Amount("usd", 10.00M);
+        var captureAmount = new NFX.Financial.Amount("usd", 10.00M);
         charge.Capture(null, amount: captureAmount);
 
         Assert.AreEqual(captureAmount, charge.AmountCaptured);
@@ -122,11 +122,11 @@ namespace NFX.NUnit.Integration.Web.Pay
 
       public static void RefundFullImplicit(PaySession sess)
       {
-        var amountToRefund = new Financial.Amount("usd", 17.25M);
+        var amountToRefund = new NFX.Financial.Amount("usd", 17.25M);
 
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance, amountToRefund, true, "test payment");
 
-        Assert.AreEqual(new Financial.Amount("usd", .0M), charge.AmountRefunded);
+        Assert.AreEqual(new NFX.Financial.Amount("usd", .0M), charge.AmountRefunded);
 
         FakePaySystemHost.Instance.SaveTransaction(charge);
 
@@ -139,11 +139,11 @@ namespace NFX.NUnit.Integration.Web.Pay
       public static void RefundFullExplicit(PaySession sess)
       {
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
-          new Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
+          new NFX.Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
 
         FakePaySystemHost.Instance.SaveTransaction(charge);
 
-        var refundTA = charge.Refund(null, new Financial.Amount("usd", 20.00M));
+        var refundTA = charge.Refund(null, new NFX.Financial.Amount("usd", 20.00M));
 
         Assert.IsNotNull(refundTA);
       }
@@ -151,18 +151,18 @@ namespace NFX.NUnit.Integration.Web.Pay
       public static void RefundFullTwoParts(PaySession sess)
       {
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
-          new Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
+          new NFX.Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
 
         FakePaySystemHost.Instance.SaveTransaction(charge);
 
-        var refund1 = charge.Refund(null, new Financial.Amount("usd", 15.00M), "fraudulent");
+        var refund1 = charge.Refund(null, new NFX.Financial.Amount("usd", 15.00M), "fraudulent");
 
         Assert.IsNotNull(refund1);
         Assert.AreEqual(charge.ID, refund1.ParentTransactionID);
 
         FakePaySystemHost.Instance.SaveTransaction(refund1);
 
-        var refund2 = charge.Refund(null, new Financial.Amount("usd", 5.00M), "requested_by_customer");
+        var refund2 = charge.Refund(null, new NFX.Financial.Amount("usd", 5.00M), "requested_by_customer");
 
         Assert.IsNotNull(refund2);
         Assert.AreEqual(refund2.ParentTransactionID, charge.ID);
@@ -171,14 +171,14 @@ namespace NFX.NUnit.Integration.Web.Pay
       public static void RefundDifferentCurrency(PaySession sess)
       {
         var chargeTA = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
-          new Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
+          new NFX.Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
 
-        var refundTA = chargeTA.Refund(null, new Financial.Amount("eur", 15.00M), "duplicate");
+        var refundTA = chargeTA.Refund(null, new NFX.Financial.Amount("eur", 15.00M), "duplicate");
       }
 
       public static void TransferToBank(PaySession sess)
       {
-        var transferTA = sess.Transfer(null, Account.EmptyInstance, FakePaySystemHost.BANK_ACCOUNT_STRIPE_CORRECT, new Financial.Amount("usd", 183.90M));
+        var transferTA = sess.Transfer(null, Account.EmptyInstance, FakePaySystemHost.BANK_ACCOUNT_STRIPE_CORRECT, new NFX.Financial.Amount("usd", 183.90M));
 
         Assert.IsNotNull(transferTA);
       }
@@ -186,7 +186,7 @@ namespace NFX.NUnit.Integration.Web.Pay
       public static void TransferToCard(PaySession sess)
       {
           var transferTA = sess.Transfer(null, Account.EmptyInstance, FakePaySystemHost.CARD_DEBIT_ACCOUNT_STRIPE_CORRECT, 
-            new Financial.Amount("usd", 27.00M));
+            new NFX.Financial.Amount("usd", 27.00M));
 
           Assert.IsNotNull(transferTA);
       }
@@ -194,7 +194,7 @@ namespace NFX.NUnit.Integration.Web.Pay
       public static void TransferToCardWithBillingAddressInfo(PaySession sess)
       {
         var transferTA = sess.Transfer(null, Account.EmptyInstance, FakePaySystemHost.CARD_DEBIT_ACCOUNT_STRIPE_CORRECT_WITH_ADDRESS,
-          new Financial.Amount("usd", 55.00M));
+          new NFX.Financial.Amount("usd", 55.00M));
 
         Assert.IsNotNull(transferTA);
       }

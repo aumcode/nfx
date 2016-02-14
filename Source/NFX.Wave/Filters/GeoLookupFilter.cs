@@ -19,9 +19,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Net;
+
 
 using NFX.Environment;
 using NFX.Web.GeoLookup;
+
 
 namespace NFX.Wave.Filters
 {
@@ -66,7 +69,7 @@ namespace NFX.Wave.Filters
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
       {     
         var needLookup = true;
-        var address = work.Request.RemoteEndPoint.Address.ToString();
+        var address = work.Request.RemoteEndPoint.Address;
 
         if (work.GeoEntity!=null) 
          needLookup = !string.Equals(work.GeoEntity.Query, address);
@@ -83,7 +86,11 @@ namespace NFX.Wave.Filters
             {
               var useAddr = matched[VAR_USE_ADDR];
               if (useAddr!=null)
-                address = useAddr.ToString();
+              {
+                IPAddress ip;
+                if (IPAddress.TryParse(useAddr.ToString(), out ip)) 
+                  address = ip;
+              }
               break;
             }
           }

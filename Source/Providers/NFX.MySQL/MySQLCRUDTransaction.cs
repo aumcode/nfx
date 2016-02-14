@@ -117,34 +117,34 @@ namespace NFX.DataAccess.MySQL
             return TaskUtils.AsCompletedTask( () => this.DoSave(rowsets) );
         }
 
-        protected override int DoInsert(Row row)
+        protected override int DoInsert(Row row, FieldFilterFunc filter = null)
         {
-            return Store.DoInsert(m_Connection, m_Transaction, row);
+            return Store.DoInsert(m_Connection, m_Transaction, row, filter);
         }
 
-        protected override Task<int> DoInsertAsync(Row row)
+        protected override Task<int> DoInsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.DoInsert(row) );
+            return TaskUtils.AsCompletedTask( () => this.DoInsert(row, filter) );
         }
 
-        protected override int DoUpsert(Row row)
+        protected override int DoUpsert(Row row, FieldFilterFunc filter = null)
         {
-            return Store.DoUpsert(m_Connection, m_Transaction, row);
+            return Store.DoUpsert(m_Connection, m_Transaction, row, filter);
         }
 
-        protected override Task<int> DoUpsertAsync(Row row)
+        protected override Task<int> DoUpsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.DoUpsert(row) );
+            return TaskUtils.AsCompletedTask( () => this.DoUpsert(row, filter) );
         }
 
-        protected override int DoUpdate(Row row, IDataStoreKey key)
+        protected override int DoUpdate(Row row, IDataStoreKey key, FieldFilterFunc filter = null)
         {
-            return Store.DoUpdate(m_Connection, m_Transaction, row, key);
+            return Store.DoUpdate(m_Connection, m_Transaction, row, key, filter);
         }
 
-        protected override Task<int> DoUpdateAsync(Row row, IDataStoreKey key)
+        protected override Task<int> DoUpdateAsync(Row row, IDataStoreKey key, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.DoUpdate(row, key) );
+            return TaskUtils.AsCompletedTask( () => this.DoUpdate(row, key, filter) );
         }
 
         protected override int DoDelete(Row row, IDataStoreKey key)

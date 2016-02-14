@@ -14,35 +14,43 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Net;
-
-
-using NFX.Log;
 using NFX.Environment;
 using NFX.ApplicationModel;
-using System.Runtime.CompilerServices;
 
 namespace NFX.Erlang
 {
-  public delegate void NodeStatusChangeEventHandler(ErlLocalNode sender, ErlAtom node, bool up, object info);
-  public delegate void ConnAttemptEventHandler     (ErlLocalNode sender, ErlAtom node, Direction dir, object info);
-  public delegate void UnhandledMsgEventHandler    (ErlLocalNode sender, ErlConnection conn, ErlMsg msg);
-  public delegate void IoOutputEventHandler        (ErlLocalNode sender, ErlAtom encoding, IErlObject output);
-  public delegate void EpmdFailedConnAttemptEventHandler(ErlLocalNode sender, ErlAtom node, object info);
+  public delegate void NodeStatusChangeEventHandler(
+    ErlLocalNode sender, ErlAtom node, bool up, object info);
+
+  public delegate void ConnAttemptEventHandler(
+    ErlLocalNode sender, ErlAtom node, Direction dir, object info);
+
+  public delegate void UnhandledMsgEventHandler(
+    ErlLocalNode sender, ErlConnection conn, ErlMsg msg);
+
+  public delegate void IoOutputEventHandler(
+    ErlLocalNode sender, ErlAtom encoding, IErlObject output);
+
+  public delegate void EpmdFailedConnAttemptEventHandler(
+    ErlLocalNode sender, ErlAtom node, object info);
 
   /// <summary>
   /// Delegate called on read/write from socket
   /// </summary>
-  public delegate void ReadWriteEventHandler(ErlLocalNode sender, ErlAbstractConnection con, Direction op, int lastBytes, long totalBytes, long totalMsgs);
+  public delegate void ReadWriteEventHandler(
+    ErlLocalNode sender, ErlAbstractConnection con, Direction op, int lastBytes,
+    long totalBytes, long totalMsgs);
 
   public class ErlLocalNode : ErlAbstractNode, IApplicationFinishNotifiable
   {
-  #region .ctor
+    #region .ctor
 
     /// <summary>
     /// Makes local node name based on app id and local host name
@@ -58,20 +66,20 @@ namespace NFX.Erlang
     /// Create a node with the given name and the default cookie
     /// </summary>
     public ErlLocalNode(string node, bool shortName = true, bool acceptConns = true)
-        : this(node, ErlAtom.Null, shortName, acceptConns)
-    { }
+      : this(node, ErlAtom.Null, shortName, acceptConns) {}
 
     /// <summary>
     /// Create a node with the given name, cookie, and short name indicator
     /// </summary>
-    public ErlLocalNode(string node, ErlAtom cookie, bool shortName = true, bool acceptConns = true)
-        : base(node, cookie, shortName)
-    { 
+    public ErlLocalNode(string node, ErlAtom cookie, bool shortName = true,
+                        bool acceptConns = true)
+      : base(node, cookie, shortName)
+    {
       m_AcceptConnections = acceptConns;
     }
 
     internal ErlLocalNode(string node, IConfigSectionNode config)
-        : base(node, config)
+      : base(node, config)
     {
       var addr = m_AcceptAddressPort.Split(':').FirstOrDefault();
       if (node.IndexOf('@') < 0 && addr != null)
@@ -80,27 +88,27 @@ namespace NFX.Erlang
       SetNodeName(node);
     }
 
-  #endregion
+    #endregion
 
-  #region Fields
+    #region Fields
 
-    private int     m_PidCount  = 0;
-    private int     m_PortCount = 0;
-    private uint[]  m_RefIds = new uint[] { 0,0,0 };
+    private int m_PidCount = 0;
+    private int m_PortCount = 0;
+    private uint[] m_RefIds = new uint[] {0, 0, 0};
 
-    private bool    m_AcceptConnections = true;
-    private string  m_AcceptAddressPort = string.Empty;
+    private bool m_AcceptConnections = true;
+    private string m_AcceptAddressPort = string.Empty;
 
     // Since the space of unique Pids is limited, we cache mailboxes used for RPC calls
     private ConcurrentQueue<ErlMbox> m_MboxFreelist =
-        new ConcurrentQueue<ErlMbox>();
-        
+      new ConcurrentQueue<ErlMbox>();
+
     // Manages incoming connections
-    private Internal.ErlAcceptor    m_Acceptor;
+    private Internal.ErlAcceptor m_Acceptor;
     // Manages distributed I/O sent from remote Erlang nodes
-    private Internal.ErlIoServer    m_IoServer;
+    private Internal.ErlIoServer m_IoServer;
     // Processes all external RPC calls
-    private Internal.ErlRpcServer   m_RpcServer;
+    private Internal.ErlRpcServer m_RpcServer;
 
     // keep track of all connections
     private ConcurrentDictionary<ErlAtom, ErlConnection> m_Connections;
@@ -115,9 +123,9 @@ namespace NFX.Erlang
     /// </summary>
     protected ReadWriteEventHandler m_OnReadWrite;
 
-  #endregion
+    #endregion
 
-  #region Props
+    #region Props
 
     /// <summary>
     /// Contains node creation bits that facilitate Pid uniqueness
@@ -130,7 +138,10 @@ namespace NFX.Erlang
       get { return m_Connections.GetEnumerator(); }
     }
 
-    internal Internal.MboxRegistry Mailboxes { get { return m_Mailboxes; } }
+    internal Internal.MboxRegistry Mailboxes
+    {
+      get { return m_Mailboxes; }
+    }
 
     /// <summary>
     /// If true local node will start a listener
@@ -156,7 +167,10 @@ namespace NFX.Erlang
     /// <summary>
     /// Mailbox for handling all I/O directed from remote nodes
     /// </summary>
-    public ErlMbox GroupLeader { get { return m_GroupLeader; } }
+    public ErlMbox GroupLeader
+    {
+      get { return m_GroupLeader; }
+    }
 
     /// <summary>
     /// Set the trace level for this connection. Normally tracing is off by default
@@ -177,19 +191,25 @@ namespace NFX.Erlang
     public bool LogUnhandledMsgs { get; set; }
 
     /// <summary>
+    /// Configs for remote nodes
+    /// </summary>
+    public IConfigSectionNode[] RemoteNodeConfigs { get; set; }
+
+    /// <summary>
     /// Trace callback executed if connection tracing is enabled
     /// </summary>
-    public event TraceEventHandler              Trace         ;
-    public event NodeStatusChangeEventHandler   NodeStatusChange;
-    public event ConnAttemptEventHandler        ConnectAttempt;
-    public event UnhandledMsgEventHandler       UnhandledMsg  ;
-    public event ReadWriteEventHandler          ReadWrite     ;
-    public event IoOutputEventHandler           IoOutput      ;
+    public event TraceEventHandler Trace;
+
+    public event NodeStatusChangeEventHandler NodeStatusChange;
+    public event ConnAttemptEventHandler ConnectAttempt;
+    public event UnhandledMsgEventHandler UnhandledMsg;
+    public event ReadWriteEventHandler ReadWrite;
+    public event IoOutputEventHandler IoOutput;
     public event EpmdFailedConnAttemptEventHandler EpmdFailedConnectAttempt;
 
-  #endregion
+    #endregion
 
-  #region Public
+    #region Public
 
     public ErlConnection Connection(string node, ErlAtom? cookie = null)
     {
@@ -197,9 +217,11 @@ namespace NFX.Erlang
       return Connection(nodeName, cookie);
     }
 
-    internal ErlConnection Connection(string toNode, IConfigSectionNode config)
+    internal ErlConnection Connection(string toNode, IConfigSectionNode config,
+                                      ErlAtom? cookie = null)
     {
-      var peer = new ErlRemoteNode(this, toNode); // This will convert toNode to a valid ErlAtom
+      var peer = new ErlRemoteNode(this, toNode);
+        // This will convert toNode to a valid ErlAtom
 
       lock (m_Connections)
       {
@@ -210,8 +232,14 @@ namespace NFX.Erlang
 
         peer.Configure(config); // Fetch all proper TCP and other settings
 
-        try { c = new ErlConnection(this, peer, true); }
-        catch { return null; }
+        try
+        {
+          c = new ErlConnection(this, peer, true);
+        }
+        catch
+        {
+          return null;
+        } // TODO: maybe add return reason for connection failure?
 
         m_Connections.TryAdd(peer.NodeName, c);
 
@@ -227,19 +255,40 @@ namespace NFX.Erlang
 
       var peer = new ErlRemoteNode(this, toNode, cookie);
 
+      //try to append config to remote node
+      TryAppendConfigToRemoteNode(peer);
+
       lock (m_Connections)
       {
         if (m_Connections.TryGetValue(toNode, out c))
           return c;
 
-        try { c = new ErlConnection(this, peer, true); }
-        catch { return null; }
+        try
+        {
+          c = new ErlConnection(this, peer, true);
+        }
+        catch
+        {
+          return null;
+        }
 
         m_Connections.TryAdd(toNode, c);
 
         return c;
       }
     }
+
+    public bool Disconnect(string fromNode)
+    {
+        ErlConnection c;
+        if (m_Connections.TryRemove(fromNode, out c))
+        {
+          c.Dispose();
+          return true;
+        } 
+        return false;
+    }
+
 
     /// <summary>
     /// Add a connection to collection
@@ -263,31 +312,23 @@ namespace NFX.Erlang
     }
 
     /// <summary>
-    /// Create a new mailbox (emulates spawning a new Pid)
-    /// </summary>
-    public ErlMbox CreateMbox() 
-    {
-      CheckServiceActiveOrStarting();
-      return m_Mailboxes.Create(); 
-    }
-
-    /// <summary>
     /// Create a new named mailbox (emulates spawning a new Pid)
     /// </summary>
-    public ErlMbox CreateMbox(string name) 
-    { 
+    public ErlMbox CreateMbox(string name = null)
+    {
       CheckServiceActiveOrStarting();
-      return name.IsNullOrEmpty() ? CreateMbox() : CreateMbox(new ErlAtom(name)); 
+      return name.IsNullOrWhiteSpace() ? m_Mailboxes.Create() 
+                                       : CreateMbox(new ErlAtom(name));
     }
 
 
     /// <summary>
     /// Create a new named mailbox (emulates spawning a new Pid)
     /// </summary>
-    public ErlMbox CreateMbox(ErlAtom name) 
+    public ErlMbox CreateMbox(ErlAtom name)
     {
       CheckServiceActiveOrStarting();
-      return m_Mailboxes.Create(name); 
+      return m_Mailboxes.Create(name);
     }
 
     /// <summary>
@@ -295,7 +336,7 @@ namespace NFX.Erlang
     /// </summary>
     public void CloseMbox(ErlMbox mbox)
     {
-      if (m_Mailboxes!=null)
+      if (m_Mailboxes != null)
         m_Mailboxes.Unregister(mbox);
     }
 
@@ -358,7 +399,8 @@ namespace NFX.Erlang
       }
     }
 
-    public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, int timeout)
+    public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args,
+                          int timeout)
     {
       var mbox = m_Mailboxes.Create(true);
       try
@@ -404,9 +446,9 @@ namespace NFX.Erlang
       return n == WaitHandle.WaitTimeout ? -1 : n;
     }
 
-  #endregion
+    #endregion
 
-  #region Protected
+    #region Protected
 
     protected override void DoConfigure(IConfigSectionNode node)
     {
@@ -431,7 +473,8 @@ namespace NFX.Erlang
       if (m_AcceptConnections)
       {
         var addr = m_AcceptAddressPort.IsNullOrEmpty()
-                 ? new IPEndPoint(0, 0) : m_AcceptAddressPort.ToIPEndPoint();
+          ? new IPEndPoint(0, 0)
+          : m_AcceptAddressPort.ToIPEndPoint();
 
         m_Acceptor = new Internal.ErlAcceptor(this, addr.Port, addr.Address);
       }
@@ -474,23 +517,28 @@ namespace NFX.Erlang
       if (NodeStatusChange != null) NodeStatusChange(this, node, up, info);
     }
 
-    protected internal virtual void OnConnectAttempt(ErlAtom node, Direction dir, object info)
+    protected internal virtual void OnConnectAttempt(ErlAtom node, Direction dir,
+                                                     object info)
     {
       if (ConnectAttempt != null) ConnectAttempt(this, node, dir, info);
     }
 
-    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg)
     {
       if (UnhandledMsg != null) UnhandledMsg(this, conn, msg);
       if (LogUnhandledMsgs)
-        Log(MessageType.TraceErl,
-            "OnUnhandledMsg",
-            "Connection {0} couldn't find mbox for: {1}".Args(conn.Name, msg), 
-            file:file, line:line);
+        App.Log.Write(new NFX.Log.Message
+        {
+          Type = Log.MessageType.TraceErl,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = this.ToString(),
+          Text = "Connection {0} couldn't find mbox for: {1}".Args(conn.Name, msg)
+        });
     }
 
     protected internal virtual void OnReadWrite(ErlAbstractConnection conn, Direction dir,
-      int lastBytes, long totalBytes, long totalMsgs)
+                                                int lastBytes, long totalBytes,
+                                                long totalMsgs)
     {
       if (ReadWrite != null) ReadWrite(this, conn, dir, lastBytes, totalBytes, totalMsgs);
     }
@@ -500,46 +548,46 @@ namespace NFX.Erlang
       if (IoOutput != null) IoOutput(this, encoding, output);
     }
 
-    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir, Func<string> msgFunc,
-      [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir,
+                                            Func<string> msgFunc)
     {
       if (ErlApp.TraceEnabled(type, TraceLevel))
       {
         var msg = msgFunc();
-        OnTraceCore(type, dir, msg, file, line);
+        OnTraceCore(type, dir, msg);
       }
     }
 
-    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg,
-      [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg)
     {
       if (ErlApp.TraceEnabled(type, TraceLevel))
       {
-        OnTraceCore(type, dir, msg, file, line);
+        OnTraceCore(type, dir, msg);
       }
     }
 
-    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg)
     {
-      if (Trace!=null) Trace(this, type, dir, msg);
+      if (Trace != null) Trace(this, type, dir, msg);
       if (TraceToLog && ErlApp.TraceEnabled(type, TraceLevel))
-          Log(MessageType.TraceErl,
-            "OnTraceCore({0},{1})".Args(type, dir),
-            msg, 
-            file: file, 
-            line: line);
+        App.Log.Write(new NFX.Log.Message
+        {
+          Type = Log.MessageType.TraceErl,
+          Topic = "{0}.{1}".Args(CoreConsts.ERLANG_TOPIC, type),
+          From = this.ToString(),
+          Text = msg
+        });
     }
 
     protected internal void OnEpmdFailedConnectAttempt(ErlAtom node, object info)
     {
       if (EpmdFailedConnectAttempt != null)
-          EpmdFailedConnectAttempt(this, node, info);
+        EpmdFailedConnectAttempt(this, node, info);
     }
 
+    #endregion
 
-  #endregion
-
-  #region Internal
+    #region Internal
 
     //---------------------------------------------------------------------
     // Application model shutdown
@@ -549,20 +597,15 @@ namespace NFX.Erlang
       ErlApp.Node = null;
     }
 
-    public void ApplicationFinishAfterCleanup(IApplication application)
-    { }
+    public void ApplicationFinishAfterCleanup(IApplication application) {}
 
-    internal bool Deliver(ErlConnectionException e, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    internal bool Deliver(ErlConnectionException e)
     {
       var fromNode = e.Node;
       OnNodeStatusChange(fromNode, false, e.Message);
 
-      var conn = Connection(fromNode);
-      if (conn != null)
-      {
-        ErlConnection c;
-        m_Connections.TryRemove(fromNode, out c);
-      }
+      ErlConnection c;
+      m_Connections.TryRemove(fromNode, out c);
 
       BreakLinks(fromNode, new ErlString(e.Message));
       return true;
@@ -577,12 +620,18 @@ namespace NFX.Erlang
       if (conn == null)
         return false;
 
-      try { conn.Send(msg); }
-      catch { return false; }
+      try
+      {
+        conn.Send(msg);
+      }
+      catch
+      {
+        return false;
+      }
       return true;
     }
 
-    internal bool Deliver(ErlMsg msg, [CallerFilePath]string file = "", [CallerLineNumber]int line = 0)
+    internal bool Deliver(ErlMsg msg)
     {
       if (msg.Recipient is ErlPid)
       {
@@ -592,16 +641,20 @@ namespace NFX.Erlang
       }
 
       var mbox = msg.Type == ErlMsg.Tag.RegSend || msg.Type == ErlMsg.Tag.RegSendTT
-          ? m_Mailboxes[msg.RecipientName]
-          : m_Mailboxes[msg.RecipientPid];
+        ? m_Mailboxes[msg.RecipientName]
+        : m_Mailboxes[msg.RecipientPid];
 
       if (mbox == null)
         return false;
 
       OnTrace(ErlTraceLevel.Send, Direction.Inbound, () =>
-          "{0}{1} got: {2}".Args(
-              mbox.Self, mbox.Name.Empty ? string.Empty : " ({0})".Args(mbox.Name.ToString()),
-              msg.Msg), file, line);
+                                                       "{0}{1} got: {2}".Args(
+                                                         mbox.Self,
+                                                         mbox.Name.Empty
+                                                           ? string.Empty
+                                                           : " ({0})".Args(
+                                                             mbox.Name.ToString()),
+                                                         msg.Msg));
 
       mbox.Deliver(msg);
 
@@ -621,7 +674,10 @@ namespace NFX.Erlang
     /// Cache of freed mailboxes that can be reused for RPC calls
     /// </summary>
     /// <remarks>This is needed because the unique Pid space is limited to 2^28</remarks>
-    internal ConcurrentQueue<ErlMbox> MboxFreelist { get { return m_MboxFreelist; } }
+    internal ConcurrentQueue<ErlMbox> MboxFreelist
+    {
+      get { return m_MboxFreelist; }
+    }
 
     /// <summary>
     /// Create an Erlang <see cref="ErlPid"/> that belongs to current node
@@ -672,8 +728,9 @@ namespace NFX.Erlang
     /// </summary>
     internal ErlPort CreatePort()
     {
-    // The label handles conditional jump in a very rare case of an overflow
-    repeat: int n = Interlocked.Increment(ref m_PortCount);
+      // The label handles conditional jump in a very rare case of an overflow
+      repeat:
+      int n = Interlocked.Increment(ref m_PortCount);
 
       while (n > 0x0fffffff)
       {
@@ -684,13 +741,23 @@ namespace NFX.Erlang
       return new ErlPort(NodeName, n, m_Creation);
     }
 
-    
+    #endregion
 
-    
+    #region .pvt
 
-  #endregion
+    private void TryAppendConfigToRemoteNode(ErlRemoteNode peer)
+    {
+      if (RemoteNodeConfigs == null)
+        return;
 
-  #region .pvt
-  #endregion
+      var conf =
+        RemoteNodeConfigs.FirstOrDefault(
+          c => c.Value.IsNotNullOrEmpty() && c.Value.EqualsSenseCase(peer.NodeName));
+
+      if (conf != null)
+        peer.Configure(conf);
+    }
+
+    #endregion
   }
 }

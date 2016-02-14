@@ -130,6 +130,27 @@ namespace NFX.NUnit.DataAccess
         public HistoryItem LatestHistory { get ; set;}
     }
 
+    [Serializable]
+    public class ExtendedPerson : Person 
+    {            
+        [Field]
+        public string Info { get; set; }
+
+        [Field]
+        public long Count { get; set; }
+
+        [Field]
+        public Person Parent { get; set; }
+
+        [Field]
+        public List<Person> Children { get; set; }
+    }
+
+    [Serializable]
+    public class Empty : TypedRow
+    {
+        public Empty() {}
+    }
 
     [DataParcel(schemaName: "Testing", areaName: "Testing", replicationChannel: "General")]
     public class PeopleNamesParcel : Parcel<List<string>>

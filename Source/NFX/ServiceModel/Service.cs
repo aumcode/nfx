@@ -100,7 +100,13 @@ namespace NFX.ServiceModel
 
         #region Properties
 
-        
+            /// <summary>
+            /// Checks whether the class is decorated with ApplicationDontAutoStartServiceAttribute
+            /// </summary>
+            public bool ApplicationDontAutoStartService
+            {
+              get{ return Attribute.IsDefined(GetType(), typeof(ApplicationDontAutoStartServiceAttribute));}
+            }
         
             /// <summary>
             /// Current service status
@@ -164,6 +170,16 @@ namespace NFX.ServiceModel
                 }
             }
         
+            /// <summary>
+            /// Blocking call that starts the service instance
+            /// </summary>
+            internal bool StartByApplication()
+            {
+                if (ApplicationDontAutoStartService) return false;
+                Start();
+                return true;
+            }
+
             /// <summary>
             /// Blocking call that starts the service instance
             /// </summary>

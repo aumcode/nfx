@@ -18,12 +18,9 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 
-using NFX.Log;
 using NFX.Environment;
 using NFX.ServiceModel;
-
 
 namespace NFX.Erlang
 {
@@ -239,7 +236,7 @@ namespace NFX.Erlang
     /// <summary>
     /// Get/Set the Epmd socket after publishing this nodes listen port to Epmd
     /// </summary>
-    internal TcpClient Epmd { get; set; }
+    internal IErlTransport Epmd { get; set; }
 
     /// <summary>
     /// Get the port number used by this node.
@@ -291,24 +288,6 @@ namespace NFX.Erlang
       ErlAtom name, longName;
       splitNodeName(nodeName, shortName, out alive, out host, out name, out longName);
       return name;
-    }
-
-    protected void Log(MessageType type, string from, string text, 
-                                            Exception error = null,
-                                            [CallerFilePath]  string file = null, 
-                                            [CallerLineNumber]int line = 0,
-                                            object pars = null)
-    {
-      App.Log.Write(
-        new Message(pars, file, line)
-        {
-          Type = type,
-          Topic = CoreConsts.ERLANG_TOPIC,
-          From = "{0}.{1}".Args(GetType().Name, from),
-          Text = text,
-          Exception = error
-        }
-      );
     }
 
   #endregion

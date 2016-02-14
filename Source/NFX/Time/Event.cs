@@ -245,7 +245,7 @@ namespace NFX.Time
       /// </summary>
       [Config]
       [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_TIME)]
-      public EventBodyAsyncModel BodyAcyncModel
+      public EventBodyAsyncModel BodyAsyncModel
       {
          get { return m_BodyAsyncModel; }
          set { m_BodyAsyncModel = value; }

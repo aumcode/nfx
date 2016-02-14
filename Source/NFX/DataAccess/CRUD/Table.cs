@@ -22,9 +22,10 @@ using System.Text;
 namespace NFX.DataAccess.CRUD
 {
     /// <summary>
-    /// Implements a master table. Tables are rowsets that are pre-sorted by keys. They are used in scenarios
-    ///  when in-memory data replication is needed. A  table supports efficient FindKey() operation but does not
-    ///   support sorting. This class is not thread-safe 
+    /// Implements a master table. Tables are rowsets that are pre-sorted by keys.
+    /// They are used in scenarios when in-memory data replication is needed.
+    /// A table supports efficient FindKey() operation but does not support sorting.
+    /// This class is not thread-safe.
     /// </summary>
     [Serializable]
     public class Table : RowsetBase

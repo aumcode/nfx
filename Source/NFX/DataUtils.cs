@@ -32,7 +32,66 @@ namespace NFX
 {
   public static class DataUtils
   {
+    private static readonly char[] FIELD_DELIMITER = {',',';','|'};
 
+
+    /// <summary>
+    /// Converts field names separated by ',' or ';' into a FieldFilterFunction
+    /// </summary>
+    public static FieldFilterFunc OnlyTheseFields(this string fields, bool caseSensitive = false)
+    {
+      if (fields.IsNullOrWhiteSpace()) return (row, key, fdef) => false;
+      var names = fields.Split(FIELD_DELIMITER).Where(n => n.IsNotNullOrWhiteSpace()).Select( n => n.Trim());
+      return (row, key, fdef) => names.Contains(fdef.Name, caseSensitive ? StringComparer.InvariantCulture : StringComparer.InvariantCultureIgnoreCase);
+    }
+
+    /// <summary>
+    /// Converts field names separated by ',' or ';' into a FieldFilterFunction
+    /// </summary>
+    public static FieldFilterFunc OnlyTheseFields(this IEnumerable<string> fields, bool caseSensitive = false)
+    {
+      if (fields==null) return (row, key, fdef) => false;
+      var names = fields.Where(n => n.IsNotNullOrWhiteSpace()).Select( n => n.Trim());
+      return (row, key, fdef) => fields.Contains(fdef.Name, caseSensitive ? StringComparer.InvariantCulture : StringComparer.InvariantCultureIgnoreCase);
+    }
+
+    /// <summary>
+    /// Converts field names separated by ',' or ';' into a FieldFilterFunction
+    /// </summary>
+    public static FieldFilterFunc AllButTheseFields(this string fields, bool caseSensitive = false)
+    {
+      if (fields.IsNullOrWhiteSpace()) return (row, key, fdef) => false;
+      var names = fields.Split(FIELD_DELIMITER).Select( n => n.Trim());
+      return (row, key, fdef) => !names.Contains(fdef.Name, caseSensitive ? StringComparer.InvariantCulture : StringComparer.InvariantCultureIgnoreCase);
+    }
+
+    /// <summary>
+    /// Converts field names separated by ',' or ';' into a FieldFilterFunction
+    /// </summary>
+    public static FieldFilterFunc AllButTheseFields(this IEnumerable<string> fields, bool caseSensitive = false)
+    {
+      if (fields==null) return (row, key, fdef) => false;
+      var names = fields.Where(n => n.IsNotNullOrWhiteSpace()).Select( n => n.Trim());
+      return (row, key, fdef) => !fields.Contains(fdef.Name, caseSensitive ? StringComparer.InvariantCulture : StringComparer.InvariantCultureIgnoreCase);
+    }
+    
+    
+    /// <summary>
+    /// If source is not null, creates a shallow clone using 'source.CopyFields(copy)'
+    /// </summary>
+    public static TRow Clone<TRow>(this TRow source,
+                                   bool includeAmorphousData = true,
+                                   bool invokeAmorphousAfterLoad = true,
+                                   Func<string, Schema.FieldDef, bool> fieldFilter = null,
+                                   Func<string, string, bool> amorphousFieldFilter = null) where TRow : Row
+    {
+      if (source==null) return null;
+      var copy = Row.MakeRow(source.Schema, typeof(TRow));
+      source.CopyFields(copy, includeAmorphousData, invokeAmorphousAfterLoad, fieldFilter, amorphousFieldFilter);
+      return (TRow)copy;
+    }
+    
+    
     /// <summary>
     /// Casts rowset's rows to the specified type, returning empty enumerable if rowset is null
     /// </summary>

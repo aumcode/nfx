@@ -80,9 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\PileCacheTestCore.cs" />
     <Compile Include="AppModel\FinishNotifiablesTests.cs" />
     <Compile Include="AppModel\Pile\CacheTest.cs" />
-    <Compile Include="AppModel\Pile\HighMemoryLoadTest.cs" />
     <Compile Include="AppModel\Pile\PileTest.cs" />
     <Compile Include="AppModel\Pile\TRow.cs" />
     <Compile Include="AppModel\StarterTests.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
+    <Compile Include="DataAccess\RowCopyFields.cs" />
     <Compile Include="DataAccess\SchemaRegExpAndDisplayFormat.cs" />
     <Compile Include="DataAccess\GDIDTest.cs" />
     <Compile Include="DataAccess\SchemaEQU.cs" />

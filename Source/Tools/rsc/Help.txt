@@ -29,7 +29,8 @@
           <f color=darkRed>case-sensitive-names<f color=gray> - when true, indicates that object names are
            case sensitive, so they must be kept kept as-is
           <f color=darkRed>domain-search-paths<f color=gray> - RDBMS only option, a ";" delimited list of
-           namespaces paths that should be searched for domain type names
+           assembly-qualified namespaces paths with '.*' wildcard that should
+           be searched for domain type names
           <f color=darkRed>separate-indexes<f color=gray> - RDBMS only option, write create index in a 
            separate output
           <f color=darkRed>separate-fkeys<f color=gray> - RDBMS only option, write all foreign keys in a
