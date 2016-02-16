@@ -8,23 +8,24 @@ using System.Threading.Tasks;
 namespace NFX.Wave.MVC
 {
   /// <summary>
-  /// Decorates controller actions that need to check CSRF token against the user session
+  /// Decorates controller classes or actions that need to check CSRF token against the user session
   /// </summary>
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
   public sealed class SessionCSRFCheckAttribute : ActionFilterAttribute
   {
     public const string DEFAULT_TOKEN_NAME = "token";
 
 
-    public SessionCSRFCheckAttribute()
+    public SessionCSRFCheckAttribute() : base(0)
     {
       TokenName = DEFAULT_TOKEN_NAME;
     }
 
-    public SessionCSRFCheckAttribute(string tokenName) : this(tokenName, true)
+    public SessionCSRFCheckAttribute(string tokenName) : this(tokenName, true, 0)
     {
     }
 
-    public SessionCSRFCheckAttribute(string tokenName, bool onlyExistingSession)
+    public SessionCSRFCheckAttribute(string tokenName, bool onlyExistingSession, int order) : base(order)
     {
       TokenName = tokenName;
      

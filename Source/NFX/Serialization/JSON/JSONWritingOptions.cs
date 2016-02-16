@@ -122,6 +122,23 @@ namespace NFX.Serialization.JSON
 
 
         /// <summary>
+        /// Specifies language ISO code (3 chars) that is used (when set) by the NLSMap class,
+        /// so only entries for that particular language are included. When NLSMap contains entries for more than 1 language,
+        /// but user needs only one entry received for his/her selected language, this option can be set, then NLSMap will only inline 
+        /// Name:Descr pair for that language. If a map does not contain an entry for the reequested lang then NLSMapLanguageISODefault 
+        /// will be tried
+        /// </summary>
+        [Config]
+        public string NLSMapLanguageISO;
+
+        /// <summary>
+        /// Specified language ISO default for NLSMap lookup, "eng" is used for default
+        /// </summary>
+        [Config]
+        public string NLSMapLanguageISODefault = CoreConsts.ISO_LANG_ENGLISH;
+
+
+        /// <summary>
         /// Specifies character width of single indent level
         /// </summary>
         [Config]

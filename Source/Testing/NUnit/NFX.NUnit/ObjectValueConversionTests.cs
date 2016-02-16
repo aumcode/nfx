@@ -33,6 +33,24 @@ namespace NFX.NUnit
     public class ObjectValueConversionTests
     {
         [TestCase]
+        public void AsLaconicConfig()
+        {
+          Assert.AreEqual(23, "value=23".AsLaconicConfig().AttrByName("value").ValueAsInt());
+          Assert.AreEqual(223, "nfx{value=223}".AsLaconicConfig().AttrByName("value").ValueAsInt());
+          Assert.IsNull("nfx{value 223}".AsLaconicConfig());
+
+          try
+          {
+            "nfx".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+            Assert.Fail("No exception");
+          }
+          catch
+          {
+            Assert.Pass("Got exception as expected");
+          }
+        }
+
+        [TestCase]
         public void FromInt()
         {
             object obj = 123;

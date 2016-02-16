@@ -471,6 +471,7 @@ namespace NFX.DataAccess.CRUD
                   private string getDisplayFieldValue(string targetName, Schema.FieldDef fdef)
                   {
                       var value = GetFieldValue(fdef);
+                      if (value==null) return null;
 
                       var atr = fdef[targetName];
                       if (atr==null || atr.DisplayFormat.IsNullOrWhiteSpace())
@@ -576,7 +577,7 @@ namespace NFX.DataAccess.CRUD
 
                 if (atr.MinLength>0)
                     if (value.ToString().Length<atr.MinLength)
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MAX_LENGTH_ERROR);
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MIN_LENGTH_ERROR);
 
                 if (atr.MaxLength>0)
                     if (value.ToString().Length>atr.MaxLength)

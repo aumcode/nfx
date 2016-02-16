@@ -1,0 +1,19 @@
+﻿{
+  "update": "MyPerzon",
+  "writeConcern": {"w":1},
+  "updates": 
+  [
+    { 
+      "q": { "_id": "$$id1" },
+      "u": { "$set": {"Age":56}}
+    },
+    { 
+      "q": { "_id": "$$id2" },
+      "u": { "Name":"John" }
+    },
+    { 
+      "q": { "_id": "$$id3" },
+      "u": { "$inc": { "Age": -5} }
+    }
+  ]
+}

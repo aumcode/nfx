@@ -38,7 +38,6 @@ namespace NFX.Serialization.JSON
     [Serializable]
     public class JSONDataMap : Dictionary<string, object>, IJSONDataObject
     {
-        
         /// <summary>
         /// Turns URL encoded content into JSONDataMap
         /// </summary>
@@ -165,4 +164,5 @@ namespace NFX.Serialization.JSON
       public JSONDataArray(IEnumerable<object> other) : base(other) {}
       public JSONDataArray(int capacity) : base(capacity) {}
     }
+
 }

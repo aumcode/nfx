@@ -595,6 +595,7 @@
     <Compile Include="Serialization\JSON\JSONDynamicObject.cs" />
     <Compile Include="Serialization\JSON\JSONReader.cs" />
     <Compile Include="Serialization\JSON\JSONWritingOptions.cs" />
+    <Compile Include="Serialization\JSON\NLSMap.cs" />
     <Compile Include="Serialization\MSBinaryFormatter.cs" />
     <Compile Include="Serialization\POD\CompositeCustomData.cs" />
     <Compile Include="Serialization\POD\CompositeData.cs" />

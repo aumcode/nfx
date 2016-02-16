@@ -73,6 +73,8 @@ namespace NFX.ApplicationModel
     #region IApplication Members
 
         
+        public bool IsUnitTest{ get{ return false;}}
+
         public Guid InstanceID
         {
             get { return m_InstanceID; }

@@ -73,21 +73,42 @@ namespace NFX
          }
 
 
-         public static ConfigSectionNode AsLaconicConfig(this object val, ConfigSectionNode dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         public static ConfigSectionNode AsLaconicConfig(this object val, ConfigSectionNode dflt = null, string wrapRootName = "nfx", ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
+              string content;
               try
               {
                 if (val==null) return dflt;
-                var content = val.ToString();
-
-                return LaconicConfiguration.CreateFromString(content).Root;
+                content = val.ToString();
               }
               catch
               {
                 if (handling!=ConvertErrorHandling.ReturnDefault) throw;
                 return dflt;
               }
+
+              try
+              {
+                return LaconicConfiguration.CreateFromString(content).Root;
+              }
+              catch
+              {
+                if (wrapRootName.IsNotNullOrWhiteSpace())
+                  try
+                  {
+                    return LaconicConfiguration.CreateFromString(wrapRootName + "\n{\n" + content + "\n}").Root;
+                  }
+                  catch
+                  {
+                    if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                    return dflt;
+                  }
+
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
          }
+
 
          public static ConfigSectionNode AsXMLConfig(this object val, ConfigSectionNode dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {

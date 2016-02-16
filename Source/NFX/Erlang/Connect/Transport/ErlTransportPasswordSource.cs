@@ -20,7 +20,7 @@ namespace NFX.Erlang
     #region Fields
 
     private static Dictionary<ErlPasswordSession, ErlPasswordSession> s_PassCache = 
-           new Dictionary<ErlPasswordSession, ErlPasswordSession>();
+               new Dictionary<ErlPasswordSession, ErlPasswordSession>();
 
     #endregion
 
@@ -39,7 +39,7 @@ namespace NFX.Erlang
     /// <summary>
     /// Returns password for specified userName and nodeName
     /// </summary>
-    public static string GetPassword(object sender, string nodeName, string userName)
+    public static SecureString GetPassword(object sender, string nodeName, string userName)
     {
       ErlPasswordSession res = null;
       var inCache = false;
@@ -54,7 +54,7 @@ namespace NFX.Erlang
           PasswordRequired(res);
 
         if (res.Password != null)
-          return SecureStringToString(res.Password);
+          return res.Password;
       }
 
       throw new ErlException("Password session not started for {0} user {1}".Args(nodeName, userName));
@@ -92,22 +92,6 @@ namespace NFX.Erlang
     {
       lock (s_PassCache)
         s_PassCache.Remove(ps);
-    }
-
-    #endregion
-
-    #region Private
-
-    private static string SecureStringToString(SecureString value)
-    {
-      if (value == null)
-        return null;
-
-      // Alternative: new System.Net.NetworkCredential(string.Empty, GetPassword()).Password
-      var bstr = Marshal.SecureStringToBSTR(value);
-
-      try     { return Marshal.PtrToStringBSTR(bstr); }
-      finally { Marshal.FreeBSTR(bstr);               }
     }
 
     #endregion

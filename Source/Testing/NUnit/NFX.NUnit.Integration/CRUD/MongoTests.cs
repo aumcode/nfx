@@ -84,7 +84,8 @@ namespace NFX.NUnit.Integration.CRUD
              Age = 89
           }; 
 
-          store.Insert(row);
+          var affected = store.Insert(row);
+          Assert.AreEqual(1, affected);
       }
 
       [Test]
@@ -356,12 +357,14 @@ namespace NFX.NUnit.Integration.CRUD
       [Test]
       public void GetSchema_ROW_JSON_ROW()
       {
+         var data = new byte[] { 0x00, 0x79, 0x14 };
          var row = 
            new MyPerzon
             {
                GDID = new GDID(1, 1, 980),
                Name = "Lenin Grib",
-               Age = 100
+               Age = 100,
+               Data = data
             }; 
 
          store.Insert(row);
@@ -374,26 +377,31 @@ namespace NFX.NUnit.Integration.CRUD
          var schema = store.GetSchema(qry);
          
          Assert.IsNotNull(schema);
-         Assert.AreEqual(3, schema.FieldCount);
+         Assert.AreEqual(4, schema.FieldCount);
          
          Assert.AreEqual(0, schema["_id"].Order); 
          Assert.AreEqual(1, schema["Name"].Order); 
          Assert.AreEqual(2, schema["Age"].Order); 
+         Assert.AreEqual(3, schema["Data"].Order); 
          
          var row2 = new DynamicRow(schema);//Notice: We are creating dynamic row with schema taken from Mongo
 
          row2["_id"] = new GDID(10,10,10);
          row2["Name"] = "Kozloff";
          row2["Age"] = "199";
+         row2["Data"] = data;
 
          var json = row2.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
          Console.WriteLine(json);
 
          var dyn = json.JSONToDynamic();
 
+         Assert.AreEqual(4, dyn.Data.Count);
          Assert.AreEqual("10:10:10", dyn._id);
          Assert.AreEqual("Kozloff", dyn.Name);
          Assert.AreEqual("199", dyn.Age);
+         //todo: how to check dynamic row with 'Data' name? dyn.Data is the collection of all kvp ((JSONDataMap)dyn.Data)["Data"] is JSONDataArray
+         //Assert.AreEqual(data, dyn.Data);
       }
 
 
@@ -502,6 +510,143 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(persisted.Age, upserted.Age);
         }
 
+        [Test]
+        public void ExecuteWithoutFetch_InsertRows()
+        {
+            var id1 = new GDID(0, 0, 1);
+            var id2 = new GDID(0, 0, 2);
+            var id3 = new GDID(0, 0, 3);
+            var data = new byte[] { 0x00, 0x79, 0x14 };
+            var query = new Query<MyPerzon>("CRUD.InsertPerzons")
+            {
+                new Query.Param("id1", id1),
+                new Query.Param("id2", id2),
+                new Query.Param("id3", id3),
+                new Query.Param("data", data)
+            };
+
+            var affected = store.ExecuteWithoutFetch(query);
+            Assert.AreEqual(1, affected);
+
+            var c = NFX.DataAccess.MongoDB.Connector.MongoClient.Instance.DefaultLocalServer["nfxtest"]["MyPerzon"];
+            var entries = c.FindAndFetchAll(new NFX.DataAccess.MongoDB.Connector.Query());
+            Assert.AreEqual(3, entries.Count);
+
+            var query1 = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id1) };
+            var person1 = store.LoadRow(query1);
+            Assert.IsNotNull(person1);
+            Assert.AreEqual(id1, person1.GDID);
+            Assert.AreEqual("Jack London", person1.Name);
+            Assert.AreEqual(32, person1.Age);
+            Assert.AreEqual(data, person1.Data);
+
+            var query2 = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id2) };
+            var person2 = store.LoadRow(query2);
+            Assert.IsNotNull(person2);
+            Assert.AreEqual(id2, person2.GDID);
+            Assert.AreEqual("Ivan Poddubny", person2.Name);
+            Assert.AreEqual(41, person2.Age);
+
+            var query3 = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id3) };
+            var person3 = store.LoadRow(query3);
+            Assert.IsNotNull(person3);
+            Assert.AreEqual(id3, person3.GDID);
+            Assert.AreEqual("Anna Smith", person3.Name);
+            Assert.AreEqual(28, person3.Age);
+        }
+
+        [Test]
+        public void ExecuteWithoutFetch_UpdateRows()
+        {
+            var id1 = new GDID(0, 0, 1);
+            var id2 = new GDID(0, 0, 2);
+            var id3 = new GDID(0, 0, 3);
+            var data = new byte[] { 0x00, 0x79, 0x14 };
+            var query = new Query<MyPerzon>("CRUD.InsertPerzons")
+            {
+                new Query.Param("id1", id1),
+                new Query.Param("id2", id2),
+                new Query.Param("id3", id3),
+                new Query.Param("data", data)
+            };
+            store.ExecuteWithoutFetch(query);
+
+            query = new Query<MyPerzon>("CRUD.UpdatePerzons")
+            {
+                new Query.Param("id1", id1),
+                new Query.Param("id2", id2),
+                new Query.Param("id3", id3),
+            };
+            var affected = store.ExecuteWithoutFetch(query);
+            Assert.AreEqual(1, affected);
+
+            query = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id1) };
+            var person1 = store.LoadRow(query);
+            Assert.IsNotNull(person1);
+            Assert.AreEqual(id1, person1.GDID);
+            Assert.AreEqual("Jack London", person1.Name);
+            Assert.AreEqual(56, person1.Age);
+
+            query = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id2) };
+            var person2 = store.LoadRow(query);
+            Assert.IsNotNull(person2);
+            Assert.AreEqual(id2, person2.GDID);
+            Assert.AreEqual("John", person2.Name);
+            Assert.AreEqual(0, person2.Age); // update without $set removed Age field
+
+            query = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id3) };
+            var person3 = store.LoadRow(query);
+            Assert.IsNotNull(person3);
+            Assert.AreEqual(id3, person3.GDID);
+            Assert.AreEqual("Anna Smith", person3.Name);
+            Assert.AreEqual(23, person3.Age);
+        }
+
+        [Test]
+        public void ExecuteWithoutFetch_Multiquering()
+        {
+            var id1 = new GDID(0, 0, 1);
+            var id2 = new GDID(0, 0, 2);
+            var id3 = new GDID(0, 0, 3);
+            var data = new byte[] { 0x00, 0x79, 0x14 };
+            var query1 = new Query<MyPerzon>("CRUD.InsertPerzons")
+            {
+                new Query.Param("id1", id1),
+                new Query.Param("id2", id2),
+                new Query.Param("id3", id3),
+                new Query.Param("data", data)
+            };
+            var query2 = new Query<MyPerzon>("CRUD.UpdatePerzons")
+            {
+                new Query.Param("id1", id1),
+                new Query.Param("id2", id2),
+                new Query.Param("id3", id3)
+            };
+
+            var affected = store.ExecuteWithoutFetch(query1, query2);
+            Assert.AreEqual(2, affected);
+
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id1) };
+            var person1 = store.LoadRow(query);
+            Assert.IsNotNull(person1);
+            Assert.AreEqual(id1, person1.GDID);
+            Assert.AreEqual("Jack London", person1.Name);
+            Assert.AreEqual(56, person1.Age);
+
+            query = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id2) };
+            var person2 = store.LoadRow(query);
+            Assert.IsNotNull(person2);
+            Assert.AreEqual(id2, person2.GDID);
+            Assert.AreEqual("John", person2.Name);
+            Assert.AreEqual(0, person2.Age); // update without $set removed Age field
+
+            query = new Query<MyPerzon>("CRUD.LoadPerzon") { new Query.Param("id", id3) };
+            var person3 = store.LoadRow(query);
+            Assert.IsNotNull(person3);
+            Assert.AreEqual(id3, person3.GDID);
+            Assert.AreEqual("Anna Smith", person3.Name);
+            Assert.AreEqual(23, person3.Age);
+        }
 
         public class MyPerzon : TypedRow
         {
@@ -513,7 +658,9 @@ namespace NFX.NUnit.Integration.CRUD
 
           [Field]
           public int Age { get; set;} 
+
+          [Field]
+          public byte[] Data {get; set; }
         }
-    
   }
 }

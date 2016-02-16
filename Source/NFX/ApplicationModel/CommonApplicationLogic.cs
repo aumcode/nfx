@@ -50,6 +50,7 @@ namespace NFX.ApplicationModel
       public const string CONFIG_SWITCH = "config";
       
       public const string CONFIG_APP_NAME_ATTR = "application-name";
+      public const string CONFIG_UNIT_TEST_ATTR = "unit-test";
     
       public const string CONFIG_MEMORY_MANAGEMENT_SECTION = "memory-management";
 
@@ -130,6 +131,13 @@ namespace NFX.ApplicationModel
 
       #region IApplication Members
 
+        
+        public bool IsUnitTest
+        {
+          get{ return m_ConfigRoot.AttrByName(CONFIG_UNIT_TEST_ATTR).ValueAsBool(); }
+        }
+        
+        
         /// <summary>
         /// Returns unique identifier of this running instance 
         /// </summary>

@@ -27,7 +27,7 @@ namespace NFX.Wave.MVC
   /// <summary>
   /// Decorates MVC Actions
   /// </summary>
-  [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
   public class ActionAttribute : Attribute
   {
     public ActionAttribute()
@@ -131,43 +131,23 @@ namespace NFX.Wave.MVC
   /// <summary>
   /// General ancestor for MVC Action Filters - get invoked before and after actions
   /// </summary>
-  [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
   public abstract class ActionFilterAttribute : Attribute
   {
-    public ActionFilterAttribute()
+    protected ActionFilterAttribute()
     {
 
     }
 
-    public ActionFilterAttribute(int order)
+    protected ActionFilterAttribute(int order)
     {
-      m_Name = Guid.NewGuid().ToString();
-      m_Order =order;
+      Order =order;
     }
-
-    
-    /// <summary>
-    /// Specifies name override
-    /// </summary>
-    public ActionFilterAttribute(string name, int order)
-    {
-      m_Name = name;
-      if (m_Name.IsNullOrWhiteSpace()) m_Name = Guid.NewGuid().ToString();
-      m_Order = order;
-    }
-
-    private string m_Name; 
-    private int m_Order;  
-    
-    /// <summary>
-    /// Specifies the name of filter
-    /// </summary>
-    public string Name{get{return m_Name;}}
 
     /// <summary>
     /// Dictates the call order
     /// </summary>
-    public int Order{get{return m_Order;}}  
+    public readonly int Order;
 
     /// <summary>
     /// Override to add logic/filtering right before the invocation of action method.
@@ -180,7 +160,6 @@ namespace NFX.Wave.MVC
     /// Override to add logic/filtering right after the invocation of action method. Must return TRUE to stop processing chain
     /// </summary>
     protected internal abstract bool AfterActionInvocation(Controller controller, WorkContext work, string action, MethodInfo method, object[] args, ref object result);
-
   }
 
 

@@ -39,6 +39,12 @@ namespace NFX.ApplicationModel
   /// </summary>
   public interface IApplication : INamed, ILocalizedTimeProvider
   {
+     /// <summary>
+     /// True if app is launched as a unit test as set by the app config "unit-test=true"
+     /// The general use of this flag is discouraged as code cnstructs should not form special cases just for unit testing,
+     /// however in some cases this flag is usefull. It is not exposed via App. static accessors
+     /// </summary>
+     bool IsUnitTest{ get;}
      
      /// <summary>
      /// Returns unique identifier of this running instance

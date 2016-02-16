@@ -63,6 +63,7 @@ namespace NFX.ApplicationModel
             ApplicationModel.ExecutionContext.__SetApplicationLevelContext(this, null, null, NOPSession.Instance);
         }
 
+        public virtual bool IsUnitTest { get; set; }
 
         public virtual Guid InstanceID { get { return m_InstanceID;}}
 

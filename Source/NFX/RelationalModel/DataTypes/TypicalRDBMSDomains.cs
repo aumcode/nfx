@@ -297,14 +297,7 @@ namespace NFX.RelationalModel.DataTypes
             column.TransformedName = "G_{0}".Args(column.TransformedName);
         }
     }
-                                          
 
-
-
-    
-
-
-    
     public abstract class HumanAttribute : RDBMSDomain
     {
     

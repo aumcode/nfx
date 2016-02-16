@@ -145,7 +145,8 @@ namespace NFX.Web.Social
 
           if (net == SocialNetID.UNS || net == SocialNetID.VKT)
           {
-            if (userAgent.IndexOf("vkShare; +vk.com/dev/Share", StringComparison.OrdinalIgnoreCase) != -1)
+            if (userAgent.IndexOf("vkShare;", StringComparison.OrdinalIgnoreCase) != -1 &&
+                userAgent.IndexOf(@"vk.com/dev/Share", StringComparison.OrdinalIgnoreCase) != -1)
               return true;
           }
 
