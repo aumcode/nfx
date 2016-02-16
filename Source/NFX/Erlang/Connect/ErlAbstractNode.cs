@@ -236,7 +236,7 @@ namespace NFX.Erlang
     /// <summary>
     /// Get/Set the Epmd socket after publishing this nodes listen port to Epmd
     /// </summary>
-    internal TcpClient Epmd { get; set; }
+    internal IErlTransport Epmd { get; set; }
 
     /// <summary>
     /// Get the port number used by this node.

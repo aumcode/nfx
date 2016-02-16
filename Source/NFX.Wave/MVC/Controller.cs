@@ -56,30 +56,54 @@ namespace NFX.Wave.MVC
       }
 
 
-         private static Dictionary<MethodInfo, ActionFilterAttribute[]> m_Filters;
+         private static Dictionary<Type, ActionFilterAttribute[]> m_ClassFilters;
+         private static Dictionary<MethodInfo, ActionFilterAttribute[]> m_MethodFilters;
+
+         /// <summary>
+         /// Returns cached (for performance)ordered array of ActionFilterAttributes for type
+         /// </summary>
+         protected static ActionFilterAttribute[] GetActionFilters(Type tp)
+         {
+            var dict = m_ClassFilters;//thread safe copy
+            ActionFilterAttribute[] filters = null;
+
+            if (dict!=null && dict.TryGetValue(tp, out filters)) return filters;
+
+            filters = tp.GetCustomAttributes().Where(atr => typeof(ActionFilterAttribute).IsAssignableFrom(atr.GetType()))
+                                                              .Cast<ActionFilterAttribute>()
+                                                              .OrderBy(a => a.Order)
+                                                              .ToArray();
+
+            var newDict = dict!=null ?  new Dictionary<Type, ActionFilterAttribute[]>( dict ) : new Dictionary<Type, ActionFilterAttribute[]>();
+            newDict[tp] = filters;
+
+            m_ClassFilters = newDict; //thread safe swap
+
+            return filters;
+         }
 
 
          /// <summary>
-         /// Returns cached (for performance)ordered array of ActionFilterAttributes 
+         /// Returns cached (for performance)ordered array of ActionFilterAttributes for action method 
          /// </summary>
          protected static ActionFilterAttribute[] GetActionFilters(MethodInfo mi)
          {
-            var dict = m_Filters;//thread safe copy
-            ActionFilterAttribute[] actions = null;
+            var dict = m_MethodFilters;//thread safe copy
+            ActionFilterAttribute[] filters = null;
 
-            if (dict!=null && dict.TryGetValue(mi, out actions)) return actions;
+            if (dict!=null && dict.TryGetValue(mi, out filters)) return filters;
 
-            actions = mi.GetCustomAttributes().Where(atr => typeof(ActionFilterAttribute).IsAssignableFrom(atr.GetType()))
+            filters = mi.GetCustomAttributes().Where(atr => typeof(ActionFilterAttribute).IsAssignableFrom(atr.GetType()))
                                                               .Cast<ActionFilterAttribute>()
                                                               .OrderBy(a => a.Order)
                                                               .ToArray();
 
             var newDict = dict!=null ?  new Dictionary<MethodInfo, ActionFilterAttribute[]>( dict ) : new Dictionary<MethodInfo, ActionFilterAttribute[]>();
-            newDict[mi] = actions;
+            newDict[mi] = filters;
 
-            m_Filters = newDict; //thread safe swap
+            m_MethodFilters = newDict; //thread safe swap
 
-            return actions;
+            return filters;
          }
 
 
@@ -92,7 +116,14 @@ namespace NFX.Wave.MVC
       /// </summary>
       protected internal virtual bool BeforeActionInvocation(WorkContext work, string action, MethodInfo method, object[] args, ref object result)
       {
-          var filters = GetActionFilters(method);
+          //1 Class-level
+          var filters = GetActionFilters(GetType());
+          if (filters!=null)
+           for(var i=0; i<filters.Length; i++)
+            if (filters[i].BeforeActionInvocation(this, work, action, method, args, ref result)) return true;
+
+          //2 Method Level
+          filters = GetActionFilters(method);
           if (filters!=null)
            for(var i=0; i<filters.Length; i++)
             if (filters[i].BeforeActionInvocation(this, work, action, method, args, ref result)) return true;
@@ -107,8 +138,15 @@ namespace NFX.Wave.MVC
       /// </summary>
       protected internal virtual object AfterActionInvocation(WorkContext work, string action, MethodInfo method, object[] args, object result)
       {
+         //1 Method Level
          var filters = GetActionFilters(method);
-          if (filters!=null)
+         if (filters!=null)
+           for(var i=filters.Length-1; i>=0; i--)
+            if (filters[i].AfterActionInvocation(this, work, action, method, args, ref result)) return result;
+
+         //2 Class Level
+         filters = GetActionFilters(GetType());
+         if (filters!=null)
            for(var i=filters.Length-1; i>=0; i--)
             if (filters[i].AfterActionInvocation(this, work, action, method, args, ref result)) return result;
 

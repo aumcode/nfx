@@ -100,6 +100,8 @@ namespace rsc
 
           ConsoleUtils.Info("Compiler information:");
           Console.WriteLine("   Type={0}\n   Name={1}\n   Target={2}".Args(compiler.GetType().FullName, compiler.Name, compiler.Target) );
+          if (compiler is RDBMSCompiler)
+            Console.WriteLine("   DomainsSearchPath={0}".Args(((RDBMSCompiler)compiler).DomainSearchPaths) );
           Console.WriteLine("   OutPath={0}".Args(compiler.OutputPath) );
           Console.WriteLine("   OutPrefix={0}".Args(compiler.OutputPrefix) );
           Console.WriteLine("   CaseSensitive={0}".Args(compiler.CaseSensitiveNames) );

@@ -118,7 +118,7 @@ namespace NFX.RecordModel
       public bool FindKey(string key)
       {
          foreach (string item in Keys)
-             if (item==key) return true;
+             if (item.EqualsOrdIgnoreCase(key)) return true;
           
          return false; 
       }

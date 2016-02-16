@@ -117,7 +117,9 @@ namespace NFX.DataAccess.Distributed
         
         public override string  ToString()
         {
- 	       return "GDID[{0}:{1}({2},{3})]".Args(Era, ID, Authority, Counter);
+           //20160123 spol fix incorrect parsing
+ 	       //return "GDID[{0}:{1}({2},{3})]".Args(Era, ID, Authority, Counter);
+           return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
         }
     
         public override int GetHashCode()

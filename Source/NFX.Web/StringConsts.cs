@@ -86,14 +86,9 @@ namespace NFX.Web
     public const string APP_SESSION_STRATEGY_INIT_ERROR =
           "Application session strategy initApplication error: ";
 
-    public const string APPLICATION_TOPIC =
-          "WebForms Application";          
-          
-
     public const string WEB_HANDLER_TOPIC =
           "WebHandler";                       
-   
-   
+
     public const string NO_RECORD_IN_VOLATILE_STORE_ERROR =
             "Volatile store returned no record instance. It may have expired " ;
 

@@ -358,6 +358,8 @@ namespace NFX.Erlang
 
     private static IErlObject coreToErlObject(object o, ErlTypeOrder etp, bool strict)
     {
+      if (o == null) return ErlAtom.Undefined;
+
       var eh = strict ? ConvertErrorHandling.Throw : ConvertErrorHandling.ReturnDefault;
 
       var e = o as IErlObject;

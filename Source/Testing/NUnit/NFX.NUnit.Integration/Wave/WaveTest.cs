@@ -21,11 +21,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
 using NUnit.Framework;
 
 using NFX;
 using NFX.Serialization.JSON;
-using System.Text.RegularExpressions;
 using NFX.DataAccess.CRUD;
 using TestRow = WaveTestSite.Controllers.IntegrationTester.TestRow;
 using TestStatus = WaveTestSite.Controllers.IntegrationTester.TestStatus;

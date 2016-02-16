@@ -263,7 +263,7 @@ namespace NFX.Serialization.BSON
         /// </summary>
         protected virtual bool TryConvertBSONtoCLR(Type target, BSONElement element, string targetName, out object clrValue, Func<BSONDocument, BSONElement, bool> filter)
         {
-          if (element==null) 
+          if (element==null || element is BSONNullElement) 
           {
             clrValue = null;
             return true;
@@ -366,8 +366,9 @@ namespace NFX.Serialization.BSON
             {
               clrValue = func(element);
             }
-            catch
+            catch(Exception error)
             {
+              Debug.Fail("Error in BSONRowConverter.TryConvertBSONtoCLR(): " + error.ToMessageWithType());
               return false;//functor could not convert
             }
             return true;
@@ -381,7 +382,7 @@ namespace NFX.Serialization.BSON
         /// </summary>
         protected virtual object DirectConvertBSONValue(BSONElement element, Func<BSONDocument, BSONElement, bool> filter = null)
         {
-          if (element==null) return null;
+          if (element==null || element is BSONNullElement) return null;
           
           if (element.ElementType == BSONElementType.Document) return BSONDocumentToJSONMap(((BSONDocumentElement)element).Value, filter);
 
@@ -436,9 +437,9 @@ namespace NFX.Serialization.BSON
       /// Pass target name (name of particular store/epoch/implementation) to get targeted field metadata.
       /// Note: the supplied row MAY NOT CONTAIN REFERENCE CYCLES - either direct or transitive
       /// </summary>
-      public virtual BSONDocument RowToBSONDocument(Row row, string targetName, bool useAmorphousData = true)
+      public virtual BSONDocument RowToBSONDocument(Row row, string targetName, bool useAmorphousData = true, FieldFilterFunc filter = null)
       {
-        var el = RowToBSONDocumentElement(row, targetName, useAmorphousData);
+        var el = RowToBSONDocumentElement(row, targetName, useAmorphousData, filter: filter);
         return el.Value;
       }
 
@@ -447,7 +448,7 @@ namespace NFX.Serialization.BSON
       /// Pass target name (name of particular store/epoch/implementation) to get targeted field metadata.
       /// Note: the supplied row MAY NOT CONTAIN REFERENCE CYCLES - either direct or transitive
       /// </summary>
-      public virtual BSONDocumentElement RowToBSONDocumentElement(Row row, string targetName, bool useAmorphousData = true, string name= null)
+      public virtual BSONDocumentElement RowToBSONDocumentElement(Row row, string targetName, bool useAmorphousData = true, string name= null, FieldFilterFunc filter = null)
       {
         if (row==null) return null;
 
@@ -462,6 +463,12 @@ namespace NFX.Serialization.BSON
         {
             var attr = field[targetName];
             if (attr!=null && attr.StoreFlag!=StoreFlag.OnlyStore && attr.StoreFlag!=StoreFlag.LoadAndStore) continue;
+           
+            if (filter!=null)//20160210 Dkh+SPol
+            {
+              if (!filter(row, null, field)) continue;
+            }
+
             var el = GetFieldAsBSON(row, field, targetName);
             result.Set( el ); 
         }

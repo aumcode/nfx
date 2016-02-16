@@ -41,6 +41,7 @@ namespace NFX.Wave.Handlers
             {
              var sub = FactoryUtils.Make<WorkHandler>(hNode, args: new object[] {dispatcher, hNode});
              sub.___setParentHandler( this );
+             sub.__setComponentDirector( this );
              if(!m_Handlers.Register(sub))
               throw new WaveException(StringConsts.CONFIG_DUPLICATE_HANDLER_NAME_ERROR.Args(hNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value)); 
             }

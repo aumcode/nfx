@@ -72,6 +72,7 @@
     <Compile Include="MVC\ActionResult.cs" />
     <Compile Include="MVC\Attributes.cs" />
     <Compile Include="MVC\Controller.cs" />
+    <Compile Include="MVC\NoCacheAttribute.cs" />
     <Compile Include="MVC\Reflection.cs" />
     <Compile Include="MVC\SessionCSRFCheckAttribute.cs" />
     <Compile Include="Portal.cs" />

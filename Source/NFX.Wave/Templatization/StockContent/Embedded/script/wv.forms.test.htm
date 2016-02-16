@@ -244,6 +244,12 @@
         <div class="fView" data-wv-fname="Various" data-wv-ctl="radio"></div>
         <div class="fView" data-wv-fname="Consent"></div>
         <div class="fView" data-wv-fname="Notes"></div>
+        
+        Record-level errors:
+         <div class="fView" data-wv-fname="#"></div>
+        All error summary:
+          <div class="fView" data-wv-fname="#" data-wv-ctl="error-summary"></div>
+
 
     </form>
 
@@ -281,6 +287,7 @@
     </script>
 
     <button onclick="REC.fldLastName.value(new Date())">Set Date</button>
+    <button onclick="REC.setExternalValidationError('', 'This was set eternally for whole record')">Set Extrenal Val Error</button>
     <button onclick="REC.fldNotes.value('Salut\nJoe Dassin!')">Set Notes</button>
     <button onclick="REC.fldLastName.visible(!REC.fldLastName.visible())">Visible LastName</button>
     <button onclick="REC.applyDefaultValue(false)">Apply Defaults</button>
@@ -344,6 +351,17 @@
                     cls: "dlgGreen"
                     });
 
+        }  
+
+        function showConfirmationDialog(){
+            WAVE.GUI.showConfirmationDialog(
+                'Action confirmation', 
+                'Are you <strong>very</strong> sure?',
+                [WAVE.GUI.DLG_YES, WAVE.GUI.DLG_NO, WAVE.GUI.DLG_CANCEL],
+                function(sender, result) {
+                   alert('You chose: ' + result);
+                   return true; 
+                });
         }
 
     </script>
@@ -354,6 +372,11 @@
     <button onclick="showDialog2('dlgGreen')">Show Dialog Green</button>
 
     <button onclick="showManyDialogs()">Show Many</button>
+
+    <br><br>
+
+    <button onclick="showConfirmationDialog()">Show Confirmation Dialog</button>
+
 
     <br><br>
     <div id="divPuzzle" class="wvPuzzle"></div>

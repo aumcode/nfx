@@ -62,7 +62,6 @@ namespace NFX.Log.Destinations
 
                 DateTime now = msg.TimeStamp;
                 line.Append(now.ToString(LogTimeFormat)); line.Append(SEPARATOR);
-                line.Append(msg.ThreadID.ToString().PadLeft(4)); line.Append(SEPARATOR);
                 line.Append(msg.RelatedTo == Guid.Empty ? string.Empty : msg.RelatedTo.ToString());
                 line.Append(SEPARATOR);
                 line.Append(msg.Type.ToString()); line.Append(SEPARATOR);

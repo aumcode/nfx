@@ -25,6 +25,7 @@ using NUnit.Framework;
 
 using NFX.ApplicationModel.Pile;
 using NFX.DataAccess.Distributed;
+using NFX.NUnit.AppModel.Pile;
 
 namespace NFX.NUnit.Integration.AppModel.Pile
 {
@@ -33,21 +34,17 @@ namespace NFX.NUnit.Integration.AppModel.Pile
   {
     #region Tests
 
-      const int SEG_SIZE = DefaultPile.SEG_SIZE_MIN;
-
       [Test]
       public void SegmentAddedDeleted()
       {
-        const int SEG_SIZE = DefaultPile.SEG_SIZE_MIN;
-
-        using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE})
+        using (var pile = new DefaultPile() { SegmentSize = PileCacheTestCore.SEG_SIZE})
         {
           pile.Start();
 
           var ipile = pile as IPile;
 
           var pp = PilePointer.Invalid;
-          for(ulong i=0; i<SEG_SIZE && ipile.SegmentCount < 2; i++)
+          for(ulong i=0; i<PileCacheTestCore.SEG_SIZE && ipile.SegmentCount < 2; i++)
           {
             var ch = Charge.MakeFake(new GDID(1, i));
             pp = ipile.Put(ch);
@@ -142,120 +139,11 @@ namespace NFX.NUnit.Integration.AppModel.Pile
         }  
       }
 
-      [Test]
-      public void Parallel_PutGetDelete_Random()
-      {
-        const int PUTTER_CNT  = 2, PUTTER_OP_CNT  = 2 * 10000;
-        const int GETTER_CNT  = 6, GETTER_OP_CNT  = 2 * 30000;
-        const int DELETER_CNT = 2, DELETER_OP_CNT = 2 * 10000;
-
-        var data = new ConcurrentDictionary<PilePointer, string>();
-
-        var getAccessViolations = new ConcurrentDictionary<int, int>();
-        var deleteAccessViolations = new ConcurrentDictionary<int, int>();
-
-        using (var pile = new DefaultPile())
-        {
-          pile.Start();
-
-          var ipile = pile as IPile;
-
-          // putter tasks
-          var putters = new Task[PUTTER_CNT];
-          for (int it = 0; it < PUTTER_CNT; it++)
-          {
-            var task = new Task(() => {
-
-              for (int i = 0; i < PUTTER_OP_CNT; i++)
-              {
-                var str = NFX.Parsing.NaturalTextGenerator.Generate();
-                var pp = ipile.Put(str);
-                data.TryAdd(pp, str);
-              }
-
-            });
-
-            putters[it] = task;
-          }
-
-          // getter tasks
-          var getters = new Task[GETTER_CNT];
-          for (int it = 0; it < GETTER_CNT; it++)
-          {
-            var task = new Task(() => {
-
-              for (int i = 0; i < GETTER_OP_CNT; i++)
-              {
-                if (data.Count == 0) {
-                  System.Threading.Thread.Yield();
-                  continue;
-                }
-                var idx = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, data.Count-1);
-                var kvp = data.ElementAt(idx);
-                try
-                {
-                  
-                  var str = ipile.Get(kvp.Key);
-                  Assert.AreEqual(str, kvp.Value);
-                }
-                catch (PileAccessViolationException)
-                {
-                  getAccessViolations.AddOrUpdate(System.Threading.Thread.CurrentThread.ManagedThreadId, 1, (mid, val) => val + 1);
-                }
-              }
-            });
-            getters[it] = task;
-          }
-
-          // deleter tasks
-          var deleters = new Task[DELETER_CNT];
-          for (int it = 0; it < DELETER_CNT; it++)
-          {
-            var task = new Task(() => {
-
-              for (int i = 0; i < DELETER_OP_CNT; i++)
-              {
-                if (data.Count == 0) {
-                  System.Threading.Thread.Yield();
-                  continue;
-                }
-                var idx = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, data.Count-1);
-                var kvp = data.ElementAt(idx);
-                try
-                {
-                  ipile.Delete(kvp.Key);
-                }
-                catch (PileAccessViolationException)
-                {
-                  deleteAccessViolations.AddOrUpdate(System.Threading.Thread.CurrentThread.ManagedThreadId, 1, (mid, val) => val + 1);
-                }
-              }
-            });
-            deleters[it] = task;
-          }
-
-
-          foreach (var task in putters) task.Start();
-          foreach (var task in getters) task.Start();
-          foreach (var task in deleters) task.Start();
-
-
-          Task.WaitAll(putters.Concat(getters).Concat(deleters).ToArray());
-
-          foreach (var kvp in getAccessViolations)
-            Console.WriteLine("Get thread '{0}' {1:n0} times accessed deleted pointer", kvp.Key, kvp.Value);
-
-          foreach (var kvp in deleteAccessViolations)
-            Console.WriteLine("Del thread '{0}' {1:n0} times accessed deleted pointer", kvp.Key, kvp.Value);
-        }
-      }
-
-
       [TestCase(128,      64,128,134,  152,  170,180,190,200,250,512,1024,2000,3000,4000,5000,6000)]
       [TestCase(32000,    64,88,128,134,170,180,190,200,250,512,1024,2000,3000,4000,5000,  32024)]  
       public void PileSmallObjects(int payloadSize, params int[] freeChunkSizes)
       {
-        using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE, AllocMode = AllocationMode.ReuseSpace })
+        using (var pile = new DefaultPile() { SegmentSize = PileCacheTestCore.SEG_SIZE, AllocMode = AllocationMode.ReuseSpace })
         {
           pile.FreeChunkSizes = freeChunkSizes;
 
@@ -308,7 +196,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
       [TestCase(200)]
       public void PileDeleteInLastSegment(int payloadSize)
       {
-        using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE})
+        using (var pile = new DefaultPile() { SegmentSize = PileCacheTestCore.SEG_SIZE})
         {
           pile.Start();
 
@@ -330,7 +218,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
       [TestCase(200)]
       public void PileDeleteInMiddleSegment(int payloadSize)
       {
-        using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE})
+        using (var pile = new DefaultPile() { SegmentSize = PileCacheTestCore.SEG_SIZE})
         {
           pile.Start();
 
@@ -360,141 +248,17 @@ namespace NFX.NUnit.Integration.AppModel.Pile
         }   
       }
 
-      [TestCase(32, 64000, 300, 1000)]
+      [TestCase(32, 16000, 300, 500)]
       public void PutGetDelete_Sequential(int fromSize, int toSize, int fromObjCount, int toObjCount)
       {
-        Console.WriteLine("test will take about 1 minute");
-
-        var startTime = DateTime.Now;
-        var objects = new Dictionary<PilePointer, byte[]>();
-        var objectCount = 0;
-        var objectsSumSize = 0;
-
-        using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE})
-        {
-          pile.Start();
-
-          var dtStop = DateTime.Now.AddMinutes(1);
-          while (dtStop >= DateTime.Now)
-          {
-            // insert routine
-            var insertCount = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(fromObjCount, toObjCount);
-            for (int i = 0; i < insertCount; i++)
-            {
-              var payloadSize = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(fromSize, toSize);
-              var payload = new byte[payloadSize];
-              payload[0] = (byte)NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 255);
-              payload[payloadSize - 1] = (byte)NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 255);
-              var pp = pile.Put(payload);
-              objects.Add(pp, payload);
-              objectCount++;
-              objectsSumSize += payloadSize;
-            }
-
-            // get
-            if (objectCount > 0)
-            {
-              var getCount = ExternalRandomGenerator.Instance.NextScaledRandomInteger(5 * fromObjCount, 5 * toObjCount);
-              for (int i = 0; i < getCount; i++)
-              {
-                var objectIdx = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, objectCount - 1);
-                var obj = objects.ElementAt(objectIdx);
-                var objPayloadFromPile = (byte[])pile.Get(obj.Key);
-                Assert.AreEqual(obj.Value[0], objPayloadFromPile[0]);
-                Assert.AreEqual(obj.Value[obj.Value.Length - 1], objPayloadFromPile[obj.Value.Length - 1]);
-                Assert.AreEqual(obj.Value.Length, objPayloadFromPile.Length);
-              }
-            }
-
-            // delete
-            var deleteCount = ExternalRandomGenerator.Instance.NextScaledRandomInteger(fromObjCount, toObjCount);
-            for (int i = 0; i < deleteCount; i++)
-            {
-              if (objectCount == 0) break;
-
-              var objectIdx = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, objectCount - 1);
-              var obj = objects.ElementAt(objectIdx);
-
-              Assert.IsTrue(pile.Delete(obj.Key));
-              objects.Remove(obj.Key);
-              objectCount--; objectsSumSize -= obj.Value.Length;
-            }   
-          }
-        }
+        PileCacheTestCore.PutGetDelete_Sequential(fromSize, toSize, fromObjCount, toObjCount);
       }
 
-      [TestCase(32, 3200, 1, 50, 8)]
-      [TestCase(32, 12800, 1, 100, 16)]
+      [TestCase(32, 3200, 1, 20, 4)]
+      [TestCase(32, 12800, 1, 50, 8)]
       public void PutGetDelete_Parallel(int fromSize, int toSize, int fromObjCount, int toObjCount, int taskCount)
       {
-        Console.WriteLine("test will take about 1 minute");
-
-        int objectsPut = 0, objectsDeleted = 0;//, objectGot = 0;
-
-        using (var pile = new DefaultPile() { SegmentSize = SEG_SIZE})
-        {
-          pile.Start();
-
-          Parallel.For(0, taskCount, _ =>
-            {
-              var startTime = DateTime.Now;
-              var objects = new Dictionary<PilePointer, byte[]>();
-              var objectCount = 0;
-              var objectsSumSize = 0;
-
-              var dtStop = DateTime.Now.AddMinutes(.5);
-              while (dtStop >= DateTime.Now)
-              {
-                // insert routine
-                var insertCount = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(fromObjCount, toObjCount);
-                for (int i = 0; i < insertCount; i++)
-                {
-                  var payloadSize = NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(fromSize, toSize);
-                  var payload = new byte[payloadSize];
-                  payload[0] = (byte)NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 255);
-                  payload[payloadSize - 1] = (byte)NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 255);
-                  var pp = pile.Put(payload);
-                  objects.Add(pp, payload);
-                  objectCount++;
-                  objectsSumSize += payloadSize;
-                }
-                Interlocked.Add(ref objectsPut, insertCount);
-
-                // get
-                if (objectCount > 0)
-                {
-                  var getCount = ExternalRandomGenerator.Instance.NextScaledRandomInteger(5 * fromObjCount, 5 * toObjCount);
-                  for (int i = 0; i < getCount; i++)
-                  {
-                    var objectIdx = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, objectCount - 1);
-                    var obj = objects.ElementAt(objectIdx);
-                    var objPayloadFromPile = (byte[])pile.Get(obj.Key);
-                    Assert.AreEqual(obj.Value[0], objPayloadFromPile[0]);
-                    Assert.AreEqual(obj.Value[obj.Value.Length - 1], objPayloadFromPile[obj.Value.Length - 1]);
-                    Assert.AreEqual(obj.Value.Length, objPayloadFromPile.Length);
-                  }
-                }
-
-                // delete
-                var deleteCount = ExternalRandomGenerator.Instance.NextScaledRandomInteger(fromObjCount, toObjCount);
-                if (deleteCount > objectCount) deleteCount = objectCount;
-                for (int i = 0; i < deleteCount; i++)
-                {
-                  if (objectCount == 0) break;
-
-                  var objectIdx = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, objectCount - 1);
-                  var obj = objects.ElementAt(objectIdx);
-
-                  Assert.IsTrue(pile.Delete(obj.Key));
-                  objects.Remove(obj.Key);
-                  objectCount--; objectsSumSize -= obj.Value.Length;
-                }   
-                Interlocked.Add(ref objectsDeleted, deleteCount);
-              }
-          });
-        }
-
-        Console.WriteLine("put {0:N0}, deleted {1:N0} object", objectsPut, objectsDeleted);
+        PileCacheTestCore.PutGetDelete_Parallel(fromSize, toSize, fromObjCount, toObjCount, taskCount);
       }
 
               private object generatePayload(int size = 8)

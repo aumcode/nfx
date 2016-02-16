@@ -16,7 +16,9 @@
 </FILE_LICENSE>*/
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using NFX.Time;
@@ -61,6 +63,7 @@ namespace NFX.ApplicationModel
             ApplicationModel.ExecutionContext.__SetApplicationLevelContext(this, null, null, NOPSession.Instance);
         }
 
+        public virtual bool IsUnitTest { get; set; }
 
         public virtual Guid InstanceID { get { return m_InstanceID;}}
 
@@ -211,20 +214,6 @@ namespace NFX.ApplicationModel
         public void Stop()
         {
 
-        }
-
-        public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
-        {
-            if (Log==null) return;
-        
-            Log.Write(new NFX.Log.Message()
-                        {
-                          Topic = GetType().Name,
-                          Type = type,
-                          From = from,
-                          Text = msgText,
-                          Exception = error
-                        });
         }
     }
 }

@@ -301,37 +301,43 @@ namespace NFX.DataAccess.Erlang
         throw new NotImplementedException();
       }
 
-      public virtual int Insert(Row row)
+      //todo: Implement filter
+      public virtual int Insert(Row row, FieldFilterFunc filter = null)
       {
         CheckServiceActive();
         return CRUDWrite(row);
       }
 
-      public virtual Task<int> InsertAsync(Row row)
+      //todo: Implement filter
+      public virtual Task<int> InsertAsync(Row row, FieldFilterFunc filter = null)
       {
         CheckServiceActive();
         return TaskUtils.AsCompletedTask( () => Insert(row) );
       }
 
-      public virtual int Upsert(Row row)
+      //todo: Implement filter
+      public virtual int Upsert(Row row, FieldFilterFunc filter = null)
       {
         CheckServiceActive();
         return CRUDWrite(row);
       }
 
-      public virtual Task<int> UpsertAsync(Row row)
+      //todo: Implement filter
+      public virtual Task<int> UpsertAsync(Row row, FieldFilterFunc filter = null)
       {
         CheckServiceActive();
         return TaskUtils.AsCompletedTask( () => Upsert(row) );
       }
 
-      public virtual int Update(Row row, IDataStoreKey key = null)
+      //todo: Implement filter
+      public virtual int Update(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
       {
         CheckServiceActive();
         return CRUDWrite(row);
       }
 
-      public virtual Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
+      //todo: Implement filter
+      public virtual Task<int> UpdateAsync(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
       {
         CheckServiceActive();
         return TaskUtils.AsCompletedTask( () => Update(row) );
@@ -394,6 +400,7 @@ namespace NFX.DataAccess.Erlang
       private void node_NodeStatusChange(ErlLocalNode sender, ErlAtom node, bool up, object info)
       {
         if (!node.Equals(this.m_RemoteName)) return;//filter-out nodes that are not mine
+        if (!Running) return;
 
         if (!up)
         {
@@ -435,7 +442,7 @@ namespace NFX.DataAccess.Erlang
           RelatedTo = correlate
         });
 
-        m_Map = null;
+        m_Map._NeedReconnect = true;
 
         try
         {
@@ -473,7 +480,11 @@ namespace NFX.DataAccess.Erlang
         m_Map = null;
        
         var node = ErlApp.Node;
-        if (node!=null) node.NodeStatusChange -= node_NodeStatusChange;
+        if (node!=null)
+        {
+          node.NodeStatusChange -= node_NodeStatusChange;
+          node.Disconnect(m_RemoteName);
+        }
 
         lock(s_Nodes)
           s_Nodes.Remove(m_RemoteName.ValueAsString);
@@ -501,12 +512,12 @@ namespace NFX.DataAccess.Erlang
 
           var result = m_Map;
 
-          if (result!=null) return result;
+          if (result!=null && !result._NeedReconnect) return result;
 
           lock(m_MapSync)
           {
             result = m_Map;
-            if (result!=null) return result;
+            if (result!=null && !result._NeedReconnect) return result;
 
             var bonjour = executeRPC(NFX_CRUD_MOD, 
                                      NFX_BONJOUR_FUN, 
@@ -540,7 +551,13 @@ namespace NFX.DataAccess.Erlang
                   break;
               }
 
-              m_Map = new SchemaMap(this, xmlContent);
+              if (m_Map==null)
+               m_Map = new SchemaMap(this, xmlContent);
+              else
+               if (!m_Map.OriginalXMLContent.EqualsOrdSenseCase(xmlContent))
+                 throw new ErlServerSchemaChangedException();
+
+              m_Map._NeedReconnect = false;
             }
             else 
               throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"Bonjour(!ok)");
@@ -577,6 +594,7 @@ namespace NFX.DataAccess.Erlang
       }
      
 
+      //todo: Implement filter that may be passed here from Insert/Update/Upsert
       protected virtual int CRUDWrite(Row row, bool delete = false)
       {
         var rowTuple = m_Map.RowToErlTuple( row, delete );
@@ -648,8 +666,5 @@ namespace NFX.DataAccess.Erlang
 
     #endregion  
 
-  
-
-      
   }
 }

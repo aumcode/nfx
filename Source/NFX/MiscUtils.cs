@@ -282,20 +282,15 @@ namespace NFX
     }
 
     /// <summary>
-    /// Returns name of executable file along with its path
+    /// Returns the name of entry point executable file optionaly with its path
     /// </summary>
-    public static string ExeName(bool withPath = true)
+    public static string EntryExeName(bool withPath = true)
     {
-#if DEBUG
-      string applicationName =
-          System.Environment.GetCommandLineArgs()[0];
-#else
-      string applicationName =
-          System.Environment.GetCommandLineArgs()[0]+ ".exe";
-#endif
+      var file = Assembly.GetEntryAssembly().Location;
+      
+      if (!withPath) file = Path.GetFileName(file);
 
-      return withPath ? Path.Combine(System.Environment.CurrentDirectory, applicationName)
-                      : applicationName;
+      return file;
     }
 
     /// <summary>

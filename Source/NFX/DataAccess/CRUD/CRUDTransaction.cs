@@ -191,42 +191,42 @@ namespace NFX.DataAccess.CRUD
                     return DoSaveAsync(tables);
                 }
 
-                public int Insert(Row row)
+                public int Insert(Row row, FieldFilterFunc filter = null)
                 {
                     CheckOpenStatus("Insert");
-                    return DoInsert(row);
+                    return DoInsert(row, filter);
                 }
 
-                public Task<int> InsertAsync(Row row)
+                public Task<int> InsertAsync(Row row, FieldFilterFunc filter = null)
                 {
                     CheckOpenStatus("Insert");
-                    return DoInsertAsync(row);
+                    return DoInsertAsync(row, filter);
                 }
 
 
-                public int Upsert(Row row)
+                public int Upsert(Row row, FieldFilterFunc filter = null)
                 {
                     CheckOpenStatus("Upsert");
-                    return DoUpsert(row);
+                    return DoUpsert(row, filter);
                 }
 
-                public Task<int> UpsertAsync(Row row)
+                public Task<int> UpsertAsync(Row row, FieldFilterFunc filter = null)
                 {
                     CheckOpenStatus("Upsert");
-                    return DoUpsertAsync(row);
+                    return DoUpsertAsync(row, filter);
                 }
 
 
-                public int Update(Row row, IDataStoreKey key = null)
+                public int Update(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
                 {
                     CheckOpenStatus("Update");
-                    return DoUpdate(row, key);
+                    return DoUpdate(row, key, filter);
                 }
 
-                public Task<int> UpdateAsync(Row row, IDataStoreKey key = null)
+                public Task<int> UpdateAsync(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)
                 {
                     CheckOpenStatus("Update");
-                    return DoUpdateAsync(row, key);
+                    return DoUpdateAsync(row, key, filter);
                 }
 
 
@@ -282,14 +282,14 @@ namespace NFX.DataAccess.CRUD
             protected abstract int  DoSave(params RowsetBase[] tables);
             protected abstract Task<int>  DoSaveAsync(params RowsetBase[] tables);
 
-            protected abstract int  DoInsert(Row row);
-            protected abstract Task<int>  DoInsertAsync(Row row);
+            protected abstract int  DoInsert(Row row, FieldFilterFunc filter = null);
+            protected abstract Task<int>  DoInsertAsync(Row row, FieldFilterFunc filter = null);
 
-            protected abstract int  DoUpsert(Row row);
-            protected abstract Task<int>  DoUpsertAsync(Row row);
+            protected abstract int  DoUpsert(Row row, FieldFilterFunc filter = null);
+            protected abstract Task<int>  DoUpsertAsync(Row row, FieldFilterFunc filter = null);
 
-            protected abstract int  DoUpdate(Row row, IDataStoreKey key);
-            protected abstract Task<int>  DoUpdateAsync(Row row, IDataStoreKey key);
+            protected abstract int  DoUpdate(Row row, IDataStoreKey key, FieldFilterFunc filter = null);
+            protected abstract Task<int>  DoUpdateAsync(Row row, IDataStoreKey key, FieldFilterFunc filter = null);
 
             protected abstract int  DoDelete(Row row, IDataStoreKey key);
             protected abstract Task<int>  DoDeleteAsync(Row row, IDataStoreKey key);

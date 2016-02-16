@@ -49,6 +49,8 @@ namespace NFX
       public const string UNNAMED_MEMORY_BUFFER = "<unnamed memory buffer>";
       public const string UNNAMED_PROJECT_ITEM = "<unnamed project item>";
 
+
+      public const string APPLICATION_TOPIC = "App";
       public const string RECORD_TOPIC = "NFX.RecordModel.Record";
 
       public const string DATA_CATEGORY = "Data";

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.ApplicationModel;
 using NFX.Environment;
 using NFX.IO.Net.Gate;
 
@@ -28,11 +29,11 @@ namespace NFX.Wave
   /// <summary>
   /// Represents a base for all work filters. Unlike handlers, filters do not necessarily handle work rather augment the work context
   /// </summary>
-  public abstract class WorkFilter : DisposableObject, INamed, IOrdered
+  public abstract class WorkFilter : ApplicationComponent, INamed, IOrdered
   {
       public const string CONFIG_FILTER_SECTION = "filter";
       
-      protected WorkFilter(WorkDispatcher dispatcher, string name, int order)
+      protected WorkFilter(WorkDispatcher dispatcher, string name, int order) : base(dispatcher)
       {
         if (name.IsNullOrWhiteSpace()||dispatcher==null)
          throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(dispatcher|name==null|empty)");
@@ -46,10 +47,11 @@ namespace NFX.Wave
       protected WorkFilter(WorkHandler handler, string name, int order) : this(handler.NonNull(text: ".ctor(handler==null)").Dispatcher, name, order)
       {
         m_Handler = handler;
+        this.__setComponentDirector(handler);
       }
 
 
-      protected WorkFilter(WorkDispatcher dispatcher, IConfigSectionNode confNode)
+      protected WorkFilter(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher)
       {
         if (confNode==null||dispatcher==null)
          throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(dispatcher|confNode==null|empty)");
@@ -65,7 +67,8 @@ namespace NFX.Wave
 
       protected WorkFilter(WorkHandler handler, IConfigSectionNode confNode) : this(handler.NonNull(text: ".ctor(handler==null)").Dispatcher, confNode)
       {
-        m_Handler = handler;
+        m_Handler = handler; 
+        this.__setComponentDirector(handler);
       }
 
       private string m_Name;

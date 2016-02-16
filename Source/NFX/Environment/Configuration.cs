@@ -62,7 +62,16 @@ namespace NFX.Environment
 
     #region Static
 
-        
+        /// <summary>
+        /// Creates a new empty config root based on laconic format
+        /// </summary>
+        public static ConfigSectionNode NewEmptyRoot(string name = null)
+        {
+          var cfg = new LaconicConfiguration();
+          cfg.Create(name);
+          return cfg.Root;
+        }
+
         /// <summary>
         /// Returns all configuration file formats (file extensions without '.') supported 
         /// by ProviderLoadFromFile/ProviderLoadFromAnySupportedFormatFile/ProviderLoadFromString

@@ -21,11 +21,13 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.Windows.Forms;
 
 
 using NFX.Wave;
 using NFX.Web.GeoLookup;
+
 
 namespace WinFormsTest
 {
@@ -107,7 +109,7 @@ namespace WinFormsTest
         m_GeoService = svc;
       }
 
-      var result = m_GeoService.Lookup( tbIP.Text);
+      var result = m_GeoService.Lookup( IPAddress.Parse( tbIP.Text));
       if (result!=null)
       {
         MessageBox.Show( result.ToString() );

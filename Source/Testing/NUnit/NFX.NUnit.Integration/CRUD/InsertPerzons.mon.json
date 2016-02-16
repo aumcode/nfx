@@ -1,0 +1,22 @@
+﻿{
+  "insert": "MyPerzon",
+  "documents": 
+    [
+      { 
+        "_id": "$$id1",
+        "Name": "Jack London",
+        "Age": 32,
+        "Data":  "$$data" 
+      },
+      { 
+        "_id": "$$id2",
+        "Name": "Ivan Poddubny",
+        "Age": 41 
+      },
+      { 
+        "_id": "$$id3",
+        "Name": "Anna Smith",
+        "Age": 28 
+      }
+  ]
+}

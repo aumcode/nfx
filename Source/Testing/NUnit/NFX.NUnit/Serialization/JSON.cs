@@ -196,5 +196,81 @@ this \r\n is not escape'
         }
 
 
+
+
+        [TestCase]
+        public void NLSMap_Basic()
+        {
+            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+
+            var nls = new NLSMap(content);
+
+            Assert.IsTrue (nls["eng"].IsAssigned);
+            Assert.IsTrue (nls["deu"].IsAssigned);
+            Assert.IsFalse(nls["rus"].IsAssigned);
+
+            Assert.AreEqual("Cucumber", nls["eng"].Name);
+            Assert.AreEqual("Gurke", nls["deu"].Name);
+
+            Assert.AreEqual("It is green", nls["eng"].Description);
+            Assert.AreEqual("Es ist grün", nls["deu"].Description);
+        }
+
+        [TestCase]
+        public void NLSMap_SerializeAll()
+        {
+            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+
+            var nls = new NLSMap(content);
+
+            var json = nls.ToJSON();
+            Console.WriteLine(json);
+
+            dynamic read = json.JSONToDynamic();
+            Assert.IsNotNull(read);
+
+            Assert.AreEqual("Cucumber", read.eng.n);
+            Assert.AreEqual("Gurke", read.deu.n);
+        }
+
+        [TestCase]
+        public void NLSMap_SerializeOnlyOneExisting()
+        {
+            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+
+            var nls = new NLSMap(content);
+
+
+            var options = new JSONWritingOptions{ NLSMapLanguageISO = "deu", Purpose = JSONSerializationPurpose.UIFeed};
+            var json = nls.ToJSON(options);
+            Console.WriteLine(json);
+
+            dynamic read = json.JSONToDynamic();
+            Assert.IsNotNull(read);
+
+            Assert.AreEqual("Gurke", read.n);
+            Assert.AreEqual("Es ist grün", read.d);
+        }
+
+        [TestCase]
+        public void NLSMap_SerializeOnlyOneNoneExisting()
+        {
+            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+
+            var nls = new NLSMap(content);
+
+
+            var options = new JSONWritingOptions{ NLSMapLanguageISO = "rus", Purpose = JSONSerializationPurpose.UIFeed};
+            var json = nls.ToJSON(options);
+            Console.WriteLine(json);
+
+            dynamic read = json.JSONToDynamic();
+            Assert.IsNotNull(read);
+
+            Assert.AreEqual("Cucumber", read.n);
+            Assert.AreEqual("It is green", read.d);
+        }
+
+
     }
 }

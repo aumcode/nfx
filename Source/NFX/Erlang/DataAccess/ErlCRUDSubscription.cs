@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+using NFX;
+using NFX.Log;
 using NFX.DataAccess;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.CRUD.Subscriptions;
 using NFX.Erlang;
+
 
 namespace NFX.DataAccess.Erlang
 {
@@ -23,7 +27,7 @@ namespace NFX.DataAccess.Erlang
                                  object correlate = null
                                  ) : base(store, name, query, recipient, correlate)
     {
-       m_ErlBox = store.MakeMailbox(name);
+       m_ErlBox = store.MakeMailbox();
 
        m_ErlBox.MailboxMessage += (_, msg) => 
                                   {
@@ -80,10 +84,10 @@ namespace NFX.DataAccess.Erlang
     private static readonly IErlObject SUBSCRIPTION_MSG_PATTERN = 
                    "{Schema::atom(), Timestamp::long(), Type, Rows::list()}".ToErlObject();
 
-    private static readonly ErlAtom SCHEMA = new ErlAtom("Schema");
+    private static readonly ErlAtom SCHEMA    = new ErlAtom("Schema");
     private static readonly ErlAtom TIMESTAMP = new ErlAtom("Timestamp");
-    private static readonly ErlAtom TYPE   = new ErlAtom("Type");
-    private static readonly ErlAtom ROWS   = new ErlAtom("Rows");
+    private static readonly ErlAtom TYPE      = new ErlAtom("Type");
+    private static readonly ErlAtom ROWS      = new ErlAtom("Rows");
 
     private void process(IQueable msg)
     {
@@ -131,12 +135,23 @@ namespace NFX.DataAccess.Erlang
 
         if (rows.Count>0)
         {
+          int errors = 0;
           foreach(var rowTuple in rows.Cast<ErlTuple>())
           {
-            var row  = map.ErlTupleToRow(schemaName, rowTuple, schema);
-            var data = new CRUDSubscriptionEvent(etp, schema, row, new DataTimeStamp(ts));
-            this.Mailbox.Deliver(this, data);
+            try
+            {
+              var row  = map.ErlTupleToRow(schemaName, rowTuple, schema);
+              var data = new CRUDSubscriptionEvent(etp, schema, row, new DataTimeStamp(ts));
+              this.Mailbox.Deliver(this, data);
+            }
+            catch(Exception ie)
+            {
+              errors++;
+              log(MessageType.Error, "prcs().forea(rTpl)", ie.ToMessageWithType(), ie);
+            }
           }
+
+          // TODO: Add error reporting to user
         }
         else
         {  //used to clear data, no rows are fetched
@@ -146,17 +161,26 @@ namespace NFX.DataAccess.Erlang
       }
       catch(Exception err)
       {
-        App.Log.Write(
-          new Log.Message
-          {
-            Type = Log.MessageType.Error,
-            Topic = CoreConsts.ERLANG_TOPIC,
-            From = "{0}.process()".Args(GetType().Name),
-            Text = err.ToMessageWithType(),
-            Exception = err 
-          }
-        );
+        log(MessageType.Error, "prcs().outcatch{}", err.ToMessageWithType(), err);
       }
     }
+  
+    private void log(MessageType type, string from, string text, Exception error,
+                                            [CallerFilePath]  string file = null, 
+                                            [CallerLineNumber]int line = 0,
+                                            object pars = null)
+    {
+      App.Log.Write(
+        new Message(pars, file, line)
+        {
+          Type = type,
+          Topic = CoreConsts.ERLANG_TOPIC,
+          From = "{0}.{1}".Args(GetType().Name, from),
+          Text = text,
+          Exception = error
+        }
+      );
+    }
+
   }
 }

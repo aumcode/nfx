@@ -258,7 +258,8 @@ namespace NFX.WinForms.Controls.GridKit
 
        protected internal override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
        {
-         DispatchSelection();
+         if (e.Button == MouseButtons.Left)
+           DispatchSelection();
          base.OnMouseDown(e);
        }
 

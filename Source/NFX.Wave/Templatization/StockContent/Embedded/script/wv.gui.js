@@ -24,8 +24,8 @@ WAVE.GUI = (function(){
         CLS_DIALOG_BASE: "wvDialogBase",
         CLS_DIALOG_TITLE: "wvDialogTitle",
         CLS_DIALOG_CONTENT: "wvDialogContent",
-        CLS_DIALOG_FOOTER: "wvConfirmDialogFooter",
-        CLS_DIALOG_BUTTON: "wvConfirmDialogButton",
+        CLS_DIALOG_CONFIRM_FOOTER: "wvConfirmDialogFooter",
+        CLS_DIALOG_CONFIRM_BUTTON: "wvConfirmDialogButton",
 
         DLG_UNDEFINED: '',
         DLG_CANCEL: 'cancel',
@@ -432,8 +432,6 @@ WAVE.GUI = (function(){
         //returns dialog result or DLG_UNDEFINED
         this.result = function(){ return fResult; };
 
-        this.setContent = function(content){ fdivContent.innerHTML=content; };
-
         //closes dialog with the specified result and returns the result
         this.close = function(result){
             if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
@@ -495,53 +493,56 @@ WAVE.GUI = (function(){
         fOnShow(this);
     };//dialog
     
+    //Displays a simple confirmation propmt dialog
     published.showConfirmationDialog = function (title, content, buttons, callback, options) {
       if (!WAVE.isObject(options)) options = {};
       if (!WAVE.isArray(buttons)) buttons = [];
 
-      var fContent = WAVE.strDefault(content, 'Please confirm');
+      content = WAVE.strDefault(content, 'Please confirm');
       var btnCls = WAVE.strDefault(options['btnCls']);
+      var footerCls = WAVE.strDefault(options['footerCls']);
 
-      function addButton(parent, caption, onClick) {
-          var btn = document.createElement('button');
-          btn.style.margin = '0 5px';
-          btn.className = published.CLS_DIALOG_BUTTON + ' ' + btnCls;
-          btn.setAttribute('onclick', onClick);
-          btn.innerHTML = caption;
-          parent.appendChild(btn);
+      function createButtonHtml(lbl, rslt) {
+          var btnTemplate = '<button class="@btnClass@" onclick="WAVE.GUI.currentDialog().close(\'@result@\');">@label@</button>';
+          return WAVE.strHTMLTemplate(
+                                     btnTemplate, 
+                                     { 
+                                       btnClass: published.CLS_DIALOG_CONFIRM_BUTTON + ' ' + btnCls, 
+                                       result: rslt,
+                                       label: lbl
+                                     });
       }
 
-      function nodeToString (node) {
-        var tmpNode = document.createElement("div");
-        tmpNode.appendChild(node.cloneNode(true));
-        var str = tmpNode.innerHTML;
-        tmpNode = node = null; // prevent memory leaks in IE
-        return str;
-      }
+      var btnYes = '';
+      var btnNo = '';
+      var btnOk = '';
+      var btnCancel = '';
+                       
+      if (WAVE.inArray(buttons, WAVE.GUI.DLG_YES))
+         btnYes = createButtonHtml('Yes', WAVE.GUI.DLG_YES);
+      if (WAVE.inArray(buttons, WAVE.GUI.DLG_NO))
+         btnNo = createButtonHtml('No', WAVE.GUI.DLG_NO);
+      if (WAVE.inArray(buttons, WAVE.GUI.DLG_OK))
+         btnOk = createButtonHtml('OK', WAVE.GUI.DLG_OK);
+      if (WAVE.inArray(buttons, WAVE.GUI.DLG_CANCEL))
+         btnCancel = createButtonHtml('Cancel', WAVE.GUI.DLG_CANCEL);   
       
+      var fullContent = 
+        '<div>'+
+          content+
+          '<div class="'+published.CLS_DIALOG_CONFIRM_FOOTER+' '+footerCls+'" style="text-align:center; padding: 5px 0 0 0">'+
+            btnYes + btnNo + btnOk + btnCancel +
+          '</div>'+
+        '<div>';
+
       var dialog = new WAVE.GUI.Dialog(
         {
           title: WAVE.strDefault(title, 'Confirmation'), 
+          content: fullContent,
           cls: WAVE.strDefault(options['cls']), 
           onShow: function(dlg){}, 
           onClose: callback
         });
-
-      var fdivFooter = document.createElement('div');
-      fdivFooter.style.textAlign = 'center';
-      fdivFooter.style.padding = '5px 0 0 0';
-      fdivFooter.className = published.CLS_DIALOG_FOOTER;
-      var handler = "WAVE.GUI.currentDialog().close('@result@');";
-      if ($.inArray(WAVE.GUI.DLG_OK, buttons) > -1)
-         addButton(fdivFooter, 'OK', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_OK }));
-      if ($.inArray(WAVE.GUI.DLG_YES, buttons) > -1)
-         addButton(fdivFooter, 'Yes', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_YES }));
-      if ($.inArray(WAVE.GUI.DLG_NO, buttons) > -1)
-         addButton(fdivFooter, 'No', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_NO }));
-      if ($.inArray(WAVE.GUI.DLG_CANCEL, buttons) > -1)
-         addButton(fdivFooter, 'Cancel', WAVE.strHTMLTemplate(handler, { result: WAVE.GUI.DLG_CANCEL }));
-      
-      dialog.setContent(content + nodeToString(fdivFooter));
     };
     
     var fDirty = false;
@@ -1570,11 +1571,16 @@ WAVE.GUI = (function(){
                       return null;
                     }
 
+                    function getNodeIdSegmentEqualsFunc(segment) {
+                        var f = function (n) { return n.id() === segment; };
+                        return f;
+                    }
+
                     var node = null;
                     var childrenWalkable = WAVE.arrayWalkable(fChildren);
                     for(var i in segments) {
                       var segment = segments[i];
-                      node = childrenWalkable.wFirst(function(n) { return n.id() === segment; });
+                      node = childrenWalkable.wFirst(getNodeIdSegmentEqualsFunc(segment));
                       if (node===null) return null;
                       childrenWalkable = WAVE.arrayWalkable(node.__children());
                     }
@@ -1805,17 +1811,19 @@ WAVE.GUI = (function(){
         fWVObjectInspectorEditor = val;
       };
 
-      this.wvTreeNodeButtonExpanded = function (val) {
-        if (typeof (val) === tUNDEFINED) return (fWVTreeNodeButtonExpanded || fNodeTemplateClsArgs.wvTreeNodeButtonExpanded);
-        if (val === fWVTreeNodeButtonExpanded) return;
-        fWVTreeNodeButtonExpanded = val;
-        fExpander.className = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
-      };
-
       var HTML_EDITOR = '<div class="@cls@">' +
                         '  <label for="@id@">@key@</label>' +
                         '  <input type="textbox" id="@id@" value="@val@" objpath="@objpath@">' +
                         '</div>';
+
+      function onInput(e) {
+          var keys = e.target.getAttribute("objpath").split(/\//);
+          var objToEdit = obj;
+          for (var i = 0; i < keys.length-1; i++)
+              objToEdit = objToEdit[keys[i]];
+              
+          objToEdit[keys[keys.length - 1]] = e.target.value;
+      }
 
       function build(troot, oroot, orootpath) {
         var keys = Object.keys(oroot);
@@ -1835,14 +1843,7 @@ WAVE.GUI = (function(){
             
             var input = WAVE.id(editorID);
             input.objpath = cn.path();
-            input.addEventListener("input", function (e) {
-              var keys = e.target.getAttribute("objpath").split(/\//);
-              var objToEdit = obj;
-              for (var i = 0; i < keys.length-1; i++)
-                objToEdit = objToEdit[keys[i]];
-              
-              objToEdit[keys[keys.length - 1]] = e.target.value;
-            });
+            input.addEventListener("input", onInput);
           } else { //branch
             cn = troot.addChild({ html: key });
             build(cn, val, orootpath ? orootpath + "/" + key : key);
@@ -2886,25 +2887,61 @@ WAVE.RecordModel.GUI = (function(){
         }
 
 
-        function rebuildControl(fldView){
-          var ct = published.getControlType(fldView);
+        function buildErrorRec(fldView, summary){
+          var record = fldView.record();
+          var divRoot = fldView.DIV();
 
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHECK)) buildCheck(fldView);
+
+          var html = "";
+          if (summary)
+          {
+            var allErrors = record.allValidationErrors();
+            for(var i in allErrors)
+            {
+               var err = allErrors[i];
+               if (err!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: err});
+            }
+            
+          }
           else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_RADIO)) buildRadioGroup(fldView);
-          else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_COMBO)) buildComboBox(fldView);
-          else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_PUZZLE)) buildPuzzle(fldView);
-          else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_TEXTAREA)) buildTextArea(fldView);
-          else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_HIDDEN)) buildHidden(fldView);
-          else
-            buildTextBox(fldView);
+          {
+            var rve = record.validationError();
+            if (rve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: rve});
+          }
+
+          divRoot.innerHTML = html;
         }
 
 
+        function rebuildControl(fldView){
+          var ct = published.getControlType(fldView);
+
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHECK))    { ensureField(fldView, ct); buildCheck(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_RADIO))    { ensureField(fldView, ct); buildRadioGroup(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_COMBO))    { ensureField(fldView, ct); buildComboBox(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_PUZZLE))   { ensureField(fldView, ct); buildPuzzle(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_TEXTAREA)) { ensureField(fldView, ct); buildTextArea(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_HIDDEN))   { ensureField(fldView, ct); buildHidden(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_ERROR_REC)) buildErrorRec(fldView, false);
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_ERROR_SUMMARY)) buildErrorRec(fldView, true);
+          else
+          {
+            ensureField(fldView, ct);
+            buildTextBox(fldView);
+          }
+        }
+
+        function ensureField(fldView, ct) {
+          if (fldView.field()===null)
+           throw "The control type '"+ct+"' requires the field binding, but was bound to record";
+        }
 
 
 

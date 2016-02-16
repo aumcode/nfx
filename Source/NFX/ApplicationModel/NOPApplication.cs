@@ -73,6 +73,8 @@ namespace NFX.ApplicationModel
     #region IApplication Members
 
         
+        public bool IsUnitTest{ get{ return false;}}
+
         public Guid InstanceID
         {
             get { return m_InstanceID; }
@@ -210,12 +212,6 @@ namespace NFX.ApplicationModel
         {
 
         }
-
-        public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
-        {
-
-        }
-
 
     #endregion
 

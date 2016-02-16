@@ -106,7 +106,6 @@ namespace NFX.DataAccess.MongoDB
                     doc.Set(new BSONStringElement("Text", msg.Text));
                     doc.Set(new BSONStringElement("Parameters", msg.Parameters));
                     doc.Set(new BSONStringElement("Exception", msg.Exception.ToMessageWithType()));
-                    doc.Set(new BSONInt32Element("ThreadID", msg.ThreadID));
 
                     return doc;
                   }

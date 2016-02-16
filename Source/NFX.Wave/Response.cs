@@ -368,14 +368,20 @@ namespace NFX.Wave
       }
 
       /// <summary>
-      /// Sets headers so all downstream, layers (browsers, proxies) do not cache response
+      /// Sets headers so all downstream, layers (browsers, proxies) do not cache response.
+      /// If Force==true(default) then overrides existing headers with no cache.
+      /// Returns true when headers were set
       /// </summary>
-      public void SetNoCacheHeaders()
+      public bool SetNoCacheHeaders(bool force = true)
       {
+        if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace())
+          return false;
+        
         m_NetResponse.Headers[HttpResponseHeader.CacheControl] = "no-cache, no-store, must-revalidate";
         m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
         m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
         m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
+        return true;
       }
 
       /// <summary>

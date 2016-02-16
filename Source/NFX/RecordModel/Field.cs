@@ -67,7 +67,7 @@ namespace NFX.RecordModel
       };
 
 
-      public static Field MakeFiedOfType(Type type)
+      public static Field MakeFieldOfType(Type type)
       {
         //Take care of Nullable<T>
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -1402,6 +1402,14 @@ namespace NFX.RecordModel
    
      protected abstract object GetValue();
      protected abstract void SetValue(object value, bool fromGUI);
+
+
+     /// <summary>
+    /// Internal framework method not intended to be called by developers
+    /// </summary>
+    internal virtual void _setValueTypeHasValue()
+    {
+    }
 
 
      protected internal void EnsureCanModifyValue()

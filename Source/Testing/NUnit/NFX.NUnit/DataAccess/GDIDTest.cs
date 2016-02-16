@@ -100,7 +100,7 @@ namespace NFX.NUnit.DataAccess
         var gdid = new GDID(1293, 3, 57);
         var s = gdid.ToString();
         Console.WriteLine(s);
-        Assert.AreEqual("GDID[1293:3458764513820540985(3,57)]", s);
+        Assert.AreEqual("1293:3:57", s);
       }
 
       [TestCase]

@@ -142,8 +142,9 @@ namespace NFX.WinForms.Controls.GridKit
       
       private RowMap m_RowMap = new RowMap();
        
-      private int m_DataRowHeight = DEFAULT_ROW_HEIGHT;
-      private int m_HeaderRowHeight = DEFAULT_ROW_HEIGHT;      
+      private int m_OrigDataRowHeight = 0;
+      private int m_DataRowHeight     = DEFAULT_ROW_HEIGHT;
+      private int m_HeaderRowHeight   = DEFAULT_ROW_HEIGHT;      
       
       
       internal CommentElement m_CommentElement;
@@ -264,8 +265,12 @@ namespace NFX.WinForms.Controls.GridKit
            } 
         }
       }
-      
-      
+
+      /// <summary>
+      /// When true Ctrl+A key will select all rows
+      /// </summary>
+      public bool SelectAllRowsAllowed { get; set; }
+
       /// <summary>
       /// Returns a column being repositioned
       /// </summary>
@@ -346,6 +351,8 @@ namespace NFX.WinForms.Controls.GridKit
         {
           if (m_DataRowHeight!=value)
           {
+            if (m_OrigDataRowHeight == 0)
+              m_OrigDataRowHeight = m_DataRowHeight;
             m_DataRowHeight= value<MIN_ROW_HEIGHT ? MIN_ROW_HEIGHT : value;
             rebuildAllCells();
           }
@@ -367,11 +374,6 @@ namespace NFX.WinForms.Controls.GridKit
           }
         }
       }
-      
-      
-      
-      
-      
       
       /// <summary>
       /// Enumerates selected rows
@@ -428,7 +430,6 @@ namespace NFX.WinForms.Controls.GridKit
      /// Occurs after rows have been selected/unselected
      /// </summary>
      public event EventHandler RowSelectionChanged;
-     
      
      /// <summary>
      /// Occurs after columns have been added/deleted
@@ -505,7 +506,7 @@ namespace NFX.WinForms.Controls.GridKit
       {
         var result = m_SelectedRowsList.Remove(row);
         if (result)
-         rowSelectionChanged();
+          rowSelectionChanged();
         return result;
       }
       
@@ -518,6 +519,27 @@ namespace NFX.WinForms.Controls.GridKit
       }
       
       /// <summary>
+      /// Selects all rows.
+      /// The method will not select any rows if SelectAllRowsAllowed is false.
+      /// <returns>Number of rows selected</returns>
+      /// </summary>
+      public int SelectAllRows()
+      {
+        if (!SelectAllRowsAllowed)
+          return 0;
+
+        m_SelectedRowsList.Clear();
+
+        for (int i=0; i < m_DataRowSource.Count; ++i)
+          m_SelectedRowsList.Add(m_DataRowSource[i]);
+       
+        if (m_SelectedRowsList.Count > 0) 
+          rowSelectionChanged();
+
+        return m_SelectedRowsList.Count;
+      }
+      
+      /// <summary>
       /// Unselects all rows
       /// </summary>
       public void UnSelectAllRows()
@@ -526,11 +548,9 @@ namespace NFX.WinForms.Controls.GridKit
         m_SelectedRowsList.Clear();
        
         if (cnt>0) 
-         rowSelectionChanged();
+          rowSelectionChanged();
       }
       
-    
-    
       /// <summary>
       /// Tries to find a column by its' id or returns null
       /// </summary>
@@ -588,7 +608,7 @@ namespace NFX.WinForms.Controls.GridKit
          ConfigSectionNode gnode = findSubNodeForThisGrid(node) as ConfigSectionNode; //see if node for this grid already exists
 
          if (gnode!=null)//delete with all column defs that are different now
-          gnode.Delete();
+           gnode.Delete();
          
          
          gnode = node.AddChildNode(CONFIG_GRID_SECTION);
@@ -597,7 +617,7 @@ namespace NFX.WinForms.Controls.GridKit
            gnode.AddAttributeNode(CONFIG_ID_ATTR, ID);
          
          foreach(var col in m_Columns)
-          col.PersistConfiguration(gnode);
+           col.PersistConfiguration(gnode);
       }
     
     
@@ -654,26 +674,55 @@ namespace NFX.WinForms.Controls.GridKit
         if (cell.Row!=null)
         {
           if (!m_MultiSelect)
-           SelectRow(cell.Row);
+            SelectRow(cell.Row);
           else //multiselect
-          { 
-            if (!m_MultiSelectWithCtrl || (Control.ModifierKeys&Keys.Control) >0)
+          {
+            if ((Control.ModifierKeys & Keys.Shift) > 0)
             {
-                if (IsRowSelected(cell.Row))
-                 UnSelectRow(cell.Row);
-                else 
-                 SelectRow(cell.Row);
-            } 
+              if (!SelectedRows.Any())
+              {
+                SelectRow(cell.Row);
+                return;
+              }
+
+              var first = m_RowMap.FindIndex(re => re.Row == SelectedRows.First());
+              var last  = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
+              var cur   = m_RowMap.FindIndex(re => re.Row == cell.Row);
+
+              if (cur < 0)
+                return;
+
+              UnSelectAllRows();
+
+              if (last <= cur)
+                for (var i=last; i <= cur; ++i)
+                   SelectRow(m_RowMap[i].Row);
+              else if (cur <= first)
+                for (var i = cur; i <= first; ++i)
+                  SelectRow(m_RowMap[i].Row);
+            }
+            else if (!m_MultiSelectWithCtrl || (Control.ModifierKeys & Keys.Control) > 0)
+            {
+              if (IsRowSelected(cell.Row))
+                UnSelectRow(cell.Row);
+              else 
+                SelectRow(cell.Row);
+            }
+            else
+            {
+              UnSelectAllRows();
+              SelectRow(cell.Row);
+            }
           } 
         }
         
         if (m_CellSelectionAllowed)
           try
           {
-           rebuildAllCells(true);//must force the rebuild or event will be invalid
-           OnCellSelection(m_SelectedCell, cell);
+            rebuildAllCells(true);//must force the rebuild or event will be invalid
+            OnCellSelection(m_SelectedCell, cell);
           }finally{
-           m_SelectedCell = cell;
+            m_SelectedCell = cell;
           } 
       } 
       
@@ -758,8 +807,16 @@ namespace NFX.WinForms.Controls.GridKit
         
         System.Windows.Forms.Clipboard.SetText(result.ToString());
       }
-    
-    
+
+      /// <summary>
+      /// Reset data row hight to its original value it had prior to changing with assignment to DataRowHeight
+      /// </summary>
+      public void ResetRowHeight()
+      {
+        if (m_OrigDataRowHeight != 0)
+          DataRowHeight = m_OrigDataRowHeight;
+      }
+
     #endregion
     
     
@@ -989,13 +1046,17 @@ namespace NFX.WinForms.Controls.GridKit
             } 
             return true;
          }
-         
-         
+
+         if ((keyData & (Keys.A | Keys.Control)) == (Keys.A | Keys.Control))
+         {
+            if ((keyData & Keys.Shift) == Keys.Shift)
+              UnSelectAllRows();
+            else
+              SelectAllRows();
+         }
+
          return base.ProcessDialogKey(keyData);
        }
-       
-
-       
 
     #endregion
     

@@ -740,7 +740,114 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual("DA DA DA!", row2["String_Name"]);
         }
 
+        public static void InsertWithPredicate(ICRUDDataStore store)
+        {
+            var patient = TestLogic.GetDefaultPatient();
+            var affected = store.Insert(patient, (r, k, f) => f.Name != "State" && f.Name != "Zip");
+            Assert.AreEqual(1, affected);
 
+            var query = new Query<Patient>("CRUD.Patient.List") { new Query.Param("LN", "%%") };
+            var persisted = store.LoadRow(query);  
+            Assert.IsNotNull(persisted);
+            Assert.AreEqual(patient.First_Name, persisted.First_Name);
+            Assert.AreEqual(patient.Last_Name, persisted.Last_Name); 
+            Assert.AreEqual(patient.SSN, persisted.SSN);
+            Assert.AreEqual(patient.City, persisted.City);
+            Assert.AreEqual(patient.Address1, persisted.Address1);
+            Assert.AreEqual(patient.Address2, persisted.Address2);
+            Assert.AreEqual(patient.Amount, persisted.Amount);
+            Assert.AreEqual(patient.Doctor_Phone, persisted.Doctor_Phone);
+            Assert.AreEqual(patient.Phone, persisted.Phone);
+            Assert.AreEqual(patient.DOB, persisted.DOB);
+            Assert.AreEqual(patient.Note, persisted.Note);
+
+            Assert.IsNull(persisted.State);
+            Assert.IsNull(persisted.Zip);
+        }
+
+        public static void UpdateWithPredicate(ICRUDDataStore store)
+        {
+            var patient = TestLogic.GetDefaultPatient();
+            var affected = store.Insert(patient);
+            Assert.AreEqual(1, affected);
+            var query = new Query<Patient>("CRUD.Patient.List") { new Query.Param("LN", "%%") };
+            var persisted = store.LoadRow(query);
+
+            persisted.Zip = "010203";
+            persisted.First_Name = "John";
+            persisted.Last_Name = "Smith";
+            affected = store.Update(persisted, null, (r, k, f) => f.Name != "First_Name" && f.Name != "Zip");
+            Assert.AreEqual(1, affected);
+            
+            var updated = store.LoadRow(query);  
+            Assert.IsNotNull(updated);
+            Assert.AreEqual(persisted.SSN, updated.SSN);
+            Assert.AreEqual(persisted.City, updated.City);
+            Assert.AreEqual(persisted.Address1, updated.Address1);
+            Assert.AreEqual(persisted.Address2, updated.Address2);
+            Assert.AreEqual(persisted.Amount, updated.Amount);
+            Assert.AreEqual(persisted.Doctor_Phone, updated.Doctor_Phone);
+            Assert.AreEqual(persisted.Phone, updated.Phone);
+            Assert.AreEqual(persisted.DOB, updated.DOB);
+            Assert.AreEqual(persisted.Note, updated.Note);
+
+            Assert.AreEqual(patient.First_Name, updated.First_Name);
+            Assert.AreEqual(persisted.Last_Name, updated.Last_Name); 
+            Assert.AreEqual(patient.Zip, updated.Zip); 
+        }
+
+        public static void UpsertWithPredicate(ICRUDDataStore store)
+        {
+            var patient = TestLogic.GetDefaultPatient();
+            var affected = store.Insert(patient);
+            Assert.AreEqual(1, affected);
+            var query = new Query<Patient>("CRUD.Patient.List") { new Query.Param("LN", "%%") };
+            var persisted = store.LoadRow(query);
+
+            persisted.Zip = "010203";
+            persisted.First_Name = "John";
+            persisted.Last_Name = "Smith";
+            affected = store.Upsert(persisted, (r, k, f) => f.Name != "Zip");
+            Assert.AreEqual(2, affected);
+            
+            var updated = store.LoadRow(query);  
+            Assert.IsNotNull(updated);
+            Assert.AreEqual(persisted.SSN, updated.SSN);
+            Assert.AreEqual(persisted.City, updated.City);
+            Assert.AreEqual(persisted.Address1, updated.Address1);
+            Assert.AreEqual(persisted.Address2, updated.Address2);
+            Assert.AreEqual(persisted.Amount, updated.Amount);
+            Assert.AreEqual(persisted.Doctor_Phone, updated.Doctor_Phone);
+            Assert.AreEqual(persisted.Phone, updated.Phone);
+            Assert.AreEqual(persisted.DOB, updated.DOB);
+            Assert.AreEqual(persisted.Note, updated.Note);
+
+            Assert.AreEqual(persisted.First_Name, updated.First_Name);
+            Assert.AreEqual(persisted.Last_Name, updated.Last_Name); 
+            Assert.AreEqual(patient.Zip, updated.Zip); // notice ZIP remains the same
+        }
+
+
+        public static Patient GetDefaultPatient()
+        {
+            var patient = new Patient
+                            {
+                                First_Name = "Ivan",
+                                Last_Name ="Poddubny",
+                                SSN = "123456",
+                                City = "New York",
+                                Address1 = "addr_1",
+                                Address2 = "addr_2",
+                                Amount = 123,
+                                Phone = "(123)456-78-90",
+                                State = "NY",
+                                DOB = new DateTime(1984, 11, 12),
+                                Note = "...",
+                                Zip = "350004"
+                            };
+
+            return patient;
+        }
 
     }
 }

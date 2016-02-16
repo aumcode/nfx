@@ -488,10 +488,33 @@
 
 
        run("Strings", "strEmpty", function(){
+           assertTrue( WAVE.strEmpty(), "undefined1" );
+           assertTrue( WAVE.strEmpty(undefined), "undefined2" );
            assertTrue( WAVE.strEmpty(null), "null" );
            assertTrue( WAVE.strEmpty(""),   "empty string" );
            assertTrue( WAVE.strEmpty("  "), "string with blanks" );
            assertFalse( WAVE.strEmpty(" a "), "string with values and blanks" );
+       });
+
+       run("Strings", "strAsBool", function(){
+           assertFalse( WAVE.strAsBool(), "undefined" );
+           assertTrue( WAVE.strAsBool(undefined, true), "undefined with true default" );
+           assertFalse( WAVE.strAsBool(null), "null" );
+           assertFalse( WAVE.strAsBool(""), "empty" );
+           assertFalse( WAVE.strAsBool("  "), "spaces" );
+           assertFalse( WAVE.strAsBool("false"), "false" );
+           assertTrue( WAVE.strAsBool("true"), "true from lower case" );
+           assertTrue( WAVE.strAsBool("True"), "True from upper case" );
+           assertTrue( WAVE.strAsBool("1"), "1 char" );
+           assertTrue( WAVE.strAsBool(" 1 "), "1 char with spaces" );
+           assertFalse( WAVE.strAsBool("0"), "0 char" );
+           assertTrue( WAVE.strAsBool(1), "1 int" );
+           assertFalse( WAVE.strAsBool(0), "0 int" );
+           assertTrue( WAVE.strAsBool(" True  "), "True+spaces" );
+           assertTrue( WAVE.strAsBool(" True  "), "True+spaces" );
+
+           assertTrue ( WAVE.strAsBool(true), "Bool True" );
+           assertFalse( WAVE.strAsBool(false), "Bool False" );
        });
 
        run("Strings", "strDefault", function(){

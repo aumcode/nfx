@@ -138,20 +138,32 @@ namespace NFX.Wave.Filters
           }
         }
        
+        var foundExisting = true;
+
         if (session==null)
         {
-          if (onlyExisting) return;//do not create anything
+          //20160124 DKh to use long term tokens
+          //if (onlyExisting) return;//do not create anything
+          if (onlyExisting) 
+          {
+            session = TryMakeSessionFromExistingLongTermToken(work);
+            if (session==null) return;//do not create anything
+          }
 
-          if (NetGate!=null && NetGate.Enabled)
-           NetGate.IncreaseVariable(IO.Net.Gate.TrafficDirection.Incoming, 
-                                   work.Request.RemoteEndPoint.Address.ToString(),
-                                   NETGATE_NEWSESSION_VAR_NAME,
-                                   1);
+          if (session==null)
+          {
+            foundExisting = false;
+            if (NetGate!=null && NetGate.Enabled)
+               NetGate.IncreaseVariable(IO.Net.Gate.TrafficDirection.Incoming, 
+                                     work.Request.RemoteEndPoint.Address.ToString(),
+                                     NETGATE_NEWSESSION_VAR_NAME,
+                                     1);
 
-          session = MakeNewSession(work);
+            session = MakeNewSession(work);
+          }
         }
-        else
-         if (Server.m_InstrumentationEnabled)
+
+        if (foundExisting && Server.m_InstrumentationEnabled)
            Interlocked.Increment(ref Server.m_Stat_SessionExisting);
 
         session.Acquire();
@@ -159,6 +171,16 @@ namespace NFX.Wave.Filters
           session.GeoEntity = work.GeoEntity;
         work.m_Session = session;
         ApplicationModel.ExecutionContext.__SetThreadLevelSessionContext(session);
+      }
+
+      /// <summary>
+      /// Override in session filters that support long-term tokens.
+      /// This method tries to re-create "existing" session from a valid long-term token, otherwise
+      /// null should be returned (the base implementation)
+      /// </summary>
+      protected virtual WaveSession TryMakeSessionFromExistingLongTermToken(WorkContext work)
+      {
+        return null;
       }
       
       /// <summary>
@@ -252,7 +274,7 @@ namespace NFX.Wave.Filters
         {
           idSecret = 0;
           return null;
-        }      
+        }
 
         idSecret = secret;
         return guid;

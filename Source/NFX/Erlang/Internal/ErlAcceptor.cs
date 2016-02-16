@@ -193,6 +193,12 @@ namespace NFX.Erlang.Internal
 
     private void closeSock(TcpClient s)
     {
+        try { if (s != null) s.Close(); }
+        catch { }
+    }
+
+    private void closeSock(IErlTransport s)
+    {
       try { if (s != null) s.Close(); }
       catch { }
     }

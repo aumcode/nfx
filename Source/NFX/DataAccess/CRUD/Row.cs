@@ -379,11 +379,19 @@ namespace NFX.DataAccess.CRUD
 
 
             /// <summary>
-            /// Copies fields from this row into another row/form
+            /// Copies fields from this row into another row/form.
+            /// Note: this is  shallow copy, as field values for complex types are just copied over
             /// </summary>
-            public void CopyFields(Row other, bool includeAmorphousData = true, bool invokeAmorphousAfterLoad = true)
+            public void CopyFields(Row other,
+                                   bool includeAmorphousData = true,
+                                   bool invokeAmorphousAfterLoad = true,
+                                   Func<string, Schema.FieldDef, bool> fieldFilter = null,
+                                   Func<string, string, bool> amorphousFieldFilter = null)
             {
-              if (other==null) return;
+              if (other==null || object.ReferenceEquals(this, other)) return;
+
+              var target = this is FormModel ? ((FormModel)this).DataStoreTargetName : string.Empty;
+
               var oad = includeAmorphousData ? other as IAmorphousData : null;
 
               if (oad!=null && this is IAmorphousData)
@@ -393,11 +401,15 @@ namespace NFX.DataAccess.CRUD
                {
                  foreach(var kvp in athis.AmorphousData)
                  {
+                   if (amorphousFieldFilter!=null && !amorphousFieldFilter(target, kvp.Key)) continue;
+
                    var ofd = other.Schema[kvp.Key];
                    if (ofd!=null)
                    {
                      try 
                      {
+                       if (!isFieldDefLoaded(target, ofd)) continue;
+
                        other.SetFieldValue(ofd, kvp.Value); 
                        continue;
                      }catch{} //this may be impossible, then we assign to amorphous in other
@@ -409,9 +421,9 @@ namespace NFX.DataAccess.CRUD
 
               foreach(var fdef in this.Schema)
               {
-                var atr = fdef[null];
-                var stored = (atr==null) ? true : (atr.StoreFlag == StoreFlag.LoadAndStore || atr.StoreFlag == StoreFlag.OnlyStore);
-                if (!stored) continue;
+                if (fieldFilter!=null && !fieldFilter(target, fdef)) continue;
+
+                if (!isFieldDefLoaded(target, fdef)) continue;
 
                 var ofd = other.Schema[fdef.Name];
                 if (ofd==null) 
@@ -427,7 +439,13 @@ namespace NFX.DataAccess.CRUD
               }//foreach
 
               if (oad!=null && oad.AmorphousDataEnabled && invokeAmorphousAfterLoad)
-                oad.AfterLoad( this is FormModel ? ((FormModel)this).DataStoreTargetName : string.Empty);
+                oad.AfterLoad( target );
+            }
+
+            private bool isFieldDefLoaded(string target, Schema.FieldDef def)
+            {
+              var atr = def[target];
+              return (atr==null) ? true : (atr.StoreFlag == StoreFlag.LoadAndStore || atr.StoreFlag == StoreFlag.OnlyLoad);
             }
 
 
@@ -453,6 +471,7 @@ namespace NFX.DataAccess.CRUD
                   private string getDisplayFieldValue(string targetName, Schema.FieldDef fdef)
                   {
                       var value = GetFieldValue(fdef);
+                      if (value==null) return null;
 
                       var atr = fdef[targetName];
                       if (atr==null || atr.DisplayFormat.IsNullOrWhiteSpace())
@@ -558,7 +577,7 @@ namespace NFX.DataAccess.CRUD
 
                 if (atr.MinLength>0)
                     if (value.ToString().Length<atr.MinLength)
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MAX_LENGTH_ERROR);
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MIN_LENGTH_ERROR);
 
                 if (atr.MaxLength>0)
                     if (value.ToString().Length>atr.MaxLength)

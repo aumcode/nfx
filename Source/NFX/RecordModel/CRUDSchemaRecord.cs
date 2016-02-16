@@ -72,7 +72,7 @@ namespace NFX.RecordModel
        foreach(var fdef in m_Schema)
        {
          var type = fdef.Type;
-         Field fld = Field.MakeFiedOfType(type);
+         Field fld = Field.MakeFieldOfType(type);
 
          var atr = fdef[m_TargetName];
 
@@ -144,9 +144,6 @@ namespace NFX.RecordModel
            }   
          }
          
-         
-         
-         
          if (!string.IsNullOrEmpty(atr.ValueList))
          {
            foreach(var item in atr.ParseValueList())
@@ -154,7 +151,6 @@ namespace NFX.RecordModel
            fld.DataEntryType = DataEntryType.DirectEntryOrLookupWithValidation;
          }
          
-
          var sdv = atr.Default!=null ? atr.Default.ToString() : (string)null;
 
          if (sdv!=null)
@@ -192,16 +188,11 @@ namespace NFX.RecordModel
              if (fld.HasDefaultValue = Boolean.TryParse(sdv, out val))
               ((BoolField)fld).DefaultValue = val;
            }
-
-           
          }
          fld.Owner = this;//registers field with record
        }
       
     }
-
-   
-    
     
     private void loadRowData()
     {
@@ -210,8 +201,13 @@ namespace NFX.RecordModel
       {
         for(var i=0; i<m_Row.Schema.FieldCount; i++)
         {
-          var rfld = m_Row[i];
-          this.Fields.ElementAt(i).ValueAsObject = rfld;
+          var fdata = m_Row[i];
+          var fld = this.Fields.ElementAt(i);
+          
+          fld.ValueAsObject = fdata;
+
+          if (fdata!=null && fdata is ValueType)
+             fld._setValueTypeHasValue();
         } 
       }
       finally

@@ -37,6 +37,15 @@ namespace NFX.DataAccess.CRUD
         Hybrid
     }
 
+
+    /// <summary>
+    /// Provides filter predicate for CRUD operations. Return true to include the specified field
+    /// </summary>
+    /// <param name="row">Row instance that filetring is performed on</param>
+    /// <param name="key">If not null, the override key passed to Update() (if any)</param>
+    /// <param name="fdef">A field that filtering is done for</param>
+    public delegate bool FieldFilterFunc(Row row, IDataStoreKey key, Schema.FieldDef fdef);
+
     /// <summary>
     /// Describes an entity that performs single (not in transaction/batch)CRUD operations
     /// </summary>
@@ -64,15 +73,15 @@ namespace NFX.DataAccess.CRUD
 
         int ExecuteWithoutFetch(params Query[] queries);
         Task<int> ExecuteWithoutFetchAsync(params Query[] queries);
-            
-        int Insert(Row row);
-        Task<int> InsertAsync(Row row);
 
-        int Upsert(Row row);
-        Task<int> UpsertAsync(Row row);
+        int Insert(Row row, FieldFilterFunc filter = null);
+        Task<int> InsertAsync(Row row, FieldFilterFunc filter = null);
 
-        int Update(Row row, IDataStoreKey key = null);
-        Task<int> UpdateAsync(Row row, IDataStoreKey key = null);
+        int Upsert(Row row, FieldFilterFunc filter = null);
+        Task<int> UpsertAsync(Row row, FieldFilterFunc filter = null);
+
+        int Update(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null);
+        Task<int> UpdateAsync(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null);
 
         int Delete(Row row, IDataStoreKey key = null);
         Task<int> DeleteAsync(Row row, IDataStoreKey key = null);

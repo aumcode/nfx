@@ -66,9 +66,7 @@ namespace NFX.WinForms
     public const string APP_FORMS_FACTORY_INIT_ERROR =
           "Application forms factory initApplication error: ";
 
-    public const string APPLICATION_TOPIC =
-          "WinForms Application";            
-                       
+
     public const string COLUMN_ID_EXISTS_GRID_ERROR =
           "Column already exists with ID: ";   
           

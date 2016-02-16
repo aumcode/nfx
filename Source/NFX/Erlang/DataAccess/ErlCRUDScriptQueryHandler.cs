@@ -143,7 +143,7 @@ namespace NFX.DataAccess.Erlang
         //  {tca_jaba, 2344, zap, "Zaplya xochet pit", false}, 
         //  {tca_jaba, 8944, tav, "User is not good", false} 
         //]};
-        return m_Store.Map.ErlCRUDResponseToRowset(schema, rows);
+        return m_Store.Map.ErlCRUDResponseToRowset(schema, rows, query.ResultRowType);
       }
 
       public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)

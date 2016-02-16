@@ -60,7 +60,7 @@ namespace NFX.IO
     
     
     /// <summary>
-    /// Represents tuple of an unsigned integer with optional int or string metadata. If metadata is null then integer is stored by itself in an efficient way.
+    /// Represents a tuple of an unsigned integer with optional int or string metadata. If metadata is null then integer is stored by itself in an efficient way.
     /// The type is useful for storage of handles/indexes (such as pointer surrogates) with optional description of pointed-to data (such as type information).
     /// A special case is reserved for strings which are immutable yet reference types, in which case a special handle INLINED_STRING_HANDLE is set to indicate that 
     ///  "Metadata" really contains string data that this handle should resolve into. Check "IsInlinedString" property to see if string was inlined.

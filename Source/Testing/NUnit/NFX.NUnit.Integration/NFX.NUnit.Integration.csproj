@@ -57,7 +57,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\CacheTest32Gb.cs" />
+    <Compile Include="AppModel\Pile\CacheTest64Gb.cs" />
+    <Compile Include="AppModel\Pile\HighMemoryLoadTest.cs" />
+    <Compile Include="AppModel\Pile\PileFragmentationTest.cs" />
     <Compile Include="AppModel\Pile\PileTest.cs" />
+    <Compile Include="AppModel\Pile\PileTest64Gb.cs" />
+    <Compile Include="AppModel\Pile\PileTest32Gb.cs" />
     <Compile Include="AppModel\Pile\TRow.cs" />
     <Compile Include="CRUD\ErlangTests.cs" />
     <Compile Include="CRUD\MongoSpecific\CountPerzons.cs" />
@@ -130,6 +136,10 @@
       <Project>{032e1188-78dd-48ec-8711-792500d7b9e8}</Project>
       <Name>WaveTestSite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NFX.NUnit\NFX.NUnit.csproj">
+      <Project>{4559002e-3388-4d9b-9257-0f75a9a23860}</Project>
+      <Name>NFX.NUnit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CRUD\Patient.List.mys.sql" />
@@ -149,6 +159,8 @@
     <None Include="CRUD\ErlSpecific\StartErlNode.bat" />
     <None Include="CRUD\ErlSpecific\tfx_schema.erl" />
     <None Include="CRUD\ErlSpecific\tfx_schema.hrl" />
+    <EmbeddedResource Include="CRUD\InsertPerzons.mon.json" />
+    <EmbeddedResource Include="CRUD\UpdatePerzons.mon.json" />
     <None Include="IO\FileSystem\GoogleDrive\GDRIVE_README.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\Escape.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\NestedFolder\Escape.txt" />

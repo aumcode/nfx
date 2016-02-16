@@ -14,6 +14,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
+
 using System;
 using System.Net.Sockets;
 using System.Threading;
@@ -44,7 +45,7 @@ namespace NFX.Erlang
     /// Accept an incoming connection from a remote node
     /// </summary>
     public ErlConnection(ErlLocalNode node, TcpClient peer)
-        : base(node, peer)
+        : base(node, new ErlTcpTransport(peer))
     {
       _ctor(StringConsts.ERL_CONNECTION.Args(m_Home.NodeName.Value, "<-", peer.ToString()));
     }
@@ -182,8 +183,8 @@ namespace NFX.Erlang
             if (len == 0)
               lock (this)
               {
-                if (m_TcpClient != null)
-                  (m_TcpClient.GetStream()).Write(tock, 0, tock.Length);
+                if (m_Transport != null)
+                  (m_Transport.GetStream()).Write(tock, 0, tock.Length);
               }
           }
           while (len == 0); // tick_loop

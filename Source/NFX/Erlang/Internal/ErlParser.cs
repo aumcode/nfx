@@ -135,6 +135,8 @@ namespace NFX.Erlang.Internal
             throw new ErlException(StringConsts.ERL_INVALID_MFA_FORMAT_ERROR);
         }
 
+      pos = skipWSAndComments(fmt, pos);
+
       // Consume trailing '.' if present
       if (pos < end)
       {

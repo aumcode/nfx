@@ -118,10 +118,15 @@ namespace NFX.Wave.Client
           result["ISOLang"] = isoLang;
 
         //20140914 DKh
-        if (row is FormModel)
+        var form = row as FormModel;
+        if (form != null)
         {
-          result[FormModel.JSON_MODE_PROPERTY] = ((FormModel)row).FormMode;
-          result[FormModel.JSON_CSRF_PROPERTY] = ((FormModel)row).CSRFToken;
+          result[FormModel.JSON_MODE_PROPERTY] = form.FormMode;
+          result[FormModel.JSON_CSRF_PROPERTY] = form.CSRFToken;
+
+          //20160123 DKh
+          if (form.HasRoundtripBag)
+            result[FormModel.JSON_ROUNDTRIP_PROPERTY] = form.RoundtripBag.ToJSON(JSONWritingOptions.CompactASCII);
         }
         
         var fields = new JSONDataArray();
@@ -201,13 +206,13 @@ namespace NFX.Wave.Client
         {
             foreach(var fn in METADATA_FIELDS)
             { 
-            var mv = attr.Metadata.AttrByName(fn).Value; 
-            if (mv.IsNullOrWhiteSpace()) continue;
+              var mv = attr.Metadata.AttrByName(fn).Value; 
+              if (mv.IsNullOrWhiteSpace()) continue;
                 
-            if (fn=="Description"||fn=="Placeholder"||fn=="LookupDict"||fn=="Hint")
-              mv = OnLocalizeString(schema, fn, mv, isoLang);
+              if (fn=="Description"||fn=="Placeholder"||fn=="LookupDict"||fn=="Hint")
+                mv = OnLocalizeString(schema, fn, mv, isoLang);
 
-            result[fn] = mv;
+              result[fn] = mv;
             }
         }
 

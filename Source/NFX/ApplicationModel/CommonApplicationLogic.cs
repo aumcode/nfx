@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using NFX.ApplicationModel;
@@ -49,6 +50,7 @@ namespace NFX.ApplicationModel
       public const string CONFIG_SWITCH = "config";
       
       public const string CONFIG_APP_NAME_ATTR = "application-name";
+      public const string CONFIG_UNIT_TEST_ATTR = "unit-test";
     
       public const string CONFIG_MEMORY_MANAGEMENT_SECTION = "memory-management";
 
@@ -129,6 +131,13 @@ namespace NFX.ApplicationModel
 
       #region IApplication Members
 
+        
+        public bool IsUnitTest
+        {
+          get{ return m_ConfigRoot.AttrByName(CONFIG_UNIT_TEST_ATTR).ValueAsBool(); }
+        }
+        
+        
         /// <summary>
         /// Returns unique identifier of this running instance 
         /// </summary>
@@ -303,19 +312,7 @@ namespace NFX.ApplicationModel
     
     #region Public
 
-            public void WriteLog(MessageType type, string from, string msgText, Exception error = null)
-            {
-                if (m_Log==null) return;
-        
-                m_Log.Write(new NFX.Log.Message()
-                            {
-                              Topic = LogTopic,
-                              Type = type,
-                              From = from,
-                              Text = msgText,
-                              Exception = error
-                            });
-            }
+           
 
             /// <summary>
             /// Converts universal time to local time as of TimeLocation property
@@ -471,13 +468,26 @@ namespace NFX.ApplicationModel
 
     #region Protected
     
-      /// <summary>
-      /// Provides log topic name
-      /// </summary>
-      protected abstract string LogTopic
+
+      protected void WriteLog(MessageType type,
+                            string from, 
+                            string msgText, 
+                            Exception error = null, 
+                            [CallerFilePath]string file = "",
+                            [CallerLineNumber]int line = 0, 
+                            object pars = null)
       {
-       get;
-      } 
+          if (m_Log==null) return;
+        
+          m_Log.Write(new NFX.Log.Message()
+                      {
+                        Topic = CoreConsts.APPLICATION_TOPIC,
+                        Type = type,
+                        From = from, 
+                        Text = msgText,
+                        Exception = error,
+                      }.SetParamsAsObject(NFX.Log.Message.FormatCallerParams(pars, file, line)));
+      }
 
 
       protected IEnumerable<IApplicationStarter> GetStarters()
@@ -748,8 +758,8 @@ namespace NFX.ApplicationModel
             
             if (m_Log is Service)
             {
-              ((Service)m_Log).Start();
-              WriteLog(MessageType.Info, FROM, "Log started, msg times are localized of machine-local time until time source starts");
+              if (((Service)m_Log).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Log started, msg times are localized of machine-local time until time source starts");
             }
           }
           catch(Exception error)
@@ -776,8 +786,8 @@ namespace NFX.ApplicationModel
             
             if (m_TimeSource is Service)
             {
-              ((Service)m_TimeSource).Start();
-              WriteLog(MessageType.Info, FROM, "TimeSource started");
+              if (((Service)m_TimeSource).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "TimeSource started");
             }
 
             WriteLog(MessageType.Info, FROM, "Log msg time is time source-supplied now");
@@ -791,6 +801,13 @@ namespace NFX.ApplicationModel
             WriteLog(MessageType.CatastrophicError, FROM, msg, error);
             throw new NFXException(msg, error);
           }
+        }
+        else
+        {
+          WriteLog(MessageType.Info, FROM, "Using default time source");
+
+          m_StartTime = LocalizedTime;
+          WriteLog(MessageType.Info, FROM, "App start time is {0}".Args(m_StartTime));
         }
 
 
@@ -813,8 +830,8 @@ namespace NFX.ApplicationModel
             
             if (m_EventTimer is Service)
             {
-              ((Service)m_EventTimer).Start();
-              WriteLog(MessageType.Info, FROM, "EventTimer started");
+              if (((Service)m_EventTimer).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "EventTimer started");
             }
           }
           catch(Exception error)
@@ -845,8 +862,8 @@ namespace NFX.ApplicationModel
            
             if (m_SecurityManager is Service)
             {
-              ((Service)m_SecurityManager).Start();
-              WriteLog(MessageType.Info, FROM, "Security Manager started");
+              if (((Service)m_SecurityManager).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Security Manager started");
             }
           }
           catch (Exception error)
@@ -885,8 +902,8 @@ namespace NFX.ApplicationModel
 
             if (m_Instrumentation is Service)
             {
-              ((Service)m_Instrumentation).Start();
-              WriteLog(MessageType.Info, FROM, "Instrumentation started");
+              if (((Service)m_Instrumentation).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Instrumentation started");
             }
 
           }
@@ -915,8 +932,8 @@ namespace NFX.ApplicationModel
 
                 if (m_Throttling is Service)
                 {
-                    ((Service)m_Throttling).Start();
-                    WriteLog(MessageType.Info, FROM, "Throttling started");
+                    if (((Service)m_Throttling).StartByApplication())
+                      WriteLog(MessageType.Info, FROM, "Throttling started");
                 }
 
             }
@@ -947,8 +964,8 @@ namespace NFX.ApplicationModel
 
             if (m_DataStore is Service)
             {
-              ((Service)m_DataStore).Start();
-              WriteLog(MessageType.Info, FROM, "DataStore started");
+              if (((Service)m_DataStore).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "DataStore started");
             }
           }
           catch (Exception error)
@@ -957,8 +974,6 @@ namespace NFX.ApplicationModel
             WriteLog(MessageType.CatastrophicError, FROM, msg, error);
             throw new NFXException(msg, error);
           }
-
-
 
         node = m_ConfigRoot[CONFIG_OBJECT_STORE_SECTION];
         if (node.Exists)
@@ -977,8 +992,8 @@ namespace NFX.ApplicationModel
            
             if (m_ObjectStore is Service)
             {
-              ((Service)m_ObjectStore).Start();
-              WriteLog(MessageType.Info, FROM, "ObjectStore started");
+              if (((Service)m_ObjectStore).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "ObjectStore started");
             }
           }
           catch (Exception error)
@@ -1005,8 +1020,8 @@ namespace NFX.ApplicationModel
            
             if (m_Glue is Service)
             {
-              ((Service)m_Glue).Start();
-              WriteLog(MessageType.Info, FROM, "Glue started");
+              if (((Service)m_Glue).StartByApplication())
+                WriteLog(MessageType.Info, FROM, "Glue started");
             }
           }
           catch (Exception error)

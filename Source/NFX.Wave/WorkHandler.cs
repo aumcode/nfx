@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.ApplicationModel;
 using NFX.Environment;
 using NFX.IO.Net.Gate;
 
@@ -28,11 +29,11 @@ namespace NFX.Wave
   /// <summary>
   /// Represents a base for all work handlers. Handlers are final work execution destination
   /// </summary>
-  public abstract class WorkHandler : DisposableObject, INamed, IOrdered
+  public abstract class WorkHandler : ApplicationComponent, INamed, IOrdered
   {
       public const string CONFIG_HANDLER_SECTION = "handler";
       
-      protected WorkHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
+      protected WorkHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match) : base(dispatcher)
       {
         if (dispatcher==null)
          throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(dispatcher==null|empty)");
@@ -49,7 +50,7 @@ namespace NFX.Wave
       }
 
 
-      protected WorkHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode)
+      protected WorkHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher)
       {
         if (confNode==null||dispatcher==null)
          throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(dispatcher|confNode==null|empty)");

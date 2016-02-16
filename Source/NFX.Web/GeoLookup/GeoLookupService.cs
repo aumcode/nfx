@@ -20,11 +20,14 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using System.Net;
+
 
 using NFX.Log;
 using NFX.DataAccess.CRUD;
 using NFX.Environment;
 using NFX.ServiceModel;
+
 
 namespace NFX.Web.GeoLookup
 {
@@ -103,7 +106,6 @@ namespace NFX.Web.GeoLookup
     #endregion
 
 
-
     #region Fields
 
       private bool m_CancelStart;
@@ -161,14 +163,13 @@ namespace NFX.Web.GeoLookup
 
 
     #region Public 
-    
 
       /// <summary>
       /// Tries to lookup the location by ip/dns name. Returns null if no match could be made
       /// </summary>
-      public GeoEntity Lookup(string address)
+      public GeoEntity Lookup(IPAddress address)
       {
-        if (Status!=ControlStatus.Active || address.IsNullOrWhiteSpace()) return null;
+        if (Status!=ControlStatus.Active || address==null) return null;
         
 
         var ip = address;//todo add DNS lookup
@@ -177,21 +178,22 @@ namespace NFX.Web.GeoLookup
         var pad = string.Empty;
         IPAddressBlock block = null;
         
-        while(true)
-        {
-          if (m_Blocks.TryGetValue(key+pad, out block)) break;
+        //todo Implement!!!!!!!
+        //while(true)
+        //{
+        //  if (m_Blocks.TryGetValue(key+pad, out block)) break;
           
-          var id = key.LastIndexOf('.');
-          if (id>0)
-          {
-            key = key.Substring(0, id);
-            pad+=".0";
-          }
-          else
-            return null;
-        }
+        //  var id = key.LastIndexOf('.');
+        //  if (id>0)
+        //  {
+        //    key = key.Substring(0, id);
+        //    pad+=".0";
+        //  }
+        //  else
+        //    return null;
+        //}
 
-        return new GeoEntity(address, block, LookupLocation(block.LocationID));
+        return null;//new GeoEntity(address, block, LookupLocation(block.LocationID));
       }
 
       /// <summary>
@@ -264,7 +266,8 @@ namespace NFX.Web.GeoLookup
                 IPAddressBlock row;
                 try
                 {
-                  row = parseBlock( fr.ReadLine());
+                  var rowLine = fr.ReadLine().Replace('/', ','); //20160202 spol replace mask separator with a comma
+                  row = parseBlock(rowLine);
                   m_Blocks.Add( row.IPBlockStart, row );
                 }
                 catch(Exception error)
@@ -429,6 +432,7 @@ namespace NFX.Web.GeoLookup
             sb.Append(line[i]);
           }
 
+          yield return sb.ToString();
         }
 
       private static void log(MessageType type, string from, string text, Exception error = null)
