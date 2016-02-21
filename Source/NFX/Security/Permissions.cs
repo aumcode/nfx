@@ -258,7 +258,7 @@ namespace NFX.Security
               
               if (access==null) return false;
                                                   
-              return access.Level >= m_Level;
+              return DoCheckAccessLevel(session, access); 
             }
 
             public override string ToString()
@@ -266,6 +266,20 @@ namespace NFX.Security
                 return FullPath;
             }
             
+        #endregion
+
+        #region Protected
+            
+            /// <summary>
+            /// Override to perform access level checks per user's AccessLevel instance.
+            /// True if  accessLevel satisfies permission requirements.
+            /// The default implementation checks the access.Level
+            /// </summary>
+            protected virtual bool DoCheckAccessLevel(ISession session, AccessLevel access)
+            {
+              return access.Level >= m_Level;
+            }
+
         #endregion
 
     }

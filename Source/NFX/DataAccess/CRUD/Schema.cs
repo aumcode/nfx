@@ -217,6 +217,20 @@ namespace NFX.DataAccess.CRUD
                     return result;
                   }
                 }
+
+                /// <summary>
+                /// For fields with ValueList returns value's description per specified schema
+                /// </summary>
+                public string ValueDescription(object fieldValue, string target = null, bool caseSensitiveKeys = false)
+                {
+                  var sv = fieldValue.AsString();
+                  if (sv.IsNullOrWhiteSpace()) return string.Empty;
+                  var atr = this[target];
+                  if (atr==null) return fieldValue.AsString(string.Empty);
+                  var vl = atr.ParseValueList(caseSensitiveKeys);
+                  
+                  return vl[sv].AsString(string.Empty);
+                }
                 
                 
                 /// <summary>

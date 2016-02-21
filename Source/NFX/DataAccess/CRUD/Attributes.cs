@@ -349,12 +349,27 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         public readonly string ValueList;  
 
+
+                  private JSONDataMap m_CacheValueList_Sensitive;
+                  private JSONDataMap m_CacheValueList_Insensitive;
+
         /// <summary>
         /// Returns a ValueList parsed into key values as:  val1: descr1,val2: desc2...
         /// </summary>
         public JSONDataMap ParseValueList(bool caseSensitiveKeys = false)
         {
-            return ParseValueListString(ValueList, caseSensitiveKeys);
+            if (caseSensitiveKeys)
+            {
+              if (m_CacheValueList_Sensitive==null) 
+              m_CacheValueList_Sensitive = ParseValueListString(ValueList, true); 
+              return m_CacheValueList_Sensitive;
+            }
+            else
+            {
+              if (m_CacheValueList_Insensitive==null) 
+              m_CacheValueList_Insensitive = ParseValueListString(ValueList, false); 
+              return m_CacheValueList_Insensitive;
+            }
         }
 
         /// <summary>

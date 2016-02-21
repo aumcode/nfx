@@ -314,7 +314,104 @@ namespace NFX.NUnit.Parsing
           Assert.AreEqual("(555) 222-4415x123", n);
         }
 
+        [TestCase]
+        public void CheckEmail()
+        {
+          string[] validEMails = {
+            "user@example.com",
+            "user.777@example.com",
+            "u.ser@example.com",
+            "user@com",
+            "user@e.xample",
+            "юзер@мояпочта.ры",
+            "#!$%&'*+-/=?^_`{}|~@example.com",
+            "-user-@example.com",
+            "us-_-er@example.com",
+            "user#01@example.com",
+            "user@7super.puper08.example.com",
+            "user@example--com",
+            "user@example.s43",
+            "user@example.museum",
+            "alex.jack.soybean@example.of.my.domain.com.me",
+            "boris_zhaba@yahoo.com",
+            "boris-zhaba@yahoo.com",
+            "boris.zhaba@yahoo.com",
+            "boris___zhaba@yahoo.com",
+            "sunny2346273864263@yahoo.com"
+          };
 
+          Console.WriteLine("==== Valid emails ====");
+          foreach (var email in validEMails)
+          {
+            Console.WriteLine(email);
+            Assert.IsTrue(DataEntryUtils.CheckEMail(email));
+          }
+
+          Console.WriteLine("==== Invlaid emails ====");
+          string[] invalidEMails = {
+            "  ",
+            "@",
+            "user@ ",
+            "user@",
+            " @example.com",
+            "@example.com",
+            ".@.",
+            "dima@zaza@yahoo.com",
+            "dima zaza@yahoo.com",
+            "user",
+            "user2example.com",
+            "user.@example.com",
+            ".user@example.com",
+            "user@example.com.",
+            "user@.example.com",
+            "us..er@example.com",
+            "user@example..com",
+            "user @example.com",
+            "user@example.com ",
+            "user@ example.com",
+            "us er@example.com",
+            "user@example com",
+            "user@example .com",
+            "user@example.-com",
+            "user@example-.com",
+            "user@-example.com",
+            "user@examplecom-",
+            "user@e-.xample.com",
+            "user@e.-xample.com",
+            "us@er@example.com",
+            "user#example.com",
+            "user@example/com",
+            @"us\er@example.com",
+            @"user@exa\mple.com",
+            "us(er@example.com",
+            "user(comment)@example.com",
+            "user@exa(mple.com",
+            "us)er@example.com",
+            "user@exa)mple.com",
+            "us,er@example.com",
+            "user@exa,mple.com",
+            "us:er@example.com",
+            "user@exa:mple.com",
+            "us;er@example.com",
+            "user@exa;mple.com",
+            "us<er@example.com",
+            "user@exa<mple.com",
+            "us>er@example.com",
+            "user@exa>mple.com",
+            "us[er@example.com",
+            "user@exa[mple.com",
+            "us]er@example.com",
+            "user@exa]mple.com",
+            "user@exam-_ple.com"
+          };
+
+          foreach (var email in invalidEMails)
+          {
+            Console.WriteLine(email);
+            Assert.IsFalse(DataEntryUtils.CheckEMail(email));
+          }
+          
+        }
     }
 }
 

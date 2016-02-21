@@ -401,17 +401,17 @@ root
           child3.AddChildNode("child3.3");
 
           var txt = conf.SaveToString(LaconfigWritingOptions.PrettyPrint);
+          Console.WriteLine(txt);
           Assert.AreEqual(
-@"
-very-root
-{ 
+@"very-root
+{
   childSection1
   {
-    name=Alex 
+    name=Alex
   }
   child2=Muxa
   {
-    name=Boris 
+    name=Boris
   }
   child3
   {
@@ -419,26 +419,28 @@ very-root
     atr2=""val with space""
     ""atr{3}""=''
     ""atr=4""=''
-    atr5=""this goes on \n\r new\\next line"" 
+    atr5=""this goes on \n\r new\\next line""
     child3.1
-    { 
+    {
     }
     child3.2
-    { 
+    {
       child3.2.1
-      { 
+      {
       }
     }
     child3.3
-    { 
+    {
     }
   }
 }", txt);
 
         txt = conf.SaveToString(LaconfigWritingOptions.Compact);
 
+        Console.WriteLine(txt);
+
         Assert.AreEqual(
- @" very-root{  childSection1{ name=Alex } child2=Muxa{ name=Boris } child3{ ""atr with space""=1 atr2=""val with space"" ""atr{3}""='' ""atr=4""='' atr5=""this goes on \n\r new\\next line""  child3.1{ } child3.2{  child3.2.1{ }} child3.3{ }}}",
+ @"very-root{childSection1{name=Alex}child2=Muxa{name=Boris}child3{""atr with space""=1 atr2=""val with space"" ""atr{3}""='' ""atr=4""='' atr5=""this goes on \n\r new\\next line"" child3.1{}child3.2{child3.2.1{}}child3.3{}}}",
    txt);
         }
 
@@ -538,6 +540,27 @@ Console.WriteLine(txt);
           Assert.AreEqual(2, conf1.Root["sect1"].AttrByName("b").ValueAsInt());
           Assert.AreEqual(3, conf1.Root["sect1"]["subsect1"].AttrByName("c").ValueAsInt());
           Assert.AreEqual(4, conf1.Root["sect1"]["subsect1"].AttrByName("d").ValueAsInt());
+        }
+
+
+        [TestCase]
+        public void Options_DontWriteRootSectionDeclaration()
+        {
+          var conf = "nfx=90{a=1 b=2 c{d=5}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          var opt = new LaconfigWritingOptions{ DontWriteRootSectionDeclaration = true };
+
+          var saved = conf.Configuration.ToLaconicString(opt);
+          Console.WriteLine(saved);
+
+          Assert.AreEqual("a=1 b=2 c{d=5}", saved);
+
+          opt = new LaconfigWritingOptions{ /* DontWriteRootSectionDeclaration = false - default */ };
+
+          saved = conf.Configuration.ToLaconicString(opt).Trim();
+          Console.WriteLine(saved);
+
+          Assert.AreEqual("nfx=90{a=1 b=2 c{d=5}}", saved);
         }
 
 

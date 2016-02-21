@@ -35,7 +35,7 @@ namespace NFX.Security
            public const string CONFIG_USERS_SECTION = "users";
            public const string CONFIG_USER_SECTION = "user";
 
-           public const string CONFIG_RIGHTS_SECTION = "rights";
+           public const string CONFIG_RIGHTS_SECTION = Rights.CONFIG_ROOT_SECTION;
            public const string CONFIG_PERMISSION_SECTION = "permission";
 
            public const string CONFIG_NAME_ATTR = "name";

@@ -65,9 +65,11 @@ namespace NFX.WinForms.Controls
         private LineStyle? m_BorderRight;
         private LineStyle? m_BorderTop;
         private LineStyle? m_BorderBottom;
-        
-        
-        private Font m_Font;
+
+        private Color? m_ForeColor;
+        private Brush  m_ForeBrush;
+
+        private Font   m_Font;
       
       #endregion
       
@@ -295,9 +297,32 @@ namespace NFX.WinForms.Controls
         
         public void ClearBorderBottom(){ m_BorderBottom = null; notify(); }
         
-                      
-      
-      
+        /// <summary>
+        /// Defines bottom border style. Call corresponding Clear method to delete attribute in this instance
+        /// </summary>
+        public Color ForeColor
+        {
+          get 
+          {
+            if (m_ForeColor.HasValue) return m_ForeColor.Value;
+            if (m_Parent!=null)       return m_Parent.ForeColor;
+            return SystemColors.WindowText;
+          }
+          set { m_ForeColor = value; m_ForeBrush = new SolidBrush(value); notify(); }
+        }
+        public void ClearForeColor(){ m_ForeColor = null; m_ForeBrush = null; notify(); }
+        
+
+        internal Brush ForeBrush
+        {
+          get 
+          {
+            if (m_ForeBrush!=null)    return m_ForeBrush;
+            if (m_Parent!=null)       return m_Parent.ForeBrush;
+            return SystemBrushes.WindowText;
+          }
+        }   
+        
         /// <summary>
         /// Defines font information. Null is never returned but may be set so it resets attribute in this instance
         /// </summary>
@@ -355,41 +380,62 @@ namespace NFX.WinForms.Controls
       #endregion
   
   }
-  
-  
+
+
   /// <summary>
   /// Defines a style for line
   /// </summary>
   public struct LineStyle
   {
-     /// <summary>
-     /// Specifies type of dashing used 
-     /// </summary>
-     public DashStyle DashStyle;
-     
-     /// <summary>
-     /// Specifies line color
-     /// </summary>
-     public Color Color;
-                           
-     /// <summary>
-     /// Specifies line width
-     /// </summary>
-     public float Width;
-     
-     
-     public static LineStyle DefaultNone
-     {
-       get { return new LineStyle(){DashStyle = DashStyle.Solid, Color = Color.Transparent, Width = 1.0f  };}
-     }
-     
-     public static LineStyle DefaultGray
-     {
-       get { return new LineStyle(){DashStyle = DashStyle.Solid, Color = Color.DarkGray, Width = 1.0f  };}
-     }
-     
+    private Color m_Color;
+    private Brush m_Brush;
+
+    /// <summary>
+    /// Specifies type of dashing used 
+    /// </summary>
+    public DashStyle DashStyle;
+
+    /// <summary>
+    /// Specifies line color
+    /// </summary>
+    public Color Color
+    {
+      get { return m_Color; }
+      set { m_Color = value; m_Brush = new SolidBrush(value); }
+    }
+
+    public Brush Brush { get { return m_Brush; } }
+
+    /// <summary>
+    /// Specifies line width
+    /// </summary>
+    public float Width;
+
+    public static LineStyle DefaultNone
+    {
+      get
+      {
+        return new LineStyle()
+        {
+          DashStyle = DashStyle.Solid,
+          Color = Color.Transparent,
+          Width = 1.0f
+        };
+      }
+    }
+
+    public static LineStyle DefaultGray
+    {
+      get
+      {
+        return new LineStyle()
+        {
+          DashStyle = DashStyle.Solid,
+          Color = Color.DarkGray,
+          Width = 1.0f
+        };
+      }
+    }
   }
-  
-  
   
 }

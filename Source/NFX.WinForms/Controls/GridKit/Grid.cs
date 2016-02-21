@@ -65,6 +65,7 @@ namespace NFX.WinForms.Controls.GridKit
          
          UpdateStyles();
          
+         m_ForeBrush = new SolidBrush(ForeColor);
          m_Style = new Style(this, null);
          m_HeaderStyle = new Style(this, null);
          m_SelectedStyle = new Style(this, null);
@@ -72,8 +73,8 @@ namespace NFX.WinForms.Controls.GridKit
          BuildDefaultStyle(m_Style);
          BuildDefaultHeaderStyle(m_HeaderStyle);
          BuildDefaultSelectedStyle(m_SelectedStyle);
-         
-        
+
+         ColumnHidingAllowed = true;
                   
          m_CellView = new CellView() {   Parent = this , TabStop = false};
          
@@ -121,7 +122,8 @@ namespace NFX.WinForms.Controls.GridKit
       private bool m_ReadOnly;
       private bool m_MultiSelect;
       private bool m_MultiSelectWithCtrl = true;
-      
+
+      private Brush m_ForeBrush;
       private Style m_Style;
       private Style m_HeaderStyle;
       private Style m_SelectedStyle;
@@ -251,6 +253,11 @@ namespace NFX.WinForms.Controls.GridKit
       }
       
       /// <summary>
+      /// Determines whether user can hide columns
+      /// </summary>
+      public bool ColumnHidingAllowed { get; set; }
+      
+      /// <summary>
       /// Determines whether user can sort data by clicking on column headers
       /// </summary>
       public bool SortingAllowed
@@ -300,12 +307,20 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns the last cell that was selected in the grid  
       /// </summary>
       [Browsable(false)]
-      public CellElement SelectedCell
-      {
-        get { return m_SelectedCell; }
+      public CellElement SelectedCell { get { return m_SelectedCell; } }
+      
+      /// <summary>
+      /// Gets/sets the text color of the grid.
+      /// </summary>
+      public new Color ForeColor
+      { 
+        get { return base.ForeColor; }
+        set { base.ForeColor = value; m_ForeBrush = new SolidBrush(value); }
       }
-      
-      
+
+      [Browsable(false)]
+      internal Brush ForeBrush { get { return m_ForeBrush; } }
+
       /// <summary>
       /// Returns a style object for all data cells in the grid 
       /// </summary>

@@ -29,6 +29,7 @@ using System.Text;
 using NFX.Parsing;
 using NFX.IO.FileSystem;
 using NFX.Serialization.JSON;
+using NFX.DataAccess.Distributed;
 
 namespace NFX.Environment
 {
@@ -478,6 +479,21 @@ namespace NFX.Environment
               var val = verbatim ? VerbatimValue : Value;
 
               return val.AsNullableGUID(dflt);
+            }
+
+            public GDID ValueAsGDID(GDID dflt, bool verbatim = false)
+            {
+              var val = verbatim ? VerbatimValue : Value;
+
+              return val.AsGDID(dflt);
+            }
+
+            
+            public GDID? ValueAsNullableGDID(GDID? dflt = null, bool verbatim = false)
+            {
+              var val = verbatim ? VerbatimValue : Value;
+
+              return val.AsNullableGDID(dflt);
             }
 
 

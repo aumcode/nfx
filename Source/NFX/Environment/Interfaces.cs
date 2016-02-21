@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 
 using NFX.Serialization.JSON;
+using NFX.DataAccess.Distributed;
 
 namespace NFX.Environment
 {
@@ -130,6 +131,8 @@ namespace NFX.Environment
             bool?      ValueAsNullableBool(bool? dflt = false, bool verbatim = false);
             Guid       ValueAsGUID(Guid dflt, bool verbatim = false);
             Guid?      ValueAsNullableGUID(Guid? dflt = null, bool verbatim = false);
+            GDID       ValueAsGDID(GDID dflt, bool verbatim = false);
+            GDID?      ValueAsNullableGDID(GDID? dflt = null, bool verbatim = false);
             DateTime   ValueAsDateTime(DateTime dflt, bool verbatim = false);
             DateTime?  ValueAsNullableDateTime(DateTime? dflt = null, bool verbatim = false);
             TimeSpan   ValueAsTimeSpan(TimeSpan dflt, bool verbatim = false);

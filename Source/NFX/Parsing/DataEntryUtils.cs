@@ -22,6 +22,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NFX.Parsing
@@ -31,6 +32,112 @@ namespace NFX.Parsing
   /// </summary>
   public static class DataEntryUtils
   {
+
+
+    /// <summary>
+    /// Returns true if the value is a valid non-null/empty email address
+    /// </summary>
+    public static bool CheckEMail(string email)
+    {
+      if (email.IsNullOrWhiteSpace()) return false;
+
+      var lastPos = email.Length - 1;
+
+      var atPos = email.IndexOf('@');
+      if (atPos <= 0 || atPos == lastPos)
+        return false;
+
+      char c;
+
+      // local part
+      var prevIsDot = false;
+      var end = atPos - 1;
+      for (int i = 0; i <= end; i++)
+      {
+        c = email[i];
+        if (i == 0 || i == end)
+        {
+          if (!IsValidEMailLocalPartChar(c)) return false;
+          continue;
+        }
+        if (c == '.')
+        {
+          if (prevIsDot) return false;
+          prevIsDot = true;
+        }
+        else 
+        {
+          if (!IsValidEMailLocalPartChar(c)) return false;
+          prevIsDot = false;
+        }
+      }
+
+      // domain part
+      var prevIsHyphen = false;
+      prevIsDot = false;
+      var start = atPos + 1;
+      end = lastPos;
+      for (int i = start; i <= end; i++)
+      {
+        c = email[i];
+        if (i == start || i == end)
+        {
+          if (!Char.IsLetterOrDigit(c)) return false;
+          continue;
+        }
+        if (c == '.')
+        {
+          if (prevIsDot || prevIsHyphen) return false;
+          prevIsDot = true;
+          continue;
+        }
+        if (c == '-')
+        {
+          if (prevIsDot) return false;
+          prevIsHyphen = true;
+          continue;
+        }
+        if (!Char.IsLetterOrDigit(c)) return false;
+        prevIsDot = false;
+        prevIsHyphen = false;
+      }
+      return true;
+    }
+
+    /// <summary>
+    /// Returns true if the value is a valid non-null/empty telephone
+    /// </summary>
+    public static bool CheckTelephone(string phone)
+    {
+      if (phone.IsNullOrWhiteSpace())
+        return false;
+      
+      phone = phone.Trim();
+      if (phone.Length == 0) return false;
+
+      char c;
+      var meetFirstParenthesis = false;
+      var meetSecondParenthesis = false;
+      for (int i = 0; i < phone.Length; i++)
+      {
+        c = phone[i];
+        if (i == 0 && c == '+') continue;
+        if (c == '(' && !meetFirstParenthesis && !meetSecondParenthesis)
+        {
+          meetFirstParenthesis = true;
+          continue;
+        }
+      }
+       // the phone may start with + "international", it may only have 1 plus at the very beginning
+       // the "(" must be matched with ")" , may not start from ")"
+       // may contain 0..9 A-Z and '-' or '.'
+       // cant have more than one consecuitive '-' or '.' also cant have -. or .-
+       // 818.234.2314x518
+       // (818) 234-2314 ext 518
+       // (818) 234-2314x518
+       // 818-234-2314x518
+       return true;
+    }
 
     
     /// <summary>
@@ -84,8 +191,19 @@ namespace NFX.Parsing
       return (c=='.' || c=='-' || c=='_');
     }
 
-    
-    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsValidEMailLocalPartChar(char c)
+    {
+      const string validLocalPartChars = "!#$%&'*+-/=?^_`{|}~";
+      return (Char.IsLetterOrDigit(c) || validLocalPartChars.IndexOf(c) >= 0);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsLatinLetterOrDigit(char c)
+    {
+      return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
+    }
+        
     /// <summary>
     /// Normalizes US phone string so it looks like (999) 999-9999x9999.
     /// </summary>

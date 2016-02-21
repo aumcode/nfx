@@ -20,7 +20,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NFX.Environment;
 using NFX.ApplicationModel;
+using NFX.ServiceModel;
 
 namespace NFX.Web.EMail
 {
@@ -34,6 +36,11 @@ namespace NFX.Web.EMail
   public interface IMailer : IApplicationComponent
   {
     void SendMsg(MailMsg msg, SendPriority? handlingPriority = null);
+  }
+
+  public interface IMailerImplementation : IMailer, IConfigurable, IService, IApplicationFinishNotifiable 
+  {
+
   }
 
   /// <summary>

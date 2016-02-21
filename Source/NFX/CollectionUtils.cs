@@ -63,5 +63,42 @@ namespace NFX
 
       return src;
     }
+
+
+    /// <summary>
+    /// Takes all elements except for last element from the given source
+    /// </summary>
+    public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source)
+    {
+      var buffer = default(T);
+      var buffered = false;
+
+      foreach(var x in source)
+      {
+        if (buffered)
+          yield return buffer;
+
+        buffer = x;
+        buffered = true;
+      }
+    }
+
+    /// <summary>
+    /// Takes all but last N elements from the source
+    /// </summary>
+    public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int n)
+    {
+      var buffer = new Queue<T>(n + 1);
+
+      foreach(var x in source)
+      {
+        buffer.Enqueue(x);
+
+        if (buffer.Count == n + 1)
+          yield return buffer.Dequeue();
+      }
+    }
+
+
   }
 }

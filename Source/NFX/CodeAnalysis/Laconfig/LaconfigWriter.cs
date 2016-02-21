@@ -32,10 +32,10 @@ namespace NFX.CodeAnalysis.Laconfig
     /// Specifies how Laconic configuration should be written as text. Use LaconfigWritingOptions.Compact or LaconfigWritingOptions.PrettyPrint
     ///  static properties for typical options
     /// </summary>
-    public class LaconfigWritingOptions
+    public class LaconfigWritingOptions : IConfigurable
     {
-        private static LaconfigWritingOptions s_Compact = new LaconfigWritingOptions(0, false, false);
-        private static LaconfigWritingOptions s_PrettyPrint = new LaconfigWritingOptions(2, true, true);
+        private static LaconfigWritingOptions s_Compact = new LaconfigWritingOptions{ IndentWidth = 0, SectionLineBreak = false, AttributeLineBreak = false};
+        private static LaconfigWritingOptions s_PrettyPrint = new LaconfigWritingOptions{IndentWidth = 2, SectionLineBreak = true, AttributeLineBreak = true};
 
         /// <summary>
         /// Writes Laconfig without line breaks between members and no indenting. Suitable for data transmission
@@ -47,16 +47,27 @@ namespace NFX.CodeAnalysis.Laconfig
         /// </summary>
         public static LaconfigWritingOptions PrettyPrint { get { return s_PrettyPrint;} }
 
+        [Config]
+        public int IndentWidth;
 
-        public readonly int IndentWidth;
-        public readonly bool SectionLineBreak;
-        public readonly bool AttributeLineBreak;
+        [Config]
+        public bool SectionLineBreak;
 
-        public LaconfigWritingOptions(int indent, bool sectionLineBreak, bool attrLineBreak)
+        [Config]
+        public bool AttributeLineBreak;
+
+        /// <summary>
+        /// If true, does not write the very top node declaration: name, value and { }.
+        /// The attributes are still written as usual.
+        /// This is needed for storage conf in db where the root node is not needed to save space
+        /// </summary>
+        [Config]
+        public bool DontWriteRootSectionDeclaration;
+
+        
+        public void Configure(IConfigSectionNode node)
         {
-            IndentWidth = indent;
-            SectionLineBreak = sectionLineBreak;
-            AttributeLineBreak = attrLineBreak;
+            ConfigAttribute.Apply(this, node);
         }
     }
     
@@ -144,28 +155,34 @@ namespace NFX.CodeAnalysis.Laconfig
                     
                         private static void writeSection(StringBuilder sb, IConfigSectionNode section, int level, LaconfigWritingOptions opt)
                         {
-                            if (opt.SectionLineBreak)
-                            { 
-                              sb.AppendLine();
-                              sb.Append(Indent(level, opt));
-                            }
-                            else sb.Append(' ');
-                           
-                            writeString(sb, section.Name);   
-                            var value = section.VerbatimValue;
-                            if (value.IsNotNullOrWhiteSpace())
+                            var writeSectionDecl = section.Parent.Exists || !opt.DontWriteRootSectionDeclaration;
+
+                            if (writeSectionDecl)
                             {
-                                sb.Append("=");
-                                writeString(sb, value);
+                              if (opt.SectionLineBreak && section.Parent.Exists)
+                              { 
+                                sb.AppendLine();
+                                sb.Append(Indent(level, opt));
+                              }
+                           //   else sb.Append(' ');
+                           
+                              writeString(sb, section.Name);   
+                              var value = section.VerbatimValue;
+                              if (value.IsNotNullOrWhiteSpace())
+                              {
+                                  sb.Append("=");
+                                  writeString(sb, value);
+                              }
+
+                              if (opt.SectionLineBreak)
+                              { 
+                                sb.AppendLine();
+                                sb.Append(Indent(level, opt));
+                              }
+                              sb.Append('{');
                             }
 
-                            if (opt.SectionLineBreak)
-                            { 
-                              sb.AppendLine();
-                              sb.Append(Indent(level, opt));
-                            }
-                            sb.Append('{');
-
+                            bool wasAttr = false;
                             foreach(var anode in section.Attributes)
                             {
                                 if (opt.AttributeLineBreak)
@@ -173,24 +190,32 @@ namespace NFX.CodeAnalysis.Laconfig
                                   sb.AppendLine();
                                   sb.Append(Indent(level+1, opt));
                                 }
-                                else sb.Append(' ');
+                                else if (wasAttr) sb.Append(' ');
 
+                                wasAttr = true;
                                 writeString(sb, anode.Name);   
                                 sb.Append("=");
                                 writeString(sb, anode.VerbatimValue);
                             }
-                            sb.Append(' ');
+                            
+                            bool wasChild = false;
                             foreach(var csect in section.Children)
                             {
+                                if (!wasChild && wasAttr && !opt.SectionLineBreak) sb.Append(' ');
+
+                                wasChild = true;
                                 writeSection(sb, csect, level+1, opt);
                             }
 
-                            if (opt.SectionLineBreak)
-                            { 
-                              sb.AppendLine();
-                              sb.Append(Indent(level, opt));
+                            if (writeSectionDecl)
+                            {
+                              if (opt.SectionLineBreak)
+                              { 
+                                sb.AppendLine();
+                                sb.Append(Indent(level, opt));
+                              }
+                              sb.Append('}');
                             }
-                            sb.Append('}');
                         }
 
 
