@@ -689,7 +689,12 @@ namespace NFX.WinForms.Controls.GridKit
         if (cell.Row!=null)
         {
           if (!m_MultiSelect)
-            SelectRow(cell.Row);
+          {
+            if ((Control.ModifierKeys & Keys.Control) > 0)
+              UnSelectRow(cell.Row);
+            else
+              SelectRow(cell.Row);
+          }
           else //multiselect
           {
             if ((Control.ModifierKeys & Keys.Shift) > 0)
@@ -701,8 +706,8 @@ namespace NFX.WinForms.Controls.GridKit
               }
 
               var first = m_RowMap.FindIndex(re => re.Row == SelectedRows.First());
-              var last  = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
-              var cur   = m_RowMap.FindIndex(re => re.Row == cell.Row);
+              var last = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
+              var cur = m_RowMap.FindIndex(re => re.Row == cell.Row);
 
               if (cur < 0)
                 return;
@@ -710,8 +715,8 @@ namespace NFX.WinForms.Controls.GridKit
               UnSelectAllRows();
 
               if (last <= cur)
-                for (var i=last; i <= cur; ++i)
-                   SelectRow(m_RowMap[i].Row);
+                for (var i = last; i <= cur; ++i)
+                  SelectRow(m_RowMap[i].Row);
               else if (cur <= first)
                 for (var i = cur; i <= first; ++i)
                   SelectRow(m_RowMap[i].Row);
@@ -720,7 +725,7 @@ namespace NFX.WinForms.Controls.GridKit
             {
               if (IsRowSelected(cell.Row))
                 UnSelectRow(cell.Row);
-              else 
+              else
                 SelectRow(cell.Row);
             }
             else
@@ -728,7 +733,7 @@ namespace NFX.WinForms.Controls.GridKit
               UnSelectAllRows();
               SelectRow(cell.Row);
             }
-          } 
+          }
         }
         
         if (m_CellSelectionAllowed)
@@ -812,7 +817,7 @@ namespace NFX.WinForms.Controls.GridKit
               if (val!=null)
               {
                 result.Append(cell.RepresentValueAsString(val));
-                result.Append("    ");
+                result.Append("\t");
               }  
             }
             result.AppendLine();
@@ -929,10 +934,31 @@ namespace NFX.WinForms.Controls.GridKit
        protected virtual void OnCellSelection(CellElement oldCell, CellElement newCell)
        {
          if (CellSelection!=null) CellSelection(oldCell, newCell);
-       }    
-           
-              
+       }
 
+       protected void ContextMenuOpening(object sender, CancelEventArgs e)
+       {
+         // Don't open context menu on the header row or on non-clickable region of the grid
+         var cms = sender as ContextMenuStrip;
+         var mousepos = MousePosition;
+         if (cms == null) return;
+
+         var relpos = PointToClient(mousepos);
+         var ele    = m_CellView.GetClickableElementAt(relpos);
+         if (ele   == null || (ele is ColumnResizeElement) ||
+            (ele is CellElement) && ((CellElement)ele).Row == null)
+           e.Cancel = true;
+       }
+
+       protected override void OnContextMenuStripChanged(EventArgs e)
+       {
+         if (ContextMenuStrip != null)
+         {
+           ContextMenuStrip.Opening -= ContextMenuOpening;
+           ContextMenuStrip.Opening += ContextMenuOpening;
+         }
+         base.OnContextMenuStripChanged(e);
+       }
 
        protected override void OnMouseWheel(MouseEventArgs e)
        {

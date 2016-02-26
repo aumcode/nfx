@@ -144,6 +144,11 @@ namespace NFX.NUnit.DataAccess
         Assert.AreEqual(2, parsed.Authority);
         Assert.AreEqual(3123, parsed.Counter);
 
+        Assert.IsTrue( GDID.TryParse("   231:2:3123   ", out parsed) );
+        Assert.AreEqual(231, parsed.Era);
+        Assert.AreEqual(2, parsed.Authority);
+        Assert.AreEqual(3123, parsed.Counter);
+
         Assert.IsTrue( GDID.TryParse("31 : 2:  3123", out parsed) );
         Assert.AreEqual(31, parsed.Era);
         Assert.AreEqual(2, parsed.Authority);
@@ -159,6 +164,47 @@ namespace NFX.NUnit.DataAccess
         Assert.IsFalse( GDID.TryParse("1: : ", out parsed) );
 
         Assert.IsFalse( GDID.TryParse("FTGEJK-IR", out parsed) );
+
+
+        //0x 00 00 00 00 10 00 00 00 00 00 00 4B
+        //   ----era---- ------ulong -----------
+        Assert.IsTrue( GDID.TryParse("0x00000000100000000000004B", out parsed) );
+        Assert.AreEqual( new GDID(0,1,0x4b), parsed);
+
+        GDID? nullable;
+        Assert.IsTrue( GDID.TryParse("0x00000000100000000000004B", out nullable) );
+        Assert.IsTrue( nullable.HasValue);
+        Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
+
+        Assert.IsFalse( GDID.TryParse("0x0001000000000000", out nullable) );//too short
+        Assert.IsFalse( nullable.HasValue);
+
+        Assert.IsFalse( GDID.TryParse("0x00000303030303003031000000000000", out nullable) );//too long
+        Assert.IsFalse( nullable.HasValue);
+      }
+
+      [TestCase()]
+      public void GDID_BinBuffer()
+      {
+        var gdid = new GDID(0,1,0x4b);
+        var buf = gdid.Bytes;
+        Console.WriteLine(buf.ToDumpString(DumpFormat.Hex));
+        var gdid2 = new GDID(buf);
+        Assert.AreEqual(gdid, gdid2);
+      }
+
+      [TestCase()]
+      public void GDID_BinBufferAndTryParseBin()
+      {
+        var gdid = new GDID(347827,15,0xaedb3434b);
+        var buf = gdid.Bytes;
+        var hex = "0x"+buf.ToDumpString(DumpFormat.Hex).Replace(" ","");
+        
+        Console.WriteLine(hex);
+        
+        GDID gdid2;
+        Assert.IsTrue(GDID.TryParse(hex, out gdid2));
+        Assert.AreEqual(gdid, gdid2);
       }
 
 

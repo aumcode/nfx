@@ -153,11 +153,53 @@ namespace NFX.Wave
   public class HTTPStatusException : WaveException
   {
 
-    public static HTTPStatusException NotFound_404
+    public static HTTPStatusException Forbidden_403(string descr = null)
     {
-      get { return new HTTPStatusException(SysConsts.STATUS_404, SysConsts.STATUS_404_DESCRIPTION);}
+      var d = SysConsts.STATUS_403_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(SysConsts.STATUS_403, d);
+    }
+    
+    public static HTTPStatusException NotFound_404(string descr = null)
+    {
+      var d = SysConsts.STATUS_404_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+
+      return new HTTPStatusException(SysConsts.STATUS_404, d);
     }
 
+    public static HTTPStatusException MethodNotAllowed_405(string descr = null)
+    {
+      var d = SysConsts.STATUS_405_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(SysConsts.STATUS_405, d);
+    }
+
+    public static HTTPStatusException NotAcceptable_406(string descr = null)
+    {
+      var d = SysConsts.STATUS_406_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(SysConsts.STATUS_406, d);
+    }
+
+    public static HTTPStatusException TooManyRequests_429(string descr = null)
+    {
+      var d = SysConsts.STATUS_429_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(SysConsts.STATUS_429, d);
+    }
+
+    public static HTTPStatusException InternalError_500(string descr = null)
+    {
+      var d = SysConsts.STATUS_500_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(SysConsts.STATUS_500, d);
+    }
 
 
     /// <summary>

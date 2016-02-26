@@ -272,13 +272,14 @@ namespace NFX.NUnit.Integration.Wave
         }
 
         [Test]
+        [ExpectedException(typeof(System.Net.WebException), ExpectedMessage="(403)", MatchType=MessageMatch.Contains)]
         public void Action_GetWithNoPermission()
         {
           using (var wc = CreateWebClient())
           {
             string str = wc.DownloadString(INTEGRATION_HTTP_ADDR + "GetWithPermission");
-            Assert.AreEqual("text/html", wc.ResponseHeaders[HttpResponseHeader.ContentType]);
-            Assert.IsTrue( Regex.IsMatch(str, "Authorization to .+/TestPath/TestPermission.+ failed"));
+           // Assert.AreEqual("text/html", wc.ResponseHeaders[HttpResponseHeader.ContentType]);
+           // Assert.IsTrue( Regex.IsMatch(str, "Authorization to .+/TestPath/TestPermission.+ failed"));
           }
         }
 

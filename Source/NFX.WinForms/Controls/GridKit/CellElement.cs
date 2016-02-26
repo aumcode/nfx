@@ -255,19 +255,23 @@ namespace NFX.WinForms.Controls.GridKit
 
     protected internal override void OnMouseClick(MouseEventArgs e)
     {
-      if (m_Row == null && //header cell
-          m_Grid.SortingAllowed && m_Column.SortingAllowed &&
-          m_Grid.m_RepositioningColumn == null &&
-          m_Grid.m_ResizingColumn == null)
-      {
-        if (e.Button == MouseButtons.Left)
+      if (m_Row == null) //header cell
+        switch (e.Button)
         {
-          var dir = m_Column.SortDirection;
-          dir++;
-          if (dir > SortDirection.LAST) dir = SortDirection.FIRST;
-          m_Column.SortDirection = dir;
+          case MouseButtons.Left:
+            if (!m_Grid.SortingAllowed || !m_Column.SortingAllowed ||
+                m_Grid.m_RepositioningColumn != null ||
+                m_Grid.m_ResizingColumn != null)
+              return;
+
+            var dir = m_Column.SortDirection;
+            dir++;
+            if (dir > SortDirection.LAST) dir = SortDirection.FIRST;
+            m_Column.SortDirection = dir;
+            break;
+          case MouseButtons.Right:
+            return;
         }
-      }
       base.OnMouseClick(e);
     }
 
@@ -332,7 +336,7 @@ namespace NFX.WinForms.Controls.GridKit
     {
       base.OnMouseDragStart(e);
 
-      if (m_Row != null) return; //only for header cells
+      if (m_Row != null || e.Button != MouseButtons.Left) return; //only for header cells
       if (!m_Grid.ColumnRepositionAllowed) return;
 
       m_Grid.m_RepositioningColumn = m_Column;
@@ -360,23 +364,20 @@ namespace NFX.WinForms.Controls.GridKit
     {
       base.OnMouseDragRelease(e);
       m_InvertRect = new Rectangle();
-      if (m_Grid.m_RepositioningColumn != null)
-      {
-        m_Grid.m_RepositioningColumn = null;
-        var elm = m_Host.GetClickableElementAt(new Point(e.X, e.Y)) as CellElement;
-        if (elm != null)
-        {
-          m_Column.RepositionTo(elm.m_Column);
-        }
-        else if (e.X >= m_Host.Elements.Where(c => c is ColumnResizeElement)
-                              .Max(c => c.DisplayRegion.X + c.DisplayRegion.Width))
-          m_Column.RepositionTo(m_Grid.Columns.LastOrDefault());
-        else if (e.X <= 0)
-          m_Column.RepositionTo(m_Grid.Columns.FirstOrDefault());
-        else
-          invert();
-        m_Grid.CellView.Invalidate();
-      }
+      if (m_Grid.m_RepositioningColumn == null) return;
+
+      m_Grid.m_RepositioningColumn = null;
+      var elm = m_Host.GetClickableElementAt(new Point(e.X, e.Y)) as CellElement;
+      if (elm != null)
+        m_Column.RepositionTo(elm.m_Column);
+      else if (e.X >= m_Host.Elements.Where(c => c is ColumnResizeElement)
+                            .Max(c => c.DisplayRegion.X + c.DisplayRegion.Width))
+        m_Column.RepositionTo(m_Grid.Columns.LastOrDefault());
+      else if (e.X <= 0)
+        m_Column.RepositionTo(m_Grid.Columns.FirstOrDefault());
+      else
+        invert();
+      m_Grid.CellView.Invalidate();
     }
 
     protected internal override void OnMouseDragCancel(EventArgs e)

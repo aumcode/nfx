@@ -347,13 +347,25 @@ namespace NFX.Erlang
     public void WriteList(ErlList list)
     {
       int n = list.Count;
-      if (n > 0)
+      if (n == 0)
+        WriteNil();
+      else
       {
-        WriteListHead(list.Count);
-        foreach (var t in list)
-          Write(t);
+        var isStr = n < 256 && list.All(i =>
+        {
+          if (i.TypeOrder != ErlTypeOrder.ErlLong && i.TypeOrder != ErlTypeOrder.ErlByte)
+            return false;
+          var k = i.ValueAsInt; return k >= 0 && k <= 255;
+        });
+        WriteListHead(list.Count, isStr);
+        if (isStr)
+          list.ForEach(t => Write1(t.ValueAsLong));
+        else
+        {
+          list.ForEach(t => Write(t));
+          WriteNil();
+        }
       }
-      WriteNil();
     }
 
     /// <summary>
@@ -361,10 +373,15 @@ namespace NFX.Erlang
     /// method, you must write 'arity' elements to the stream followed by
     /// nil, or it will not be possible to decode it later.
     /// </summary>
-    public void WriteListHead(int arity)
+    public void WriteListHead(int arity, bool isStr = false)
     {
       if (arity == 0)
         WriteNil();
+      else if (isStr)
+      {
+        write(ErlExternalTag.String);
+        Write2BE(arity);
+      }
       else
       {
         write(ErlExternalTag.List);

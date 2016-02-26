@@ -68,6 +68,8 @@ namespace NFX.WinForms.Controls
 
         private Color? m_ForeColor;
         private Brush  m_ForeBrush;
+        private Pen    m_ForePen;
+        private Brush  m_BackBrush;
 
         private Font   m_Font;
       
@@ -142,19 +144,25 @@ namespace NFX.WinForms.Controls
           get 
           {
             if (m_BGColor.HasValue) return m_BGColor.Value;
-            if (m_Parent!=null) return m_Parent.BGColor;
-            if (m_ContextControl!=null)
-             return m_ContextControl.BackColor;
-            else
-             return Color.White; 
+            if (m_Parent!=null)     return m_Parent.BGColor;
+            return (m_ContextControl==null) ? SystemColors.Window : m_ContextControl.BackColor;
           }
-          set {m_BGColor = value; notify(); }
+          set { m_BGColor = value; m_BackBrush = new SolidBrush(value); notify(); }
         }   
         
-        public void ClearBGColor(){ m_BGColor = null; notify(); }
+        public void ClearBGColor(){ m_BGColor = null; m_BackBrush = null; notify(); }
         
+        public Brush BackBrush
+        {
+          get 
+          {
+            if (m_BackBrush!=null)    return m_BackBrush;
+            if (m_Parent!=null)       return m_Parent.BackBrush;
+            return SystemBrushes.Window;
+          }
+        }   
         
-         /// <summary>
+        /// <summary>
         /// Defines second background color used by gradients. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
         public Color BGColor2
@@ -308,18 +316,36 @@ namespace NFX.WinForms.Controls
             if (m_Parent!=null)       return m_Parent.ForeColor;
             return SystemColors.WindowText;
           }
-          set { m_ForeColor = value; m_ForeBrush = new SolidBrush(value); notify(); }
+          set { m_ForeColor = value; m_ForeBrush = new SolidBrush(value); m_ForePen = new Pen(value); notify(); }
         }
-        public void ClearForeColor(){ m_ForeColor = null; m_ForeBrush = null; notify(); }
-        
 
-        internal Brush ForeBrush
+        public void ClearForeColor()
+        {
+          if (m_ForeBrush != null) m_ForeBrush.Dispose();
+          if (m_ForePen   != null) m_ForePen.Dispose();
+          m_ForeColor      = null;
+          m_ForeBrush      = null;
+          m_ForePen        = null;
+          notify();
+        }
+
+        public Brush ForeBrush
         {
           get 
           {
-            if (m_ForeBrush!=null)    return m_ForeBrush;
-            if (m_Parent!=null)       return m_Parent.ForeBrush;
+            if (m_ForeBrush != null) return m_ForeBrush;
+            if (m_Parent    != null) return m_Parent.ForeBrush;
             return SystemBrushes.WindowText;
+          }
+        }   
+        
+        public Pen ForePen
+        {
+          get 
+          {
+            if (m_ForePen != null) return m_ForePen;
+            if (m_Parent  != null) return m_Parent.ForePen;
+            return SystemPens.WindowText;
           }
         }   
         

@@ -150,7 +150,7 @@ namespace NFX.Security
                 var token = user.AuthToken;
                 var reuser = Authenticate(token);
 
-                user.___reset_data(reuser.Status, reuser.Name, reuser.Description, reuser.Rights);
+                user.___update_status(reuser.Status, reuser.Name, reuser.Description, reuser.Rights);
             }
 
 

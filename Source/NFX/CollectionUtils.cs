@@ -49,6 +49,22 @@ namespace NFX
     }
 
     /// <summary>
+    /// Runs some method over each element of src sequence
+    /// </summary>
+    /// <typeparam name="T">Sequence item type</typeparam>
+    /// <param name="src">Source sequence</param>
+    /// <param name="action">Method to call on each element and its sequence number</param>
+    /// <returns>Source sequence (to have ability to chain similar calls)</returns>
+    public static IEnumerable<T> ForEach<T>(this IEnumerable<T> src, Action<T, int> action)
+    {
+      int i = 0;
+      foreach (T item in src)
+        action(item, i++);
+
+      return src;
+    }
+
+    /// <summary>
     /// Add all values from range sequence to src IDictionary. Source is actually modified.
     /// </summary>
     /// <typeparam name="TKey">Type of key</typeparam>

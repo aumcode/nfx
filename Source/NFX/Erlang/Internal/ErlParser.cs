@@ -184,6 +184,24 @@ namespace NFX.Erlang.Internal
             }
             throw new ErlException(StringConsts.ERL_PARSING_AT_ERROR, "list", pos);
 
+          case '<':
+            if (pos < fmt.Length - 1 && fmt[pos] == '<')
+            {
+              var i = ++pos;
+              var str = fmt[i] == '"';
+              if (str) pos++;
+              for (; i < fmt.Length && fmt[i - 1] != '>' && fmt[i] != '>'; ++i);
+              if (i == fmt.Length)
+                break;
+              var end = ++i - (str ? 3 : 2);
+              var len = end - pos + 1;
+              var cnt = Encoding.UTF8.GetByteCount(fmt.ToCharArray(), pos, len);
+              var bytes = new byte[cnt];
+              Encoding.UTF8.GetBytes(fmt, pos, len, bytes, 0);
+              result = new ErlBinary(bytes, 0, bytes.Length);
+              pos = i+1;
+            }
+            break;
           case '$': /* char-value? */
             result = new ErlByte(Convert.ToByte(fmt[pos++]));
             break;

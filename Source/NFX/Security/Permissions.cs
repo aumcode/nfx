@@ -219,10 +219,11 @@ namespace NFX.Security
             {
                get
                {
-                 if (Path.EndsWith("/"))
-                   return Path + Name; 
+                 var path = Path;
+                 if (path.EndsWith("/"))
+                   return path + Name; 
                  else
-                   return Path + "/" + Name;
+                   return path + "/" + Name;
                }
             }
 

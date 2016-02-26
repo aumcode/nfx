@@ -109,36 +109,84 @@ namespace NFX.Parsing
     /// </summary>
     public static bool CheckTelephone(string phone)
     {
-      if (phone.IsNullOrWhiteSpace())
-        return false;
-      
-      phone = phone.Trim();
-      if (phone.Length == 0) return false;
+      if (String.IsNullOrEmpty(phone)) return false;
+      if (phone.Length < 7) return false;
 
       char c;
-      var meetFirstParenthesis = false;
-      var meetSecondParenthesis = false;
+      var hasFirstParenthesis = false;
+      var hasSecondParenthesis = false;
+      var prevIsSpecial = false;
+      var area = false;
+      var inParentheses = false;
       for (int i = 0; i < phone.Length; i++)
       {
         c = phone[i];
-        if (i == 0 && c == '+') continue;
-        if (c == '(' && !meetFirstParenthesis && !meetSecondParenthesis)
+        if (i == 0)
         {
-          meetFirstParenthesis = true;
+          if (Char.IsWhiteSpace(c)) return false;
+          if (c == '+')
+          {
+            prevIsSpecial = true;
+            continue;
+          }
+          else
+            area = true;
+        }
+        if (i == (phone.Length - 1) && !IsLatinLetterOrDigit(c)) return false;
+          
+
+        if (c == '(')
+        {
+          if (hasFirstParenthesis || hasSecondParenthesis || prevIsSpecial) return false;
+          hasFirstParenthesis = true;
+          inParentheses = true;
           continue;
         }
-      }
-       // the phone may start with + "international", it may only have 1 plus at the very beginning
-       // the "(" must be matched with ")" , may not start from ")"
-       // may contain 0..9 A-Z and '-' or '.'
-       // cant have more than one consecuitive '-' or '.' also cant have -. or .-
-       // 818.234.2314x518
-       // (818) 234-2314 ext 518
-       // (818) 234-2314x518
-       // 818-234-2314x518
-       return true;
-    }
 
+        if (c == ')')
+        {
+          if (hasSecondParenthesis || prevIsSpecial) return false;
+          hasSecondParenthesis = true;
+          prevIsSpecial = true;
+          inParentheses = false;
+          continue;
+        }
+
+        if (c == '-' || c == '.')
+        {
+          if (prevIsSpecial || inParentheses) return false;
+          prevIsSpecial = true;
+          continue;
+        }
+
+        if (c == ' ')
+        {
+          if ((prevIsSpecial && phone[i - 1] != ')') || inParentheses) return false;
+          prevIsSpecial = true;
+          continue;
+        }
+
+        if (area)
+        {
+          for (int j = 0; j < 3 && i < phone.Length - 2; j++)
+          {
+            c = phone[i + j];
+            if (!Char.IsDigit(c)) return false;
+          }
+          if (inParentheses && phone[i + 3] != ')') return false;
+          area = false;
+          i = i + 2;
+          continue;
+        }
+
+        if (!IsLatinLetterOrDigit(c)) return false;
+        prevIsSpecial = false;
+      }
+      if (inParentheses || (hasSecondParenthesis && !hasFirstParenthesis))
+        return false;
+
+      return true;
+    }
     
     /// <summary>
     /// Returns true if the value starts from primary language char and contains only those chars separated by one of ['.','-','_'].

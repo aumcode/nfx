@@ -96,6 +96,7 @@
     <Compile Include="Collections\EventedListTests.cs" />
     <Compile Include="Collections\MatrixTest.cs" />
     <Compile Include="Config\ConfAndJSON.cs" />
+    <Compile Include="Config\ConfigNodeEqualityComparerTest.cs" />
     <Compile Include="Config\ValueAccessors.cs" />
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />

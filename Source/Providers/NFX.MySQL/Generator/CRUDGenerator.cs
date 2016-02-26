@@ -433,24 +433,37 @@ namespace NFX.DataAccess.MySQL
     {
       var result = row[order];
 
-      return CLRValueToDB(store, result);
+      MySqlDbType? convertedDbType;
+      return CLRValueToDB(store, result, out convertedDbType);
     }
 
-
-    internal static object CLRValueToDB(MySQLDataStoreBase store, object value)
+    internal static object CLRValueToDB(MySQLDataStoreBase store, object value, out MySqlDbType? convertedDbType)
     {
+      convertedDbType = null;
+
       if (value==null) return null;
 
       if (value is GDID)
       {
-        value = store.FullGDIDS ? (object)((GDID)value).Bytes
-                                : (object)((GDID)value).ID;
+        if(store.FullGDIDS)
+        {
+          value = (object)((GDID)value).Bytes;
+          convertedDbType = MySqlDbType.Binary;
+        }
+        else
+        {
+          value = (object)((GDID)value).ID;
+          convertedDbType = MySqlDbType.Int64;
+        }
       }
       else
       if (value is bool)
       {
         if (store.StringBool)
-         value = (bool)value ? store.StringForTrue : store.StringForFalse;
+        {
+          value = (bool)value ? store.StringForTrue : store.StringForFalse;
+          convertedDbType = MySqlDbType.VarChar;
+        }
       }
 
       return value;
@@ -461,8 +474,11 @@ namespace NFX.DataAccess.MySQL
       if (pars==null) return;
       for(var i=0; i<pars.Count; i++)
       {
-        var par = pars[i];
-        par.Value = CLRValueToDB(store, par.Value);
+        var par = pars[i];  
+        MySqlDbType? convertedDbType;
+        par.Value = CLRValueToDB(store, par.Value, out convertedDbType);
+        if (convertedDbType.HasValue)
+         par.MySqlDbType = convertedDbType.Value;
       }
     }
 

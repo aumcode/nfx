@@ -220,9 +220,9 @@ namespace NFX.DataAccess.Erlang
 
         foreach(var query in queries)
         {
-            var handler = QueryResolver.Resolve(query);
-            var rowset = handler.Execute( new ErlCRUDQueryExecutionContext(this), query, false);
-            result.Add( rowset );
+          var handler = QueryResolver.Resolve(query);
+          var rowset = handler.Execute( new ErlCRUDQueryExecutionContext(this), query, false);
+          result.Add( rowset );
         }
 
         return result;

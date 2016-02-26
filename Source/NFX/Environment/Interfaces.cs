@@ -169,9 +169,19 @@ namespace NFX.Environment
             bool HasChildren { get; }
 
             /// <summary>
+            /// Returns number of child section nodes
+            /// </summary>
+            int ChildCount { get; }
+
+            /// <summary>
             /// Indicates whether this node has any associated attributes 
             /// </summary>
             bool HasAttributes { get; }
+
+            /// <summary>
+            /// Returns number of child attribute nodes
+            /// </summary>
+            int AttrCount { get; }
 
             /// <summary>
             /// Enumerates all child nodes

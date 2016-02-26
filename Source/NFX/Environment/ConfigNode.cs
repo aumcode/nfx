@@ -697,6 +697,14 @@ namespace NFX.Environment
         {
           get { lock (m_Children) return m_Children.Count > 0; }
         }
+        
+        /// <summary>
+        /// Returns number of child section nodes
+        /// </summary>
+        public int ChildCount
+        {
+          get { lock (m_Children) return m_Children.Count; }
+        }
 
         /// <summary>
         /// Indicates whether this node has any associated attributes
@@ -704,6 +712,14 @@ namespace NFX.Environment
         public bool HasAttributes
         {
           get { lock (m_Attributes) return m_Attributes.Count > 0; }
+        }
+
+        /// <summary>
+        /// Returns number of child attribute nodes
+        /// </summary>
+        public int AttrCount
+        {
+          get { lock (m_Attributes) return m_Attributes.Count; }
         }
 
         /// <summary>

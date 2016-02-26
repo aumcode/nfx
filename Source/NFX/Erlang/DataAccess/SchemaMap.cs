@@ -15,35 +15,35 @@ namespace NFX.DataAccess.Erlang
   /// </summary>
   public class SchemaMap
   {
-    public const string CONFIG_SCHEMA_SECTION = "schema";
-    public const string CONFIG_FIELD_SECTION = "field";
-    public const string CONFIG_VALUE_SECTION = "value";
+    public const string CONFIG_SCHEMA_SECTION       = "schema";
+    public const string CONFIG_FIELD_SECTION        = "field";
+    public const string CONFIG_VALUE_SECTION        = "value";
 
-     public const string CONFIG_TITLE_ATTR = "title";
-     public const string CONFIG_TYPE_ATTR = "type";
-     public const string CONFIG_REQUIRED_ATTR = "required";
-     public const string CONFIG_MIN_ATTR = "min";
-     public const string CONFIG_MAX_ATTR = "max";
-     public const string CONFIG_KEY_ATTR = "key";
-     public const string CONFIG_DESCR_ATTR = "descr";
-     public const string CONFIG_DEFAULT_ATTR = "default";
-     public const string CONFIG_LEN_ATTR = "len";
-     public const string CONFIG_VISIBLE_ATTR = "visible";
+     public const string CONFIG_TITLE_ATTR          = "title";
+     public const string CONFIG_TYPE_ATTR           = "type";
+     public const string CONFIG_REQUIRED_ATTR       = "required";
+     public const string CONFIG_MIN_ATTR            = "min";
+     public const string CONFIG_MAX_ATTR            = "max";
+     public const string CONFIG_KEY_ATTR            = "key";
+     public const string CONFIG_DESCR_ATTR          = "descr";
+     public const string CONFIG_DEFAULT_ATTR        = "default";
+     public const string CONFIG_LEN_ATTR            = "len";
+     public const string CONFIG_VISIBLE_ATTR        = "visible";
      
-     public const string CONFIG_CASE_ATTR = "case";
+     public const string CONFIG_CASE_ATTR           = "case";
 
-     public const string CONFIG_FORMAT_ATTR = "format";
-     public const string CONFIG_FORMAT_DESCR_ATTR = "format-descr";
+     public const string CONFIG_FORMAT_ATTR         = "format";
+     public const string CONFIG_FORMAT_DESCR_ATTR   = "format-descr";
      public const string CONFIG_DISPLAY_FORMAT_ATTR = "display-format";
 
-     public const string CONFIG_CODE_ATTR = "code";
-     public const string CONFIG_DISPLAY_ATTR = "display";
+     public const string CONFIG_CODE_ATTR           = "code";
+     public const string CONFIG_DISPLAY_ATTR        = "display";
 
-     public const string CONFIG_INSERT_ATTR = "insert";
-     public const string CONFIG_UPDATE_ATTR = "update";
-     public const string CONFIG_DELETE_ATTR = "delete";
+     public const string CONFIG_INSERT_ATTR         = "insert";
+     public const string CONFIG_UPDATE_ATTR         = "update";
+     public const string CONFIG_DELETE_ATTR         = "delete";
 
-     private const string SCHEMA_KEY_COUNT = "KEY_COUNT";
+     private const string SCHEMA_KEY_COUNT          = "KEY_COUNT";
 
     public SchemaMap(ErlDataStore store, string xmlContent)
     {
@@ -319,7 +319,7 @@ namespace NFX.DataAccess.Erlang
           var ftitle  = nodeField.AttrByName(CONFIG_TITLE_ATTR).Value;
           var isKey   = nodeField.AttrByName(CONFIG_KEY_ATTR).ValueAsBool();
           var required= nodeField.AttrByName(CONFIG_REQUIRED_ATTR).ValueAsBool(false);
-          var type = nodeField.AttrByName(CONFIG_TYPE_ATTR).Value;
+          var type    = nodeField.AttrByName(CONFIG_TYPE_ATTR).Value;
           var clrType = mapErlTypeToCLR(type);
 
           object minV = null;
@@ -330,8 +330,6 @@ namespace NFX.DataAccess.Erlang
 
           sv = nodeField.AttrByName(CONFIG_MAX_ATTR).Value;
           if (sv.IsNotNullOrWhiteSpace()) maxV = sv.AsType(clrType, true);
-             
-
 
 
           var strDfltValue = nodeField.AttrByName(CONFIG_DEFAULT_ATTR).ValueAsString(string.Empty);
@@ -380,27 +378,27 @@ namespace NFX.DataAccess.Erlang
 
 
           var atr = new FieldAttribute(
-                         targetName: m_Store.TargetName, 
-                         backendName: fname,
-                         backendType: type,
-                         storeFlag: StoreFlag.LoadAndStore,
-                         key: isKey,
-                         required: required,
-                         dflt: dfltValue,
+              targetName:    m_Store.TargetName, 
+              backendName:   fname,
+              backendType:   type,
+              storeFlag:     StoreFlag.LoadAndStore,
+              key:           isKey,
+              required:      required,
+              dflt:          dfltValue,
+                             
+              min:           minV,
+              max:           maxV,
+                             
+              charCase:      caze,
 
-                         min: minV,
-                         max: maxV,
-
-                         charCase: caze,
-
-                         visible:   nodeField.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(true),
-                         maxLength: nodeField.AttrByName(CONFIG_LEN_ATTR).ValueAsInt(0),
-                         description: ftitle,
-                         formatRegExp: nodeField.AttrByName(CONFIG_FORMAT_ATTR).Value,
-                         formatDescr: nodeField.AttrByName(CONFIG_FORMAT_DESCR_ATTR).Value,
-                         displayFormat: nodeField.AttrByName(CONFIG_DISPLAY_FORMAT_ATTR).Value,
-                         valueList: vList==null ? null : string.Join(",", vList),//"CAR: Car Driver,SMK: Smoker, REL: Religious, CNT: Country music lover, GLD: Gold collector"
-                         metadata: nodeField.ToLaconicString());
+              visible:       nodeField.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(true),
+              maxLength:     nodeField.AttrByName(CONFIG_LEN_ATTR).ValueAsInt(0),
+              description:   ftitle,
+              formatRegExp:  nodeField.AttrByName(CONFIG_FORMAT_ATTR).Value,
+              formatDescr:   nodeField.AttrByName(CONFIG_FORMAT_DESCR_ATTR).Value,
+              displayFormat: nodeField.AttrByName(CONFIG_DISPLAY_FORMAT_ATTR).Value,
+              valueList:     vList==null ? null : string.Join(",", vList),//"CAR: Car Driver,SMK: Smoker, REL: Religious, CNT: Country music lover, GLD: Gold collector"
+              metadata:      nodeField.ToLaconicString());
 
           var def = new Schema.FieldDef(fname, clrType, new FieldAttribute[]{atr});
           defs.Add( def );

@@ -189,6 +189,61 @@ namespace NFX.Wave.MVC
     }
   }
   
+  /// <summary>
+  /// Returns HTTP 404 - not found. 
+  /// This should be used in place of returning exceptions where needed as it is faster
+  /// </summary>
+  public struct Http404NotFound : IActionResult
+  {
+    public Http404NotFound(string descr = null)
+    {
+      Description = descr;
+    }
+
+    public readonly string Description;
+    
+    public void Execute(Controller controller, WorkContext work)
+    {
+      var txt = SysConsts.STATUS_404_DESCRIPTION;
+      if (Description.IsNotNullOrWhiteSpace())
+        txt += (": " + Description);
+      work.Response.StatusCode = SysConsts.STATUS_404;
+      work.Response.StatusDescription = txt;
+
+      if (work.RequestedJSON)
+       work.Response.WriteJSON( new {OK = false, http = SysConsts.STATUS_404, descr = txt});
+      else
+       work.Response.Write(txt);
+    } 
+  }
+
+  /// <summary>
+  /// Returns HTTP 403 - forbidden
+  /// This should be used in place of returning exceptions where needed as it is faster
+  /// </summary>
+  public struct Http403Forbidden : IActionResult
+  {
+    public Http403Forbidden(string descr = null)
+    {
+      Description = descr;
+    }
+
+    public readonly string Description;
+    
+    public void Execute(Controller controller, WorkContext work)
+    {
+      var txt = SysConsts.STATUS_403_DESCRIPTION;
+      if (Description.IsNotNullOrWhiteSpace())
+        txt += (": " + Description);
+      work.Response.StatusCode = SysConsts.STATUS_403;
+      work.Response.StatusDescription = txt;
+
+      if (work.RequestedJSON)
+       work.Response.WriteJSON( new {OK = false, http = SysConsts.STATUS_403, descr = txt});
+      else
+       work.Response.Write(txt);
+    } 
+  }
 
 
 }

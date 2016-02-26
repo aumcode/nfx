@@ -439,8 +439,5 @@ namespace NFX.DataAccess.MySQL
 
     #endregion
 
-
-
-        
   }
 }

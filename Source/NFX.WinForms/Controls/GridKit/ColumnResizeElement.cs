@@ -66,8 +66,11 @@ namespace NFX.WinForms.Controls.GridKit
     protected internal override void OnMouseClick(MouseEventArgs e)
     {
       // Right click on the right edge of a column - open the column picker
-      if (e.Button == MouseButtons.Right && m_Grid.Columns.Any() && m_Grid.ColumnHidingAllowed)
+      if (e.Button == MouseButtons.Right)
       {
+        if (!m_Grid.Columns.Any() || !m_Grid.ColumnHidingAllowed)
+          return;
+
         var longestText     = new string('W', m_Grid.Columns.Max(c => c.Title.Length));
         var textSize        = TextRenderer.MeasureText(longestText, m_Grid.Font);
         int preferredHeight = (m_Grid.Columns.Count * textSize.Height) + 7;

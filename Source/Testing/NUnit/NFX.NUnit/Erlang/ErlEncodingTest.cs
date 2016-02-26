@@ -78,9 +78,41 @@ namespace NFX.NUnit.Erlang
         Assert.AreEqual(t, es.Read());
       }
       {
+        var b = new byte[] { 131, 108, 0, 0, 0, 2, 107, 0, 1, 1, 107, 0, 1, 2, 106 };
+        var t = new ErlList(new ErlList(1), new ErlList(2));
+        var os = new ErlOutputStream(t);
+        Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
+        var es = new ErlInputStream(b);
+        Assert.AreEqual(t, es.Read());
+      }
+      {
+        var b = new byte[] { 131,108,0,0,0,2,108,0,0,0,2,97,1,107,0,1,2,106,107,0,1,3,106 };
+        var t = new ErlList(new ErlList(1, new ErlList(2)), new ErlList(3));
+        var os = new ErlOutputStream(t);
+        Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
+        var es = new ErlInputStream(b);
+        Assert.AreEqual(t, es.Read());
+      }
+      {
         var b = new byte[] { 131,108,0,0,0,3,97,1,70,64,36,61,112,163,215,10,61,108,0,0,0,2,
                              100,0,4,116,114,117,101,107,0,1,97,106,106 };
         var t = new ErlList(1, 10.12, new ErlList(true, "a"));
+        var os = new ErlOutputStream(t);
+        Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
+        var es = new ErlInputStream(b);
+        Assert.AreEqual(t, es.Read());
+      }
+      {
+        var b = new byte[] {
+          131,108,0,0,0,3,97,23,97,4,104,1,108,0,0,0,1,104,2,109,0,0,0,5,101,118,101,
+          110,116,104,1,108,0,0,0,2,104,2,109,0,0,0,10,102,108,101,101,116,95,104,97,
+          115,104,109,0,0,0,36,97,54,97,50,50,100,49,52,45,56,52,56,51,45,52,49,102,99,
+          45,97,52,54,98,45,50,56,51,98,57,55,55,55,99,50,97,50,104,2,109,0,0,0,4,116,
+          121,112,101,109,0,0,0,13,102,108,101,101,116,95,99,104,97,110,103,101,100,
+          106,106,106 };
+        var t = ErlObject.Parse("[23,4,{[{<<\"event\">>,"+
+                                "{[{<<\"fleet_hash\">>,<<\"a6a22d14-8483-41fc-a46b-283b9777c2a2\">>},"+
+                                "{<<\"type\">>,<<\"fleet_changed\">>}]}}]}]");
         var os = new ErlOutputStream(t);
         Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
         var es = new ErlInputStream(b);
