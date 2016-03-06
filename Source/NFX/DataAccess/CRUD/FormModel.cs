@@ -40,7 +40,7 @@ namespace NFX.DataAccess.CRUD
   public abstract class FormModel : AmorphousTypedRow
   {
       public const string JSON_MODE_PROPERTY = "__FormMode";
-      public const string JSON_CSRF_PROPERTY = "__CSRFToken";
+      public const string JSON_CSRF_PROPERTY = CoreConsts.CSRF_TOKEN_NAME;
       public const string JSON_ROUNDTRIP_PROPERTY = "__Roundtrip";
 
 

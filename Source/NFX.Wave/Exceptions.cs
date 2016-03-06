@@ -153,6 +153,14 @@ namespace NFX.Wave
   public class HTTPStatusException : WaveException
   {
 
+    public static HTTPStatusException BadRequest_400(string descr = null)
+    {
+      var d = SysConsts.STATUS_400_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(SysConsts.STATUS_400, d);
+    }
+
     public static HTTPStatusException Forbidden_403(string descr = null)
     {
       var d = SysConsts.STATUS_403_DESCRIPTION;

@@ -202,6 +202,12 @@ namespace NFX.DataAccess.CRUD
 
 
                 /// <summary>
+                /// Returns true when this field is attributed as being a visible in any of the targeted attribute
+                /// </summary>
+                public bool AnyVisible { get { return m_Attrs.Any(a=>a.Visible);} } 
+
+
+                /// <summary>
                 /// Returns description from field attribute or parses it from field name
                 /// </summary>
                 public string Description
@@ -558,8 +564,14 @@ namespace NFX.DataAccess.CRUD
             /// <summary>
             /// Returns FieldDefs in their order within rows that are declared as key fields in ANY_TARGET
             /// </summary>
-            public IEnumerable<FieldDef> AnyTargetKeyFieldDefs { get { return m_FieldDefs.Where(fd => fd.AnyTargetKey);}}
+            public IEnumerable<FieldDef> AnyTargetKeyFieldDefs { get { return m_FieldDefs.OrderedValues.Where(fd => fd.AnyTargetKey);}}
 
+
+
+            /// <summary>
+            /// Returns FieldDefs in their order within rows as
+            /// </summary>
+            public IEnumerable<FieldDef> AnyVisibleFieldDefs { get { return m_FieldDefs.OrderedValues.Where(fd => fd.AnyVisible);}}
 
 
             /// <summary>

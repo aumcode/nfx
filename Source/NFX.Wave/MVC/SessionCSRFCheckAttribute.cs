@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 namespace NFX.Wave.MVC
 {
   /// <summary>
-  /// Decorates controller classes or actions that need to check CSRF token against the user session
+  /// Decorates controller classes or actions that need to check CSRF token on POST against the user session
   /// </summary>
   [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
   public sealed class SessionCSRFCheckAttribute : ActionFilterAttribute
   {
-    public const string DEFAULT_TOKEN_NAME = "token";
+    public const string DEFAULT_TOKEN_NAME = CoreConsts.CSRF_TOKEN_NAME;
 
 
     public SessionCSRFCheckAttribute() : base(0)
     {
       TokenName = DEFAULT_TOKEN_NAME;
+      OnlyExistingSession = true;
     }
 
     public SessionCSRFCheckAttribute(string tokenName) : this(tokenName, true, 0)
@@ -47,10 +48,10 @@ namespace NFX.Wave.MVC
       work.NeedsSession(OnlyExistingSession);
 
       var session = work.Session; 
-      var supplied = work.MatchedVars[TokenName].AsString();
+      var supplied = work.WholeRequestAsJSONDataMap[TokenName].AsString();
 
       if (session==null || 
-          !session.CSRFToken.EqualsOrdIgnoreCase(supplied))
+          !session.CSRFToken.EqualsOrdSenseCase(supplied))
         throw new HTTPStatusException(NFX.Wave.SysConsts.STATUS_400, NFX.Wave.SysConsts.STATUS_400_DESCRIPTION, "CSRF failed");
 
       return false;

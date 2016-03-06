@@ -14,14 +14,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace NFX.DataAccess
 {
-  
   /// <summary>
   /// Defines log level for DataStores
   /// </summary>
@@ -31,7 +25,6 @@ namespace NFX.DataAccess
     Debug,
     Trace
   }
-  
   
   /// <summary>
   /// Determines whether entity should be loaded/stored from/to storage
@@ -44,15 +37,34 @@ namespace NFX.DataAccess
      None
   }
 
-   /// <summary>
+  /// <summary>
   /// Types of char casing
   /// </summary>
   public enum CharCase
   {
+    /// <summary>
+    /// The string remains as-is
+    /// </summary>
     AsIs = 0,
+
+    /// <summary>
+    /// The string is converted to upper case
+    /// </summary>
     Upper,
-    Lower
+
+    /// <summary>
+    /// The string is converted to lower case
+    /// </summary>
+    Lower,
+
+    /// <summary>
+    /// The first and subsequent chars after space or '.' are capitalized, the rest left intact
+    /// </summary>
+    Caps,
+
+    /// <summary>
+    /// The first and subsequent chars after space or '.' are capitalized, the rest is lower-cased
+    /// </summary>
+    CapsNorm
   }
-
-
 }

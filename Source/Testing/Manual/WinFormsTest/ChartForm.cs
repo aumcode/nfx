@@ -214,7 +214,7 @@ namespace WinFormsTest
             {
               MidLineType = MidLineType.OpenClose,
               ShowYLevels = true,
-              LineStyle = new LineStyle{ Color = Color.FromArgb(200, 255, 180, 0), Width = 3f}
+              LineStyle   = new LineStyle{ Color = Color.FromArgb(200, 255, 180, 0), Width = 3f}
             });
         
         chart.Series = m_Data;

@@ -141,13 +141,37 @@ namespace NFX.Wave.MVC
   /// </summary>
   public struct ClientRecord : IActionResult
   {
-    public ClientRecord(Row row, Exception validationError, string recID = null, string target = null, string isoLang = null)
+    public ClientRecord(Row row,
+                        Exception validationError,
+                        string recID = null,
+                        string target = null,
+                        string isoLang = null, 
+                        Client.ModelFieldValueListLookupFunc valueListLookupFunc = null)
     {
       RecID = recID;
       Row = row;
       ValidationError = validationError;
       Target = target;
       IsoLang = isoLang;
+      ValueListLookupFunc = valueListLookupFunc;
+    }
+
+    public ClientRecord(Row row,
+                        Exception validationError,
+                        Func<Schema.FieldDef, JSONDataMap> simpleValueListLookupFunc,
+                        string recID = null,
+                        string target = null,
+                        string isoLang = null)
+    {
+      RecID = recID;
+      Row = row;
+      ValidationError = validationError;
+      Target = target;
+      IsoLang = isoLang;
+      if (simpleValueListLookupFunc!=null)
+        ValueListLookupFunc = (_sender, _row, _def, _target, _iso) => simpleValueListLookupFunc(_def);
+      else
+        ValueListLookupFunc = null;
     }
     
     public readonly string RecID;
@@ -155,6 +179,7 @@ namespace NFX.Wave.MVC
     public readonly Exception ValidationError;
     public readonly string Target;
     public readonly string IsoLang;
+    public readonly Client.ModelFieldValueListLookupFunc ValueListLookupFunc;
 
 
     public void Execute(Controller controller, WorkContext work)
@@ -162,7 +187,7 @@ namespace NFX.Wave.MVC
       var gen = (work.Portal!=null) ? work.Portal.RecordModelGenerator
                                     : Client.RecordModelGenerator.DefaultInstance;
 
-      work.Response.WriteJSON( gen.RowToRecordInitJSON(Row, ValidationError, RecID, Target, IsoLang) );
+      work.Response.WriteJSON( gen.RowToRecordInitJSON(Row, ValidationError, RecID, Target, IsoLang, ValueListLookupFunc) );
     }
   }
 

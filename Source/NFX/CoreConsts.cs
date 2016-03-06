@@ -24,6 +24,8 @@ namespace NFX
   {
       public const int ABS_HASH_MASK = 0x7FFFFFFF;
 
+      public const string CSRF_TOKEN_NAME = "__CSRFToken";
+
       public const string EXT_PARAM_CONTENT_LACONIC = "laconic://";
       public const string EXT_PARAM_CONTENT_JSON = "json://";
 

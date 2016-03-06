@@ -176,7 +176,7 @@ namespace NFX.Wave.Handlers
 
         if (mpars.Length==0) return;
 
-        var requested = GetRequestAsJSONDataMap(work);
+        var requested = work.WholeRequestAsJSONDataMap;
 
         var strictParamBinding = attrAction.StrictParamBinding;
 
@@ -229,33 +229,6 @@ namespace NFX.Wave.Handlers
           }
         }
       }
-
-      /// <summary>
-      /// Converts request into JSONDataMap
-      /// </summary>
-      protected JSONDataMap GetRequestAsJSONDataMap(WorkContext work)
-      {
-        if (!work.Request.HasEntityBody) return work.MatchedVars;
-
-        JSONDataMap result = null;
-
-        var ctp = work.Request.ContentType;
-        
-        //Multipart
-        if (ctp.IndexOf(ContentType.FORM_MULTIPART_ENCODED)>=0)
-          result = MultiPartContent.ToJSONDataMap(work.Request.InputStream, ctp,  work.Request.ContentEncoding);
-        else //Form URL encoded
-        if (ctp.IndexOf(ContentType.FORM_URL_ENCODED)>=0)
-          result = JSONDataMap.FromURLEncodedStream(new NFX.IO.NonClosingStreamWrap(work.Request.InputStream),
-                                                  work.Request.ContentEncoding); 
-        else//JSON
-        if (ctp.IndexOf(ContentType.JSON)>=0)
-          result = JSONReader.DeserializeDataObject(new NFX.IO.NonClosingStreamWrap(work.Request.InputStream),
-                                                  work.Request.ContentEncoding) as JSONDataMap;
-
-        return result==null ? work.MatchedVars : result.Append(work.MatchedVars);
-      }
-
 
       /// <summary>
       /// Turns result object into appropriate response

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Drawing;
@@ -25,7 +26,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         /// </summary>
         public class YLevel : INamed, IOrdered
         {
-          public YLevel(string name, int order)
+          public YLevel(string name, int order, Style style = null)
           {
             if (name.IsNullOrWhiteSpace()) name = Guid.NewGuid().ToString();
 
@@ -33,27 +34,28 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
             m_Order = order;
             Visible = true;
             AffectsScale = true;
-            HLineStyle = new LineStyle{ Color = Color.FromArgb(240, 255, 100, 0), 
+            HLineStyle = new LineStyle{ Color = style == null ? Color.FromArgb(240, 255, 100, 0) : style.BGColor, 
                                         Width = 1,
-                                        DashStyle= System.Drawing.Drawing2D.DashStyle.Dot};
+                                        DashStyle = System.Drawing.Drawing2D.DashStyle.Dot};
+            Style = new Style(null, null);
             ValueFormat = "n2";
           }
 
           private string m_Name;
-          private int m_Order;
+          private int    m_Order;
           
-          public string Name { get{ return m_Name; }}
-          public int    Order{ get{ return m_Order;}}
+          public string  Name { get{ return m_Name; }}
+          public int     Order{ get{ return m_Order;}}
 
           /// <summary>
           /// The value is in primary series unit
           /// </summary>
-          public float Value { get; set;}
+          public float   Value { get; set;}
 
-          public string ValueFormat{ get; set;}
+          public string  ValueFormat{ get; set;}
 
 
-          public string DisplayValue
+          public string  DisplayValue
           {
             get
             {
@@ -73,7 +75,10 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           //the horizontal level is not going to be visible at a normal zoom
           public bool AffectsScale { get; set;}
 
-          public LineStyle HLineStyle{ get; set;}
+          public LineStyle HLineStyle  { get; set;}
+
+          [Description("Style of the horizontal line marker")]
+          public Style     Style { get; private set; }
         }
 
     #endregion
@@ -113,8 +118,6 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
     private OrderedRegistry<YLevel> m_YLevels = new OrderedRegistry<YLevel>();
 
-
-    
     /// <summary>
     /// Returns parent of this series or null
     /// </summary>
@@ -346,6 +349,25 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     }
 
     /// <summary>
+    /// Replace last data sample.
+    /// This function requires that the new sample has the same timestamp 
+    /// as the last sample in the time series data.
+    /// </summary>
+    public void ReplaceLast(ITimeSeriesSample sample)
+    {
+      var last = m_Data.Last;
+      if (last == null)
+        throw new WFormsException(StringConsts.ARGUMENT_ERROR + "last sample not assigned!");
+
+      if (sample.TimeStamp < last.Value.TimeStamp)
+        throw new WFormsException(StringConsts.ARGUMENT_ERROR +
+          "inconsistent time stamp of the new sample (expected: {0}, got: {1}!".Args(
+            last.Value.TimeStamp, sample.TimeStamp));
+
+      m_Data.Last.Value = sample;
+    }
+
+    /// <summary>
     /// Deletes sample from the set. This method is not efficient as it does linear list scan
     /// </summary>
     public bool Delete(ITimeSeriesSample sample)
@@ -362,7 +384,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     {
       m_Data.Clear();
       foreach(var sample in data)
-       this.Add(sample);
+        this.Add(sample);
     }
 
 
@@ -381,7 +403,12 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     
     public void Add(TSample sample)
     {
-      base.Add( sample );
+      base.Add(sample);
+    }
+
+    public void ReplaceLast(TSample sample)
+    {
+      base.ReplaceLast(sample);
     }
 
     public new IEnumerable<TSample> Data { get{ return base.Data.Cast<TSample>(); } }

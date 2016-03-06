@@ -31,6 +31,7 @@ using NFX.ServiceModel;
 using NFX.ApplicationModel;
 using NFX.Serialization.JSON;
 using NFX.Web.GeoLookup;
+using NFX.DataAccess.CRUD;
 
 namespace NFX.Wave
 {
@@ -98,6 +99,7 @@ namespace NFX.Wave
                      /// </summary>
                      internal void ___SetWorkMatch(WorkMatch match, JSONDataMap vars){m_Match = match; m_MatchedVars = vars;} 
 
+      private JSONDataMap m_WholeRequestAsJSONDataMap;
 
       internal bool m_Handled;
       private bool m_Aborted;
@@ -208,6 +210,22 @@ namespace NFX.Wave
       /// If variables have not been assigned yet returns empty object
       /// </summary>
       public dynamic Matched{ get { return new JSONDynamicObject(MatchedVars);} }
+
+
+      /// <summary>
+      /// Fetches matched vars, multipart content, url encoded content, or JSON body into one JSONDataMap bag.
+      /// The property does caching
+      /// </summary>
+      public JSONDataMap WholeRequestAsJSONDataMap
+      {
+        get
+        {
+          if (m_WholeRequestAsJSONDataMap==null)
+            m_WholeRequestAsJSONDataMap = GetWholeRequestAsJSONDataMap();
+          return m_WholeRequestAsJSONDataMap;
+        }
+      }
+
 
       /// <summary>
       /// Provides a thread-safe dictionary of items. The underlying collection is lazily allocated
@@ -400,10 +418,54 @@ namespace NFX.Wave
         App.Log.Write(msg);     
       }
 
+      /// <summary>
+      /// Returns true if the whole request (body or matched vars) contains any names matching any field names of the specified row
+      /// </summary>
+      public bool HasAnyVarsMatchingFieldNames(Row row)
+      {
+        if (row==null) return false;
+        
+        foreach(var fdef in row.Schema)
+         if (WholeRequestAsJSONDataMap.ContainsKey(fdef.Name)) return true;
+        
+        return false;
+      }
+
       public override string ToString()
       {
         return About;
       } 
+    #endregion
+
+
+    #region Protected
+
+      /// <summary>
+      /// Converts request body and MatchedVars into a single JSONDataMap. Users should call WholeRequestAsJSONDataMap.get() as it caches the result
+      /// </summary>
+      protected virtual JSONDataMap GetWholeRequestAsJSONDataMap()
+      {
+        if (!Request.HasEntityBody) return MatchedVars;
+
+        JSONDataMap result = null;
+
+        var ctp = Request.ContentType;
+        
+        //Multipart
+        if (ctp.IndexOf(ContentType.FORM_MULTIPART_ENCODED)>=0)
+          result = MultiPartContent.ToJSONDataMap(Request.InputStream, ctp,  Request.ContentEncoding);
+        else //Form URL encoded
+        if (ctp.IndexOf(ContentType.FORM_URL_ENCODED)>=0)
+          result = JSONDataMap.FromURLEncodedStream(new NFX.IO.NonClosingStreamWrap(Request.InputStream),
+                                                  Request.ContentEncoding); 
+        else//JSON
+        if (ctp.IndexOf(ContentType.JSON)>=0)
+          result = JSONReader.DeserializeDataObject(new NFX.IO.NonClosingStreamWrap(Request.InputStream),
+                                                  Request.ContentEncoding) as JSONDataMap;
+
+        return result==null ? MatchedVars : result.Append(MatchedVars);
+      }
+
     #endregion
 
   }

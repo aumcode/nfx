@@ -33,6 +33,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
             this.Region = new Rectangle(0, m_Y-2, host.Width, m_Y+2);
           }
 
+          public PlotPane Pane { get { return (PlotPane)Host; } }
+
           private TimeSeries.YLevel m_Level;
 
           private int m_Y;
@@ -40,81 +42,80 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           private float m_ScaleMin;
           private float m_ScaleMax;
 
-              private void computeCoords()
-              {
-                var pxTotalHeight = (int)(m_Host.Height / m_Host.Zoom);
-                var pxValue = (float)pxTotalHeight / (m_ScaleMax - m_ScaleMin);
+          private void computeCoords()
+          {
+            var pxTotalHeight = (int)(m_Host.Height / m_Host.Zoom);
+            var pxValue = (float)pxTotalHeight / (m_ScaleMax - m_ScaleMin);
          
-                m_Y = pxTotalHeight - (int)( ((m_Level.Value - m_ScaleMin) * pxValue ));
+            m_Y = pxTotalHeight - (int)( ((m_Level.Value - m_ScaleMin) * pxValue ));
                 
-              }
+          }
 
-              protected internal override void Paint(Graphics gr)
-              {           
-                //for now, no styles
-                  using(var pen = getContourPen(m_Level.HLineStyle))
-                  {
-                    gr.DrawLine(pen, 0, m_Y, Host.Width / Host.Zoom, m_Y); //horizontal line
+          protected internal override void Paint(Graphics gr)
+          {           
+            //for now, no styles
+
+            using(var pen = getContourPen(m_Level.HLineStyle))
+            {
+              gr.DrawLine(pen, 0, m_Y, Host.Width / Host.Zoom, m_Y); //horizontal line
                     
-                    
-                    if (Host.Zoom==1.0f)
-                    {
-                        var chart = ((PlotPane)Host).Chart;
-                        
-                        Color cbg = Color.Black; 
-                        Color ctxt = Color.White;
-
-                        var rw = chart.VRulerWidth;
-
-                        var x = chart.VRulerPosition== VRulerPosition.Left ? 0 : Width - rw;
-
-                        var th = Host.CurrentFontHeight;
-                        var txtRect = new RectangleF(x, m_Y-(th/2)-1, rw, th+2);
-                   
-                        var txtRect1 = new RectangleF(x, m_Y-(th/2)-1, rw, (th/2)+1);
-                        var txtRect2 = new RectangleF(x, m_Y, rw, (th/2)+1);
-
-
-                        const int ARROW_SZ = 8;
-                        const int PEN_ARROW_SZ = 6;
-
-
-                         using(var gb1 = new LinearGradientBrush(txtRect, pen.Color, cbg, 90))
-                         using(var gb2 = new LinearGradientBrush(txtRect, pen.Color, cbg, 270))
-                         using(var ap = new Pen(pen.Color, PEN_ARROW_SZ))
-                         using(var tbr = new SolidBrush(ctxt))
-                         {
-                           gr.SmoothingMode = SmoothingMode.AntiAlias;
-                           
-                           
-
-                           if (chart.VRulerPosition==VRulerPosition.Right)
-                           {
-                             ap.StartCap = LineCap.ArrowAnchor;
-                             gr.DrawLine(ap, x-ARROW_SZ, m_Y, x, m_Y);
-                           }
-                           else
-                           { 
-                             ap.EndCap = LineCap.ArrowAnchor;
-                             gr.DrawLine(ap, x+rw, m_Y, x+rw+ARROW_SZ, m_Y);
-                           }
-
-                           gr.FillRectangle(gb1, txtRect1);
-                           gr.FillRectangle(gb2, txtRect2);
-                      
-                           gr.DrawString(m_Level.DisplayValue, Host.Font, tbr, txtRect); 
-                         }
-                    }
-                  }
-              }
-
-              private Pen getContourPen(LineStyle style)
+              if (Host.Zoom==1.0f)
               {
-                  var result = new Pen(style.Color);
-                  result.Width = style.Width;
-                  result.DashStyle = style.DashStyle;
-                  return result;
+                var   chart = ((PlotPane)Host).Chart;
+                Color cbg   = m_Level.Style == null ? Color.Black : m_Level.Style.BGColor; 
+                Color ctxt  = m_Level.Style == null ? Color.White : m_Level.Style.ForeColor;
+
+                var rw = chart.VRulerWidth;
+
+                var x = chart.VRulerPosition== VRulerPosition.Left ? 0 : Width - rw;
+
+                var th = Host.CurrentFontHeight;
+                var txtRect = new RectangleF(x, m_Y-(th/2)-1, rw, th+2);
+                   
+                //var txtRect1 = new RectangleF(x, m_Y-(th/2)-1, rw, (th/2)+1);
+                //var txtRect2 = new RectangleF(x, m_Y, rw, (th/2)+1);
+
+
+                const int ARROW_SZ = 8;
+                const int PEN_ARROW_SZ = 6;
+
+                //using(var gb1 = new LinearGradientBrush(txtRect, pen.Color, cbg, 90))
+                //using(var gb2 = new LinearGradientBrush(txtRect, pen.Color, cbg, 270))
+                using(var gb  = new SolidBrush(pen.Color))
+                using(var ap  = new Pen(pen.Color, PEN_ARROW_SZ))
+                using(var tbr = new SolidBrush(ctxt))
+                {
+                  gr.SmoothingMode = SmoothingMode.AntiAlias;
+                           
+                           
+
+                  if (chart.VRulerPosition==VRulerPosition.Right)
+                  {
+                    ap.StartCap = LineCap.ArrowAnchor;
+                    gr.DrawLine(ap, x-ARROW_SZ, m_Y, x, m_Y);
+                  }
+                  else
+                  { 
+                    ap.EndCap = LineCap.ArrowAnchor;
+                    gr.DrawLine(ap, x+rw, m_Y, x+rw+ARROW_SZ, m_Y);
+                  }
+
+                  gr.FillRectangle(gb, txtRect);
+                  //gr.FillRectangle(gb2, txtRect2);
+                      
+                  gr.DrawString(m_Level.DisplayValue, Host.Font, tbr, txtRect); 
+                }
               }
+            }
+          }
+
+          private Pen getContourPen(LineStyle style)
+          {
+              var result = new Pen(style.Color);
+              result.Width = style.Width;
+              result.DashStyle = style.DashStyle;
+              return result;
+          }
         }
      #endregion
 
@@ -188,7 +189,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     {
       get 
       {
-         return m_PaneName.IsNotNullOrWhiteSpace() ? m_PaneName : DefaultPaneName;
+        return m_PaneName.IsNotNullOrWhiteSpace() ? m_PaneName : DefaultPaneName;
       }
     }
 
@@ -216,12 +217,9 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
   public abstract class SeriesView<TSeries, TSample> : SeriesView where TSeries : TimeSeries 
                                                                   where TSample : class
   {
-
     protected SeriesView(string name, int order, string paneName = null) : base(name, order, paneName)
     {
     }
-
-    
 
     protected virtual VScaleZoomAlign VScaleZoomAlignment { get{ return VScaleZoomAlign.Mid;} }
 
@@ -234,7 +232,6 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         var cdata = series as TSeries;
         if (cdata==null) throw new WFormsException("{0} requires {1} source".Args(GetType().FullName, typeof(TSeries).FullName));
 
-      
         var drawData = GetDataPerScroll(chart, cdata);
 
         if (!drawData.Any()) return 0;//nothing to draw
@@ -242,10 +239,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
         var x = chart.VRulerPosition == VRulerPosition.Left ? chart.VRulerWidth + 1 : 1;
 
-        if (pane.Zoom!=1.0f)
-        {
-          x = (int)(x  / pane.Zoom);
-        }
+        if (pane.Zoom != 1.0f)
+          x = (int)(x/pane.Zoom);
 
         var xcutof = chart.VRulerPosition == VRulerPosition.Right ? pane.Width - 1 - chart.VRulerWidth : pane.Width;
         var fitSamples = 0;
@@ -287,12 +282,10 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           }//switch
         }
 
-
         m_MinScale = minScale;
         m_MaxScale = maxScale;
 
         pane.SetMinMaxScale(minScale, maxScale, false);
-
 
         //1. Try to build whole view from 1 Element
         var elm = MakeSeriesElement(chart, pane, drawData, x, minScale, maxScale, maxSampleWidth, out fitSamples);

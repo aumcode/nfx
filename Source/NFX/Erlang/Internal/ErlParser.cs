@@ -193,11 +193,31 @@ namespace NFX.Erlang.Internal
               for (; i < fmt.Length && fmt[i - 1] != '>' && fmt[i] != '>'; ++i);
               if (i == fmt.Length)
                 break;
-              var end = ++i - (str ? 3 : 2);
-              var len = end - pos + 1;
-              var cnt = Encoding.UTF8.GetByteCount(fmt.ToCharArray(), pos, len);
-              var bytes = new byte[cnt];
-              Encoding.UTF8.GetBytes(fmt, pos, len, bytes, 0);
+              var end   = ++i - (str ? 3 : 2);
+              var len   = end - pos + 1;
+              byte[] bytes;
+              if (str)
+              {
+                var cnt = Encoding.UTF8.GetByteCount(fmt.ToCharArray(), pos, len);
+                bytes = new byte[cnt];
+                Encoding.UTF8.GetBytes(fmt, pos, len, bytes, 0);
+              }
+              else
+              {
+                var beg = pos - 2;
+                bytes   = fmt.Substring(pos, len)
+                             .Split(new char[] {',', ' '},
+                                    StringSplitOptions.RemoveEmptyEntries)
+                             .Select(s =>
+                             {
+                               var n = int.Parse(s);
+                               if (n < 0 || n > 255)
+                                 throw new ErlException
+                                  ("Invalid binary in format string: {0}".Args(fmt.Substring(beg, len+4)));
+                               return (byte)n;
+                             })
+                             .ToArray();
+              }
               result = new ErlBinary(bytes, 0, bytes.Length);
               pos = i+1;
             }

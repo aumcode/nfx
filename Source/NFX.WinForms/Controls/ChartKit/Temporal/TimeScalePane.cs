@@ -18,244 +18,278 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
-
 using NFX.Financial.Market;
 using NFX.WinForms.Elements;
 
 namespace NFX.WinForms.Controls.ChartKit.Temporal
 {
+  /// <summary>
+  /// Event handler for formatting the the time line text
+  /// </summary>
+  public delegate string TimeLineFormatEventHandler(TimeScalePane sender, TimeLineFormatEventArgs args);
 
   /// <summary>
   /// Provides a viewport for horizntal scale
   /// </summary>
   public class TimeScalePane : ElementHostControl
   {
-      private const int TICK_SPACE = 52;
+    internal const int DEFAULT_TICK_SPACE = 52;
 
-            public class Tick
-            {
-               public Tick(ITimeSeriesSample sample, int x, bool warp, bool dayChange){ Sample = sample; X = x; Warp = warp; DayChange = dayChange; }
-               public readonly ITimeSeriesSample Sample;
-               public readonly int X;
-               public readonly bool Warp;
-               public readonly bool DayChange;
+    public class Tick
+    {
+      public Tick(ITimeSeriesSample sample, int x, bool warp, bool dayChange)
+      {
+        Sample    = sample;
+        X         = x;
+        Warp      = warp;
+        DayChange = dayChange;
+      }
 
-            }
+      public readonly ITimeSeriesSample Sample;
+      public readonly int X;
+      public readonly bool Warp;
+      public readonly bool DayChange;
+    }
 
+    #region Time Cursor Element
 
-         #region Time Cursor Element
-            /// <summary>
-            /// Represents an element for candle mid line
-            /// </summary>
-            public class TimeCursorElement : Element
-            {
-              protected internal TimeCursorElement(TimeScalePane host) : base(host)
-              {
-                this.Region = new Rectangle(0, 0, TICK_SPACE, host.Height);
-              }
+    /// <summary>
+    /// Represents an element for candle mid line
+    /// </summary>
+    public class TimeCursorElement : Element
+    {
+      protected internal TimeCursorElement(TimeScalePane host) : base(host)
+      {
+        this.Region = new Rectangle(0, 0, Pane.Chart.TimeLineTickSpace, host.Height);
+      }
 
-                 private string m_Text;
+      private string m_Text;
 
-                 public void SetText(string text, int x)
-                 {
-                   m_Text = text; 
-                   m_Host.Invalidate(this.Region); 
-                   this.Region = new Rectangle(x - (Width / 2), 0, TICK_SPACE, Host.Height);
-                 } 
+      public TimeScalePane Pane { get { return (TimeScalePane)m_Host; } }
 
-                 protected internal override void Paint(Graphics gr)
-                 {           
-                     using(var font = new Font("Verdana", 6f))
-                      using(var sf = new StringFormat())
-                      {
-                        sf.Alignment = StringAlignment.Center;
-                        sf.LineAlignment = StringAlignment.Center; 
-                        
-                        gr.FillRectangle(Brushes.Orange, this.Region); 
-                        gr.DrawString(m_Text, font, Brushes.White, this.Region, sf);
-                      }
-                     
-                 }
-            }
-        #endregion
+      public void SetText(string text, int x)
+      {
+        m_Text = text;
+        m_Host.Invalidate(this.Region);
+        this.Region = new Rectangle(x - (Width/2), 0, Pane.Chart.TimeLineTickSpace, Host.Height);
+      }
 
+      protected internal override void Paint(Graphics gr)
+      {
+        using (var font    = new Font("Verdana", 6f))
+        using (var sf      = new StringFormat())
+        {
+          sf.Alignment     = StringAlignment.Center;
+          sf.LineAlignment = StringAlignment.Center;
+          gr.FillRectangle(Pane.Chart.TimeScaleSelectStyle.BackBrush, this.Region);
+          gr.DrawString(m_Text, font, Pane.Chart.TimeScaleSelectStyle.ForeBrush, this.Region, sf);
+        }
+      }
+    }
 
+    #endregion
 
-     internal TimeScalePane(TimeSeriesChart chart) : base()
-     {              
-       m_Chart = chart;
-       m_TimeCursor = new TimeCursorElement(this);
-     }
+    internal TimeScalePane(TimeSeriesChart chart)
+    {
+      m_Chart      = chart;
+      m_TimeCursor = new TimeCursorElement(this);
+      TickSpace    = DEFAULT_TICK_SPACE;
+    }
 
-     private TimeSeriesChart m_Chart;
+    #region Fields
+    private TimeSeriesChart   m_Chart;
+    private List<Tick>        m_Ticks;
+    private int               m_MouseCursorX;
+    private TimeCursorElement m_TimeCursor;
+    private bool?             m_AllowMultiLineTitle;
+    #endregion
 
-     private List<Tick> m_Ticks; 
-     private int m_MouseCursorX;
-     private TimeCursorElement m_TimeCursor;
+    #region Properties
 
-     public TimeSeriesChart Chart{ get{ return m_Chart;}}
+    public TimeSeriesChart    Chart { get { return m_Chart; } }
+    public IEnumerable<Tick>  Ticks { get { return m_Ticks; } }
 
-     public IEnumerable<Tick> Ticks { get{ return m_Ticks;}}
+    [Description("Determines if timeline title by default should be split to multiple lines")]
+    public bool AllowMultiLineTitle
+    {
+      get { return m_AllowMultiLineTitle ?? Chart.DefaultAllowMultiLineTitle; }
+      set { m_AllowMultiLineTitle = value; }
+    }
 
-     public int MouseCursorX
-     {
-       get{ return m_MouseCursorX;}
-     }
+    [Description("Tick space used to draw time line ticks")]
+    public int TickSpace { get; set; }
 
-     public void SetMouseCursorX(int x, bool force = false)
-     {
-         if (!force && m_MouseCursorX==x) return;
+    [Description("Event handler for formatting the the time line text")]
+    public event TimeLineFormatEventHandler TimeLineFormat;
 
-         foreach(var pane in m_Chart.Panes)
-          pane.Invalidate( new Rectangle(m_MouseCursorX-1, 0, 2, pane.Height) );
+    public int MouseCursorX { get { return m_MouseCursorX; } }
 
-         m_MouseCursorX = x;
+    #endregion
 
-         foreach(var pane in m_Chart.Panes)
-          pane.Invalidate( new Rectangle(m_MouseCursorX-1, 0, 2, pane.Height) );
+    public void SetMouseCursorX(int x, bool force = false)
+    {
+      if (!force && m_MouseCursorX == x) return;
 
-         var sample = m_Chart.MapXToSample(x);
-         if (sample!=null)
-         {
-           var ts = sample.TimeStamp;
-           m_TimeCursor.SetText( "{0:D2}/{1:D2}\n{2:D2}:{3:D2}:{4:D2}".Args(ts.Month, ts.Day, ts.Hour, ts.Minute, ts.Second), x);
-           m_TimeCursor.Visible = true;
-         }
-         else
-          m_TimeCursor.Visible = false;
-     }
+      foreach (var pane in m_Chart.Panes)
+        pane.Invalidate(new Rectangle(m_MouseCursorX - 1, 0, 2, pane.Height));
 
+      m_MouseCursorX = x;
 
-     internal void ComputeTicks(IEnumerable<ITimeSeriesSample> data, int maxSampleWidth)
-     {
+      foreach (var pane in m_Chart.Panes)
+        pane.Invalidate(new Rectangle(m_MouseCursorX - 1, 0, 2, pane.Height));
+
+      var sample = m_Chart.MapXToSample(x);
+      if (sample != null)
+      {
+        m_TimeCursor.SetText(OnTimeLineFormat(sample.TimeStamp, null, true), x);
+        m_TimeCursor.Visible = true;
+      }
+      else
+        m_TimeCursor.Visible = false;
+    }
+
+    protected virtual string OnTimeLineFormat(DateTime time, Tick priorTick, bool isCursor)
+    {
+      if (TimeLineFormat != null)
+        return TimeLineFormat(this, new TimeLineFormatEventArgs(time, priorTick, isCursor));
+      if (isCursor)
+        return "{0:D2}/{1:D2}{2}{3:D2}:{4:D2}:{5:D2}".Args
+               (time.Month, time.Day, AllowMultiLineTitle ? "\n" : " ", time.Hour, time.Minute, time.Second);
       
+      if (priorTick == null || priorTick.Sample.TimeStamp.Day != time.Day)
+        return "{0}/{1}{2}{3:D2}:{4:D2}:{5:D2}".Args
+               (time.Month, time.Day, AllowMultiLineTitle ? "\n" : " ", time.Hour, time.Minute, time.Second);
+      if (priorTick.Sample.TimeStamp.Hour != time.Hour)
+        return "{0:D2}:{1:D2}:{2:D2}".Args(time.Hour, time.Minute, time.Second);
 
-       m_Ticks = new List<Tick>();
-      
-       //x is in non-scalable coords
-       float x = m_Chart.VRulerPosition == VRulerPosition.Left ? m_Chart.VRulerWidth + 1 : 1;
+      return "{0:D2}:{1:D2}".Args(time.Minute, time.Second);
+    }
 
-       x += (maxSampleWidth / 2);
+    internal void ComputeTicks(IEnumerable<ITimeSeriesSample> data, int maxSampleWidth)
+    {
+      m_Ticks = new List<Tick>();
 
-       float xcutof = m_Chart.VRulerPosition == VRulerPosition.Right ? Width - 1 - m_Chart.VRulerWidth : Width;
-       
+      //x is in non-scalable coords
+      float x = m_Chart.VRulerPosition == VRulerPosition.Left ? m_Chart.VRulerWidth + 1 : 1; 
 
-       var scaledMaxSampleWidth = maxSampleWidth * m_Chart.Zoom;
+      x += (maxSampleWidth/2);
 
-       ITimeSeriesSample priorSample = null;
-       Tick priorTick = null;
-       int msDist = 0;
-       foreach(var sample in data)
-       {
-         var warp = false;
-         //WARP detection
-         if (priorSample!=null)
-         {
-           var dist = (int)((sample.TimeStamp - priorSample.TimeStamp).TotalMilliseconds);//positive because data is pre-ordered
-           if (msDist>0)
-           {
-             var delta = 2;
-             if (dist<2000) delta = 3;//more than 5x change
-             if( dist/msDist > delta) 
-             {
-              //WARP!
-               priorTick = new Tick(sample, (int)x, true, priorSample!=null ? priorSample.TimeStamp.DayOfYear != sample.TimeStamp.DayOfYear : false);
-               m_Ticks.Add( priorTick );
-               warp = true;
-             }
-             msDist = (dist + msDist) / 2;
-           }
-           else
-            msDist = dist;
-         }
+      var xcutof = m_Chart.VRulerPosition == VRulerPosition.Right ? Width - 1 - m_Chart.VRulerWidth : Width; 
 
-         if (!warp)//try to create regular scale notch
-         {
-           if (
-               (priorTick==null && x >= TICK_SPACE) ||
-               (priorTick!=null && (((x - priorTick.X) >= TICK_SPACE) || (priorSample.TimeStamp.DayOfYear != sample.TimeStamp.DayOfYear))  )
-              )
-           {
-             priorTick = new Tick(sample, (int)x, false, priorSample!=null ? priorSample.TimeStamp.DayOfYear != sample.TimeStamp.DayOfYear : false);
-             m_Ticks.Add(priorTick);
-           }
-         }
+      var scaledMaxSampleWidth = maxSampleWidth*m_Chart.Zoom;
 
-         priorSample = sample;
-         x += scaledMaxSampleWidth;
-         x += m_Chart.Zoom;
-         if (x>xcutof) break;
-       }
-
-     }
-    
-
-
-     protected override void OnPaint(PaintEventArgs e)
-     {
-          if (m_Ticks==null) return;
-
-          
-          var gr = e.Graphics;
-
-         // gr.Clear(Color.Black);
-
-          using(var font = new Font("Verdana", 6f))
-          using(var sf = new StringFormat())
+      ITimeSeriesSample priorSample = null;
+      Tick priorTick = null;
+      int msDist = 0;
+      foreach (var sample in data)
+      {
+        var warp = false;
+        //WARP detection
+        if (priorSample != null)
+        {
+          var dist = (int)((sample.TimeStamp - priorSample.TimeStamp).TotalMilliseconds);
+            //positive because data is pre-ordered
+          if (msDist > 0)
           {
-            sf.Alignment = StringAlignment.Center;
-            sf.LineAlignment = StringAlignment.Center;
-
-            var hh = Height / 2;
-            Tick prior = null;
-            foreach( var tick in m_Ticks)
+            var delta = 2;
+            if (dist < 2000) delta = 3; //more than 5x change
+            if (dist/msDist > delta)
             {
-            
-
-              var dt = tick.Sample.TimeStamp;
-              string txt;
-                   
-              if (prior==null || prior.Sample.TimeStamp.Day!=dt.Day)
-               txt = "{0}/{1}\n{2:D2}:{3:D2}:{4:D2}".Args(dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
-              else
-               if (prior.Sample.TimeStamp.Hour!=dt.Hour)
-                 txt = "{0:D2}:{1:D2}:{2:D2}".Args(dt.Hour, dt.Minute, dt.Second);
-               else
-                  txt = "{0:D2}:{1:D2}".Args(dt.Minute, dt.Second);
-                      
-
-              var rect = new RectangleF(tick.X, 0, TICK_SPACE, Height);
-
-              if (tick.Warp)
-              {
-               gr.FillRectangle(Brushes.Gray, rect);
-               gr.DrawLine(Pens.White, tick.X, 0, tick.X, Height);
-              }
-              else
-               gr.DrawLine(Pens.DimGray, tick.X, 0, tick.X, hh);
-
+              //WARP!
+              priorTick = new Tick(sample, (int)x, true,
+                                    priorSample != null
+                                      ? priorSample.TimeStamp.DayOfYear !=
+                                        sample.TimeStamp.DayOfYear
+                                      : false);
+              if (Chart.ShowTimeGaps)
+                m_Ticks.Add(priorTick);
               
-              gr.DrawString(txt, font, Brushes.White, rect, sf);
-
-              prior = tick;
+              warp = true;
             }
-          } 
+            msDist = dist; // (dist + msDist) / 2;
+          }
+          else
+            msDist = dist;
+        }
 
-          base.OnPaint(e);
-     }
+        if (!warp) //try to create regular scale notch
+        {
+          if (
+            (priorTick == null && x >= TickSpace) ||
+            (priorTick != null &&
+             (((x - priorTick.X) >= TickSpace) ||
+              (priorSample.TimeStamp.DayOfYear != sample.TimeStamp.DayOfYear)))
+            )
+          {
+            priorTick = new Tick(sample, (int)x, false,
+                                 priorSample != null && priorSample.TimeStamp.DayOfYear != sample.TimeStamp.DayOfYear);
+            m_Ticks.Add(priorTick);
+          }
+        }
 
-       private Pen getGridPen(LineStyle style)
-       {
-         var result = new Pen(style.Color);
-         result.Width = style.Width;
-         result.DashStyle = style.DashStyle;
-         return result;
-       }
+        priorSample = sample;
+        x += scaledMaxSampleWidth;
+        x += m_Chart.Zoom;
+        if (x > xcutof) break;
+      }
+    }
 
+    protected override void OnPaint(PaintEventArgs e)
+    {
+      if (m_Ticks == null) return;
+
+      var gr = e.Graphics;
+
+      gr.Clear(Chart.TimeScaleStyle.BGColor);
+
+      using (var sf = new StringFormat())
+      {
+        sf.Alignment     = StringAlignment.Center;
+        sf.LineAlignment = StringAlignment.Center;
+
+        var hh = Height/2;
+        Tick prior = null;
+        foreach (var tick in m_Ticks)
+        {
+          var txt  = OnTimeLineFormat(tick.Sample.TimeStamp, prior, false);
+          var rect = new RectangleF(tick.X, 0, TickSpace, Height);
+
+          if (tick.Warp)
+          {
+            gr.FillRectangle(Brushes.Gray, rect);
+            gr.DrawLine(Pens.White, tick.X, 0, tick.X, Height);
+          }
+          else
+            gr.DrawLine(m_Chart.GridLinePen, tick.X, 0, tick.X, hh);
+
+          gr.DrawString(txt, Chart.TimeScaleStyle.Font, Chart.TimeScaleStyle.ForeBrush, rect, sf);
+
+          prior = tick;
+        }
+      }
+
+      base.OnPaint(e);
+    }
   }
 
+  public class TimeLineFormatEventArgs : EventArgs
+  {
+    public TimeLineFormatEventArgs(DateTime time, TimeScalePane.Tick priorTick, bool isCursor)
+    {
+      PriorTick = priorTick;
+      Time      = time;
+      IsCursor  = isCursor;
+      Text      = string.Empty;
+    }
+
+    public readonly TimeScalePane.Tick PriorTick;
+    public readonly DateTime           Time;
+    public readonly bool               IsCursor;
+    public string                      Text;
+  }
 }

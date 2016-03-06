@@ -244,7 +244,8 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="IO\SlimFormat.cs" />
     <Compile Include="Log\Bin\Exceptions.cs" />
-    <Compile Include="Log\Bin\Primitives.cs" />
+    <Compile Include="Log\Bin\Metadata.cs" />
+    <Compile Include="Log\Bin\Format.cs" />
     <Compile Include="Log\Bin\SlimLogWriter.cs" />
     <Compile Include="Log\Bin\SlimLogReader.cs" />
     <Compile Include="Log\Bin\LogReader.cs" />

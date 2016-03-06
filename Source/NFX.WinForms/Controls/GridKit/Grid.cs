@@ -77,6 +77,16 @@ namespace NFX.WinForms.Controls.GridKit
          ColumnHidingAllowed = true;
                   
          m_CellView = new CellView() {   Parent = this , TabStop = false};
+
+         m_CellView.MouseClick       += (_, e) => this.OnMouseClick(e);
+         m_CellView.MouseDoubleClick += (_, e) => this.OnMouseDoubleClick(e);
+         m_CellView.MouseDown        += (_, e) => this.OnMouseDown(e);
+         m_CellView.MouseUp          += (_, e) => this.OnMouseUp(e);
+         m_CellView.MouseEnter       += (_, e) => this.OnMouseEnter(e);
+         m_CellView.MouseLeave       += (_, e) => this.OnMouseLeave(e);
+         m_CellView.MouseHover       += (_, e) => this.OnMouseHover(e);
+         m_CellView.MouseMove        += (_, e) => this.OnMouseMove(e);
+         m_CellView.Click            += (_, e) => this.OnClick(e);
          
          
          m_HScrollBar = new HScrollBar() {   Parent = this, TabStop = false, Minimum=0, SmallChange=1, LargeChange =1  };
@@ -325,7 +335,6 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns a style object for all data cells in the grid 
       /// </summary>
       //[Browsable(false)]
-      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style Style
       {
         get { return m_Style; }
@@ -336,7 +345,6 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns a style object for all header cells in the grid
       /// </summary>
       //[Browsable(false)]
-      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style HeaderStyle
       {
         get { return m_HeaderStyle; }
@@ -348,7 +356,6 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns a style object for all data cells in the grid which are in selected rows
       /// </summary>
       //[Browsable(false)]
-      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style SelectedStyle
       {
         get { return m_SelectedStyle; }
@@ -426,6 +433,7 @@ namespace NFX.WinForms.Controls.GridKit
       /// <summary>
       /// Returns reference to cellview - an area where cells are displayed
       /// </summary>
+      [Browsable(false)] 
       public CellView CellView
       {
         get { return m_CellView; }

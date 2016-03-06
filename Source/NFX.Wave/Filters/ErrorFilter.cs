@@ -157,6 +157,9 @@ namespace NFX.Wave.Filters
           var actual = error;
           if (actual is FilterPipelineException)
             actual = ((FilterPipelineException)actual).RootException;
+          
+          if (actual is MVCActionException)
+            actual = ((MVCActionException)actual).InnerException;
 
 
           var securityError = actual is NFX.Security.AuthorizationException || actual.InnerException is NFX.Security.AuthorizationException;

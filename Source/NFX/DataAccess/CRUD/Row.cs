@@ -640,10 +640,18 @@ namespace NFX.DataAccess.CRUD
                     if (error!=null) return error;
                 }
 
-                 if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
-                   if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription));
-
+                if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
+                {
+                   //For those VERY RARE cases when RegExpFormat may need to be applied to complex types, i.e. StringBuilder
+                   //set the flag in metadata to true, otherwise regexp gets matched only for STRINGS
+                   var complex = atr.Metadata.AttrByName("validate-format-regexp-complex-types").ValueAsBool(false);
+                   if (complex || value is string)
+                   {
+                     if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name,
+                         StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription ?? "Input format: {0}".Args(atr.FormatRegExp)));
+                   }
+                }
                      
                 return null;
             }

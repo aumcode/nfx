@@ -43,5 +43,10 @@ namespace NFX.WinForms.Controls.GridKit
        //  elm.Visible = true;
        //  }
      }
+
+     /// <summary>
+     /// Points to parent Grid that hosts this cell view
+     /// </summary>
+     public Grid Grid{ get { return (Grid)Parent; } }
   }
 }
