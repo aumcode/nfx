@@ -74,82 +74,82 @@ root
 }//root
 ";
 
- const string expected1=@"
-root
+ const string expected1=
+@"root
 {
   a=12
   b=true
-  c=45 
+  c=45
   sectionLoop
   {
     name=section_13
-    value=something 
+    value=something
   }
   sectionLoop
   {
     name=section_14
-    value=something 
+    value=something
   }
   sectionLoop
   {
     name=section_15
-    value=something 
+    value=something
   }
   fromSubLoop
   {
     name=section_1
-    value=something 
+    value=something
   }
   fromSubLoop
   {
     name=section_2
-    value=something 
+    value=something
   }
   fromSubLoopFOR_THREE
   {
     name=section_3
-    value=""3 gets special handling"" 
+    value=""3 gets special handling""
   }
   fromSubLoop
   {
     name=section_4
-    value=something 
+    value=something
   }
   fromSubLoop
   {
     name=section_5
-    value=something 
+    value=something
   }
   kerosine
-  { 
+  {
   }
   fromSubLoop
   {
     name=section_1
-    value=something 
+    value=something
   }
   fromSubLoop
   {
     name=section_2
-    value=something 
+    value=something
   }
   fromSubLoopFOR_THREE
   {
     name=section_3
-    value=""3 gets special handling"" 
+    value=""3 gets special handling""
   }
   fromSubLoop
   {
     name=section_4
-    value=something 
+    value=something
   }
   fromSubLoop
   {
     name=section_5
-    value=something 
+    value=something
   }
   benzin
-  { 
+  {
   }
 }";
 
@@ -362,66 +362,66 @@ schema{
  
 }";
 
-const string rschemaExpected=@"
-schema
+const string rschemaExpected=
+@"schema
 {
-  PK_COLUMN=counter 
+  PK_COLUMN=counter
   table=patient
-  { 
+  {
     column=$(/$PK_COLUMN)
     {
       type=TCounter
-      required=true 
+      required=true
     }
     column=resident_id
     {
       type=TMeaningfulID
-      required=true 
+      required=true
     }
     column=name
     {
-      type=THumanName 
+      type=THumanName
     }
     column=change_user_id
     {
       type=TMeaningfulID
-      required=true 
+      required=true
     }
     column=change_date
     {
       type=TTimeStamp
-      required=true 
+      required=true
     }
   }
   table=charge
-  { 
+  {
     column=$(/$PK_COLUMN)
     {
       type=TCounter
-      required=true 
+      required=true
     }
     column=transaction_date
     {
       type=TTimeStamp
-      required=true 
+      required=true
     }
     column=description
     {
-      type=TDescription 
+      type=TDescription
     }
     column=amount
     {
-      type=TMonetaryAmount 
+      type=TMonetaryAmount
     }
     column=change_user_id
     {
       type=TMeaningfulID
-      required=true 
+      required=true
     }
     column=change_date
     {
       type=TTimeStamp
-      required=true 
+      required=true
     }
   }
 }";

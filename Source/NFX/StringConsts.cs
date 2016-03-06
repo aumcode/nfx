@@ -180,6 +180,14 @@ namespace NFX
     public const string SLIM_STREAM_CORRUPTED_ERROR = "Slim data stream is corrupted: ";  
 
     public const string SECDB_STREAM_CORRUPTED_ERROR = "SecDB data stream is corrupted: ";  
+
+
+    public const string BINLOG_STREAM_NULL_ERROR = "BinLog stream is null: ";  
+    public const string BINLOG_STREAM_CANT_SEEK_WRITE_ERROR = "BinLog stream can not seek or can not write: ";  
+    public const string BINLOG_STREAM_CORRUPTED_ERROR = "BinLog data stream is corrupted: ";  
+    public const string BINLOG_READER_FACTORY_ERROR = "BinLog reader factory error: ";  
+    public const string BINLOG_READER_TYPE_MISMATCH_ERROR = "BinLog reader type mismatched. Class: '{0}' Stream: '{1}'";  
+    public const string BINLOG_BAD_READER_TYPE_ERROR = "BinLog header contains reader type which could not be loaded or is not a valid LogReader derivative: ";  
              
 
     public const string SECURITY_AUTHROIZATION_ERROR =
@@ -757,6 +765,10 @@ namespace NFX
     public const string CRUD_FIELD_VALUE_MAX_LENGTH_ERROR = "Field value exceeds max length";
 
     public const string CRUD_FIELD_VALUE_SCREEN_NAME_ERROR = "Field value is not a valid screen name ID";
+
+    public const string CRUD_FIELD_VALUE_EMAIL_ERROR = "Field value is not a valid EMail";
+
+    public const string CRUD_FIELD_VALUE_PHONE_ERROR = "Field value is not a valid Telephone";
 
     public const string CRUD_FIELD_VALUE_REGEXP_ERROR = "Field value is not valid per defined format: {0}";
 

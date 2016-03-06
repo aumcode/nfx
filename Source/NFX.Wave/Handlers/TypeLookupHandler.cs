@@ -268,6 +268,17 @@ namespace NFX.Wave.Handlers
              if (result.IsNullOrWhiteSpace())
               result = DefaultTypeName;
 
+             //20160217 DKh
+             var match = work.Match;
+             if (match!=null && match.TypeNsPrefix.IsNotNullOrWhiteSpace())
+             {
+                var pfx = match.TypeNsPrefix;
+                
+                if (pfx[pfx.Length-1]!='/' && pfx[pfx.Length-1]!='\\') pfx = pfx + '/';
+                
+                result = pfx + result;
+             }
+
              return result;
            }
 

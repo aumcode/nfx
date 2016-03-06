@@ -19,6 +19,8 @@
 // This code is derived from:
 // https://github.com/saleyn/otp.net/blob/master/Otp/Erlang/String.cs
 using System;
+using System.Linq;
+using System.Text;
 
 namespace NFX.Erlang
 {
@@ -120,6 +122,16 @@ namespace NFX.Erlang
 
     public string ToString(bool withQuotes)
     {
+      var n = m_Value.Length-1;
+      var printable = m_Value.All(c => (byte)c >= 10);
+      if (!printable)
+      {
+        var s = new StringBuilder();
+        s.Append('[');
+        m_Value.ForEach((c, i) => { s.Append((byte)c); if (i != n) s.Append(','); });
+        s.Append(']');
+        return s.ToString();
+      }
       return withQuotes ? string.Format("\"{0}\"", m_Value) : m_Value;
     }
 

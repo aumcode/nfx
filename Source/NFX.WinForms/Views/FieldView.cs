@@ -58,8 +58,8 @@ namespace NFX.WinForms.Views
   
   
     #region .ctor
-     public FieldView() : base ()
-     {
+      public FieldView() : base ()
+      {
         m_CaptionElement = new TextLabelElement(this);
         m_CaptionElement.FieldControlContext = this;
         m_CaptionElement.Text = DEFAULT_FIELD_CAPTION;
@@ -67,50 +67,45 @@ namespace NFX.WinForms.Views
         m_SymbolElement = new SymbolElement(this);
         m_SymbolElement.FieldControlContext = this;
         m_SymbolElement.SymbolType = SymbolType.Diamond;
-        m_SymbolElement.Visible = false;
-     }
+        m_SymbolElement.Visible    = false;
+      }
 
-     protected override void Dispose(bool disposing)
-     {
+      protected override void Dispose(bool disposing)
+      {
         base.Dispose(disposing);
         HideErrorBalloon();//20120523DKh
         destroyDataEntryElement();
-     }
+      }
      
     #endregion
     
     #region Private Fields
     
-        private TextLabelElement  m_CaptionElement;
-        private Element m_DataEntryElement;
-        private SymbolElement m_SymbolElement;
-        private InternalTextBox  m_InternalTextBox;
+      private TextLabelElement  m_CaptionElement;
+      private Element           m_DataEntryElement;
+      private SymbolElement     m_SymbolElement;
+      private InternalTextBox   m_InternalTextBox;
              
-              private ControlType m_ControlType;
-              private ControlType m_ActualControlType = ControlType.None;
+      private ControlType       m_ControlType;
+      private ControlType       m_ActualControlType  = ControlType.None;
               
-              private CaptionPlacement m_CaptionPlacement;
-              private StringAlignment m_CaptionAlignment;
-              private int m_CaptionHIndent = CAPTION_HINDENT;
-              
-              private int m_LineCount = 1;
-              private int m_ElementHSpacing = ELEMENT_HSPACING;
-              private int m_ElementVSpacing = ELEMENT_VSPACING;
+      private CaptionPlacement  m_CaptionPlacement;
+      private StringAlignment   m_CaptionAlignment;
+      private int               m_CaptionHIndent     = CAPTION_HINDENT;
 
-              private string m_DisplayFormat = string.Empty;
+      private int               m_LineCount          = 1;
+      private int               m_ElementHSpacing    = ELEMENT_HSPACING;
+      private int               m_ElementVSpacing    = ELEMENT_VSPACING;
+
+      private string            m_DisplayFormat      = string.Empty;
               
-              private TextHAlignment m_TextHAlignment = TextHAlignment.Controller;
+      private TextHAlignment    m_TextHAlignment     = TextHAlignment.Controller;
               
-              private bool m_ComboButtonVisible = true;
+      private bool              m_ComboButtonVisible = true;
               
     #endregion
- 
- 
-    
     
     #region Properties
-    
-      
       
       /// <summary>
       /// Determines data-entry control type. When property is set to "Auto", FieldView will automatically determine
@@ -131,7 +126,6 @@ namespace NFX.WinForms.Views
          }
       }
 
-
       /// <summary>
       /// Actual data-entry control type. Property value is infered from field when "ControlType"  is "Auto"
       /// </summary>
@@ -140,8 +134,6 @@ namespace NFX.WinForms.Views
       {
         get { return m_ActualControlType; }
       }
-      
-      
 
       /// <summary>
       /// Determines where caption label is placed relative to entry control
@@ -320,24 +312,19 @@ namespace NFX.WinForms.Views
         }
       }
 
-
-      
-
-
-
       /// <summary>
       /// Indicates whether control is able to display multiple lines of text
       /// </summary>
       [Browsable(false)]
-      public override bool Multiline
-      {
-        get
-        {
-          return m_LineCount>1;
-        }
-      }
-    
-    
+      public override bool Multiline { get { return m_LineCount>1; } }
+
+    /// <summary>
+    /// Determines character casing
+    /// </summary>
+    [Category(StringConsts.VIEW_CATEGORY),
+     Description("Determines character casing")]
+    public CharacterCasing CharCase { get; set; }
+
     #endregion
  
  
@@ -876,8 +863,8 @@ namespace NFX.WinForms.Views
                         {
                           m_InternalTextBox.ScrollBars = ScrollBars.None;   
                           m_InternalTextBox.WordWrap = false;
-                        }  
-                          
+                        }
+                        m_InternalTextBox.CharacterCasing = CharCase;
                         m_InternalTextBox.BackColor = renderer.TextBoxBackgroundColor;       
                  }//m_InternalTextBox!=null
                  
@@ -1092,6 +1079,8 @@ namespace NFX.WinForms.Views
           }  
 
           m_CaptionElement.Text = Field.Description;
+          if (Field.LineCount > 1)
+            m_LineCount = Field.LineCount;
 // TODO: Replace with lookup drill-down-navigation in future          
 m_CaptionElement.IsHyperlink = true;
 
@@ -1409,14 +1398,6 @@ m_CaptionElement.IsHyperlink = true;
     
     #endregion
 
-
-
-
-
-
-
-
-
      //#################################################################################################################    
      #region Private FieldContextControl Binding Class
 
@@ -1459,12 +1440,13 @@ m_CaptionElement.IsHyperlink = true;
 
          if (needsInteractability)
          {
-             Owner.setInteractability();
+           Owner.setInteractability();
          }
 
          if (needsLayout)
          {
            Owner.m_CaptionElement.Text = Field.Description;
+           Owner.LineCount = Field.LineCount;
            Owner.LayoutElements();
          }
 
@@ -1481,7 +1463,6 @@ m_CaptionElement.IsHyperlink = true;
 
          }
 
-
          Owner.Invalidate(); 
 
          needsData = false;
@@ -1491,16 +1472,12 @@ m_CaptionElement.IsHyperlink = true;
 
        }
 
-
        protected override void BindingStatusChanged()
        {
          base.BindingStatusChanged();
 
          Owner.rebuild();
        } 
-       
-       
-       
 
        protected override bool DesignTime
        {
@@ -1512,18 +1489,7 @@ m_CaptionElement.IsHyperlink = true;
 
      }
 
-
      #endregion
     //#################################################################################################################        
-
-
-    
-  
-  
-  
   }
-  
-  
-  
-  
 }

@@ -40,5 +40,24 @@ namespace NFX.DataAccess.MySQL
             Connection = cnn;
             Transaction = trans;
        }
+
+
+       /// <summary>
+       /// Based on store settings, converts CLR value to MySQL-acceptable value, i.e. GDID -> BYTe[].
+       /// </summary>
+       public object CLRValueToDB(MySQLDataStoreBase store, object value, out MySqlDbType? convertedDbType)
+       {
+          return CRUDGenerator.CLRValueToDB(DataStore, value, out convertedDbType);
+       }
+
+       /// <summary>
+       /// Based on store settings, converts query parameters into MySQL-acceptable values, i.e. GDID -> BYTe[].
+       /// This function is not idempotent
+       /// </summary>
+       public void ConvertParameters(MySqlParameterCollection pars)
+       {
+          CRUDGenerator.ConvertParameters(DataStore, pars);
+       }
+
     }
 }

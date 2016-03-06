@@ -207,7 +207,7 @@ var WAVE = (function(){
     
     //Capitalizes first chars after spaces or dots, otionally converting chars in between to lower case
     published.strCaps = function(str, norm){ 
-        //this doe snot use Regexp because regexp does not detect words correctly for non-english languages
+        //this does not use Regexp because regexp does not detect words correctly for non-english languages
         if (published.strEmpty(str)) return str;
         var c;
         var result = "";

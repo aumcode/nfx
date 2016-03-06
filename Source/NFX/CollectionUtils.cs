@@ -49,6 +49,22 @@ namespace NFX
     }
 
     /// <summary>
+    /// Runs some method over each element of src sequence
+    /// </summary>
+    /// <typeparam name="T">Sequence item type</typeparam>
+    /// <param name="src">Source sequence</param>
+    /// <param name="action">Method to call on each element and its sequence number</param>
+    /// <returns>Source sequence (to have ability to chain similar calls)</returns>
+    public static IEnumerable<T> ForEach<T>(this IEnumerable<T> src, Action<T, int> action)
+    {
+      int i = 0;
+      foreach (T item in src)
+        action(item, i++);
+
+      return src;
+    }
+
+    /// <summary>
     /// Add all values from range sequence to src IDictionary. Source is actually modified.
     /// </summary>
     /// <typeparam name="TKey">Type of key</typeparam>
@@ -63,5 +79,42 @@ namespace NFX
 
       return src;
     }
+
+
+    /// <summary>
+    /// Takes all elements except for last element from the given source
+    /// </summary>
+    public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source)
+    {
+      var buffer = default(T);
+      var buffered = false;
+
+      foreach(var x in source)
+      {
+        if (buffered)
+          yield return buffer;
+
+        buffer = x;
+        buffered = true;
+      }
+    }
+
+    /// <summary>
+    /// Takes all but last N elements from the source
+    /// </summary>
+    public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int n)
+    {
+      var buffer = new Queue<T>(n + 1);
+
+      foreach(var x in source)
+      {
+        buffer.Enqueue(x);
+
+        if (buffer.Count == n + 1)
+          yield return buffer.Dequeue();
+      }
+    }
+
+
   }
 }

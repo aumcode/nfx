@@ -30,6 +30,16 @@ namespace NFX.NUnit
     public class MiscUtilsTest
     {
         [TestCase]
+        public void SkipLastTest()
+        {
+            var Seq = Enumerable.Range(1, 5);
+            Assert.AreEqual("1,2,3,4", string.Join(",", Seq.SkipLast().ToArray()));
+            Assert.AreEqual("1,2,3,4", string.Join(",", Seq.SkipLast(1).ToArray()));
+            Assert.AreEqual("1,2,3",   string.Join(",", Seq.SkipLast(2).ToArray()));
+            Assert.AreEqual("",        string.Join(",", Seq.SkipLast(5).ToArray()));
+        }
+
+        [TestCase]
         public void ReadWriteBEShortTestStream()
         {
             var ms = new MemoryStream();

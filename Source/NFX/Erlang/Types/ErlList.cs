@@ -82,7 +82,14 @@ namespace NFX.Erlang
       /// </summary>
       public override bool Equals(IErlObject o)
       {
-        return o is ErlList ? Equals((ErlList)o) : false;
+        if (o is ErlList) return Equals((ErlList)o);
+        if (o is ErlString)
+        {
+          var rhs = ((ErlString)o).Value;
+          if (rhs.Length != m_Items.Count) return false;
+          return !rhs.Where((t, i) => !m_Items[i].IsInt() || (int)t != m_Items[i].ValueAsInt).Any();
+        }
+        return false;
       }
 
       /// <summary>

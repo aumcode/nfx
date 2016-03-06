@@ -36,46 +36,31 @@ namespace NFX.Security
       /// </summary>
       public sealed class Rights
       {
-            #region Static
+        public const string CONFIG_ROOT_SECTION = "rights";
 
-                  private static Rights m_NoneInstance = new Rights( new MemoryConfiguration() );
+        private static Rights m_NoneInstance = new Rights( Configuration.NewEmptyRoot(CONFIG_ROOT_SECTION).Configuration );
 
-                  /// <summary>
-                  /// An instance that signifies an absence of any rights at all - complete access denied
-                  /// </summary>
-                  public static Rights None
-                  {
-                    get
-                    {
-                      return m_NoneInstance;
-                    }
-                  }
+        /// <summary>
+        /// An instance that signifies an absence of any rights at all - complete access denied
+        /// </summary>
+        public static Rights None
+        {
+          get
+          {
+            return m_NoneInstance;
+          }
+        }
     
+        public Rights(Configuration data)
+        {
+          m_Data = data;
+        }
     
-            #endregion
-  
-            #region .ctor
+        private Configuration m_Data;
     
-                  public Rights(Configuration data)
-                  {
-                     m_Data = data;
-                  }
-    
-            #endregion
-    
-            #region Private Props/Members
-
-                private Configuration m_Data;
-    
-            #endregion
-    
-            #region Properties
-
-              public IConfigSectionNode Root
-              {
-                get { return m_Data.Root; }
-              }
-
-            #endregion
+        public IConfigSectionNode Root
+        {
+          get { return m_Data.Root; }
+        }
   }
 }

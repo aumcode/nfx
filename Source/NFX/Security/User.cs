@@ -34,59 +34,54 @@ namespace NFX.Security
       [Serializable]
       public class User : IIdentity, IPrincipal, IDeserializationCallback
       {
-            #region Static
-              private static User m_FakeUserInstance;
+        #region Static
+          private static readonly User s_FakeUserInstance = new User(BlankCredentials.Instance, 
+                                              new AuthenticationToken(), 
+                                              UserStatus.Invalid,
+                                                "John Doe", 
+                                                "Fake user", 
+                                                NFX.Security.Rights.None);
 
-              /// <summary>
-              /// Returns default instance of the fake user that has no rights
-              /// </summary>
-              public static User Fake
-              {
-                get
-                {
-                  if (m_FakeUserInstance == null)
-                    m_FakeUserInstance = new User(BlankCredentials.Instance, 
-                                                  new AuthenticationToken(), 
-                                                  UserStatus.Invalid,
-                                                   "John Doe", 
-                                                   "Fake user", 
-                                                   NFX.Security.Rights.None);
-
-                  return m_FakeUserInstance;
-                }
-              }
-            #endregion
+          /// <summary>
+          /// Returns default instance of the fake user that has no rights
+          /// </summary>
+          public static User Fake{ get{ return s_FakeUserInstance; } }
+        #endregion
     
     
-            #region .ctor
-              private User() { }
+        #region .ctor
+          private User() { } //for quicker serialization
     
-              public User(Credentials credentials, 
-                          AuthenticationToken token,
-                          UserStatus status, 
-                          string name,
-                          string descr,
-                          Rights rights)
-              {
-                  m_Credentials = credentials;
-                  m_AuthenticationToken = token;
-                  m_Status = status;
-                  m_Name = name;
-                  m_Description = descr;
-                  m_Rights = rights;
-              }
+          public User(Credentials credentials, 
+                      AuthenticationToken token,
+                      UserStatus status, 
+                      string name,
+                      string descr,
+                      Rights rights)
+          {
+              m_Credentials = credentials;
+              m_AuthenticationToken = token;
+              m_Status = status;
+              m_Name = name;
+              m_Description = descr;
+              m_Rights = rights;
+              m_StatusTimeStampUTC = App.TimeSource.UTCNow;
+          }
       
-              public User(Credentials credentials,
-                          AuthenticationToken token, 
-                          string name,
-                          Rights rights) : this(credentials, token, UserStatus.User, name, null, rights)
-              {
+          public User(Credentials credentials,
+                      AuthenticationToken token, 
+                      string name,
+                      Rights rights) : this(credentials, token, UserStatus.User, name, null, rights)
+          {
           
-              }
-            #endregion
+          }
+        #endregion
   
   
         #region Private Props/Members
+
+          private DateTime m_StatusTimeStampUTC;
+
           private Credentials m_Credentials;
           private AuthenticationToken m_AuthenticationToken;
 
@@ -95,100 +90,107 @@ namespace NFX.Security
           
           private string m_Description;
           
-          [NonSerialized]
+          [NonSerialized]//Important, rights are NOT serializable
           private Rights m_Rights;
           
         #endregion
   
   
-    #region Properties
-
-            public Credentials Credentials
-            {
-              get { return m_Credentials ?? BlankCredentials.Instance; }
-            }
-
-            public AuthenticationToken AuthToken
-            {
-              get { return m_AuthenticationToken; }
-            }
-
-            public string Name
-            {
-              get { return m_Name ?? string.Empty; }
-            }
-
-            public string Description
-            {
-              get { return m_Description ?? string.Empty; }
-            }
-
-            public UserStatus Status
-            {
-              get { return m_Status; }
-            }
-
-
+        #region Properties
             
-
-            /// <summary>
-            /// Returns data bag that contains user rights. This is a framework-only internal property
-            ///  which should not be used by application developers. This bag may get populated fully-or-partially
-            ///   by ISecurityManager implementation. Use User[permission] indexer or Application.SecurityManager.Authorize() 
-            ///    to obtain AccessLevel
-            /// </summary>
-            public Rights Rights
-            {
-              get { return m_Rights ?? NFX.Security.Rights.None; }
-            }
-
-            /// <summary>
-            /// Authorizes user to specified permission.
-            /// Note: this authorization call returns AccessLevel object that may contain a complex data structure.
-            /// The final assertion of user's ability to perform a certain action is encapsulated in Permission.Check() method.
-            /// Call Permission.AuthorizeAndGuardAction(MemberInfo, ISession) to guard classes and methods from unauthorized access
-            /// </summary>
-            public AccessLevel this[Permission permission]
-            {
-                get { return App.SecurityManager.Authorize(this, permission); }
-            }
-
-
-    #endregion
-
-    #region Pub
+          /// <summary>
+          /// Captures timestamp when this user was set to current status (created/set rights)
+          /// Security managers may elect to reftech user rights after some period
+          /// </summary>
+          public DateTime StatusTimeStampUTC
+          {
+            get{ return m_StatusTimeStampUTC;}
+          }
             
-            /// <summary>
-            /// Makes user invalid
-            /// </summary>
-            public void Invalidate()
+          public Credentials Credentials
+          {
+            get { return m_Credentials ?? BlankCredentials.Instance; }
+          }
+
+          public AuthenticationToken AuthToken
+          {
+            get { return m_AuthenticationToken; }
+          }
+
+          public string Name
+          {
+            get { return m_Name ?? string.Empty; }
+          }
+
+          public string Description
+          {
+            get { return m_Description ?? string.Empty; }
+          }
+
+          public UserStatus Status
+          {
+            get { return m_Status; }
+          }
+
+
+          /// <summary>
+          /// Returns data bag that contains user rights. This is a framework-only internal property
+          ///  which should not be used by application developers. This bag may get populated fully-or-partially
+          ///   by ISecurityManager implementation. Use User[permission] indexer or Application.SecurityManager.Authorize() 
+          ///    to obtain AccessLevel
+          /// </summary>
+          public Rights Rights
+          {
+            get { return m_Rights ?? NFX.Security.Rights.None; }
+          }
+
+          /// <summary>
+          /// Authorizes user to specified permission.
+          /// Note: this authorization call returns AccessLevel object that may contain a complex data structure.
+          /// The final assertion of user's ability to perform a certain action is encapsulated in Permission.Check() method.
+          /// Call Permission.AuthorizeAndGuardAction(MemberInfo, ISession) to guard classes and methods from unauthorized access
+          /// </summary>
+          public AccessLevel this[Permission permission]
+          {
+              get { return App.SecurityManager.Authorize(this, permission); }
+          }
+        #endregion
+
+        #region Pub
+            
+          /// <summary>
+          /// Makes user invalid
+          /// </summary>
+          public void Invalidate()
+          {
+            m_Status = UserStatus.Invalid;
+          }
+
+          /// <summary>
+          /// Framework-internal. Do not call
+          /// </summary>
+          public void ___update_status(
+                        UserStatus status, 
+                        string name,
+                        string descr,
+                        Rights rights)
             {
-              m_Status = UserStatus.Invalid;
+                if (object.ReferenceEquals(this, s_FakeUserInstance)) return;//Fake user is immutable
+                m_Status = status;
+                m_Name = name;
+                m_Description = descr;
+                m_Rights = rights;
+                m_StatusTimeStampUTC = App.TimeSource.UTCNow;
             }
 
-            /// <summary>
-            /// Framework-internal. Do not call
-            /// </summary>
-            public void ___reset_data(
-                          UserStatus status, 
-                          string name,
-                          string descr,
-                          Rights rights)
-              {
-                  m_Status = status;
-                  m_Name = name;
-                  m_Description = descr;
-                  m_Rights = rights;
-              }
+
+          public override string ToString()
+          {
+            return "[{0}]{1},{2}".Args(Status, Name, Description);
+          }
 
 
-            public override string ToString()
-            {
-              return "[{0}]{1},{2}".Args(Status, Name, Description);
-            }
-
-
-    #endregion
+        #endregion
 
     #region IIdentity Members
 

@@ -86,7 +86,7 @@ namespace NFX
                                    Func<string, string, bool> amorphousFieldFilter = null) where TRow : Row
     {
       if (source==null) return null;
-      var copy = Row.MakeRow(source.Schema, typeof(TRow));
+      var copy = Row.MakeRow(source.Schema, source.GetType());//must be GetType() not typeof() as we want to clone possibly more derived row as specified by the instance
       source.CopyFields(copy, includeAmorphousData, invokeAmorphousAfterLoad, fieldFilter, amorphousFieldFilter);
       return (TRow)copy;
     }

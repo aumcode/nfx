@@ -116,7 +116,8 @@ namespace NFX.RecordModel
      private bool m_PreEdit_Overridden;
      
      private int m_LogicalOrder;
-     
+     private int m_LineCount;
+     private CharCasing m_CharCase;
      private Exception m_CalculationError;
      private Exception m_PreEdit_CalculationError;
      
@@ -477,8 +478,62 @@ namespace NFX.RecordModel
      }
 
      /// <summary>
-     /// Indicates whether a field was marked. This property is usually used to implement user-selectable fields 
+     /// Determines if a field is multi-line
      /// </summary>
+     [Description("When greater than 1 this is a multiline field")]
+     [DefaultValue("")]
+     public int LineCount
+     {
+       get { return m_LineCount; }
+       set
+       {
+         if (!Constructed)
+         {
+           m_LineCount = value;
+           return;
+         }
+         
+         if (m_LineCount!=value)
+         {
+           DisableBindings();
+           m_LineCount = value;
+           AddNotification(new PresentationChangeNotification(this));
+           EnableBindings();
+         }
+       }
+     }
+
+     public enum CharCasing
+     {
+       Normal,
+       Upper,
+       Lower
+     }
+
+     [Description("Sets character input casing")]
+     public CharCasing CharCase
+     {
+       get { return m_CharCase; }
+       set
+       {
+         if (!Constructed)
+         {
+           m_CharCase = value;
+           return;
+         }
+         
+         if (m_CharCase != value)
+         {
+           DisableBindings();
+           m_CharCase = value;
+           AddNotification(new PresentationChangeNotification(this));
+           EnableBindings();
+         }
+       }
+     }
+
+     /// <summary>
+     /// Indicates whether a field was marked. This property is usually used to implement user-selectable fields 
      [Category(CoreConsts.PRESENTATION_CATEGORY),
      Description("Indicates whether a field was marked. This property is usually used to implement user-selectable fields"),
      DefaultValue(false)]

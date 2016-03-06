@@ -90,39 +90,11 @@ namespace NFX.DataAccess.MySQL
                     using (reader)
                     {
                       Schema.FieldDef[] toLoad;
-                      return getSchema(target, query, reader, out toLoad);
+                      return GetSchemaForQuery(target, query, reader, m_Source, out toLoad);
                     }//using reader
                 }//using command
             }
 
-
-                        private Schema getSchema(string target, Query query, MySqlDataReader reader, out Schema.FieldDef[] toLoad)
-                        {
-                          Schema schema;
-                          var rtp = query.ResultRowType;
-
-                          if (rtp != null && typeof(TypedRow).IsAssignableFrom(rtp))
-                            schema = Schema.GetForTypedRow(query.ResultRowType);
-                          else
-                            schema = GetSchemaFromReader(query.Name, m_Source, reader); 
-                      
-                          //determine what fields to load
-                          toLoad = new Schema.FieldDef[reader.FieldCount];
-                          for (int i = 0; i < reader.FieldCount; i++)
-                          {
-                            var name = reader.GetName(i);
-                            var fdef = schema[name];
-                            if (fdef==null) continue;
-                            var attr =  fdef[target];
-                            if (attr!=null)
-                            {
-                                if (attr.StoreFlag!=StoreFlag.LoadAndStore && attr.StoreFlag!=StoreFlag.OnlyLoad) continue;
-                            }
-                            toLoad[i] = fdef;
-                          }
-
-                          return schema;
-                        }
 
             public Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
             {
@@ -134,8 +106,6 @@ namespace NFX.DataAccess.MySQL
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
                 var target = ctx.DataStore.TargetName;
-
-                Rowset result = null;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
@@ -161,37 +131,9 @@ namespace NFX.DataAccess.MySQL
                         throw;
                     }
 
-
                     using (reader)
-                    {
-                      Schema.FieldDef[] toLoad;
-                      Schema schema = getSchema(target, query, reader, out toLoad);
-
-                      result = new Rowset(schema);
-                      while(reader.Read())
-                      {
-                        var row = Row.MakeRow(schema, query.ResultRowType);
-                        
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            var fdef = toLoad[i];
-                            if (fdef==null) continue;
-
-                            var val = reader.GetValue(i);
-                            if (fdef.NonNullableType==typeof(bool))
-                                row[fdef.Order] = val.AsNullableBool();
-                            else
-                                row[fdef.Order] = val;
-                        }
-
-                        result.Add( row );
-                        if (oneRow) break;
-                      }
-                    }//using reader
-
+                      return PopulateRowset(reader, target, query, m_Source, oneRow);
                 }//using command
-
-               return result;
             }
 
             public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
@@ -233,16 +175,42 @@ namespace NFX.DataAccess.MySQL
                return TaskUtils.AsCompletedTask( () => this.ExecuteWithoutFetch(context, query));
             }
 
-
-
-
-
-
-
         #endregion
 
         #region Static Helpers
 
+            /// <summary>
+            /// Reads data from reader into rowset. th reader is NOT disposed 
+            /// </summary>
+            public static Rowset PopulateRowset(MySqlDataReader reader, string target, Query query, QuerySource qSource, bool oneRow)
+            {
+              Schema.FieldDef[] toLoad;
+              Schema schema = GetSchemaForQuery(target, query, reader, qSource, out toLoad);
+
+              var result = new Rowset(schema);
+              while(reader.Read())
+              {
+                var row = Row.MakeRow(schema, query.ResultRowType);
+                        
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    var fdef = toLoad[i];
+                    if (fdef==null) continue;
+
+                    var val = reader.GetValue(i);
+                    if (fdef.NonNullableType==typeof(bool))
+                        row[fdef.Order] = val.AsNullableBool();
+                    else
+                        row[fdef.Order] = val;
+                }
+
+                result.Add( row );
+                if (oneRow) break;
+              }
+
+              return result;
+            }
+            
             /// <summary>
             /// Populates MySqlCommand with parameters from CRUD Query object
             /// Note: this code was purposely made provider specific because other providers may treat some nuances differently
@@ -286,6 +254,37 @@ namespace NFX.DataAccess.MySQL
                if (table.IsNullOrWhiteSpace()) table = Guid.NewGuid().ToString();
                 
                return new Schema(table, source!=null ? source.ReadOnly : true,  fdefs);
+            }
+
+            /// <summary>
+            /// Gets schema from reader taking Query.ResultRowType in consideration
+            /// </summary>
+            public static Schema GetSchemaForQuery(string target, Query query, MySqlDataReader reader, QuerySource qSource, out Schema.FieldDef[] toLoad)
+            {
+              Schema schema;
+              var rtp = query.ResultRowType;
+
+              if (rtp != null && typeof(TypedRow).IsAssignableFrom(rtp))
+                schema = Schema.GetForTypedRow(query.ResultRowType);
+              else
+                schema = GetSchemaFromReader(query.Name, qSource, reader); 
+                      
+              //determine what fields to load
+              toLoad = new Schema.FieldDef[reader.FieldCount];
+              for (int i = 0; i < reader.FieldCount; i++)
+              {
+                var name = reader.GetName(i);
+                var fdef = schema[name];
+                if (fdef==null) continue;
+                var attr =  fdef[target];
+                if (attr!=null)
+                {
+                  if (attr.StoreFlag!=StoreFlag.LoadAndStore && attr.StoreFlag!=StoreFlag.OnlyLoad) continue;
+                }
+                toLoad[i] = fdef;
+              }
+
+              return schema;
             }
 
         #endregion

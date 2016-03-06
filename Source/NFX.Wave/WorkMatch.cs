@@ -191,6 +191,8 @@ namespace NFX.Wave
       private URIPattern m_PathPattern;
       private URIPattern m_NotPathPattern;
 
+      private string m_TypeNsPrefix;
+
       private string[] m_Schemes;
       private string[] m_AcceptTypes;
       private bool     m_AcceptJson;
@@ -243,13 +245,23 @@ namespace NFX.Wave
         set { m_NotPathPattern = value;}
       }
 
+      /// <summary>
+      /// Namespace prefix used for type lookups. The prefix uses '/' or '\' path separation char not '.'
+      /// </summary>
+      [Config]
+      public string TypeNsPrefix
+      {
+        get { return m_TypeNsPrefix;}
+        set { m_TypeNsPrefix = value;}
+      }
+
       [Config]
       public string Schemes
       {
         get { return m_Schemes==null ? null : string.Join(",", m_Schemes); } 
         set { m_Schemes = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
-      
+
       [Config]
       public string AcceptTypes
       {

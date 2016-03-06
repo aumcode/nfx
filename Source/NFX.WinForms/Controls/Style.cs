@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -29,6 +30,8 @@ namespace NFX.WinForms.Controls
   /// <summary>
   /// Defines a style used for painting and layout
   /// </summary>
+  [TypeConverter(typeof(ExpandableObjectConverter))]
+  [Themable]
   public class Style
   {
       #region .ctor
@@ -65,9 +68,13 @@ namespace NFX.WinForms.Controls
         private LineStyle? m_BorderRight;
         private LineStyle? m_BorderTop;
         private LineStyle? m_BorderBottom;
-        
-        
-        private Font m_Font;
+
+        private Color? m_ForeColor;
+        private Brush  m_ForeBrush;
+        private Pen    m_ForePen;
+        private Brush  m_BackBrush;
+
+        private Font   m_Font;
       
       #endregion
       
@@ -77,6 +84,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Returns a context/control that this style is in. May be null 
         /// </summary>
+        [Browsable(false)]
         public Control ControlContext
         {
           get { return m_ContextControl; }
@@ -86,6 +94,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Returns parent style definition or null
         /// </summary>
+        [Browsable(false)]
         public Style Parent
         {
           get { return m_Parent; }
@@ -99,6 +108,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines text horizontal alignment. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines text horizontal alignment")]
         public HAlignment HAlignment
         {
           get 
@@ -118,6 +128,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines background kind. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines background kind")]
         public BGKind BGKind
         {
           get 
@@ -135,26 +146,35 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines background color. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines background color")]
         public Color BGColor
         {
           get 
           {
             if (m_BGColor.HasValue) return m_BGColor.Value;
-            if (m_Parent!=null) return m_Parent.BGColor;
-            if (m_ContextControl!=null)
-             return m_ContextControl.BackColor;
-            else
-             return Color.White; 
+            if (m_Parent!=null)     return m_Parent.BGColor;
+            return (m_ContextControl==null) ? SystemColors.Window : m_ContextControl.BackColor;
           }
-          set {m_BGColor = value; notify(); }
+          set { m_BGColor = value; m_BackBrush = new SolidBrush(value); notify(); }
         }   
         
-        public void ClearBGColor(){ m_BGColor = null; notify(); }
+        public void ClearBGColor(){ m_BGColor = null; m_BackBrush = null; notify(); }
         
+        [Browsable(false)]
+        public Brush BackBrush
+        {
+          get 
+          {
+            if (m_BackBrush!=null)    return m_BackBrush;
+            if (m_Parent!=null)       return m_Parent.BackBrush;
+            return SystemBrushes.Window;
+          }
+        }   
         
-         /// <summary>
+        /// <summary>
         /// Defines second background color used by gradients. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines second background color used by gradients")]
         public Color BGColor2
         {
           get 
@@ -173,6 +193,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines background hatch color. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines background hatch color")]
         public Color BGHatchColor
         {
           get 
@@ -190,6 +211,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines background hatch style. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines background hatch style")]
         public HatchStyle BGHatchStyle
         {
           get 
@@ -211,6 +233,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines padding - an extra space inside of container. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines padding - an extra space inside of container")]
         public Padding Padding
         {
           get 
@@ -230,6 +253,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines left border style. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines left border style")]
         public LineStyle BorderLeft
         {
           get 
@@ -247,6 +271,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines right border style. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines right border style")]
         public LineStyle BorderRight
         {
           get 
@@ -265,6 +290,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines top border style. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines top border style")]
         public LineStyle BorderTop
         {
           get 
@@ -282,6 +308,7 @@ namespace NFX.WinForms.Controls
         /// <summary>
         /// Defines bottom border style. Call corresponding Clear method to delete attribute in this instance
         /// </summary>
+        [Description("Defines bottom border style")]
         public LineStyle BorderBottom
         {
           get 
@@ -295,9 +322,53 @@ namespace NFX.WinForms.Controls
         
         public void ClearBorderBottom(){ m_BorderBottom = null; notify(); }
         
-                      
-      
-      
+        /// <summary>
+        /// Defines foreground color. Call corresponding Clear method to delete attribute in this instance
+        /// </summary>
+        [Description("Defines foreground color")]
+        public Color ForeColor
+        {
+          get 
+          {
+            if (m_ForeColor.HasValue) return m_ForeColor.Value;
+            if (m_Parent!=null)       return m_Parent.ForeColor;
+            return SystemColors.WindowText;
+          }
+          set { m_ForeColor = value; m_ForeBrush = new SolidBrush(value); m_ForePen = new Pen(value); notify(); }
+        }
+
+        public void ClearForeColor()
+        {
+          if (m_ForeBrush != null) m_ForeBrush.Dispose();
+          if (m_ForePen   != null) m_ForePen.Dispose();
+          m_ForeColor      = null;
+          m_ForeBrush      = null;
+          m_ForePen        = null;
+          notify();
+        }
+
+        [Browsable(false)]
+        public Brush ForeBrush
+        {
+          get 
+          {
+            if (m_ForeBrush != null) return m_ForeBrush;
+            if (m_Parent    != null) return m_Parent.ForeBrush;
+            return SystemBrushes.WindowText;
+          }
+        }   
+        
+        [Browsable(false)]
+        public Pen ForePen
+        {
+          get 
+          {
+            if (m_ForePen != null) return m_ForePen;
+            if (m_Parent  != null) return m_Parent.ForePen;
+            return SystemPens.WindowText;
+          }
+        }   
+        
         /// <summary>
         /// Defines font information. Null is never returned but may be set so it resets attribute in this instance
         /// </summary>
@@ -314,9 +385,6 @@ namespace NFX.WinForms.Controls
           }
           set { m_Font = value;notify(); }
         }
-        
-      
-      
       
       #endregion
       
@@ -355,41 +423,75 @@ namespace NFX.WinForms.Controls
       #endregion
   
   }
-  
-  
+
   /// <summary>
   /// Defines a style for line
   /// </summary>
+  [TypeConverter(typeof(ExpandableObjectConverter))]
+  [Themable]
   public struct LineStyle
   {
-     /// <summary>
-     /// Specifies type of dashing used 
-     /// </summary>
-     public DashStyle DashStyle;
-     
-     /// <summary>
-     /// Specifies line color
-     /// </summary>
-     public Color Color;
-                           
-     /// <summary>
-     /// Specifies line width
-     /// </summary>
-     public float Width;
-     
-     
-     public static LineStyle DefaultNone
-     {
-       get { return new LineStyle(){DashStyle = DashStyle.Solid, Color = Color.Transparent, Width = 1.0f  };}
-     }
-     
-     public static LineStyle DefaultGray
-     {
-       get { return new LineStyle(){DashStyle = DashStyle.Solid, Color = Color.DarkGray, Width = 1.0f  };}
-     }
-     
+    private Color m_Color;
+    private Brush m_Brush;
+
+    /// <summary>
+    /// Specifies type of dashing used 
+    /// </summary>
+    public DashStyle DashStyle { get; set; }
+
+    /// <summary>
+    /// Specifies line color
+    /// </summary>
+    public Color Color
+    {
+      get { return m_Color; }
+      set { m_Color = value; m_Brush = new SolidBrush(value); }
+    }
+
+    [Browsable(false)]      
+    public Brush Brush { get { return m_Brush; } }
+
+    /// <summary>
+    /// Specifies line width
+    /// </summary>
+    [Description("Specifies line width")]
+    public float Width { get; set; }
+
+    public static LineStyle DefaultNone
+    {
+      get
+      {
+        return new LineStyle()
+        {
+          DashStyle = DashStyle.Solid,
+          Color = Color.Transparent,
+          Width = 1.0f
+        };
+      }
+    }
+
+    public static LineStyle DefaultGray
+    {
+      get
+      {
+        return new LineStyle()
+        {
+          DashStyle = DashStyle.Solid,
+          Color = Color.DarkGray,
+          Width = 1.0f
+        };
+      }
+    }
   }
-  
-  
-  
+
+  /// <summary>
+  /// Indicates that the class/struct/field/prop is themable
+  /// </summary>
+  [AttributeUsage(AttributeTargets.Class  |
+                  AttributeTargets.Struct |
+                  AttributeTargets.Field  |
+                  AttributeTargets.Property)]
+  public class ThemableAttribute : Attribute
+  {
+  }
 }

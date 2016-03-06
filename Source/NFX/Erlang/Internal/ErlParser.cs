@@ -184,6 +184,44 @@ namespace NFX.Erlang.Internal
             }
             throw new ErlException(StringConsts.ERL_PARSING_AT_ERROR, "list", pos);
 
+          case '<':
+            if (pos < fmt.Length - 1 && fmt[pos] == '<')
+            {
+              var i = ++pos;
+              var str = fmt[i] == '"';
+              if (str) pos++;
+              for (; i < fmt.Length && fmt[i - 1] != '>' && fmt[i] != '>'; ++i);
+              if (i == fmt.Length)
+                break;
+              var end   = ++i - (str ? 3 : 2);
+              var len   = end - pos + 1;
+              byte[] bytes;
+              if (str)
+              {
+                var cnt = Encoding.UTF8.GetByteCount(fmt.ToCharArray(), pos, len);
+                bytes = new byte[cnt];
+                Encoding.UTF8.GetBytes(fmt, pos, len, bytes, 0);
+              }
+              else
+              {
+                var beg = pos - 2;
+                bytes   = fmt.Substring(pos, len)
+                             .Split(new char[] {',', ' '},
+                                    StringSplitOptions.RemoveEmptyEntries)
+                             .Select(s =>
+                             {
+                               var n = int.Parse(s);
+                               if (n < 0 || n > 255)
+                                 throw new ErlException
+                                  ("Invalid binary in format string: {0}".Args(fmt.Substring(beg, len+4)));
+                               return (byte)n;
+                             })
+                             .ToArray();
+              }
+              result = new ErlBinary(bytes, 0, bytes.Length);
+              pos = i+1;
+            }
+            break;
           case '$': /* char-value? */
             result = new ErlByte(Convert.ToByte(fmt[pos++]));
             break;

@@ -73,7 +73,6 @@ namespace NFX
       return str.Substring(0, count);
     }
 
-
     /// <summary>
     /// Gets number of seconds since Unix epoch start (1970/1/1 0:0:0)
     /// </summary>

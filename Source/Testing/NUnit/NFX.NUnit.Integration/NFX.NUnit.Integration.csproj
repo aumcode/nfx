@@ -57,10 +57,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\CacheFragmentationTest.cs" />
     <Compile Include="AppModel\Pile\CacheTest32Gb.cs" />
     <Compile Include="AppModel\Pile\CacheTest64Gb.cs" />
     <Compile Include="AppModel\Pile\HighMemoryLoadTest.cs" />
     <Compile Include="AppModel\Pile\PileFragmentationTest.cs" />
+    <Compile Include="AppModel\Pile\PileFragmentationTest32Gb.cs" />
+    <Compile Include="AppModel\Pile\PileFragmentationTest64Gb.cs" />
     <Compile Include="AppModel\Pile\PileTest.cs" />
     <Compile Include="AppModel\Pile\PileTest64Gb.cs" />
     <Compile Include="AppModel\Pile\PileTest32Gb.cs" />

@@ -450,19 +450,52 @@ namespace NFX.DataAccess.CRUD
 
 
             /// <summary>
+            /// For fields with ValueList returns value's description per specified targeted schema 
+            /// </summary>
+            public string GetFieldValueDescription(string fieldName, string targetName=null, bool caseSensitiveKeys=false)
+            {
+              var def = Schema[fieldName];
+              if (def==null)
+                throw new CRUDException(StringConsts.CRUD_FIELD_NOT_FOUND_ERROR.Args(fieldName, Schema));
+
+              return def.ValueDescription( GetFieldValue(def), targetName, caseSensitiveKeys);
+            }
+
+            /// <summary>
+            /// For fields with ValueList returns value's description per specified targeted schema 
+            /// </summary>
+            public string GetFieldValueDescription(int fieldIndex, string targetName=null, bool caseSensitiveKeys=false)
+            {
+              var def = Schema[fieldIndex];
+              if (def==null)
+                throw new CRUDException(StringConsts.CRUD_FIELD_NOT_FOUND_ERROR.Args("[{0}]".Args(fieldIndex), Schema));
+
+              return def.ValueDescription( GetFieldValue(def), targetName, caseSensitiveKeys);
+            }
+
+
+            /// <summary>
             /// Returns field value as string formatted per target DisplayFormat attribute
             /// </summary>
-            public string GetDisplayFieldValue(string targetName, string fieldName)
+            public string GetDisplayFieldValue(string fieldName, string targetName=null)
             {
-              return getDisplayFieldValue(targetName, Schema[fieldName]);
+              var def = Schema[fieldName];
+              if (def==null)
+                throw new CRUDException(StringConsts.CRUD_FIELD_NOT_FOUND_ERROR.Args(fieldName, Schema));
+
+              return getDisplayFieldValue(targetName, def);
             }
 
             /// <summary>
             /// Returns field value as string formatted per target DisplayFormat attribute
             /// </summary>
-            public string GetDisplayFieldValue(string targetName, int fieldIndex)
+            public string GetDisplayFieldValue(int fieldIndex, string targetName=null)
             {
-              return getDisplayFieldValue(targetName, Schema[fieldIndex]);
+              var def = Schema[fieldIndex];
+              if (def==null)
+                throw new CRUDException(StringConsts.CRUD_FIELD_NOT_FOUND_ERROR.Args("[{0}]".Args(fieldIndex), Schema));
+
+              return getDisplayFieldValue(targetName, def);
             }
 
                   /// <summary>
@@ -584,8 +617,22 @@ namespace NFX.DataAccess.CRUD
                        return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MAX_LENGTH_ERROR);
                 
                 if (atr.Kind==DataKind.ScreenName)
+                {
                     if (!NFX.Parsing.DataEntryUtils.CheckScreenName(value.ToString()))
                        return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_SCREEN_NAME_ERROR);
+                }
+                else if (atr.Kind==DataKind.EMail)
+                {
+                    if (!NFX.Parsing.DataEntryUtils.CheckEMail(value.ToString()))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_EMAIL_ERROR);
+                }
+                else if (atr.Kind==DataKind.Telephone)
+                {
+                    if (!NFX.Parsing.DataEntryUtils.CheckTelephone(value.ToString()))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_PHONE_ERROR);
+                }
+
+
 
                 if (value is IComparable)
                 {
@@ -593,10 +640,18 @@ namespace NFX.DataAccess.CRUD
                     if (error!=null) return error;
                 }
 
-                 if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
-                   if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription));
-
+                if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
+                {
+                   //For those VERY RARE cases when RegExpFormat may need to be applied to complex types, i.e. StringBuilder
+                   //set the flag in metadata to true, otherwise regexp gets matched only for STRINGS
+                   var complex = atr.Metadata.AttrByName("validate-format-regexp-complex-types").ValueAsBool(false);
+                   if (complex || value is string)
+                   {
+                     if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name,
+                         StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription ?? "Input format: {0}".Args(atr.FormatRegExp)));
+                   }
+                }
                      
                 return null;
             }

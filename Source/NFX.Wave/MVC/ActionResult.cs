@@ -141,13 +141,37 @@ namespace NFX.Wave.MVC
   /// </summary>
   public struct ClientRecord : IActionResult
   {
-    public ClientRecord(Row row, Exception validationError, string recID = null, string target = null, string isoLang = null)
+    public ClientRecord(Row row,
+                        Exception validationError,
+                        string recID = null,
+                        string target = null,
+                        string isoLang = null, 
+                        Client.ModelFieldValueListLookupFunc valueListLookupFunc = null)
     {
       RecID = recID;
       Row = row;
       ValidationError = validationError;
       Target = target;
       IsoLang = isoLang;
+      ValueListLookupFunc = valueListLookupFunc;
+    }
+
+    public ClientRecord(Row row,
+                        Exception validationError,
+                        Func<Schema.FieldDef, JSONDataMap> simpleValueListLookupFunc,
+                        string recID = null,
+                        string target = null,
+                        string isoLang = null)
+    {
+      RecID = recID;
+      Row = row;
+      ValidationError = validationError;
+      Target = target;
+      IsoLang = isoLang;
+      if (simpleValueListLookupFunc!=null)
+        ValueListLookupFunc = (_sender, _row, _def, _target, _iso) => simpleValueListLookupFunc(_def);
+      else
+        ValueListLookupFunc = null;
     }
     
     public readonly string RecID;
@@ -155,6 +179,7 @@ namespace NFX.Wave.MVC
     public readonly Exception ValidationError;
     public readonly string Target;
     public readonly string IsoLang;
+    public readonly Client.ModelFieldValueListLookupFunc ValueListLookupFunc;
 
 
     public void Execute(Controller controller, WorkContext work)
@@ -162,7 +187,7 @@ namespace NFX.Wave.MVC
       var gen = (work.Portal!=null) ? work.Portal.RecordModelGenerator
                                     : Client.RecordModelGenerator.DefaultInstance;
 
-      work.Response.WriteJSON( gen.RowToRecordInitJSON(Row, ValidationError, RecID, Target, IsoLang) );
+      work.Response.WriteJSON( gen.RowToRecordInitJSON(Row, ValidationError, RecID, Target, IsoLang, ValueListLookupFunc) );
     }
   }
 
@@ -189,6 +214,61 @@ namespace NFX.Wave.MVC
     }
   }
   
+  /// <summary>
+  /// Returns HTTP 404 - not found. 
+  /// This should be used in place of returning exceptions where needed as it is faster
+  /// </summary>
+  public struct Http404NotFound : IActionResult
+  {
+    public Http404NotFound(string descr = null)
+    {
+      Description = descr;
+    }
+
+    public readonly string Description;
+    
+    public void Execute(Controller controller, WorkContext work)
+    {
+      var txt = SysConsts.STATUS_404_DESCRIPTION;
+      if (Description.IsNotNullOrWhiteSpace())
+        txt += (": " + Description);
+      work.Response.StatusCode = SysConsts.STATUS_404;
+      work.Response.StatusDescription = txt;
+
+      if (work.RequestedJSON)
+       work.Response.WriteJSON( new {OK = false, http = SysConsts.STATUS_404, descr = txt});
+      else
+       work.Response.Write(txt);
+    } 
+  }
+
+  /// <summary>
+  /// Returns HTTP 403 - forbidden
+  /// This should be used in place of returning exceptions where needed as it is faster
+  /// </summary>
+  public struct Http403Forbidden : IActionResult
+  {
+    public Http403Forbidden(string descr = null)
+    {
+      Description = descr;
+    }
+
+    public readonly string Description;
+    
+    public void Execute(Controller controller, WorkContext work)
+    {
+      var txt = SysConsts.STATUS_403_DESCRIPTION;
+      if (Description.IsNotNullOrWhiteSpace())
+        txt += (": " + Description);
+      work.Response.StatusCode = SysConsts.STATUS_403;
+      work.Response.StatusDescription = txt;
+
+      if (work.RequestedJSON)
+       work.Response.WriteJSON( new {OK = false, http = SysConsts.STATUS_403, descr = txt});
+      else
+       work.Response.Write(txt);
+    } 
+  }
 
 
 }

@@ -92,6 +92,22 @@ namespace NFX
        return scopingType.Assembly.GetManifestResourceStream(scopingType, resourceName);
     }
 
+    /// <summary>
+    /// Pass a type and resource path rooted at type's namespace, for example
+    ///  given <code> using (var stream = typeof(SomeType).GetBinary("My.Picture.gif")){...}</code>
+    ///  If "SomeType" is declared in "TestApp.Types", then statement's resource will have to be embedded under resource named: 
+    ///   "TestApp.Types.My.Picture.gif"
+    /// </summary>
+    public static byte[] GetBinaryContent(this Type scopingType, string resourceName)
+    {
+      using(var ms = new MemoryStream())
+        using(var str = scopingType.GetBinaryStream(resourceName))
+        {
+          str.CopyTo(ms);
+          return ms.ToArray();
+        }
+    }
+
 
   }
 }

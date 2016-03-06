@@ -34,10 +34,11 @@ namespace NFX.WinForms.Controls.GridKit
   {
       
       #region CONSTS
-       public const int MIN_MIN_WIDTH = 1;
+       public const int    MIN_MIN_WIDTH        = 1;
        
-       public const string CONFIG_WIDTH_ATTR = "width";
-       public const string CONFIG_SORT_ATTR = "sort";
+       public const string CONFIG_WIDTH_ATTR    = "width";
+       public const string CONFIG_SORT_ATTR     = "sort";
+       public const string CONFIG_VISIBLE_ATTR  = "visible";
        
      #endregion
       
@@ -327,10 +328,11 @@ namespace NFX.WinForms.Controls.GridKit
           Grid.BeginBatchChange();
           try
           {
-            Width = node.AttrByName(CONFIG_WIDTH_ATTR).ValueAsInt(m_Width);
+            Width   = node.AttrByName(CONFIG_WIDTH_ATTR).ValueAsInt(m_Width);
+            Visible = node.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(m_Visible);
             
             if (SortingAllowed)
-             SortDirection = node.AttrByName(CONFIG_SORT_ATTR).ValueAsEnum<SortDirection>(SortDirection.None);
+              SortDirection = node.AttrByName(CONFIG_SORT_ATTR).ValueAsEnum(SortDirection.None);
           }
           finally
           {
@@ -343,10 +345,11 @@ namespace NFX.WinForms.Controls.GridKit
         {
           var cn = node.AddChildNode(Grid.CONFIG_COLUMN_SECTION);
           cn.AddAttributeNode(Grid.CONFIG_ID_ATTR, m_ID);
-          cn.AddAttributeNode(CONFIG_WIDTH_ATTR, m_Width);
-          
+          cn.AddAttributeNode(CONFIG_WIDTH_ATTR,   m_Width);
+          cn.AddAttributeNode(CONFIG_VISIBLE_ATTR, m_Visible);
+
           if (SortingAllowed)
-           cn.AddAttributeNode(CONFIG_SORT_ATTR, m_SortDirection);
+            cn.AddAttributeNode(CONFIG_SORT_ATTR, m_SortDirection);
         }
         
         

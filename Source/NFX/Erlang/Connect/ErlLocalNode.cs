@@ -21,6 +21,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Net;
+using System.Runtime.CompilerServices;
 using NFX.Environment;
 using NFX.ApplicationModel;
 
@@ -523,11 +524,13 @@ namespace NFX.Erlang
       if (ConnectAttempt != null) ConnectAttempt(this, node, dir, info);
     }
 
-    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg)
+    protected internal virtual void OnUnhandledMsg(ErlConnection conn, ErlMsg msg,
+                                                   [CallerFilePath]  string file = null,
+                                                   [CallerLineNumber]int    line = 0)
     {
       if (UnhandledMsg != null) UnhandledMsg(this, conn, msg);
       if (LogUnhandledMsgs)
-        App.Log.Write(new NFX.Log.Message
+        App.Log.Write(new NFX.Log.Message(null, file, line)
         {
           Type = Log.MessageType.TraceErl,
           Topic = CoreConsts.ERLANG_TOPIC,
@@ -548,29 +551,29 @@ namespace NFX.Erlang
       if (IoOutput != null) IoOutput(this, encoding, output);
     }
 
-    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir,
-                                            Func<string> msgFunc)
+    protected internal virtual void OnTrace(ErlTraceLevel type, Direction dir, Func<string> msgFunc,
+                                            [CallerFilePath]  string file = null,
+                                            [CallerLineNumber]int    line = 0)
     {
-      if (ErlApp.TraceEnabled(type, TraceLevel))
-      {
-        var msg = msgFunc();
-        OnTraceCore(type, dir, msg);
-      }
+      if (!ErlApp.TraceEnabled(type, TraceLevel)) return;
+      var msg = msgFunc();
+      OnTraceCore(type, dir, msg, file, line);
     }
 
-    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg)
+    protected internal void OnTrace(ErlTraceLevel type, Direction dir, string msg,
+                                    [CallerFilePath]  string file = null,
+                                    [CallerLineNumber]int line = 0)
     {
-      if (ErlApp.TraceEnabled(type, TraceLevel))
-      {
-        OnTraceCore(type, dir, msg);
-      }
+      if (!ErlApp.TraceEnabled(type, TraceLevel)) return;
+      OnTraceCore(type, dir, msg, file, line);
     }
 
-    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg)
+    protected virtual void OnTraceCore(ErlTraceLevel type, Direction dir, string msg,
+                                       string file, int line)
     {
       if (Trace != null) Trace(this, type, dir, msg);
       if (TraceToLog && ErlApp.TraceEnabled(type, TraceLevel))
-        App.Log.Write(new NFX.Log.Message
+        App.Log.Write(new NFX.Log.Message(null, file, line)
         {
           Type = Log.MessageType.TraceErl,
           Topic = "{0}.{1}".Args(CoreConsts.ERLANG_TOPIC, type),

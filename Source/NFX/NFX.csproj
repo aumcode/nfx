@@ -119,6 +119,7 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Mailbox.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
+    <Compile Include="Environment\ConfigNodeEqualityComparer.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTcpTransport.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTransportFactory.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTransportPasswordSource.cs" />
@@ -242,6 +243,13 @@
     <Compile Include="IO\Net\IPRange.cs" />
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="IO\SlimFormat.cs" />
+    <Compile Include="Log\Bin\Exceptions.cs" />
+    <Compile Include="Log\Bin\Metadata.cs" />
+    <Compile Include="Log\Bin\Format.cs" />
+    <Compile Include="Log\Bin\SlimLogWriter.cs" />
+    <Compile Include="Log\Bin\SlimLogReader.cs" />
+    <Compile Include="Log\Bin\LogReader.cs" />
+    <Compile Include="Log\Bin\LogWriter.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
     <Compile Include="Media\PDF\Constants.cs" />

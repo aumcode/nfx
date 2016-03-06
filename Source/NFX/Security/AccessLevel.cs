@@ -41,9 +41,16 @@ namespace NFX.Security
 
             public const string CONFIG_LEVEL_ATTR = "level";
 
+            public static readonly IConfigSectionNode DENIED_CONF = "p{level=0}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
         #endregion
     
         #region .ctor
+
+            public static AccessLevel DeniedFor(User user, Permission permission)
+            {
+              return new AccessLevel(user, permission, DENIED_CONF);
+            }
 
             public AccessLevel(User user, Permission permission, IConfigSectionNode data)
             {

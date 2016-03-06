@@ -65,6 +65,7 @@ namespace NFX.WinForms.Controls.GridKit
          
          UpdateStyles();
          
+         m_ForeBrush = new SolidBrush(ForeColor);
          m_Style = new Style(this, null);
          m_HeaderStyle = new Style(this, null);
          m_SelectedStyle = new Style(this, null);
@@ -72,10 +73,20 @@ namespace NFX.WinForms.Controls.GridKit
          BuildDefaultStyle(m_Style);
          BuildDefaultHeaderStyle(m_HeaderStyle);
          BuildDefaultSelectedStyle(m_SelectedStyle);
-         
-        
+
+         ColumnHidingAllowed = true;
                   
          m_CellView = new CellView() {   Parent = this , TabStop = false};
+
+         m_CellView.MouseClick       += (_, e) => this.OnMouseClick(e);
+         m_CellView.MouseDoubleClick += (_, e) => this.OnMouseDoubleClick(e);
+         m_CellView.MouseDown        += (_, e) => this.OnMouseDown(e);
+         m_CellView.MouseUp          += (_, e) => this.OnMouseUp(e);
+         m_CellView.MouseEnter       += (_, e) => this.OnMouseEnter(e);
+         m_CellView.MouseLeave       += (_, e) => this.OnMouseLeave(e);
+         m_CellView.MouseHover       += (_, e) => this.OnMouseHover(e);
+         m_CellView.MouseMove        += (_, e) => this.OnMouseMove(e);
+         m_CellView.Click            += (_, e) => this.OnClick(e);
          
          
          m_HScrollBar = new HScrollBar() {   Parent = this, TabStop = false, Minimum=0, SmallChange=1, LargeChange =1  };
@@ -121,7 +132,8 @@ namespace NFX.WinForms.Controls.GridKit
       private bool m_ReadOnly;
       private bool m_MultiSelect;
       private bool m_MultiSelectWithCtrl = true;
-      
+
+      private Brush m_ForeBrush;
       private Style m_Style;
       private Style m_HeaderStyle;
       private Style m_SelectedStyle;
@@ -251,6 +263,11 @@ namespace NFX.WinForms.Controls.GridKit
       }
       
       /// <summary>
+      /// Determines whether user can hide columns
+      /// </summary>
+      public bool ColumnHidingAllowed { get; set; }
+      
+      /// <summary>
       /// Determines whether user can sort data by clicking on column headers
       /// </summary>
       public bool SortingAllowed
@@ -300,17 +317,24 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns the last cell that was selected in the grid  
       /// </summary>
       [Browsable(false)]
-      public CellElement SelectedCell
-      {
-        get { return m_SelectedCell; }
+      public CellElement SelectedCell { get { return m_SelectedCell; } }
+      
+      /// <summary>
+      /// Gets/sets the text color of the grid.
+      /// </summary>
+      public new Color ForeColor
+      { 
+        get { return base.ForeColor; }
+        set { base.ForeColor = value; m_ForeBrush = new SolidBrush(value); }
       }
-      
-      
+
+      [Browsable(false)]
+      internal Brush ForeBrush { get { return m_ForeBrush; } }
+
       /// <summary>
       /// Returns a style object for all data cells in the grid 
       /// </summary>
       //[Browsable(false)]
-      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style Style
       {
         get { return m_Style; }
@@ -321,7 +345,6 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns a style object for all header cells in the grid
       /// </summary>
       //[Browsable(false)]
-      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style HeaderStyle
       {
         get { return m_HeaderStyle; }
@@ -333,7 +356,6 @@ namespace NFX.WinForms.Controls.GridKit
       /// Returns a style object for all data cells in the grid which are in selected rows
       /// </summary>
       //[Browsable(false)]
-      [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       public Style SelectedStyle
       {
         get { return m_SelectedStyle; }
@@ -411,6 +433,7 @@ namespace NFX.WinForms.Controls.GridKit
       /// <summary>
       /// Returns reference to cellview - an area where cells are displayed
       /// </summary>
+      [Browsable(false)] 
       public CellView CellView
       {
         get { return m_CellView; }
@@ -674,7 +697,12 @@ namespace NFX.WinForms.Controls.GridKit
         if (cell.Row!=null)
         {
           if (!m_MultiSelect)
-            SelectRow(cell.Row);
+          {
+            if ((Control.ModifierKeys & Keys.Control) > 0)
+              UnSelectRow(cell.Row);
+            else
+              SelectRow(cell.Row);
+          }
           else //multiselect
           {
             if ((Control.ModifierKeys & Keys.Shift) > 0)
@@ -686,8 +714,8 @@ namespace NFX.WinForms.Controls.GridKit
               }
 
               var first = m_RowMap.FindIndex(re => re.Row == SelectedRows.First());
-              var last  = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
-              var cur   = m_RowMap.FindIndex(re => re.Row == cell.Row);
+              var last = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
+              var cur = m_RowMap.FindIndex(re => re.Row == cell.Row);
 
               if (cur < 0)
                 return;
@@ -695,8 +723,8 @@ namespace NFX.WinForms.Controls.GridKit
               UnSelectAllRows();
 
               if (last <= cur)
-                for (var i=last; i <= cur; ++i)
-                   SelectRow(m_RowMap[i].Row);
+                for (var i = last; i <= cur; ++i)
+                  SelectRow(m_RowMap[i].Row);
               else if (cur <= first)
                 for (var i = cur; i <= first; ++i)
                   SelectRow(m_RowMap[i].Row);
@@ -705,7 +733,7 @@ namespace NFX.WinForms.Controls.GridKit
             {
               if (IsRowSelected(cell.Row))
                 UnSelectRow(cell.Row);
-              else 
+              else
                 SelectRow(cell.Row);
             }
             else
@@ -713,7 +741,7 @@ namespace NFX.WinForms.Controls.GridKit
               UnSelectAllRows();
               SelectRow(cell.Row);
             }
-          } 
+          }
         }
         
         if (m_CellSelectionAllowed)
@@ -797,7 +825,7 @@ namespace NFX.WinForms.Controls.GridKit
               if (val!=null)
               {
                 result.Append(cell.RepresentValueAsString(val));
-                result.Append("    ");
+                result.Append("\t");
               }  
             }
             result.AppendLine();
@@ -914,10 +942,31 @@ namespace NFX.WinForms.Controls.GridKit
        protected virtual void OnCellSelection(CellElement oldCell, CellElement newCell)
        {
          if (CellSelection!=null) CellSelection(oldCell, newCell);
-       }    
-           
-              
+       }
 
+       protected void ContextMenuOpening(object sender, CancelEventArgs e)
+       {
+         // Don't open context menu on the header row or on non-clickable region of the grid
+         var cms = sender as ContextMenuStrip;
+         var mousepos = MousePosition;
+         if (cms == null) return;
+
+         var relpos = PointToClient(mousepos);
+         var ele    = m_CellView.GetClickableElementAt(relpos);
+         if (ele   == null || (ele is ColumnResizeElement) ||
+            (ele is CellElement) && ((CellElement)ele).Row == null)
+           e.Cancel = true;
+       }
+
+       protected override void OnContextMenuStripChanged(EventArgs e)
+       {
+         if (ContextMenuStrip != null)
+         {
+           ContextMenuStrip.Opening -= ContextMenuOpening;
+           ContextMenuStrip.Opening += ContextMenuOpening;
+         }
+         base.OnContextMenuStripChanged(e);
+       }
 
        protected override void OnMouseWheel(MouseEventArgs e)
        {

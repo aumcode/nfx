@@ -157,6 +157,33 @@ namespace NFX.Wave.Filters
           var actual = error;
           if (actual is FilterPipelineException)
             actual = ((FilterPipelineException)actual).RootException;
+          
+          if (actual is MVCActionException)
+            actual = ((MVCActionException)actual).InnerException;
+
+
+          var securityError = actual is NFX.Security.AuthorizationException || actual.InnerException is NFX.Security.AuthorizationException;
+
+          if (actual is HTTPStatusException)
+          {
+            var se = (HTTPStatusException)actual;
+            work.Response.StatusCode = se.StatusCode;
+            work.Response.StatusDescription = se.StatusDescription;
+          }
+          else
+          {
+            if (securityError)
+            {
+              work.Response.StatusCode = SysConsts.STATUS_403;
+              work.Response.StatusDescription = SysConsts.STATUS_403_DESCRIPTION;
+            }
+            else
+            {
+              work.Response.StatusCode = SysConsts.STATUS_500;
+              work.Response.StatusDescription = SysConsts.STATUS_500_DESCRIPTION;
+            }
+          }
+
 
           if (json)
           {
@@ -165,7 +192,7 @@ namespace NFX.Wave.Filters
           }
           else
           {
-            if (securityRedirectURL.IsNotNullOrWhiteSpace() && (actual is NFX.Security.AuthorizationException || actual.InnerException is NFX.Security.AuthorizationException))
+            if (securityRedirectURL.IsNotNullOrWhiteSpace() && securityError)
               work.Response.RedirectAndAbort(securityRedirectURL);
             else
             {
@@ -190,15 +217,6 @@ namespace NFX.Wave.Filters
                 
               errorPage.Render(work, error);
             }
-          }
-
-         
-          
-          if (actual is HTTPStatusException)
-          {
-            var se = (HTTPStatusException)actual;
-            work.Response.StatusCode = se.StatusCode;
-            work.Response.StatusDescription = se.StatusDescription;
           }
 
           if (logMatches!=null && logMatches.Count>0)

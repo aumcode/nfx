@@ -206,10 +206,63 @@ namespace NFX.DataAccess.Distributed
           return result;
         }
 
+        private static int hexDigit(char c)
+        {
+          var d = c - '0';
+          if (d>=0 && d<=9) return d;
+
+          d = c - 'A';
+          if (d>=0 && d<=5) return 10 + d;
+
+          d = c - 'a';
+          if (d>=0 && d<=5) return 10 + d;
+
+          return -1;
+        }
+
+
+        public static bool TryParse(string str, out GDID? gdid)
+        {
+          GDID parsed;
+          if (TryParse(str, out parsed))
+          {
+            gdid = parsed;
+            return true;
+          }
+
+          gdid = null;
+          return false;
+        }
+
         public static bool TryParse(string str, out GDID gdid)
         {
-          const int MIN_LEN = 5;// "0:0:0"
           gdid = GDID.Zero;
+
+          var ix = str.IndexOf("0x", StringComparison.OrdinalIgnoreCase);
+          if (ix>-1)//HEX format
+          {
+            ix+=2;//skip 0x
+            var buf = new byte[sizeof(uint) + sizeof(ulong)];
+            var j = 0;
+            for(var i=ix; i<str.Length;)
+            {
+              var dh = hexDigit(str[i]); i++;
+              if (dh<0 || i==str.Length) return false;
+              var dl = hexDigit(str[i]); i++;
+              if (dl<0) return false;
+
+              if (j==buf.Length) return false;
+              buf[j] = (byte)((dh << 4) + dl);
+              j++;
+            }
+            if (j<buf.Length) return false;
+
+            gdid = new GDID(buf);
+            return true;
+          }//HEX format
+
+          //regular Era:Auth:Counter format
+          const int MIN_LEN = 5;// "0:0:0"
           if (str.IsNullOrWhiteSpace() || str.Length<MIN_LEN) return false;
 
           string sera, sau, sctr;

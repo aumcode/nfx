@@ -29,6 +29,7 @@ using System.Text;
 using NFX.Parsing;
 using NFX.IO.FileSystem;
 using NFX.Serialization.JSON;
+using NFX.DataAccess.Distributed;
 
 namespace NFX.Environment
 {
@@ -480,6 +481,21 @@ namespace NFX.Environment
               return val.AsNullableGUID(dflt);
             }
 
+            public GDID ValueAsGDID(GDID dflt, bool verbatim = false)
+            {
+              var val = verbatim ? VerbatimValue : Value;
+
+              return val.AsGDID(dflt);
+            }
+
+            
+            public GDID? ValueAsNullableGDID(GDID? dflt = null, bool verbatim = false)
+            {
+              var val = verbatim ? VerbatimValue : Value;
+
+              return val.AsNullableGDID(dflt);
+            }
+
 
 
             public DateTime ValueAsDateTime(DateTime dflt, bool verbatim = false)
@@ -681,6 +697,14 @@ namespace NFX.Environment
         {
           get { lock (m_Children) return m_Children.Count > 0; }
         }
+        
+        /// <summary>
+        /// Returns number of child section nodes
+        /// </summary>
+        public int ChildCount
+        {
+          get { lock (m_Children) return m_Children.Count; }
+        }
 
         /// <summary>
         /// Indicates whether this node has any associated attributes
@@ -688,6 +712,14 @@ namespace NFX.Environment
         public bool HasAttributes
         {
           get { lock (m_Attributes) return m_Attributes.Count > 0; }
+        }
+
+        /// <summary>
+        /// Returns number of child attribute nodes
+        /// </summary>
+        public int AttrCount
+        {
+          get { lock (m_Attributes) return m_Attributes.Count; }
         }
 
         /// <summary>

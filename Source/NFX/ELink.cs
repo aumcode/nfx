@@ -94,7 +94,7 @@ namespace NFX
             /// <summary>
             /// Create ELink instance from GDID (with era).
             /// </summary>
-            public ELink(GDID gdid, byte[] metadata)
+            public ELink(GDID gdid, byte[] metadata = null)
             {
                 m_GDID = gdid;
                 m_Metadata = metadata;
@@ -163,7 +163,7 @@ namespace NFX
             /// Encodes a link into a textual form, using the supplied randomization seed, otherwise the system rnd is used.
             /// A seed has 4 effective bits, yielding 16 possible variations for every link
             /// </summary>
-            public void Encode(byte? seed = null) //props -> link
+            public string Encode(byte? seed = null) //props -> link
             {
                 
                 /* Format
@@ -253,6 +253,8 @@ namespace NFX
                   throw new NFXException(StringConsts.ELINK_CHAR_LENGTH_LIMIT_ERROR.Args(link.Substring(0, 20)));
 
                 m_Link = link;
+
+                return link;
             }
             
             private byte crc(uint era, ulong id, byte[] md)

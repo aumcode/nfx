@@ -385,6 +385,10 @@ namespace NFX.Erlang
         for (int i = 0; i < arity; i++)
           list.Add(Read());
 
+        var next = Peek();
+        if (next.Item1 && (ErlExternalTag)next.Item2 == ErlExternalTag.Nil)
+          readTag(ErlExternalTag.Nil);
+
         return new ErlList(list, false);
       }
 
@@ -460,7 +464,7 @@ namespace NFX.Erlang
       }
 
       /// <summary>
-      /// Read Erlang string from the stream
+      /// Read Erlang string or list from the stream
       /// </summary>
       /// <returns></returns>
       public ErlString ReadString()
@@ -471,7 +475,7 @@ namespace NFX.Erlang
         switch (tag)
         {
           case ErlExternalTag.String:
-            var len = Read2BE();
+            var len   = Read2BE();
             s = m_Encoding.GetString(m_Buffer, m_Position, len);
             m_Position += len;
             break;
@@ -510,6 +514,11 @@ namespace NFX.Erlang
     #endregion
 
     #region Internal
+
+      internal Tuple<bool, byte> Peek()
+      {
+        return m_Position < m_End ? Tuple.Create(true, m_Buffer[m_Position]) : Tuple.Create(false, (byte)0);
+      }
 
       internal byte Read1()
       {

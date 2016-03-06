@@ -38,8 +38,16 @@ namespace NFX.WinForms.Views
       AutoScroll = true;
       BackColor = Color.FromArgb(0xf0, 0xf0, 0xe5);
       //panel1.AutoScrollMinSize = new Size (400, 400)
+      m_ToolTip = new ToolTip();
+      m_ToolTip.AutoPopDelay = 3000;
+      m_ToolTip.InitialDelay = 1000;
+      m_ToolTip.ReshowDelay  = 500;
+      m_ToolTip.ShowAlways   = true;
+      m_ToolTip.Active       = true;
     }
-    
+
+    private ToolTip m_ToolTip;
+
     public new Record Record
     {
       get { return base.Record; }
@@ -106,15 +114,19 @@ namespace NFX.WinForms.Views
           view.LineCount = fld.LookupDictionary.Count;
           view.ElementVSpacing = 6;
         }
+
+        view.CharCase = (CharacterCasing)Enum.Parse(typeof(CharacterCasing), fld.CharCase.ToString());
         
         if (fld is BoolField)
          view.ControlType = ControlType.Check;
        
         view.SetBounds(x, y, width, 0);
        
-        
         view.EndInit();
-        
+       
+        //m_ToolTip.SetToolTip(view, fld.Hint);
+        view.Enter += (sender, args) => { m_ToolTip.Show(fld.Hint, this, MousePosition); };
+
         y+=view.Height+hpad;
       }
     }//buildFields

@@ -349,12 +349,27 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         public readonly string ValueList;  
 
+
+                  private JSONDataMap m_CacheValueList_Sensitive;
+                  private JSONDataMap m_CacheValueList_Insensitive;
+
         /// <summary>
         /// Returns a ValueList parsed into key values as:  val1: descr1,val2: desc2...
         /// </summary>
         public JSONDataMap ParseValueList(bool caseSensitiveKeys = false)
         {
-            return ParseValueListString(ValueList, caseSensitiveKeys);
+            if (caseSensitiveKeys)
+            {
+              if (m_CacheValueList_Sensitive==null) 
+              m_CacheValueList_Sensitive = ParseValueListString(ValueList, true); 
+              return m_CacheValueList_Sensitive;
+            }
+            else
+            {
+              if (m_CacheValueList_Insensitive==null) 
+              m_CacheValueList_Insensitive = ParseValueListString(ValueList, false); 
+              return m_CacheValueList_Insensitive;
+            }
         }
 
         /// <summary>
@@ -507,6 +522,24 @@ namespace NFX.DataAccess.CRUD
         Sequence = sequence;
       }
 
+      public UniqueSequenceAttribute(Type protoRow)
+      { 
+        if (protoRow==null)
+           throw new CRUDException(StringConsts.ARGUMENT_ERROR+"{0}.ctor(protoRow=null)".Args(GetType().Name));
+        
+        Prototype = GetForRowType(protoRow); 
+
+        if (Prototype==null)
+          throw new CRUDException(StringConsts.ARGUMENT_ERROR+"{0}.ctor(protoRow is not decorated by attr)".Args(GetType().Name));
+        
+        if (Prototype.Prototype!=null)
+           throw new CRUDException(StringConsts.ARGUMENT_ERROR+"{0}.ctor(protoType is pointing to another {0})".Args(GetType().Name));
+        
+        Scope = Prototype.Scope;
+        Sequence = Prototype.Sequence;
+      }
+
+      public readonly UniqueSequenceAttribute Prototype;
       public readonly string Scope;
       public readonly string Sequence;
       

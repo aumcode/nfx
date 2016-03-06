@@ -15,35 +15,35 @@ namespace NFX.DataAccess.Erlang
   /// </summary>
   public class SchemaMap
   {
-    public const string CONFIG_SCHEMA_SECTION = "schema";
-    public const string CONFIG_FIELD_SECTION = "field";
-    public const string CONFIG_VALUE_SECTION = "value";
+    public const string CONFIG_SCHEMA_SECTION       = "schema";
+    public const string CONFIG_FIELD_SECTION        = "field";
+    public const string CONFIG_VALUE_SECTION        = "value";
 
-     public const string CONFIG_TITLE_ATTR = "title";
-     public const string CONFIG_TYPE_ATTR = "type";
-     public const string CONFIG_REQUIRED_ATTR = "required";
-     public const string CONFIG_MIN_ATTR = "min";
-     public const string CONFIG_MAX_ATTR = "max";
-     public const string CONFIG_KEY_ATTR = "key";
-     public const string CONFIG_DESCR_ATTR = "descr";
-     public const string CONFIG_DEFAULT_ATTR = "default";
-     public const string CONFIG_LEN_ATTR = "len";
-     public const string CONFIG_VISIBLE_ATTR = "visible";
+     public const string CONFIG_TITLE_ATTR          = "title";
+     public const string CONFIG_TYPE_ATTR           = "type";
+     public const string CONFIG_REQUIRED_ATTR       = "required";
+     public const string CONFIG_MIN_ATTR            = "min";
+     public const string CONFIG_MAX_ATTR            = "max";
+     public const string CONFIG_KEY_ATTR            = "key";
+     public const string CONFIG_DESCR_ATTR          = "descr";
+     public const string CONFIG_DEFAULT_ATTR        = "default";
+     public const string CONFIG_LEN_ATTR            = "len";
+     public const string CONFIG_VISIBLE_ATTR        = "visible";
      
-     public const string CONFIG_CASE_ATTR = "case";
+     public const string CONFIG_CASE_ATTR           = "case";
 
-     public const string CONFIG_FORMAT_ATTR = "format";
-     public const string CONFIG_FORMAT_DESCR_ATTR = "format-descr";
+     public const string CONFIG_FORMAT_ATTR         = "format";
+     public const string CONFIG_FORMAT_DESCR_ATTR   = "format-descr";
      public const string CONFIG_DISPLAY_FORMAT_ATTR = "display-format";
 
-     public const string CONFIG_CODE_ATTR = "code";
-     public const string CONFIG_DISPLAY_ATTR = "display";
+     public const string CONFIG_CODE_ATTR           = "code";
+     public const string CONFIG_DISPLAY_ATTR        = "display";
 
-     public const string CONFIG_INSERT_ATTR = "insert";
-     public const string CONFIG_UPDATE_ATTR = "update";
-     public const string CONFIG_DELETE_ATTR = "delete";
+     public const string CONFIG_INSERT_ATTR         = "insert";
+     public const string CONFIG_UPDATE_ATTR         = "update";
+     public const string CONFIG_DELETE_ATTR         = "delete";
 
-     private const string SCHEMA_KEY_COUNT = "KEY_COUNT";
+     private const string SCHEMA_KEY_COUNT          = "KEY_COUNT";
 
     public SchemaMap(ErlDataStore store, string xmlContent)
     {
@@ -295,13 +295,17 @@ namespace NFX.DataAccess.Erlang
          }
       }
 
-
       private Schema erlSchemaToCRUDSchema(string name)
       {
         var erlSect = GetErlSchemaSection(name);
-        if (erlSect==null) 
-         throw new ErlDataAccessException(StringConsts.ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR.Args(name));
+        if (erlSect == null)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR.Args(name));
 
+        return ErlSchemaToCRUDSchema(name, erlSect);
+      }
+
+      public static Schema ErlSchemaToCRUDSchema(string name, IConfigSectionNode erlSect)
+      {
         var defs = new List<Schema.FieldDef>();
 
         var isInsert = erlSect.AttrByName(CONFIG_INSERT_ATTR).ValueAsBool(false);
@@ -315,48 +319,46 @@ namespace NFX.DataAccess.Erlang
         var nodeFields = erlSect.Children.Where(c => c.IsSameName(CONFIG_FIELD_SECTION));
         foreach(var nodeField in nodeFields)
         {
-          var fname   = nodeField.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
-          var ftitle  = nodeField.AttrByName(CONFIG_TITLE_ATTR).Value;
-          var isKey   = nodeField.AttrByName(CONFIG_KEY_ATTR).ValueAsBool();
-          var required= nodeField.AttrByName(CONFIG_REQUIRED_ATTR).ValueAsBool(false);
-          var type = nodeField.AttrByName(CONFIG_TYPE_ATTR).Value;
+          var cfg     = new LaconicConfiguration();
+          cfg.CreateFromNode(nodeField);
+          var node    = cfg.Root;
+
+          var fname   = node.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
+          var ftitle  = node.AttrByName(CONFIG_TITLE_ATTR).Value;
+          var fhint   = node.AttrByName(CONFIG_DESCR_ATTR).ValueAsString("");
+          var isKey   = node.AttrByName(CONFIG_KEY_ATTR).ValueAsBool();
+          var required= node.AttrByName(CONFIG_REQUIRED_ATTR).ValueAsBool(false);
+          var type    = node.AttrByName(CONFIG_TYPE_ATTR).Value;
           var clrType = mapErlTypeToCLR(type);
+          var fmtdesc = node.AttrByName(CONFIG_FORMAT_DESCR_ATTR).Value;
+
+          node.AddAttributeNode("title", ftitle);
 
           object minV = null;
           object maxV = null;
 
-          var sv = nodeField.AttrByName(CONFIG_MIN_ATTR).Value;
+          var sv = node.AttrByName(CONFIG_MIN_ATTR).Value;
           if (sv.IsNotNullOrWhiteSpace()) minV = sv.AsType(clrType, true);
 
-          sv = nodeField.AttrByName(CONFIG_MAX_ATTR).Value;
+          sv = node.AttrByName(CONFIG_MAX_ATTR).Value;
           if (sv.IsNotNullOrWhiteSpace()) maxV = sv.AsType(clrType, true);
-             
 
 
-
-          var strDfltValue = nodeField.AttrByName(CONFIG_DEFAULT_ATTR).ValueAsString(string.Empty);
+          var strDfltValue = node.AttrByName(CONFIG_DEFAULT_ATTR).ValueAsString(string.Empty);
           object dfltValue = null;
           
-          if (clrType!=typeof(string))
-          {
-            if (strDfltValue.IsNotNullOrWhiteSpace())
-            {
-               if (clrType==typeof(DateTime?))
-                dfltValue = ((long)strDfltValue.AsType(typeof(long), false)).FromMicrosecondsSinceUnixEpochStart();
-               else
-                dfltValue = strDfltValue.AsType(clrType, false);
-            }
-          }
-          else
-          {
+          if (clrType==typeof(string))
             dfltValue = strDfltValue;
-          }
+          else if (strDfltValue.IsNotNullOrWhiteSpace())
+            dfltValue = clrType==typeof(DateTime?) 
+                      ? ((long)strDfltValue.AsType(typeof(long), false)).FromMicrosecondsSinceUnixEpochStart() 
+                      : strDfltValue.AsType(clrType, false);
 
           if (isKey) keyCount++;
 
           List<string> vList = null;
                    
-          var values = nodeField.Children.Where( c => c.IsSameName(CONFIG_VALUE_SECTION));
+          var values = node.Children.Where( c => c.IsSameName(CONFIG_VALUE_SECTION));
           foreach(var vnode in values)
           {
             var code = vnode.AttrByName(CONFIG_CODE_ATTR).Value;
@@ -370,43 +372,40 @@ namespace NFX.DataAccess.Erlang
               vList.Add("{0}: {1}".Args(code, disp));
           }
 
-
           var caze = CharCase.AsIs;
 
-          var ca = nodeField.AttrByName(CONFIG_CASE_ATTR).Value;
+          var ca = node.AttrByName(CONFIG_CASE_ATTR).Value;
           if (ca.EqualsOrdIgnoreCase("upper")) caze = CharCase.Upper;
           else
           if (ca.EqualsOrdIgnoreCase("lower")) caze = CharCase.Lower;
 
-
           var atr = new FieldAttribute(
-                         targetName: m_Store.TargetName, 
-                         backendName: fname,
-                         backendType: type,
-                         storeFlag: StoreFlag.LoadAndStore,
-                         key: isKey,
-                         required: required,
-                         dflt: dfltValue,
+              targetName:    TargetedAttribute.ANY_TARGET, 
+              backendName:   fname,
+              backendType:   type,
+              storeFlag:     StoreFlag.LoadAndStore,
+              key:           isKey,
+              required:      required,
+              dflt:          dfltValue,
+                             
+              min:           minV,
+              max:           maxV,
+                             
+              charCase:      caze,
 
-                         min: minV,
-                         max: maxV,
+              visible:       node.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(true),
+              maxLength:     node.AttrByName(CONFIG_LEN_ATTR).ValueAsInt(0),
+              description:   fmtdesc.IsNullOrEmpty() ? fhint : "{0}\nFormat: {1}".Args(fhint,fmtdesc),
+                             //Parsing.Utils.ParseFieldNameToDescription(ftitle, true),
+              formatRegExp:  node.AttrByName(CONFIG_FORMAT_ATTR).Value,
+              formatDescr:   fmtdesc,
+              displayFormat: node.AttrByName(CONFIG_DISPLAY_FORMAT_ATTR).Value,
+              valueList:     vList==null ? null : string.Join(",", vList),//"CAR: Car Driver,SMK: Smoker, REL: Religious, CNT: Country music lover, GLD: Gold collector"
+              metadata:      node.ToLaconicString());
 
-                         charCase: caze,
-
-                         visible:   nodeField.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(true),
-                         maxLength: nodeField.AttrByName(CONFIG_LEN_ATTR).ValueAsInt(0),
-                         description: ftitle,
-                         formatRegExp: nodeField.AttrByName(CONFIG_FORMAT_ATTR).Value,
-                         formatDescr: nodeField.AttrByName(CONFIG_FORMAT_DESCR_ATTR).Value,
-                         displayFormat: nodeField.AttrByName(CONFIG_DISPLAY_FORMAT_ATTR).Value,
-                         valueList: vList==null ? null : string.Join(",", vList),//"CAR: Car Driver,SMK: Smoker, REL: Religious, CNT: Country music lover, GLD: Gold collector"
-                         metadata: nodeField.ToLaconicString());
-
-          var def = new Schema.FieldDef(fname, clrType, new FieldAttribute[]{atr});
+          var def = new Schema.FieldDef(fname, clrType, new []{atr});
           defs.Add( def );
         }//for fields 
-
-
 
         var result = new Schema(name, isReadonly, defs.ToArray());
 
@@ -418,7 +417,7 @@ namespace NFX.DataAccess.Erlang
         return result;
       }
 
-      private Type mapErlTypeToCLR(string erlType)
+      private static Type mapErlTypeToCLR(string erlType)
       {
         Tuple<Type, Func<IErlObject, object>> to;
         if (ERL_TO_CLR_TYPEMAP.TryGetValue(erlType, out to)) return to.Item1;
@@ -427,12 +426,13 @@ namespace NFX.DataAccess.Erlang
         throw new ErlDataAccessException(StringConsts.ERL_DS_SCHEMA_MAP_ERL_TYPE_ERROR.Args(erlType));
       }
     
-      private static readonly Dictionary<string, Tuple<Type, Func<IErlObject, object>>> ERL_TO_CLR_TYPEMAP =
-        new Dictionary<string,Tuple<Type,Func<IErlObject,object>>>
+      private static readonly    Dictionary<string,Tuple<Type,Func<IErlObject,object>>>
+        ERL_TO_CLR_TYPEMAP = new Dictionary<string,Tuple<Type,Func<IErlObject,object>>>
       {
         {"atom",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)},
         {"string",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsString)},
         {"char",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(string),   (erl) => erl.IsNull() ? (string)null    : erl.ValueAsChar.ToString())},
+        {"int",      Tuple.Create<Type, Func<IErlObject, object>>(typeof(long?),    (erl) => erl.IsNull() ? (long?)null     : erl.ValueAsLong)},
         {"long",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(long?),    (erl) => erl.IsNull() ? (long?)null     : erl.ValueAsLong)},
         {"double",   Tuple.Create<Type, Func<IErlObject, object>>(typeof(double?),  (erl) => erl.IsNull() ? (double?)null   : erl.ValueAsDouble)},
         {"date",     Tuple.Create<Type, Func<IErlObject, object>>(typeof(DateTime?),(erl) => erl.IsNull() ? (DateTime?)null : erlDate2DateTime(erl))},
@@ -446,12 +446,13 @@ namespace NFX.DataAccess.Erlang
       };
 
 
-      private static readonly Dictionary<string, Func<object, IErlObject>> CLR_TO_ERL_TYPEMAP =
-        new Dictionary<string, Func<object,IErlObject>>
+      private static readonly    Dictionary<string, Func<object,IErlObject>>
+        CLR_TO_ERL_TYPEMAP = new Dictionary<string, Func<object,IErlObject>>
       {
         {"atom",     (clr) => new ErlAtom(clr.ToString())},
         {"string",   (clr) => new ErlString(clr.ToString())},
         {"char",     (clr) => new ErlByte(clr.ToString()[0])},
+        {"int",      (clr) => new ErlLong(clr.AsLong(handling: ConvertErrorHandling.Throw))},
         {"long",     (clr) => new ErlLong(clr.AsLong(handling: ConvertErrorHandling.Throw))},
         {"double",   (clr) => new ErlDouble(clr.AsDouble(handling: ConvertErrorHandling.Throw))},
         {"date",     (clr) => 
@@ -498,7 +499,7 @@ namespace NFX.DataAccess.Erlang
 
     private static ErlTuple ipAddrToErlTuple(string addr)
     {
-      var a = addr.AsString().Split(new char[] { '.' }).Select(s => int.Parse(s)).ToArray();
+      var a = addr.AsString().Split(new[] { '.' }).Select(s => int.Parse(s)).ToArray();
       if (a.Length != 4)
         throw new ErlDataAccessException("Invalid IP address format: " + addr);
       return new ErlTuple(a[0], a[1], a[2], a[3]);

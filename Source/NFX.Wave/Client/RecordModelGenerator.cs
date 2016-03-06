@@ -39,9 +39,26 @@ namespace NFX.Wave.Client
   public delegate string ModelLocalizationEventHandler(RecordModelGenerator sender, string schema, string field, string value, string isoLang);
 
 
+  /// <summary>
+  /// Invoked by generator to obtain a list of dynamic lookup values for a field.
+  /// This event is invoked ONLY for fields that DO NOT have valueList specified
+  /// </summary>
+  /// <param name="sender">Generator</param>
+  /// <param name="row">Row that data model is generated for</param>
+  /// <param name="fdef">Field definition</param>
+  /// <param name="target">Target name</param>
+  /// <param name="isoLang">Desired isoLang for localization</param>
+  /// <returns>JSONDataMap populated by business logic or null to indicate that no lookup values are available</returns>
+  public delegate JSONDataMap ModelFieldValueListLookupFunc(RecordModelGenerator sender,
+                                                            Row  row, 
+                                                            Schema.FieldDef fdef,
+                                                            string target,
+                                                            string isoLang);
 
   /// <summary>
-  /// Facilitates tasks of JSON generation for record models/rows as needed by WV.RecordModel client library
+  /// Facilitates tasks of JSON generation for record models/rows as needed by WV.RecordModel client library.
+  /// This class does not generate nested models, only flat models for particular row 
+  /// (i.e. id row has a complex type field, it will be serialized as "object")
   /// </summary>
   public class RecordModelGenerator
   {
@@ -106,7 +123,12 @@ namespace NFX.Wave.Client
       ///  may get attributes for client data entry screen that sees field metadata differently, in which case target will reflect the name
       ///   of the screen
       /// </summary>
-      public virtual JSONDataMap RowToRecordInitJSON(Row row, Exception validationError, string recID = null, string target = null, string isoLang = null)
+      public virtual JSONDataMap RowToRecordInitJSON(Row row, 
+                                                     Exception validationError,
+                                                     string recID = null,
+                                                     string target = null,
+                                                     string isoLang = null,
+                                                     ModelFieldValueListLookupFunc valueListLookup = null)
       {
         var result = new JSONDataMap();
         if (row==null) return result;
@@ -139,7 +161,7 @@ namespace NFX.Wave.Client
         {
           var fld = new JSONDataMap();
           fields.Add(fld);
-          fld["def"] = FieldDefToJSON(schemaName, fdef, target);
+          fld["def"] = FieldDefToJSON(row, schemaName, fdef, target, isoLang, valueListLookup);
           fld["val"] = row.GetFieldValue(fdef);
           var ferr = validationError as CRUDFieldValidationException;
           //field level exception
@@ -161,7 +183,12 @@ namespace NFX.Wave.Client
       }   
 
 
-      protected virtual JSONDataMap FieldDefToJSON(string schema, Schema.FieldDef fdef, string target, string isoLang = null)
+      protected virtual JSONDataMap FieldDefToJSON(Row row, 
+                                                   string schema,
+                                                   Schema.FieldDef fdef,
+                                                   string target, 
+                                                   string isoLang,
+                                                   ModelFieldValueListLookupFunc valueListLookup)
       {
         var result = new JSONDataMap();
 
@@ -169,7 +196,7 @@ namespace NFX.Wave.Client
         result["Type"] = MapCLRTypeToJS(fdef.NonNullableType);
         var key = fdef.AnyTargetKey;
         if (key) result["Key"] = key; 
-                               
+
 
         if (fdef.NonNullableType.IsEnum)
         { //Generate default lookupdict for enum
@@ -192,14 +219,26 @@ namespace NFX.Wave.Client
             if (attr.Min!=null) result["MinValue"] = attr.Min;
             if (attr.Max!=null) result["MaxValue"] = attr.Max;
             if (attr.MinLength>0) result["MinSize"] = attr.MinLength;
-            if (attr.MaxLength>0) result["Size"]    = attr.MaxLength;        
+            if (attr.MaxLength>0) result["Size"]    = attr.MaxLength;
             if (attr.Default!=null) result["DefaultValue"] = attr.Default;
             if (attr.ValueList.IsNotNullOrWhiteSpace())
             {
               var vl = OnLocalizeString(schema, "LookupDict", attr.ValueList, isoLang);
               result["LookupDict"] = FieldAttribute.ParseValueListString(vl);
             }
+            else
+            {
+              if (valueListLookup!=null)
+              {
+                var valueList = valueListLookup(this, row, fdef, target, isoLang);
+                if (valueList!=null)
+                  result["LookupDict"] = valueList;
+              }
+            }
+            
             if (attr.Kind!=DataKind.Text) result["Kind"] = MapCLRKindToJS(attr.Kind);
+
+            if (attr.CharCase!=CharCase.AsIs) result["Case"] = MapCLRCharCaseToJS(attr.CharCase);
         }
 
         if (attr.Metadata!=null)
@@ -264,6 +303,11 @@ namespace NFX.Wave.Client
             case DataKind.Telephone: return "tel";
             default: return kind.ToString().ToLowerInvariant();
         }
+      }
+
+      protected virtual string MapCLRCharCaseToJS(CharCase kind)
+      {
+        return kind.ToString().ToLowerInvariant();
       }
 
 

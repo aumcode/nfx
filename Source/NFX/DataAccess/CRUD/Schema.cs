@@ -202,6 +202,12 @@ namespace NFX.DataAccess.CRUD
 
 
                 /// <summary>
+                /// Returns true when this field is attributed as being a visible in any of the targeted attribute
+                /// </summary>
+                public bool AnyVisible { get { return m_Attrs.Any(a=>a.Visible);} } 
+
+
+                /// <summary>
                 /// Returns description from field attribute or parses it from field name
                 /// </summary>
                 public string Description
@@ -216,6 +222,20 @@ namespace NFX.DataAccess.CRUD
 
                     return result;
                   }
+                }
+
+                /// <summary>
+                /// For fields with ValueList returns value's description per specified schema
+                /// </summary>
+                public string ValueDescription(object fieldValue, string target = null, bool caseSensitiveKeys = false)
+                {
+                  var sv = fieldValue.AsString();
+                  if (sv.IsNullOrWhiteSpace()) return string.Empty;
+                  var atr = this[target];
+                  if (atr==null) return fieldValue.AsString(string.Empty);
+                  var vl = atr.ParseValueList(caseSensitiveKeys);
+                  
+                  return vl[sv].AsString(string.Empty);
                 }
                 
                 
@@ -544,8 +564,14 @@ namespace NFX.DataAccess.CRUD
             /// <summary>
             /// Returns FieldDefs in their order within rows that are declared as key fields in ANY_TARGET
             /// </summary>
-            public IEnumerable<FieldDef> AnyTargetKeyFieldDefs { get { return m_FieldDefs.Where(fd => fd.AnyTargetKey);}}
+            public IEnumerable<FieldDef> AnyTargetKeyFieldDefs { get { return m_FieldDefs.OrderedValues.Where(fd => fd.AnyTargetKey);}}
 
+
+
+            /// <summary>
+            /// Returns FieldDefs in their order within rows as
+            /// </summary>
+            public IEnumerable<FieldDef> AnyVisibleFieldDefs { get { return m_FieldDefs.OrderedValues.Where(fd => fd.AnyVisible);}}
 
 
             /// <summary>

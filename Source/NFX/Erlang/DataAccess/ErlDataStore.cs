@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -220,9 +221,9 @@ namespace NFX.DataAccess.Erlang
 
         foreach(var query in queries)
         {
-            var handler = QueryResolver.Resolve(query);
-            var rowset = handler.Execute( new ErlCRUDQueryExecutionContext(this), query, false);
-            result.Add( rowset );
+          var handler = QueryResolver.Resolve(query);
+          var rowset = handler.Execute( new ErlCRUDQueryExecutionContext(this), query, false);
+          result.Add( rowset );
         }
 
         return result;
@@ -429,11 +430,12 @@ namespace NFX.DataAccess.Erlang
           });
       }
 
-      private void reconnectNode()
+      private void reconnectNode([CallerFilePath]  string file = null,
+                                 [CallerLineNumber]int    line = 0)
       {
         var correlate = Guid.NewGuid();
         
-        App.Log.Write(new Log.Message
+        App.Log.Write(new Log.Message(null, file, line)
         {
           Type = Log.MessageType.Error,
           Topic = CoreConsts.ERLANG_TOPIC,
@@ -450,7 +452,7 @@ namespace NFX.DataAccess.Erlang
         }
         catch(Exception error)
         {
-          App.Log.Write(new Log.Message
+          App.Log.Write(new Log.Message(null, file, line)
           {
             Type = Log.MessageType.Error,
             Topic = CoreConsts.ERLANG_TOPIC,

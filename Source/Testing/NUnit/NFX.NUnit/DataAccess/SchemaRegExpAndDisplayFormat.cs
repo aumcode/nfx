@@ -58,13 +58,29 @@ namespace NFX.NUnit.DataAccess
             };
 
             Assert.AreEqual("150000", row["Milage"].ToString());
-            Assert.AreEqual("Milage: 150,000 miles", row.GetDisplayFieldValue(null, "Milage"));
+            Assert.AreEqual("Milage: 150,000 miles", row.GetDisplayFieldValue("Milage"));
         }
 
         [TestCase]
-        public void SchemaEQU1()
-        {                      
+        public void FieldValueDescription()
+        {
+            var row = new MyCar();
+
+            row.Sex = "F";
+            Assert.AreEqual("Female", row.GetFieldValueDescription("Sex"));
+            
+            row.Sex = "M";
+            Assert.AreEqual("Male", row.GetFieldValueDescription("Sex"));
+            
+            row.Sex = "U";
+            Assert.AreEqual("Unknown", row.GetFieldValueDescription("Sex"));
+        }
+
+        [TestCase]
+        public void SchemaEquivalence()
+        {
             Assert.IsTrue( Schema.GetForTypedRow(typeof(MyCar)).IsEquivalentTo(Schema.GetForTypedRow(typeof(MyCar2)), false ));
+            Assert.IsFalse( Schema.GetForTypedRow(typeof(MyCar)).IsEquivalentTo(Schema.GetForTypedRow(typeof(MyCarDiffOrder)), false ));
 
             Assert.IsFalse( Schema.GetForTypedRow(typeof(MyCar)).IsEquivalentTo(Schema.GetForTypedRow(typeof(MyCar3)), false ));
             Assert.IsFalse( Schema.GetForTypedRow(typeof(MyCar)).IsEquivalentTo(Schema.GetForTypedRow(typeof(MyCar4)), false ));
@@ -82,6 +98,9 @@ namespace NFX.NUnit.DataAccess
 
       [Field(displayFormat: "Milage: {0:n0} miles")]
       public int Milage{ get; set;}
+
+      [Field(valueList:"M: Male, F: Female, U: Unknown")]
+      public string Sex{ get; set;}
     }
 
     public class MyCar2 : TypedRow
@@ -93,6 +112,23 @@ namespace NFX.NUnit.DataAccess
 
       [Field(displayFormat: "Milage: {0:n0} miles")]
       public int Milage{ get; set;}
+
+      [Field(valueList:"M: Male, F: Female, U: Unknown")]
+      public string Sex{ get; set;}
+    }
+
+    public class MyCarDiffOrder : TypedRow
+    {
+      
+      [Field(formatRegExp: @"^[A-Z0-9\-]+$",
+             formatDescr: @"Allowed characters: A-Z,0-9,-")]
+      public string Code{ get; set;}
+
+      [Field(displayFormat: "Milage: {0:n0} miles")]
+      public int Milage{ get; set;}
+
+      [Field(valueList:"M: Male, U: Unknown, F: Female")]
+      public string Sex{ get; set;}
     }
 
     public class MyCar3 : TypedRow

@@ -36,7 +36,7 @@ namespace NFX.Web.EMail
   /// <summary>
   /// Provides implementation for IMailer service
   /// </summary>
-  public sealed class MailerService : Service, IMailer, IApplicationFinishNotifiable
+  public sealed class MailerService : Service, IMailerImplementation
   {
     #region CONSTS
 
@@ -50,7 +50,7 @@ namespace NFX.Web.EMail
     
     #region .ctor and static/lifecycle
       private static object s_Lock = new object();
-      private static MailerService s_Instance;
+      private static IMailerImplementation s_Instance;
 
       /// <summary>
       /// Returns a singleton instance of the default mailer
@@ -66,8 +66,7 @@ namespace NFX.Web.EMail
             instance = s_Instance;
             if (instance!=null) return instance;
 
-            instance = new MailerService();
-            instance.Configure(App.ConfigRoot[CONFIG_MESSAGING_SECTION][CONFIG_MAILER_SECTION]);
+            instance = FactoryUtils.MakeAndConfigure<IMailerImplementation>(App.ConfigRoot[CONFIG_MESSAGING_SECTION][CONFIG_MAILER_SECTION], typeof(MailerService));
             instance.Start();
             App.Instance.RegisterAppFinishNotifiable(instance);
             s_Instance = instance;
