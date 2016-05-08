@@ -127,11 +127,11 @@
   }
   
 
-  /*geo-lookup
+  geo-lookup
   {
     data-path=$"d:\geodata"
-    resolution="city"    
-  }*/
+    resolution="city"
+  }
   
   wave
   {
@@ -289,11 +289,11 @@
                 match{ path="pages/{*type}"}
                 type-location { name="local" assembly="WaveTestSite.exe" ns{ name="WaveTestSite.Pages"} }
                 
-                /*filter
+                filter
                 {
                     name="geoLocation"
                     type="NFX.Wave.Filters.GeoLookupFilter, NFX.Wave"
-                }*/
+                }
                 
             }
             

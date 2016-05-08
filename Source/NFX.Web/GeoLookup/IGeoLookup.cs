@@ -52,7 +52,7 @@ namespace NFX.Web.GeoLookup
     /// <summary>
     /// Tries to lookup the location by its id and returns it or null if no match could be made
     /// </summary>
-    Location LookupLocation(string locationID);
+    Location LookupLocation(int locationID);
   }
 
 
@@ -62,7 +62,7 @@ namespace NFX.Web.GeoLookup
   [Serializable]
   public class GeoEntity
   {
-    protected internal GeoEntity(IPAddress query, IPAddressBlock block, Location location)
+    protected internal GeoEntity(IPAddress query, IPSubnetBlock block, Location location)
     {
       Query = query;
       Block = block;
@@ -76,7 +76,7 @@ namespace NFX.Web.GeoLookup
     /// <summary>
     /// Information about IP address block
     /// </summary>
-    public readonly IPAddressBlock Block;
+    public readonly IPSubnetBlock Block;
 
     /// <summary>
     /// Information about geo location

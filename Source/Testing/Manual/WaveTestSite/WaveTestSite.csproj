@@ -54,6 +54,9 @@
     <Compile Include="Controllers\Tester.cs" />
     <Compile Include="Controllers\IntegrationTester.cs" />
     <Compile Include="Embedded\EmbeddedTestSiteHandler.cs" />
+    <Compile Include="Pages\GeoLookup.htm.auto.cs">
+      <DependentUpon>GeoLookup.htm</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AboutUs.htm.auto.cs">
       <DependentUpon>AboutUs.htm</DependentUpon>
     </Compile>
@@ -127,6 +130,7 @@
     <None Include="Pages\ImageBoxTest.htm" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Pages\GeoLookup.htm" />
     <Content Include="Pages\SocialLogin.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
