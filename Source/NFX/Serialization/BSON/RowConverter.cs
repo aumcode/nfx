@@ -89,7 +89,6 @@ namespace NFX.Serialization.BSON
           { typeof(double),   (v) => ((BSONDoubleElement)v).Value },
           { typeof(decimal),  (v) => Decimal_BSONtoCLR((BSONInt64Element)v) },
           { typeof(Amount),   (v) => {  if (v is BSONDocumentElement) return Amount_BSONtoCLR((BSONDocumentElement)v); return Amount.Parse(Convert.ToString(v.ObjectValue)); }},
-          //{ typeof(GDID),     (v) => ((BSONObjectIDElement)v).Value.AsGDID },
           { typeof(GDID),     (v) => GDID_BSONtoCLR((BSONBinaryElement)v) },
           { typeof(DateTime), (v) => ((BSONDateTimeElement)v).Value },
           { typeof(TimeSpan), (v) => TimeSpan.FromTicks( ((BSONInt64Element)v).Value) },
@@ -601,8 +600,9 @@ namespace NFX.Serialization.BSON
           return name != null ? new BSONDocumentElement(name, doc) : new BSONDocumentElement(doc);
         }
 
-        public static BSONBinaryElement GDID_CLRtoBSON(string name, GDID gdid)
+        public static BSONElement GDID_CLRtoBSON(string name, GDID gdid)
         {
+          if (gdid.IsZero) return new BSONNullElement(name);
           //As tested on Feb 27, 2015
           //BinData works faster than string 8% and stores 40%-60% less data in index and data segment
           //Also, SEQUENTIAL keys (big endian) yield 30% smaller indexes (vs non-sequential)

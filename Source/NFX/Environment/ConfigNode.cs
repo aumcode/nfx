@@ -1043,17 +1043,37 @@ namespace NFX.Environment
             }
             
             
-            var matches = children.Where(child => child.IsSameName(osect)).ToList();
-            if (matches.Count>1)
-            {
-              matches = matches.Where(child => child.AttrByName( rules.SectionMatchAttrName).ValueAsString()
-                                                                  .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).ValueAsString())).ToList();
-            }
+            //var matches = children.Where(child => child.IsSameName(osect)).ToList();
+            //if (matches.Count>1)
+            //{
+            //  matches = matches.Where(child => child.AttrByName( rules.SectionMatchAttrName).ValueAsString()
+            //                                                      .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).ValueAsString())).ToList();
+            //}
 
-            if (matches.Count>0)
-             matches[0].OverrideBy(osect, rules);
+            //if (matches.Count>0)
+            // matches[0].OverrideBy(osect, rules);
+            //else
+            // AddChildNode(osect.Name, osect.VerbatimValue).OverrideBy(osect, rules);
+            
+            //20160329 DKh
+            var match = children.Where(child => 
+                                 child.IsSameName(osect) &&
+                                 child.AttrByName( rules.SectionMatchAttrName ).Value
+                                 .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).Value)).FirstOrDefault();
+            
+            var append = match == null;
+
+            if (!append)
+             append = rules.AppendSectionsWithoutMatchAttr &&
+                      osect.AttrByName(rules.SectionMatchAttrName).Value.IsNullOrWhiteSpace();
+
+            if (append)
+              AddChildNode(osect.Name, osect.VerbatimValue).OverrideBy(osect, rules);
             else
-             AddChildNode(osect.Name, osect.VerbatimValue).OverrideBy(osect, rules);
+              match.OverrideBy(osect, rules);
+
+
+
           }
         }
 
@@ -1378,6 +1398,14 @@ namespace NFX.Environment
           return NFX.CodeAnalysis.Laconfig.LaconfigWriter.Write(this, options);
         }
 
+        /// <summary>
+        /// Serializes configuration tree rooted at this node into JSON configuration format and returns it as a string
+        /// </summary>
+        public string ToJSONString(NFX.Serialization.JSON.JSONWritingOptions options = null)
+        {
+          return this.ToConfigurationJSONDataMap().ToJSON(options);
+        }
+
 
         /// <summary>
         /// Replaces all include pragmas - sections with specified names ('_include' by default), with pointed to configuration file content
@@ -1442,18 +1470,22 @@ namespace NFX.Environment
         }
 
         /// <summary>
-        /// Converts this ConfigSectionNode to JSONDataMap.
-        /// Be carefull: that this operation can "loose" data from ConfigSectionNode.
-        /// In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap
+        /// Converts this ConfigSectionNode to JSONDataMap. Contrast with ToConfigurationJSONDataMap
+        /// Be carefull: that this operation can "lose" data from ConfigSectionNode.
+        /// In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap, for example
+        ///  this method overwrites duplicate key names and does not support section values
         /// </summary>
         public JSONDataMap ToJSONDataMap()
         {
           var map = new JSONDataMap();
-          buildMap(this, map);
+         
+          if (this.Exists)
+            buildSectionMap(this, map);
+         
           return map;
         }
 
-                  private void buildMap(ConfigSectionNode node, JSONDataMap map)
+                  private static void buildSectionMap(ConfigSectionNode node, JSONDataMap map)
                   {
                     foreach (var attr in node.Attributes)
                     {
@@ -1464,10 +1496,55 @@ namespace NFX.Environment
                     {
                       var childMap = new JSONDataMap();
                       map[childNode.Name] = childMap;
-                      buildMap(childNode, childMap);
+                      buildSectionMap(childNode, childMap);
                     }
                   }
 
+         /// <summary>
+         /// Returns this config node as JSON data map suitable for making JSONConfiguration.
+         /// Contrast with ToJSONDataMap
+         /// </summary>
+         public JSONDataMap ToConfigurationJSONDataMap()
+         {
+           var root = new JSONDataMap(false);
+          
+           if (this.Exists)
+             root[this.Name] = buildSectionConfigJSONDataMap(this);
+      
+           return root;
+         }
+      
+               private static JSONDataMap buildSectionConfigJSONDataMap(ConfigSectionNode sect)
+               {
+                 var result = new JSONDataMap(false);
+      
+                 if (sect.VerbatimValue.IsNotNullOrWhiteSpace())
+                   result[JSONConfiguration.SECTION_VALUE_ATTR] = sect.VerbatimValue;
+      
+                 foreach(var atr in sect.Attributes)
+                   result[atr.Name] = atr.VerbatimValue;
+      
+                 foreach(var cs in sect.Children)
+                 {
+                   var subSection = buildSectionConfigJSONDataMap(cs);
+                   var existing = result[cs.Name];
+                   if (existing==null)
+                     result[cs.Name] = subSection;
+                   else
+                   {
+                     if (existing is JSONDataMap)
+                     {
+                       var lst =  new List<JSONDataMap>();
+                       lst.Add((JSONDataMap)existing);
+                       lst.Add(subSection);
+                       result[cs.Name] = lst;
+                     }
+                     else
+                      ((List<JSONDataMap>)existing).Add(subSection);
+                   }
+                 }
+                 return result;
+               }
 
     #endregion
          
@@ -1611,6 +1688,9 @@ namespace NFX.Environment
           
           foreach(var s in segs)
           {
+               //20160319 DKh
+               if (!result.Exists) break;
+               
                var seg = s.Trim();
 
                if (seg=="..")

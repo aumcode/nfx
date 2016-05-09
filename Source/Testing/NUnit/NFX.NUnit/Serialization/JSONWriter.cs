@@ -20,8 +20,11 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Diagnostics;
+
 using NUnit.Framework;
 
+using NFX.DataAccess.CRUD;
 using NFX.CodeAnalysis;
 using NFX.CodeAnalysis.Source;
 using NFX.CodeAnalysis.JSON;
@@ -30,9 +33,6 @@ using JL=NFX.CodeAnalysis.JSON.JSONLexer;
 using JP=NFX.CodeAnalysis.JSON.JSONParser;
 using JW=NFX.Serialization.JSON.JSONWriter;
 using JDO=NFX.Serialization.JSON.JSONDynamicObject;
-using System.Diagnostics;
-
-
 
 namespace NFX.NUnit.Serialization
 {
@@ -448,6 +448,145 @@ namespace NFX.NUnit.Serialization
 
             Assert.AreEqual("{\"Age\":99,\"Name\":\"Kuklachev\"}", json);
 
+        }
+
+
+        [TestCase]
+        public void Options_MapSkipNulls()
+        {
+            var map = new JSONDataMap();
+             
+            map["a"] = 23;
+            map["b"] = true;
+            map["c"] = null;
+            map["d"] = (int?)11;
+            map["e"] = "aaa";
+            map["f"] = (int?)null;
+
+
+            var json = JW.Write(map);
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""a"":23,""b"":true,""c"":null,""d"":11,""e"":""aaa"",""f"":null}", json);
+
+            json = JW.Write(map, new JSONWritingOptions{ MapSkipNulls = true});
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""a"":23,""b"":true,""d"":11,""e"":""aaa""}", json);
+        }
+
+            private class OptRow: TypedRow
+            {
+              [Field]
+              public string ID { get; set;}
+
+              [Field(targetName: "AAA", backendName: "aln")]
+              [Field(targetName: "BBB", backendName: "bln")]
+              public string LongName{get; set;}
+
+              [Field(targetName: "AAA", storeFlag: NFX.DataAccess.StoreFlag.None)]
+              public string Hidden{get; set;}
+            }
+
+
+        [TestCase]
+        public void Options_RowMapTargetName()
+        {
+            var row = new OptRow{ ID = "id123", LongName = "Long string", Hidden = "Cant see"};
+
+            var json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "AAA"});
+
+            var map = JSONReader.DeserializeDataObject(json) as JSONDataMap;
+
+            Assert.IsNotNull(map);
+            Assert.AreEqual(2, map.Count);
+            Assert.AreEqual("id123", map["ID"]);
+            Assert.AreEqual("Long string", map["aln"]);
+
+            json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "BBB"});
+            
+            map = JSONReader.DeserializeDataObject(json) as JSONDataMap;
+
+            Assert.IsNotNull(map);
+            Assert.AreEqual(3, map.Count);
+            Assert.AreEqual("id123", map["ID"]);
+            Assert.AreEqual("Long string", map["bln"]);
+            Assert.AreEqual("Cant see", map["Hidden"]);
+
+            json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true});
+            
+            map = JSONReader.DeserializeDataObject(json) as JSONDataMap;
+
+            Assert.IsNotNull(map);
+            Assert.AreEqual(3, map.Count);
+            Assert.AreEqual("id123", map["ID"]);
+            Assert.AreEqual("Long string", map["LongName"]);
+            Assert.AreEqual("Cant see", map["Hidden"]);
+        }
+
+
+            private class FieldWithDefaultsRow: TypedRow
+            {
+              [Field]
+              public string ID { get; set;}
+
+              [Field(targetName: "AAA", backendName: "aln")]
+              public string Name{get; set;}
+
+              [Field(targetName: "AAA", dflt: true, backendName: "d_t")]
+              public bool DefaultTrue{get; set;}
+
+              [Field(targetName: "AAA", dflt: false, backendName: "d_f")]
+              public bool DefaultFalse{get; set;}
+
+              [Field(targetName: "AAA", dflt: 5, backendName: "d_five")]
+              public int DefaultFive{get; set;}
+
+              [Field(targetName: "AAA", dflt: 7.8d, backendName: "d_seven")]
+              public double DefaultSeven{get; set;}
+            }
+       
+       
+        [TestCase]
+        public void RowFieldWithDefaults()
+        {
+            var row = new FieldWithDefaultsRow{ Name = "123", DefaultTrue = true, DefaultFalse = false, DefaultFive = 5, DefaultSeven = 7.8d};
+
+            var json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "AAA"});
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""ID"":null,""aln"":""123""}", json);
+
+            json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "AAA", MapSkipNulls = true});
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""aln"":""123""}", json);
+
+
+            row = new FieldWithDefaultsRow{ Name = null, DefaultTrue = true, DefaultFalse = false, DefaultFive = 5, DefaultSeven = 7.8d};
+            json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "AAA", MapSkipNulls = true});
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{}", json);
+
+            row = new FieldWithDefaultsRow{ Name = null, DefaultTrue = false, DefaultFalse = false, DefaultFive = 5, DefaultSeven = 7.8d};
+            json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "AAA", MapSkipNulls = true});
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""d_t"":false}", json);
+
+             row = new FieldWithDefaultsRow{ Name = null, DefaultTrue = true, DefaultFalse = true, DefaultFive = 4, DefaultSeven = 7.1d};
+            json = JW.Write(row, new JSONWritingOptions{ RowsAsMap = true, RowMapTargetName = "AAA", MapSkipNulls = true});
+
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""d_f"":true,""d_five"":4,""d_seven"":7.1}", json);
         }
         
     }

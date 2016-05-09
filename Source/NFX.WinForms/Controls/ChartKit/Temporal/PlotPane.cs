@@ -37,6 +37,12 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       base.Name = paneName;
       this.m_Order = paneOrder;
 
+      using (var gr = CreateGraphics())
+      {
+        var fSize = gr.MeasureString("0.00000", m_Chart.RulerStyle.Font); //margin
+        m_VLineSpaceHeight = (int)Math.Round(fSize.Height) + VLINE_SPACE_PADDING;
+      }
+
       //for(var x=0; x<1600; x+= 48)
       //  for(var y=0; y<1800; y+= 16)
       //  {
@@ -62,6 +68,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
     private float m_VRulerMinScale;
     private float m_VRulerMaxScale;
+    private int   m_VLineSpaceHeight;
+    private const int VLINE_SPACE_PADDING = 8;
 
     public new string Name { get { return base.Name; } }
 
@@ -97,7 +105,17 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       }
 
       if (invalidate)
+      {
+        var s1 = scaleValueToString(m_VRulerMaxScale);
+        var s2 = scaleValueToString(m_VRulerMinScale);
+        using (var gr = CreateGraphics())
+        { 
+          var fSize = gr.MeasureString(s1.Length > s2.Length ? s1 : s2, m_Chart.RulerStyle.Font); //margin
+          m_Chart.VRulerWidth = (int)Math.Round(fSize.Width);
+          m_VLineSpaceHeight  = (int)Math.Round(fSize.Height) + VLINE_SPACE_PADDING;
+        }
         Invalidate();
+      }
     }
 
 
@@ -147,69 +165,58 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
     protected override void OnPaint(PaintEventArgs e)
     {
-      const int TXT_H_MARGIN = 8;
-      const int TXT_V_MARGIN = 8;
+      //const int TXT_H_MARGIN = 8;
 
       var gr = e.Graphics;
       
-      using (var font = new Font("Verdana", 6f))
+      var lineWidth = m_Chart.VRulerWidth;
+      // + TXT_H_MARGIN;// (int)(fSize.Width + TXT_H_MARGIN);//H margin
+      var halfLineHeight = m_VLineSpaceHeight / 2;
+
+      var rulerX = m_Chart.VRulerPosition == VRulerPosition.Right ? this.Width - lineWidth : 0;
+      //Ruler bar
+      gr.FillRectangle(m_Chart.RulerStyle.BackBrush, new Rectangle(rulerX, 0, lineWidth, Height));
+
+      var pen = m_Chart.GridLinePen;
+      var lineCount = this.Height/m_VLineSpaceHeight;
+      var linePrice = (m_VRulerMaxScale - m_VRulerMinScale)/lineCount;
+
+      var price = m_VRulerMinScale;
+      var y = this.Height;
+      while (y >= 0)
       {
-        var s1 = scaleValueToString(m_VRulerMaxScale);
-        var s2 = scaleValueToString(m_VRulerMinScale);
+        if (m_Chart.VRulerPosition == VRulerPosition.Right)
+          gr.DrawLine(pen, 0, y, this.Width - lineWidth, y);
+        else
+          gr.DrawLine(pen, lineWidth, y, this.Right, y);
 
-        var fSize = gr.MeasureString(s1.Length > s2.Length ? s1 : s2, font); //margin
-        var lineWidth = m_Chart.VRulerWidth;
-          // + TXT_H_MARGIN;// (int)(fSize.Width + TXT_H_MARGIN);//H margin
-        var lineHeight = (int)(fSize.Height + TXT_V_MARGIN); //V margin
-        var halfLineHeight = lineHeight/2;
-
-        var rulerX = m_Chart.VRulerPosition == VRulerPosition.Right
-                   ? this.Width - lineWidth
-                   : 0;
-        //Ruler bar
-        gr.FillRectangle(m_Chart.RulerStyle.BackBrush, new Rectangle(rulerX, 0, lineWidth, Height));
-
-        var pen = m_Chart.GridLinePen;
-        var lineCount = this.Height/lineHeight;
-        var linePrice = (m_VRulerMaxScale - m_VRulerMinScale)/lineCount;
-
-        var price = m_VRulerMinScale;
-        var y = this.Height;
-        while (y >= 0)
-        {
-          if (m_Chart.VRulerPosition == VRulerPosition.Right)
-            gr.DrawLine(pen, 0, y, this.Width - lineWidth, y);
-          else
-            gr.DrawLine(pen, lineWidth, y, this.Right, y);
-
-          gr.DrawString(scaleValueToString(price), font, m_Chart.RulerStyle.ForeBrush,
-                        rulerX + (TXT_H_MARGIN/2), y - halfLineHeight + (TXT_V_MARGIN/2));
-          y     -= lineHeight;
-          price += linePrice;
-        }
-
-        using (var warpPen = getGridPen(m_Chart.GridLineTimeGapStyle))
-        {
-          foreach (var tick in m_Chart.m_TimeScalePane.Ticks)
-          {
-            if (tick.Warp)
-            {
-              gr.DrawLine(warpPen, tick.X - 1, 0, tick.X - 1, Height);
-              gr.DrawLine(warpPen, tick.X + 1, 0, tick.X + 1, Height);
-            }
-
-            if (tick.DayChange)
-              using (var dayChgPen = getGridPen(m_Chart.GridLineDayChangeStyle))
-                gr.DrawLine(dayChgPen, tick.X, 0, tick.X, Height);
-            else
-              gr.DrawLine(pen, tick.X, 0, tick.X, Height);
-          }
-        }
-
-        //Vertical cursor line
-        gr.DrawLine(m_Chart.VCursorLinePen, m_Chart.m_TimeScalePane.MouseCursorX, 0,
-                    m_Chart.m_TimeScalePane.MouseCursorX, Height);
+        gr.DrawString(scaleValueToString(price), m_Chart.RulerStyle.Font, m_Chart.RulerStyle.ForeBrush,
+                      rulerX + (TimeSeriesChart.VRULLER_HPADDING/2), y - halfLineHeight + (VLINE_SPACE_PADDING/2));
+        y     -= m_VLineSpaceHeight;
+        price += linePrice;
       }
+
+      using (var warpPen = getGridPen(m_Chart.GridLineTimeGapStyle))
+      {
+        foreach (var tick in m_Chart.m_TimeScalePane.Ticks)
+        {
+          if (tick.Warp)
+          {
+            gr.DrawLine(warpPen, tick.X - 1, 0, tick.X - 1, Height);
+            gr.DrawLine(warpPen, tick.X + 1, 0, tick.X + 1, Height);
+          }
+
+          if (tick.DayChange)
+            using (var dayChgPen = getGridPen(m_Chart.GridLineDayChangeStyle))
+              gr.DrawLine(dayChgPen, tick.X, 0, tick.X, Height);
+          else
+            gr.DrawLine(pen, tick.X, 0, tick.X, Height);
+        }
+      }
+
+      //Vertical cursor line
+      gr.DrawLine(m_Chart.VCursorLinePen, m_Chart.m_TimeScalePane.MouseCursorX, 0,
+                  m_Chart.m_TimeScalePane.MouseCursorX, Height);
 
       base.OnPaint(e);
     }

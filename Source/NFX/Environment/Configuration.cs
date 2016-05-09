@@ -27,6 +27,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+using NFX.Serialization.JSON;
+
 namespace NFX.Environment
 {
   /// <summary>
@@ -81,9 +83,8 @@ namespace NFX.Environment
           get
           {
             return NFX.CodeAnalysis.Laconfig.LaconfigLanguage.Instance.FileExtensions
-                                            .Concat(
-                   NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions)
-                   ;
+                                            .Concat(NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions)
+                                            .Concat(NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions);
           }
         }
         
@@ -105,6 +106,9 @@ namespace NFX.Environment
             if (NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions.Any(e => string.Equals(e, ext, StringComparison.InvariantCultureIgnoreCase) ))
               return new XMLConfiguration(fileName);
 
+            if (NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions.Any(e => string.Equals(e, ext, StringComparison.InvariantCultureIgnoreCase) ))
+              return new JSONConfiguration(fileName);
+
             throw new ConfigException(StringConsts.CONFIG_NO_PROVIDER_LOAD_FILE_ERROR + fileName);
         }
 
@@ -116,14 +120,20 @@ namespace NFX.Environment
         /// Given "c:\conf\users" as an input:
         ///   if "c:\conf\users.xml" exists then it will be opened as XMLConfiguration
         ///   if "c:\conf\users.laconf" exists then it will be opened as LaconicConfiguration
+        ///   if "c:\conf\users.json" exists then it will be opened as JSONConfiguration
         ///   and so on... for the rest of supported formats
         /// </example>
         public static Configuration ProviderLoadFromAnySupportedFormatFile(string fileName)
         {
-            foreach(var fmt in AllSupportedFormats)
+            if (fileName.IsNotNullOrWhiteSpace())
             {
-              var fn =  "{0}.{1}".Args(fileName, fmt);
-              if (File.Exists(fileName+fmt)) return ProviderLoadFromFile(fn);
+              if (fileName.EndsWith(".")) fileName=fileName.Remove(fileName.Length-1);
+             
+              foreach(var fmt in AllSupportedFormats)
+              {
+                var fn =  "{0}.{1}".Args(fileName, fmt);
+                if (File.Exists(fn)) return ProviderLoadFromFile(fn);
+              }
             }
 
             throw new ConfigException(StringConsts.CONFIG_NO_PROVIDER_LOAD_FILE_ERROR + fileName);
@@ -145,6 +155,9 @@ namespace NFX.Environment
 
             if (NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase) ))
               return XMLConfiguration.CreateFromXML(content);
+
+            if (NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase) ))
+              return JSONConfiguration.CreateFromJSON(content);
 
             throw new ConfigException(StringConsts.CONFIG_NO_PROVIDER_LOAD_FORMAT_ERROR + format);
         }
@@ -558,6 +571,15 @@ namespace NFX.Environment
               NFX.CodeAnalysis.Laconfig.LaconfigWriter.Write(this, fs, options, encoding);
         }
 
+        /// <summary>
+        /// Returns this config as JSON data map suitable for making JSONConfiguration
+        /// </summary>
+        public JSONDataMap ToConfigurationJSONDataMap()
+        {
+          if (m_Root==null) return new JSONDataMap(false);
+
+          return m_Root.ToConfigurationJSONDataMap();
+        }
 
     #endregion
 

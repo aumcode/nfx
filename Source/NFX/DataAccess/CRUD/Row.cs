@@ -169,7 +169,7 @@ namespace NFX.DataAccess.CRUD
             /// Performs validation of data in the row returning exception object that provides description
             /// in cases when validation does not pass. Validation is performed not targeting any particular backend
             /// </summary>
-            public Exception Validate()
+            public virtual Exception Validate()
             {
                 return Validate(null);
             }
@@ -320,43 +320,76 @@ namespace NFX.DataAccess.CRUD
             {
               if (value==DBNull.Value) value = null;
 
-                if (value != null)
-                {
-                    var tv = value.GetType();
+              if (value == null) return null;
+           
+              var tv = value.GetType();
 
-                    if (tv != fdef.NonNullableType && !fdef.NonNullableType.IsAssignableFrom(tv))
-                    {
+              if (tv != fdef.NonNullableType && !fdef.NonNullableType.IsAssignableFrom(tv))
+              {
+
+                  if (value is ObjectValueConversion.TriStateBool)
+                  {
+                    var tsb = (ObjectValueConversion.TriStateBool)value;
+                    if (tsb==ObjectValueConversion.TriStateBool.Unspecified) 
+                      value = null;
+                    else
+                      value = tsb==ObjectValueConversion.TriStateBool.True;
+
+                    return value;
+                  }
                 
-                      // 20150224 DKh, addedEra to GDID. Only GDIDS with ERA=0 can be converted to/from INT64
-                      if (fdef.NonNullableType==typeof(NFX.DataAccess.Distributed.GDID))
+                  if (fdef.NonNullableType==typeof(ObjectValueConversion.TriStateBool))
+                  {
+                    var nb = value.AsNullableBool();
+                    if (!nb.HasValue) 
+                      value = ObjectValueConversion.TriStateBool.Unspecified;
+                    else
+                      value = nb.Value ? ObjectValueConversion.TriStateBool.True : ObjectValueConversion.TriStateBool.False;
+
+                    return value;
+                  }
+
+                
+                  // 20150224 DKh, addedEra to GDID. Only GDIDS with ERA=0 can be converted to/from INT64
+                  if (fdef.NonNullableType==typeof(NFX.DataAccess.Distributed.GDID))
+                  {
+                      if (tv==typeof(byte[]))//20151103 DKh GDID support for byte[]
+                        value = new Distributed.GDID((byte[])value);
+                      else if (tv==typeof(string))//20160504 Spol GDID support for string
                       {
-                         if (tv==typeof(byte[]))//20151103 DKh GDID support for byte[]
-                           value = new Distributed.GDID((byte[])value);
-                         else
-                           value = new Distributed.GDID(0, (UInt64)Convert.ChangeType(value, typeof(UInt64)));
+                        var sv = (string)value;
+                        if (sv.IsNotNullOrWhiteSpace())
+                          value = Distributed.GDID.Parse((string)value);
+                        else
+                          value = fdef.Type == typeof(Distributed.GDID?) ? (Distributed.GDID?)null : Distributed.GDID.Zero;
+                      }
+                      else
+                        value = new Distributed.GDID(0, (UInt64)Convert.ChangeType(value, typeof(UInt64)));
+
+                      return value;
+                  }
+
+                  if (tv==typeof(Distributed.GDID))
+                  {
+                      if (fdef.NonNullableType==typeof(byte[]))
+                      {
+                        value = ((Distributed.GDID)value).Bytes;
+                      }
+                      else if (fdef.NonNullableType==typeof(string))
+                      {
+                        value = value.ToString();
                       }
                       else
                       {
-                         if (tv==typeof(Distributed.GDID))
-                         {
-                             if (fdef.NonNullableType==typeof(byte[]))
-                             {
-                               value = ((Distributed.GDID)value).Bytes;
-                             }
-                             else
-                             {
-                               var gdid = (Distributed.GDID)value;
-                               if (gdid.Era!=0)
-                                 throw new CRUDException(StringConsts.CRUD_GDID_ERA_CONVERSION_ERROR.Args(fdef.Name, fdef.NonNullableType.Name));
-                               value = gdid.ID;
-                             }
-                         }
-                         else
-                           value = Convert.ChangeType(value, fdef.NonNullableType); 
+                        var gdid = (Distributed.GDID)value;
+                        if (gdid.Era!=0)
+                          throw new CRUDException(StringConsts.CRUD_GDID_ERA_CONVERSION_ERROR.Args(fdef.Name, fdef.NonNullableType.Name));
+                        value = gdid.ID;
                       }
-                      
-                    }//Types Differ
-                }   
+                  }
+                  else value = Convert.ChangeType(value, fdef.NonNullableType);
+
+              }//Types Differ
 
               return value;
             }
@@ -477,41 +510,91 @@ namespace NFX.DataAccess.CRUD
             /// <summary>
             /// Returns field value as string formatted per target DisplayFormat attribute
             /// </summary>
-            public string GetDisplayFieldValue(string fieldName, string targetName=null)
+            public string GetDisplayFieldValue(string fieldName, string targetName=null, Func<object,object> transform = null)
             {
               var def = Schema[fieldName];
               if (def==null)
                 throw new CRUDException(StringConsts.CRUD_FIELD_NOT_FOUND_ERROR.Args(fieldName, Schema));
 
-              return getDisplayFieldValue(targetName, def);
+              return getDisplayFieldValue(targetName, def, transform);
             }
 
             /// <summary>
             /// Returns field value as string formatted per target DisplayFormat attribute
             /// </summary>
-            public string GetDisplayFieldValue(int fieldIndex, string targetName=null)
+            public string GetDisplayFieldValue(int fieldIndex, string targetName=null, Func<object, object> transform = null)
             {
               var def = Schema[fieldIndex];
               if (def==null)
                 throw new CRUDException(StringConsts.CRUD_FIELD_NOT_FOUND_ERROR.Args("[{0}]".Args(fieldIndex), Schema));
 
-              return getDisplayFieldValue(targetName, def);
+              return getDisplayFieldValue(targetName, def, transform);
             }
 
                   /// <summary>
                   /// Returns field value as string formatted per target DisplayFormat attribute
                   /// </summary>
-                  private string getDisplayFieldValue(string targetName, Schema.FieldDef fdef)
+                  private string getDisplayFieldValue(string targetName, Schema.FieldDef fdef, Func<object, object> transform =null)
                   {
                       var value = GetFieldValue(fdef);
                       if (value==null) return null;
 
                       var atr = fdef[targetName];
+                      if (transform != null)
+                        value = transform(value);
+
                       if (atr==null || atr.DisplayFormat.IsNullOrWhiteSpace())
                         return value.ToString();
                 
                       return atr.DisplayFormat.Args(value);
                   }
+
+
+            /// <summary>
+            /// Override to perform dynamic lookup of field value list for the specified field.
+            /// This method is used by client ui/scaffolding to extract dynamic lookup values
+            /// as dictated by business logic. This method IS NOT used by row validation, only by client
+            /// that feeds from row's metadata.
+            /// This is a simplified version of GetClientFieldDef
+            /// </summary>
+            public virtual JSONDataMap GetClientFieldValueList(object callerContext,
+                                                               Schema.FieldDef fdef,
+                                                               string targetName,
+                                                               string isoLang)
+            {
+              return null;
+            }
+
+            /// <summary>
+            /// Override to perform dynamic substitute of field def for the specified field.
+            /// This method is used by client ui/scaffolding to extract dynamic definition for a field 
+            /// (i.e. field description, requirement, value list etc.) as dictated by business logic.
+            /// This method IS NOT used by row validation, only by client that feeds from row's metadata.
+            /// The default implementation returns the original field def, you can return a substituted field def
+            ///  per particular business logic
+            /// </summary>
+            public virtual Schema.FieldDef GetClientFieldDef(object callerContext,
+                                                             Schema.FieldDef fdef,
+                                                             string targetName,
+                                                             string isoLang)
+            {
+              return fdef;
+            }
+
+            /// <summary>
+            /// Override to perform dynamic substitute of field value for the specified field.
+            /// This method is used by client ui/scaffolding to extract field values for a field as dictated by business logic.
+            /// This method IS NOT used by row validation, only by client that feeds from row's metadata.
+            /// The default implementation returns the original GetFieldValue(fdef), you can return a substituted field value
+            ///  per particular business logic
+            /// </summary>
+            public virtual object GetClientFieldValue(object callerContext,
+                                                      Schema.FieldDef fdef,
+                                                      string targetName,
+                                                      string isoLang)
+            {
+              return GetFieldValue(fdef);
+            }
 
         #endregion
 
@@ -531,7 +614,14 @@ namespace NFX.DataAccess.CRUD
 
                 var map = new Dictionary<string, object>();
                 foreach(var fd in Schema)
-                  map.Add(fd.Name, GetFieldValue(fd));
+                {
+                  string name;
+                  
+                  var val = FilterJSONSerializerField(fd, options, out name);
+                  if (name.IsNullOrWhiteSpace()) continue;
+
+                  map[name] = val;
+                }
                 
                 if (this is IAmorphousData)
                 {
@@ -551,9 +641,6 @@ namespace NFX.DataAccess.CRUD
 
         #region Protected
 
-            
-            
-            
             /// <summary>
             /// Validates row field using Schema.FieldDef settings.
             /// This method is invoked by base Validate() implementation.
@@ -567,7 +654,10 @@ namespace NFX.DataAccess.CRUD
                 
                 var value = GetFieldValue(fdef);
                 
-                if (value==null || (value is string && ((string)value).IsNullOrWhiteSpace()))
+                if (value==null || 
+                    (value is string && ((string)value).IsNullOrWhiteSpace()) ||
+                    (value is Distributed.GDID && ((Distributed.GDID)value).IsZero)
+                   )
                 {
                    if (atr.Required) 
                     return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_REQUIRED_ERROR);
@@ -601,7 +691,7 @@ namespace NFX.DataAccess.CRUD
                    return null; 
                 }
 
-                if (atr.ValueList.IsNotNullOrWhiteSpace())//check dictionary
+                if (atr.HasValueList)//check dictionary
                 {
                     var parsed = atr.ParseValueList();
                     if (!parsed.ContainsKey(value.ToString()))
@@ -644,7 +734,10 @@ namespace NFX.DataAccess.CRUD
                 {
                    //For those VERY RARE cases when RegExpFormat may need to be applied to complex types, i.e. StringBuilder
                    //set the flag in metadata to true, otherwise regexp gets matched only for STRINGS
-                   var complex = atr.Metadata.AttrByName("validate-format-regexp-complex-types").ValueAsBool(false);
+                   var complex = atr.Metadata==null? false
+                                                   : atr.Metadata
+                                                        .AttrByName("validate-format-regexp-complex-types")
+                                                        .ValueAsBool(false);
                    if (complex || value is string)
                    {
                      if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
@@ -687,6 +780,45 @@ namespace NFX.DataAccess.CRUD
                }
 
                return null;
+            }
+
+            /// <summary>
+            /// Override to filter-out some fields from serialization to JSON, or change field values.
+            /// Return name null to indicate that field should be filtered-out(excluded from serialization to JSON)
+            /// </summary>
+            protected virtual object FilterJSONSerializerField(Schema.FieldDef def, JSONWritingOptions options, out string name)
+            {
+              var tname = options!=null ? options.RowMapTargetName : null;
+              
+              if (tname.IsNotNullOrWhiteSpace())
+              {
+                FieldAttribute attr;
+                name = def.GetBackendNameForTarget(tname, out attr);
+                if (attr!=null)
+                {
+                  if(attr.StoreFlag==StoreFlag.None || attr.StoreFlag==StoreFlag.OnlyLoad)
+                  {
+                    name = null;
+                    return null;
+                  }
+                  
+                  var dflt = attr.Default;
+                  if (dflt!=null)
+                  {
+                    var value = GetFieldValue(def);
+                    if (dflt.Equals(value))
+                    {
+                      name = null;
+                      return null;
+                    }
+                    return value;
+                  }
+                }
+              }
+              else
+                name = def.Name;
+
+              return name.IsNotNullOrWhiteSpace() ? GetFieldValue(def) : null;
             }
 
         #endregion

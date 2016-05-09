@@ -305,6 +305,11 @@ namespace NFX.DataAccess.CRUD
         /// Relative cache priority which is used when WriteCacheMaxAgeSec>=0
         /// </summary>
         int WriteCachePriority{ get; }
+
+        /// <summary>
+        /// When true would cache the instance of AbsentData to signify the absence of data in the backend for key
+        /// </summary>
+        bool CacheAbsentData { get;}
     }
 
 }

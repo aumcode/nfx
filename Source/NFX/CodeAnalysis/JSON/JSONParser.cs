@@ -30,20 +30,24 @@ namespace NFX.CodeAnalysis.JSON
     public sealed partial class JSONParser : Parser<JSONLexer>
     {
         
-        public JSONParser(JSONLexer input,  MessageList messages = null, bool throwErrors = false) :
+        public JSONParser(JSONLexer input,  MessageList messages = null, bool throwErrors = false, bool caseSensitiveMaps = true) :
             base(new JSONData(), new JSONLexer[]{ input }, messages, throwErrors)
         {
             m_Lexer = Input.First();
+            m_CaseSensitiveMaps = caseSensitiveMaps;
         }
         
         
-        public JSONParser(JSONData context, JSONLexer input,  MessageList messages = null, bool throwErrors = false) :
+        public JSONParser(JSONData context, JSONLexer input,  MessageList messages = null, bool throwErrors = false, bool caseSensitiveMaps = true) :
             base(context, new JSONLexer[]{ input }, messages, throwErrors)
         {
             m_Lexer = Input.First();
+            m_CaseSensitiveMaps = caseSensitiveMaps;
         }
         
         private JSONLexer m_Lexer;
+
+        private bool m_CaseSensitiveMaps;
 
         public JSONLexer Lexer { get { return m_Lexer;} }
 

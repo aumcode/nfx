@@ -46,6 +46,15 @@ namespace NFX
     public static readonly string[] WIN_UNIX_LINE_BRAKES = new string[]{ "\r\n", "\n" };
 
     
+
+    public static bool IsTrue(this Nullable<bool> value, bool dflt = false)
+    {
+      if (!value.HasValue) return dflt;
+      return value.Value;
+    }
+
+
+
     /// <summary>
     /// Checks the value for null and throws exception if it is.
     /// The method is useful for .ctor call chaining to preclude otherwise anonymous NullReferenceException
@@ -66,11 +75,11 @@ namespace NFX
     /// Takes first X chars from a string. If string is null returns null. If string does not have enough
     /// the function returns what the string has
     /// </summary>
-    public static string TakeFirstChars(this string str, int count)
+    public static string TakeFirstChars(this string str, int count, string ellipsis = null)
     {
       if (str==null) return null;
       if (str.Length<=count) return str;
-      return str.Substring(0, count);
+      return str.Substring(0, count) + (ellipsis ?? string.Empty);
     }
 
     /// <summary>
@@ -153,6 +162,32 @@ namespace NFX
     public static string ToMessageWithType(this Exception error)
     {
       return string.Format("[{0}] {1}", error.GetType().FullName, error.Message);
+    }
+
+    /// <summary>
+    /// If there is error, converts its details to JSOnDataMap
+    /// </summary>
+    public static NFX.Serialization.JSON.JSONDataMap ToJSONDataMap(this Exception error, bool recurse = true, bool stackTrace = false)
+    {
+      if (error==null) return null;
+      var result = new NFX.Serialization.JSON.JSONDataMap(false);
+
+      result["Type"] = error.GetType().FullName;
+      result["Msg"] = error.Message;
+      result["Data"] = error.Data;
+      result["Src"] = error.Source;
+      if (stackTrace) result["STrace"] = error.StackTrace;
+
+      if (recurse)
+       result["Inner"] = error.InnerException.ToJSONDataMap(recurse);
+      else
+      {
+        result["Inner.Type"] = error.InnerException!=null ? error.InnerException.GetType().FullName : null;
+        result["Inner.Msg"] = error.InnerException!=null ? error.InnerException.Message : null;
+        if (stackTrace) result["Inner.STrace"] = error.InnerException!=null ? error.InnerException.StackTrace : null;
+      }
+
+      return result;
     }
 
     /// <summary>
@@ -678,6 +713,16 @@ namespace NFX
         return !string.IsNullOrWhiteSpace(s);
     }
 
+    /// <summary>
+    /// Defaults string if it is null or whitespace
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static string Default(this string str, string val)
+    {
+       if (str.IsNullOrWhiteSpace()) return val;
+       return str;
+    }
+
 
     /// <summary>
     /// Convert a buffer to a printable string
@@ -714,16 +759,16 @@ namespace NFX
         switch (fmt)       
         {
             case DumpFormat.Decimal:
-                m -= 5;
+                m -= 2;
                 sb.Append("<<");
-                for (int i = offset; i < k && sb.Length < m; i++)
+                for (int i = offset; i < k && sb.Length+1/*comma*/ < m; i++)
                 {
                     sb.Append(buf[i]);
                     sb.Append(',');
                 }
                 if (sb.Length > 2)
                     sb.Remove(sb.Length-1, 1);
-                sb.Append(shrink && sb.Length == maxLen ? "...>>" : ">>");
+                sb.Append(!shrink || sb.Length+1 < m ? ">>" : "...>>");
                 break;
             case DumpFormat.Hex:
                 m -= 3;
@@ -740,8 +785,14 @@ namespace NFX
                     byte c = buf[i];
                     if (c >= 32 && c < 127)
                         sb.Append((char)c);
-                    else
-                        sb.AppendFormat("\\{0,3:D3}", c);
+                    else 
+                        switch (c)
+                        {
+                            case 10: sb.Append("\n"); break;
+                            case 13: sb.Append("\r"); break;
+                            case  8: sb.Append("\t"); break;
+                            default: sb.AppendFormat("\\{0,3:D3}", c); break;
+                        }
                 }
                 if (shrink) sb.Append("...");
                 break;
@@ -970,7 +1021,7 @@ namespace NFX
 
 
     /// <summary>
-    /// Performs URI.ExcapeDataString with additional replacement of " and ' chars with their hex equivalents.
+    /// Performs URI.EscapeDataString with additional replacement of " and ' chars with their hex equivalents.
     /// This method is suitable for escaping client-side intelligent keys that may have single/double quotes
     /// </summary>
     public static string EscapeURIDataStringWithQuotes(this string uri)

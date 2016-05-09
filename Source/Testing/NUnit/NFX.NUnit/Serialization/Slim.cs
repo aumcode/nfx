@@ -222,10 +222,11 @@ namespace NFX.NUnit.Serialization
 
             var deser = s.Deserialize(ms);
 
-            Console.WriteLine( deser.ToString(), deser.GetType().FullName);
+            Console.WriteLine( deser.ToString() );
+            Assert.IsTrue(deser is NFX.Serialization.JSON.JSONDataMap);
 
             var map2 = deser as NFX.Serialization.JSON.JSONDataMap;
-                                                                           
+
 
             Assert.AreEqual("1", map2["flag"]);
             Assert.AreEqual("22", map2["FLAG"]);
@@ -255,7 +256,8 @@ namespace NFX.NUnit.Serialization
 
             var deser = s.Deserialize(ms);
 
-            Console.WriteLine( deser.ToString(), deser.GetType().FullName);
+            Console.WriteLine( deser.ToString());
+            Assert.IsTrue(deser is NFX.Serialization.JSON.JSONDataMap);
 
             var map2 = deser as NFX.Serialization.JSON.JSONDataMap;
                                                                            

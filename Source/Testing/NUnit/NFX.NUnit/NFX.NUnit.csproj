@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\KeyStructsTest.cs" />
     <Compile Include="AppModel\Pile\PileCacheTestCore.cs" />
     <Compile Include="AppModel\FinishNotifiablesTests.cs" />
     <Compile Include="AppModel\Pile\CacheTest.cs" />
@@ -97,10 +98,13 @@
     <Compile Include="Collections\MatrixTest.cs" />
     <Compile Include="Config\ConfAndJSON.cs" />
     <Compile Include="Config\ConfigNodeEqualityComparerTest.cs" />
+    <Compile Include="Config\JSONConfigurationTest.cs" />
     <Compile Include="Config\ValueAccessors.cs" />
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
+    <Compile Include="SealedStringTests.cs" />
+    <Compile Include="DataAccess\FieldAttrCloningTests.cs" />
     <Compile Include="DataAccess\RowCopyFields.cs" />
     <Compile Include="DataAccess\SchemaRegExpAndDisplayFormat.cs" />
     <Compile Include="DataAccess\GDIDTest.cs" />
@@ -205,12 +209,10 @@
     <Compile Include="TestLog.cs" />
     <Compile Include="Throttling\ThrottlingTest.cs" />
     <Compile Include="Wave\URIPatternTests.cs" />
+    <Compile Include="Web\EscapeJSLiteralTest.cs" />
+    <Compile Include="Web\MultiPart\MultipartTest.cs" />
     <Compile Include="Web\PortalHubTests.cs" />
-    <Compile Include="Web\MultiPart\CopyToTest.cs" />
-    <Compile Include="Web\MultiPart\FindSplitTests.cs" />
-    <Compile Include="Web\MultiPart\FindTest.cs" />
     <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />
-    <Compile Include="Web\MultiPart\SplitTest.cs" />
     <Compile Include="Web\ParseQueryStringTest.cs" />
     <Compile Include="Web\Pay\ConfigBasedCurrencyMarketTests.cs" />
     <Compile Include="Web\Pay\FeeTests.cs" />
@@ -250,6 +252,9 @@
     <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_test_chinese.txt.dat" />
     <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_test_russian.txt.dat" />
     <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_2_text_files.txt.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\bmp.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\test.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\txt.dat" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

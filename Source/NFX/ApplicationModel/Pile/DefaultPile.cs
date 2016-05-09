@@ -28,7 +28,7 @@ namespace NFX.ApplicationModel.Pile
       
       public const int SEG_SIZE_MIN  = 64 * 1024 * 1024; // 64 Mbyte
       public const int SEG_SIZE_DFLT = 256 * 1024 * 1024; // 256 Mbyte
-      public const int SEG_SIZE_MAX  = 2147483632; // 2 Gbyte - 16 bytes
+      public const int SEG_SIZE_MAX  = CoreConsts.MAX_BYTE_BUFFER_SIZE;//2Gb
 
 
       public const int FREE_LST_COUNT = 16;
@@ -896,11 +896,33 @@ namespace NFX.ApplicationModel.Pile
         }
       }
       
+
       /// <summary>
       /// Returns a CLR object by its pointer or throws access violation if pointer is invalid 
       /// </summary>
       public object Get(PilePointer ptr)
       {
+        byte sver;
+        return get(ptr, false, out sver);
+      }
+
+      /// <summary>
+      /// Returns a raw byte[] occupied by the object payload, only payload is returned along with serializer flag
+      /// which tells what kind of serializer was used. 
+      /// This method is rarely used, it is needed for debugging and special-case "direct" memory access on read
+      /// to bypass the de-serialization process altogether
+      /// </summary>
+      public byte[] GetRawBuffer(PilePointer ptr, out byte serializerFlag)
+      {
+        return (byte[])get(ptr, true, out serializerFlag);
+      }
+
+      /// <summary>
+      /// Returns a CLR object by its pointer or throws access violation if pointer is invalid 
+      /// </summary>
+      private object get(PilePointer ptr, bool raw, out byte serVersion)
+      {
+        serVersion = 0;
         if (!Running) return null;
 
         var segs = m_Segments;
@@ -933,11 +955,14 @@ namespace NFX.ApplicationModel.Pile
           if (payloadSize>data.Length)
            throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_ADDR_PAYLOAD_SIZE_ERROR.Args(ptr, payloadSize)); 
 
-          //not used now
-          //var serVer = data[addr];
+          if (raw)
+          {
+             serVersion = data[addr];
+          }
+          //otherwise not used for now
           addr++;
 
-          return deserialize(data, addr, payloadSize);
+          return raw ? readRaw(data, addr, payloadSize) : deserialize(data, addr, payloadSize);
         }
         finally
         {
@@ -1324,6 +1349,14 @@ namespace NFX.ApplicationModel.Pile
           }
 
          
+          private object readRaw(byte[] data, int addr, int payloadSize)
+          {
+            var result = new byte[payloadSize];
+            Array.Copy(data, addr, result, 0, payloadSize);
+            return result;
+          }
+
+
           [ThreadStatic] private static SlimSerializer ts_ReadSerializer;
         
           private object deserialize(byte[] data, int addr, int payloadSize)
@@ -1402,8 +1435,10 @@ namespace NFX.ApplicationModel.Pile
             instr.Record( new Instrumentation.AllocatedMemoryBytes(src, this.AllocatedMemoryBytes) );
             
             var ub = this.UtilizedBytes;
-            instr.Record( new Instrumentation.UtilizedBytes(src, this.UtilizedBytes) );
-            instr.Record( new Instrumentation.MemoryCapacityBytes(src, this.MemoryCapacityBytes) );
+            instr.Record( new Instrumentation.UtilizedBytes(src, ub) );
+
+            var mc = this.MemoryCapacityBytes;
+            instr.Record( new Instrumentation.MemoryCapacityBytes(src, mc) );
             instr.Record( new Instrumentation.OverheadBytes(src, this.OverheadBytes) );
 
             instr.Record( new Instrumentation.AverageObjectSizeBytes(src, count>0 ? ub / count : 0) );
@@ -1419,13 +1454,22 @@ namespace NFX.ApplicationModel.Pile
                                        (sum, seg)  => seg.SnapshotOfFreeChunkCapacities.Zip(sum, (i1, i2) => i1+i2).ToArray()
                                       );
 
-            for(var i=0; i<totalFreeCapacities.Length; i++)                                                           
+            for(var i=0; i<totalFreeCapacities.Length; i++)
               instr.Record( new Instrumentation.FreeListCapacity(src+"::"+ m_FreeChunkSizes[i].ToString().PadLeft(10), totalFreeCapacities[i]) );
 
-             m_stat_PutCount = 0;
-             m_stat_DeleteCount = 0;
-             m_stat_GetCount = 0;
+            
+            if (count>1000)
+            {
+              if (mc%3==0) ExternalRandomGenerator.Instance.FeedExternalEntropySample((int)count);
+              ExternalRandomGenerator.Instance.FeedExternalEntropySample((int)mc);
+              ExternalRandomGenerator.Instance.FeedExternalEntropySample((int)ub);
+              ExternalRandomGenerator.Instance.FeedExternalEntropySample((int)((m_stat_PutCount << 25) ^ (m_stat_GetCount << 14) ^ m_stat_DeleteCount));
+            } 
 
+
+            m_stat_PutCount = 0;
+            m_stat_DeleteCount = 0;
+            m_stat_GetCount = 0;
           }
 
     #endregion

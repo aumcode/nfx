@@ -29,7 +29,7 @@ using NFX.WinForms.Elements;
 namespace NFX.WinForms.Controls.ChartKit.Temporal
 {
   /// <summary>
-  /// Event handler for formatting the the time line text
+  /// Event handler for formatting the the tm line text
   /// </summary>
   public delegate string TimeLineFormatEventHandler(TimeScalePane sender, TimeLineFormatEventArgs args);
 
@@ -106,7 +106,6 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     private List<Tick>        m_Ticks;
     private int               m_MouseCursorX;
     private TimeCursorElement m_TimeCursor;
-    private bool?             m_AllowMultiLineTitle;
     #endregion
 
     #region Properties
@@ -114,17 +113,13 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     public TimeSeriesChart    Chart { get { return m_Chart; } }
     public IEnumerable<Tick>  Ticks { get { return m_Ticks; } }
 
-    [Description("Determines if timeline title by default should be split to multiple lines")]
-    public bool AllowMultiLineTitle
-    {
-      get { return m_AllowMultiLineTitle ?? Chart.DefaultAllowMultiLineTitle; }
-      set { m_AllowMultiLineTitle = value; }
-    }
+    [Browsable(false)]
+    public bool AllowMultiLineTitle { get { return Chart.AllowMultiLineTitle; } }
 
-    [Description("Tick space used to draw time line ticks")]
+    [Description("Tick space used to draw tm line ticks")]
     public int TickSpace { get; set; }
 
-    [Description("Event handler for formatting the the time line text")]
+    [Description("Event handler for formatting the the tm line text")]
     public event TimeLineFormatEventHandler TimeLineFormat;
 
     public int MouseCursorX { get { return m_MouseCursorX; } }
@@ -157,17 +152,16 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     {
       if (TimeLineFormat != null)
         return TimeLineFormat(this, new TimeLineFormatEventArgs(time, priorTick, isCursor));
-      if (isCursor)
-        return "{0:D2}/{1:D2}{2}{3:D2}:{4:D2}:{5:D2}".Args
-               (time.Month, time.Day, AllowMultiLineTitle ? "\n" : " ", time.Hour, time.Minute, time.Second);
-      
-      if (priorTick == null || priorTick.Sample.TimeStamp.Day != time.Day)
-        return "{0}/{1}{2}{3:D2}:{4:D2}:{5:D2}".Args
-               (time.Month, time.Day, AllowMultiLineTitle ? "\n" : " ", time.Hour, time.Minute, time.Second);
-      if (priorTick.Sample.TimeStamp.Hour != time.Hour)
-        return "{0:D2}:{1:D2}:{2:D2}".Args(time.Hour, time.Minute, time.Second);
 
-      return "{0:D2}:{1:D2}".Args(time.Minute, time.Second);
+      var tm = Chart.UseLocalTime ? App.UniversalTimeToLocalizedTime(time) : time;
+
+      if (isCursor || priorTick == null || priorTick.Sample.TimeStamp.Day != time.Day)
+        return "{0}-{1:D2}-{2:D2}{3}{4:D2}:{5:D2}:{6:D2}".Args
+               (tm.Year, tm.Month, tm.Day, AllowMultiLineTitle ? "\n" : " ", tm.Hour, tm.Minute, tm.Second);
+      if (priorTick.Sample.TimeStamp.Hour != time.Hour)
+        return "{0:D2}:{1:D2}:{2:D2}".Args(tm.Hour, tm.Minute, tm.Second);
+
+      return "{0:D2}:{1:D2}".Args(tm.Minute, tm.Second);
     }
 
     internal void ComputeTicks(IEnumerable<ITimeSeriesSample> data, int maxSampleWidth)

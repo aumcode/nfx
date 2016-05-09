@@ -22,6 +22,7 @@ using System.IO;
 using System.Reflection;
 
 using NFX.Inventorization;
+using NFX.Serialization.JSON;
 
 
 
@@ -221,6 +222,9 @@ namespace NFX.IO
 
               public abstract VarIntStr? ReadNullableVarIntStr();
 
+         public abstract NLSMap ReadNLSMap();
+
+             public abstract NLSMap? ReadNullableNLSMap();
 
         #endregion
 

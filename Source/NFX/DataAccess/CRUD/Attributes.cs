@@ -212,6 +212,70 @@ namespace NFX.DataAccess.CRUD
               DisplayFormat = displayFormat;
         }
 
+        /// <summary>
+        /// Used for injection of pre-parsed value list
+        /// </summary>
+        public FieldAttribute(
+                        JSONDataMap valueList,
+                        string targetName   = ANY_TARGET,
+                        StoreFlag storeFlag = StoreFlag.LoadAndStore,
+                        bool key            = false,
+                        DataKind kind       = DataKind.Text,
+                        bool required       = false,
+                        bool visible        = true,
+                        object dflt         = null,
+                        object min          = null,
+                        object max          = null,
+                        int minLength       = 0,
+                        int maxLength       = 0,
+                        CharCase charCase   = CharCase.AsIs,
+                        string backendName  = null,
+                        string backendType  = null,
+                        string description  = null,
+                        string metadata = null,
+                        bool nonUI = false,
+                        string formatRegExp = null,
+                        string formatDescr  = null,
+                        string displayFormat = null
+                    ) : base(targetName, metadata)
+        {
+              if (valueList == null)
+               throw new CRUDException("FieldAttribute(JSONDataMap valueList==null)");
+
+              StoreFlag = storeFlag;
+              BackendName = backendName;
+              BackendType = backendType;
+              Key = key;
+              Kind = kind;
+              Required = required;
+              Visible = visible;
+              Min = min;
+              Max = max;
+              Default = dflt;
+              MinLength = minLength;
+              MaxLength = maxLength;
+              CharCase = charCase;
+              Description = description;
+              NonUI = nonUI;
+              FormatRegExp = formatRegExp;
+              FormatDescription = formatDescr;
+              DisplayFormat = displayFormat;
+
+              m_CacheValueListPresetInCtor = true;
+              m_CacheValueList_Insensitive = valueList;
+              m_CacheValueList_Sensitive = valueList;
+              ValueList = null;
+        }
+
+
+        public FieldAttribute(Type cloneFromRowType): base(ANY_TARGET, null)
+        {
+          if (cloneFromRowType == null || !typeof(TypedRow).IsAssignableFrom(cloneFromRowType))
+            throw new CRUDException("FieldAttribute(tClone isnt TypedRow)");
+          CloneFromRowType = cloneFromRowType;
+        }
+
+
         public FieldAttribute(
                         Type protoType, 
                         string protoFieldName, //Schema:Field
@@ -306,7 +370,13 @@ namespace NFX.DataAccess.CRUD
 
         }
            
-         /// <summary>
+        
+        /// <summary>
+        /// When set, points to a Typed-Row derivative that is used as a full clone
+        /// </summary>
+        public readonly Type CloneFromRowType;
+        
+        /// <summary>
         /// Determines whether field should be loaded/stored from/to storage
         /// </summary>
         public readonly StoreFlag StoreFlag;
@@ -349,7 +419,12 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         public readonly string ValueList;  
 
+        /// <summary>
+        /// Returns true if the value list is set or internal JSONDataMap is set
+        /// </summary>
+        public bool HasValueList{ get{ return ValueList.IsNotNullOrWhiteSpace() || m_CacheValueList_Sensitive!=null;} }
 
+                  private bool m_CacheValueListPresetInCtor;
                   private JSONDataMap m_CacheValueList_Sensitive;
                   private JSONDataMap m_CacheValueList_Insensitive;
 
@@ -498,7 +573,15 @@ namespace NFX.DataAccess.CRUD
                 this.NonUI == other.NonUI &&
                 this.FormatRegExp.EqualsOrdSenseCase(other.FormatRegExp) && 
                 this.FormatDescription.EqualsOrdSenseCase(other.FormatDescription)&&
-                this.DisplayFormat.EqualsOrdSenseCase(other.DisplayFormat);
+                this.DisplayFormat.EqualsOrdSenseCase(other.DisplayFormat) &&
+                (
+                   (!m_CacheValueListPresetInCtor)||
+                   (this.m_CacheValueList_Sensitive==null && other.m_CacheValueList_Sensitive==null) ||
+                   (
+                    this.m_CacheValueList_Sensitive!=null && other.m_CacheValueList_Sensitive!=null &&
+                    object.ReferenceEquals(this.m_CacheValueList_Sensitive, other.m_CacheValueList_Sensitive)
+                   ) 
+                );
 
             return equ;
         }
@@ -552,7 +635,7 @@ namespace NFX.DataAccess.CRUD
       public static UniqueSequenceAttribute GetForRowType(Type tRow)
       {
         if (tRow == null || !typeof(Row).IsAssignableFrom(tRow))
-          throw new CRUDException("{0}: {1} is not Row".Args("GetForRowType", tRow.FullName));
+          throw new CRUDException("UniqueSequenceAttribute.GetForRowType(tRow isnt TypedRow | null)");
       
         UniqueSequenceAttribute result;
 

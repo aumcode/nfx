@@ -96,6 +96,14 @@ namespace NFX.ApplicationModel.Pile
     object Get(PilePointer ptr);
 
     /// <summary>
+    /// Returns a raw byte[] occupied by the object payload, only payload is returned along with serializer flag
+    /// which tells what kind of serializer was used. 
+    /// This method is rarely used, it is needed for debugging and special-case "direct" memory access on read
+    /// to bypass the de-serialization process altogether
+    /// </summary>
+    byte[] GetRawBuffer(PilePointer ptr, out byte serializerFlag);
+
+    /// <summary>
     /// Deletes object from pile by its pointer returning true if there is no access violation
     /// and pointer is pointing to the valid object, throws otherwise unless
     /// throwInvalid is set to false

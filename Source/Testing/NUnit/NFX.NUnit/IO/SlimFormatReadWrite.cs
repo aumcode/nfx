@@ -23,6 +23,7 @@ using System.IO;
 using NUnit.Framework;
 
 using NFX.IO;
+using NFX.Serialization.JSON;
 
 namespace NFX.NUnit.IO
 {
@@ -911,13 +912,37 @@ namespace NFX.NUnit.IO
             w.BindStream(ms);
 
                 
-                        w.Write((decimal)-2);
-                        w.Write((decimal)0.1234);
+                        w.Write(-2m);
+                        w.Write(0.1234m);
+
+                        w.Write(789123612637621332.2390m);
+                        w.Write(-789123612637621332.2390m);
+                        
+                        w.Write(23123123213789123612637621332.001237182738m);
+                        w.Write(-23123123213789123612637621332.001237182738m);
+
+                        w.Write(0.123123213789123612637621332001237182738m);
+                        w.Write(-0.123123213789123612637621332001237182738m);
+
+                        w.Write(0.0000000000000000000000000073m);
+                        w.Write(-0.0000000000000000000000000073m);
 
                         ms.Seek(0, SeekOrigin.Begin);
-                
-                        Assert.AreEqual(-2, r.ReadDecimal());
-                        Assert.AreEqual(0.1234, r.ReadDecimal());
+
+                        Assert.AreEqual(-2m, r.ReadDecimal());
+                        Assert.AreEqual(0.1234m, r.ReadDecimal());
+
+                        Assert.AreEqual(789123612637621332.2390m, r.ReadDecimal());
+                        Assert.AreEqual(-789123612637621332.2390m, r.ReadDecimal());
+
+                        Assert.AreEqual(23123123213789123612637621332.001237182738m, r.ReadDecimal());
+                        Assert.AreEqual(-23123123213789123612637621332.001237182738m, r.ReadDecimal());
+
+                        Assert.AreEqual(0.123123213789123612637621332001237182738m, r.ReadDecimal());
+                        Assert.AreEqual(-0.123123213789123612637621332001237182738m, r.ReadDecimal());
+
+                        Assert.AreEqual(0.0000000000000000000000000073m, r.ReadDecimal());
+                        Assert.AreEqual(-0.0000000000000000000000000073m, r.ReadDecimal());
                     }
                 }
 
@@ -1276,6 +1301,95 @@ namespace NFX.NUnit.IO
                             Assert.AreEqual(pp, r.ReadPilePointer());
                         }
                     }
+
+
+        [TestCase]
+        public void NLSMap()
+        {
+            using(var ms = new MemoryStream())
+            {
+                var r = SlimFormat.Instance.MakeReadingStreamer();
+                var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                r.BindStream(ms);
+                w.BindStream(ms); 
+             
+                var map = new NLSMap(
+        @"nls{
+            eng{n='Cream>Serum>Day' d='Daily Serum Care'}
+            rus{n='Крем>Серум>Дневной' d='Дневной Уход Серум'}
+            deu{n='Ein Drek'}
+          }".AsLaconicConfig(handling: ConvertErrorHandling.Throw));
+
+                w.Write(map);
+                
+                ms.Position = 0;
+                
+                var map2 = r.ReadNLSMap();
+
+                Assert.IsNotNull(map2);
+                Assert.AreEqual(3, map2.Count);
+                Assert.AreEqual("Cream>Serum>Day", map2["ENG"].Name);
+                Assert.AreEqual("Крем>Серум>Дневной", map2["rus"].Name);
+                Assert.AreEqual("Ein Drek", map2["dEu"].Name);
+
+                Assert.AreEqual("Daily Serum Care", map2["ENG"].Description);
+                Assert.AreEqual("Дневной Уход Серум", map2["rus"].Description);
+                Assert.AreEqual(null, map2["dEu"].Description);
+
+                ms.Position = 0;
+                NLSMap nullmap = new NLSMap();
+                w.Write(nullmap);
+                ms.Position = 0;
+
+                var map3 = r.ReadNLSMap();
+                Assert.IsNull( map3.m_Data);
+                Assert.AreEqual(0 , map3.Count);
+
+
+            }
+        }
+
+                [TestCase]
+                public void _NLSMap()
+                {
+                    using(var ms = new MemoryStream())
+                    {
+                        var r = SlimFormat.Instance.MakeReadingStreamer();
+                        var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                        r.BindStream(ms);
+                        w.BindStream(ms); 
+             
+                        NLSMap? map = new NLSMap(
+                @"nls{
+                    eng{n='Cream>Serum>Day' d='Daily Serum Care'}
+                    rus{n='Крем>Серум>Дневной' d='Дневной Уход Серум'}
+                    deu{n='Ein Drek'}
+                  }".AsLaconicConfig(handling: ConvertErrorHandling.Throw));
+
+                        w.Write(map);
+                
+                        ms.Position = 0;
+                
+                        var map2 = r.ReadNullableNLSMap();
+
+                        Assert.IsTrue(map2.HasValue);
+                        Assert.AreEqual(3, map2.Value.Count);
+                        Assert.AreEqual("Cream>Serum>Day", map2.Value["ENG"].Name);
+                        Assert.AreEqual("Крем>Серум>Дневной", map2.Value["rus"].Name);
+                        Assert.AreEqual("Ein Drek", map2.Value["dEu"].Name);
+
+                       
+                        ms.Position = 0;
+                        NLSMap? nullmap = null;
+                        w.Write(nullmap);
+                        ms.Position = 0;
+
+                        var map3 = r.ReadNullableNLSMap();
+                        Assert.IsFalse( map3.HasValue );
+                    }
+                }
 
     }
 }

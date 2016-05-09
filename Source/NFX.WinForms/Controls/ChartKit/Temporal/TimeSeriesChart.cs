@@ -38,18 +38,17 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
   {
     #region CONSTS
 
-    public const int    DEFAULT_VRULER_WIDTH     = 48;
-    public const int    SPLITTER_HEIGHT          = 5;
+    private const int    DEFAULT_VRULER_WIDTH     = 48;
+    internal const int   VRULLER_HPADDING         = 4;
+    private const int    SPLITTER_HEIGHT          = 5;
 
+    private const string CONFIG_CHART_SECTION     = "chart";
+    private const string CONFIG_PANE_SECTION      = "pane";
+    private const string CONFIG_ID_ATTR           = "id";
 
-    public const string CONFIG_CHART_SECTION     = "chart";
-    public const string CONFIG_PANE_SECTION      = "pane";
-    public const string CONFIG_ID_ATTR           = "id";
-
-    public const int    MIN_PANE_HEIGHT          = 8;
-    public const float  DEFAULT_PANE_VPROPORTION = 0.25f;
-
-    public const int    REBUILD_TIMEOUT_MS       = 100;
+    private const int    MIN_PANE_HEIGHT          = 8;
+    private const float  DEFAULT_PANE_VPROPORTION = 0.25f;
+    private const int    REBUILD_TIMEOUT_MS       = 100;
 
     #endregion
 
@@ -73,6 +72,9 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
       m_ChartPanel           = new Panel();
       m_ChartPanel.Parent    = this;
+      m_ChartPanel.KeyDown  += (s, e) => OnKeyDown(e);
+      m_ChartPanel.KeyUp    += (s, e) => OnKeyUp(e);
+      m_ChartPanel.KeyPress += (s, e) => OnKeyPress(e);
 
       Controls.Add(m_ChartPanel);
       Controls.Add(m_TimeScalePane);
@@ -125,6 +127,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     private TimeSeries m_Series;
 
     private int m_VRulerWidth = DEFAULT_VRULER_WIDTH;
+    private int m_VRulerFixedWidth;
 
     internal TimeScalePane m_TimeScalePane;
     internal Panel m_ChartPanel;
@@ -236,14 +239,18 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     [Category("Appearance")]
     public Style TimeScaleSelectStyle { get; set; }
 
+    [Description("When set to true chart will display ticks in local time (default: UTC)")]
+    [Category("Appearance")]
+    public bool  UseLocalTime { get; set; }
+
     [Description("Style used for drawing horizontal line last price marker")]
     public Style LastPriceMarkerStyle { get; private set; }
 
     [Description("Default display format for the vertical axis' text")]
     public string VRulerDefaultFormat { get; set; }
 
-    [Description("Determines if timeline title by default should be split to multiple lines")]
-    public bool DefaultAllowMultiLineTitle { get; set; }
+    [Description("Determines if timeline title should be split to multiple lines")]
+    public bool AllowMultiLineTitle { get; set; }
 
     [Description("When true the chart will visually display time gaps")]
     public bool ShowTimeGaps { get; set; }
@@ -260,11 +267,18 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
     public VRulerPosition VRulerPosition { get; set; }
 
-    [Description("Width of the vertical ruler bar")]
-    public int VRulerWidth
+    [Description("Width of the vertical ruler bar (calculated automatically unless VRulerFixedWidth is set)")]
+    internal int VRulerWidth
     {
-      get { return m_VRulerWidth; }
+      get { return m_VRulerFixedWidth == 0 ? m_VRulerWidth+VRULLER_HPADDING : m_VRulerFixedWidth; }
       set { m_VRulerWidth = value < 0 ? 0 : value; }
+    }
+
+    [Description("Fixed width of the vertical ruler bar")]
+    public int VRulerFixedWidth
+    {
+      get { return m_VRulerFixedWidth; }
+      set { m_VRulerFixedWidth = value < 0 ? 0 : value; }
     }
 
     /// <summary>
@@ -322,6 +336,10 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       }
     }
 
+    public void ZoomInc()   { Zoom *= (1f + Math.Max(ZoomStepPercent, 1) / 100.0f); }
+    public void ZoomDec()   { Zoom /= (1f + Math.Max(ZoomStepPercent, 1) / 100.0f); }
+    public void ZoomReset() { Zoom  = 1f; }
+
     public MouseCursorMode MouseCursorMode { get; set; }
 
     /// <summary>
@@ -333,7 +351,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       {
         if (m_Series == null) return 0;
         var maxSampleWidth = m_Series.GetMaxSampleWidth();
-        var width = Width - VRulerWidth;
+        var width = Width - VRulerWidth - VRULLER_HPADDING;
         var canFit = (int)(width/((maxSampleWidth + 1)*Zoom));
         return canFit;
       }
@@ -467,6 +485,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       RulerStyle.BGColor             = Color.White;
       RulerStyle.BGColor2            = Color.Silver;
       RulerStyle.ForeColor           = Color.BlueViolet;
+      RulerStyle.Font                = new Font("Verdana", 6f);
 
       // Builds default style for data plots
       //  style.HAlignment = HAlignment.Center;
@@ -518,17 +537,18 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       var data = m_Series.Data.Skip(m_HScrollPosition);
 
 
-      var x = VRulerPosition == VRulerPosition.Left ? m_VRulerWidth + 1 : 1;
+      var x = VRulerPosition == VRulerPosition.Left ? VRulerWidth + 1 : 1;
 
       if (m_Zoom != 1.0f)
       {
         x = (int)(x/m_Zoom);
         xcoord = (int)(xcoord/m_Zoom);
       }
-
+      /*
       var xcutof = VRulerPosition == VRulerPosition.Right
                  ? Width - 1 - VRulerWidth
                  : Width;
+      */
       ITimeSeriesSample prior = null;
       foreach (var sample in data)
       {
@@ -723,6 +743,24 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         return true;
       }
 
+      if ((keyData & Keys.Control) == Keys.Control)
+      {
+        if ((keyData & Keys.Add) == Keys.Add)
+        {
+          Zoom *= (1f + Math.Max(ZoomStepPercent, 1)/100.0f);
+          return true;
+        }
+        else if ((keyData & Keys.Subtract) == Keys.Subtract)
+        {
+          Zoom /= (1f + Math.Max(ZoomStepPercent, 1)/100.0f);
+          return true;
+        }
+        else if ((keyData & Keys.Multiply) == Keys.Multiply)
+        {
+          Zoom = 1f;
+          return true;
+        }
+      }
 
       //  if (keyData==(Keys.C | Keys.Control))
       //  {
@@ -751,7 +789,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
 
       //Adjust scroll
-      var width = Width - VRulerWidth;
+      var width = Width - VRulerWidth - VRULLER_HPADDING;
       var canFit = (int)(width/((maxSampleWidth + 1)*zoom));
 
       var rightMostScroll = m_Series.SampleCount - canFit;

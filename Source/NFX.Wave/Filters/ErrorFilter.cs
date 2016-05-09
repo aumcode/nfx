@@ -213,9 +213,12 @@ namespace NFX.Wave.Filters
                 }
               
               if (errorPage==null)
+              {
                 errorPage =  new ErrorPage(work, error, showDump);
-                
-              errorPage.Render(work, error);
+                errorPage.Render(work, error);
+              }
+              else
+                errorPage.Render(work, actual);
             }
           }
 

@@ -445,6 +445,11 @@ namespace NFX.DataAccess.MySQL
 
       if (value is GDID)
       {
+        if (((GDID)value).IsZero)
+        {
+          return null;
+        }
+        
         if(store.FullGDIDS)
         {
           value = (object)((GDID)value).Bytes;

@@ -47,7 +47,7 @@ namespace NFX.Wave.MVC
 
       work.NeedsSession(OnlyExistingSession);
 
-      var session = work.Session; 
+      var session = work.Session;
       var supplied = work.WholeRequestAsJSONDataMap[TokenName].AsString();
 
       if (session==null || 

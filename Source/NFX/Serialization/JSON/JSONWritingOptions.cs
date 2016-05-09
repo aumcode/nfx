@@ -205,7 +205,21 @@ namespace NFX.Serialization.JSON
         [Config]
         public JSONSerializationPurpose Purpose;
 
+
+        /// <summary>
+        /// If true, then does not write map keys which are null
+        /// </summary>
+        [Config]
+        public bool MapSkipNulls;
+
         
+        /// <summary>
+        /// When set, specifies the target name for Row's fields when they are written as map
+        /// </summary>
+        [Config]
+        public string RowMapTargetName;
+
+
         public void Configure(IConfigSectionNode node)
         {
             ConfigAttribute.Apply(this, node);

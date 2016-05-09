@@ -142,8 +142,5 @@ namespace NFX.DataAccess.CRUD
       /// Return extra result obtained during save i.e. a db-assigned auto-inc field
       /// </summary>
       protected abstract Exception DoSave(out object saveResult);
-
-      
-
   }
 }

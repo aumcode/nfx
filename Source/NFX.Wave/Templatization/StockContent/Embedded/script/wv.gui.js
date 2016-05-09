@@ -69,71 +69,71 @@ WAVE.GUI = (function(){
 
         // ImageBox {   
         // classes               
-        IBOX_DIV_FRAME: "wvIBoxDivFrame",
-        IBOX_DIV_MAINIMAGE: "wvIBoxDivMainImage",
-        IBOX_IMG_MAINIMAGE: "wvIBoxImgMainImage",
-        IBOX_DIV_THUMBSCONTAINER: "wvIBoxDivThumbsContainer",
-        IBOX_DIV_THUMBSNAVIGATION: "wvIBoxDivThumbsNavigation",
-        IBOX_DIV_THUMBSIMAGESCONTAINER: "wvIBoxDivThumbsImagesContainer",
-        IBOX_DIV_THUMB: "wvIBoxDivThumb",
-        IBOX_DIV_THUMB_CROP: "wvIBoxDivThumbCrop",
-        IBOX_DIV_THUMB_IMAGE: "wvIBoxDivThumbImage",
+        CLS_IBOX_DIV_FRAME: "wvIBoxDivFrame",
+        CLS_IBOX_DIV_MAINIMAGE: "wvIBoxDivMainImage",
+        CLS_IBOX_IMG_MAINIMAGE: "wvIBoxImgMainImage",
+        CLS_IBOX_DIV_THUMBSCONTAINER: "wvIBoxDivThumbsContainer",
+        CLS_IBOX_DIV_THUMBSNAVIGATION: "wvIBoxDivThumbsNavigation",
+        CLS_IBOX_DIV_THUMBSIMAGESCONTAINER: "wvIBoxDivThumbsImagesContainer",
+        CLS_IBOX_DIV_THUMB: "wvIBoxDivThumb",
+        CLS_IBOX_DIV_THUMB_CROP: "wvIBoxDivThumbCrop",
+        CLS_IBOX_DIV_THUMB_IMAGE: "wvIBoxDivThumbImage",
 
         // default styles
-        STYLE_DIV_FRAME: "",
-        STYLE_IMG_MAINIMAGE: "position: relative;",
-        STYLE_DIV_MAINIMAGE_V: "width: 72%;" +
-                               "height: 100%;" +
-                               "margin: 0 1%;" +
-                               "overflow: hidden;",
-        STYLE_DIV_MAINIMAGE_H: "width: 100%;" +
-                               "height: 74%;" +
-                               "margin: 1% 0;" +
-                               "overflow: hidden;",
-        STYLE_DIV_THUMBSCONTAINER_V: "width: 25%;" +
-                                     "height: 100%;",
-        STYLE_DIV_THUMBSCONTAINER_H: "width: 100%;" +
-                                     "height: 25%;",
-        STYLE_DIV_THUMBSNAV_V: "width: 100%;" +
-                               "height: 5%;" +
-                               "display: none;",
-        STYLE_DIV_THUMBSNAV_H: "width: 5%;" +
-                               "height: 100%;" +
-                               "display: none;",
-        STYLE_IMG_THUMBSNAV: "display: block;" +
-                             "position: relative;",
-        STYLE_DIV_THUMBSIMAGESCONTAINER_V: "width: 100%;" +
-                                           "height: 100%;" +
-                                           "overflow: hidden;",
-        STYLE_DIV_THUMBSIMAGESCONTAINER_H: "width: 100%;" +
-                                           "height: 100%;" +
-                                           "overflow: hidden;" +
-                                           "display: inline-block;" +
-                                           "white-space: nowrap; " +
-                                           "vertical-align: top;",
-        STYLE_DIV_THUMB_V: "width: 100%;" +
-                           "margin: 3px 0;",
-        STYLE_DIV_THUMB_H: "height: 100%;" +
-                           "margin: 0 3px;" +
-                           "display: inline-block;" +
-                           "vertical-align: top;",
-        STYLE_DIV_THUMB_CROP: "overflow: hidden;" +
-                              "position:relative;",
-        STYLE_DIV_THUMB_IMAGE: "position: relative;",
-        STYLE_DISABLE_MOBILE_HANDLING: "-webkit-touch-callout: none;" +
-                                       "-webkit-user-select: none;" +
-                                       "-khtml-user-select: none;" +
-                                       "-moz-user-select: none;" +
-                                       "-ms-user-select: none;" +
-                                       "user-select: none;", 
+        STL_DIV_FRAME: "",
+        STL_IMG_MAINIMAGE: "position: relative; display: block;",
+        STL_DIV_MAINIMAGE_V: "width: 72%;" +
+                             "height: 100%;" +
+                             "margin: 0 1%;" +
+                             "overflow: hidden;",
+        STL_DIV_MAINIMAGE_H: "width: 100%;" +
+                             "height: 74%;" +
+                             "margin: 1% 0;" +
+                             "overflow: hidden;",
+        STL_DIV_THUMBSCONTAINER_V: "width: 25%;" +
+                                   "height: 100%;",
+        STL_DIV_THUMBSCONTAINER_H: "width: 100%;" +
+                                   "height: 25%;",
+        STL_DIV_THUMBSNAV_V: "width: 100%;" +
+                             "height: 5%;" +
+                             "display: none;",
+        STL_DIV_THUMBSNAV_H: "width: 5%;" +
+                             "height: 100%;" +
+                             "display: none;",
+        STL_IMG_THUMBSNAV: "display: block;" +
+                           "position: relative;",
+        STL_DIV_THUMBSIMAGESCONTAINER_V: "width: 100%;" +
+                                         "height: 100%;" +
+                                         "overflow: hidden;",
+        STL_DIV_THUMBSIMAGESCONTAINER_H: "width: 100%;" +
+                                         "height: 100%;" +
+                                         "overflow: hidden;" +
+                                         "display: inline-block;" +
+                                         "white-space: nowrap; " +
+                                         "vertical-align: top;",
+        STL_DIV_THUMB_V: "width: 100%;" +
+                         "margin: 3px 0;",
+        STL_DIV_THUMB_H: "height: 100%;" +
+                         "margin: 0 3px;" +
+                         "display: inline-block;" +
+                         "vertical-align: top;",
+        STL_DIV_THUMB_CROP: "overflow: hidden;" +
+                            "position:relative;",
+        STL_DIV_THUMB_IMAGE: "position: relative;",
+        STL_DISABLE_MOBILE_HANDLING: "-webkit-touch-callout: none;" +
+                                     "-webkit-user-select: none;" +
+                                     "-khtml-user-select: none;" +
+                                     "-moz-user-select: none;" +
+                                     "-ms-user-select: none;" +
+                                     "user-select: none;", 
 
         // events
         EVT_IMAGE_CHANGED: "image-changed",
         
         // constants
-        POS_LEFT: "left",
-        POS_RIGHT: "right",
-        POS_TOP: "top",
+        POS_LEFT:   "left",
+        POS_RIGHT:  "right",
+        POS_TOP:    "top",
         POS_BOTTOM: "bottom",
 
         // default values
@@ -276,11 +276,37 @@ WAVE.GUI = (function(){
         PARAM_IMAGES_LIST: "images",
         PARAM_THUMB_TITLE: "title", 
         PARAM_THUMBS_SCROLL_DELTA: "thumbsScrollDelta",
-        //}               
+        //} ImageBox            
 
         //ObjectInspector {
-        CLS_OBJECTINSPECTOR_EDITOR: 'wvObjectInspectorEditor'
+        CLS_OBJECTINSPECTOR_EDITOR: 'wvObjectInspectorEditor',
         // { ObjectInspector
+
+        //PropSetEditor
+        EVT_PS_EDITOR_UPDATED: 'editor-updated',
+
+        //classes
+        CLS_PS_DIV_LANGS_CONTAINER: 'wvPSLangsContainer',
+        CLS_PS_BTN_ADD: 'wvPSBtnAdd',
+        CLS_PS_BTN_DEL: 'wvPSBtnDel',
+        CLS_PS_BTN_RAW: 'wvPSBtnRaw',
+        CLS_PS_BTN_CLEAR: 'wvPSBtnClear',
+        CLS_PS_DIV_LANG_NAME: 'wvPSLangLabel',
+        CLS_PS_LANG_SELECTOR: 'wvPSLangSelector',
+        CLS_PS_TEXTAREA_RAW_EDITOR: 'wvPSTextareaRawEditor',
+        CLS_PS_LABEL_CONTAINER: 'wvPSLabelContainer',
+        CLS_PS_INPUT_CONTAINER: 'wvPSInputContainer',
+
+
+        //Tabs control
+        CLS_TABS_ACTIVE_TAB: "wvTabsActive",
+        CLS_TABS_UL: "wvTabsUl",
+        CLS_TABS_CONTENT_DIV: "wvTabsContentDiv",
+        CLS_TABS_CONTENT_CONTAINER: "wvTabsContentContainer",
+        CLS_TABS_UL_CONTAINER: "wvTabsUlContainer",
+        CLS_TABS_LI_DISABLED: "wvTabDisabled",
+
+        EVT_TABS_TAB_CHANGED: "acteve-tab-changed"
     };
 
     var CURTAIN_ZORDER  = 500000;
@@ -328,7 +354,22 @@ WAVE.GUI = (function(){
     var fCurtains = [];
     var fCurtainDIV = null;
 
+    document.addEventListener("focus", function(e){
+      if (fCurtains.length > 0){
+        var topCurtain = fCurtains[fCurtains.length -1];
+        var t = e.target;
+        if (typeof(t) !== tUNDEFINED && t !== null){
+           if(!WAVE.isParentOf(topCurtain, t)) {
+            topCurtain.tabIndex = 0;
+            topCurtain.focus();
+          }
+        }
+      }
+    }, true);
+
     published.curtainOn = function(){
+        try{ document.activeElement.blur(); } catch(e){}
+
         var div = document.createElement("div");
         div.style.backgroundColor = "rgba(127,127,127,0.45)";
         div.className = published.CLS_CURTAIN;
@@ -1858,7 +1899,7 @@ WAVE.GUI = (function(){
     // ImageBox {
     published.IBox = function (container, init) {
     
-      // fields
+// ************************* Fields *************************
     
       if (WAVE.isStringType(typeof (container)))
         container = WAVE.id(container);
@@ -1884,27 +1925,15 @@ WAVE.GUI = (function(){
       var isMainImageMouseDown = false;
       var isNavAnimationInProgress = false;
       var navTouchStartPosition = null;
-      var scrollInfo;
       var thumbsOrientation;
       var thumbsScrollDelta;
       var thumbsData;
       var imagesNaturalSizeCache = {};
+      var logOut;
 
-      // public
-    
-      this.visible = function (val) {
-        var vis = WAVE.id(ids.divFrameId).style.visibility;
-        if (vis === "") vis = "visible";
-        var isv = vis === "visible";
-
-        if (typeof(val)===WAVE.UNDEFINED || val===isv) return val;
-
-        WAVE.id(ids.divFrameId).style.visibility = val ? "visible" : "hidden";
-        ibox.eventInvoke(published.EVT_INTERACTION_CHANGE, "visible", val);
-        return val;
-      };
-
-      // private
+// ************************* Utilities *************************
+   
+      // Returns pointer's position
       function getPos(e) {
         return { 
                  x: (isNaN(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX),
@@ -1912,123 +1941,35 @@ WAVE.GUI = (function(){
                };
       }
 
+      // Cancels event bubbling and prevents default action
+      function cancelBubbleAndDefault(e) {
+        if (e.stopPropagation) e.stopPropagation();
+        if (e.cancelBubble) e.cancelBubble = true;
+        if (e.preventDefault) e.preventDefault();
+        e.returnValue = false;
+        return false;
+      }
+
+      // 'True' if IBox is vertically oriented (thumb container is located on the left or right), 'False' otherwise
       function isVerticalOrientation() {
         return thumbsOrientation === published.POS_LEFT  || 
                thumbsOrientation === published.POS_RIGHT;
       }
 
-      function getNaturalImageSize(imageElement) {
-        var size = imagesNaturalSizeCache[imageElement.src];
-        if (!size) {
-          var height = imageElement.naturalHeight;
-          var width = imageElement.naturalWidth;
-          if (height === 0 || width === 0) {
-            // get real image's size via temporary Image element.
-            // imageElement.natural* is not enough for Safari at startup
-            var tmp = new Image();
-            tmp.src = imageElement.src;
-            width = tmp.width;
-            height = tmp.height;
-          }
-          size = { width: width, height: height };
-          imagesNaturalSizeCache[imageElement.src] = size;
-        }
-
-        return size;
+      function log(func, message) {
+        if (!logOut || !message) return;
+        if (message.length > 256) message = message.substring(0, 256) + "...";
+        logOut.innerHTML += !func ? message : func + "(): " + message;
+        logOut.innerHTML += "\r\n";
       }
 
-      function fitImageToContainer(imageElementId) {
+// ****************** Thumbs and Navigation ********************
 
-        var imageElement = WAVE.id(imageElementId);
-        var size = getNaturalImageSize(imageElement);
-        var iw = size.width;
-        var ih = size.height;
-        var w = imageElement.parentElement.clientWidth;
-        var h = imageElement.parentElement.clientHeight;
-
-        if ((w * ih) / (iw * h) > 1) {
-          var width = h * iw / ih;
-          imageElement.style.width = width + "px";
-          imageElement.style.height = h + "px";
-          imageElement.style.left = (w - width) / 2 + "px";
-          imageElement.style.top = "0";
-        } else {
-          var height = w * ih / iw;
-          imageElement.style.width = w + "px";
-          imageElement.style.height = height + "px";
-          imageElement.style.left = "0";
-          imageElement.style.top = (h - height) / 2 + "px";
-        }
-      }
-
-      function fitThumbToContainer(thumb) {
-        
-        var divThumb = WAVE.id(thumb.id);
-        var divCrop = WAVE.id(thumb.cropId);
-        var imgImage = WAVE.id(thumb.imageId);
-        
-        if (isVerticalOrientation()) {
-          divThumb.style.height = divThumb.clientWidth + "px";
-        } else {
-           divThumb.style.width = divThumb.clientHeight + "px";
-        }
-
-        var size = getNaturalImageSize(imgImage);
-        var naturalWidth = size.width;
-        var naturalHeight = size.height;
-
-        var imageHeight = (typeof (thumb.imageHeight) === WAVE.UNDEFINED) || isNaN(thumb.imageHeight) ? naturalHeight : thumb.imageHeight;
-        var imageWidth = (typeof (thumb.imageWidth) === WAVE.UNDEFINED) || isNaN(thumb.imageWidth) ? naturalWidth : thumb.imageWidth;
-        var imageLeft = (typeof (thumb.imageLeft) === WAVE.UNDEFINED) || isNaN(thumb.imageLeft) ? 0 : thumb.imageLeft; 
-        var imageTop = (typeof (thumb.imageTop) === WAVE.UNDEFINED) || isNaN(thumb.imageTop) ? 0 : thumb.imageTop; 
-
-        var delta = Math.min(divThumb.clientHeight / imageHeight, divThumb.clientWidth / imageWidth);
-
-        divCrop.style.height = (imageHeight * delta) + "px";
-        divCrop.style.width = (imageWidth * delta) + "px";
-        divCrop.style.top = (divThumb.clientHeight - imageHeight * delta)/2 + "px";
-        divCrop.style.left = (divThumb.clientWidth - imageWidth * delta)/2 + "px";
-        imgImage.style.height = (imgImage.naturalHeight * delta) + "px";
-        imgImage.style.width = (imgImage.naturalWidth * delta) + "px";
-        imgImage.style.left = (imageLeft * delta) + "px";
-        imgImage.style.top = (imageTop * delta) + "px";
-      }
-      
-      function loadMainImage(imageSrc) {
-        
-        var imageElement = WAVE.id(ids.imgMainImageId);
-        if (imageSrc === imageElement.src)
-          return;
-
-        var downloadingImage = new Image();
-        downloadingImage.onload = function () {
-          var src = this.src;
-          $(imageElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
-            imageElement.src = src;
-            fitImageToContainer(ids.imgMainImageId);
-          }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME, function () {
-              ibox.eventInvoke(published.EVT_IMAGE_CHANGED, imageSrc);
-          });
-        };
-        downloadingImage.onerror = function () {
-          imageElement.src = published.DEFAULT_IMAGE;
-          fitImageToContainer(ids.imgMainImageId);
-        };
-        downloadingImage.src = imageSrc;
-      } 
-    
-      function areAllThumbsLoaded() {
-        for (var i = 0; i < thumbsData.length; i++) {
-          if (!thumbsData[i].imageLoaded)
-             return false;
-        }
-        return true;
-      }
-    
       function areThumbsOverflowed() {
         var thumbsImagesContainer = WAVE.id(ids.divThumbsImagesContainerId); 
-        return thumbsImagesContainer.scrollHeight > thumbsImagesContainer.clientHeight || 
-               thumbsImagesContainer.scrollWidth > thumbsImagesContainer.clientWidth;
+        return isVerticalOrientation() ?
+                  thumbsImagesContainer.scrollHeight > thumbsImagesContainer.clientHeight :
+                  thumbsImagesContainer.scrollWidth > thumbsImagesContainer.clientWidth;
       } 
 
       function alignThumbContainer(){
@@ -2066,19 +2007,15 @@ WAVE.GUI = (function(){
 
         if (isVerticalOrientation()) {
           divThumbsImagesContainer.style.height = "90%";
-          divNavBack.style.height = "5%";
-          divNavBack.style.width = "100%";
+          divNavBack.style = published.STL_DIV_THUMBSNAV_V;
           divNavBack.style.display = "";
-          divNavForth.style.height = "5%";
-          divNavForth.style.width = "100%";
+          divNavForth.style = published.STL_DIV_THUMBSNAV_V;
           divNavForth.style.display = "";
         } else {
           divThumbsImagesContainer.style.width = "90%";
-          divNavBack.style.height = "100%";
-          divNavBack.style.width = "5%";
+          divNavBack.style = published.STL_DIV_THUMBSNAV_H;
           divNavBack.style.display = "inline-block";
-          divNavForth.style.height = "100%";
-          divNavForth.style.width = "5%";
+          divNavForth.style.height = published.STL_DIV_THUMBSNAV_H;
           divNavForth.style.display = "inline-block";
         }
       }
@@ -2099,38 +2036,51 @@ WAVE.GUI = (function(){
           alignThumbContainer();
         } 
       }
- 
-      function initializeScrollInfo() {
-        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        
-        var scrollBackFactory; 
-        var scrollForthFactory; 
-        var canScrollBack;
-        var canScrollForth;
-        if (isVerticalOrientation()) {
-          scrollBackFactory = function() { return { scrollTop: scrollContainer.scrollTop - thumbsScrollDelta * scrollContainer.clientHeight }; };
-          scrollForthFactory = function() { return { scrollTop: scrollContainer.scrollTop + thumbsScrollDelta * scrollContainer.clientHeight }; };
-          canScrollBack = function() { return scrollContainer.scrollTop > 0; };
-          canScrollForth = function() { return scrollContainer.scrollTop + scrollContainer.clientHeight < scrollContainer.scrollHeight - 1; };
-        } else {
-          scrollBackFactory = function() { return { scrollLeft: scrollContainer.scrollLeft - thumbsScrollDelta * scrollContainer.clientWidth }; };
-          scrollForthFactory = function() { return { scrollLeft: scrollContainer.scrollLeft + thumbsScrollDelta * scrollContainer.clientWidth }; };
-          canScrollBack = function() { return scrollContainer.scrollLeft > 0; };
-          canScrollForth = function() { return scrollContainer.scrollLeft + scrollContainer.clientWidth < scrollContainer.scrollWidth - 1; };
-        }
 
-        scrollInfo = { scrollBackFactory: scrollBackFactory, 
-                       scrollForthFactory: scrollForthFactory, 
-                       canScrollBack: canScrollBack, 
-                       canScrollForth: canScrollForth };
+      function areAllThumbsLoaded() {
+        for (var i = 0; i < thumbsData.length; i++) {
+          if (!thumbsData[i].imageLoaded)
+            return false;
+        }
+        return true;
+      }
+
+// ******************* Navigation Scrolling ******************** 
+
+      function canScrollBack() {
+        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        return isVerticalOrientation() ?
+                  scrollContainer.scrollTop > 0 :
+                  scrollContainer.scrollLeft > 0;
+      }
+
+      function canScrollForth() {
+        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        return isVerticalOrientation() ?
+                  scrollContainer.scrollTop  + scrollContainer.clientHeight < scrollContainer.scrollHeight - 1 :
+                  scrollContainer.scrollLeft + scrollContainer.clientWidth  < scrollContainer.scrollWidth  - 1;
+      }
+
+      function scrollBack() {
+        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        return isVerticalOrientation() ?
+                  { scrollTop:  scrollContainer.scrollTop  - thumbsScrollDelta * scrollContainer.clientHeight } :
+                  { scrollLeft: scrollContainer.scrollLeft - thumbsScrollDelta * scrollContainer.clientWidth  };
+      }
+
+      function scrollForth() {
+        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
+        return isVerticalOrientation() ?
+                  { scrollTop:  scrollContainer.scrollTop  + thumbsScrollDelta * scrollContainer.clientHeight } :
+                  { scrollLeft: scrollContainer.scrollLeft + thumbsScrollDelta * scrollContainer.clientWidth  };
       }
 
       function refreshScrolling() {
-        var divNavBack = WAVE.id(ids.divNavBackId);
+        var divNavBack  = WAVE.id(ids.divNavBackId);
         var divNavForth = WAVE.id(ids.divNavForthId);
-        var navBackOpacity = scrollInfo.canScrollBack() ? 1 : published.DEFAULT_ARROWS_OPACITY;
-        var navForthOpacity =  scrollInfo.canScrollForth() ? 1 : published.DEFAULT_ARROWS_OPACITY;
-        divNavBack.style.opacity = navBackOpacity;
+        var navBackOpacity  = canScrollBack()  ? 1 : published.DEFAULT_ARROWS_OPACITY;
+        var navForthOpacity = canScrollForth() ? 1 : published.DEFAULT_ARROWS_OPACITY;
+        divNavBack.style.opacity  = navBackOpacity;
         divNavForth.style.opacity = navForthOpacity;
       }
 
@@ -2139,75 +2089,185 @@ WAVE.GUI = (function(){
         var divNavBack = WAVE.id(ids.divNavBackId);
         var divNavForth = WAVE.id(ids.divNavForthId);
 
-        $(divNavBack).on("click touchend", function () {
+        $(divNavBack).bind("touchend click", function () {
           if (isNavAnimationInProgress) return;
           isNavAnimationInProgress = true;
-          $(scrollContainer).animate(scrollInfo.scrollBackFactory(), 
-                                  function() {
-                                    refreshScrolling();
-                                    isNavAnimationInProgress = false;
-                                  });
-        });
+          $(scrollContainer).animate(scrollBack(), 
+                                     function() {
+                                       refreshScrolling();
+                                       isNavAnimationInProgress = false;
+                                     });
+          });
 
-        $(divNavForth).on("click touchend", function () {
+        $(divNavForth).bind("touchend click", function () {
           if (isNavAnimationInProgress) return;
           isNavAnimationInProgress = true;
-          $(scrollContainer).animate(scrollInfo.scrollForthFactory(), 
-                                  function() {
-                                    refreshScrolling();
-                                    isNavAnimationInProgress = false;
-                                  });
-        });
+          $(scrollContainer).animate(scrollForth(), 
+                                     function() {
+                                       refreshScrolling();
+                                       isNavAnimationInProgress = false;
+                                     });
+          });
+      }
+
+// ******************** Working with Images ********************
+
+      // Returns original ('natural') image size via temporary Image element (imageElement.natural* is not enough for Safari at startup). 
+      // Performs caching by image src.
+      function getNaturalImageSize(imageElement) {
+        var size = imagesNaturalSizeCache[imageElement.src];
+        if (!size) {
+          var height = imageElement.naturalHeight;
+          var width = imageElement.naturalWidth;
+          if (height === 0 || width === 0) {
+            var tmp = new Image();
+            tmp.src = imageElement.src;
+            width = tmp.width;
+            height = tmp.height;
+          }
+          size = { width: width, height: height };
+          imagesNaturalSizeCache[imageElement.src] = size;
+        }
+
+        log("getNaturalImageSize",
+            "\r\n   width=" + width +
+            "\r\n   height=" + height +
+            "\r\n   src=" + imageElement.src);
+
+        return size;
+      }
+
+      function fitImageToContainer(imageElementId) {
+        var imageElement = WAVE.id(imageElementId);
+        var size = getNaturalImageSize(imageElement);
+        var iw = size.width;
+        var ih = size.height;
+        var w = imageElement.parentElement.clientWidth;
+        var h = imageElement.parentElement.clientHeight;
+
+        if ((w * ih) / (iw * h) > 1) {
+          var width = h * iw / ih;
+          imageElement.style.width = width + "px";
+          imageElement.style.height = h + "px";
+          imageElement.style.left = (w - width) / 2 + "px";
+          imageElement.style.top = "0";
+        } else {
+          var height = w * ih / iw;
+          imageElement.style.width = w + "px";
+          imageElement.style.height = height + "px";
+          imageElement.style.left = "0";
+          imageElement.style.top = (h - height) / 2 + "px";
+        }
+        log("fitImageToContainer",
+            "\r\n   imageElement.style.width = " + imageElement.style.width +
+            "\r\n   imageElement.style.height = " + imageElement.style.height +
+            "\r\n   imageElement.style.left = " + imageElement.style.left +
+            "\r\n   imageElement.style.top = " + imageElement.style.top);
+      }
+
+      function fitThumbImageToContainer(thumb) {
+        var divThumb = WAVE.id(thumb.id);
+        var divCrop = WAVE.id(thumb.cropId);
+        var imgImage = WAVE.id(thumb.imageId);
+        
+        if (isVerticalOrientation()) {
+          divThumb.style.height = divThumb.clientWidth + "px";
+        } else {
+           divThumb.style.width = divThumb.clientHeight + "px";
+        }
+
+        var size = getNaturalImageSize(imgImage);
+        var naturalWidth = size.width;
+        var naturalHeight = size.height;
+
+        var imageHeight = (typeof (thumb.imageHeight) === WAVE.UNDEFINED) || isNaN(thumb.imageHeight) ? naturalHeight : thumb.imageHeight;
+        var imageWidth = (typeof (thumb.imageWidth) === WAVE.UNDEFINED) || isNaN(thumb.imageWidth) ? naturalWidth : thumb.imageWidth;
+        var imageLeft = (typeof (thumb.imageLeft) === WAVE.UNDEFINED) || isNaN(thumb.imageLeft) ? 0 : thumb.imageLeft; 
+        var imageTop = (typeof (thumb.imageTop) === WAVE.UNDEFINED) || isNaN(thumb.imageTop) ? 0 : thumb.imageTop; 
+
+        var delta = Math.min(divThumb.clientHeight / imageHeight, divThumb.clientWidth / imageWidth);
+
+        divCrop.style.height  = (imageHeight * delta) + "px";
+        divCrop.style.width   = (imageWidth * delta) + "px";
+        divCrop.style.top     = (divThumb.clientHeight - imageHeight * delta)/2 + "px";
+        divCrop.style.left    = (divThumb.clientWidth - imageWidth * delta)/2 + "px";
+        imgImage.style.height = (imgImage.naturalHeight * delta) + "px";
+        imgImage.style.width  = (imgImage.naturalWidth * delta) + "px";
+        imgImage.style.left   = (imageLeft * delta) + "px";
+        imgImage.style.top    = (imageTop * delta) + "px";
       }
       
-      function refreshMarkup() {
-        
-        // refresh main image
-        fitImageToContainer(ids.imgMainImageId);
-        
+      function loadMainImage(imageSrc) {
+        log("loadMainImage", "imageSrc=" + imageSrc);
+        var imageElement = WAVE.id(ids.imgMainImageId);
+        if (imageSrc === imageElement.src)
+          return;
+
+        var downloadingImage = new Image();
+        downloadingImage.onload = function () {
+          log("loadMainImage", "success src=" + this.src);
+          var src = this.src;
+          $(imageElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
+            imageElement.src = src;
+            fitImageToContainer(ids.imgMainImageId);
+          }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME, function () {
+              ibox.eventInvoke(published.EVT_IMAGE_CHANGED, imageSrc);
+          });
+        };
+        downloadingImage.onerror = function () {
+          log("loadMainImage", "error");
+          imageElement.src = published.DEFAULT_IMAGE;
+          fitImageToContainer(ids.imgMainImageId);
+        };
+        downloadingImage.src = imageSrc;
+      } 
+
+      // Force recalculate and redraw IBox's UI
+      function doRefreshMarkup() {
         // refresh thumb images
         for (var i = 0; i < thumbsData.length; i++) {
-          fitThumbToContainer(thumbsData[i]);
+          fitThumbImageToContainer(thumbsData[i]);
         }
-        
+
         // refresh scrollers
-        refreshNavigation();  
+        refreshNavigation();
+
+        // refresh main image
+        fitImageToContainer(ids.imgMainImageId);
       }
 
       function onThumbImageLoaded(thumb, thumbImageSrc) {
         thumb.imageLoaded = true;
         var thumbElement = WAVE.id(thumb.imageId);
         thumbElement.src = thumbImageSrc;
-        fitThumbToContainer(thumb);
+        fitThumbImageToContainer(thumb);
         if (areAllThumbsLoaded())
-          refreshMarkup();
+          doRefreshMarkup();
         else
           refreshNavigation();
       }
        
-      function loadThumbImage(thumb) {
-        
+      function loadThumbImage(thumb) {                                                     
         var thumbElement = WAVE.id(thumb.imageId);
         if (thumb.thumbImageSrc === thumbElement.src)
           return;
 
+        log("loadThumbImage", "thumbImageSrc=" + thumbElement.src);
         var downloadingImage = new Image();
         downloadingImage.onload = function () {
+          log("loadThumbImage", "success src=" + this.src);
           var src = this.src;
           $(thumbElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
             onThumbImageLoaded(thumb, src);
           }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME);
         };
         downloadingImage.onerror = function () {
+          log("loadThumbImage", "error");
           onThumbImageLoaded(thumb, published.DEFAULT_IMAGE);
         };
         downloadingImage.src = thumb.thumbImageSrc;
       }
 
-      function thumbClickFactory(imageSrc) {
-        return function () { loadMainImage(imageSrc); };
-      }
-      
       function calculateImageZoomOffsets(ih, iw, h, w, x, y) {
         var delta, X, Y;
         var aspect = iw * h / (ih * w);
@@ -2224,10 +2284,15 @@ WAVE.GUI = (function(){
         }
         var left = iw > w ? Math.min(Math.max(X - w / 2, 0), iw - w) : (iw - w) / 2;
         var top = ih > h ? Math.min(Math.max(Y - h / 2, 0), ih - h) : (ih - h) / 2;
-        
+        log("calculateImageZoomOffsets",
+            "\r\n  ih=" + ih + ", iw=" + w + " h=" + h + ", w=" + w + ", x=" + x + ", y=" + y +
+            "\r\n  left=" + left + ", top=" + top);
+
         return { left: left, top: top };
       }
     
+      // Called when user clicks/taps on the main image area.
+      // It resets image's size to its original ('natural') value and shifts the image according to poiter position
       function adjustMainImage(e) {
         var img = WAVE.id(ids.imgMainImageId);
         var div = WAVE.id(ids.divMainImageId);
@@ -2249,32 +2314,25 @@ WAVE.GUI = (function(){
         img.style.left = (-offset.left) + "px";
         img.style.top = (-offset.top) + "px";
 
+        log("adjustMainImage", "img.style.left=" + img.style.left + ", img.style.top=" + img.style.top);
+
         return true;
       }
 
-      function cancelBubbleAndDefault(e) {
-        if (e.stopPropagation) e.stopPropagation();
-        if (e.cancelBubble) e.cancelBubble = true;
-        if (e.preventDefault) e.preventDefault();
-        e.returnValue = false;
-        return false;
-      }
+// ******************** Event Handlers ********************
 
       function divMainImageMouseDown(e) {
-        if (!adjustMainImage(e))
-          return cancelBubbleAndDefault(e);
-        isMainImageMouseDown = true;
+        if (adjustMainImage(e)) isMainImageMouseDown = true;
         return cancelBubbleAndDefault(e);
       }
     
       function divMainImageMouseMove(e) {
-        if (isMainImageMouseDown) {
-          adjustMainImage(e);
-        }
+        if (isMainImageMouseDown) adjustMainImage(e);
         return cancelBubbleAndDefault(e);
       }
     
       function onMouseUp(e) {
+        log("onMouseUp");
         // if thumb navigation in progress
         if (navTouchStartPosition !== null) {
           refreshNavigation();
@@ -2313,8 +2371,37 @@ WAVE.GUI = (function(){
         return cancelBubbleAndDefault(e);
       }
 
+      function thumbClickFactory(imageSrc) {
+        return function () { loadMainImage(imageSrc); };
+      }
+      
+// ********************** Public *************************
+
+      // Toggle IBox's visibility
+      this.visible = function (val) {
+        var vis = WAVE.id(ids.divFrameId).style.visibility;
+        if (vis === "") vis = "visible";
+        var isv = vis === "visible";
+
+        if (typeof (val) === WAVE.UNDEFINED || val === isv) return val;
+
+        WAVE.id(ids.divFrameId).style.visibility = val ? "visible" : "hidden";
+        ibox.eventInvoke(published.EVT_INTERACTION_CHANGE, "visible", val);
+        return val;
+      };
+
+      // Force recalculate and redraw IBox's UI
+      this.refreshMarkup = function () {
+        doRefreshMarkup();
+      };
+
+// ******** Initialization and UI Construction ***********
+
       // parse init json
       
+      var logOut = WAVE.id(WAVE.get(init, "logOut", ""));
+      log(".ctor", "begin");
+
       var imagesList = init[published.PARAM_IMAGES_LIST];
       var defaultImageSrcKey = init[published.PARAM_DEF_IMG_SRC];
       var defaultImageSrc = (typeof (defaultImageSrcKey) === WAVE.UNDEFINED) ? 
@@ -2332,9 +2419,9 @@ WAVE.GUI = (function(){
 
       var imgMainImage = document.createElement("img");
       imgMainImage.id = ids.imgMainImageId;
-      imgMainImage.className = published.IBOX_IMG_MAINIMAGE;
+      imgMainImage.className = published.CLS_IBOX_IMG_MAINIMAGE;
       imgMainImage.src = published.DEFAULT_IMAGE;
-      imgMainImage.style.cssText = published.STYLE_IMG_MAINIMAGE + published.STYLE_DISABLE_MOBILE_HANDLING;
+      imgMainImage.style.cssText = published.STL_IMG_MAINIMAGE + published.STL_DISABLE_MOBILE_HANDLING;
       imgMainImage.ondragstart = function() { return false; };
 
       var divThumbsImagesContainer = document.createElement("div");
@@ -2342,12 +2429,13 @@ WAVE.GUI = (function(){
       divThumbsImagesContainer.className = published.IBOX_DIV_THUMBSIMAGESCONTAINER;
     
       if (typeof (thumbsData) !== WAVE.UNDEFINED) {
+        log(".ctor", "fill thumbs data");
         for (var i = 0; i < thumbsData.length; ++i) {
-          
+          log(".ctor", "fill thumb[" + i + "] data");
           var thumb = thumbsData[i];
     
-          var id = "divThumbId_ibox_" + i + "_" + WAVE.genRndKey(4);
-          var cropId = "divThumbCropId_ibox_" + i + "_" + WAVE.genRndKey(4);
+          var id      = "divThumbId_ibox_" + i + "_" + WAVE.genRndKey(4);
+          var cropId  = "divThumbCropId_ibox_" + i + "_" + WAVE.genRndKey(4);
           var imageId = "imgThumbImageId_ibox_" + i + "_" + WAVE.genRndKey(4);
           var title = WAVE.strDefault(thumb[published.PARAM_THUMB_TITLE], "");
           var bigImageSrcKey = thumb[published.PARAM_BIG_IMG_SRC];
@@ -2361,11 +2449,16 @@ WAVE.GUI = (function(){
           
           if (thumbImageSrc !== published.DEFAULT_IMAGE && thumbImageSrc !== defaultThumbSrc) {
             thumb.imageHeight = parseFloat(thumb[published.PARAM_HEIGHT]);
-            thumb.imageWidth = parseFloat(thumb[published.PARAM_WIDTH]);
-            thumb.imageLeft = parseFloat(thumb[published.PARAM_LEFT]);
-            thumb.imageTop = parseFloat(thumb[published.PARAM_TOP]);
+            thumb.imageWidth  = parseFloat(thumb[published.PARAM_WIDTH]);
+            thumb.imageLeft   = parseFloat(thumb[published.PARAM_LEFT]);
+            thumb.imageTop    = parseFloat(thumb[published.PARAM_TOP]);
           }
-          
+          log(".ctor", 
+              "\r\n   thumb[" + i + "].imageHeight = " + thumb.imageHeight + 
+              "\r\n   thumb[" + i + "].imageWidth = " + thumb.imageWidth + 
+              "\r\n   thumb[" + i + "].imageLeft = " + thumb.imageLeft + 
+              "\r\n   thumb[" + i + "].imageTop = " + thumb.imageTop);
+
           thumb.imageLoaded = false;
           thumb.bigImageSrc = bigImageSrc;
           thumb.thumbImageSrc = thumbImageSrc;
@@ -2376,12 +2469,7 @@ WAVE.GUI = (function(){
 
           // thumbnails UI templatization
 
-          var divThumbStyle;
-          if (isVerticalOrientation()) {
-            divThumbStyle = published.STYLE_DIV_THUMB_V;
-          } else {
-            divThumbStyle = published.STYLE_DIV_THUMB_H;
-          }
+          var divThumbStyle = isVerticalOrientation() ? published.STL_DIV_THUMB_V : published.STL_DIV_THUMB_H;
 
           var divThumbTemplate = 
                 "<div id='@divThumbId@' class='@divThumbClass@' style='@divThumbStyle@'>" +
@@ -2396,15 +2484,15 @@ WAVE.GUI = (function(){
           divThumbsImagesContainer.innerHTML += WAVE.strHTMLTemplate(divThumbTemplate,
                 {           
                   divThumbId: id,
-                  divThumbClass: published.IBOX_DIV_THUMB,
+                  divThumbClass: published.CLS_IBOX_DIV_THUMB,
                   divThumbStyle: divThumbStyle,  
                   divThumbCropId: cropId,
-                  divThumbCropClass: published.IBOX_DIV_THUMB_CROP,
-                  divThumbCropStyle: published.STYLE_DIV_THUMB_CROP,
+                  divThumbCropClass: published.CLS_IBOX_DIV_THUMB_CROP,
+                  divThumbCropStyle: published.STL_DIV_THUMB_CROP,
                   divThumbImageId: imageId,
                   initialSrc: published.DEFAULT_IMAGE,
-                  divThumbImageClass: published.IBOX_DIV_THUMB_IMAGE,
-                  divThumbImageStyle: published.STYLE_DIV_THUMB_IMAGE + published.STYLE_DISABLE_MOBILE_HANDLING
+                  divThumbImageClass: published.CLS_IBOX_DIV_THUMB_IMAGE,
+                  divThumbImageStyle: published.STL_DIV_THUMB_IMAGE + published.STL_DISABLE_MOBILE_HANDLING
                 });
         }
       }
@@ -2419,18 +2507,18 @@ WAVE.GUI = (function(){
       var imgNavForthSrc;
 
       if (isVerticalOrientation()) {
-        divThumbsImagesContainer.style.cssText = published.STYLE_DIV_THUMBSIMAGESCONTAINER_V;
-        divThumbsContainerStyle = published.STYLE_DIV_THUMBSCONTAINER_V;
-        divNavStyle = published.STYLE_DIV_THUMBSNAV_V;
-        divMainImageStyle = published.STYLE_DIV_MAINIMAGE_V;
+        divThumbsImagesContainer.style.cssText = published.STL_DIV_THUMBSIMAGESCONTAINER_V;
+        divThumbsContainerStyle = published.STL_DIV_THUMBSCONTAINER_V;
+        divNavStyle = published.STL_DIV_THUMBSNAV_V;
+        divMainImageStyle = published.STL_DIV_MAINIMAGE_V;
         imgNavBackSrc = published.DEFAULT_UP_NAVIGATION_IMAGE;
         imgNavForthSrc = published.DEFAULT_DOWN_NAVIGATION_IMAGE; 
         imageFloat = thumbsOrientation === published.POS_LEFT ? "right" : "left";
       } else {
-        divThumbsImagesContainer.style.cssText = published.STYLE_DIV_THUMBSIMAGESCONTAINER_H;
-        divThumbsContainerStyle = published.STYLE_DIV_THUMBSCONTAINER_H;
-        divNavStyle = published.STYLE_DIV_THUMBSNAV_H;
-        divMainImageStyle = published.STYLE_DIV_MAINIMAGE_H;
+        divThumbsImagesContainer.style.cssText = published.STL_DIV_THUMBSIMAGESCONTAINER_H;
+        divThumbsContainerStyle = published.STL_DIV_THUMBSCONTAINER_H;
+        divNavStyle = published.STL_DIV_THUMBSNAV_H;
+        divMainImageStyle = published.STL_DIV_MAINIMAGE_H;
         imgNavBackSrc = published.DEFAULT_LEFT_NAVIGATION_IMAGE;
         imgNavForthSrc = published.DEFAULT_RIGHT_NAVIGATION_IMAGE;
         imageFloat = "";
@@ -2469,43 +2557,40 @@ WAVE.GUI = (function(){
       container.innerHTML = WAVE.strHTMLTemplate(divFrameTemplate,
             {
               divFrameId: ids.divFrameId,
-              divFrameClass: published.IBOX_DIV_FRAME,
-              divFrameStyle: published.STYLE_DIV_FRAME,
+              divFrameClass: published.CLS_IBOX_DIV_FRAME,
+              divFrameStyle: published.STL_DIV_FRAME,
                         
               divMainImageId: ids.divMainImageId,
-              divMainImageClass: published.IBOX_DIV_MAINIMAGE,
+              divMainImageClass: published.CLS_IBOX_DIV_MAINIMAGE,
               divMainImageStyle: divMainImageStyle,
               imageFloat: imageFloat,
 
               divThumbsContainerId: ids.divThumbsContainerId,
-              divThumbsContainerClass: published.IBOX_DIV_THUMBSCONTAINER,
+              divThumbsContainerClass: published.CLS_IBOX_DIV_THUMBSCONTAINER,
               divThumbsContainerStyle: divThumbsContainerStyle,
               
               divNavBackId: ids.divNavBackId,
               defaultOpacity: published.DEFAULT_ARROWS_OPACITY,
-              divNavBackClass: published.IBOX_DIV_THUMBSNAVIGATION,
+              divNavBackClass: published.CLS_IBOX_DIV_THUMBSNAVIGATION,
               imgNavBackId: ids.imgNavBackId,
-              imgNavBackStyle: published.STYLE_IMG_THUMBSNAV,
+              imgNavBackStyle: published.STL_IMG_THUMBSNAV,
               imgNavBackSrc: imgNavBackSrc,
               divNavStyle: divNavStyle,
               
               divNavForthId: ids.divNavForthId,
-              divNavForthClass: published.IBOX_DIV_THUMBSNAVIGATION,
+              divNavForthClass: published.CLS_IBOX_DIV_THUMBSNAVIGATION,
               imgNavForthId: ids.imgNavForthId,
-              imgNavForthStyle: published.STYLE_IMG_THUMBSNAV,
+              imgNavForthStyle: published.STL_IMG_THUMBSNAV,
               imgNavForthSrc: imgNavForthSrc
             });
-    
-      // initialize scrolling data context
-      initializeScrollInfo();
-      
+
       // apply handlers
       var divMainImage = WAVE.id(ids.divMainImageId);
       var divThumbsContainer = WAVE.id(ids.divThumbsContainerId);
-      $(divMainImage).on("mousedown touchstart", divMainImageMouseDown);
-      $(divMainImage).on("mousemove touchmove", divMainImageMouseMove);   
-      $(divThumbsContainer).on("mousedown touchstart", divThumbsContainerMouseDown);
-      $(divThumbsContainer).on("mousemove touchmove", divThumbsContainerMouseMove);
+      $(divMainImage).bind("touchstart mousedown", divMainImageMouseDown);
+      $(divMainImage).bind("touchmove mousemove", divMainImageMouseMove);
+      $(divThumbsContainer).bind("touchstart mousedown", divThumbsContainerMouseDown);
+      $(divThumbsContainer).bind("touchmove mousemove", divThumbsContainerMouseMove);
       initializeScrolling();
       
       // load the 1st image
@@ -2517,18 +2602,753 @@ WAVE.GUI = (function(){
       // load thumb images
       for (var j = 0; j < thumbsData.length; j++) {
         var tmb = thumbsData[j];
-        fitThumbToContainer(tmb);
+        fitThumbImageToContainer(tmb);
         var thumbImage = WAVE.id(tmb.imageId);
-        $(thumbImage).on("click touchend", thumbClickFactory(tmb.bigImageSrc));
+        $(thumbImage).bind("touchend click", thumbClickFactory(tmb.bigImageSrc));
         loadThumbImage(tmb);
       }
 
       // global events
       
-      $(window).resize(function() { refreshMarkup(); });
+      $(window).resize(function() { doRefreshMarkup(); });
       
-      $(document).on("mouseup touchend", onMouseUp);
+      $(document).bind("touchend mouseup", onMouseUp);
+
+      log(".ctor", "end");
     };
+
+  // {
+  //   "DIV": html container,
+  //   "id" : "uniqueId",
+  //   "value" : "",
+  //   "disabled" : false,
+  //   "readonly" : false,
+  //   "placeholder" : "some text",
+  //   "attrs" : {attr : value}
+  //   "onChange" : function(e)
+  // }
+    published.MultiLineTextBox = function (init) {
+      if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "MultiLineTextBox.ctor(init.DIV)";
+      if (WAVE.strEmpty(init.id)) throw "MultiLineTextBox.ctor(init.id)";
+
+      var editor = this;
+
+      var fTemplate = 
+        "<div id='@shdwDivId@' style='position: fixed;visibility: hidden;height: auto;width: auto;'></div>" +
+        "<textarea id='@id@' @disabled@ @readonly@ style='resize: none' placeholder='@placeholder@'></textarea>";
+      var fDIV = init.DIV;
+      var fId = init.id;
+      var fShadowDivId = "shdw_div_" + fId;
+      var fPlaceholder = WAVE.strDefault(init.placeholder);
+      var fReadOnly = WAVE.strAsBool(init.readonly, false);
+      var fDisabled = WAVE.strAsBool(init.disabled, false);
+      var fValue = WAVE.strDefault(init.value);
+      var fAttrs = WAVE.tryParseJSON(init.attrs).obj;
+
+      fDIV.innerHTML = WAVE.strHTMLTemplate(fTemplate, {
+        shdwDivId: fShadowDivId,
+        id : fId,             
+        disabled: fDisabled ? "disabled" : "",
+        readonly: fReadOnly ? "readonly" : "",
+        placeholder : fPlaceholder
+      });
+
+      var dI = WAVE.id(fId);
+      var shadowDiv = WAVE.id(fShadowDivId);
+
+      dI.onresize = function () { shadowDiv.style.maxWidth = WAVE.styleOf(dI, 'width'); };
+      dI.style.overflow = 'hidden';
+      for(var n in fAttrs){
+        dI.setAttribute(n, fAttrs[n]);
+      }
+
+      shadowDiv.innerText = dI.value = fValue;
+      shadowDiv.style.maxWidth = WAVE.styleOf(dI, 'width');
+      shadowDiv.style.font = WAVE.styleOf(dI, 'font');
+      shadowDiv.style.minHeight = WAVE.styleOf(dI, 'height');
+      shadowDiv.style.paddingTop = WAVE.styleOf(dI, 'padding-top');
+      shadowDiv.style.paddingRight = WAVE.styleOf(dI, 'padding-right');
+      shadowDiv.style.paddingBottom = WAVE.styleOf(dI, 'padding-bottom');
+      shadowDiv.style.paddingLeft = WAVE.styleOf(dI, 'padding-left');
+      shadowDiv.style.wordWrap = WAVE.styleOf(dI, 'word-wrap');
+      shadowDiv.style.wordSpacing = WAVE.styleOf(dI, 'word-spacing');
+      shadowDiv.style.whiteSpace = WAVE.styleOf(dI, 'white-space');
+      shadowDiv.style.borderSpacing = WAVE.styleOf(dI, 'border-spacing');
+      shadowDiv.style.letterSpacing = WAVE.styleOf(dI, 'letter-spacing');
+      shadowDiv.style.lineHeight = WAVE.styleOf(dI, 'line-height');
+      shadowDiv.style.boxSizing = WAVE.styleOf(dI, 'box-sizing');
+      shadowDiv.style.border = WAVE.styleOf(dI, 'border');
+      shadowDiv.style.borderWidth = WAVE.styleOf(dI, 'border-width');
+      shadowDiv.style.borderRadius = WAVE.styleOf(dI, 'border-radius');
+      shadowDiv.style.textIndent = WAVE.styleOf(dI, 'text-indent');
+
+      var setAreaHeight = function (control) {
+        shadowDiv.innerText = WAVE.strEmpty(control.value) ? 'W' : control.value.replace(/\r\n|\r|\n/g, "\n ");
+        control.style.height = shadowDiv.clientHeight + "px";
+      };
+
+      dI.onchange = function (e) {
+        setAreaHeight(this);
+        shadowDiv.style.maxWidth = WAVE.styleOf(dI, 'width');
+        if(WAVE.isFunction(init.onChange)) init.onChange(e);
+      };
+      dI.onkeydown = dI.onkeyup = function (e) {
+        setAreaHeight(this);
+      };
+
+      setAreaHeight(dI);
+    };//MultiLineTextBox
+
+    var fPSEditorIDSeed = 0;
+
+  // {
+  //   "DIV": html container, --required
+  //   "outputFormFieldName" : "fieldId"
+  //   "langs" :[], 
+  //   "content": "{}", 
+  //   "disabled": false,
+  //   "readonly": false,
+  //   "canAdd": true,
+  //   "canDel": true,
+  //   "canRaw": true,
+  //   "options" : {"n": {type : "text", plh: "Name"}, "d": {type : "textarea", plh: "Description"}},
+  //   "btnClasses" : {
+  //     "addBtnCls" : "class name",
+  //     "delBtnCls" : "class name",
+  //     "rawBtnCls" : "class name",
+  //     "clearBtnCls" : "class name",
+  //     "modalBtnCls" : "class name",
+  //   },
+  //   "texts" : {
+  //     "add-title" : "Add New Language",
+  //     "add-body" : "",
+  //     "raw-title" : "Raw Edit",
+  //     "raw-body" : "",
+  //     "clear-confirm-title" : "Confirm Clear",
+  //     "clear-confirm-body" : "Clear all language data?",
+  //     "del-confirm-title" : "Confirm Delete",
+  //     "del-confirm-body" : "",
+  //     "btn-del" : "Delete",
+  //     "btn-add" : "Add",
+  //     "btn-raw" : "Edit Raw",
+  //     "btn-clear" : "Clear",
+  //     "n-plh" : "Name",
+  //     "d-plh" : "Description",
+  //   }
+  // }
+    published.PropSetEditor = function (init) {
+      if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "PropSetEditor.ctor(init.DIV)";
+
+      var psEditor = this;
+      WAVE.extend(psEditor, WAVE.EventManager);
+
+      fPSEditorIDSeed++;
+      var fDIV = init.DIV;
+      var fContent = WAVE.cloneEnsure(WAVE.tryParseJSON(init.content).obj);
+      var fOutputFormFieldName = WAVE.strDefault(init.outputFormFieldName, null);
+      var fReadOnly = WAVE.strAsBool(init.readonly, false);
+      var fDisable = WAVE.strAsBool(init.disabled, false);
+      var fCanRaw = WAVE.strAsBool(init.canRaw, true);
+      var fCanAdd = WAVE.strAsBool(init.canAdd, true);
+      var fCanDel = WAVE.strAsBool(init.canDel, true);
+      var fLangs = ["eng"];
+      var fCurrentLocal = WAVE.strDefault(init.local, "eng");
+      var fLocalizerSchema = "PSEditor";
+      var fLocalizerField = "ps";
+      var fTitle = WAVE.strDefault(init.title);
+      var fOptions = WAVE.get(init, "options", {n: {type : "text", plh: "Name"}, d: {type : "textarea", plh: "Description"}});
+
+      var fClasses = WAVE.get(init, "btnClasses", {});
+        fClasses.addBtnCls = WAVE.strDefault(fClasses.addBtnCls, published.CLS_PS_BTN_ADD);
+        fClasses.delBtnCls = WAVE.strDefault(fClasses.delBtnCls, published.CLS_PS_BTN_DEL);
+        fClasses.rawBtnCls = WAVE.strDefault(fClasses.rawBtnCls, published.CLS_PS_BTN_RAW);
+        fClasses.clearBtnCls = WAVE.strDefault(fClasses.clearBtnCls, published.CLS_PS_BTN_CLEAR);
+        fClasses.modalBtnCls = WAVE.strDefault(fClasses.modalBtnCls, "");
+
+      var fSeed = "ps_" + fPSEditorIDSeed;
+      var fControlIds = {
+        btnAddId : "addLang_" + fSeed,
+        btnRawId : "rawEdit_" + fSeed,
+        btnClearId : "clearBtn_" + fSeed,
+        divTextTemplateId : "textTemplate_" + fSeed,
+        divEditorsContainerId : "divEditorsContainer_" + fSeed,
+        divDeleteButtonId : "deleteButtonId_" + fSeed,
+        inputId : "_inputId_" + fSeed,
+        divLangNameId : "islLabel_" + fSeed,
+        outputHiddenId : "hidden_" + fSeed
+      };
+
+      var fTexts = WAVE.get(init, "texts", {});
+        fTexts.addTitle = getText("add-title", "Add New Language");
+        fTexts.addBody = getText("add-body", "");
+        fTexts.rawTitle= getText("raw-title", "Raw Edit");
+        fTexts.rawBody = getText("raw-body");
+        fTexts.clearConfirmTitle = getText("clear-confirm-title", "Confirm Clear");
+        fTexts.clearConfirmBody = getText("clear-confirm-body", "Clear all language data?");
+        fTexts.delConfirmTitle = getText("del-confirm-title", "Confirm Delete");
+        fTexts.delConfirmBody = getText("del-confirm-body");
+        fTexts.btnDel = getText("btn-del", "Delete");
+        fTexts.btnAdd = getText("btn-add", "Add");
+        fTexts.btnRaw = getText("btn-raw", "Edit Raw");
+        fTexts.btnClear = getText("btn-clear", "Clear");
+
+      function getText(n, dflt){
+        return localize(fTexts[n], dflt);
+      }
+
+      function localize(text, dflt){
+        return WAVE.strLocalize(fCurrentLocal, fLocalizerSchema, fLocalizerField, WAVE.strDefault(text, dflt));
+      }
+
+      function getNotAddedLangs() {
+        var langs = [];
+        for (var l in fLangs) {
+          if (!WAVE.has(fContent, fLangs[l]))
+            langs.push(fLangs[l]);
+        }
+        return langs;
+      }
+
+      function addMainControls() {
+        var addControlTemaplate =
+          "<input id='@outerId@' type='hidden' name='@outerName@'/>" +
+          "<div id='@divEditorsContainerId@' class='@divEditorsContainerClass@'></div>" +
+          ((!fReadOnly && !fDisable) ?
+            (fCanAdd ? "<input type='button' id='@btnAddId@' class='@btnAddClass@' value='@add@' />" : "") +
+            (fCanRaw ? "<input type='button' id='@btnRawId@' class='@btnRawClass@' value='@raw@' />" : "") +
+            (fCanDel ? "<input type='button' id='@btnClearId@' class='@btnClearClass@' value='@clear@' />" : "") : "");
+
+        fDIV.innerHTML = WAVE.strHTMLTemplate(addControlTemaplate,
+          {
+            outerId: fControlIds.outputHiddenId,
+            outerName: WAVE.strDefault(fOutputFormFieldName, ''),
+            divEditorsContainerId: fControlIds.divEditorsContainerId,
+            divEditorsContainerClass: published.CLS_PS_DIV_LANGS_CONTAINER,
+            btnAddId: fControlIds.btnAddId,
+            btnAddClass: fClasses.addBtnCls,
+            btnRawId: fControlIds.btnRawId,
+            btnRawClass: fClasses.rawBtnCls,
+            btnClearId: fControlIds.btnClearId,
+            btnClearClass: fClasses.clearBtnCls,
+
+            add: fTexts.btnAdd,
+            raw: fTexts.btnRaw,
+            clear: fTexts.btnClear
+          });
+        if (!fReadOnly && !fDisable && fCanAdd && getNotAddedLangs().length === 0)
+          WAVE.id(fControlIds.btnAddId).disabled = true;
+
+        if (fReadOnly || fDisable) return;
+
+        if (fCanAdd && getNotAddedLangs().length > 0) {
+          WAVE.id(fControlIds.btnAddId).onclick = function () {
+            var btnAdd = this;
+            var ls = getNotAddedLangs();
+            var opts = "";
+            for (var l in ls) {
+              opts += "<option>" + ls[l] + "</option>";
+            }
+
+            var inputId = "newIso_" + fSeed;
+            published.showConfirmationDialog(
+              pfxTitle() + fTexts.addTitle,
+              "<div>" + fTexts.addBody + "</div>" +
+              "<div><select class='" + published.CLS_PS_LANG_SELECTOR + "' id='" + inputId + "'>" + opts + "</select></div>",
+              [published.DLG_OK, published.DLG_CANCEL],
+              function (sender, result) {
+                if (result === published.DLG_OK) {
+                  var iso = WAVE.id(inputId).value;
+                  psEditor.addLang(iso);
+                  if (ls.length === 1)
+                    btnAdd.disabled = true;
+                }
+                return true;
+              },
+              { btnCls: fClasses.modalBtnCls });
+            WAVE.id(inputId).focus();
+          };
+        }
+
+        if (fCanRaw) {
+          WAVE.id(fControlIds.btnRawId).onclick = function () {
+            var inputId = "raw" + fSeed;
+            published.showConfirmationDialog(
+              pfxTitle() + fTexts.rawTitle,
+              "<div>" + fTexts.rawBody + "</div>" +
+              "<div><textarea style='width: 70vw; height: 70vh;' class='" + published.CLS_PS_TEXTAREA_RAW_EDITOR + "' type='text' id='" + inputId + "'></textarea></div>",
+              [published.DLG_OK, published.DLG_CANCEL],
+              function (sender, result) {
+                if (result === published.DLG_OK) {
+                  var val = WAVE.id(inputId).value;
+                  var res = WAVE.tryParseJSON(val);
+                  if (res.ok){
+                      if (WAVE.checkKeysUnique(res.obj)){
+                        published.toast(WAVE.strLocalize(fCurrentLocal, fLocalizerSchema, fLocalizerField, "JSON is valid, but some keys are duplicated"), "error");
+                        return false;
+                      }
+                      psEditor.content(val);
+                    }
+                  else {
+                    published.toast(WAVE.strLocalize(fCurrentLocal, fLocalizerSchema, fLocalizerField, "Invalid JSON"), "error");
+                    return false;
+                  }
+                }
+                return true;
+              },
+              { btnCls: fClasses.modalBtnCls });
+            WAVE.id(inputId).value = psEditor.content();
+            WAVE.id(inputId).focus();
+          };
+        }
+
+        if (fCanDel) {
+          WAVE.id(fControlIds.btnClearId).onclick = function () {
+            published.showConfirmationDialog(
+              pfxTitle() + fTexts.clearConfirmTitle,
+              "<div>"+fTexts.clearConfirmBody+"</div>",
+              [published.DLG_OK, published.DLG_CANCEL],
+              function (sender, result) {
+                if (result === published.DLG_OK) {
+                  psEditor.clear();
+                }
+                return true;
+              },
+              { btnCls: fClasses.modalBtnCls });
+          };
+        }
+      }
+
+      function getLangContainerId(iso){
+        return  fSeed + "_" + iso;
+      }
+
+      function buildLang(iso) {
+        var langId = getLangContainerId(iso);
+        var langEditors = WAVE.id(fControlIds.divEditorsContainerId);
+        var delButtonId = fControlIds.divDeleteButtonId + "_" + iso;
+        var labelId = fControlIds.divLangNameId + "_" + iso;
+        var inputId = fControlIds.inputId + "_" + iso;
+        var multiLineCont = fControlIds.divTextTemplateId + "_" + iso;
+
+        function uName(filedName, id){
+          return filedName + id;
+        }
+
+        var html =
+          "<fieldset id='@langId@'>" +      
+          "<legend id='@isoLabelId@' class='@langClass@'></legend>" +
+          "<div class='@textEditorsContainerClass@'>";
+
+        for(var n in fOptions){
+          if(fOptions[n].type === "textarea"){
+            html += "<div id='" + uName(n, multiLineCont) + "'></div>";
+          } else {
+            html += "<div><input id='"+ uName(n, inputId) +"' type='text' @disabled@ @readonly@ placeholder='" + localize(fOptions[n].plh) + "'/></div>";
+          }
+        }
+
+        html += 
+          "</div>" +    
+          (fCanDel && !fReadOnly && !fDisable ? "<input type='button' id='@deleteButtonId@' class='@delCls@' value='@delText@'/>" : "") +
+          "</fieldset>";
+
+        var params = {
+            langId: langId,
+            deleteButtonId: delButtonId,
+            isoLabelId: labelId,
+            langClass: published.CLS_PS_DIV_LANG_NAME,
+            labelContainerClass: published.CLS_PS_LABEL_CONTAINER,
+            textEditorsContainerClass: published.CLS_PS_INPUT_CONTAINER,
+            delCls: fClasses.delBtnCls,
+            disabled: fDisable ? "disabled" : "",
+            readonly: fReadOnly ? "readonly" : "",
+
+            delText: fTexts.btnDel
+          };
+
+        langEditors.insertAdjacentHTML("beforeend", WAVE.strHTMLTemplate(html, params));
+        WAVE.id(labelId).innerText = iso;
+
+        var attr = "data-ps-field";
+        function change(e) {
+          fContent[iso][e.target.getAttribute(attr)] = e.target.value;
+          psEditor.content(JSON.stringify(fContent), false);
+        }
+        for(var o in fOptions){
+          var id = uName(o, inputId);
+          if(fOptions[o].type === "textarea"){
+            published.MultiLineTextBox({
+              DIV : WAVE.id(uName(o, multiLineCont)),
+              id : id,
+              value : WAVE.strDefault(fContent[iso][o]),
+              disabled : fDisable,
+              readonly : fReadOnly,
+              placeholder : localize(fOptions[o].plh),
+              attrs : '{"' + attr + '" : "' + o + '"}',
+              onChange : change
+            });
+          } else {
+            var nI = WAVE.id(id);
+            nI.value = WAVE.strDefault(fContent[iso][o]);
+            nI.setAttribute(attr, o);
+            nI.onchange = change;
+          }
+        }
+
+        if (fCanDel && !fReadOnly && !fDisable) {
+          WAVE.id(delButtonId).onclick = function () {
+            published.showConfirmationDialog(
+              pfxTitle() + fTexts.delConfirmTitle + " : " + iso.toUpperCase(),
+              "<div>"+fTexts.delConfirmBody+"</div>",
+              [published.DLG_OK, published.DLG_CANCEL],
+              function (sender, result) {
+                if (result === published.DLG_OK) {
+                  psEditor.deleteLang(iso);
+                }
+                return true;
+              },
+              { btnCls: fClasses.modalBtnCls });
+          };
+        }
+      }
+
+      function buildEditors() {
+        if (WAVE.isObject(fContent))
+          for (var iso in fContent) buildLang(iso);
+      }
+
+      function rebuild() {
+        while (fDIV.hasChildNodes()) {
+          fDIV.removeChild(fDIV.lastChild);
+        }
+        addMainControls();
+        buildEditors();
+        setHiddenValue();
+      }
+
+      function setHiddenValue(){
+         if (fOutputFormFieldName !== null) WAVE.id(fControlIds.outputHiddenId).value = psEditor.content();
+      }
+
+      if (init.langs) {
+        fLangs = WAVE.mergeArrays(fLangs, init.langs, function (a, b) { return a.toLowerCase() === b.toLowerCase(); }, function(a) {return a.toLowerCase();});
+      }
+
+      addMainControls();
+
+      this.DIV = function() { return fDIV; };
+
+      this.jsonContent = function () { return fContent; };
+
+      this.content = function (value, rebuild) {
+        if (typeof (value) === tUNDEFINED) 
+          return WAVE.empty(fContent) ? "" : JSON.stringify(fContent, null, 2);
+                  
+        var parsed = WAVE.tryParseJSON(value);
+        if (parsed.ok) {
+          rebuild = WAVE.strAsBool(rebuild, true);
+          if (rebuild) { 
+            for (var iso in fContent) {
+              WAVE.removeElem(getLangContainerId(iso));
+            } 
+          }
+
+          fContent = WAVE.cloneEnsure(parsed.obj);
+          
+          if(rebuild) buildEditors();
+
+          setHiddenValue();
+          psEditor.eventInvoke(published.EVT_PS_EDITOR_UPDATED, psEditor.content());
+        }
+        return value;
+      };
+
+      this.title = function(value) {
+          if (typeof (value) === tUNDEFINED) return fTitle;
+          fTitle = WAVE.strDefault(value);
+      };
+
+      function pfxTitle(){
+        return WAVE.strEmpty(fTitle) ? "" : (fTitle + ": ");
+      }
+
+      this.enable = function (value) {
+        if (typeof(value) === tUNDEFINED) return !fDisable;
+        
+        fDisable = !(value===true);
+        rebuild();
+        return value;
+      };
+
+      this.readOnly = function (value) {
+        if (typeof(value) === tUNDEFINED) return fReadOnly;
+        
+        fReadOnly = value===true;
+        rebuild();
+        return value;
+      };
+
+      this.canAdd = function (value) {
+        if (typeof(value) === tUNDEFINED) return fCanAdd;
+        
+        fCanAdd = value===true;
+        rebuild();
+        return value;
+      };
+
+      this.canDel = function (value) {
+        if (typeof(value) === tUNDEFINED) return fCanDel;
+        
+        fCanDel = value===true;
+        rebuild();
+        return value;
+      };
+
+      this.canRaw = function (value) {
+        if (typeof (value) === tUNDEFINED) return fCanRaw;
+        
+        fCanRaw = value===true;
+        rebuild();
+        return value;
+      };
+
+      this.addLang = function (iso) {
+        if (WAVE.strEmpty(iso)) return false;
+
+        iso = iso.toLowerCase();
+        if (WAVE.has(fContent, iso)) return false;
+
+        var i = {};
+        for(var n in fOptions) {
+          i[n] =  "";
+        } 
+        fContent[iso] = i;
+        buildLang(iso);
+
+        psEditor.content(JSON.stringify(fContent));
+        return true;
+      };
+
+      this.deleteLang = function (iso) {
+        if (WAVE.strEmpty(iso)) return false;
+
+        iso = iso.toLowerCase();
+        if (!WAVE.has(fContent, iso)) return false;
+
+        delete fContent[iso];
+        WAVE.removeElem(getLangContainerId(iso));
+        if (!fReadOnly && !fDisable) WAVE.id(fControlIds.btnAddId).disabled = false;
+        psEditor.content(JSON.stringify(fContent));
+        return true;
+      };
+
+      this.clear = function () {
+        if (!fReadOnly && !fDisable) WAVE.id(fControlIds.btnAddId).disabled = false;
+        psEditor.content("{}");
+      };
+
+      rebuild();
+      return psEditor;
+    };//PropSetEditor
+
+
+    var fTabsIdSeed = 0;
+    //{
+    //  "DIV" : DIV,
+    //  "unswitchable" : false,
+    //  "tabs" : [ 
+    //    {
+    //      "title" : "text",
+    //      "content" : "text or hml",
+    //      "isHtml" : "true",
+    //      "isActive" : "false"
+    //    }
+    //  ]
+    //}
+    published.Tabs = function (init) {
+      if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "Tabs.ctor(init.DIV)";
+
+      var tabs = this;
+      WAVE.extend(tabs, WAVE.EventManager);
+      fTabsIdSeed++;
+      var fSeed = "wvTabs_" + fTabsIdSeed;
+
+      var fDIV = init.DIV;
+      var fUnswitchable = WAVE.strAsBool(init.unswitchable, false);
+      var fTabs = WAVE.isArray(init.tabs) ? init.tabs : [];
+      var fTSeed = 0;
+      for(var i = 0; i < fTabs.length; i++){
+         fTabs[i] = ensureTab(fTabs[i]);
+      }
+
+      var fControlsIds = {
+        divTabsContId : "tabs_cont_" + fSeed,
+        divContentContId : "content_cont_" + fSeed,
+        ulTabsId : "ul_tabs_ " + fSeed
+      };
+      var fTexts = {};
+      var fClasses = {};
+
+      function ensureTab(obj){
+        if (!WAVE.isObject(obj)) obj = {};
+
+        fTSeed++;
+        obj.title = WAVE.strDefault(obj.title, fTSeed.toString());
+        obj.content = WAVE.strDefault(obj.content);
+        obj.isHtml = WAVE.strAsBool(obj.isHtml, true);
+        obj.isActive = WAVE.strAsBool(obj.isActive, true);
+        obj.id = fSeed + "_" + fTSeed;
+        obj.name = WAVE.strDefault(obj.Name, fTSeed);
+        return obj;
+      }
+
+      function buildTab(tab){
+        var ulTabs = WAVE.id(fControlsIds.ulTabsId);
+        var divTabs = WAVE.id(fControlsIds.divContentContId);
+
+        var divId = getTabContentId(tab.id);
+        ulTabs.insertAdjacentHTML("beforeend", "<li id='" + tab.id + "'></li>");
+        divTabs.insertAdjacentHTML("beforeend", "<div id='" + divId + "' class='" + published.CLS_TABS_CONTENT_DIV + "'></div>");
+
+        var t = WAVE.id(tab.id);
+        var div = WAVE.id(divId);
+        t.innerText = tab.title;
+        t.onclick = function(){
+          tabs.activeTab(tab.name);
+        };
+
+        if(tab.isHtml) 
+          div.innerHTML = tab.content;
+        else
+          div.innerText = tab.content;
+      }
+
+      function getTabContentId(tabId){
+        return "content_" + tabId;
+      }
+
+      function activate(name){
+        var result = null;
+        for(var i = 0; i < fTabs.length; i++){
+          var tab = fTabs[i];
+          var hTab = WAVE.id(tab.id);
+          var div = WAVE.id(getTabContentId(tab.id));
+          if(tab.name === name){
+              tab.isActive = true;
+              result = tab.name;
+              div.style.display = "block";
+              hTab.className += " " + published.CLS_TABS_ACTIVE_TAB;
+          } else {
+            tab.isActive = false;
+            div.style.display = "none";
+            WAVE.removeClass(hTab, published.CLS_TABS_ACTIVE_TAB);
+          }
+        }
+        return result;
+      }
+
+      this.DIV = function() { return fDIV; };
+
+      this.unswitchable = function(value) {
+        if (typeof(value) === tUNDEFINED) return fUnswitchable;
+        
+        fUnswitchable = value === true;
+        for(var i = 0; i < fTabs.length; i++){
+          var tab = WAVE.id(fTabs[i].id);
+          if(fUnswitchable){
+            if(!fTabs[i].isActive)
+              tab.className += " " + published.CLS_TABS_LI_DISABLED;
+          }
+          else 
+            WAVE.removeClass(tab, published.CLS_TABS_LI_DISABLED);
+        }
+        return value;
+      }
+
+      this.addTab = function(tab){
+        tab = ensureTab(tab);
+        fTabs.push(tab);
+        buildTab(tab, true);
+        activate(tab.name);
+        tabs.eventInvoke(published.EVT_TABS_TAB_CHANGED, tabs.activeTab());
+        return tab.name;
+      };
+
+      this.deleteTab = function(name){
+        if(WAVE.strEmpty(name)) return false;
+
+        for(var i = 0; i < fTabs.length; i++){
+          if(fTabs[i].name === name){
+            var t = fTabs[i];
+            fTabs.splice(i, 1);
+            if(fTabs.length > 0){
+              tabs.activeTab(fTabs[0].name);
+            }
+            return WAVE.removeElem(t.id) && WAVE.removeElem(getTabContentId(t.id));
+          }
+        }
+        return false;
+      };
+
+      this.activeTab = function(name){
+        var result = null;
+        if(WAVE.strEmpty(name)) {
+          for(var i = 0; i < fTabs.length; i++){
+            if(fTabs[i].isActive)
+              result = fTabs[i].name;
+          }
+        } else {
+          if(!fUnswitchable)
+            if(tabs.activeTab() !== name){
+              result = activate(name);
+              tabs.eventInvoke(published.EVT_TABS_TAB_CHANGED, tabs.activeTab());
+            }
+        }
+        return result;
+      };
+
+      (function build() {
+        var html = 
+          "<div id='@divTabsId@' class='@ulContainer@'>" +
+            "<ul id='@ulId@' class='@ulClass@'></ul>" +
+          "</div>" +
+          "<div id='@divContId@' class='@divClass@'></div>";
+
+        fDIV.innerHTML = WAVE.strHTMLTemplate(html, 
+        {
+          divTabsId : fControlsIds.divTabsContId,
+          divContId : fControlsIds.divContentContId,
+          ulId : fControlsIds.ulTabsId,
+          ulClass : published.CLS_TABS_UL,
+          divClass : published.CLS_TABS_CONTENT_CONTAINER,
+          ulContainer : published.CLS_TABS_UL_CONTAINER
+        });
+
+        if(fTabs.length === 0) return;
+
+        var activeTab = null;
+        var hit = false;
+        for(var i = 0; i < fTabs.length; i++) {
+          var tab = fTabs[i];
+          if(tab.isActive){
+            if(!hit){
+              activeTab = tab.name;
+              hit = true;
+            } else {
+              tab.isActive = false;
+            }
+          }
+          buildTab(tab);
+        }
+        if(!hit){
+          activeTab = fTabs[0].name;
+          fTabs[0].isActive = true;
+        }
+        activate(activeTab);
+      })();
+
+      return tabs;
+    };//Tabs
 
     return published;
 }());//WAVE.GUI
@@ -2683,8 +3503,6 @@ WAVE.RecordModel.GUI = (function(){
           var field = fldView.field();
           var divRoot = fldView.DIV();
 
-         
-        
           var dict = field.lookupDict();
           var keys = Object.keys(dict);
           
@@ -2758,33 +3576,97 @@ WAVE.RecordModel.GUI = (function(){
           var ve = field.validationError();
           if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
 
+
+          html+= WAVE.strHTMLTemplate("<input id='h_@id@' type='hidden'  value='@val@' name='@name@'>",
+                                      {
+                                        id: idInput,
+                                        name: field.name(),
+                                        val: WAVE.strAsBool(field.value()) ? "true" : "false"
+                                      });
+
+
           html+= WAVE.strHTMLTemplate("<label for='@chkid@' class='@cls@'>@about@</label>",
                                       {
                                         chkid: idInput, 
                                         about: field.about(),
                                         cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
                                       });
-          html+= WAVE.strHTMLTemplate("<input id='@id@' type='checkbox' name='@name@' value='true' @disabled@ @readonly@  @required@ @checked@>",
+          html+= WAVE.strHTMLTemplate("<input id='@id@' type='checkbox' @disabled@ @readonly@  @required@ @checked@>",
                                       {
                                         id: idInput,
-                                        tp: field.password() ? "password" : "text",
-                                        name: field.name(),
                                         disabled: field.isEnabled() ? "" : "disabled",
                                         readonly: field.readonly() ? "readonly" : "",
                                         required: field.required() ? "required" : "",
-                                        checked: field.value()===true ? "checked" : ""
+                                        checked: WAVE.strAsBool(field.value()) ? "checked" : ""
                                       });
 
           divRoot.innerHTML = html;
           WAVE.id(idInput).__fieldView = fldView;
           $("#"+idInput).change(function(){
                var val = this.checked;
+               $("#h_"+idInput).val( val ? "true" : "false");
                var fld = this.__fieldView.field();
                if (!fld.readonly()) 
                  fld.value(val, true);//from GUI
                else
                  rebuildControl(this.__fieldView);
           });
+        }
+
+        function buildPSEditor(fldView){
+          var field = fldView.field();
+          var divRoot = fldView.DIV();
+
+          var genIdKey = "@#$PS_EDITOR_GEN_ID$#@";
+          var ids = WAVE.get(fldView, genIdKey, null);
+          if (ids === null) {
+            ids = genIDSeed(fldView);
+            fldView[genIdKey] = ids;
+          }
+          var idPSDiv = "divps_"+ids;
+          var idLabelDiv =  "labelCont_"+ids;
+
+          var labelCont = WAVE.id(idLabelDiv);
+          var editorCont = WAVE.id(idPSDiv);
+          if (labelCont === null || editorCont === null){
+             divRoot.innerHTML = WAVE.strHTMLTemplate("<div id='@idLabelDiv@'></div><div id='@idPSDiv@'></div>", {idLabelDiv:idLabelDiv, idPSDiv:idPSDiv});
+             labelCont = WAVE.id(idLabelDiv);
+             editorCont = WAVE.id(idPSDiv);
+          }
+
+          var html = "";
+          var ve = field.validationError();
+          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
+          html+= WAVE.strHTMLTemplate("<label class='@cls@'>@about@</label>",
+                                      {
+                                        about: field.about(),
+                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
+                                      });
+
+          labelCont.innerHTML = html;
+
+          var json = field.isNull()? "" : field.value();
+          var ekey = "@#$PS_EDITOR$#@";
+          var editor = WAVE.get(fldView, ekey, null);
+          if (editor===null)
+          {
+               editor =  new WAVE.GUI.PropSetEditor({ 
+                                    DIV: editorCont,
+                                    outputFormFieldName: field.name(),
+                                    langs: WAVE.LOCALIZER.allLanguageISOs(), 
+                                    content: json,
+                                    disable: field.isEnabled() ? false : true,
+                                    readonly: field.readonly(),
+                                    title: field.about()
+                                });
+
+               fldView[ekey] = editor;
+             
+               editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED, 
+                               function (e, d){
+                                 field.value(d, true);//from GUI
+                               });
+         }
         }
 
         function buildComboBox(fldView){
@@ -2817,6 +3699,7 @@ WAVE.RecordModel.GUI = (function(){
           
           var dict = field.lookupDict();
           var keys = Object.keys(dict);
+          html += "<option value=''></option>";//add Blank
           for(var i in Object.keys(dict)){
               html+= WAVE.strHTMLTemplate("<option value='@value@' @selected@>@descr@</option>",
                                           {
@@ -2919,6 +3802,8 @@ WAVE.RecordModel.GUI = (function(){
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHECK))    { ensureField(fldView, ct); buildCheck(fldView);}
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_RADIO))    { ensureField(fldView, ct); buildRadioGroup(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_NLS))      { ensureField(fldView, ct); buildPSEditor(fldView);}
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_COMBO))    { ensureField(fldView, ct); buildComboBox(fldView);}
           else

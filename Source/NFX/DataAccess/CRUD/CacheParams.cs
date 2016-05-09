@@ -24,7 +24,7 @@ namespace NFX.DataAccess.CRUD
     /// </summary>
     public static CacheParams DefaultCache
     {
-      get { return new CacheParams{ ReadCacheMaxAgeSec = 0, WriteCacheMaxAgeSec = 0, WriteCachePriority = 0}; }
+      get { return new CacheParams{ ReadCacheMaxAgeSec = 0, WriteCacheMaxAgeSec = 0, WriteCachePriority = 0, CacheAbsentData = true}; }
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace NFX.DataAccess.CRUD
     /// </summary>
     public static CacheParams ReadWriteSec(int sec, int priority = 0)
     {
-      return new CacheParams{ ReadCacheMaxAgeSec = sec, WriteCacheMaxAgeSec = sec, WriteCachePriority = priority};
+      return new CacheParams{ ReadCacheMaxAgeSec = sec, WriteCacheMaxAgeSec = sec, WriteCachePriority = priority, CacheAbsentData = true};
     }
     
     
@@ -60,6 +60,14 @@ namespace NFX.DataAccess.CRUD
     /// Relative cache priority which is used when WriteCacheMaxAgeSec>=0
     /// </summary>
     public int WriteCachePriority
+    {
+      get; set;
+    }
+
+    /// <summary>
+    /// When true would cache the instance of AbsentData to signify the absence of data in the backend for key
+    /// </summary>
+    public bool CacheAbsentData 
     {
       get; set;
     }

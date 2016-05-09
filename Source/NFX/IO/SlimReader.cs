@@ -22,7 +22,7 @@ using System.IO;
 using System.Reflection;
 
 using NFX.Inventorization;
-
+using NFX.Serialization.JSON;
 
 namespace NFX.IO
 {
@@ -224,16 +224,30 @@ namespace NFX.IO
             return result;
           }
           
+          //DKh 20160418
+          //public override decimal ReadDecimal()
+          //{
+          //  var bits = new int[4];
+          //  bits[0] = this.ReadInt();
+          //  bits[1] = this.ReadInt();
+          //  bits[2] = this.ReadInt();
+          //  bits[3] = this.ReadInt();
+          //  return new Decimal(bits);
+          //}
 
           public override decimal ReadDecimal()
           {
-            var bits = new int[4];
-            bits[0] = this.ReadInt();
-            bits[1] = this.ReadInt();
-            bits[2] = this.ReadInt();
-            bits[3] = this.ReadInt();
-            return new Decimal(bits);
+            var bits_0 = this.ReadInt();
+            var bits_1 = this.ReadInt();
+            var bits_2 = this.ReadInt();
+            var bits_3 = this.ReadByte();
+            return new Decimal(bits_0,
+                               bits_1, 
+                               bits_2, 
+                               (bits_3 & 0x80) != 0, 
+                               (byte)(bits_3 & 0x7F));
           }
+
               public override decimal? ReadNullableDecimal()
               {
                 var has = this.ReadBool();
@@ -425,7 +439,7 @@ namespace NFX.IO
           private const int STR_BUF_SZ = 32 * 1024;
 
           [ThreadStatic]
-          private static byte[] s_StrBuff;
+          private static byte[] ts_StrBuff;
 
           
           public override string ReadString()
@@ -442,9 +456,9 @@ namespace NFX.IO
             var bsz = this.ReadInt();
             if (bsz<STR_BUF_SZ)
             {
-              if (s_StrBuff==null) s_StrBuff = new byte[STR_BUF_SZ];
-              ReadFromStream(s_StrBuff, bsz);
-              return m_Encoding.GetString(s_StrBuff, 0, bsz);
+              if (ts_StrBuff==null) ts_StrBuff = new byte[STR_BUF_SZ];
+              ReadFromStream(ts_StrBuff, bsz);
+              return m_Encoding.GetString(ts_StrBuff, 0, bsz);
             }
 
            
@@ -738,6 +752,33 @@ namespace NFX.IO
                 var has = this.ReadBool();
                                                   
                 if (has) return this.ReadVarIntStr();
+
+                return null;
+              }
+
+          public override NLSMap ReadNLSMap()
+          {
+            var cnt = this.ReadInt();
+            var result = new NLSMap(cnt>0);
+            if (cnt<=0) return result;
+            for(var i=0; i<cnt; i++)
+            {
+              var key = this.ReadString();
+              if (key==null)
+                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadNLSMap(): key==null");
+              var name = this.ReadString();
+              var descr = this.ReadString();
+              result.m_Data[key] = new NLSMap.NDPair(name, descr);
+            }
+
+            return result;
+          }
+
+              public override NLSMap? ReadNullableNLSMap()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadNLSMap();
 
                 return null;
               }

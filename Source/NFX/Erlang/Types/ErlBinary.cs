@@ -100,7 +100,8 @@ namespace NFX.Erlang
 
     public override string ToString()
     {
-      return "#Bin<" + m_Value.Length + ">";
+      //return "#Bin<" + m_Value.Length + ">";
+      return ToPrintableString();
     }
 
     public string ToString(Encoding encoding)
@@ -114,9 +115,18 @@ namespace NFX.Erlang
     /// Returns binary representation of the string encoded as &lt;&lt;...&gt;&gt;
     /// </summary>
     /// <returns></returns>
-    public string ToBinaryString()
+    public string ToBinaryString(int maxLen = 0)
     {
-      return ToBinaryString(m_Value, 0, m_Value.Length);
+      return ToBinaryString(m_Value, 0, m_Value.Length, maxLen);
+    }
+
+    /// <summary>
+    /// Returns printable binary representation of the string encoded as &lt;&lt;"abc..."&gt;&gt;
+    /// </summary>
+    /// <returns></returns>
+    public string ToPrintableString(int maxLen = 0)
+    {
+      return ToPrintableString(m_Value, 0, m_Value.Length, maxLen);
     }
 
     /// <summary>
@@ -145,6 +155,26 @@ namespace NFX.Erlang
     }
 
     /// <summary>
+    /// Convert a byte buffer to printable binary representation (i.e. &lt;&lt;"abc...">>)
+    /// </summary>
+    public static string ToPrintableString(byte[] buf, int offset, int count, int maxLen = 0)
+    {
+      var printable = true;
+      var n = maxLen == 0 ? offset + count : offset + Math.Min(count, maxLen);
+      for (int i = offset; i < n; ++i)
+      {
+        var c = buf[i];
+        if (c > 31 && c != 127 || c == 8 || c == 10 || c == 13)
+          continue;
+        printable = false;
+        break;
+      }
+      return printable
+           ? "<<\"{0}\">>".Args(buf.ToDumpString(DumpFormat.Printable, offset, count, maxLen: maxLen))
+           : ToBinaryString(buf, offset, count, maxLen);
+    }
+
+    /// <summary>
     /// Determine if this instance equals to the object
     /// </summary>
     public override bool Equals(object o)
@@ -157,7 +187,7 @@ namespace NFX.Erlang
     /// </summary>
     public bool Equals(IErlObject o)
     {
-      return (o is ErlBinary) ? Equals((ErlBinary)o) : false;
+      return (o is ErlBinary) && Equals((ErlBinary)o);
     }
 
     /// <summary>
@@ -195,8 +225,8 @@ namespace NFX.Erlang
       if (!(obj is ErlBinary))
         return TypeOrder < obj.TypeOrder ? -1 : 1;
 
-      ErlBinary rhs = (ErlBinary)obj;
-      int n = m_Value.Length.CompareTo(rhs.Value.Length);
+      var rhs = (ErlBinary)obj;
+      var n   = m_Value.Length.CompareTo(rhs.Value.Length);
       if (n != 0) return n;
 
       for (int i = 0; i < m_Value.Length; i++)

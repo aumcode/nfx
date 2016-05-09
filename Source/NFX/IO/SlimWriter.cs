@@ -23,6 +23,7 @@ using System.Reflection;
 
 
 using NFX.Inventorization;
+using NFX.Serialization.JSON;
 
 namespace NFX.IO
 {
@@ -225,6 +226,15 @@ namespace NFX.IO
              this.Write(array[i]); 
           }
           
+          //DKh 20160418
+          //public override void Write(decimal value)
+          //{
+          //  var bits = decimal.GetBits(value);
+          //  this.Write( bits[0] );
+          //  this.Write( bits[1] );
+          //  this.Write( bits[2] );
+          //  this.Write( bits[3] );
+          //}
 
           public override void Write(decimal value)
           {
@@ -232,7 +242,11 @@ namespace NFX.IO
             this.Write( bits[0] );
             this.Write( bits[1] );
             this.Write( bits[2] );
-            this.Write( bits[3] );
+
+            byte sign = (bits[3] & 0x80000000) != 0 ? (byte)0x80 : (byte)0x00;
+            byte scale = (byte) ((bits[3] >> 16) & 0x7F); 
+
+            this.Write( (byte)(sign | scale) );
           }
               public override void Write(decimal? value)
               {
@@ -433,7 +447,7 @@ namespace NFX.IO
                                                           //this is done on purpose NOT to call
                                                           //Encoding.GetByteCount()
           [ThreadStatic]
-          private static byte[] s_StrBuff;
+          private static byte[] ts_StrBuff;
 
           public override void Write(string value)
           {
@@ -464,11 +478,11 @@ namespace NFX.IO
             }
           
             //try to reuse pre-allocated buffer
-            if (s_StrBuff==null) s_StrBuff = new byte[STR_BUF_SZ];
-            var bcnt = m_Encoding.GetBytes(value, 0, len, s_StrBuff, 0);
+            if (ts_StrBuff==null) ts_StrBuff = new byte[STR_BUF_SZ];
+            var bcnt = m_Encoding.GetBytes(value, 0, len, ts_StrBuff, 0);
 
             this.Write(bcnt);
-            m_Stream.Write(s_StrBuff, 0, bcnt);
+            m_Stream.Write(ts_StrBuff, 0, bcnt);
           }
          
           public override void Write(uint value)
@@ -738,6 +752,34 @@ namespace NFX.IO
           }
 
               public override void Write(VarIntStr? value)
+              {
+                if (value.HasValue)
+                {
+                  this.Write(true);
+                  Write(value.Value);
+                  return;
+                }
+                this.Write(false);
+              }
+
+          public override void Write(NLSMap map)
+          {
+            if (map.m_Data==null)
+            {
+              this.Write((int)0);
+              return;
+            }
+
+            this.Write(map.m_Data.Count);
+            foreach(var kvp in map.m_Data)
+            {
+              this.Write(kvp.Key);
+              this.Write(kvp.Value.Name);
+              this.Write(kvp.Value.Description);
+            }
+          }
+
+              public override void Write(NLSMap? value)
               {
                 if (value.HasValue)
                 {

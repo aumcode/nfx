@@ -128,6 +128,11 @@ namespace NFX.Serialization.JSON
           return this;
         }
 
+        public override string ToString()
+        {
+          return this.ToJSON(JSONWritingOptions.Compact);
+        }
+
         /// <summary>
         /// Returns this object as a config tree
         /// </summary>
@@ -163,6 +168,11 @@ namespace NFX.Serialization.JSON
       public JSONDataArray() {}
       public JSONDataArray(IEnumerable<object> other) : base(other) {}
       public JSONDataArray(int capacity) : base(capacity) {}
+
+      public override string ToString()
+      {
+        return this.ToJSON(JSONWritingOptions.Compact);
+      }
     }
 
 }

@@ -225,6 +225,8 @@ namespace NFX.NUnit.Config
 
            Assert.AreEqual(true, conf.Root.Navigate("a/b/c").Exists);
            Assert.AreEqual(false, conf.Root.Navigate("a/b/c/d").Exists);
+           Assert.AreEqual(false, conf.Root.Navigate("GGG/b/c").Exists); //non existing section is in the beginning
+           Assert.AreEqual(false, conf.Root.Navigate("a/GGG/c").Exists); //non existing section is in the middle
 
            Assert.AreEqual(true, conf.Root.Navigate("/a/b/$cool").ValueAsBool());
            Assert.AreEqual(false, conf.Root.Navigate("/a/b/$snake").ValueAsBool());

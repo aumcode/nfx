@@ -35,34 +35,40 @@ namespace NFX.Serialization.JSON
         
         #region Public
       
-            public static dynamic DeserializeDynamic(Stream stream, Encoding encoding = null)
+            public static dynamic DeserializeDynamic(Stream stream, Encoding encoding = null, bool caseSensitiveMaps = true)
             {
-               return deserializeDynamic( read(stream, encoding));
+               return deserializeDynamic( read(stream, encoding, caseSensitiveMaps));
             }
 
-            public static dynamic DeserializeDynamic(string source)
+            public static dynamic DeserializeDynamic(string source, bool caseSensitiveMaps = true)
             {
-               return deserializeDynamic( read(source));
+               return deserializeDynamic( read(source, caseSensitiveMaps));
             }
 
-            public static dynamic DeserializeDynamic(ISourceText source)
+            public static dynamic DeserializeDynamic(ISourceText source, bool caseSensitiveMaps = true)
             {
-               return deserializeDynamic( read(source));
+               return deserializeDynamic( read(source, caseSensitiveMaps));
             }
 
-            public static IJSONDataObject DeserializeDataObject(Stream stream, Encoding encoding = null)
+            public static IJSONDataObject DeserializeDataObject(Stream stream, Encoding encoding = null, bool caseSensitiveMaps = true)
             {
-               return deserializeObject( read(stream, encoding));
+               return deserializeObject( read(stream, encoding, caseSensitiveMaps));
             }
 
-            public static IJSONDataObject DeserializeDataObject(string source)
+            public static IJSONDataObject DeserializeDataObject(string source, bool caseSensitiveMaps = true)
             {
-               return deserializeObject( read(source));
+               return deserializeObject( read(source, caseSensitiveMaps));
             }
 
-            public static IJSONDataObject DeserializeDataObject(ISourceText source)
+            public static IJSONDataObject DeserializeDataObjectFromFile(string filePath, Encoding encoding = null, bool caseSensitiveMaps = true)
             {
-               return deserializeObject( read(source));
+               using(var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                 return deserializeObject( read(fs, encoding, caseSensitiveMaps));
+            }
+
+            public static IJSONDataObject DeserializeDataObject(ISourceText source, bool caseSensitiveMaps = true)
+            {
+               return deserializeObject( read(source, caseSensitiveMaps));
             }
 
 
@@ -298,13 +304,13 @@ namespace NFX.Serialization.JSON
                             if (typeof(TypedRow).IsAssignableFrom(rfd.Type))
                             {
                              if (sfv.IsNotNullOrWhiteSpace())
-                                row.SetFieldValue(rfd, ToRow(rfd.Type, (JSONDataMap)deserializeObject( read(sfv))));
+                                row.SetFieldValue(rfd, ToRow(rfd.Type, (JSONDataMap)deserializeObject( read(sfv, true))));
                              continue;
                             }
                             if (typeof(IJSONDataObject).IsAssignableFrom(rfd.Type))
                             {
                              if (sfv.IsNotNullOrWhiteSpace())
-                                row.SetFieldValue(rfd, deserializeObject( read(sfv)));//try to set row's field to MAP directly
+                                row.SetFieldValue(rfd, deserializeObject( read(sfv, true)));//try to set row's field to MAP directly
                              continue;
                             }
                           }
@@ -353,23 +359,23 @@ namespace NFX.Serialization.JSON
                 return data;
             }
             
-            private static object read(Stream stream, Encoding encoding)
+            private static object read(Stream stream, Encoding encoding, bool caseSensitiveMaps)
             {
                 using(var source = encoding==null ? new StreamSource(stream, JSONLanguage.Instance)
                                                   : new StreamSource(stream, encoding, JSONLanguage.Instance))
-                    return read(source);
+                    return read(source, caseSensitiveMaps);
             }
 
-            private static object read(string data)
+            private static object read(string data, bool caseSensitiveMaps)
             {
                 var source = new StringSource(data, JSONLanguage.Instance);
-                return read(source);
+                return read(source, caseSensitiveMaps);
             }
 
-            private static object read(ISourceText source)
+            private static object read(ISourceText source, bool caseSensitiveMaps)
             {
                 var lexer = new JSONLexer(source, throwErrors: true);
-                var parser = new JSONParser(lexer, throwErrors: true);
+                var parser = new JSONParser(lexer, throwErrors: true, caseSensitiveMaps: caseSensitiveMaps);
                 
                 parser.Parse();
                 

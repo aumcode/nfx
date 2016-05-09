@@ -24,6 +24,8 @@ namespace NFX
   {
       public const int ABS_HASH_MASK = 0x7FFFFFFF;
 
+      public const int MAX_BYTE_BUFFER_SIZE = 2147483647 - 256 - 15; // 2 Gbyte - 256 (reserved for object headers etc.) - 15 bytes (16-aligned)
+
       public const string CSRF_TOKEN_NAME = "__CSRFToken";
 
       public const string EXT_PARAM_CONTENT_LACONIC = "laconic://";
@@ -99,6 +101,15 @@ namespace NFX
 
       public const string ISO_CURRENCY_USD  = "usd";
       public const string ISO_CURRENCY_EUR  = "eur";
+      public const string ISO_CURRENCY_MXN  = "mxn";
+      public const string ISO_CURRENCY_RUB  = "rub";
+
+      public const string ISO_COUNTRY_USA      = "usa";
+      public const string ISO_COUNTRY_RUSSIA   = "rus";
+      public const string ISO_COUNTRY_GERMANY  = "deu";
+      public const string ISO_COUNTRY_MEXICO   = "mex";
+      public const string ISO_COUNTRY_CANADA   = "can";
+      public const string ISO_COUNTRY_FRANCE   = "fra";
 
       
                   public const string UNIT_NAME_OCCURENCE = "occr.";

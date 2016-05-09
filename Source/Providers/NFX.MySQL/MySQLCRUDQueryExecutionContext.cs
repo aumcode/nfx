@@ -43,7 +43,7 @@ namespace NFX.DataAccess.MySQL
 
 
        /// <summary>
-       /// Based on store settings, converts CLR value to MySQL-acceptable value, i.e. GDID -> BYTe[].
+       /// Based on store settings, converts CLR value to MySQL-acceptable value, i.e. GDID -> BYTE[].
        /// </summary>
        public object CLRValueToDB(MySQLDataStoreBase store, object value, out MySqlDbType? convertedDbType)
        {

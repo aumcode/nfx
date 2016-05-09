@@ -69,7 +69,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
                 var x = chart.VRulerPosition== VRulerPosition.Left ? 0 : Width - rw;
 
-                var th = Host.CurrentFontHeight;
+                var th = Pane.Chart.RulerStyle.Font.Height; // Host.CurrentFontHeight;
                 var txtRect = new RectangleF(x, m_Y-(th/2)-1, rw, th+2);
                    
                 //var txtRect1 = new RectangleF(x, m_Y-(th/2)-1, rw, (th/2)+1);
@@ -86,8 +86,6 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                 using(var tbr = new SolidBrush(ctxt))
                 {
                   gr.SmoothingMode = SmoothingMode.AntiAlias;
-                           
-                           
 
                   if (chart.VRulerPosition==VRulerPosition.Right)
                   {
@@ -103,7 +101,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                   gr.FillRectangle(gb, txtRect);
                   //gr.FillRectangle(gb2, txtRect2);
                       
-                  gr.DrawString(m_Level.DisplayValue, Host.Font, tbr, txtRect); 
+                  gr.DrawString(m_Level.DisplayValue, Pane.Chart.RulerStyle.Font, tbr,
+                    txtRect.X + (TimeSeriesChart.VRULLER_HPADDING/2), txtRect.Y+1); 
                 }
               }
             }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using NFX.Serialization.JSON;
+using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
+using NFX.Serialization.JSON;
+
 
 namespace NFX.NUnit.DataAccess
 {
@@ -222,6 +224,78 @@ namespace NFX.NUnit.DataAccess
         //notice: Authority is ignored
         Assert.AreEqual(0, GDIDRangeComparer.Instance.Compare( new GDID(1, 13, 2), new GDID(1,8,2)));
 
+      }
+
+      [TestCase()]
+      public void GDID_Zero()
+      {
+        var zero = GDID.Zero;
+        Assert.IsTrue( zero.IsZero );
+
+        zero = new GDID(0,1,0);
+        Assert.IsFalse( zero.IsZero );
+      }
+
+      [TestCase()]
+      public void GDID_RequiredRow_1()
+      {
+        var row = new GDIDRow();
+        var err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+
+        row.GDID = new GDID(1,1,1);
+        err = row.Validate();
+
+        Assert.IsNull(err);
+        row.GDID = GDID.Zero;
+        err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+      }
+
+      [TestCase()]
+      public void GDID_RequiredRow_2()
+      {
+        var row = new NullableGDIDRow();
+        var err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+
+        row.GDID = new GDID(1,1,1);
+        err = row.Validate();
+
+        Assert.IsNull(err);
+
+        row.GDID = GDID.Zero;
+        err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+
+        row.GDID = null;//Nullable
+        err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+      }
+
+      public class GDIDRow: TypedRow
+      {
+        [Field(required: true)] public GDID GDID {get; set;}
+      }
+
+       public class NullableGDIDRow: TypedRow
+      {
+        [Field(required: true)] public GDID? GDID {get; set;}
       }
 
   }

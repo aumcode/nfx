@@ -714,8 +714,8 @@ namespace NFX.WinForms.Controls.GridKit
               }
 
               var first = m_RowMap.FindIndex(re => re.Row == SelectedRows.First());
-              var last = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
-              var cur = m_RowMap.FindIndex(re => re.Row == cell.Row);
+              var last  = m_RowMap.FindIndex(re => re.Row == SelectedRows.Last());
+              var cur   = m_RowMap.FindIndex(re => re.Row == cell.Row);
 
               if (cur < 0)
                 return;
@@ -982,7 +982,7 @@ namespace NFX.WinForms.Controls.GridKit
          }
          else  if (shift)//stretch data rows
          {
-           DataRowHeight -= Math.Sign(e.Delta);
+           DataRowHeight = Math.Max(DEFAULT_ROW_HEIGHT, DataRowHeight - 3*Math.Sign(e.Delta));
            rebuildAllCells(); 
          }
           else //scroll
@@ -1030,78 +1030,146 @@ namespace NFX.WinForms.Controls.GridKit
        {
          if (keyData==(Keys.C | Keys.Control))
          {
-          CopyToClipboard();
-          return true;
+           CopyToClipboard();
+           return true;
          }
          
          if (keyData==Keys.Up)
          {
-            if (m_VScrollBar.Value>0)
-              m_VScrollBar.Value-=1;
-            return true;
+           if (m_SelectedRowsList.Count == 1)
+           {
+             var row = m_SelectedRowsList[0];
+             var idx = m_RowMap.FindIndex(r => r.Row == row);
+             if (idx == 1 && m_VScrollBar.Value > 0)
+             {
+               m_VScrollBar.Value -= 1;
+               idx = m_RowMap.FindIndex(r => r.Row == row);
+             }
+
+             if (idx > 1)
+             {
+               UnSelectRow(row);
+               SelectRow(m_RowMap[idx - 1].Row);
+             }
+           }
+           else if (m_VScrollBar.Value>0)
+             m_VScrollBar.Value-=1;
+           return true;
          }
          
          if (keyData==Keys.Down)
          {
-            if (m_VScrollBar.Value<m_VScrollBar.Maximum)
-             m_VScrollBar.Value+=1;
-            return true;
+           if (m_SelectedRowsList.Count == 1)
+           {
+             var row = m_SelectedRowsList[0];
+             var idx = m_RowMap.FindIndex(r => r.Row == row);
+             if (idx == m_RowMap.Count-2 && m_VScrollBar.Value+idx+1 < m_VScrollBar.Maximum)
+             {
+               m_VScrollBar.Value += 1;
+               idx = m_RowMap.FindIndex(r => r.Row == row);
+             }
+
+             if (idx > 0 && idx < m_RowMap.Count-1)
+             {
+               UnSelectRow(row);
+               SelectRow(m_RowMap[idx + 1].Row);
+             }
+           }
+           else if (m_VScrollBar.Value<m_VScrollBar.Maximum)
+             m_VScrollBar.Value += 1;
+           return true;
          }
          
          if (keyData==Keys.PageUp)
          {
-            var v = m_VScrollBar.Value - m_RowMap.Count;
-            if (v<0) v = 0;
-            m_VScrollBar.Value = v;
-            return true;
+           var v = m_VScrollBar.Value - m_RowMap.Count;
+           if (v<0) v = 0;
+           m_VScrollBar.Value = v;
+           if (m_SelectedRowsList.Count == 1 && m_RowMap.Count > 1)
+           {
+             UnSelectRow(m_SelectedRowsList[0]);
+             SelectRow(m_RowMap[1].Row);
+           }
+           return true;
          }
          
          if (keyData==Keys.PageDown)
          {
-            if (m_VScrollBar.Maximum>2)
-            {
-              var v = m_VScrollBar.Value + m_RowMap.Count;
-              if (v>m_VScrollBar.Maximum-1) v = m_VScrollBar.Maximum-1;
-              m_VScrollBar.Value = v;
-            }
-            return true;
+           if (m_VScrollBar.Maximum>2)
+           {
+             var v = m_VScrollBar.Value + m_RowMap.Count;
+             if (v>m_VScrollBar.Maximum-1) v = m_VScrollBar.Maximum-1;
+             m_VScrollBar.Value = v;
+           }
+
+           if (m_SelectedRowsList.Count == 1 && m_RowMap.Count > 1)
+           {
+             UnSelectRow(m_SelectedRowsList[0]);
+             SelectRow(m_RowMap[1].Row);
+           }
+           return true;
          }
          
          if (keyData==Keys.Left)
          {
-            if (m_HScrollBar.Value>0)
-              m_HScrollBar.Value-=1;
-            return true;
+           if (m_HScrollBar.Value>0)
+             m_HScrollBar.Value-=1;
+           return true;
          }
          
          if (keyData==Keys.Right)
          {
-            if (m_HScrollBar.Value<m_HScrollBar.Maximum)
+           if (m_HScrollBar.Value<m_HScrollBar.Maximum)
              m_HScrollBar.Value+=1;
-            return true;
+           return true;
          }
          
          if (keyData==Keys.Home)
          {
-            m_VScrollBar.Value=0;
-            return true;
+           m_VScrollBar.Value=0;
+           return true;
          }
          
          if (keyData==Keys.End)
          {
-            if (m_VScrollBar.Maximum>2)
-            {
-              m_VScrollBar.Value = m_VScrollBar.Maximum - 2;
-            } 
-            return true;
+           if (m_VScrollBar.Maximum > 2)
+             m_VScrollBar.Value = m_VScrollBar.Maximum - 2;
+           return true;
          }
 
-         if ((keyData & (Keys.A | Keys.Control)) == (Keys.A | Keys.Control))
+         if (keyData == (Keys.A | Keys.Control))
          {
-            if ((keyData & Keys.Shift) == Keys.Shift)
-              UnSelectAllRows();
-            else
-              SelectAllRows();
+           if ((keyData & Keys.Shift) == Keys.Shift)
+             UnSelectAllRows();
+           else
+             SelectAllRows();
+
+           return true;
+         }
+
+         if (keyData == (Keys.Multiply | Keys.Control))
+         {
+           CellView.Zoom = 1.0f;
+           ResetRowHeight();
+           return true;
+         }
+
+         if ((keyData & (Keys.Add | Keys.Control)) == (Keys.Add | Keys.Control))
+         {
+           if ((keyData & Keys.Shift) == Keys.Shift)
+             DataRowHeight += 3;
+           else
+             CellView.Zoom *= 1.1f;
+           return true;
+         }
+
+         if ((keyData & (Keys.Subtract | Keys.Control)) == (Keys.Subtract | Keys.Control))
+         {
+           if ((keyData & Keys.Shift) == Keys.Shift)
+             DataRowHeight = Math.Max(DEFAULT_ROW_HEIGHT, DataRowHeight - 3);
+           else
+             CellView.Zoom *= 0.9f;
+           return true;
          }
 
          return base.ProcessDialogKey(keyData);
@@ -1126,21 +1194,21 @@ namespace NFX.WinForms.Controls.GridKit
          
          try
          {
-             if (m_CellView==null) return;
-             
-             if (m_Disposed) return;
-             
-             //forget all previously selected cells
-             m_SelectedCell = null;
-             
-             m_CommentElement = null;
-             
-             m_CellView.DeleteAllElements();
-             buildCells();
+           if (m_CellView==null) return;
+              
+           if (m_Disposed) return;
+              
+           //forget all previously selected cells
+           m_SelectedCell = null;
+              
+           m_CommentElement = null;
+              
+           m_CellView.DeleteAllElements();
+           buildCells();
          }
          finally
          {
-            if (!force)
+           if (!force)
              m_BatchChangeNeedsRebuild = false;
          }
        }
@@ -1150,7 +1218,7 @@ namespace NFX.WinForms.Controls.GridKit
        {
     //     m_CellView.ScrollElementsBy(10, 10,   m_HScrollBar.Value, 0, true);
          
-           rebuildAllCells();
+         rebuildAllCells();
        }
        
        private void m_VScrollBar_Scroll(object sender, EventArgs e)
@@ -1158,7 +1226,7 @@ namespace NFX.WinForms.Controls.GridKit
     //     m_CellView.ScrollElementsBy(10, 10,  0, - m_HeaderRowHeight, true);
     // return;
      
-          rebuildAllCells();    
+         rebuildAllCells();    
        }
     
     
@@ -1190,8 +1258,6 @@ namespace NFX.WinForms.Controls.GridKit
            EndBatchChange();
          }  
        }
-       
-       
        
        private void dataRowSourceChanged()
        {
@@ -1303,7 +1369,7 @@ namespace NFX.WinForms.Controls.GridKit
          var rowHeight = GetRowHeight(null);
          
          m_RowMap.Clear();
-         m_RowMap.Add( new RowMapEntry(){ Row = null, Height = rowHeight, Top = y} );        
+         m_RowMap.Add( new RowMapEntry{ Row = null, Height = rowHeight, Top = y} );        
          
          for(int i=m_HScrollBar.Value,x=0; i<m_Columns.Count; i++)
          {
@@ -1325,7 +1391,7 @@ namespace NFX.WinForms.Controls.GridKit
          {
            var row = m_DataRowSource[idx];
            rowHeight = GetRowHeight(row);
-           m_RowMap.Add( new RowMapEntry(){ Row = row, Height = rowHeight, Top = y} ); 
+           m_RowMap.Add( new RowMapEntry{ Row = row, Height = rowHeight, Top = y} ); 
            
            for(int i=m_HScrollBar.Value,x=0; i<m_Columns.Count; i++)
            {

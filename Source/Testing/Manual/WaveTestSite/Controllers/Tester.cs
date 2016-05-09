@@ -270,6 +270,30 @@ namespace WaveTestSite.Controllers
         return new JSONResult(result, JSONWritingOptions.Compact);
       }
 
+      [Action]
+      public object MultipartByteArray(string customerNumber, byte[] picture, string picture_filename)
+      {
+        return new
+        {
+            ServerSays = "ECHO: You Have posted to me BYte Array",
+            Customer = customerNumber,
+            Picture = picture,
+            File = picture_filename
+        };
+      }
+
+      [Action]
+      public object MultipartStream(string customerNumber, Stream picture, string picture_filename)
+      {
+        return new
+        {
+            ServerSays = "ECHO: You Have posted to me STREAM!",
+            Customer = customerNumber,
+            PictureSize = picture.Length,
+            File = picture_filename
+        };
+      }
+
 
 
       private void makePuzzle()

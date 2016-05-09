@@ -132,7 +132,7 @@ namespace NFX.DataAccess.MySQL
                     }
 
                     using (reader)
-                      return PopulateRowset(reader, target, query, m_Source, oneRow);
+                      return PopulateRowset(ctx, reader, target, query, m_Source, oneRow);
                 }//using command
             }
 
@@ -180,12 +180,13 @@ namespace NFX.DataAccess.MySQL
         #region Static Helpers
 
             /// <summary>
-            /// Reads data from reader into rowset. th reader is NOT disposed 
+            /// Reads data from reader into rowset. the reader is NOT disposed 
             /// </summary>
-            public static Rowset PopulateRowset(MySqlDataReader reader, string target, Query query, QuerySource qSource, bool oneRow)
+            public static Rowset PopulateRowset(MySQLCRUDQueryExecutionContext context, MySqlDataReader reader, string target, Query query, QuerySource qSource, bool oneRow)
             {
               Schema.FieldDef[] toLoad;
               Schema schema = GetSchemaForQuery(target, query, reader, qSource, out toLoad);
+              var store= context.DataStore;
 
               var result = new Rowset(schema);
               while(reader.Read())
@@ -198,10 +199,25 @@ namespace NFX.DataAccess.MySQL
                     if (fdef==null) continue;
 
                     var val = reader.GetValue(i);
+
+                    if (val==null || val is DBNull)
+                    {
+                      row[fdef.Order] = null;
+                      continue;
+                    }
+
                     if (fdef.NonNullableType==typeof(bool))
+                    {
+                       if (store.StringBool)
+                       {
+                          var bval = (val is bool) ? (bool)val : val.ToString().EqualsIgnoreCase(store.StringForTrue);
+                          row[fdef.Order] = bval;
+                       }
+                       else
                         row[fdef.Order] = val.AsNullableBool();
+                    }
                     else
-                        row[fdef.Order] = val;
+                       row[fdef.Order] = val;
                 }
 
                 result.Add( row );

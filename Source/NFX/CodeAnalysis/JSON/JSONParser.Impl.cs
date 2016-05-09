@@ -121,7 +121,7 @@ namespace NFX.CodeAnalysis.JSON
             {
                fetchPrimary(); // skip {
 
-               var obj = new JSONDataMap();
+               var obj = new JSONDataMap(this.m_CaseSensitiveMaps);
 
                if (token.Type!=JSONTokenType.tBraceClose)//empty object  {}
                 {   

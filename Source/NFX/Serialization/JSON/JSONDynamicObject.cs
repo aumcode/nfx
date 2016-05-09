@@ -241,14 +241,5 @@ namespace NFX.Serialization.JSON
             }
 
         #endregion
-
-        #region Protected
-
-        #endregion
-
-
-        #region .pvt .impl
-            
-        #endregion   
     }
 }

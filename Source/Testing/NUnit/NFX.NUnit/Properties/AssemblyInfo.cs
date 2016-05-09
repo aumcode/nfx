@@ -26,9 +26,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NFX.NUnit")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IT Adapter Corp. Inc.")]
+[assembly: AssemblyCompany("IT Adapter Corp")]
 [assembly: AssemblyProduct("NFX.NUnit")]
-[assembly: AssemblyCopyright("Copyright ©  2003-2015 IT Adapter Corp. Inc.")]
+[assembly: AssemblyCopyright("Copyright ©  2003-2016 IT Adapter")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,5 +50,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.1")]
-[assembly: AssemblyFileVersion("2.0.0.1")]
+[assembly: AssemblyVersion("3.0.0.1")]
+[assembly: AssemblyFileVersion("3.0.0.1")]

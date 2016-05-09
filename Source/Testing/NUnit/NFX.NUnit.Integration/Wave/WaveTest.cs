@@ -1,4 +1,4 @@
-/*<FILE_LICENSE>
+﻿/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
 * Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
 *
@@ -22,6 +22,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 using NUnit.Framework;
 
@@ -606,34 +607,88 @@ namespace NFX.NUnit.Integration.Wave
           }
         }
 
-        //[Test]
-        //public void Action_NullableDateTimeWrongFormat()
-        //{
-        //  using (var wc = CreateWebClient())
-        //  {
-        //    var response = wc.DownloadString(INTEGRATION_HTTP_ADDR + "StrictDateTime");
-        //    Assert.IsTrue(response.IsNullOrEmpty());
 
-        //    var dt = new DateTime(2014, 12, 5);
-        //    var dtStr = dt.ToString();
+        [Test]
+        public void MultipartByteArray()
+        {
+          MultipartTest("MultipartByteArray");
+        }
 
-        //    response = wc.DownloadString(INTEGRATION_HTTP_ADDR + "StrictDateTime?dt=" + dtStr);
-        //    Assert.IsTrue(response.IsNotNullOrEmpty());
-        //    var responseDt = DateTime.Parse(response.Trim('"'));
-        //    Assert.AreEqual(dt, responseDt);
+        [Test]
+        public void MultipartMap()
+        {
+          MultipartTest("MultipartMap");
+        }
 
-        //    response = wc.DownloadString(INTEGRATION_HTTP_ADDR + "StrictDateTime?dt=" + dt.Ticks);
-        //    Assert.IsTrue(response.IsNotNullOrEmpty());
-        //    responseDt = DateTime.Parse(response.Trim('"'));
-        //    Assert.AreEqual(dt, responseDt);
-        //  }
-        //}
+        [Test]
+        public void MultipartRow()
+        {
+          MultipartTest("MultipartRow");
+        }
 
-      #endregion
+        [Test]
+        public void MultipartStream()
+        {
+          MultipartTest("MultipartStream");
+        }
 
-      #region Helpers
+        [Test]
+        public void MultipartEncoding()
+        {
+          var encoding = Encoding.GetEncoding(1251);
+          var part = new NFX.Web.Multipart.Part("field");
+          part.Content = "Значение";
 
-        private bool Is400(WebException ex)
+          var mp = new NFX.Web.Multipart(new NFX.Web.Multipart.Part[] { part });
+          var enc = mp.Encode(encoding);
+
+          var req = HttpWebRequest.CreateHttp(INTEGRATION_HTTP_ADDR + "MultipartEncoding");
+          req.Method = "POST";
+          req.ContentType = NFX.Web.ContentType.FORM_MULTIPART_ENCODED + "; charset=windows-1251";
+          req.ContentLength = enc.Length;
+          req.CookieContainer = new CookieContainer();
+          req.CookieContainer.Add(S_WAVE_URI, S_WAVE_COOKIE);
+
+          using (var reqs = req.GetRequestStream())
+          {
+            reqs.Write(enc.Buffer, 0, (int)enc.Length);
+            var resp = req.GetResponse();
+
+            var ms = new MemoryStream();
+            resp.GetResponseStream().CopyTo(ms);
+
+            Assert.AreEqual(part.Content.AsString(), encoding.GetString(ms.ToArray()));
+          }
+        }
+
+    //[Test]
+    //public void Action_NullableDateTimeWrongFormat()
+    //{
+    //  using (var wc = CreateWebClient())
+    //  {
+    //    var response = wc.DownloadString(INTEGRATION_HTTP_ADDR + "StrictDateTime");
+    //    Assert.IsTrue(response.IsNullOrEmpty());
+
+    //    var dt = new DateTime(2014, 12, 5);
+    //    var dtStr = dt.ToString();
+
+    //    response = wc.DownloadString(INTEGRATION_HTTP_ADDR + "StrictDateTime?dt=" + dtStr);
+    //    Assert.IsTrue(response.IsNotNullOrEmpty());
+    //    var responseDt = DateTime.Parse(response.Trim('"'));
+    //    Assert.AreEqual(dt, responseDt);
+
+    //    response = wc.DownloadString(INTEGRATION_HTTP_ADDR + "StrictDateTime?dt=" + dt.Ticks);
+    //    Assert.IsTrue(response.IsNotNullOrEmpty());
+    //    responseDt = DateTime.Parse(response.Trim('"'));
+    //    Assert.AreEqual(dt, responseDt);
+    //  }
+    //}
+
+    #endregion
+
+    #region Helpers
+
+    private bool Is400(WebException ex)
         {
           return ex.Message.IndexOf("(400)") >= 0;
         }
@@ -651,7 +706,50 @@ namespace NFX.NUnit.Integration.Wave
           return Encoding.UTF8.GetString(buf);
         }
 
-      #endregion
+        private void MultipartTest(string type)
+        {
+          var partField = new NFX.Web.Multipart.Part("field");
+          partField.Content = "value";
+
+          var partTxtFile = new NFX.Web.Multipart.Part("text");
+          partTxtFile.Content = "Text with\r\nnewline";
+          partTxtFile.FileName = "TxtFile";
+          partTxtFile.ContentType = "Content-type: text/plain";
+
+          var partBinFile = new NFX.Web.Multipart.Part("bin");
+          partBinFile.Content = new byte[] { 0xff, 0xaa, 0x89, 0xde, 0x23, 0x20, 0xff, 0xfe, 0x02 };
+          partBinFile.FileName = "BinFile";
+          partBinFile.ContentType = "application/octet-stream";
+
+          var mp = new NFX.Web.Multipart(new NFX.Web.Multipart.Part[] { partField, partTxtFile, partBinFile });
+
+          var enc = mp.Encode();
+
+          var req = HttpWebRequest.CreateHttp(INTEGRATION_HTTP_ADDR + type);
+          req.Method = "POST";
+          req.ContentType = NFX.Web.ContentType.FORM_MULTIPART_ENCODED;
+          req.ContentLength = enc.Length;
+          req.CookieContainer = new CookieContainer();
+          req.CookieContainer.Add(S_WAVE_URI, S_WAVE_COOKIE);
+
+          using (var reqs = req.GetRequestStream())
+          {
+            reqs.Write(enc.Buffer, 0, (int)enc.Length);
+            var resp = req.GetResponse();
+
+            var ms = new MemoryStream();
+            resp.GetResponseStream().CopyTo(ms);
+            var returned = ms.ToArray();
+
+            var fieldSize = Encoding.UTF8.GetBytes(partField.Content.AsString()).Length;
+            var txtFileSize = Encoding.UTF8.GetBytes(partTxtFile.Content.AsString()).Length;
+            Assert.AreEqual(partField.Content.AsString(), Encoding.UTF8.GetString(returned.Take(fieldSize).ToArray()));
+            Assert.AreEqual(partTxtFile.Content.AsString(), Encoding.UTF8.GetString(returned.Skip(fieldSize).Take(txtFileSize).ToArray()));
+            Assert.IsTrue(NFX.IOMiscUtils.MemBufferEquals(partBinFile.Content as byte[], returned.Skip(fieldSize + txtFileSize).ToArray()));
+          }
+        }
+
+    #endregion
 
     #endregion
   }

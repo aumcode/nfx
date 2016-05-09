@@ -263,6 +263,24 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
         [Test]
+        public void ManualDS_TypedRowTestVariousTypes_StrBool()
+        {
+            using(var store = new MySQLDataStore(getConnectString()))
+            {
+                store.StringBool = true; //<-------- NOTICE
+                store.StringForTrue = "1";
+                store.StringForFalse = "0";
+
+                store.FullGDIDS = false;
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.TypedRowTestVariousTypes( store );
+            }   
+        }
+
+
+
+        [Test]
         public void ManualDS_TypedRowTest_FullGDID()
         {
             using(var store = new MySQLDataStore(getConnectString()))

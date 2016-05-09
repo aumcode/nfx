@@ -290,8 +290,10 @@ namespace NFX.Erlang
         throw new ErlException(StringConsts.ERL_CANNOT_CONVERT_TYPES_CYCLE_ERROR,
             o.GetType().FullName, typeof(IErlObject).Name);
 
-      try { return coreToErlObject(o); }
-      finally { ts_Refs.Remove(o); }
+      ts_Refs.Add(o);
+
+      try     { return coreToErlObject(o); }
+      finally { ts_Refs.Remove(o);         }
     }
 
     /// <summary>
