@@ -22,13 +22,10 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net;
 
-
 using NFX.Log;
-using NFX.DataAccess.CRUD;
 using NFX.Environment;
 using NFX.ServiceModel;
 using System.Net.Sockets;
-using System.Diagnostics;
 
 namespace NFX.Web.GeoLookup
 {
@@ -174,7 +171,7 @@ namespace NFX.Web.GeoLookup
       {
         if (Status!=ControlStatus.Active || address==null) return null;
 
-        var subnet = new Subnet("5.11.16.0/32");
+        var subnet = new Subnet(address);
         var record = subnet.address.AddressFamily == AddressFamily.InterNetwork ? m_OffsetV4 : 0;
         var index = -1;
         foreach (var bit in subnet)
@@ -466,11 +463,10 @@ namespace NFX.Web.GeoLookup
 
       public class Node
       {
-        public Node Left { get; set; }
-        public Node Right { get; set; }
         public int Index { get; set; }
         public uint Number { get; set; }
-        public uint Level { get; set; }
+        public Node Left { get; set; }
+        public Node Right { get; set; }
         public Node()
         {
           Index = -1;
@@ -502,8 +498,6 @@ namespace NFX.Web.GeoLookup
             default:
               throw new NotImplementedException();
           }
-          if (node.Index != -1)
-            ((Action)(() => { }))();
           node.Index = index;
         }
 
@@ -511,17 +505,13 @@ namespace NFX.Web.GeoLookup
         {
           var node = root;
 
-          uint i = 0;
           foreach (var bit in network)
           {
-            i++;
-            if (node.Index >= 0)
-              ((Action)(() => { }))();
             var next = bit ? node.Right : node.Left;
 
             if (next == null)
             {
-              next = new Node { Number = count++, Level = i };
+              next = new Node { Number = count++ };
               if (bit) node.Right = next;
               else node.Left = next;
             }
