@@ -52,7 +52,7 @@ namespace NFX.Web.GeoLookup
     /// <summary>
     /// Tries to lookup the location by its id and returns it or null if no match could be made
     /// </summary>
-    Location LookupLocation(int locationID);
+    Location? LookupLocation(string locationID);
   }
 
 
@@ -62,7 +62,7 @@ namespace NFX.Web.GeoLookup
   [Serializable]
   public class GeoEntity
   {
-    protected internal GeoEntity(IPAddress query, IPSubnetBlock block, Location location)
+    protected internal GeoEntity(IPAddress query, IPSubnetBlock block, Location? location)
     {
       Query = query;
       Block = block;
@@ -81,7 +81,7 @@ namespace NFX.Web.GeoLookup
     /// <summary>
     /// Information about geo location
     /// </summary>
-    public readonly Location Location;
+    public readonly Location? Location;
 
     /// <summary>
     /// Returns handy name of locality, i.e. "City, Country" if city is available
@@ -90,8 +90,10 @@ namespace NFX.Web.GeoLookup
     {
       get
       {
-        return Location.CityName.IsNotNullOrWhiteSpace() ? "{0}, {1} {2}".Args(Location.CityName, Location.SubdivisionName, Location.CountryName) 
-                                                         : "{0} {1}".Args(Location.SubdivisionName, Location.CountryName);
+        if (!Location.HasValue) return string.Empty;
+        return Location.Value.CityName.IsNotNullOrWhiteSpace() 
+          ? "{0}, {1} {2}".Args(Location.Value.CityName, Location.Value.SubdivisionName, Location.Value.CountryName) 
+          : "{0} {1}".Args(Location.Value.SubdivisionName, Location.Value.CountryName);
       }
     }
 

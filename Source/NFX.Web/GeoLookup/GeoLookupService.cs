@@ -28,6 +28,7 @@ using NFX.DataAccess.CRUD;
 using NFX.Environment;
 using NFX.ServiceModel;
 using System.Net.Sockets;
+using System.Diagnostics;
 
 namespace NFX.Web.GeoLookup
 {
@@ -111,12 +112,11 @@ namespace NFX.Web.GeoLookup
       private bool m_CancelStart;
       private string m_DataPath;
       private LookupResolution m_Resolution = LookupResolution.Country;
-      private string m_Language;
 
       private IPSubnetBlock[] m_Blocks;
-      private Dictionary<int, Location> m_Locations;
+      private Dictionary<string, Location> m_Locations;
       private BinaryRecord[] m_BST;
-      private int m_OffsetV4;
+      private uint m_OffsetV4;
 
     #endregion
 
@@ -157,17 +157,6 @@ namespace NFX.Web.GeoLookup
         }
       }
 
-      [Config]
-      public string Language
-      {
-        get { return m_Language ?? "en"; }
-        set
-        {
-          CheckServiceInactive();
-          m_Language = value;
-        }
-      }
-
       /// <summary>
       /// Returns true to indicate that previous attempt to start service - load data, was canceled
       /// </summary>
@@ -186,25 +175,28 @@ namespace NFX.Web.GeoLookup
         if (Status!=ControlStatus.Active || address==null) return null;
 
         var subnet = new Subnet(address);
-        long record = subnet.address.AddressFamily == AddressFamily.InterNetwork ? m_OffsetV4 : 0;
+        var record = subnet.address.AddressFamily == AddressFamily.InterNetwork ? m_OffsetV4 : 0;
+        var index = -1;
         foreach (var bit in subnet)
-        {
+        {          
+          int i = m_BST[record].Index;
+          if (i > 0) index = i;
           record = bit ? m_BST[record].Right : m_BST[record].Left;
-          if (record <= 0)
+          if (record == 0)
             break;
         }
-        if (-record >= m_BST.LongLength)
+        if (index < 0)
           return null;
-        var block = m_Blocks[-record]; 
+        var block = m_Blocks[index]; 
         return new GeoEntity(address, block, LookupLocation(block.LocationID));
       }
   
       /// <summary>
       /// Tries to lookup location by id. Returns null if no match could be made
       /// </summary>
-      public Location LookupLocation(int locationID)
+      public Location? LookupLocation(string locationID)
       {
-        if (Status!=ControlStatus.Active) return null;
+        if (Status!=ControlStatus.Active || string.IsNullOrEmpty(locationID)) return null;
         Location result;
         if (m_Locations.TryGetValue(locationID, out result)) return result;
         return null;
@@ -244,7 +236,7 @@ namespace NFX.Web.GeoLookup
 
         var fnBlocks    = Path.Combine(m_DataPath, "GeoLite2-{0}-Blocks-IPv6.csv".Args(m_Resolution));
         var fnBlocksV4 = Path.Combine(m_DataPath, "GeoLite2-{0}-Blocks-IPv4.csv".Args(m_Resolution));
-        var fnLocations = Path.Combine(m_DataPath, "GeoLite2-{0}-Locations-{1}.csv".Args(m_Resolution, m_Language));
+        var fnLocations = Path.Combine(m_DataPath, "GeoLite2-{0}-Locations-en.csv".Args(m_Resolution));
 
         if (!File.Exists(fnBlocks))
             throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnBlocks));
@@ -254,7 +246,7 @@ namespace NFX.Web.GeoLookup
             throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnLocations));
 
         m_CancelStart = false;
-        m_Locations = new Dictionary<int, Location>();
+        m_Locations = new Dictionary<string, Location>();
 
         try
         {
@@ -269,13 +261,15 @@ namespace NFX.Web.GeoLookup
               var errors = 0;
               while(!fr.EndOfStream && !m_CancelStart && App.Active)
               {
-                IPSubnetBlock row;
                 try
                 {
                   var rowLine = fr.ReadLine();
-                  row = parseBlock(rowLine);
-                  tree.Insert(row.Subnet, blocks.Count);
-                  blocks.Add(row);
+                  var row = parseBlock(rowLine);
+                  if (row.HasValue)
+                  {
+                    tree.Insert(row.Value.Subnet, blocks.Count);
+                    blocks.Add(row.Value);
+                  }
                 }
                 catch(Exception error)
                 {
@@ -297,13 +291,17 @@ namespace NFX.Web.GeoLookup
               var errors = 0;
               while(!fr.EndOfStream && !m_CancelStart && App.Active)
               {
-                IPSubnetBlock row;
                 try
                 {
+                  if (line == 48265)
+                    ((Action)(() => { }))();
                   var rowLine = fr.ReadLine();
-                  row = parseBlock(rowLine);
-                  tree.Insert(row.Subnet, blocks.Count);
-                  blocks.Add(row);
+                  var row = parseBlock(rowLine);
+                  if (row.HasValue)
+                  {
+                    tree.Insert(row.Value.Subnet, blocks.Count);
+                    blocks.Add(row.Value);
+                  }
                 }
                 catch(Exception error)
                 {
@@ -328,11 +326,11 @@ namespace NFX.Web.GeoLookup
               var errors = 0;
               while(!fr.EndOfStream && !m_CancelStart && App.Active)
               {
-                Location row;
                 try
                 {
-                  row =  parseLocation( fr.ReadLine()); 
-                  m_Locations.Add( row.ID, row );
+                  var row =  parseLocation( fr.ReadLine()); 
+                  if (row.HasValue)
+                    m_Locations.Add(row.Value.ID, row.Value);
                 }
                 catch(Exception error)
                 {
@@ -369,70 +367,41 @@ namespace NFX.Web.GeoLookup
 
     #region .pvt
 
-      private IPSubnetBlock parseBlock(string data)
+      private IPSubnetBlock? parseBlock(string data)
       {
-        var row = new IPSubnetBlock();
-        if (data.IsNullOrWhiteSpace()) return row;
+        if (data.IsNullOrWhiteSpace()) return null;
 
-        var i = 0;
-        var fc = row.Schema.FieldCount;
-        foreach(var seg in parseCSVLine(data))
-        {
-          if (i==fc) break;
-          
-          var v = seg;
-
-          if (row.Schema[i].Type==typeof(Boolean)) v = v=="1" ? "true" : "false";
-          try
-          {
-            if (row.Schema[i].Type == typeof(Subnet))
-              row[i] = new Subnet(v);
-            else
-              row[i] = v;
-          }
-          catch(Exception error)
-          {
-            throw new GeoException("Block {0}.{1}[{2}] = '{3}' error: {4} ".Args(
-                                   row.Schema.Name,
-                                   row.Schema[i].Name,
-                                   i,
-                                   v,
-                                   error.ToMessageWithType()), error); 
-          }
-          i++;
-        }
-        return row;
+        var arr = parseCSVLine(data).ToArray();
+        return new IPSubnetBlock(new Subnet(arr[0]),
+          arr[1],
+          arr[2],
+          arr[3],
+          arr[4] == "1",
+          arr[5] == "1",
+          arr[6],
+          string.IsNullOrEmpty(arr[7]) ? 0f : float.Parse(arr[7]),
+          string.IsNullOrEmpty(arr[8]) ? 0f : float.Parse(arr[8]));
       }
 
-      private Location parseLocation(string data)
+      private Location? parseLocation(string data)
       {
-        var row = new Location();
-        if (data.IsNullOrWhiteSpace()) return row;
+        if (data.IsNullOrWhiteSpace()) return null;
         
-        var i = 0;
-        var fc = row.Schema.FieldCount; 
-        foreach(var seg in parseCSVLine(data))
-        {
-          if (i==fc) break;
-          var v = seg;
-
-          if (row.Schema[i].Type==typeof(Boolean)) v = v=="1"?"true":"false";
-          try
-          {
-            row[i] = v;
-          }
-          catch(Exception error)
-          {
-            throw new GeoException("Location {0}.{1}[{2}] = '{3}' error: {4} ".Args(
-                                   row.Schema.Name,
-                                   row.Schema[i].Name,
-                                   i,
-                                   v,
-                                   error.ToMessageWithType()), error); 
-          }
-          i++;
-        }
-        return row;
+        var arr = parseCSVLine(data).ToArray();
+        return new Location(
+          arr[0],
+          arr[1],
+          arr[2],
+          arr[3],
+          arr[4],
+          arr[5],
+          arr[6],
+          arr[7],
+          arr[8],
+          arr[9],
+          arr[10],
+          arr[11],
+          arr[12]);
       }
 
 
@@ -489,106 +458,98 @@ namespace NFX.Web.GeoLookup
     #region BST
       public struct BinaryRecord
       {
-        public int Left;
-        public int Right;
-      }
-
-      public class Record
-      {
-        public int Index { get; set; } = -1;
-        public Node Node { get; set; }
-
-        public override string ToString() =>
-          Node != null ? Node.ToString() : (-Index).ToString();
+        public int Index;
+        public uint Left;
+        public uint Right;
       }
 
       public class Node
       {
-        public Record Left { get; set; }
-        public Record Right { get; set; }
-        public int Number { get; set; }
-
-        public override string ToString() =>
-          "{0}({1}:{2})".Args(Number, Left.Node != null ? Left.Node.Number : -Left.Index, Right.Node != null ? Right.Node.Number : -Right.Index);
+        public Node Left { get; set; }
+        public Node Right { get; set; }
+        public int Index { get; set; }
+        public uint Number { get; set; }
+        public uint Level { get; set; }
+        public Node()
+        {
+          Index = -1;
+        }
       }
 
       public class Tree
       {
-        public Record Root { get; private set; } = new Record();
-        public Record RootV4 { get; private set; }
-        private int Count = 0;
+        public Node Root { get; private set; } = new Node();
+        public Node RootV4 { get; private set; }
+        private uint m_Count = 0;
 
         public Tree()
         {
-          RootV4 = FindRecord(Root, ref Count, new Subnet { address = IPAddress.Any.MapToIPv6(), CIDR = 96 });
+          RootV4 = findNode(Root, ref m_Count, new Subnet(IPAddress.Any.MapToIPv6(), 96));
         }
 
         public void Insert(Subnet network, int index)
         {
+          Node node;
           switch (network.address.AddressFamily)
           {
-            case System.Net.Sockets.AddressFamily.InterNetwork:
-              FindRecord(RootV4, ref Count, network).Index = index;
+            case AddressFamily.InterNetwork:
+              node = findNode(RootV4, ref m_Count, network);
               break;
-            case System.Net.Sockets.AddressFamily.InterNetworkV6:
-              FindRecord(Root, ref Count, network).Index = index;
+            case AddressFamily.InterNetworkV6:
+              node = findNode(Root, ref m_Count, network);
               break;
             default:
-              FindRecord(Root, ref Count, new Subnet
-              {
-                address = network.address.MapToIPv6(),
-                CIDR = network.CIDR
-              }).Index = index;
-              break;
+              throw new NotImplementedException();
           }
+          if (node.Index != -1)
+            ((Action)(() => { }))();
+          node.Index = index;
         }
 
-        private static Record FindRecord(Record root, ref int count, Subnet network)
+        private static Node findNode(Node root, ref uint count, Subnet network)
         {
-          var record = root;
+          var node = root;
 
+          uint i = 0;
           foreach (var bit in network)
           {
-            Node node;
-            if (record.Node != null)
-              node = record.Node;
-            else
-            {
-              node = new Node
-              {
-                Number = count++,
-                Left = new Record(),
-                Right = new Record()
-              };
-              record.Node = node;
-            }
+            i++;
+            if (node.Index >= 0)
+              ((Action)(() => { }))();
+            var next = bit ? node.Right : node.Left;
 
-            record = bit ? node.Right : node.Left;
+            if (next == null)
+            {
+              next = new Node { Number = count++, Level = i };
+              if (bit) node.Right = next;
+              else node.Left = next;
+            }
+            node = next;
           }
 
-          return record;
+          return node;
         }
 
-        public BinaryRecord[] Build(out int offsetV4)
+        public BinaryRecord[] Build(out uint offsetV4)
         {
-          offsetV4 = RootV4.Node.Number;
-          var binaryTree = new BinaryRecord[Count];
-          Iterate(Root, node =>
+          offsetV4 = RootV4.Number;
+          var binaryTree = new BinaryRecord[m_Count];
+          iterate(Root, (node, index) =>
           {
-            binaryTree[node.Number].Left = node.Left.Node != null ? node.Left.Node.Number : -(node.Left.Index < 0 ? Count : node.Left.Index);
-            binaryTree[node.Number].Right = node.Right.Node != null ? node.Right.Node.Number : -(node.Right.Index < 0 ? Count : node.Right.Index);
+            binaryTree[node.Number].Index = index;
+            binaryTree[node.Number].Left = node.Left != null ? node.Left.Number : 0;
+            binaryTree[node.Number].Right = node.Right != null ? node.Right.Number : 0;
           });
           return binaryTree;
         }
 
-        private void Iterate(Record record, Action<Node> callback)
+        private void iterate(Node node, Action<Node, int> callback)
         {
-          if (record.Node != null)
+          if (node != null)
           {
-            var node = record.Node;
-            callback(node);
-            Iterate(node.Left, callback);
-            Iterate(node.Right, callback);
+            callback(node, node.Index);
+            iterate(node.Left, callback);
+            iterate(node.Right, callback);
           }
         }
       }

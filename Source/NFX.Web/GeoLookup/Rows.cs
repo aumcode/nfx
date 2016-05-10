@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 
-using NFX.DataAccess.CRUD;
 using System.Net;
 using System.Collections;
 
@@ -25,8 +24,13 @@ namespace NFX.Web.GeoLookup
 {
   public struct Subnet: IEnumerable<bool>
   {
-    public IPAddress address;
-    public uint CIDR;
+    public readonly IPAddress address;
+    public readonly uint CIDR;
+    public Subnet(IPAddress ipaddress, uint cidr)
+    {
+      address = ipaddress;
+      CIDR = cidr;
+    }
     public Subnet(IPAddress ipaddress)
     {
       address = ipaddress;
@@ -43,7 +47,7 @@ namespace NFX.Web.GeoLookup
     {
       var bytes = address.GetAddressBytes();
       for (var i = 0u; i < CIDR; i++)
-        yield return (bytes[i / 8] & (1u << ((int)i % 8))) != 0;
+        yield return (bytes[i / 8] & (1u << ((byte)(7 - i) % 8))) != 0;
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -61,17 +65,38 @@ namespace NFX.Web.GeoLookup
   /// Provides address segment block information
   /// </summary>
   [Serializable]
-  public class IPSubnetBlock : TypedRow
+  public struct IPSubnetBlock
   {
-    [Field(key: true)] public Subnet Subnet { get; set; }
-    [Field] public int              LocationID         {get; set;}  
-    [Field] public string           RegisteredLocationID  {get; set;}
-    [Field] public string           RepresentedLocationID {get; set;}
-    [Field] public bool             AnonymousProxy     {get; set;}
-    [Field] public bool             SatelliteProvider  {get; set;}
-    [Field] public string           PostalCode         {get; set;}
-    [Field] public string           Lat                {get; set;}
-    [Field] public string           Lng                {get; set;}
+    public readonly Subnet Subnet;
+    public readonly string LocationID;
+    public readonly string RegisteredLocationID;
+    public readonly string RepresentedLocationID;
+    public readonly bool AnonymousProxy;
+    public readonly bool SatelliteProvider;
+    public readonly string PostalCode;
+    public readonly float Lat;
+    public readonly float Lng;
+    public IPSubnetBlock(
+      Subnet subnet,
+      string locationID,
+      string registeredLocationID,
+      string representedLocationID,
+      bool anonymousProxy,
+      bool satelliteProvider,
+      string postalCode,
+      float lat,
+      float lng)
+    {
+      Subnet = subnet;
+      LocationID = locationID;
+      RegisteredLocationID = registeredLocationID;
+      RepresentedLocationID = representedLocationID;
+      AnonymousProxy = anonymousProxy;
+      SatelliteProvider = satelliteProvider;
+      PostalCode = postalCode;
+      Lat = lat;
+      Lng = lng;
+    }
     public override string ToString()
     {
       return @" 
@@ -84,15 +109,15 @@ Lat                   {5}
 Lng                   {6}
 AnonymousProxy        {7}
 SatelliteProvider     {8}".Args(
-Subnet       , 
-LocationID         ,  
-RegisteredLocationID,  
+Subnet               , 
+LocationID           ,  
+RegisteredLocationID ,  
 RepresentedLocationID, 
-PostalCode         ,
-Lat                ,
-Lng                ,
-AnonymousProxy     ,
-SatelliteProvider);
+PostalCode           ,
+Lat                  ,
+Lng                  ,
+AnonymousProxy       ,
+SatelliteProvider    );
     }
   }
 
@@ -100,22 +125,51 @@ SatelliteProvider);
   /// Provides location information
   /// </summary>
   [Serializable]
-  public class Location : TypedRow
+  public struct Location
   {
-    [Field(key:true)] public int ID                 {get; set;}
-    [Field] public string           LocaleCode        {get; set;}
-    [Field] public string           ContinentID        {get; set;}
-    [Field] public string           ContinentName      {get; set;} 
-    [Field] public string           CountryISOName     {get; set;}  
-    [Field] public string           CountryName        {get; set;}  
-    [Field] public string           SubdivisionISOCode {get; set;}
-    [Field] public string           SubdivisionName    {get; set;}  
-    [Field] public string           Subdivision2ISOCode {get; set;}
-    [Field] public string           Subdivision2Name    {get; set;}
-    [Field] public string           CityName           {get; set;}
-    [Field] public string           MetroCode          {get; set;}
-    [Field] public string           TimeZone           {get; set;}
-   public override string ToString()
+    public readonly string ID;
+    public readonly string LocaleCode;
+    public readonly string ContinentID;
+    public readonly string ContinentName;
+    public readonly string CountryISOName;
+    public readonly string CountryName;
+    public readonly string SubdivisionISOCode;
+    public readonly string SubdivisionName;
+    public readonly string Subdivision2ISOCode;
+    public readonly string Subdivision2Name;
+    public readonly string CityName;
+    public readonly string MetroCode;
+    public readonly string TimeZone;
+    public Location(
+      string id,
+      string localeCode,
+      string continentID,
+      string continentName,
+      string countryISOName,
+      string countryName,
+      string subdivisionISOCode,
+      string subdivisionName,
+      string subdivision2ISOCode,
+      string subdivision2Name,
+      string cityName,
+      string metroCode,
+      string timeZone)
+    {
+      ID = id;
+      LocaleCode = localeCode;
+      ContinentID = continentID;
+      ContinentName = continentName;
+      CountryISOName = countryISOName;
+      CountryName = countryName;
+      SubdivisionISOCode = subdivisionISOCode;
+      SubdivisionName = subdivisionName;
+      Subdivision2ISOCode = subdivision2ISOCode;
+      Subdivision2Name = subdivision2Name;
+      CityName = cityName;
+      MetroCode = metroCode;
+      TimeZone = timeZone;
+    }
+    public override string ToString()
     {
       return @" 
 ID                  {0}
