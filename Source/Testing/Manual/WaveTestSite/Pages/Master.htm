@@ -186,7 +186,7 @@
           <br />
          Generated on ?[DateTime.Now]  for ?[Context.Request.RemoteEndPoint]
          @[if(Context.GeoEntity!=null && Context.GeoEntity.Location.HasValue){
-           var fn = (Context.GeoEntity.Location.Value.CountryISOName ?? string.Empty).ToLower();
+           var fn = (Context.GeoEntity.Location.Value.CountryISOName.Value ?? string.Empty).ToLower();
          ]
          from ?[Context.GeoEntity.LocalityName] <img src="/stock/site/flags/?[fn].png">
          @[}]

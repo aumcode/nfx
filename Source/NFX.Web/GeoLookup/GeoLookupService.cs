@@ -174,13 +174,14 @@ namespace NFX.Web.GeoLookup
       {
         if (Status!=ControlStatus.Active || address==null) return null;
 
-        var subnet = new Subnet(address);
+        var subnet = new Subnet("5.11.16.0/32");
         var record = subnet.address.AddressFamily == AddressFamily.InterNetwork ? m_OffsetV4 : 0;
         var index = -1;
         foreach (var bit in subnet)
         {          
           int i = m_BST[record].Index;
-          if (i > 0) index = i;
+          if (i >= 0)
+            index = i;
           record = bit ? m_BST[record].Right : m_BST[record].Left;
           if (record == 0)
             break;
@@ -188,7 +189,7 @@ namespace NFX.Web.GeoLookup
         if (index < 0)
           return null;
         var block = m_Blocks[index]; 
-        return new GeoEntity(address, block, LookupLocation(block.LocationID));
+        return new GeoEntity(address, block, LookupLocation(block.LocationID.Value));
       }
   
       /// <summary>
@@ -330,7 +331,7 @@ namespace NFX.Web.GeoLookup
                 {
                   var row =  parseLocation( fr.ReadLine()); 
                   if (row.HasValue)
-                    m_Locations.Add(row.Value.ID, row.Value);
+                    m_Locations.Add(row.Value.ID.Value, row.Value);
                 }
                 catch(Exception error)
                 {

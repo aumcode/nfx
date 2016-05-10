@@ -68,12 +68,12 @@ namespace NFX.Web.GeoLookup
   public struct IPSubnetBlock
   {
     public readonly Subnet Subnet;
-    public readonly string LocationID;
-    public readonly string RegisteredLocationID;
-    public readonly string RepresentedLocationID;
+    public readonly SealedString LocationID;
+    public readonly SealedString RegisteredLocationID;
+    public readonly SealedString RepresentedLocationID;
     public readonly bool AnonymousProxy;
     public readonly bool SatelliteProvider;
-    public readonly string PostalCode;
+    public readonly SealedString PostalCode;
     public readonly float Lat;
     public readonly float Lng;
     public IPSubnetBlock(
@@ -88,12 +88,12 @@ namespace NFX.Web.GeoLookup
       float lng)
     {
       Subnet = subnet;
-      LocationID = locationID;
-      RegisteredLocationID = registeredLocationID;
-      RepresentedLocationID = representedLocationID;
+      LocationID = new SealedString(locationID);
+      RegisteredLocationID = new SealedString(registeredLocationID);
+      RepresentedLocationID = new SealedString(representedLocationID);
       AnonymousProxy = anonymousProxy;
       SatelliteProvider = satelliteProvider;
-      PostalCode = postalCode;
+      PostalCode = new SealedString(postalCode);
       Lat = lat;
       Lng = lng;
     }
@@ -127,19 +127,19 @@ SatelliteProvider    );
   [Serializable]
   public struct Location
   {
-    public readonly string ID;
-    public readonly string LocaleCode;
-    public readonly string ContinentID;
-    public readonly string ContinentName;
-    public readonly string CountryISOName;
-    public readonly string CountryName;
-    public readonly string SubdivisionISOCode;
-    public readonly string SubdivisionName;
-    public readonly string Subdivision2ISOCode;
-    public readonly string Subdivision2Name;
-    public readonly string CityName;
-    public readonly string MetroCode;
-    public readonly string TimeZone;
+    public readonly SealedString ID;
+    public readonly SealedString LocaleCode;
+    public readonly SealedString ContinentID;
+    public readonly SealedString ContinentName;
+    public readonly SealedString CountryISOName;
+    public readonly SealedString CountryName;
+    public readonly SealedString SubdivisionISOCode;
+    public readonly SealedString SubdivisionName;
+    public readonly SealedString Subdivision2ISOCode;
+    public readonly SealedString Subdivision2Name;
+    public readonly SealedString CityName;
+    public readonly SealedString MetroCode;
+    public readonly SealedString TimeZone;
     public Location(
       string id,
       string localeCode,
@@ -155,19 +155,19 @@ SatelliteProvider    );
       string metroCode,
       string timeZone)
     {
-      ID = id;
-      LocaleCode = localeCode;
-      ContinentID = continentID;
-      ContinentName = continentName;
-      CountryISOName = countryISOName;
-      CountryName = countryName;
-      SubdivisionISOCode = subdivisionISOCode;
-      SubdivisionName = subdivisionName;
-      Subdivision2ISOCode = subdivision2ISOCode;
-      Subdivision2Name = subdivision2Name;
-      CityName = cityName;
-      MetroCode = metroCode;
-      TimeZone = timeZone;
+      ID = new SealedString(id);
+      LocaleCode = new SealedString(localeCode);
+      ContinentID = new SealedString(continentID);
+      ContinentName = new SealedString(continentName);
+      CountryISOName = new SealedString(countryISOName);
+      CountryName = new SealedString(countryName);
+      SubdivisionISOCode = new SealedString(subdivisionISOCode);
+      SubdivisionName = new SealedString(subdivisionName);
+      Subdivision2ISOCode = new SealedString(subdivision2ISOCode);
+      Subdivision2Name = new SealedString(subdivision2Name);
+      CityName = new SealedString(cityName);
+      MetroCode = new SealedString(metroCode);
+      TimeZone = new SealedString(timeZone);
     }
     public override string ToString()
     {

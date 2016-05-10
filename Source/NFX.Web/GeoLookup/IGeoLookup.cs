@@ -91,7 +91,7 @@ namespace NFX.Web.GeoLookup
       get
       {
         if (!Location.HasValue) return string.Empty;
-        return Location.Value.CityName.IsNotNullOrWhiteSpace() 
+        return Location.Value.CityName.Value.IsNotNullOrWhiteSpace() 
           ? "{0}, {1} {2}".Args(Location.Value.CityName, Location.Value.SubdivisionName, Location.Value.CountryName) 
           : "{0} {1}".Args(Location.Value.SubdivisionName, Location.Value.CountryName);
       }
