@@ -164,6 +164,27 @@ namespace NFX.NUnit.AppModel.Pile
 
 
       [Test]
+      public void PutGetRawObject()
+      {
+        using (var pile = new DefaultPile())
+        {
+          pile.Start();
+          var ipile = pile as IPile;
+
+          var buf = new byte[]{1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
+
+          var pp = ipile.Put(buf);
+
+          byte svr;
+          var buf2 = ipile.GetRawBuffer(pp, out svr); //main point: we dont get any exceptions
+          
+          Assert.IsTrue(buf2.Length >= buf.Length);
+        }
+      } 
+
+
+
+      [Test]
       [ExpectedException(typeof(PileAccessViolationException))]
       public void GetNoObject()
       {

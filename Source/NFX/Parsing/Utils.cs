@@ -30,23 +30,46 @@ namespace NFX.Parsing
 {
   public static class Utils
   {
+    private const char SPACE = ' ';
+    private static readonly char[] FIELD_NAME_DELIMETERS = new char[] {' ', '-', '_'};
 
     /// <summary>
     /// Parses database field names (column names) and converts parts to human-readable description
     ///  like:
-    ///  "FIRST_NAME" -> "First Name",    
+    ///  "FIRST_NAME" -> "First Name",
     ///  "FirstName" -> "First Name",
     ///  "CHART_OF_ACCOUNTS" -> "Chart of Accounts"
     /// </summary>
     public static string ParseFieldNameToDescription(this string fieldName, bool capitalize)
     {
-      string result = fieldName;
-      var segs = fieldName.Split(' ', '-', '_');
+      if (fieldName.IsNullOrWhiteSpace()) return string.Empty;
 
-      if (capitalize)
-        result = segs.Select(s => s.Trim().ToLowerInvariant().CapitalizeFirstChar()).Aggregate( (s1,s2) => s1+" "+s2);
-      else
-        result = segs.Select(s => s.Trim().ToLowerInvariant()).Aggregate( (s1,s2) => s1+" "+s2);
+      var builder = new StringBuilder();
+      char prev = fieldName[0];
+      builder.Append(prev);
+
+      var length = fieldName.Length;
+      for (int i = 1; i < length; i++)
+      {
+        var curr = fieldName[i];
+        if (
+            !FIELD_NAME_DELIMETERS.Contains(prev) && 
+            !FIELD_NAME_DELIMETERS.Contains(curr) &&
+            (charCaseTransition(prev, curr) || charDigitTransition(prev, curr))
+           )
+        {
+            builder.Append(SPACE);
+        }
+        
+        builder.Append(curr);
+        prev = curr;
+      }
+
+      var name = builder.ToString();
+      var segs = name.Split(FIELD_NAME_DELIMETERS, StringSplitOptions.RemoveEmptyEntries);
+      var result = capitalize ?
+                      segs.Select(s => s.Trim().ToLowerInvariant().CapitalizeFirstChar()).Aggregate((s1,s2) => s1+SPACE+s2) :
+                      segs.Select(s => s.Trim().ToLowerInvariant()).Aggregate((s1,s2) => s1+SPACE+s2);
 
       return result;
     }
@@ -176,8 +199,14 @@ namespace NFX.Parsing
       return senseCase ? a==b : Char.ToUpperInvariant(a)==Char.ToUpperInvariant(b);
     }
 
+    private static bool charCaseTransition(char prev, char curr)
+    {
+      return  char.IsLower(prev) & char.IsUpper(curr);
+    }
 
-
-
+    private static bool charDigitTransition(char prev, char curr)
+    {
+      return char.IsDigit(prev) ^ char.IsDigit(curr);
+    }
   }
 }

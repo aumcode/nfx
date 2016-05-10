@@ -261,11 +261,22 @@ namespace NFX.Environment
             string ToLaconicString(NFX.CodeAnalysis.Laconfig.LaconfigWritingOptions options = null);
 
             /// <summary>
-            /// Converts this IConfigSectionNode to JSONDataMap.
-            /// Be carefull: that this operation can "loose" data from IConfigSectionNode.
-            /// In other words some IConfigSectionNode information can not be reflected in corresponding JSONDataMap
+            /// Converts this ConfigSectionNode to JSONDataMap. Contrast with ToConfigurationJSONDataMap
+            /// Be carefull: that this operation can "loose" data from ConfigSectionNode.
+            /// In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap, for example
+            ///  this method overwrites duplicate key names and does not support section values
             /// </summary>
             JSONDataMap ToJSONDataMap();
+
+            /// <summary>
+            /// Returns the contents of this node per JSONConfiguration specification. Contrast with ToJSONDataMap
+            /// </summary>
+            JSONDataMap ToConfigurationJSONDataMap();
+
+            /// <summary>
+            /// Serializes configuration tree rooted at this node into JSON configuration format and returns it as a string
+            /// </summary>
+            string ToJSONString(NFX.Serialization.JSON.JSONWritingOptions options = null);
       }
 
       /// <summary>

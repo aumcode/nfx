@@ -534,6 +534,7 @@ namespace NFX.RecordModel
 
      /// <summary>
      /// Indicates whether a field was marked. This property is usually used to implement user-selectable fields 
+     /// </summary>
      [Category(CoreConsts.PRESENTATION_CATEGORY),
      Description("Indicates whether a field was marked. This property is usually used to implement user-selectable fields"),
      DefaultValue(false)]

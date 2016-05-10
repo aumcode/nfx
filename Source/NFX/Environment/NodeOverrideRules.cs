@@ -197,6 +197,16 @@ namespace NFX.Environment
         }
 
         /// <summary>
+        /// When true will APPEND sections not having SectionMatchAttrName defined,
+        /// otherwise matches section names by SectionMatchAttrName
+        /// </summary>
+        public bool AppendSectionsWithoutMatchAttr
+        {
+          get;
+          set;
+        }
+
+        /// <summary>
         /// Provides a name for clear section - when present it deletes all existing subsections
         /// </summary>
         public string SectionClearName

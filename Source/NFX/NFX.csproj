@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsentValue.cs" />
     <Compile Include="App.cs" />
     <Compile Include="ApplicationModel\BaseSession.cs" />
     <Compile Include="ApplicationModel\CommonApplicationLogic.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="ApplicationModel\ExecutionContext.cs" />
     <Compile Include="ApplicationModel\LifecycleIntfs.cs" />
     <Compile Include="ApplicationModel\NOPSession.cs" />
+    <Compile Include="ApplicationModel\Pile\CacheExtensions.cs" />
     <Compile Include="ApplicationModel\Pile\DefaultPile.cs" />
     <Compile Include="ApplicationModel\Pile\Enums.cs" />
     <Compile Include="ApplicationModel\Pile\Exceptions.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="ApplicationModel\Pile\Instrumentation\Gauges.cs" />
     <Compile Include="ApplicationModel\Pile\IPile.cs" />
     <Compile Include="ApplicationModel\Pile\ICache.cs" />
+    <Compile Include="ApplicationModel\Pile\KeyStructs.cs" />
     <Compile Include="ApplicationModel\Pile\LocalCache.cs" />
     <Compile Include="ApplicationModel\Pile\LocalCacheTable.cs" />
     <Compile Include="ApplicationModel\Pile\PilePointer.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
     <Compile Include="Environment\ConfigNodeEqualityComparer.cs" />
+    <Compile Include="Environment\JSONConfiguration.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTcpTransport.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTransportFactory.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTransportPasswordSource.cs" />
@@ -131,6 +135,7 @@
     <Compile Include="Erlang\DataAccess\ErlDataStore.cs" />
     <Compile Include="Erlang\DataAccess\ErlDataAccessException.cs" />
     <Compile Include="Erlang\DataAccess\SchemaMap.cs" />
+    <Compile Include="Erlang\DataAccess\ErlSchemaUtils.cs" />
     <Compile Include="ExternalParameterAttribute.cs" />
     <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
     <Compile Include="CodeAnalysis\XML\XMLLanguage.cs" />
@@ -342,6 +347,7 @@
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
     <Compile Include="RecordModel\CRUDSchemaRecord.cs" />
+    <Compile Include="SealedString.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />
     <Compile Include="Security\PasswordUtils.cs" />

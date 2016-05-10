@@ -88,6 +88,7 @@
       this.label17 = new System.Windows.Forms.Label();
       this.stbMemCapacityBytes = new System.Windows.Forms.TextBox();
       this.btnCompact = new System.Windows.Forms.Button();
+      this.chkRaw = new System.Windows.Forms.CheckBox();
       this.grpPerson.SuspendLayout();
       this.groupBox1.SuspendLayout();
       this.SuspendLayout();
@@ -264,6 +265,7 @@
       // 
       // grpPerson
       // 
+      this.grpPerson.Controls.Add(this.chkRaw);
       this.grpPerson.Controls.Add(this.btnPersonParaGet);
       this.grpPerson.Controls.Add(this.btnStruct);
       this.grpPerson.Controls.Add(this.btnPersonSizeOf);
@@ -739,6 +741,16 @@
       this.btnCompact.UseVisualStyleBackColor = true;
       this.btnCompact.Click += new System.EventHandler(this.btnCompact_Click);
       // 
+      // chkRaw
+      // 
+      this.chkRaw.AutoSize = true;
+      this.chkRaw.Location = new System.Drawing.Point(143, 111);
+      this.chkRaw.Name = "chkRaw";
+      this.chkRaw.Size = new System.Drawing.Size(79, 17);
+      this.chkRaw.TabIndex = 38;
+      this.chkRaw.Text = "Raw Buffer";
+      this.chkRaw.UseVisualStyleBackColor = true;
+      // 
       // PileForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -851,5 +863,6 @@
     private System.Windows.Forms.Button btnStruct;
     private System.Windows.Forms.Button btnPersonParaGet;
     private System.Windows.Forms.Button btnCompact;
+    private System.Windows.Forms.CheckBox chkRaw;
   }
 }

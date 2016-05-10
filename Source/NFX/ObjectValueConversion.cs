@@ -109,6 +109,42 @@ namespace NFX
               }
          }
 
+         public static ConfigSectionNode AsJSONConfig(this object val, ConfigSectionNode dflt = null, string wrapRootName = "nfx", ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+              string content;
+              try
+              {
+                if (val==null) return dflt;
+                content = val.ToString();
+              }
+              catch
+              {
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
+
+              try
+              {
+                return JSONConfiguration.CreateFromJSON(content).Root;
+              }
+              catch
+              {
+                if (wrapRootName.IsNotNullOrWhiteSpace())
+                  try
+                  {
+                    return JSONConfiguration.CreateFromJSON("{'"+ wrapRootName +"':\n" + content + "\n}").Root;
+                  }
+                  catch
+                  {
+                    if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                    return dflt;
+                  }
+
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
+         }
+
 
          public static ConfigSectionNode AsXMLConfig(this object val, ConfigSectionNode dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
@@ -598,13 +634,26 @@ namespace NFX
          }
 
 
+         /// <summary>
+         /// A "hack" enum used to provide tri-state checkbox functionality in some systems, i.e. HTML checkmarks
+         /// do not understand "nulls". This is a surrogate type not used in server-side programming
+         /// </summary>
+         public enum TriStateBool { Unspecified = 0, False = 1, True = 2}
+
+         public static bool? AsNullableBool(this TriStateBool val)
+         {
+           return val==TriStateBool.Unspecified ? null : val==TriStateBool.True ? (bool?)true : (bool?)false;
+         }
+
+
          public static bool AsBool(this object val, bool dflt = false, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
               try
               {
                 if (val==null) return dflt;
 
-                if (val is string)
+                if (val is bool) return (bool)val;
+                else if (val is string)
                 {
                     var sval = ((string)val).Trim();
 
@@ -626,6 +675,8 @@ namespace NFX
                     decimal dcval;
                     if (decimal.TryParse(sval, out dcval)) return dcval!=0;
                 }
+                else if (val is TriStateBool) { return ((TriStateBool)val)==TriStateBool.True; }
+                else if (val is char)   { var c = (char)val; if ( c=='T' || c=='t' || c=='Y' || c=='y' || c=='1')  return true; }
                 else if (val is int)    { if ( (int)val != 0)     return true; }
                 else if (val is double) { if ( (double)val != 0)  return true; }
                 else if (val is decimal){ if ( (decimal)val != 0) return true; }
@@ -642,12 +693,14 @@ namespace NFX
               }
          }
 
-
          public static bool? AsNullableBool(this object val, bool? dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
               try
               {
                 if (val==null) return null;
+
+                if (val is TriStateBool) return ((TriStateBool)val).AsNullableBool();
+
                 return val.AsBool(false, ConvertErrorHandling.Throw);
               }
               catch
@@ -700,7 +753,7 @@ namespace NFX
               try
               {
                 if (val==null) return null;
-                return val.AsGUID(dflt.Value, ConvertErrorHandling.Throw);
+                return val.AsGUID(dflt ?? Guid.Empty, ConvertErrorHandling.Throw);
               }
               catch
               {

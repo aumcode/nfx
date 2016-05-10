@@ -197,11 +197,63 @@ this \r\n is not escape'
 
 
 
+        [TestCase]
+        public void NLSMap_Basic1()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}}";
+
+            var nls = new NLSMap(content);
+
+            Assert.IsTrue (nls["eng"].IsAssigned);
+            Assert.IsFalse(nls["rus"].IsAssigned);
+
+            Assert.AreEqual("Cucumber", nls["eng"].Name);
+            Assert.AreEqual(null, nls["rus"].Name);
+
+            Assert.AreEqual("It is green", nls["eng"].Description);
+            Assert.AreEqual(null, nls["rus"].Description);
+        }
+
 
         [TestCase]
-        public void NLSMap_Basic()
+        public void NLSMap_Basic2()
         {
-            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
+
+            var nls = new NLSMap(content);
+
+            Assert.IsTrue (nls["eng"].IsAssigned);
+            Assert.IsTrue (nls["deu"].IsAssigned);
+            Assert.IsFalse(nls["rus"].IsAssigned);
+
+            Assert.AreEqual("Cucumber", nls["eng"].Name);
+            Assert.AreEqual("Gurke", nls["deu"].Name);
+
+            Assert.AreEqual("It is green", nls["eng"].Description);
+            Assert.AreEqual("Es ist grün", nls["deu"].Description);
+        }
+
+        [TestCase]
+        public void NLSMap_Basic1_WithRoot()
+        {
+            var content=@"{""nls"": {""eng"": {""n"": ""Cucumber"",""d"": ""It is green""}}}";
+
+            var nls = new NLSMap(content);
+
+            Assert.IsTrue (nls["eng"].IsAssigned);
+            Assert.IsFalse(nls["rus"].IsAssigned);
+
+            Assert.AreEqual("Cucumber", nls["eng"].Name);
+            Assert.AreEqual(null, nls["rus"].Name);
+
+            Assert.AreEqual("It is green", nls["eng"].Description);
+            Assert.AreEqual(null, nls["rus"].Description);
+        }
+
+        [TestCase]
+        public void NLSMap_Basic2_WithRoot()
+        {
+            var content=@"{""nls"": {""eng"": {""n"": ""Cucumber"",""d"": ""It is green""}, ""deu"": {""n"": ""Gurke"", ""d"": ""Es ist grün""}}}";
 
             var nls = new NLSMap(content);
 
@@ -219,7 +271,7 @@ this \r\n is not escape'
         [TestCase]
         public void NLSMap_SerializeAll()
         {
-            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
 
             var nls = new NLSMap(content);
 
@@ -236,7 +288,7 @@ this \r\n is not escape'
         [TestCase]
         public void NLSMap_SerializeOnlyOneExisting()
         {
-            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
 
             var nls = new NLSMap(content);
 
@@ -255,7 +307,7 @@ this \r\n is not escape'
         [TestCase]
         public void NLSMap_SerializeOnlyOneNoneExisting()
         {
-            var content="eng{n='Cucumber' d='It is green'} deu{n='Gurke' d='Es ist grün'}";
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
 
             var nls = new NLSMap(content);
 
@@ -269,6 +321,145 @@ this \r\n is not escape'
 
             Assert.AreEqual("Cucumber", read.n);
             Assert.AreEqual("It is green", read.d);
+        }
+
+        [TestCase]
+        public void NLSMap_Get_Name()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
+
+            var nls = new NLSMap(content);
+
+            var name = nls.Get(NLSMap.GetParts.Name);
+            Assert.AreEqual("Cucumber", name);
+
+            name = nls.Get(NLSMap.GetParts.Name, "deu");
+            Assert.AreEqual("Gurke", name);
+
+            name = nls.Get(NLSMap.GetParts.Name, "XXX");
+            Assert.AreEqual("Cucumber", name);
+
+            name = nls.Get(NLSMap.GetParts.Name, "XXX", dfltLangIso: "ZZZ");
+            Assert.IsNull(name);
+        }
+
+        [TestCase]
+        public void NLSMap_Get_Descr()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
+
+            var nls = new NLSMap(content);
+
+            var descr = nls.Get(NLSMap.GetParts.Description);
+            Assert.AreEqual("It is green", descr);
+
+            descr = nls.Get(NLSMap.GetParts.Description, "deu");
+            Assert.AreEqual("Es ist grün", descr);
+
+            descr = nls.Get(NLSMap.GetParts.Description, "XXX");
+            Assert.AreEqual("It is green", descr);
+
+            descr = nls.Get(NLSMap.GetParts.Description, "XXX", dfltLangIso: "ZZZ");
+            Assert.IsNull(descr);
+        }
+
+        [TestCase]
+        public void NLSMap_Get_NameOrDescr()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}, rus: { d: 'On Zeleniy'}}";
+
+            var nls = new NLSMap(content);
+
+            var nord = nls.Get(NLSMap.GetParts.NameOrDescription);
+            Assert.AreEqual("Cucumber", nord);
+
+            nord = nls.Get(NLSMap.GetParts.NameOrDescription, "deu");
+            Assert.AreEqual("Gurke", nord);
+
+            nord = nls.Get(NLSMap.GetParts.NameOrDescription, "XXX");
+            Assert.AreEqual("Cucumber", nord);
+
+            nord = nls.Get(NLSMap.GetParts.NameOrDescription, "rus");
+            Assert.AreEqual("On Zeleniy", nord);
+
+            nord = nls.Get(NLSMap.GetParts.NameOrDescription, "XXX", dfltLangIso: "ZZZ");
+            Assert.IsNull(nord);
+        }
+
+        [TestCase]
+        public void NLSMap_Get_DescrOrName()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}, rus: { d: 'On Zeleniy'}}";
+
+            var nls = new NLSMap(content);
+
+            var dorn = nls.Get(NLSMap.GetParts.DescriptionOrName);
+            Assert.AreEqual("It is green", dorn);
+
+            dorn = nls.Get(NLSMap.GetParts.DescriptionOrName, "deu");
+            Assert.AreEqual("Es ist grün", dorn);
+
+            dorn = nls.Get(NLSMap.GetParts.DescriptionOrName, "XXX");
+            Assert.AreEqual("It is green", dorn);
+
+            dorn = nls.Get(NLSMap.GetParts.DescriptionOrName, "rus");
+            Assert.AreEqual("On Zeleniy", dorn);
+
+            dorn = nls.Get(NLSMap.GetParts.DescriptionOrName, "XXX", dfltLangIso: "ZZZ");
+            Assert.IsNull(dorn);
+        }
+
+
+        [TestCase]
+        public void NLSMap_Get_NameAndDescr()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}, rus: { d: 'On Zeleniy'}}";
+
+            var nls = new NLSMap(content);
+
+            var nand = nls.Get(NLSMap.GetParts.NameAndDescription);
+            Assert.AreEqual("Cucumber - It is green", nand);
+
+            nand = nls.Get(NLSMap.GetParts.NameAndDescription, "deu");
+            Assert.AreEqual("Gurke - Es ist grün", nand);
+
+            nand = nls.Get(NLSMap.GetParts.NameAndDescription, "XXX");
+            Assert.AreEqual("Cucumber - It is green", nand);
+
+             nand = nls.Get(NLSMap.GetParts.NameAndDescription, "YYY", concat: "::");
+            Assert.AreEqual("Cucumber::It is green", nand);
+
+            nand = nls.Get(NLSMap.GetParts.NameAndDescription, "rus");
+            Assert.AreEqual("On Zeleniy", nand);
+
+            nand = nls.Get(NLSMap.GetParts.NameAndDescription, "XXX", dfltLangIso: "ZZZ");
+            Assert.IsNull(nand);
+        }
+
+        [TestCase]
+        public void NLSMap_Get_DescrAndName()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}, rus: { d: 'On Zeleniy'}}";
+
+            var nls = new NLSMap(content);
+
+            var dan = nls.Get(NLSMap.GetParts.DescriptionAndName);
+            Assert.AreEqual("It is green - Cucumber", dan);
+
+            dan = nls.Get(NLSMap.GetParts.DescriptionAndName, "deu");
+            Assert.AreEqual("Es ist grün - Gurke", dan);
+
+            dan = nls.Get(NLSMap.GetParts.DescriptionAndName, "XXX");
+            Assert.AreEqual("It is green - Cucumber", dan);
+
+             dan = nls.Get(NLSMap.GetParts.DescriptionAndName, "YYY", concat: "::");
+            Assert.AreEqual("It is green::Cucumber", dan);
+
+            dan = nls.Get(NLSMap.GetParts.DescriptionAndName, "rus");
+            Assert.AreEqual("On Zeleniy", dan);
+
+            dan = nls.Get(NLSMap.GetParts.DescriptionAndName, "XXX", dfltLangIso: "ZZZ");
+            Assert.IsNull(dan);
         }
 
 

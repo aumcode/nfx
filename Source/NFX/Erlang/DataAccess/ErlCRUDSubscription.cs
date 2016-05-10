@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NFX;
@@ -28,10 +30,12 @@ namespace NFX.DataAccess.Erlang
                                  ) : base(store, name, query, recipient, correlate)
     {
        m_ErlBox = store.MakeMailbox();
+       m_Queue  = new ConcurrentQueue<IQueable>();
 
        m_ErlBox.MailboxMessage += (_, msg) => 
                                   {
-                                    Task.Run( () => process(msg) );
+                                    m_Queue.Enqueue(msg);
+                                    asyncProcess();
                                     return true;
                                   };
 
@@ -46,6 +50,39 @@ namespace NFX.DataAccess.Erlang
       if (!IsLoaded || !IsValid)
         return;
       subscribeCore();
+    }
+
+    private int  m_TaskLock;
+
+    private void asyncProcess()
+    {
+      if (Interlocked.CompareExchange(ref m_TaskLock, 1, 0) == 1)
+        return;
+
+      Task.Run
+      (
+        () =>
+        {
+          while (true)
+          {
+            try
+            {
+              IQueable msg;
+              while (m_Queue.TryDequeue(out msg))
+                process(msg);
+            }
+            finally
+            {
+              Thread.VolatileWrite(ref m_TaskLock, 0);
+            }
+
+            if (m_Queue.IsEmpty) return;
+
+            if (Interlocked.CompareExchange(ref m_TaskLock, 1, 0) == 1)
+              return;
+          }
+        }
+      );
     }
 
     private void subscribeCore()
@@ -79,7 +116,7 @@ namespace NFX.DataAccess.Erlang
     private ErlDataStore m_Store;
     private Query m_Query;
     internal ErlMbox m_ErlBox;
-
+    private ConcurrentQueue<IQueable> m_Queue;
 
     private static readonly IErlObject SUBSCRIPTION_MSG_PATTERN = 
                    "{Schema::atom(), Timestamp::long(), Type, Rows::list()}".ToErlObject();
@@ -141,7 +178,7 @@ namespace NFX.DataAccess.Erlang
             try
             {
               var row  = map.ErlTupleToRow(schemaName, rowTuple, schema);
-              var data = new CRUDSubscriptionEvent(etp, schema, row, new DataTimeStamp(ts));
+              var data = new CRUDSubscriptionEvent(etp, schema, row, m_LastTimeStamp);
               this.Mailbox.Deliver(this, data);
             }
             catch(Exception ie)
@@ -155,7 +192,7 @@ namespace NFX.DataAccess.Erlang
         }
         else
         {  //used to clear data, no rows are fetched
-          var data = new CRUDSubscriptionEvent(etp, schema, null, new DataTimeStamp(ts));
+          var data = new CRUDSubscriptionEvent(etp, schema, null, m_LastTimeStamp);
           this.Mailbox.Deliver(this, data);
         }  
       }

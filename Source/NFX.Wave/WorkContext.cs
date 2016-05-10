@@ -43,6 +43,7 @@ namespace NFX.Wave
     #region .ctor/.dctor
       internal WorkContext(WaveServer server, HttpListenerContext listenerContext)
       {
+        m_ID = Guid.NewGuid();
         m_Server = server;
         m_ListenerContext = listenerContext;
         m_Response = new Response(this, listenerContext.Response);
@@ -71,6 +72,7 @@ namespace NFX.Wave
     #endregion
 
     #region Fields
+      private Guid m_ID;
       private WaveServer m_Server;
       private bool m_WorkSemaphoreReleased;
       
@@ -99,6 +101,8 @@ namespace NFX.Wave
                      /// </summary>
                      internal void ___SetWorkMatch(WorkMatch match, JSONDataMap vars){m_Match = match; m_MatchedVars = vars;} 
 
+      private bool m_HasParsedRequestBody;
+      private JSONDataMap m_RequestBodyAsJSONDataMap;
       private JSONDataMap m_WholeRequestAsJSONDataMap;
 
       internal bool m_Handled;
@@ -111,6 +115,13 @@ namespace NFX.Wave
     #endregion
 
     #region Properties
+      
+      
+      /// <summary>
+      /// Uniquely identifies the request
+      /// </summary>
+      public Guid ID{ get{ return m_ID;} }
+      
       /// <summary>
       /// Returns the server this context is under
       /// </summary>
@@ -157,6 +168,21 @@ namespace NFX.Wave
       /// </summary>
       public Portal Portal { get { return m_Portal;} }
 
+               /// <summary>
+               /// DEVELOPERS do not use!
+               /// A hack method needed in some VERY RARE cases, like serving an error page form the filter which is out of portal scope.
+               /// </summary>
+               public void ___InternalInjectPortal(Portal portal = null,
+                                                   Theme theme = null,
+                                                   WorkMatch match = null,
+                                                   JSONDataMap matchedVars = null)
+                                                   {
+                                                     m_Portal = portal; 
+                                                     m_PortalTheme = theme; 
+                                                     m_PortalMatch = match;
+                                                     m_PortalMatchedVars = matchedVars;
+                                                   }
+
       /// <summary>
       /// Returns the first portal filter which was injected in the processing line.
       /// It is the filter that manages the portals for this context
@@ -199,7 +225,7 @@ namespace NFX.Wave
         get 
         {
           if (m_MatchedVars==null)
-            m_MatchedVars = new JSONDataMap();
+            m_MatchedVars = new JSONDataMap(false);
 
           return m_MatchedVars;
         } 
@@ -211,6 +237,25 @@ namespace NFX.Wave
       /// </summary>
       public dynamic Matched{ get { return new JSONDynamicObject(MatchedVars);} }
 
+
+
+      /// <summary>
+      /// Fetches request body: multipart content, url encoded content, or JSON body into one JSONDataMap bag,
+      /// or null if there is no body.
+      /// The property does caching
+      /// </summary>
+      public JSONDataMap RequestBodyAsJSONDataMap
+      {
+        get
+        {
+          if (!m_HasParsedRequestBody)
+          {
+            m_RequestBodyAsJSONDataMap = ParseRequestBodyAsJSONDataMap();
+            m_HasParsedRequestBody = true;
+          }
+          return m_RequestBodyAsJSONDataMap;
+        }
+      }
 
       /// <summary>
       /// Fetches matched vars, multipart content, url encoded content, or JSON body into one JSONDataMap bag.
@@ -414,8 +459,10 @@ namespace NFX.Wave
       
         if (related.HasValue)
           msg.RelatedTo = related.Value;
+        else
+          msg.RelatedTo = this.m_ID;
 
-        App.Log.Write(msg);     
+        App.Log.Write(msg);
       }
 
       /// <summary>
@@ -445,15 +492,35 @@ namespace NFX.Wave
       /// </summary>
       protected virtual JSONDataMap GetWholeRequestAsJSONDataMap()
       {
-        if (!Request.HasEntityBody) return MatchedVars;
+        var body = this.RequestBodyAsJSONDataMap;
+        
+        if (body==null) return MatchedVars;
 
+        var result = new JSONDataMap(false);
+        result.Append(MatchedVars)
+              .Append(body);
+        return result;
+      }
+
+      /// <summary>
+      /// This method is called only once as it touches the input streams
+      /// </summary>
+      protected virtual JSONDataMap ParseRequestBodyAsJSONDataMap()
+      {
+        if (!Request.HasEntityBody) return null;
+        
         JSONDataMap result = null;
 
         var ctp = Request.ContentType;
         
         //Multipart
         if (ctp.IndexOf(ContentType.FORM_MULTIPART_ENCODED)>=0)
-          result = MultiPartContent.ToJSONDataMap(Request.InputStream, ctp,  Request.ContentEncoding);
+        {
+          var boundary = Multipart.ParseContentType(ctp);
+          var mp = Multipart.ReadFromStream(Request.InputStream, ref boundary, Request.ContentEncoding); 
+          result =  mp.ToJSONDataMap();
+          // Multipart.ToJSONDataMap(Request.InputStream, ctp,  Request.ContentEncoding);
+        }
         else //Form URL encoded
         if (ctp.IndexOf(ContentType.FORM_URL_ENCODED)>=0)
           result = JSONDataMap.FromURLEncodedStream(new NFX.IO.NonClosingStreamWrap(Request.InputStream),
@@ -462,8 +529,8 @@ namespace NFX.Wave
         if (ctp.IndexOf(ContentType.JSON)>=0)
           result = JSONReader.DeserializeDataObject(new NFX.IO.NonClosingStreamWrap(Request.InputStream),
                                                   Request.ContentEncoding) as JSONDataMap;
-
-        return result==null ? MatchedVars : result.Append(MatchedVars);
+        
+        return result;
       }
 
     #endregion

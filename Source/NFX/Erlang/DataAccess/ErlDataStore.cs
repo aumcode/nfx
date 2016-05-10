@@ -531,7 +531,7 @@ namespace NFX.DataAccess.Erlang
                                      }) as ErlTuple;
 
             if (bonjour==null)
-              throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"Bonjour request timeout");
+              throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"Bonjour request timeout");
            
             var bind = bonjour.Match(BONJOUR_OK_PATTERN);
             if (bind!=null)
@@ -539,7 +539,7 @@ namespace NFX.DataAccess.Erlang
               var instID = bind["InstanceID"].ValueAsLong;
 
               if (instID!=m_InstanceID)
-                throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"Bonjour(InstanceId mismatch)");
+                throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"Bonjour(InstanceId mismatch)");
 
               var    contentType = bind[ENCODING].ValueAsString;
               string xmlContent  = null;
@@ -562,7 +562,7 @@ namespace NFX.DataAccess.Erlang
               m_Map._NeedReconnect = false;
             }
             else 
-              throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"Bonjour(!ok)");
+              throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"Bonjour(!ok)");
           }
           //Resubscribe
           foreach(var subs in m_Subscriptions.Cast<ErlCRUDSubscription>())
@@ -608,7 +608,7 @@ namespace NFX.DataAccess.Erlang
         var result = this.ExecuteRPC(NFX_CRUD_MOD, delete ? NFX_DELETE_FUN : NFX_WRITE_FUN,  rowArgs);
         
         if (result==null)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"CRUDWrite==null");
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"CRUDWrite==null");
 
         var bind = result.Match(CRUD_WRITE_OK_PATTERN);
 
@@ -648,7 +648,7 @@ namespace NFX.DataAccess.Erlang
         catch(Exception error)
         {
           throw new ErlDataAccessException(StringConsts.ERL_DS_RPC_EXEC_ERROR.Args(
-                                              "{0}:{1}({2})".Args(module, func, args.ToString().TakeFirstChars(20)), 
+                                              "{0}:{1}({2})".Args(module, func, args.ToString().TakeFirstChars(256)), 
                                               error.ToMessageWithType(), error));
         }
         finally

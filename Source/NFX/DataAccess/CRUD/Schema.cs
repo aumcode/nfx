@@ -49,6 +49,12 @@ namespace NFX.DataAccess.CRUD
             [Serializable]
             public sealed class FieldDef : INamed, IOrdered, ISerializable, IJSONWritable
             {
+                
+                public FieldDef(string name, Type type, FieldAttribute attr) 
+                {
+                    ctor(name, 0, type, new[]{attr}, null);
+                }
+
                 public FieldDef(string name, Type type, IEnumerable<FieldAttribute> attrs) 
                 {
                     ctor(name, 0, type, attrs, null);
@@ -285,10 +291,23 @@ namespace NFX.DataAccess.CRUD
                 /// </summary>
                 public string GetBackendNameForTarget(string targetName)
                 {
+                    FieldAttribute attr;
+                    return GetBackendNameForTarget(targetName, out attr);
+                }
+
+                /// <summary>
+                /// Returns the name of the field in backend that was possibly overriden for a particular target
+                /// along with store flag
+                /// </summary>
+                public string GetBackendNameForTarget(string targetName, out FieldAttribute attr)
+                {
                     var result = m_Name;
                     var fattr = this[targetName];
-                    if (fattr!=null && fattr.BackendName.IsNotNullOrWhiteSpace()) result = fattr.BackendName;
-
+                    attr = fattr;
+                    if (fattr!=null)
+                    {
+                      if (fattr.BackendName.IsNotNullOrWhiteSpace()) result = fattr.BackendName;
+                    }
                     return result;
                 }
 
@@ -402,6 +421,15 @@ namespace NFX.DataAccess.CRUD
                 return GetForTypedRow(row.GetType());
             }
 
+            /// <summary>
+            /// Returns schema instance for the TypedRow instance by fetching schema object from cache or
+            ///  creating it if it has not been cached yet
+            /// </summary>
+            public static Schema GetForTypedRow<TRow>() where TRow : TypedRow
+            {
+                return GetForTypedRow(typeof(TRow));
+            }
+
 
             /// <summary>
             /// Returns schema instance for the TypedRow instance by fetching schema object from cache or
@@ -451,7 +479,28 @@ namespace NFX.DataAccess.CRUD
                       var order = 0;
                       foreach(var prop in props)
                       {
-                          var fattrs = prop.GetCustomAttributes(typeof(FieldAttribute), false).Cast<FieldAttribute>();
+                          var fattrs = prop.GetCustomAttributes(typeof(FieldAttribute), false)
+                                           .Cast<FieldAttribute>()
+                                           .ToArray();
+                          
+                          //20160318 DKh. Interpret [Field(CloneFromType)]
+                          for(var i=0; i<fattrs.Length; i++)
+                          {
+                            var attr = fattrs[i];
+                            if (attr.CloneFromRowType==null) continue;
+                            
+                            if (fattrs.Length>1)
+                             throw new CRUDException(StringConsts.CRUD_TYPED_ROW_SINGLE_CLONED_FIELD_ERROR.Args(trow.FullName, prop.Name));
+                            
+                            var clonedSchema = Schema.GetForTypedRow(attr.CloneFromRowType);
+                            var clonedDef = clonedSchema[prop.Name];
+                            if (clonedDef==null)
+                             throw new CRUDException(StringConsts.CRUD_TYPED_ROW_CLONED_FIELD_NOTEXISTS_ERROR.Args(trow.FullName, prop.Name));
+                           
+                            fattrs = clonedDef.Attrs.ToArray();//replace these attrs from the cloned target
+                            break;
+                          }
+
                           var fdef = new FieldDef(prop.Name, order, prop.PropertyType, fattrs, prop);
                           m_FieldDefs.Register(fdef);
 

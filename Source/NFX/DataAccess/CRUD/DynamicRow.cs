@@ -31,16 +31,29 @@ namespace NFX.DataAccess.CRUD
     public class DynamicRow : Row
     {
         #region .ctor
+            protected DynamicRow()//used by serializer
+            {
+
+            }
+
             public DynamicRow(Schema schema)
             {
-                m_Schema = schema;
-                m_Data = new object[schema.FieldCount];
+               __ctor(schema);
+            }
+
+            /// <summary>
+            /// Developers do not call, lazily injects the statr of this object, 
+            /// this is needed for speed and other optimizations
+            /// </summary>
+            internal void __ctor(Schema schema)
+            {
+               m_Schema = schema;
+               m_Data = new object[schema.FieldCount];
             }
         #endregion
 
         #region Fields
-            
-            
+
             private Schema m_Schema;
             private object[] m_Data;
 
@@ -69,7 +82,7 @@ namespace NFX.DataAccess.CRUD
 
         #region Public
             
-            public sealed override object GetFieldValue(Schema.FieldDef fdef)
+            public override object GetFieldValue(Schema.FieldDef fdef)
             {
                 var result = m_Data[ fdef.Order ];
 
@@ -78,7 +91,7 @@ namespace NFX.DataAccess.CRUD
                 return result;
             }
 
-            public sealed override void SetFieldValue(Schema.FieldDef fdef, object value)
+            public override void SetFieldValue(Schema.FieldDef fdef, object value)
             {
                 value = ConvertFieldValueToDef(fdef, value);
                 m_Data[ fdef.Order ] = value;

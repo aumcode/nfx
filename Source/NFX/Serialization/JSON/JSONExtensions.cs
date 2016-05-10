@@ -33,52 +33,52 @@ namespace NFX.Serialization.JSON
         /// <summary>
         ///  Deserializes JSON content into dynamic JSON object
         /// </summary>
-        public static dynamic JSONToDynamic(this string json)
+        public static dynamic JSONToDynamic(this string json, bool caseSensitiveMaps = true)
         {
-            return JSONReader.DeserializeDynamic(json);
+            return JSONReader.DeserializeDynamic(json, caseSensitiveMaps);
         }
 
         /// <summary>
         ///  Deserializes JSON content into dynamic JSON object
         /// </summary>
-        public static dynamic JSONToDynamic(this Stream json, Encoding encoding = null)
+        public static dynamic JSONToDynamic(this Stream json, Encoding encoding = null, bool caseSensitiveMaps = true)
         {
-            return JSONReader.DeserializeDynamic(json, encoding);
+            return JSONReader.DeserializeDynamic(json, encoding, caseSensitiveMaps);
         }
 
 
         /// <summary>
         ///  Deserializes JSON content into dynamic JSON object
         /// </summary>
-        public static dynamic JSONToDynamic(this ISourceText json)
+        public static dynamic JSONToDynamic(this ISourceText json, bool caseSensitiveMaps = true)
         {
-            return JSONReader.DeserializeDynamic(json);
+            return JSONReader.DeserializeDynamic(json, caseSensitiveMaps);
         }
 
 
         /// <summary>
         ///  Deserializes JSON content into IJSONDataObject
         /// </summary>
-        public static IJSONDataObject JSONToDataObject(this string json)
+        public static IJSONDataObject JSONToDataObject(this string json, bool caseSensitiveMaps = true)
         {
-            return JSONReader.DeserializeDataObject(json);
+            return JSONReader.DeserializeDataObject(json, caseSensitiveMaps);
         }
 
         /// <summary>
         ///  Deserializes JSON content into IJSONDataObject
         /// </summary>
-        public static IJSONDataObject JSONToDataObject(this Stream json, Encoding encoding = null)
+        public static IJSONDataObject JSONToDataObject(this Stream json, Encoding encoding = null, bool caseSensitiveMaps = true)
         {
-            return JSONReader.DeserializeDataObject(json, encoding);
+            return JSONReader.DeserializeDataObject(json, encoding, caseSensitiveMaps);
         }
 
 
         /// <summary>
         ///  Deserializes JSON content into IJSONDataObject
         /// </summary>
-        public static IJSONDataObject JSONToDataObject(this ISourceText json)
+        public static IJSONDataObject JSONToDataObject(this ISourceText json, bool caseSensitiveMaps = true)
         {
-            return JSONReader.DeserializeDataObject(json);
+            return JSONReader.DeserializeDataObject(json, caseSensitiveMaps);
         }
 
 

@@ -27,9 +27,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NFX")]
 [assembly: AssemblyDescription(".NET Framework Extension Core Assembly")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IT Adapter Corp. Inc.")]
+[assembly: AssemblyCompany("IT Adapter")]
 [assembly: AssemblyProduct("NFX")]
-[assembly: AssemblyCopyright("Copyright ©  2003-2015 IT Adapter LLC")]
+[assembly: AssemblyCopyright("Copyright ©  2003-2016 IT Adapter")]
 [assembly: AssemblyTrademark("NFX")]
 [assembly: AssemblyCulture("")]
 
@@ -51,8 +51,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.1")]
-[assembly: AssemblyFileVersion("2.0.0.1")]
+[assembly: AssemblyVersion("3.0.0.1")]
+[assembly: AssemblyFileVersion("3.0.0.1")]
 
 [assembly:InternalsVisibleTo("NFX.Web")]
 [assembly:InternalsVisibleTo("NFX.Wave")]

@@ -33,13 +33,15 @@ namespace NFX.DataAccess.Distributed
   /// possible between authorities. 
   /// Within a single era, GDID structure may identify 2^60 = 1,152,921,504,606,846,976(per authority) * 16(authorities) = 2^64 = 18,446,744,073,709,551,616 total combinations.
   /// Because of such a large number of combinations supported by GDID.ID alone (having the same Era), some systems may always use Era=0 and only store the ID part 
-  /// (i.e. as UNSIGNED BIGINT in SQL datastores)
+  /// (i.e. as UNSIGNED BIGINT in SQL datastores).
+  /// Note GDID.Zero is never returned by generators as it represents the absence of a value
   /// </summary>
   [Serializable]
   public struct GDID : IDataStoreKey, IComparable<GDID>, IEquatable<GDID>, IComparable, IJSONWritable, IDistributedStableHashProvider
   {
         public const UInt64 AUTHORITY_MASK = 0xf000000000000000;
-        public const UInt64 COUNTER_MASK   = 0x0fffffffffffffff;
+        public const UInt64 COUNTER_MASK   = 0x0fffffffffffffff;//0x 0f  ff  ff  ff  ff  ff  ff  ff
+                                                                //    1   2   3   4   5   6   7   8
 
         /// <summary>
         /// Provides maximum value for counter segment
@@ -114,28 +116,33 @@ namespace NFX.DataAccess.Distributed
           }
         }
         
+        /// <summary>
+        /// True is this instance is invalid - represents 0:0:0
+        /// </summary>
+        public bool IsZero
+        {
+          get{ return Era==0 && ID==0;}
+        }
         
         public override string  ToString()
         {
-           //20160123 spol fix incorrect parsing
- 	       //return "GDID[{0}:{1}({2},{3})]".Args(Era, ID, Authority, Counter);
-           return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
+          return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
         }
     
         public override int GetHashCode()
         {
- 	       return (int)Era ^ (int)ID ^ (int)(ID >> 32);
+ 	        return (int)Era ^ (int)ID ^ (int)(ID >> 32);
         }
 
         public ulong GetDistributedStableHash()
         {
-         return  ((ulong)Era << 32) ^ ID;
+          return  ((ulong)Era << 32) ^ ID;
         }
     
         public override bool  Equals(object obj)
         {
- 	       if(obj==null || !(obj is GDID)) return false;
-         return this.Equals(((GDID)obj));
+ 	        if(obj==null || !(obj is GDID)) return false;
+          return this.Equals(((GDID)obj));
         }
 
         public int CompareTo(GDID other)

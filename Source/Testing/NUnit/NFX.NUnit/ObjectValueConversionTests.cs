@@ -51,6 +51,24 @@ namespace NFX.NUnit
         }
 
         [TestCase]
+        public void AsJSONConfig()
+        {
+          Assert.AreEqual(23, "{value: 23}".AsJSONConfig().AttrByName("value").ValueAsInt());
+          Assert.AreEqual(223, "{nfx: {value: 223}}".AsJSONConfig().AttrByName("value").ValueAsInt());
+          Assert.IsNull("{ bad }".AsJSONConfig());
+
+          try
+          {
+            "bad".AsJSONConfig(handling: ConvertErrorHandling.Throw);
+            Assert.Fail("No exception");
+          }
+          catch
+          {
+            Assert.Pass("Got exception as expected");
+          }
+        }
+
+        [TestCase]
         public void FromInt()
         {
             object obj = 123;
@@ -474,6 +492,63 @@ namespace NFX.NUnit
             Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsGUID(Guid.Empty));
         }
         
+
+        [TestCase]
+        public void GUID_5()
+        {
+            object obj = new Guid("CF04F818-6194-48C3-B618-8965ACA4D229");
+
+            Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsGUID(Guid.Empty));
+        }
+
+
+        [TestCase]
+        public void NullableGUID_1()
+        {
+            object obj = "{CF04F818-6194-48C3-B618-8965ACA4D229}";
+
+            Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsNullableGUID());
+        }
+
+        [TestCase]
+        public void NullableGUID_2()
+        {
+            object obj = "CF04F818-6194-48C3-B618-8965ACA4D229";
+
+            Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsNullableGUID());
+        }
+
+        [TestCase]
+        public void NullableGUID_3()
+        {
+            object obj = "sfsadfsd fsdafsd CF04F818-6194-48C3-B618-8965ACA4D229";
+
+            Assert.IsNull(obj.AsNullableGUID());
+        }
+
+        [TestCase]
+        public void NullableGUID_4()
+        {
+            object obj = "sfsadfsd fsdafsd CF04F818-6194-48C3-B618-8965ACA4D229";
+
+            Assert.AreEqual(Guid.Empty, obj.AsNullableGUID(Guid.Empty));
+        }
+
+        [TestCase]
+        public void NullableGUID_5()
+        {
+            object obj = "CF04F818619448C3B6188965ACA4D229";
+
+            Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsNullableGUID());
+        }
+
+        [TestCase]
+        public void NullableGUID_6()
+        {
+            object obj = new Guid("CF04F818-6194-48C3-B618-8965ACA4D229");
+
+            Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsNullableGUID());
+        }
 
 
     }

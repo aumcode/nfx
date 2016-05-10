@@ -216,7 +216,7 @@
       this.chart.TabIndex = 3;
       this.chart.Text = "chart1";
       this.chart.VRulerPosition = NFX.WinForms.Controls.ChartKit.VRulerPosition.Right;
-      this.chart.VRulerWidth = 48;
+      this.chart.VRulerFixedWidth = 48;
       this.chart.Zoom = 1F;
       this.chart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chart_MouseDown);
       // 

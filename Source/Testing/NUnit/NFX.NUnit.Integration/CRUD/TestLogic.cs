@@ -666,33 +666,50 @@ namespace NFX.NUnit.Integration.CRUD
         {
                 
             var row = new Types();
-            row["GDID"] = new GDID(0, 234);
-            row["SCREEN_NAME"] = "User1";
-            row["STRING_NAME"] = "Some user 1";
-            row["CHAR_NAME"] = "Some user 2";
-            row["BOOL_CHAR"] = true; //notice TRUE for both char and bool columns below 
-            row["BOOL_BOOL"] = true;
+            row.GDID = new GDID(0, 234);
+            row.Screen_Name = "User1";
+            row.String_Name = "Some user 1";
+            row.Char_Name = "Some user 2";
+            row.Bool_Char = true; //notice TRUE for both char and bool columns below 
+            row.Bool_Bool = true;
 
             row["AMOUNT"] = 145670.23m;
 
             row["DOB"] = new DateTime(1980,12,1);
+            row["Age"] = 145;
 
             store.Insert( row );
 
-            var row2 = store.LoadOneRow(new Query("CRUD.Types.Load", new GDID(0, 234)));
+            var row2 = store.LoadRow(new Query<Types>("CRUD.Types.Load", new GDID(0, 234)));
 
             Assert.NotNull(row2);
-            Assert.AreEqual(234, row2["GDID"]);
-            Assert.AreEqual("User1", row2["Screen_Name"]);
-            Assert.AreEqual("Some user 1", row2["String_Name"]);
-            Assert.AreEqual("Some user 2", row2["Char_Name"]);
+            Assert.AreEqual(new GDID(0,0,234), row2.GDID);
+            Assert.AreEqual("User1", row2.Screen_Name);
+            Assert.AreEqual("Some user 1", row2.String_Name);
+            Assert.AreEqual("Some user 2", row2.Char_Name);
 
-            Assert.AreEqual(true, row2["BOOL_Char"].AsBool());
-            Assert.AreEqual(true, row2["BOOL_BOOL"].AsBool());
+            Assert.AreEqual(true, row2.Bool_Char.Value);
+            Assert.AreEqual(true, row2.Bool_Bool.Value);
 
-            Assert.AreEqual(145670.23m, row2["Amount"]);
+            Assert.AreEqual(145670.23m, row2.Amount);
 
-            Assert.AreEqual(1980, row2["DOB"].AsDateTime().Year);
+            Assert.AreEqual(1980, row2.DOB.Value.Year);
+
+            Assert.AreEqual(145, row2.Age);
+
+            row.Age = null;
+            row.Bool_Bool = null;
+            row.DOB = null;
+            store.Update(row);
+            
+            var row3 = store.LoadRow(new Query<Types>("CRUD.Types.Load", new GDID(0, 234)));
+            Assert.IsFalse(row3.Age.HasValue);
+            Assert.IsFalse(row3.Bool_Bool.HasValue);
+            Assert.IsFalse(row3.DOB.HasValue);
+
+            Assert.IsNull( row3["Age"].AsNullableInt());
+            Assert.IsNull( row3["DOB"].AsNullableDateTime());
+            Assert.IsNull( row3["Bool_Bool"].AsNullableBool());
         }
 
 

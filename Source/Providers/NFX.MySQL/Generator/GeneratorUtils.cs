@@ -34,7 +34,10 @@ using NFX.DataAccess.Distributed;
 namespace NFX.DataAccess.MySQL
 {
 
-  internal static class GeneratorUtils
+  /// <summary>
+  /// Facilitates various SQL-construction and logging tasks
+  /// </summary>
+  public static class GeneratorUtils
   {
 
         public static Record AsSuitableRecordInstance(ModelBase model, bool autoSql)

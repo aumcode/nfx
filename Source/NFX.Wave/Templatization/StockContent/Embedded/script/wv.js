@@ -47,6 +47,20 @@ var WAVE = (function(){
     
     published.arrayClear = function(array) {  while(array.length > 0) array.pop(); };
 
+    published.mergeArrays = function(left, right, matcher, transform) {
+      var m = published.isFunction(matcher) ? matcher : function(a, b) { return a === b; };
+      var t = published.isFunction(transform) ? transform : function(a){return a;};
+      var a = left.concat(right);
+      for (var i = 0; i < a.length; ++i) {
+        for (var j = i + 1; j < a.length; ++j) {
+          if (m(a[i],a[j]))
+            a.splice(j--, 1);
+        }
+        a[i] = t(a[i]);
+      }
+      return a;
+    }
+
     published.inArray = Array.prototype.indexOf ? 
                           function(array, value) { return array.indexOf(value) !== -1;} : 
                           function(array, value) {
@@ -149,6 +163,63 @@ var WAVE = (function(){
         }
     };
 
+    //Tries to parse string as json, passing through objects and arrays
+    published.tryParseJSON = function(content, dflt) {
+        if (typeof(content)!==tUNDEFINED && content!==null) 
+        {
+          if (published.isMapOrArray(content)) 
+            return {ok: true, obj: content};
+          try {
+            return {ok: true, obj: JSON.parse(content)}; 
+          } catch(e){}
+        }
+        
+        return {ok: false, obj: typeof(dflt)!==tUNDEFINED ? dflt : {}};
+    }
+
+    //returns true if object has no duplicated keys
+    published.checkKeysUnique = function(obj){
+      if (!published.isObject(obj)) return obj;
+
+      var keys = Object.keys(obj);
+      for(var i=0; i < keys.length; ++i)
+        for(var j=i+1; j < keys.length; ++j)
+          if (keys[i].toLowerCase() === keys[j].toLowerCase()) return true;
+
+      return false;
+    }
+
+    // deep clones data object (not functions), set all keys to lower case 
+    published.cloneEnsure = function(obj){
+      if (!published.isObject(obj)) return obj;      
+      var result = {};
+      for(var n in obj) result[n.toLowerCase()] = published.cloneEnsure(obj[n]);
+      return result;
+    }
+
+    //true if object has no keys
+    published.empty = function(obj) {
+        if (typeof(obj)===tUNDEFINED || obj===null) return true;
+        for(var n in obj) return false;
+        return true;
+    }
+
+    //Test if object has its own property
+    published.has = function(obj, prop) {
+        return obj ? hasOwnProperty.call(obj, prop) : false;
+    }
+
+    //Reads obj prop OR it doesnt exist return default or null, but never undefined
+    published.get = function(obj, prop, dflt) {
+        if (typeof(obj)!==tUNDEFINED && 
+            obj!==null &&
+            typeof(prop)!==tUNDEFINED &&
+            prop!==null &&
+            published.has(obj, prop))  return obj[prop];
+        
+        return(typeof(dflt)===tUNDEFINED) ? null : dflt;
+    }
+
 
     published.intValid = function(val) {
         if (!val) return false;
@@ -191,6 +262,37 @@ var WAVE = (function(){
     published.strDefault = function(str, dflt){ 
      return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str; 
     };
+
+    published.nlsNameDefault = function(nls, dflt){ 
+     var v = (typeof(nls)===tUNDEFINED||nls===null) ? null : nls.n;
+     return published.strDefault(v, dflt); 
+    };
+
+    published.nlsDescrDefault = function(nls, dflt){ 
+     var v = (typeof(nls)===tUNDEFINED||nls===null) ? null : nls.d;
+     return published.strDefault(v, dflt); 
+    };
+
+    published.nlsNameOrDescrDefault = function(nls, dflt){ 
+     var v = null;
+     if (typeof(nls)!==tUNDEFINED&&nls!==null)
+     {
+       v = nls.n;
+       if (published.strEmpty(v)) v = nls.d;
+     }
+     return published.strDefault(v, dflt); 
+    };
+
+    published.nlsDescrOrNameDefault = function(nls, dflt){ 
+     var v = null;
+     if (typeof(nls)!==tUNDEFINED&&nls!==null)
+     {
+       v = nls.d;
+       if (published.strEmpty(v)) v = nls.n;
+     }
+     return published.strDefault(v, dflt); 
+    };
+
     
     published.strTrim = function(str){  return str.replace(/^\s+|\s+$/g, ''); };
     published.strLTrim = function(str){  return str.replace(/^\s+/,''); };
@@ -309,6 +411,41 @@ var WAVE = (function(){
       return vset.indexOf(str1)>=0;  
     };
 
+    //returns true if an element is a direct or indirect child of the specified parent
+    published.isParentOf = function(parent, elem){
+      if (WAVE.isFunction(parent.contains)) return parent.contains(elem);
+
+      var node = elem;
+      while(true){
+        node = node.parentNode; 
+        if(node === null) return false;
+        if(node === parent) return true;
+      }
+    };
+
+    //returns computed value of specified css style for given elemen
+    published.styleOf = function(elem, cssStyle){
+      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !WAVE.isFunction(window.getComputedStyle)) 
+        return "";
+
+      return window.getComputedStyle(elem, null).getPropertyValue(cssStyle);
+    };
+
+    //removes html element with given id
+    published.removeElem = function(id) {
+      var el = WAVE.id(id);
+      if (el !== null){
+        el.parentNode.removeChild(el);
+        return true;
+      }
+      return false;
+    };
+
+    published.removeClass = function(elem, className) {
+      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className)) return;
+
+      elem.className = elem.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', "g") , '' );
+    }
 
     var htmlEscapes = {
         "&": "&amp;",
@@ -332,6 +469,17 @@ var WAVE = (function(){
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex & Boris"}' provided that a = 'Alex & Boris'. Data is not HTML escaped
     published.strTemplate = function(tpl, args) {
 	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return args[key]; });
+	};
+
+
+    //Turns content like ' {a: "@name@"} ' -> '{a: "Alex"}' provided that f = function(s, k){ return "Alex"}). Data is HTML escaped
+    published.strHTMLTemplateFun = function(tpl, f) {
+	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) {return published.strEscapeHTML(f(s, key)); });
+	};
+
+    //Turns content like ' {a: "@name@"} ' -> '{a: "Alex"}' provided that f = function(s, k){ return "Alex"}). Data is not HTML escaped
+    published.strTemplateFun = function(tpl, f) {
+	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, f);
 	};
 
     //True if str contains valid email per: a@bc.de
@@ -497,8 +645,20 @@ var WAVE = (function(){
     {
       eng: {},
       rus: {},
-      deu: {}
+      deu: {},
+      fra: {},
+      esp: {},
+
+      allLanguageISOs:  function () {
+         var result = [];
+
+         for (var name in published.LOCALIZER)
+           if (published.has(published.LOCALIZER, name) && name.length === 3) result.push(name);
+
+         return result;
+       }
     };
+
 
     //Localizes string per supplied lang iso code within schema/field
     published.strLocalize = function(iso, schema, fld, val){
@@ -2780,6 +2940,7 @@ WAVE.RecordModel = (function(){
         CTL_TP_RADIO:   "radio",
         CTL_TP_COMBO:   "combo",
         CTL_TP_TEXT:    "text",
+        CTL_TP_NLS:     "nls",
         CTL_TP_TEXTAREA:"textarea",
         CTL_TP_HIDDEN:  "hidden",
         CTL_TP_PUZZLE:  "puzzle",

@@ -33,6 +33,16 @@ namespace NFX.Serialization.JSON
     {
 
         /// <summary>
+        /// Writes JSON data to the file
+        /// </summary>
+        public static void WriteToFile(object data, string  fileName, JSONWritingOptions options = null, Encoding encoding = null)
+        {
+            using(var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+               Write(data, fs, options, encoding);
+        }
+
+
+        /// <summary>
         /// Writes JSON data to the stream
         /// </summary>
         public static void Write(object data, Stream stream, JSONWritingOptions options = null, Encoding encoding = null)
@@ -452,6 +462,9 @@ namespace NFX.Serialization.JSON
                             var first = true;
                             foreach(DictionaryEntry entry in data)
                             {
+                              //20160324 DKh
+                              if (opt.MapSkipNulls && entry.Value==null) continue;
+
                               if (!first)
                                 wri.Write(opt.SpaceSymbols ? ", " : ",");
 

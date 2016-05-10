@@ -157,12 +157,17 @@ namespace NFX.Wave.Client
         var schemaName = row.Schema.Name;
         if (row.Schema.TypedRowType!=null) schemaName = row.Schema.TypedRowType.FullName;
 
-        foreach(var fdef in row.Schema.FieldDefs.Where(fd=>!fd.NonUI))
+        foreach(var sfdef in row.Schema.FieldDefs.Where(fd=>!fd.NonUI))
         {
+          var fdef = row.GetClientFieldDef(this, sfdef, target, isoLang);
+          if (fdef==null || fdef.NonUI) continue;
+         
           var fld = new JSONDataMap();
           fields.Add(fld);
           fld["def"] = FieldDefToJSON(row, schemaName, fdef, target, isoLang, valueListLookup);
-          fld["val"] = row.GetFieldValue(fdef);
+          var val = row.GetClientFieldValue(this, sfdef, target, isoLang);
+          if (val is GDID && ((GDID)val).IsZero) val = null;
+          fld["val"] = val;
           var ferr = validationError as CRUDFieldValidationException;
           //field level exception
           if (ferr!= null && ferr.FieldName==fdef.Name)
@@ -228,12 +233,14 @@ namespace NFX.Wave.Client
             }
             else
             {
-              if (valueListLookup!=null)
-              {
-                var valueList = valueListLookup(this, row, fdef, target, isoLang);
-                if (valueList!=null)
-                  result["LookupDict"] = valueList;
-              }
+              var valueList = valueListLookup!=null ? valueListLookup(this, row, fdef, target, isoLang)
+                                                    : row.GetClientFieldValueList(this, fdef, target, isoLang);
+              
+              if (valueList==null && attr.HasValueList)
+                valueList = attr.ParseValueList();
+              
+              if (valueList!=null)
+                result["LookupDict"] = valueList;
             }
             
             if (attr.Kind!=DataKind.Text) result["Kind"] = MapCLRKindToJS(attr.Kind);

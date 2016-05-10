@@ -116,21 +116,14 @@ namespace NFX.DataAccess.Erlang
         // {ReqID, {error, Reason}}
 
         if (response==null)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response timeout");
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"QryHndlr.Response timeout");
 
 
         bind = response.Match(EXECUTE_OK_PATTERN);
-        if (bind==null)
-        {
-          bind = response.Match(EXECUTE_ERROR_PATTERN);
-          if (bind==null || bind[ATOM_ReqID].ValueAsLong != reqID)
-            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response wrong error");
-
-          throw new ErlDataAccessException("Remote error code {0}. Message: '{1}'".Args(bind[ATOM_Code], bind[ATOM_Msg]));
-        }
+        checkForError(EXECUTE_ERROR_PATTERN, response, bind, reqID);
 
         if (bind[ATOM_ReqID].ValueAsLong != reqID)
-            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response.ReqID mismatch");
+            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"QryHndlr.Response.ReqID mismatch");
 
         //{ReqID::int(), {ok, SchemaID::atom(), Rows::list()}}
 
@@ -159,7 +152,7 @@ namespace NFX.DataAccess.Erlang
         var ts = ((ErlCRUDQueryExecutionContext)context).SubscriptionTimestamp;
 
         if (!ts.HasValue)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TIMESTAMP_CTX_ABSENT_ERROR);
+          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TMSTAMP_CTX_ABSENT_ERROR);
 
         var parsed = prepareQuery(m_Source);
 
@@ -197,9 +190,9 @@ namespace NFX.DataAccess.Erlang
         }
 
         if (!wass)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_SUBSCRIBER_NOT_FOUND_ERROR);
+          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_SUBSCR_NOT_FOUND_ERROR);
         if (!wast)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TIMESTAMP_NOT_FOUND_ERROR);
+          throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TMSTAMP_NOT_FOUND_ERROR);
 
 
         var request = parsed.ArgTerm.Subst(bind);
@@ -221,29 +214,11 @@ namespace NFX.DataAccess.Erlang
         // {ReqID, {ReqID::int(), {error, Code::int(), Msg}}}
 
         if (response==null)
-          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response==null");
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"QryHndlr.Response==null");
 
 
         bind = response.Match(EXECUTE_SUBSCRIBE_OK_PATTERN);
-        if (bind==null)
-        {
-          bind = response.Match(EXECUTE_SUBSCRIBE_ERROR_PATTERN);
-          if (bind==null || bind[ATOM_ReqID].ValueAsLong != reqID)
-            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response wrong error");
-
-          var ecode = bind[ATOM_Code].ValueAsInt;
-          var emsg  = bind[ATOM_Msg].ToString();
-
-          Exception error = new ErlDataAccessException("Remote error code {0}. Message: '{1}'".Args(ecode, emsg));
-
-          if (ecode==INVALID_SUBSCRIPTION_REQUEST_EXCEPTION)
-           error = new NFX.DataAccess.CRUD.Subscriptions.InvalidSubscriptionRequestException(emsg, error);
-
-          throw error;
-        }
-
-        if (bind[ATOM_ReqID].ValueAsLong != reqID)
-            throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR+"QryHndlr.Response.ReqID mismatch");
+        checkForError(EXECUTE_SUBSCRIBE_ERROR_PATTERN, response, bind, reqID);
 
         //{ReqID::int(), ok}
         return 0;
@@ -258,6 +233,44 @@ namespace NFX.DataAccess.Erlang
 
 
     #region .pvt
+
+      private void checkForError(IErlObject pattern, IErlObject response, ErlVarBind bind, int reqID)
+      {
+        if (bind != null)
+          return;
+
+        bind = response.Match(pattern);
+        if (bind == null)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR + "invalid error response pattern", new Exception(response.ToString()));
+
+        var gotReqID = bind[ATOM_ReqID].ValueAsLong;
+
+        if (gotReqID != reqID)
+          throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR + "unexpected transaction ID (expected={0}, got={1})".Args(reqID, gotReqID));
+
+        var ecode = bind[ATOM_Code].ValueAsInt;
+        var rmsg  = bind[ATOM_Msg];
+        var emsg  = rmsg.TypeOrder == ErlTypeOrder.ErlString || rmsg.TypeOrder == ErlTypeOrder.ErlAtom
+                  ? rmsg.ValueAsString
+                  : rmsg.ToString();
+
+        Exception error;
+
+        switch (ecode)
+        {
+          case INVALID_SUBSCRIPTION_REQUEST_EXCEPTION:
+            error = new NFX.DataAccess.CRUD.Subscriptions.InvalidSubscriptionRequestException(emsg, null);
+            break;
+          case -1:
+            error = new ErlDataAccessException("Remote error message: {0}".Args(emsg));
+            break;
+          default:
+            error = new ErlDataAccessException("Remote error code {0}. Message: {1}".Args(ecode, emsg));
+            break;
+        }
+
+        throw error;
+      }
 
       private struct parsedQuery
       {

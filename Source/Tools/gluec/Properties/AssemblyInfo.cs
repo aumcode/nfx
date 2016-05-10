@@ -24,9 +24,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("gluec")]
 [assembly: AssemblyDescription("NFX Glue Client Compiler")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IT Adapter Inc.")]
+[assembly: AssemblyCompany("IT Adapter")]
 [assembly: AssemblyProduct("gluec")]
-[assembly: AssemblyCopyright("Copyright © IT Adapter Inc. 2013")]
+[assembly: AssemblyCopyright("Copyright © IT Adapter 2013-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -48,5 +48,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("3.0.0.1")]
+[assembly: AssemblyFileVersion("3.0.0.1")]

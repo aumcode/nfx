@@ -51,6 +51,7 @@ namespace NFX.DataAccess.CRUD
             internal List<Row> m_List;
             internal List<RowChange> m_Changes;
 
+            private JSONDynamicObject m_DataContext;
         #endregion
 
 
@@ -110,6 +111,34 @@ namespace NFX.DataAccess.CRUD
             public int ChangeCount
             {
                 get { return m_Changes!=null?m_Changes.Count : 0; }
+            }
+
+
+            /// <summary>
+            /// Provides dynamic view as JSONDataMap of rowset's data context - attributes applicable to the whole rowset
+            /// </summary>
+            public JSONDataMap ContextMap
+            {
+                get
+                {
+                  var data = this.Context;//laizily created if needed
+                 
+                  return m_DataContext.Data as JSONDataMap;
+                }
+            }
+
+            /// <summary>
+            /// Provides dynamic view of rowset's data context - attributes applicable to the whole rowset
+            /// </summary>
+            public dynamic Context
+            {
+               get
+               {
+                  if (m_DataContext==null) 
+                    m_DataContext = new JSONDynamicObject(JSONDynamicObjectKind.Map, false);
+                 
+                  return m_DataContext;
+               }
             }
 
         #endregion

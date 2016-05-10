@@ -260,12 +260,14 @@ namespace WinFormsTest
       if (lbPerson.SelectedItem==null) return;
       var pp = (PilePointer)lbPerson.SelectedItem;
       
+      var raw = chkRaw.Checked;
       var cnt = tbPersonCount.Text.AsInt(10);
       var w = Stopwatch.StartNew();
       object person = null;
+      byte sver;
       for(var i=0; i<cnt;i++)
       {
-       person = m_Pile.Get( pp );
+        person = raw ? m_Pile.GetRawBuffer( pp, out sver) : m_Pile.Get( pp );
       }
 
       var elps = w.ElapsedMilliseconds;

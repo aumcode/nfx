@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Drawing;
+using System.IO;
 
 using NFX.Web;
 using NFX.Environment;
@@ -191,15 +192,27 @@ namespace NFX.Wave.Handlers
           }
           if (typeof(TypedRow).IsAssignableFrom(ctp))
           {
-            args[i] = JSONReader.ToRow(ctp, requested);
-            continue;
+            try
+            {
+              args[i] = JSONReader.ToRow(ctp, requested);
+              continue;
+            }
+            catch(Exception error)
+            {
+              throw new HTTPStatusException(SysConsts.STATUS_400, 
+                                            SysConsts.STATUS_400_DESCRIPTION,
+                                            error.ToMessageWithType(),
+                                            error);
+            }
           } 
         }
-              
+
         for(var i=0; i<args.Length; i++)
         {
+          if (args[i]!=null) continue;
+
           var mp = mpars[i];
-                
+
           var got = requested[mp.Name];
 
           if (got==null)
@@ -208,6 +221,30 @@ namespace NFX.Wave.Handlers
             continue;
           }
           
+          if (got is byte[])
+          {
+            if (mp.ParameterType==typeof(byte[]))
+            {
+              args[i] = got;
+              continue;
+            }
+            if (mp.ParameterType==typeof(Stream) || mp.ParameterType==typeof(MemoryStream))
+            {
+              args[i] = new MemoryStream((byte[])got, false);
+              continue;
+            }
+            if (strictParamBinding)
+             throw new HTTPStatusException(SysConsts.STATUS_400, 
+                                        SysConsts.STATUS_400_DESCRIPTION,
+                                        StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
+                                                    .Args(
+                                                          controller.GetType().DisplayNameWithExpandedGenericArgs(),
+                                                          strictParamBinding ? "strict" : "relaxed",
+                                                          action,
+                                                          mp.Name,
+                                                          mp.ParameterType.DisplayNameWithExpandedGenericArgs(), "byte[]" )); 
+          }//got byte[]
+
           var strVal = got.AsString();
           try
           {      

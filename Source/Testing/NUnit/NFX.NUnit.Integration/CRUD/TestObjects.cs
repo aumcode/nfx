@@ -98,7 +98,7 @@ namespace NFX.NUnit.Integration.CRUD
 
     public class Types : TypedRow
     {
-      [Field]
+      [Field(key: true)]
       public GDID GDID{ get; set;} 
 
       [Field]
@@ -122,6 +122,9 @@ namespace NFX.NUnit.Integration.CRUD
       
       [Field]
       public DateTime? DOB{ get; set;} 
+
+      [Field]
+      public int? Age{ get; set;} 
     }
 
 

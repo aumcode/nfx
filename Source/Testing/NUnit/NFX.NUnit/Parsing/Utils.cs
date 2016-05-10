@@ -38,6 +38,18 @@ namespace NFX.NUnit.Parsing
 
           Assert.AreEqual("First Name 2", "FIRST-NAME_2".ParseFieldNameToDescription(true));
           Assert.AreEqual("first name 2", "FIRST-NAME_2".ParseFieldNameToDescription(false));
+
+          Assert.AreEqual("First Name 013 S", "FirstName013S".ParseFieldNameToDescription(true));
+          Assert.AreEqual("first name 013 s", "FirstName013S".ParseFieldNameToDescription(false));
+
+          Assert.AreEqual("turn off", "TurnOFF".ParseFieldNameToDescription(false));
+          Assert.AreEqual("Turn Off", "TurnOFF".ParseFieldNameToDescription(true));
+
+          Assert.AreEqual("first name", "__FIRST__Name".ParseFieldNameToDescription(false));
+          Assert.AreEqual("First Name", "__FIRST__Name__".ParseFieldNameToDescription(true));
+
+          Assert.AreEqual("field 0 1", "field_0_1".ParseFieldNameToDescription(false));
+          Assert.AreEqual("Field 0 1", "field_0_1".ParseFieldNameToDescription(true));
         }
 
 

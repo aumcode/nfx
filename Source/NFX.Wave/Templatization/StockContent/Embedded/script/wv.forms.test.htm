@@ -232,6 +232,7 @@
         <div class="fView" data-wv-fname="MiddleName"></div>
         <div class="fView" data-wv-fname="LastName"></div>
         <div class="fView" data-wv-fname="LastName"></div>
+        <div class="fView" data-wv-fname="NLSName"></div>
         <div class="fView" data-wv-fname="Age"></div>
         <div class="fView" data-wv-fname="DateOfCall"></div>
         <div class="fView" data-wv-fname="Phone"></div>
@@ -262,6 +263,7 @@
                                               {def: {Name: 'FirstName', Type: 'string', Required: true, DefaultValue: 'Bob', Placeholder: 'Your First Name', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Sunil'},
                                               {def: {Name: 'MiddleName', Type: 'string', Required: false, Placeholder: 'Your Middle Name', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Borman'},
                                               {def: {Name: 'LastName', Type: 'string', Required: true, DefaultValue: 'Dole', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Buchan'},
+                                              {def: {Name: 'NLSName', Type: 'string', Required: true, ControlType: 'nls'}, val: null},
                                               {def: {Name: 'Age', Type: 'int', MinValue: 10}, val: 127},
                                               {def: {Name: 'DateOfCall', Type: 'date', Kind: WAVE.RecordModel.KIND_DATETIME}, val: "5/11/1980 14:35"},
                                               {def: {Name: 'Phone', Type: 'string', Kind: WAVE.RecordModel.KIND_TEL}, val: "(216) 292-1030"},

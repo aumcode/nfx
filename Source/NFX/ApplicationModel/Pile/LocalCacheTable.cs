@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace NFX.ApplicationModel.Pile
 {
-  
+
   internal abstract class LocalCacheTable : ICacheTable
   {
     public const int BUCKETS = 256;

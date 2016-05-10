@@ -23,6 +23,7 @@ using System.Reflection;
 
 
 using NFX.Inventorization;
+using NFX.Serialization.JSON;
 
 namespace NFX.IO
 {
@@ -202,6 +203,10 @@ namespace NFX.IO
            public abstract void Write(VarIntStr value);
 
               public abstract void Write(VarIntStr? value);
+
+           public abstract void Write(NLSMap map);
+              
+              public abstract void Write(NLSMap? map);
 
         #endregion
 

@@ -211,6 +211,12 @@ namespace NFX.DataAccess.CRUD
             /// </summary>
             public int WriteCachePriority{ get; set;}
 
+            /// <summary>
+            /// When true would cache the instance of AbsentData to signify the absence of data in the backend for key
+            /// </summary>
+            public bool CacheAbsentData{ get; set; }
+
+
        #endregion
 
        #region Public

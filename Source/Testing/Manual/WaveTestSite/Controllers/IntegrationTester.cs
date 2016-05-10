@@ -25,6 +25,7 @@ using NFX.DataAccess.CRUD;
 using NFX.Security;
 using NFX.Serialization.JSON;
 using NFX.Wave.MVC;
+using System.IO;
 
 namespace WaveTestSite.Controllers
 {
@@ -276,6 +277,60 @@ namespace WaveTestSite.Controllers
       return dt;
     }
 
+
+    [Action]
+    public void MultipartByteArray(string field, string text, byte[] bin)
+    {
+      var fld = Encoding.UTF8.GetBytes(field);
+      var txt = Encoding.UTF8.GetBytes(text);
+      var output = WorkContext.Response.GetDirectOutputStreamForWriting();
+      output.Write(fld, 0, fld.Length);
+      output.Write(txt, 0, txt.Length);
+      output.Write(bin, 0, bin.Length);
+    }
+
+    [Action]
+    public void MultipartMap(JSONDataMap map)
+    {
+      var fld = Encoding.UTF8.GetBytes(map["field"].AsString());
+      var txt = Encoding.UTF8.GetBytes(map["text"].AsString());
+      var bin = map["bin"] as byte[];
+      var output = WorkContext.Response.GetDirectOutputStreamForWriting();
+      output.Write(fld, 0, fld.Length);
+      output.Write(txt, 0, txt.Length);
+      output.Write(bin, 0, bin.Length);
+    }
+
+    [Action]
+    public void MultipartRow(MultipartTestRow row)
+    {
+      var fld = Encoding.UTF8.GetBytes(row.Field);
+      var txt = Encoding.UTF8.GetBytes(row.Text);
+      var bin = row.Bin;
+      var output = WorkContext.Response.GetDirectOutputStreamForWriting();
+      output.Write(fld, 0, fld.Length);
+      output.Write(txt, 0, txt.Length);
+      output.Write(bin, 0, bin.Length);
+    }
+
+    [Action]
+    public void MultipartStream(string field, string text, Stream bin)
+    {
+      var fld = Encoding.UTF8.GetBytes(field);
+      var txt = Encoding.UTF8.GetBytes(text);
+      var output = WorkContext.Response.GetDirectOutputStreamForWriting();
+      output.Write(fld, 0, fld.Length);
+      output.Write(txt, 0, txt.Length);
+      bin.CopyTo(output);
+    }
+
+    [Action]
+    public void MultipartEncoding(string field)
+    {
+      var fld = Encoding.GetEncoding(1251).GetBytes(field);
+      WorkContext.Response.GetDirectOutputStreamForWriting().Write(fld, 0, fld.Length);
+    }
+
     //protected override System.Reflection.MethodInfo FindMatchingAction(NFX.Wave.WorkContext work, string action, out object[] args)
     //{
     //  return base.FindMatchingAction(work, action, out args);
@@ -287,5 +342,29 @@ namespace WaveTestSite.Controllers
     //public object RowSet(int a, string b, JSONDataMap row)
     //public object RowSet(TestRow row, int a, string b)
     //match{is-local=false}
+    
+    public class MultipartTestRow : TypedRow
+    {
+      [Field]
+      public string Field { get; set;}
+
+      [Field]
+      public string Text { get; set;}
+
+      [Field]
+      public string Text_filename { get; set;}
+
+      [Field]
+      public string Text_contenttype { get; set;}
+
+      [Field]
+      public byte[] Bin { get; set;}
+
+      [Field]
+      public string Bin_filename { get; set;}
+
+      [Field]
+      public string Bin_contenttype { get; set;}
+    }
   }
 }

@@ -251,7 +251,27 @@ namespace NFX.Parsing
     {
       return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
     }
-        
+     
+    /// <summary>
+    /// Allows only safe characters and digits replacing characters that may be used in SQL injection. 
+    /// This method may be used to generate column names from entity IDs
+    /// </summary>   
+    public static string SQLSafeSubstitute(string str, char subst = ' ')
+    {
+      if (str.IsNullOrWhiteSpace()) return null;
+
+      var result = new StringBuilder();
+      foreach (var c in str)
+      {
+        if (IsValidScreenNameLetterOrDigit(c) || (c == '-') || (c == '_') || (c == ' '))
+          result.Append(c);
+        else
+          result.Append(subst);
+      }
+
+      return result.ToString();
+    }
+
     /// <summary>
     /// Normalizes US phone string so it looks like (999) 999-9999x9999.
     /// </summary>

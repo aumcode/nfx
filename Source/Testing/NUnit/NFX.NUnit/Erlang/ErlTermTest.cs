@@ -121,10 +121,17 @@ namespace NFX.NUnit.Erlang
       Assert.AreEqual(tb, t.Value);
       Assert.IsTrue(t.ValueAsBool);
       Assert.IsFalse(new ErlBinary(new byte[] { }).ValueAsBool);
-      Assert.AreEqual("#Bin<3>", t.ToString());
+      Assert.AreEqual("<<1,2,3>>", t.ToString());
       Assert.AreEqual("<<1,2,3>>", t.ToBinaryString());
       Assert.IsFalse(t.IsScalar);
       Assert.AreEqual(ErlTypeOrder.ErlBinary, t.TypeOrder);
+
+      var bbb = new ErlBinary(new byte[] { 97, 98, 99, 10, 49, 50, 51 });
+      Assert.AreEqual("<<\"abc\n123\">>", bbb.ToString());
+      Assert.AreEqual("<<\"abc\n123\">>", bbb.ToPrintableString());
+      Assert.AreEqual("<<\"abc...\">>", bbb.ToPrintableString(6));
+      Assert.AreEqual("<<97,98,99,10,49,50,51>>", bbb.ToBinaryString());
+      Assert.AreEqual("<<97,98...>>", bbb.ToBinaryString(10));
 
       Assert.IsTrue(t.Matches(new ErlBinary(new byte[] { 1, 2, 3 })));
       Assert.AreEqual(new ErlVarBind(), t.Match(new ErlBinary(new byte[] { 1, 2, 3 })));

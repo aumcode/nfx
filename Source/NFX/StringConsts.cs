@@ -407,8 +407,13 @@ namespace NFX
     
     
     public const string CONFIG_BEHAVIOR_APPLY_ERROR =
-        "Error while applying behavior to {0}. Error: {1}"; 
+        "Error while applying behavior to {0}. Error: {1}";
         
+    public const string CONFIG_JSON_MAP_ERROR =
+        "JSONConfig must be represented by a valid JSON map(hash) with a single root key, not array or multikey map";
+
+    public const string CONFIG_JSON_STRUCTURE_ERROR =
+        "JSONConfig wa supplied content with invalid logical structure, all members of an array must be non-null maps that represent config sub-sections";
     
     public const string WORK_ITEM_NOT_AGGREGATABLE_ERROR =
         "Work item must implement IAggregatableWorkItem interface to be posted in this queue";    
@@ -792,6 +797,10 @@ namespace NFX
 
     public const string CRUD_TYPED_ROW_RECURSIVE_FIELD_DEFINITION_ERROR = "Typedrow '{0}' recursive field definition. Check for [Field(prototype..)] cycle";
 
+    public const string CRUD_TYPED_ROW_SINGLE_CLONED_FIELD_ERROR = "Typedrow '{0}' defines field clone via [Field(....)]]'{1}' in which case only a single [Field(....)] decoration is allowed";
+
+    public const string CRUD_TYPED_ROW_CLONED_FIELD_NOTEXISTS_ERROR = "Typedrow '{0}' defines field clone via [Field(....)]]'{1}' but there is no field with such name in the cloned-from type";
+
     public const string CRUD_TYPE_IS_NOT_DERIVED_FROM_ROW_ERROR = "CRUD supplied type of '{0}' is not a Row-derivative";
     
     public const string CRUD_TYPE_IS_NOT_DERIVED_FROM_TYPED_ROW_ERROR = "CRUD supplied type of '{0}' is not a TypedRow-derivative";
@@ -839,26 +848,28 @@ namespace NFX
     public const string ELINK_CSUM_MISMATCH_ERROR = "ELink '{0}' could not be read as its checksum does not match";
     
 
-    public const string ERL_DS_RPC_EXEC_ERROR = "ErlDataStore could not execute RPC call '{0}'. Error: {1}";
+    public const string ERL_DS_RPC_EXEC_ERROR                 = "ErlDataStore could not execute RPC call '{0}'. Error: {1}";
 
-    public const string ERL_DS_START_REMOTE_ABSENT_ERROR = "ErlDataStore could not start as required remote name is absent";
-    public const string ERL_DS_START_REMOTE_DUPLICATE_ERROR = "ErlDataStore could not start as remote name '{0}' is already used by another instance. An app may only have one ErlDataStore with the same remote node name";
+    public const string ERL_DS_START_REMOTE_ABSENT_ERROR      = "ErlDataStore could not start as required remote name is absent";
+    public const string ERL_DS_START_REMOTE_DUPLICATE_ERROR   = "ErlDataStore could not start as remote name '{0}' is already used by another instance. An app may only have one ErlDataStore with the same remote node name";
 
     public const string ERL_DS_QUERY_SCRIPT_PARSE_ERROR       = "ErlDataStore could not parse script query source '{0}'. Error: {1}";
     public const string ERL_DS_QUERY_PARAM_NOT_FOUND_ERROR    = "ErlDataStore could not bind script query source '{0}' as param '{1}' was not found";
 
-    public const string ERL_DS_QUERY_SUBSCRIBER_NOT_FOUND_ERROR = "ErlDataStore subscription query must include Subscriber::pid() parameter";
-    public const string ERL_DS_QUERY_TIMESTAMP_NOT_FOUND_ERROR = "ErlDataStore subscription query must include Timestamp::long() parameter";
-    public const string ERL_DS_QUERY_TIMESTAMP_CTX_ABSENT_ERROR = "ErlDataStore subscription Timestamp::long() is absent in context";
+    public const string ERL_DS_QUERY_SUBSCR_NOT_FOUND_ERROR   = "ErlDataStore subscription query must include Subscriber::pid() parameter";
+    public const string ERL_DS_QUERY_TMSTAMP_NOT_FOUND_ERROR  = "ErlDataStore subscription query must include Timestamp::long() parameter";
+    public const string ERL_DS_QUERY_TMSTAMP_CTX_ABSENT_ERROR = "ErlDataStore subscription Timestamp::long() is absent in context";
     
+    public const string ERL_DS_SCHEMA_NOT_KNOWN_ERROR         = "Schema '{0}' is not known in: {1}";
+    public const string ERL_DS_SCHEMA_INVALID_VALUE_ERROR     = "Schema '{0}' has invalid value in term {1}";
     public const string ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR     = "ErlSchema name '{0}' is not known in the map set";
     public const string ERL_DS_SCHEMA_MAP_ERL_TYPE_ERROR      = "ErlSchema mapping does not handle '{0}' erl type";
-    public const string ERL_DS_INVALID_RESPONSE_PROTOCOL_ERROR = "ErlDataStore received an invalid protocol response: ";
-    public const string ERL_DS_CRUD_WRITE_FAILED_ERROR         = "ErlDataStore CRUD write failed: ";
-    public const string ERL_DS_CRUD_RESPONSE_SCHEMA_MISMATCH_ERROR = "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied schema name '{1}'";
-    public const string ERL_DS_CRUD_RESPONSE_SCHEMA_FLD_COUNT_MISMATCH_ERROR = 
+    public const string ERL_DS_INVALID_RESP_PROTOCOL_ERROR    = "ErlDataStore received an invalid protocol response: ";
+    public const string ERL_DS_CRUD_WRITE_FAILED_ERROR        = "ErlDataStore CRUD write failed: ";
+    public const string ERL_DS_CRUD_RESP_SCH_MISMATCH_ERROR   = "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied schema name '{1}'";
+    public const string ERL_DS_CRUD_RESP_SCH_FLD_COUNT_ERROR  = 
            "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied CRUD schema name '{1}' as field count differ";
-    public const string ERL_DS_INTERNAL_MAPPING_ERROR          = "ErlDataStore internal mapping error: ";
+    public const string ERL_DS_INTERNAL_MAPPING_ERROR         = "ErlDataStore internal mapping error: ";
 
     public const string ERL_ATOM_SIZE_TOO_LONG_ERROR          = "Atom size is too long!";
     public const string ERL_ATOM_TABLE_IS_FULL_ERROR          = "Atom table is full!";
@@ -1101,5 +1112,8 @@ namespace NFX
     
     public const string SECDB_FILE_NOT_FOUND_ERROR = 
        "SecDB file '{0}' could not be read as it was not found by the file system '{1}'"; 
+
+    public const string SEALED_STRING_OUT_OF_SPACE_ERROR =  "SealedString has allocated a maximum of {0} segments";
+    public const string SEALED_STRING_TOO_BIG_ERROR =  "SealedString value of {0} bytes is too big";
   }
 }
