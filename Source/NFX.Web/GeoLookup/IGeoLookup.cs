@@ -15,9 +15,6 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 
 using NFX.ApplicationModel;
@@ -48,11 +45,6 @@ namespace NFX.Web.GeoLookup
     /// Returns null when no match could be made
     /// </summary>
     GeoEntity Lookup(IPAddress address);
-
-    /// <summary>
-    /// Tries to lookup the location by its id and returns it or null if no match could be made
-    /// </summary>
-    Location? LookupLocation(string locationID);
   }
 
 
@@ -92,8 +84,8 @@ namespace NFX.Web.GeoLookup
       {
         if (!Location.HasValue) return string.Empty;
         return Location.Value.CityName.Value.IsNotNullOrWhiteSpace() 
-          ? "{0}, {1} {2}".Args(Location.Value.CityName, Location.Value.SubdivisionName, Location.Value.CountryName) 
-          : "{0} {1}".Args(Location.Value.SubdivisionName, Location.Value.CountryName);
+          ? "{0}, {1} {2}".Args(Location.Value.CityName.Value, Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value) 
+          : "{0} {1}".Args(Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value);
       }
     }
 
