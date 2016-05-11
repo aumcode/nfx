@@ -185,8 +185,8 @@
          This site is served by the <strong>NFX.Wave</strong> framework
           <br />
          Generated on ?[DateTime.Now]  for ?[Context.Request.RemoteEndPoint]
-         @[if(Context.GeoEntity!=null){
-           var fn = (Context.GeoEntity.Location.CountryISOName ?? string.Empty).ToLower();
+         @[if(Context.GeoEntity!=null && Context.GeoEntity.Location.HasValue){
+           var fn = (Context.GeoEntity.Location.Value.CountryISOName.Value ?? string.Empty).ToLower();
          ]
          from ?[Context.GeoEntity.LocalityName] <img src="/stock/site/flags/?[fn].png">
          @[}]
