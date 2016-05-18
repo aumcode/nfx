@@ -323,7 +323,7 @@ namespace NFX.Wave.Handlers
            /// </summary>
            protected virtual HTTPStatusException Do404(WorkContext context)
            {
-              return new HTTPStatusException(SysConsts.STATUS_404, SysConsts.STATUS_404_DESCRIPTION);
+              return new HTTPStatusException(Web.WebConsts.STATUS_404, Web.WebConsts.STATUS_404_DESCRIPTION);
            }
 
            /// <summary>

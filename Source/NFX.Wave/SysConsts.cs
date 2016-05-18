@@ -36,29 +36,14 @@ namespace NFX.Wave
       /// </summary>
       public static readonly object JSON_RESULT_ERROR = new {OK = false};
       
+
+      public const string HEADER_API_VERSION = "wv-api-ver";
+      public const string HEADER_API_SESSION = "wv-api-session";
       
       public const string WAVE_LOG_TOPIC = "WAVE";
       public const string NULL_STRING = "<null>";
 
       public const string UNSPECIFIED = "<unspecified>";
-
-      public const string HTTP_HDR_CONTENT_DISPOSITION = "Content-disposition";
-      public const string HTTP_SET_COOKIE = "Set-Cookie";
-
-
-      public const int STATUS_200 = 200;  public const string STATUS_200_DESCRIPTION = "OK";
-      public const int STATUS_404 = 404;  public const string STATUS_404_DESCRIPTION = "Not found";
-      public const int STATUS_403 = 403;  public const string STATUS_403_DESCRIPTION = "Forbidden";
-
-
-      public const int STATUS_400 = 400;  public const string STATUS_400_DESCRIPTION = "Bad Request";
-
-      public const int STATUS_405 = 405;  public const string STATUS_405_DESCRIPTION = "Method Not Allowed";
-      public const int STATUS_406 = 406;  public const string STATUS_406_DESCRIPTION = "Not Acceptable";
-
-      public const int STATUS_429 = 429;  public const string STATUS_429_DESCRIPTION = "Too Many Requests";
-
-      public const int STATUS_500 = 500;  public const string STATUS_500_DESCRIPTION = "Internal error";
 
       public const string CONFIG_WAVE_SECTION = "wave";
 

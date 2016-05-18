@@ -74,6 +74,7 @@
     <Compile Include="CRUD\MySQLTests.cs" />
     <Compile Include="CRUD\TestLogic.cs" />
     <Compile Include="CRUD\TestObjects.cs" />
+    <Compile Include="GeoLookup\GeoLookupTest.cs" />
     <Compile Include="Glue\JokeCalculator.cs" />
     <Compile Include="Glue\JokeContracts.cs" />
     <Compile Include="Glue\JokeHelper.cs" />

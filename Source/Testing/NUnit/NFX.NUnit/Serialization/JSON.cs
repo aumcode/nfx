@@ -67,6 +67,11 @@ namespace NFX.NUnit.Serialization
         }
 
 
+
+
+
+
+
         [TestCase]
         public void JSONDataMapFromURLEncoded_1()
         {
@@ -94,7 +99,109 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual("Hello & Welcome.久有归天愿", map["two"]);
         }
 
+        [TestCase]
+        public void JSONDataMapFromURLEncoded_PlusSign()
+        {
+            var map = JSONDataMap.FromURLEncodedString("a=I+Am John&b=He Is++Not");
 
+            Assert.AreEqual("I Am John", map["a"]);
+            Assert.AreEqual("He Is  Not", map["b"]);
+        }
+
+        [TestCase]
+        public void JSONDataMapFromURLEncoded_PlusAnd20Mix()
+        {
+            var map = JSONDataMap.FromURLEncodedString("a=I+Am%20John&b=He%20Is++Not");
+
+            Assert.AreEqual("I Am John", map["a"]);
+            Assert.AreEqual("He Is  Not", map["b"]);
+        }
+
+        [Test]
+        public void JSONDataMapFromURLEncoded_Empty()
+        {
+          Assert.AreEqual(0, JSONDataMap.FromURLEncodedString(null).Count);
+          Assert.AreEqual(0, JSONDataMap.FromURLEncodedString(string.Empty).Count);
+          Assert.AreEqual(0, JSONDataMap.FromURLEncodedString(" ").Count);
+          Assert.AreEqual(0, JSONDataMap.FromURLEncodedString("\r \n").Count);
+          Assert.AreEqual(0, JSONDataMap.FromURLEncodedString("\t \t ").Count);
+        }
+        
+        [Test]
+        public void JSONDataMapFromURLEncoded_WOAmKey()
+        {
+          var dict = JSONDataMap.FromURLEncodedString("a");
+        
+          Assert.AreEqual(1, dict.Count);
+          Assert.AreEqual(null, dict["a"]);
+        }
+        
+        [Test]
+        public void JSONDataMapFromURLEncoded_WOAmpKeyVal()
+        {
+          var dict = JSONDataMap.FromURLEncodedString("a=1");
+        
+          Assert.AreEqual(1, dict.Count);
+          Assert.AreEqual("1", dict["a"]);
+        }
+        
+        [Test]
+        public void JSONDataMapFromURLEncoded_WOAmpVal()
+        {
+          var dict = JSONDataMap.FromURLEncodedString("=1");
+        
+          Assert.AreEqual(0, dict.Count);
+        }
+        
+        [Test]
+        public void JSONDataMapFromURLEncoded_DoubleEq()
+        {
+          var dict = JSONDataMap.FromURLEncodedString("a==1");
+        
+          Assert.AreEqual(1, dict.Count);
+          Assert.AreEqual("=1", dict["a"]);
+        }
+        
+        [TestCase("a=1&b=rrt")]
+        [TestCase("a=1&b=rrt&")]
+        [TestCase("&a=1&b=rrt&")]
+        [TestCase("&&a=1&&b=rrt&&&")]
+        public void JSONDataMapFromURLEncoded_KeyVal(string query)
+        {
+          var dict = JSONDataMap.FromURLEncodedString(query);
+        
+          Assert.AreEqual(2, dict.Count);
+          Assert.AreEqual("1", dict["a"]);
+          Assert.AreEqual("rrt", dict["b"]);
+        }
+        
+        [Test]
+        public void JSONDataMapFromURLEncoded_KeyEmptyEqNormal()
+        {
+          var dict = JSONDataMap.FromURLEncodedString("a=&b&&=&=14&c=3459");
+        
+          Assert.AreEqual(3, dict.Count);
+          Assert.AreEqual(string.Empty, dict["a"]);
+          Assert.AreEqual(null, dict["b"]);
+          Assert.AreEqual("3459", dict["c"]);
+        }
+        
+        [Test]
+        public void JSONDataMapFromURLEncoded_Esc()
+        {
+          string[] strs = { " ", "!", "=", "&", "\"zele/m\\h()an\"" };
+        
+          foreach (var str in strs)
+          {
+            var query = "a=" + Uri.EscapeDataString(str);
+        
+            var dict = JSONDataMap.FromURLEncodedString(query);
+        
+            Assert.AreEqual(1, dict.Count);
+            Assert.AreEqual(str, dict["a"]);
+          }
+        }
+ 
 
         [TestCase]
         public void ReadRootComplexObject()

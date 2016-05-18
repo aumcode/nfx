@@ -484,36 +484,6 @@ namespace NFX
       return fromFolder.AllFileNamesThatMatch("*.*", recurse);
     }
 
-
-
-    /// <summary>
-    /// Copies reader fields into record fields finding matches by name and store flag.
-    /// Reader must be in a "readable" state - "reader.Read()" should be executed by the caller
-    /// <code>
-    ///   if (reader.Read()) reader.CopyFieldsToRecordFields(record);
-    /// </code>
-    /// </summary>
-    public static void CopyFieldsToRecordFields(this DbDataReader reader, RecordModel.Record record)
-    {
-      for (int i = 0; i < reader.FieldCount; i++)
-      {
-        var val = reader.GetValue(i);
-
-        var fld = record.FindFieldByName(reader.GetName(i));
-
-        if (fld == null) continue;
-
-        if (fld.StoreFlag == DataAccess.StoreFlag.LoadAndStore || fld.StoreFlag == DataAccess.StoreFlag.OnlyLoad)
-        {
-          if (val == DBNull.Value)
-            fld.ValueAsObject = null; //same as field.Clear();
-          else
-            fld.ValueAsObject = val;
-        }
-      }
-    }
-
-
     /// <summary>
     /// Generates GUID based on a string MD5 hash
     /// </summary>
@@ -1046,6 +1016,26 @@ namespace NFX
       return result.ToString();
     }
 
+    public static string ComposeURLQueryString(IDictionary<string, object> qParams)
+    {
+      if (qParams == null || qParams.Count <= 0)
+        return string.Empty;
+
+      var builder = new StringBuilder();
+      foreach (var kvp in qParams)
+      {
+        if (kvp.Key.IsNullOrWhiteSpace()) continue;
+
+        builder.Append(Uri.EscapeDataString(kvp.Key));
+        if (kvp.Value != null)
+          builder.Append('=').Append(Uri.EscapeDataString(kvp.Value.AsString()));
+        builder.Append('&');
+      }
+
+      if (builder.Length > 0) builder.Length--;
+
+      return builder.ToString();
+    }
 
   }
 }

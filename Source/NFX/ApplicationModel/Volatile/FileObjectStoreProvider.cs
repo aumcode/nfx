@@ -271,7 +271,6 @@ namespace NFX.ApplicationModel.Volatile
 
 
           var treg = new TypeRegistry(TypeRegistry.CommonCollectionTypes,
-                                                TypeRegistry.RecordModelTypes,
                                                 TypeRegistry.BoxedCommonTypes,
                                                 TypeRegistry.BoxedCommonNullableTypes);
           

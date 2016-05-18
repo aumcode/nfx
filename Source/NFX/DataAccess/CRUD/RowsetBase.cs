@@ -32,7 +32,75 @@ namespace NFX.DataAccess.CRUD
     [Serializable]
     public abstract class RowsetBase : IList<Row>, IComparer<Row>, IJSONWritable, IValidatable
     {
-        #region .ctor
+        #region .ctor/static
+
+            /// <summary>
+            /// Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present
+            /// </summary>
+            public static RowsetBase FromJSON(string json, bool schemaOnly = false, bool readOnlySchema = false)
+            {
+              return FromJSON( JSONReader.DeserializeDataObject(json) as JSONDataMap, schemaOnly, readOnlySchema );
+            }
+
+
+            /// <summary>
+            /// Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present
+            /// </summary>
+            public static RowsetBase FromJSON(JSONDataMap jsonMap, bool schemaOnly = false, bool readOnlySchema = false)
+            {
+              bool dummy;
+              return FromJSON(jsonMap, out dummy, schemaOnly, readOnlySchema);
+            }
+
+            /// <summary>
+            /// Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present.
+            /// allMatched==false when some data did not match schema (i.e. too little fields or extra fields supplied)
+            /// </summary>
+            public static RowsetBase FromJSON(JSONDataMap jsonMap, 
+                                              out bool allMatched,
+                                              bool schemaOnly = false,
+                                              bool readOnlySchema = false,
+                                              SetFieldFunc setFieldFunc = null)
+            {
+              if (jsonMap == null || jsonMap.Count == 0)
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(jsonMap=null)");
+
+              var schMap = jsonMap["Schema"] as JSONDataMap;
+              if (schMap==null)
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(jsonMap!schema)"); 
+
+              var schema = Schema.FromJSON(schMap, readOnlySchema);
+              var isTable = jsonMap["IsTable"].AsBool();
+
+              allMatched = true;
+              var result = isTable ? (RowsetBase)new Table(schema) : (RowsetBase)new Rowset(schema);
+              if (schemaOnly) return result;
+
+              var rows = jsonMap["Rows"] as JSONDataArray;
+              if (rows==null) return result;
+              
+              
+              foreach(var jrow in rows)
+              {
+                var jdo = jrow as IJSONDataObject;
+                if (jdo==null)
+                {
+                  allMatched = false;
+                  continue;
+                }
+                
+                var row = new DynamicRow(schema);
+           
+                if (!Row.TryFillFromJSON(row, jdo, setFieldFunc)) allMatched = false;
+
+                result.Add( row );
+              }
+              
+              return result;
+            }
+
+           
+
             /// <summary>
             /// Creates an empty rowset
             /// </summary>

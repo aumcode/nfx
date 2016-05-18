@@ -122,12 +122,6 @@
     <Compile Include="ELinkForm.Designer.cs">
       <DependentUpon>ELinkForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,12 +135,6 @@
       <DependentUpon>GlueForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Glue\JokeHelper.cs" />
-    <Compile Include="GridForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GridForm.Designer.cs">
-      <DependentUpon>GridForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Glue\JokeCalculatorClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,24 +158,6 @@
     </Compile>
     <Compile Include="MongoConnectorForm.Designer.cs">
       <DependentUpon>MongoConnectorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MongoDBForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MongoDBForm.Designer.cs">
-      <DependentUpon>MongoDBForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ObjectStoreForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ObjectStoreForm.Designer.cs">
-      <DependentUpon>ObjectStoreForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PatientForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PatientForm.Designer.cs">
-      <DependentUpon>PatientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PdfTestForm.cs">
       <SubType>Form</SubType>
@@ -260,17 +230,11 @@
     <EmbeddedResource Include="ELinkForm.resx">
       <DependentUpon>ELinkForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlueForm.resx">
       <DependentUpon>GlueForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GridForm.resx">
-      <DependentUpon>GridForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Glue\JokeCalculatorClientForm.resx">
       <DependentUpon>JokeCalculatorClientForm.cs</DependentUpon>
@@ -283,15 +247,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MongoConnectorForm.resx">
       <DependentUpon>MongoConnectorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MongoDBForm.resx">
-      <DependentUpon>MongoDBForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ObjectStoreForm.resx">
-      <DependentUpon>ObjectStoreForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PatientForm.resx">
-      <DependentUpon>PatientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PdfTestForm.resx">
       <DependentUpon>PdfTestForm.cs</DependentUpon>

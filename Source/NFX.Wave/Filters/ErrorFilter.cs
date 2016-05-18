@@ -174,13 +174,13 @@ namespace NFX.Wave.Filters
           {
             if (securityError)
             {
-              work.Response.StatusCode = SysConsts.STATUS_403;
-              work.Response.StatusDescription = SysConsts.STATUS_403_DESCRIPTION;
+              work.Response.StatusCode = WebConsts.STATUS_403;
+              work.Response.StatusDescription = WebConsts.STATUS_403_DESCRIPTION;
             }
             else
             {
-              work.Response.StatusCode = SysConsts.STATUS_500;
-              work.Response.StatusDescription = SysConsts.STATUS_500_DESCRIPTION;
+              work.Response.StatusCode = WebConsts.STATUS_500;
+              work.Response.StatusDescription = WebConsts.STATUS_500_DESCRIPTION;
             }
           }
 

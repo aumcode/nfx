@@ -139,12 +139,12 @@ namespace NFX.Wave.Handlers
              {
                var text = StringConsts.FILE_DL_HANDLER_NOT_FOUND_INFO.Args(fileName);
                if (m_Throw)
-                throw new HTTPStatusException(SysConsts.STATUS_404, SysConsts.STATUS_404_DESCRIPTION, text);  
+                throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, text);  
            
                work.Response.ContentType = ContentType.TEXT;
                work.Response.Write( text );
-               work.Response.StatusCode = SysConsts.STATUS_404;
-               work.Response.StatusDescription = SysConsts.STATUS_404_DESCRIPTION;
+               work.Response.StatusCode = WebConsts.STATUS_404;
+               work.Response.StatusDescription = WebConsts.STATUS_404_DESCRIPTION;
                return;
              }
 

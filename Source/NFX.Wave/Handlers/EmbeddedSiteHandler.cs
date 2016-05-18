@@ -210,8 +210,8 @@ namespace NFX.Wave.Handlers
                    actionInstance.Perform(context);
               else
               {
-                   context.Response.StatusCode = SysConsts.STATUS_500;
-                   context.Response.StatusDescription = SysConsts.STATUS_500_DESCRIPTION;
+                   context.Response.StatusCode = WebConsts.STATUS_500;
+                   context.Response.StatusDescription = WebConsts.STATUS_500_DESCRIPTION;
                    context.Response.Write(StringConsts.DONT_KNOW_ACTION_ERROR + action);
               }
             }
@@ -241,7 +241,7 @@ namespace NFX.Wave.Handlers
                  SetResourceCacheHeader(work, sitePath, resName);
                  work.Response.WriteStream(strm);
                }
-               else throw new HTTPStatusException(SysConsts.STATUS_404, SysConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);  
+               else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);  
             }
 
             private string getResourcePath(string sitePath)

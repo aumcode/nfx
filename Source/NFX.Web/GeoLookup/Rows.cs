@@ -15,105 +15,92 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using NFX.DataAccess.CRUD;
 
 namespace NFX.Web.GeoLookup
 {
   /// <summary>
   /// Provides address segment block information
   /// </summary>
-  [Serializable]
-  public class IPAddressBlock : TypedRow
+  public struct IPSubnetBlock
   {
-    [Field(key:true)] public string IPBlockStart       {get; set;} 
-    [Field] public int              NetMaskLength      {get; set;} 
-    [Field] public string           LocationID         {get; set;}  
-    [Field] public string           RegisteredLocationID  {get; set;}
-    [Field] public string           RepresentedLocationID {get; set;}
-    [Field] public bool             AnonymousProxy     {get; set;}
-    [Field] public bool             SatelliteProvider  {get; set;}
-    [Field] public string           PostalCode         {get; set;}
-    [Field] public string           Lat                {get; set;}
-    [Field] public string           Lng                {get; set;}
-    public override string ToString()
+    public readonly SealedString Subnet;
+    public readonly SealedString LocationID;
+    public readonly SealedString RegisteredLocationID;
+    public readonly SealedString RepresentedLocationID;
+    public readonly bool AnonymousProxy;
+    public readonly bool SatelliteProvider;
+    public readonly SealedString PostalCode;
+    public readonly float Lat;
+    public readonly float Lng;
+    public IPSubnetBlock(
+      SealedString subnet,
+      SealedString locationID,
+      SealedString registeredLocationID,
+      SealedString representedLocationID,
+      bool anonymousProxy,
+      bool satelliteProvider,
+      SealedString postalCode,
+      float lat,
+      float lng)
     {
-      return @" 
-IPBlockStart       {0} 
-NetMaskLength      {1} 
-LocationID         {2}  
-RegisteredLocationID  {3}
-RepresentedLocationID {4}
-PostalCode         {5}
-Lat                {6}
-Lng                {7}
-AnonymousProxy     {8}
-SatelliteProvider  {9}".Args(
-IPBlockStart       , 
-NetMaskLength      ,
-LocationID         ,  
-RegisteredLocationID,  
-RepresentedLocationID, 
-PostalCode         ,
-Lat                ,
-Lng                ,
-AnonymousProxy     ,
-SatelliteProvider);
+      Subnet = subnet;
+      LocationID = locationID;
+      RegisteredLocationID = registeredLocationID;
+      RepresentedLocationID = representedLocationID;
+      AnonymousProxy = anonymousProxy;
+      SatelliteProvider = satelliteProvider;
+      PostalCode = postalCode;
+      Lat = lat;
+      Lng = lng;
     }
   }
 
   /// <summary>
   /// Provides location information
   /// </summary>
-  [Serializable]
-  public class Location : TypedRow
+  public struct Location
   {
-    [Field(key:true)] public string ID                 {get; set;}
-    [Field] public string           LocaleCode        {get; set;}
-    [Field] public string           ContinentID        {get; set;}
-    [Field] public string           ContinentName      {get; set;} 
-    [Field] public string           CountryISOName     {get; set;}  
-    [Field] public string           CountryName        {get; set;}  
-    [Field] public string           SubdivisionISOCode {get; set;}
-    [Field] public string           SubdivisionName    {get; set;}  
-    [Field] public string           Subdivision2ISOCode {get; set;}
-    [Field] public string           Subdivision2Name    {get; set;}
-    [Field] public string           CityName           {get; set;}
-    [Field] public string           MetroCode          {get; set;}
-    [Field] public string           TimeZone           {get; set;}
-   public override string ToString()
+    public readonly SealedString ID;
+    public readonly SealedString LocaleCode;
+    public readonly SealedString ContinentID;
+    public readonly SealedString ContinentName;
+    public readonly SealedString CountryISOName;
+    public readonly SealedString CountryName;
+    public readonly SealedString SubdivisionISOCode;
+    public readonly SealedString SubdivisionName;
+    public readonly SealedString Subdivision2ISOCode;
+    public readonly SealedString Subdivision2Name;
+    public readonly SealedString CityName;
+    public readonly SealedString MetroCode;
+    public readonly SealedString TimeZone;
+    public Location(
+      SealedString id,
+      SealedString localeCode,
+      SealedString continentID,
+      SealedString continentName,
+      SealedString countryISOName,
+      SealedString countryName,
+      SealedString subdivisionISOCode,
+      SealedString subdivisionName,
+      SealedString subdivision2ISOCode,
+      SealedString subdivision2Name,
+      SealedString cityName,
+      SealedString metroCode,
+      SealedString timeZone)
     {
-      return @" 
-ID                  {0}
-LocaleCode          {1} 
-ContinentID         {2} 
-ContinentName       {3}  
-CountryISOName      {4}
-CountryName         {5}
-SubdivisionISOCode  {6}
-SubdivisionName     {7}
-Subdivision2ISOCode {8}
-Subdivision2Name    {9}
-CityName            {10}
-MetroCode           {11}
-TimeZone            {12}".Args(
-ID                  , 
-LocaleCode          ,
-ContinentID         , 
-ContinentName       ,  
-CountryISOName      ,  
-CountryName         , 
-SubdivisionISOCode  ,
-SubdivisionName     , 
-Subdivision2ISOCode ,
-Subdivision2Name    ,
-CityName            ,
-MetroCode           ,
-TimeZone            );
+      ID = id;
+      LocaleCode = localeCode;
+      ContinentID = continentID;
+      ContinentName = continentName;
+      CountryISOName = countryISOName;
+      CountryName = countryName;
+      SubdivisionISOCode = subdivisionISOCode;
+      SubdivisionName = subdivisionName;
+      Subdivision2ISOCode = subdivision2ISOCode;
+      Subdivision2Name = subdivision2Name;
+      CityName = cityName;
+      MetroCode = metroCode;
+      TimeZone = timeZone;
     }
   }
-
 }

@@ -12,169 +12,127 @@
 
 #[override renderHeader()]
 
-<script src="/stock/site/script/jquery-1.11.0.min.js"></script>
+<script src="/stock/site/script/jquery-2.1.4.min.js"></script>
 <script src="/stock/site/script/wv.js"></script>
 <script src="/stock/site/script/wv.gui.js"></script>
+
+#[override renderHeader()]
+<h1>
+  Testing Image Box
+</h1> 
 
 #[override renderBody()]
 
 <style>
-    .wvIBoxDivFrame {
-        height: 400px;
-        width: 70%;
-    }
+  .wvIBoxDivFrame {
+    height: 400px;
+    width: 50%;
+  }
 
-    .wvIBoxDivMainImage {
-        outline: 1px solid #e0e0e0;
-        background-color: #f4f4f4;
-    }
+  .wvIBoxDivMainImage {
+    background-color: #f4f4f4;
+  }
+
+  .wvIBoxDivThumbsContainer {
+    width: 15%;
+    height: 100%;
+  }
+
+  .wvIBoxDivThumb {
+    border: 1px solid white;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+
+  .wvIBoxDivThumb:hover {
+    border: 1px solid black;
+  }
 </style>
 
-<div style="margin:20px; font-size: 20pt;">Lenin test</div>
-<div id="divIBox0"></div>
-
-<div style="margin: 20px;">
-    <button id="hide_btn">Hide</button>
-    <button id="show_btn">Show</button>
-</div>
-
-<!--Tests-->
-<!--<div>
-    <div style="display: inline-block">frame visibility:</div>
-    <div id="test_frameVisibility" style="display: inline-block; border: 1px solid black; min-height: 15px; min-width: 100px;"></div>
-</div>
-
-<div>
-    <div style="display: inline-block">offsets input:</div>
-    <div id="test_mainImageOffsetsInput" style="display: inline-block; border: 1px solid black; min-height: 15px; min-width: 100px;"></div>
-</div>
-
-<div>
-    <div style="display: inline-block">main image offsets:</div>
-    <div id="test_mainImageOffsets" style="display: inline-block; border: 1px solid black; min-height: 15px; min-width: 100px;"></div>
-</div>-->
-<!--Tests-->
-
-<div style="margin:20px; font-size: 20pt;">General test: direct links to images</div>
-<div id="divIBox1"></div>
-<div id="divImageChangedEventBox" style="margin-top:50px"></div>
-
-<div style="margin:20px; font-size: 20pt;">Big images test (needs server to be started)</div>
-<div id="divIBox2"></div>
-
+<div id="divIBox0" style="margin-bottom: 40px;"></div>
+<div style="margin: 30px;"></div>
+<div id="divIBox1" style="margin-bottom: 40px;"></div>
+<textarea id="logArea" style="resize: none; height:500px; margin-top: 30px; width: 100%;" readonly></textarea>
 
 <script>
 
-        $(function () {
+  $(function() {
 
-            var init0 =
-            {
-                images: {
-                    "d": "https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
-                    "g": "https://www.google.ru/images/nav_logo225.png",
-                    "1": "https://avatars1.githubusercontent.com/u/6332300?v=3&s=200",
-                    "2": "https://probaway.files.wordpress.com/2013/06/vladimir_lenin_2.jpg",
-                    "3": "http://avisensandhed.files.wordpress.com/2014/02/1398991_786918908000731_484648162_o.jpg",
-                    "4": "https://www.marxists.org/glossary/people/l/pics/lenin.jpg",
-                    "g1": "https://www.google.ru/images/srpr/logo11w.png",
-                    "g2": "http://simpleicon.com/wp-content/uploads/phone-symbol-1.png",
-                    "g3": "http://www.cliparthut.com/clip-arts/910/green-play-icon-910267.gif"
-                },
-                thumbs: [
-                     { bigSrc: "1", thumbSrc: "1" }
-                    , { bigSrc: "2", thumbSrc: "2", title: "Some Text" }
-                    , { bigSrc: "3", thumbSrc: "3", title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }
-                    , { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                    , { bigSrc: "g2", thumbSrc: "g", h: 18, w: 15, l: -13, t: -88 }
-                    , { bigSrc: "g3", thumbSrc: "g", h: 28, w: 28, l: -138, t: -41 }
-                    , { bigSrc: "4", thumbSrc: "5" }
-                    , { bigSrc: "2", thumbSrc: "2" }
-                    , { bigSrc: "3", thumbSrc: "3" }
-                    , { bigSrc: "4", thumbSrc: "5" }
-                ],
-                defaultImageSrc: "d",
-                defaultThumbSrc: "d",
-                thumbsPosition: "left",
-                thumbsScrollDelta: 0.7
-            };
+      var init0 =
+      {
+          images: {
+              "2":  "https://probaway.files.wordpress.com/2013/06/vladimir_lenin_2.jpg",
+              "g":  "https://www.google.ru/images/nav_logo225.png",
+              "g1": "https://www.google.ru/images/srpr/logo11w.png",
+          },
+          thumbs: [
+              { bigSrc: "2",  thumbSrc: "2" },
+              { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 },
+              { bigSrc: "2",  thumbSrc: "2" },
+              { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 },
+              { bigSrc: "2",  thumbSrc: "2" },
+              { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 },
+              { bigSrc: "20", thumbSrc: "21" }
+              //,{ bigSrc: "g1", thumbSrc: "g0", h: 37, w: 95, l: 0, t: -41 },
+              //{ bigSrc: "2",  thumbSrc: "20" },
+              //{ bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
+          ],
+          defaultImageSrc: "d",
+          defaultThumbSrc: "d",
+          thumbsPosition: "left",
+          thumbsScrollDelta: 0.7
+      };
 
-            var imageBox0 = new WAVE.GUI.IBox('divIBox0', init0);
+      var imageBox0 = new WAVE.GUI.IBox('divIBox0', init0);
 
-            WAVE.id('hide_btn').onclick = function () {
-                imageBox0.visible(false);
-            };
-            WAVE.id('show_btn').onclick = function () {
-                imageBox0.visible(true);
-            };
+      imageBox0.eventBind(WAVE.GUI.EVT_IBOX_IMAGE_CHANGED, function (sender, url) {
+        var logArea = WAVE.id('logArea');
+        if (url.length > 256) url = url.substring(0, 256) + "...";
+        logArea.innerHTML += 'IBOX #1 image changed to ' + url + '\r\n';
+      });
 
-            // general test
+      imageBox0.eventBind(WAVE.GUI.EVT_IBOX_ERROR, function (sender, data) {
+        var logArea = WAVE.id('logArea');
+        logArea.innerHTML += 'IBOX #1 ERROR: src=' + data.src + ', message=' + data.message + '\r\n';
+      });
 
-            var init1 =
-            {
-                images: {
-                    "d": "https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
-                    "g": "https://www.google.ru/images/nav_logo225.png",
-                    "1": "https://www.google.ru/images/srpr/logo11w.png",
-                    "2": "http://simpleicon.com/wp-content/uploads/phone-symbol-1.png",
-                    "3": "http://www.cliparthut.com/clip-arts/910/green-play-icon-910267.gif",
-                    "4": "https://www.google.ru/images/srpr/logo11w.png"
-                },
-                thumbs: [
-                     { bigSrc: "1", thumbSrc: "g", h: 37, w: 95, l: 0,    t: -41, title: "Some Text" }
-                    ,{ bigSrc: "2", thumbSrc: "g", h: 18, w: 15, l: -13,  t: -88, title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }
-                    ,{ bigSrc: "3", thumbSrc: "g", h: 28, w: 28, l: -138, t: -41 }
-                    ,{ thumbSrc: "g", h: 37, w: 95, l: 0,   t: -41, title: "<strong>Flume Plasma long long long long long long text</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }
-                    ,{ thumbSrc: "g", h: 18, w: 15, l: -13, t: -88 }
-                    ,{ bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                    ,{ bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                    ,{ bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                    ,{ bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                    ,{ bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                    ,{ bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-                ],
-                defaultImageSrc: "d",
-                defaultThumbSrc: "d",
-                thumbsPosition: "bottom",
-                thumbsScrollDelta: 0.7
-            };
+      var init1 =
+      {
+        images: {
+          "2": "https://probaway.files.wordpress.com/2013/06/vladimir_lenin_2.jpg",
+          "g": "https://www.google.ru/images/nav_logo225.png",
+          "g1": "https://www.google.ru/images/srpr/logo11w.png",
+        },
+        thumbs: [
+            { bigSrc: "2",  thumbSrc: "2" },
+            { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 },
+            { bigSrc: "2",  thumbSrc: "2" },
+            { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 },
+            { bigSrc: "2",  thumbSrc: "2" },
+            { bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 },
+            { bigSrc: "20", thumbSrc: "21" }
+            //,{ bigSrc: "g1", thumbSrc: "g0", h: 37, w: 95, l: 0, t: -41 },
+            //{ bigSrc: "2",  thumbSrc: "20" },
+            //{ bigSrc: "g1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
+        ],
+        defaultImageSrc: "d",
+        defaultThumbSrc: "d",
+        thumbsPosition: "bottom",
+        thumbsScrollDelta: 0.7
+      };
 
-            var imageBox1 = new WAVE.GUI.IBox('divIBox1', init1);
+      var imageBox1 = new WAVE.GUI.IBox('divIBox1', init1);
 
-            imageBox1.eventBind("image-changed", function(sender, url) {
-                var divImageChangedEventBox = WAVE.id('divImageChangedEventBox');
-                divImageChangedEventBox.innerText = 'EVENT TEST: image changed to ' + url;
-            });
+      imageBox1.eventBind(WAVE.GUI.EVT_IBOX_IMAGE_CHANGED, function (sender, url) {
+        var logArea = WAVE.id('logArea');
+        if (url.length > 256) url = url.substring(0, 256) + "...";
+        logArea.innerHTML += 'IBOX #2 image changed to ' + url + '\r\n';
+      });
 
-            // big & slow images test
-
-            var init2 =
-            {
-                images: {
-                    "d": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
-                    "1": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://www.colourbox.com/preview/1167198-nature-orange-insect-attractive-garden-butterfly-beautiful-plant-small-spotted-resting-single-close-green-fly-color-bright-macro-flap-beauty-antenna-yellow-wings-background-summer-wild-sunlight-pattern-light-head-open-closeu.jpg",
-                    "2": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://www.photocase.com/stock-photos/202338-stock-photo-nature-flower-blue-plant-summer-small.jpg",
-                    "3": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://pixabay.com/static/uploads/photo/2014/10/09/14/58/tit-481988_640.jpg",
-                    "4": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg",
-                },
-                thumbs: [
-                     { bigSrc: "1", thumbSrc: "1", title: "Some Text" }
-                    ,{ bigSrc: "2", thumbSrc: "2", title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }
-                    ,{ bigSrc: "3", thumbSrc: "3" }
-                    ,{ bigSrc: "4", thumbSrc: "4" }
-                    ,{ bigSrc: "5", thumbSrc: "5" }
-                    ,{ bigSrc: "4", thumbSrc: "4" }
-                    ,{ bigSrc: "4", thumbSrc: "4" }
-                    ,{ bigSrc: "4", thumbSrc: "4" }
-                    ,{ bigSrc: "4", thumbSrc: "4" }
-                    ,{ bigSrc: "4", thumbSrc: "4" }
-                ],
-                defaultImageSrc: "d",
-                defaultThumbSrc: "d",
-                thumbsPosition: "top",
-                thumbsScrollDelta: 0.7
-            };
-
-            var imageBox2 = new WAVE.GUI.IBox('divIBox2', init2);
-        });
+      imageBox1.eventBind(WAVE.GUI.EVT_IBOX_ERROR, function (sender, data) {
+        var logArea = WAVE.id('logArea');
+        logArea.innerHTML += 'IBOX #2 ERROR: src=' + data.src + ', message=' + data.message + '\r\n';
+      });
+  });
 
 </script>

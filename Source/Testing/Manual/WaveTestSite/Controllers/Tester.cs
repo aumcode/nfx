@@ -146,7 +146,7 @@ namespace WaveTestSite.Controllers
       }
 
       [Action]
-      public object IBoxTestPage()
+      public object IBox()
       {
          return new ImageBoxTest();
       }

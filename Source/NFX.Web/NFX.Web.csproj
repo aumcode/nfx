@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -79,7 +79,9 @@
     <Compile Include="EMail\MailerSink.cs" />
     <Compile Include="EMail\NOPMailer.cs" />
     <Compile Include="EMail\SMTPMailerSink.cs" />
+    <Compile Include="GeoLookup\BinaryTree.cs" />
     <Compile Include="GeoLookup\Exceptions.cs" />
+    <Compile Include="GeoLookup\SubnetTree.cs" />
     <Compile Include="IO\FileSystem\GoogleDrive\Auth\JsonWebToken.cs" />
     <Compile Include="IO\FileSystem\GoogleDrive\Ensure.cs" />
     <Compile Include="IO\FileSystem\GoogleDrive\Extensions.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="Social\LinkedIn.cs" />
     <Compile Include="Social\NFXSocialException.cs" />
     <Compile Include="Social\SocialNetworkStarter.cs" />
+    <Compile Include="SysConsts.cs" />
     <Compile Include="WebClient.cs" />
     <Compile Include="Social\Odnoklassniki .cs" />
     <Compile Include="Social\Pinterest.cs" />

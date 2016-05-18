@@ -24,8 +24,6 @@ using System.Text;
 
 using NFX.Serialization.JSON;
 
-using NFX.RecordModel;
-
 namespace NFX.DataAccess.CRUD
 {
     /// <summary>
@@ -342,19 +340,15 @@ namespace NFX.DataAccess.CRUD
 
                     if (attr.NonUI) return;//nothing to write for NONUI
 
-                    string tp;
-                    if (m_NonNullableType.IsPrimitive)
-                         tp = m_NonNullableType.Name;
-                    else
-                         tp = m_NonNullableType.FullName;
-                   
+                    bool typeIsNullable;
+                    string tp = JSONMappings.MapCLRTypeToJSON(m_Type, out typeIsNullable);
 
                     var map = new Dictionary<string, object>
                     {
-                      {"Name",  m_Name},       
-                      {"Order", m_Order},       
+                      {"Name",  m_Name},
+                      {"Order", m_Order},
                       {"Type",  tp},
-                      {"Nullable", m_Type!=m_NonNullableType}
+                      {"Nullable", typeIsNullable}
                     };
 
                     if (attr!=null)
@@ -408,7 +402,52 @@ namespace NFX.DataAccess.CRUD
                     return local;
             }
             
+
+            public static Schema FromJSON(string json, bool readOnly = false)
+            {
+              return FromJSON(JSONReader.DeserializeDataObject( json ) as JSONDataMap, readOnly);
+            }
             
+            public static Schema FromJSON(JSONDataMap map, bool readOnly = false)
+            {
+              if (map==null || map.Count==0)
+                 throw new CRUDException(StringConsts.ARGUMENT_ERROR+"Schema.FromJSON(map==null|empty)");
+
+              var name = map["Name"].AsString();
+              if (name.IsNullOrWhiteSpace())
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR+"Schema.FromJSON(map.Name=null|empty)");
+
+              var adefs = map["FieldDefs"] as JSONDataArray;
+              if (adefs==null || adefs.Count==0)
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR+"Schema.FromJSON(map.FieldDefs=null|empty)");
+
+              var defs = new List<Schema.FieldDef>();
+              foreach(var mdef in adefs.Cast<JSONDataMap>())
+              {
+                var fname = mdef["Name"].AsString();
+                if (fname.IsNullOrWhiteSpace())
+                  throw new CRUDException(StringConsts.ARGUMENT_ERROR+"Schema.FromJSON(map.FierldDefs[name=null|empty])");
+                var req = mdef["IsRequired"].AsBool();
+                var key = mdef["IsKey"].AsBool();
+                var vis = mdef["Visible"].AsBool();
+
+                var tp = mdef["Type"].AsString(string.Empty).ToLowerInvariant().Trim();
+                var tpn = mdef["Nullable"].AsBool();
+
+                var type = JSONMappings.MapJSONTypeToCLR(tp, tpn);
+
+                var atr = new FieldAttribute(required: req, key: key, visible: vis);
+                var def = new Schema.FieldDef(fname, type, atr);
+                defs.Add(def);
+              }
+
+              return new Schema(name, readOnly, defs);
+            }
+
+
+
+
+
             private static Registry<Schema> s_TypedRegistry = new Registry<Schema>();
 
             
@@ -556,8 +595,6 @@ namespace NFX.DataAccess.CRUD
                 }
 
             }
-
-
 
         #endregion
 

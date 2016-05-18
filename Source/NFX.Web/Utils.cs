@@ -73,56 +73,5 @@ namespace NFX.Web
       return sb.ToString();
     }
 
-
-#pragma warning disable 1570
-    /// <summary>
-    /// Parses query string (e.g. "id=457&name=zelemhan") into dictionary (e.g. {{"id", "457"}, {"name", "zelemhan"}})
-    /// </summary>
-#pragma warning restore 1570
-    public static JSONDataMap ParseQueryString(string query)
-    {
-      if (query.IsNullOrWhiteSpace()) return new JSONDataMap();
-
-      var dict = new JSONDataMap();
-      int queryLen = query.Length;
-
-      int startIdx = 0;
-      while (startIdx < queryLen)
-      {
-        int ampIdx = query.IndexOf('&', startIdx);
-        int kvLen = (ampIdx != -1) ? ampIdx - startIdx : queryLen - startIdx;
-
-        if (kvLen < 1)
-        {
-          startIdx = ampIdx + 1;
-          continue;
-        }
-
-        int eqIdx = query.IndexOf('=', startIdx, kvLen);
-        if (eqIdx == -1)
-        {
-          var key = Uri.UnescapeDataString(query.Substring(startIdx, kvLen));
-          dict.Add(key, null);
-        }
-        else
-        {
-          int keyLen = eqIdx - startIdx;
-          if (keyLen > 0)
-          {
-            string key = Uri.UnescapeDataString(query.Substring(startIdx, keyLen));
-            string val = null;
-            int valLen = kvLen - (eqIdx - startIdx) - 1;
-            if (valLen > 0)
-              val = Uri.UnescapeDataString(query.Substring(eqIdx + 1, kvLen - (eqIdx - startIdx) - 1));
-            dict.Add(key, val);
-          }
-        }
-
-        startIdx += kvLen + 1;
-      }
-
-      return dict;
-    }
-
   }
 }

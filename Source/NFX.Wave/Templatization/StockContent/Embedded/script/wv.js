@@ -48,11 +48,17 @@ var WAVE = (function(){
     published.arrayClear = function(array) {  while(array.length > 0) array.pop(); };
 
     published.mergeArrays = function(left, right, matcher, transform) {
+      if(!published.isArray(left) && !published.isArray(right)) return [];
+      
       var m = published.isFunction(matcher) ? matcher : function(a, b) { return a === b; };
-      var t = published.isFunction(transform) ? transform : function(a){return a;};
+      var t = published.isFunction(transform) ? transform : function(a){ return a; };
+
+      if(!published.isArray(left)) left = right;
+      if(!published.isArray(right)) right = left;
+
       var a = left.concat(right);
-      for (var i = 0; i < a.length; ++i) {
-        for (var j = i + 1; j < a.length; ++j) {
+      for (var i = 0; i < a.length; i++) {
+        for (var j = i + 1; j < a.length; j++) {
           if (m(a[i],a[j]))
             a.splice(j--, 1);
         }
@@ -215,7 +221,8 @@ var WAVE = (function(){
             obj!==null &&
             typeof(prop)!==tUNDEFINED &&
             prop!==null &&
-            published.has(obj, prop))  return obj[prop];
+            published.has(obj, prop) &&
+            typeof(obj[prop])!==tUNDEFINED) return obj[prop];
         
         return(typeof(dflt)===tUNDEFINED) ? null : dflt;
     }
@@ -1010,7 +1017,7 @@ var WAVE = (function(){
          return published.arrayDelete(sl, sink);
        },
 
-       //Clears all objects that cat as event sinks bound to this instance
+       //Clears all objects that act as event sinks bound to this instance
        eventSinkClear: function(){
          deleteSinkList(this);
        },

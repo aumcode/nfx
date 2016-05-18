@@ -64,6 +64,7 @@ namespace NFX.ApplicationModel
 
 
             private DateTime? m_LastLoginUTC;
+            private SessionLoginType m_LastLoginType;
             private User m_User;
 
 
@@ -126,6 +127,14 @@ namespace NFX.ApplicationModel
             public DateTime? LastLoginUTC
             {
               get { return m_LastLoginUTC;}
+            }
+
+            /// <summary>
+            /// Returns the last login type
+            /// </summary>
+            public SessionLoginType LastLoginType
+            {
+              get { return m_LastLoginType;}
             }
 
             /// <summary>
@@ -202,10 +211,11 @@ namespace NFX.ApplicationModel
             /// Called from business code when user supplies login credentals and/or performs another action
             /// that can be qualified as a reliable user identity proof
             /// </summary>
-            public virtual void HasJustLoggedIn()
+            public virtual void HasJustLoggedIn(SessionLoginType loginType)
             {
               m_IsJustLoggedIn = true;
               m_LastLoginUTC = App.TimeSource.UTCNow;
+              m_LastLoginType = loginType;
             }
 
             /// <summary>

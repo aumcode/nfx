@@ -30,9 +30,6 @@ using System.Drawing.Imaging;
 
 using NFX.WinApi;
 
-using NFX.RecordModel;
-
-
 namespace NFX.WinForms
 {
 
@@ -88,42 +85,6 @@ namespace NFX.WinForms
         return false;
     }
     
-    
-    /// <summary>
-    /// Walks control parent tree and tries to find a record in the inner-most node. 
-    /// Returns null if nothing could be found
-    /// </summary>
-    public static Record FindParentRecord(Control ctl)
-    {
-      while (ctl != null)
-      {
-        ctl = ctl.Parent;
-        
-        if ((ctl!=null)&&(ctl is IRecordContext))
-         if (((IRecordContext)ctl).Record!=null)
-             return ((IRecordContext)ctl).Record;
-      }
-      return null;
-    }
-
-    /// <summary>
-    /// Walks control parent tree and tries to find a surrogate record type name in the inner-most node. 
-    /// Returns null if nothing could be found
-    /// </summary>
-    public static string FindParentRecordSurrogateTypeName(Control ctl)
-    {
-      while (ctl != null)
-      {
-        ctl = ctl.Parent;
-
-        if ((ctl != null) && (ctl is ISurrogateRecordTypeNameProvider))
-          if (!string.IsNullOrEmpty(((ISurrogateRecordTypeNameProvider)ctl).AttachToRecordSurrogateTypeName))
-            return ((ISurrogateRecordTypeNameProvider)ctl).AttachToRecordSurrogateTypeName;
-      }
-      return null;
-    }
-    
-    
     /// <summary>
     /// Walks the whole child control tree and returns all controls as a flat enumeration
     /// </summary>
@@ -140,28 +101,6 @@ namespace NFX.WinForms
       }
     }
     
-    /// <summary>
-    /// Walks child controls and attaches controls to parent record
-    /// </summary>
-    public static void AttachChildControlsToParentRecord(Control ctl)
-    {
-       if (ctl == null) return;
-      
-       foreach (Control c in ctl.Controls)
-       {
-               IParentRecordAttachable a = c as IParentRecordAttachable;
-               if (a != null)
-               { //found attachable control, it will take care of it's children by itself
-                 if (a.AttachToParentRecord)
-                         a.TryAttachModel();
-               }
-               else
-               {
-                 AttachChildControlsToParentRecord(c);
-               }          
-               
-       }     
-    }       
     
     
     /// <summary>

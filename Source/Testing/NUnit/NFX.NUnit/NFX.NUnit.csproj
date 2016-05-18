@@ -92,6 +92,7 @@
     <Compile Include="CodeAnalysis\JSONLexer.cs" />
     <Compile Include="CodeAnalysis\JSONParser.cs" />
     <Compile Include="Collections\BitListTest.cs" />
+    <Compile Include="Collections\LookAheadEnumerableTest.cs" />
     <Compile Include="Collections\RegistryTests.cs" />
     <Compile Include="Collections\EventedDictionaryTests.cs" />
     <Compile Include="Collections\EventedListTests.cs" />
@@ -103,6 +104,8 @@
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
+    <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
+    <Compile Include="Parsing\CSVParserTest.cs" />
     <Compile Include="SealedStringTests.cs" />
     <Compile Include="DataAccess\FieldAttrCloningTests.cs" />
     <Compile Include="DataAccess\RowCopyFields.cs" />
@@ -190,15 +193,9 @@
     <Compile Include="Parsing\CompilingExpressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parsing\Evaluator.cs" />
-    <Compile Include="RecordModel\SpeedRecord.cs" />
-    <Compile Include="RecordModel\RecordWithAttributes.cs" />
-    <Compile Include="RecordModel\PersonRecordWithAttributes.cs" />
-    <Compile Include="RecordModel\PersonRecord.cs" />
-    <Compile Include="RecordModel\Record.cs" />
     <Compile Include="ScopeTest.cs" />
     <Compile Include="Serialization\ArrayWalking.cs" />
     <Compile Include="Serialization\POD.cs" />
-    <Compile Include="Serialization\ExampleRecord.cs" />
     <Compile Include="Serialization\JSON.cs" />
     <Compile Include="Serialization\PODSlim.cs" />
     <Compile Include="Serialization\TestObjects.cs" />
@@ -209,11 +206,11 @@
     <Compile Include="TestLog.cs" />
     <Compile Include="Throttling\ThrottlingTest.cs" />
     <Compile Include="Wave\URIPatternTests.cs" />
+    <Compile Include="Web\Client\RecordTest.cs" />
     <Compile Include="Web\EscapeJSLiteralTest.cs" />
     <Compile Include="Web\MultiPart\MultipartTest.cs" />
     <Compile Include="Web\PortalHubTests.cs" />
     <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />
-    <Compile Include="Web\ParseQueryStringTest.cs" />
     <Compile Include="Web\Pay\ConfigBasedCurrencyMarketTests.cs" />
     <Compile Include="Web\Pay\FeeTests.cs" />
     <Compile Include="Web\WebSettingsTests.cs" />
@@ -272,10 +269,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RecordModel\PersonRecordWithAttributes.test-tech.js" />
-    <EmbeddedResource Include="RecordModel\PersonRecordWithAttributes.m_fldName.test-tech.js" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

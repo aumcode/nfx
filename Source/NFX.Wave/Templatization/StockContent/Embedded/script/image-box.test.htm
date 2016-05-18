@@ -106,8 +106,7 @@
                 defaultImageSrc: "d",
                 defaultThumbSrc: "d",
                 thumbsPosition: "left",
-                thumbsScrollDelta: 0.7,
-                logOut: "logArea"
+                thumbsScrollDelta: 0.7
             };
 
             var imageBox0 = new WAVE.GUI.IBox('divIBox0', init0);
@@ -121,53 +120,53 @@
 
             // general test
 
-            //var init1 =
-            //{
-            //    images: {
-            //        "d": "https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
-            //        "g": "https://www.google.ru/images/nav_logo225.png",
-            //        "1": "https://www.google.ru/images/srpr/logo11w.png",
-            //        "2": "http://simpleicon.com/wp-content/uploads/phone-symbol-1.png",
-            //        "3": "http://www.cliparthut.com/clip-arts/910/green-play-icon-910267.gif",
-            //        "4": "https://www.google.ru/images/srpr/logo11w.png"
-            //    },
-            //    thumbs: [
-            //        { bigSrc: "1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41, title: "Some Text" }, { bigSrc: "2", thumbSrc: "g", h: 18, w: 15, l: -13, t: -88, title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }, { bigSrc: "3", thumbSrc: "g", h: 28, w: 28, l: -138, t: -41 }, { thumbSrc: "g", h: 37, w: 95, l: 0, t: -41, title: "<strong>Flume Plasma long long long long long long text</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }, { thumbSrc: "g", h: 18, w: 15, l: -13, t: -88 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
-            //    ],
-            //    defaultImageSrc: "d",
-            //    defaultThumbSrc: "d",
-            //    thumbsPosition: "bottom",
-            //    thumbsScrollDelta: 0.7
-            //};
+            var init1 =
+            {
+                images: {
+                    "d": "https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
+                    "g": "https://www.google.ru/images/nav_logo225.png",
+                    "1": "https://www.google.ru/images/srpr/logo11w.png",
+                    "2": "http://simpleicon.com/wp-content/uploads/phone-symbol-1.png",
+                    "3": "http://www.cliparthut.com/clip-arts/910/green-play-icon-910267.gif",
+                    "4": "https://www.google.ru/images/srpr/logo11w.png"
+                },
+                thumbs: [
+                    { bigSrc: "1", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41, title: "Some Text" }, { bigSrc: "2", thumbSrc: "g", h: 18, w: 15, l: -13, t: -88, title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }, { bigSrc: "3", thumbSrc: "g", h: 28, w: 28, l: -138, t: -41 }, { thumbSrc: "g", h: 37, w: 95, l: 0, t: -41, title: "<strong>Flume Plasma long long long long long long text</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }, { thumbSrc: "g", h: 18, w: 15, l: -13, t: -88 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }, { bigSrc: "4", thumbSrc: "g", h: 37, w: 95, l: 0, t: -41 }
+                ],
+                defaultImageSrc: "d",
+                defaultThumbSrc: "d",
+                thumbsPosition: "bottom",
+                thumbsScrollDelta: 0.7
+            };
 
-            //var imageBox1 = new WAVE.GUI.IBox('divIBox1', init1);
+            var imageBox1 = new WAVE.GUI.IBox('divIBox1', init1);
 
-            //imageBox1.eventBind("image-changed", function(sender, url) {
-            //    var divImageChangedEventBox = WAVE.id('divImageChangedEventBox');
-            //    divImageChangedEventBox.innerText = 'EVENT TEST: image changed to ' + url;
-            //});
+            imageBox1.eventBind(WAVE.GUI.EVT_IBOX_IMAGE_CHANGED, function (sender, url) {
+                var divImageChangedEventBox = WAVE.id('divImageChangedEventBox');
+                divImageChangedEventBox.innerText = 'EVENT TEST: image changed to ' + url;
+            });
 
-            //// big & slow images test
+            // big & slow images test
 
-            //var init2 =
-            //{
-            //    images: {
-            //        "d": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
-            //        "1": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://www.colourbox.com/preview/1167198-nature-orange-insect-attractive-garden-butterfly-beautiful-plant-small-spotted-resting-single-close-green-fly-color-bright-macro-flap-beauty-antenna-yellow-wings-background-summer-wild-sunlight-pattern-light-head-open-closeu.jpg",
-            //        "2": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://www.photocase.com/stock-photos/202338-stock-photo-nature-flower-blue-plant-summer-small.jpg",
-            //        "3": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://pixabay.com/static/uploads/photo/2014/10/09/14/58/tit-481988_640.jpg",
-            //        "4": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg",
-            //    },
-            //    thumbs: [
-            //        { bigSrc: "1", thumbSrc: "1", title: "Some Text" }, { bigSrc: "2", thumbSrc: "2", title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }, { bigSrc: "3", thumbSrc: "3" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "5", thumbSrc: "5" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }
-            //    ],
-            //    defaultImageSrc: "d",
-            //    defaultThumbSrc: "d",
-            //    thumbsPosition: "top",
-            //    thumbsScrollDelta: 0.7
-            //};
+            var init2 =
+            {
+                images: {
+                    "d": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://cdn.tutsplus.com/vector/uploads/2013/11/chris-flower-600.png",
+                    "1": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://www.colourbox.com/preview/1167198-nature-orange-insect-attractive-garden-butterfly-beautiful-plant-small-spotted-resting-single-close-green-fly-color-bright-macro-flap-beauty-antenna-yellow-wings-background-summer-wild-sunlight-pattern-light-head-open-closeu.jpg",
+                    "2": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://www.photocase.com/stock-photos/202338-stock-photo-nature-flower-blue-plant-summer-small.jpg",
+                    "3": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=https://pixabay.com/static/uploads/photo/2014/10/09/14/58/tit-481988_640.jpg",
+                    "4": "http://www.sl.rs/mvc/tester/SlowImage?dbDelayMs=500&netDelayMs=10&url=http://iphonewallpapers-hd.com/thumbs/small_bonsai_plants-t2.jpg",
+                },
+                thumbs: [
+                    { bigSrc: "1", thumbSrc: "1", title: "Some Text" }, { bigSrc: "2", thumbSrc: "2", title: "<strong>Flume Plasma</strong><br> 12% off 'til Dec 26<br><a href='http://www.itadapter.com'>Buy me now</a>" }, { bigSrc: "3", thumbSrc: "3" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "5", thumbSrc: "5" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }, { bigSrc: "4", thumbSrc: "4" }
+                ],
+                defaultImageSrc: "d",
+                defaultThumbSrc: "d",
+                thumbsPosition: "top",
+                thumbsScrollDelta: 0.7
+            };
 
-            //var imageBox2 = new WAVE.GUI.IBox('divIBox2', init2);
+            var imageBox2 = new WAVE.GUI.IBox('divIBox2', init2);
         });
 
     </script>

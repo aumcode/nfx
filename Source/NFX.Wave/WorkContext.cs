@@ -278,7 +278,7 @@ namespace NFX.Wave
       public ConcurrentDictionary<object, object> Items
       {
           get 
-          {                                        
+          {
             if (m_Items==null)
                 lock(m_ItemsLock)
                 {

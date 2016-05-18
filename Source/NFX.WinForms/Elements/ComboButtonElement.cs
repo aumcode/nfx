@@ -71,11 +71,11 @@ namespace NFX.WinForms.Elements
         protected internal override void Paint(System.Drawing.Graphics gr)
         {
           base.Paint(gr);
-          BaseApplication.Theme.PartRenderer.ComboButton(gr,
-                                                    Region,
-                                                    MouseIsOver,
-                                                    Pressed,
-                                                    FieldControlContext);
+          //BaseApplication.Theme.PartRenderer.ComboButton(gr,
+          //                                          Region,
+          //                                          MouseIsOver,
+          //                                          Pressed,
+          //                                          FieldControlContext);
         }
 
 

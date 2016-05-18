@@ -29,7 +29,27 @@ using NFX.Security;
 
 namespace NFX.ApplicationModel
 {
-  
+  /// <summary>
+  /// Denotes types of session login
+  /// </summary>
+  public enum SessionLoginType
+  {
+     /// <summary>
+     /// Not known
+     /// </summary>
+     Unspecified = 0, 
+
+     /// <summary>
+     /// A human user has entered/supplied/provider the credentials
+     /// </summary>
+     Human, 
+     
+     /// <summary>
+     /// A robot/computer/process/API caller  
+     /// </summary>
+     Robot
+  }
+
   /// <summary>
   /// Describes user session 
   /// </summary>
@@ -70,6 +90,11 @@ namespace NFX.ApplicationModel
      DateTime? LastLoginUTC { get; }
 
      /// <summary>
+     /// Returns last login type
+     /// </summary>
+     SessionLoginType LastLoginType { get; }
+
+     /// <summary>
      /// References item dictionary that may be used to persist object graphs per session  
      /// </summary>
      IDictionary<object, object> Items { get; }
@@ -100,7 +125,7 @@ namespace NFX.ApplicationModel
      /// Sets IsJustLoggedIn to true to indicate that user has supplied credentials/got checked via security manager.
      /// The caller of this method is implementation-specific and depends on what is considered to be "proof of users' identity"
      /// </summary>
-     void HasJustLoggedIn();
+     void HasJustLoggedIn(SessionLoginType loginType);
 
      /// <summary>
      /// Generates new GUID and stores it in ID storing old ID value in OldID property which is not serializable.

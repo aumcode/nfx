@@ -20,7 +20,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BUILD_INFO.txt" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.object-editor.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">

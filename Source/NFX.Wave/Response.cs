@@ -253,7 +253,7 @@ namespace NFX.Wave
         m_NetResponse.ContentType = NFX.Web.ContentType.ExtensionToContentType(ext, NFX.Web.ContentType.BINARY);
         
         if (attachment)
-          m_NetResponse.Headers.Add(SysConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(fi.Name));
+          m_NetResponse.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(fi.Name));
         
         if (bufferSize<MIN_DOWNLOAD_BUFFER_SIZE) bufferSize=MIN_DOWNLOAD_BUFFER_SIZE;
         else if (bufferSize>MAX_DOWNLOAD_BUFFER_SIZE) bufferSize=MAX_DOWNLOAD_BUFFER_SIZE;
@@ -290,7 +290,7 @@ namespace NFX.Wave
         setWasWrittenTo();
         
         if (attachmentName.IsNotNullOrWhiteSpace())
-          m_NetResponse.Headers.Add(SysConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(attachmentName));
+          m_NetResponse.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(attachmentName));
         
         if (bufferSize<MIN_DOWNLOAD_BUFFER_SIZE) bufferSize=MIN_DOWNLOAD_BUFFER_SIZE;
         else if (bufferSize>MAX_DOWNLOAD_BUFFER_SIZE) bufferSize=MAX_DOWNLOAD_BUFFER_SIZE;
@@ -497,7 +497,6 @@ namespace NFX.Wave
         var cv = cookie.Value;
         if (cv.IsNullOrWhiteSpace()) return;
 
-//Console.WriteLine("Cookie detected: "+cv); 
 
         var segs = cv.Split(VAR_DELIMITER);
         foreach(var seg in segs)
@@ -509,7 +508,6 @@ namespace NFX.Wave
           else
             m_ClientVars[seg.Substring(0, i)] = seg.Substring(i+1);
         }
-//Console.WriteLine("Parsed: "+m_ClientVars.ToJSON());
       }
 
       private void stowClientVars()
@@ -536,10 +534,7 @@ namespace NFX.Wave
         if (total > MAX_COOKIE_LENGTH)
          throw new WaveException(StringConsts.CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR.Args(total, MAX_COOKIE_LENGTH)); 
 
-
-// Console.WriteLine("Cookie added: "+cookieName+",  value: "+cv); 
-
-        AddHeader(NFX.Wave.SysConsts.HTTP_SET_COOKIE,
+        AddHeader(WebConsts.HTTP_SET_COOKIE,
                              "{0}={1};path=/;expires={2};HttpOnly"
                            .Args(cookieName, cv, App.TimeSource.UTCNow.AddYears(100).DateTimeToHTTPCookieDateTime() )); 
       }

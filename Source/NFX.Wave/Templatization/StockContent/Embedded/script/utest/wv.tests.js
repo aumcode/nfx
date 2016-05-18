@@ -76,12 +76,22 @@
        });
 
        run("Arrays", "mergeArrays", function () {
+         assertTrue(WAVE.mergeArrays().length === 0);
+         assertTrue(WAVE.isSame(WAVE.mergeArrays(), []));
+
          var arrayA = [1, 2, 3];
          var arrayB = [2, 3, 5, 7];
-         var r = WAVE.mergeArrays(arrayA, arrayB);
+         var r = WAVE.mergeArrays(arrayA, arrayB); 
 
          assertTrue(r.length === 5);
          assertTrue(WAVE.isSame(r, [1, 2, 3, 5, 7]));
+
+         arrayB = [2, 3, 5, 7];
+         var r = WAVE.mergeArrays(arrayB); 
+
+         assertTrue(r.length === 4);
+         assertTrue(WAVE.isSame(r, [2, 3, 5, 7]));
+
 
          arrayA = ["rus", "RUS", "ENg"];
          arrayB = ["Eng", "eps"];
@@ -237,6 +247,9 @@
          assertTrue( 3 === WAVE.get(o2, 2, 123) );
          assertTrue( 123 === WAVE.get(o2, 3, 123) );
 
+         var s = {};
+         s.n = undefined;
+         assertTrue( 100 === WAVE.get(s, "n", 100) );
        });
 
 
@@ -1011,23 +1024,23 @@
        });
 
        run("Strings", "siNum 1 <= n < 1000", function () {
-         assertTrue("1.00", WAVE.siNum(1));
-         assertTrue("1m", WAVE.siNum(1, 0));
-         assertTrue("999.0", WAVE.siNum(999, 1));
-         assertTrue("1.0k", WAVE.siNum(999.9, 1));
-         assertTrue("900000.0k", WAVE.siNum(900000, 1));
-         assertTrue("1M", WAVE.siNum(999999.9, 0));
+         assertTrue("1.00" === WAVE.siNum(1), "1");
+         assertTrue("1" === WAVE.siNum(1, 0), "2");
+         assertTrue("999.0" === WAVE.siNum(999, 1), "3");
+         assertTrue("1.0k" === WAVE.siNum(999.99, 1), "4");
+         assertTrue("900.0k" === WAVE.siNum(900000, 1), "5");
+         assertTrue("1M" === WAVE.siNum(999999.9, 0), "6");
 
-         assertTrue("23.000", WAVE.siNum(23, 3));
-         assertTrue("-100.0", WAVE.siNum(-99.99, 1));
+         assertTrue("23.000" === WAVE.siNum(23, 3));
+         assertTrue("-100.0" === WAVE.siNum(-99.99, 1));
        });
 
        run("Strings", "siNum 0 <= n < 1", function () {
-         assertTrue("0.00", WAVE.siNum(0));
-         assertTrue("100.00m", WAVE.siNum(0.1));
-         assertTrue("-10.010m", WAVE.siNum(-0.01001, 3));
-         assertTrue("1.2m", WAVE.siNum(0.00118, 1));
-         assertTrue("10µ", WAVE.siNum(0.00001, 0));
+         assertTrue("0.00" === WAVE.siNum(0));
+         assertTrue("100.00m" === WAVE.siNum(0.1));
+         assertTrue("-10.010m" === WAVE.siNum(-0.01001, 3));
+         assertTrue("1.2m" === WAVE.siNum(0.00118, 1));
+         assertTrue("10µ" === WAVE.siNum(0.00001, 0));
        });
 
         run("Strings", "charIsAZLetterOrDigit", function(){

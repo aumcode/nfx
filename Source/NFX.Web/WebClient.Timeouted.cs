@@ -28,7 +28,7 @@ namespace NFX.Web
           /// <summary>
           /// Provides WebClient functionality with timeout
           /// </summary>
-          private class WebClientTimeouted : System.Net.WebClient
+          public class WebClientTimeouted : System.Net.WebClient
           {
             public WebClientTimeouted(IWebClientCaller caller)
             {

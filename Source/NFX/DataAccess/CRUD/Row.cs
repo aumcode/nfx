@@ -25,7 +25,12 @@ using NFX.Serialization.JSON;
 
 namespace NFX.DataAccess.CRUD
 {
-    
+    /// <summary>
+    /// Injects function that tries to set field value. May elect to skip the set and return false to indicate failure(instead of throwing exception)
+    /// </summary>
+    public delegate bool SetFieldFunc(Row row, Schema.FieldDef fdef, object val);
+
+
     /// <summary>
     /// Base class for any CRUD row. This class has two direct subtypes - DynamicRow and TypedRow.
     /// Rows are NOT THREAD SAFE by definition
@@ -36,31 +41,88 @@ namespace NFX.DataAccess.CRUD
 
         #region Static
 
-            /// <summary>
-            /// Factory method that makes an appropriate row type.For performance purposes,
-            ///  this method does not check passed type for Row-derivation and returns null instead if type was invalid
-            /// </summary>
-            /// <param name="schema">Schema, which is used for creation of DynamicRows and their derivatives</param>
-            /// <param name="tRow">
-            /// A type of row to create, if the type is TypedRow-descending then a parameterless .ctor is called, 
-            /// otherwise a type must have a .ctor that takes schema as a sole argument
-            /// </param>
-            /// <returns>
-            /// Row instance or null if wrong type was passed. For performance purposes,
-            ///  this method does not check passed type for Row-derivation and returns null instead if type was invalid
-            /// </returns>
-            public static Row MakeRow(Schema schema, Type tRow = null)
+          /// <summary>
+          /// Factory method that makes an appropriate row type.For performance purposes,
+          ///  this method does not check passed type for Row-derivation and returns null instead if type was invalid
+          /// </summary>
+          /// <param name="schema">Schema, which is used for creation of DynamicRows and their derivatives</param>
+          /// <param name="tRow">
+          /// A type of row to create, if the type is TypedRow-descending then a parameterless .ctor is called, 
+          /// otherwise a type must have a .ctor that takes schema as a sole argument
+          /// </param>
+          /// <returns>
+          /// Row instance or null if wrong type was passed. For performance purposes,
+          ///  this method does not check passed type for Row-derivation and returns null instead if type was invalid
+          /// </returns>
+          public static Row MakeRow(Schema schema, Type tRow = null)
+          {
+            if (tRow!=null)
             {
-                if (tRow!=null)
+                if (typeof(TypedRow).IsAssignableFrom(tRow))
+                    return Activator.CreateInstance(tRow) as Row;  
+                else                                         //todo Compile do dynamic functors for speed
+                    return Activator.CreateInstance(tRow, schema) as Row;
+            }
+                
+            return new DynamicRow(schema);
+          }
+
+          /// <summary>
+          /// Tries to fill the row with data returning true if field count matched
+          /// </summary>
+          public static bool TryFillFromJSON(Row row, IJSONDataObject jsonData, SetFieldFunc setFieldFunc = null)
+          {
+            if (row==null || jsonData==null) return false;
+
+            var allMatch = true;
+            var map = jsonData as JSONDataMap;
+            if (map!=null)
+            {
+              foreach(var kvp in map)
+              {
+                var fdef = row.Schema[kvp.Key];
+                if (fdef==null)
                 {
-                    if (typeof(TypedRow).IsAssignableFrom(tRow))
-                        return Activator.CreateInstance(tRow) as Row;  
-                    else                                         //todo Compile do dynamic functors for speed
-                        return Activator.CreateInstance(tRow, schema) as Row;
+                  var ad = row as IAmorphousData;
+                  if (ad!=null && ad.AmorphousDataEnabled)
+                    ad.AmorphousData[kvp.Key] = kvp.Value;
+
+                  allMatch = false;
+                  continue;
                 }
                 
-                return new DynamicRow(schema);
+                if (setFieldFunc==null)
+                  row.SetFieldValue(fdef, kvp.Value);
+                else
+                {
+                  var ok = setFieldFunc(row, fdef, kvp.Value);
+                  if (!ok) allMatch = false;
+                }
+              }
             }
+            else
+            {
+              var arr = jsonData as JSONDataArray;
+              if (arr==null) return false;
+
+              for(var i=0; i<row.Schema.FieldCount; i++) 
+              {
+                 if (i==arr.Count) break;
+                 var fdef = row.Schema[i];
+                 
+                 if (setFieldFunc==null)
+                   row.SetFieldValue(fdef, arr[i]);
+                 else
+                 {
+                   var ok = setFieldFunc(row, fdef, arr[i]);
+                   if (!ok) allMatch = false;
+                 }
+              }
+              if (arr.Count!=row.Schema.FieldCount) allMatch = false;
+            }
+
+            return allMatch;
+          }
 
 
         #endregion

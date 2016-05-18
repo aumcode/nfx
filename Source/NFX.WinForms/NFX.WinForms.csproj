@@ -120,7 +120,6 @@
     <Compile Include="Controls\Style.cs" />
     <Compile Include="Elements\CheckableElement.cs" />
     <Compile Include="Elements\CheckBoxElement.cs" />
-    <Compile Include="Elements\ComboBoxElement.cs" />
     <Compile Include="Elements\ComboButtonElement.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\ElementHostControl.cs">
@@ -130,7 +129,6 @@
     <Compile Include="Elements\RadioButtonElement.cs" />
     <Compile Include="Elements\RadioGroupElement.cs" />
     <Compile Include="Elements\SymbolElement.cs" />
-    <Compile Include="Elements\TextBoxElement.cs" />
     <Compile Include="Elements\TextElement.cs" />
     <Compile Include="Elements\TextLabelElement.cs" />
     <Compile Include="Exceptions.cs" />
@@ -138,47 +136,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IFieldControlContext.cs" />
-    <Compile Include="BaseApplication.cs" />
     <Compile Include="StringConsts.cs" />
-    <Compile Include="Themes\Default\DefaultPartRenderer.cs" />
-    <Compile Include="Themes\Default\DefaultTheme.cs" />
-    <Compile Include="Themes\ITheme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Themes\IPartRenderer.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Views\ComboBoxLookupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Design\FieldContextDesignClasses.cs" />
-    <Compile Include="Views\Design\FieldViewDesignClasses.cs" />
-    <Compile Include="Views\Design\RecordContextDesignClasses.cs" />
-    <Compile Include="Views\Enums.cs" />
-    <Compile Include="Views\FieldContextControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\FieldView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\InternalTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\RecordContextForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\RecordContextPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\GeneratedRecordView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="WinApi\GDI.cs" />
     <Compile Include="WinApi\Kernel.cs" />
     <Compile Include="WinApi\Messages.cs" />
     <Compile Include="WinApi\User.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\FieldView.bmp" />
-    <Content Include="Views\FieldContextControl.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NFX\NFX.csproj">

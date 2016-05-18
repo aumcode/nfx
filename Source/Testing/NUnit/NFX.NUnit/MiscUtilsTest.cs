@@ -1,4 +1,4 @@
-/*<FILE_LICENSE>
+﻿/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
 * Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
 *
@@ -411,6 +411,137 @@ f
           Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs("      /static/","site","\\content"));
           Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs(" ", null, "      /static/","site","\\content"));
           Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs("static", null, "site","", "", "\\content"));
+        }
+    
+        [Test]
+        public void ComposeURLQueryString_Empty()
+        {
+          Dictionary<string, object> pars = null;
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual(string.Empty, result);
+        
+          pars = new Dictionary<string, object>();
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual(string.Empty, result);
+        }
+        
+        [Test]
+        public void ComposeURLQueryString_NullOrEmptyQueryParts()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "name", null }
+          };
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name", result);
+          
+          pars = new Dictionary<string, object>
+          {
+            { "name", string.Empty },
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name=", result);
+          
+          pars = new Dictionary<string, object>
+          {
+            { string.Empty, "ABBA" }
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual(string.Empty, result);
+        
+          pars = new Dictionary<string, object>
+          {
+            { "name1", null },
+            { "name2", string.Empty },
+            { string.Empty, "ABBA" }
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name1&name2=", result);
+        
+          pars = new Dictionary<string, object>
+          {
+            { "name1", string.Empty },
+            { "name2", null },
+            { string.Empty, "ABBA" },
+            { "name3", "John" }
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name1=&name2&name3=John", result);
+        }
+        
+        [Test]
+        public void ComposeURLQueryString_SpecSymbols()
+        {
+          var pars = new Dictionary<string, object> { { "name", "Petrov" }, { "age", 19 }, { "spec", @" -y~!@#$%^&*()_?><|';:\/=+" } };
+        
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name=Petrov&age=19&spec=%20-y~%21%40%23%24%25%5E%26%2A%28%29_%3F%3E%3C%7C%27%3B%3A%5C%2F%3D%2B", result);
+        }
+        
+        [Test]
+        public void ComposeURLQueryString_Types()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "int", -257 },
+            { "bool", true },
+            { "double", 1.9D },
+            { "string", "data&data" },
+            { "dec", 23.45M },
+            { "float", -12.34F }
+          };
+        
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("int=-257&bool=True&double=1.9&string=data%26data&dec=23.45&float=-12.34", result);
+        }
+        
+        [Test]
+        public void ComposeURLQueryString_UTF8()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "eng", "Hello!" },
+            { "jap", "こんにちは" },
+            { "chi", "久有归天愿"},
+            { "chi2", "你好" },
+            { "fra", "Allô" },
+            { "привет", "rus" },
+            { "नमस्कार", "hind" }
+          };
+        
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("eng=Hello%21&jap=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF&chi=%E4%B9%85%E6%9C%89%E5%BD%92%E5%A4%A9%E6%84%BF&chi2=%E4%BD%A0%E5%A5%BD&fra=All%C3%B4&%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82=rus&%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0=hind", result);
+        }
+        
+        [Test]
+        public void ComposeURLQueryString_Mixed()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "eng", "Hello!" },
+            { "jap", null },
+            { "chi", "久有归天愿"},
+            { "chi2", 12 },
+            { "", -123456 },
+            { "привет", string.Empty },
+            { "नमस्कार", null }
+          };
+        
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("eng=Hello%21&jap&chi=%E4%B9%85%E6%9C%89%E5%BD%92%E5%A4%A9%E6%84%BF&chi2=12&%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82=&%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0", result);
+        }
+        
+        [Test]
+        public void ComposeURLQueryString_PlusAndSpaces()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "eng", "Hello Lenin!" },
+            { "rus", "Привет Ленин!" }
+          };
+        
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("eng=Hello%20Lenin%21&rus=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%20%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%21", result);
         }
 
     }

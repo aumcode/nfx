@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using NFX.ApplicationModel;
 using NFX.WinForms;
 
 namespace WinFormsTest
@@ -35,21 +36,17 @@ namespace WinFormsTest
     {
       //This line initializes  NFX Application Model dependency injection services container
       //Separate class was needed because Application  class is sealed
-      using(new BaseApplication(args, null))
-      {                                      
+      using(new ServiceBaseApplication(args, null))
+      {
         Application.EnableVisualStyles();
        // Application.SetCompatibleTextRenderingDefault(false);
 
         Application.Run(new MenuForm());
      //   Application.Run( new ChartFormDemo());
 
-        //Application.Run(new PatientForm());
-        //Application.Run(new GridForm());
       // Application.Run(new Form2());
-       //Application.Run(new Form1());
       //    Application.Run(new MongoDBForm());
       //    Application.Run(new LogForm());
-        // Application.Run(new ObjectStoreForm());
 
        //  Application.Run(new SerializerForm());
 //          Application.Run(new SerializerForm2());

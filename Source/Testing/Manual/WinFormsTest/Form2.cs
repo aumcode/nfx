@@ -210,13 +210,13 @@ namespace WinFormsTest
 
     private void button4_Click(object sender, EventArgs e)
     {
-      grid.Configure(NFX.WinForms.BaseApplication.ConfRoot);
+      grid.Configure(App.ConfigRoot);
     }
 
     private void button5_Click(object sender, EventArgs e)
     {
-      grid.PersistConfiguration(NFX.WinForms.BaseApplication.ConfRoot);
-      NFX.WinForms.BaseApplication.ConfRoot.Configuration.Save();
+      grid.PersistConfiguration(App.ConfigRoot);
+      App.ConfigRoot.Configuration.Save();
       //MessageBox.Show(NFX.WinForms.BaseApplication.ConfRoot.Configuration.ToString());
     }
 

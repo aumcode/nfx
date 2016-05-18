@@ -65,7 +65,7 @@ namespace NFX.WinForms.Elements
 
       protected internal override void Paint(Graphics gr)
       {
-        BaseApplication.Theme.PartRenderer.RadioButton(gr, Region, MouseIsOver, FieldControlContext, Checked);
+        //BaseApplication.Theme.PartRenderer.RadioButton(gr, Region, MouseIsOver, FieldControlContext, Checked);
       }
 
     #endregion

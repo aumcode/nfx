@@ -204,7 +204,11 @@ namespace NFX.Wave.Filters
            
             if (session.IsNew || regenerated)
             {
-              work.Response.SetClientVar(m_CookieName, EncodeSessionID( session ));
+              var apiVersion = work.Request.Headers[SysConsts.HEADER_API_VERSION];
+              if (apiVersion!=null)
+                work.Response.AddHeader(SysConsts.HEADER_API_SESSION, EncodeSessionID( work, session, true));
+              else
+                work.Response.SetClientVar(m_CookieName, EncodeSessionID( work, session, false ));//the cookie is set only for non-api call
             }
           }
           else
@@ -233,9 +237,16 @@ namespace NFX.Wave.Filters
       {
         var cv = work.Response.GetClientVar(m_CookieName);// work.Request.Cookies[m_CookieName];
 
+        var apiHeaders = false;
+        if (cv.IsNullOrWhiteSpace())
+        {
+          cv = work.Request.Headers[SysConsts.HEADER_API_SESSION];
+          apiHeaders = true;
+        }
+
         if (cv.IsNotNullOrWhiteSpace())
         {
-          var guid = DecodeSessionID(cv, out idSecret);
+          var guid = DecodeSessionID(work, cv, apiHeaders, out idSecret);
           if (guid.HasValue) return guid.Value;
 
           if (Server.m_InstrumentationEnabled)
@@ -249,7 +260,7 @@ namespace NFX.Wave.Filters
       /// <summary>
       /// Override to encode session ID GUID into string representation
       /// </summary>
-      protected virtual string EncodeSessionID(WaveSession session)
+      protected virtual string EncodeSessionID(WorkContext work, WaveSession session, bool hasApiHeaders)
       {
         var encoded = new ELink(session.IDSecret, session.ID.ToByteArray());
         return encoded.Link;
@@ -258,7 +269,7 @@ namespace NFX.Wave.Filters
       /// <summary>
       /// Override to decode session ID GUID from string representation. Return null if conversion not possible
       /// </summary>
-      protected virtual Guid? DecodeSessionID(string id, out ulong idSecret)
+      protected virtual Guid? DecodeSessionID(WorkContext work, string id, bool hasApiHeaders, out ulong idSecret)
       {
         ELink encoded;
         Guid guid; 
@@ -282,7 +293,7 @@ namespace NFX.Wave.Filters
       
 
       /// <summary>
-      /// Called to create new session
+      /// Called to create a new session
       /// </summary>
       protected WaveSession MakeNewSession(WorkContext work)
       {
@@ -293,7 +304,7 @@ namespace NFX.Wave.Filters
       }
 
       /// <summary>
-      /// Override to create new session instance
+      /// Override to create a new session instance
       /// </summary>
       protected virtual WaveSession MakeNewSessionInstance(WorkContext work)
       {

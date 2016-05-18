@@ -395,7 +395,28 @@ namespace NFX
           s.WriteByte((byte)(value));
         }
 
-        /// <summary>
+        public static IEnumerable<char> AsCharEnumerable(this Stream stream)
+        {
+          using (var reader = new StreamReader(stream))
+          {
+            char[] chars = new char[4096];
+            int length;
+            while ((length = reader.Read(chars, 0, chars.Length)) != 0)
+              for (int i = 0; i < length; i++)
+                yield return chars[i];            
+          }
+        }
+
+        public static IEnumerable<char> AsCharEnumerable(this TextReader reader)
+        {
+          char[] chars = new char[4096];
+          int length;
+          while ((length = reader.Read(chars, 0, chars.Length)) != 0)
+            for (int i = 0; i < length; i++)
+              yield return chars[i];
+        }
+
+      /// <summary>
         /// Deleted file if it exists - does not block until file is deleted, the behavior is up to the OS
         /// </summary>
         /// <param name="fileName">Full file name with path</param>
@@ -582,7 +603,6 @@ namespace NFX
          }
          return result;
        }
-
     }
 
 

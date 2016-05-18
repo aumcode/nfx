@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.CodeAnalysis.Laconfig;
+using NFX.DataAccess;
 using NFX.DataAccess.CRUD;
+using NFX.Environment;
 using NFX.Serialization.JSON;
 
 namespace NFX.Wave.Client
@@ -16,6 +19,20 @@ namespace NFX.Wave.Client
   /// </summary>
   public class Record : DynamicRow
   {
+    public struct ServerError
+    {
+      internal ServerError(string fname, string error, string text)
+      {
+        FieldName = fname;
+        Error = error;
+        Text = text;
+      }
+
+      public readonly string FieldName;
+      public readonly string Error;
+      public readonly string Text;
+    }
+
 
     public Record(string init) : base()
     {
@@ -31,7 +48,7 @@ namespace NFX.Wave.Client
         throw new WaveException(StringConsts.ARGUMENT_ERROR+"Record.ctor(init is bad): "+error.ToMessageWithType(), error);
       }
 
-      if (initMap ==null) throw new WaveException(StringConsts.ARGUMENT_ERROR+"Record.ctor(init isnot map)");
+      if (initMap==null) throw new WaveException(StringConsts.ARGUMENT_ERROR+"Record.ctor(init isnot map)");
 
       ctor(initMap);
     }
@@ -51,39 +68,197 @@ namespace NFX.Wave.Client
       LoadData();
     }
 
-
+    protected List<ServerError> m_Errors = new List<ServerError>(); 
     protected JSONDataMap m_Init;
 
 
-    public JSONDataMap Init{ get{ return m_Init;}}
+    public JSONDataMap Init { get { return m_Init; } }
+    public IEnumerable<ServerError> ServerErrors { get { return m_Errors; } }
+    public bool? OK { get; private set; }
+    public Guid? ID { get; private set; }
+    public string ISOLang { get; private set; }
+    public string FormMode { get; private set; }
+    public string CSRFToken { get; private set; }
+    public JSONDataMap Roundtrip { get; private set; }
 
+    public JSONDataMap Data
+    {
+      get
+      {
+        var result = new JSONDataMap(true);
+        foreach (var fDef in this.Schema)
+        {
+          result[fDef.Name] = this.GetFieldValue(fDef);
+        }
 
+        result[FormModel.JSON_MODE_PROPERTY] = FormMode;
+        result[FormModel.JSON_CSRF_PROPERTY] = CSRFToken;
+        result[FormModel.JSON_ROUNDTRIP_PROPERTY] = Roundtrip;
+
+        return result;
+      }
+    }
 
     protected virtual Schema MapInitToSchema()
     {
-      var defs = new List<Schema.FieldDef>();
+      var fdefs = new List<Schema.FieldDef>();
 
-      //loop{
-      var attr = new FieldAttribute("aaaa");
-      var ftp = typeof(string);
-      var def = new Schema.FieldDef("First_Name", ftp, attr); 
+      var fields = m_Init["fields"] as JSONDataArray;
+      if (fields != null)
+      {
+        foreach (JSONDataMap field in fields)
+        {
+          var def = field["def"] as JSONDataMap;
+          if (def == null) continue;
+          var fdef = GetFieldDefFromJSON(def);
+          fdefs.Add(fdef);
+        }
+      }
 
-      defs.Add(def);
-      //}loop
-
-      return new Schema("aaaa", false, defs);
+      return new Schema(Guid.NewGuid().ToString(), false, fdefs);
     }
 
     protected virtual void LoadData()
     {
-      //loop
-      this["First_Name"] = "object";
+      OK = m_Init["OK"].AsNullableBool();
+      ID = m_Init["ID"].AsNullableGUID();
+      ISOLang = m_Init["ISOLang"].AsString();
+      FormMode = m_Init[FormModel.JSON_MODE_PROPERTY].AsString();
+      CSRFToken = m_Init[FormModel.JSON_CSRF_PROPERTY].AsString();
+      var roundtrip = m_Init[FormModel.JSON_ROUNDTRIP_PROPERTY].AsString();
+      Roundtrip = roundtrip != null ? JSONReader.DeserializeDataObject(roundtrip) as JSONDataMap : null;
+      
+      var error = m_Init["error"].AsString();
+      var errorText = m_Init["errorText"].AsString();
+      if (error.IsNotNullOrWhiteSpace() || errorText.IsNotNullOrWhiteSpace())
+        m_Errors.Add(new ServerError(null, error, errorText));
+
+      var fields = m_Init["fields"] as JSONDataArray;
+      if (fields != null)
+      {
+        foreach (var item in fields)
+        {
+          var field = item as JSONDataMap;
+          if (field == null) continue;
+
+          var def = field["def"] as JSONDataMap;
+          if (def == null) continue;
+
+          var name = def["Name"].AsString();
+          if (name.IsNullOrWhiteSpace()) continue;
+
+          this[name] = field["val"];
+
+          var fError = field["error"].AsString();
+          var fErrorText = field["errorText"].AsString();
+          if (fError.IsNotNullOrWhiteSpace() || fErrorText.IsNotNullOrWhiteSpace())
+            m_Errors.Add(new ServerError(name, fError, fErrorText));
+        }
+      }
     }
 
+    protected virtual Schema.FieldDef GetFieldDefFromJSON(JSONDataMap def)
+    {
+      var name = def["Name"].AsString();
+      var type = MapJSToCLRType(def["Type"].AsString());
+      var key = def["Key"].AsBool(false);
+      var description = def["Description"].AsString(null);
+      var required = def["Required"].AsBool(false);
+      var visible = def["Visible"].AsBool(true);
+      var minValue = def["MinValue"];
+      var maxValue = def["MaxValue"];
+      var minLength = def["MinSize"].AsInt(0);
+      var maxLength = def["Size"].AsInt(0);
+      var defaultValue = def["DefaultValue"];
+      var kind = MapJSToCLRKind(def["Kind"].AsString());
+      var charCase = MapJSToCLRCharCase(def["Case"].AsString());  
 
+      var stored = def["Stored"].AsNullableBool();
+      var storeFlag = (stored == false) ? StoreFlag.OnlyLoad : StoreFlag.LoadAndStore;
+     
+      var lookupValues = def["LookupDict"] as JSONDataMap;
+
+      var metadata = Configuration.NewEmptyRoot();
+      foreach (var kvp in def)
+      {
+        if (kvp.Value == null) continue;
+        metadata.AddAttributeNode(kvp.Key, kvp.Value);
+      }
+      var mcontent = metadata.ToLaconicString(LaconfigWritingOptions.Compact);
+
+      var attr = lookupValues == null ?
+                 new FieldAttribute(
+                   targetName: TargetedAttribute.ANY_TARGET,
+                   storeFlag: storeFlag,
+                   key: key,
+                   kind: kind,
+                   required: required,
+                   visible: visible,
+                   dflt: defaultValue,
+                   min: minValue,
+                   max: maxValue,
+                   minLength: minLength,
+                   maxLength: maxLength,
+                   charCase: charCase,
+                   description: description,
+                   metadata: mcontent
+                   // nonUI = false,
+                   // formatRegExp = null,
+                   // formatDescr  = null,
+                   // displayFormat = null
+                   ) :
+                   new FieldAttribute(
+                   valueList: lookupValues,
+                   targetName: TargetedAttribute.ANY_TARGET,
+                   storeFlag: storeFlag,
+                   key: key,
+                   kind: kind,
+                   required: required,
+                   visible: visible,
+                   dflt: defaultValue,
+                   min: minValue,
+                   max: maxValue,
+                   minLength: minLength,
+                   maxLength: maxLength,
+                   charCase: charCase,
+                   description: description,
+                   metadata: mcontent
+                   // nonUI = false,
+                   // formatRegExp = null,
+                   // formatDescr  = null,
+                   // displayFormat = null
+                   );
+
+      var fdef = new Schema.FieldDef(name, type, attr); 
+    
+      return fdef;
+    }
+
+    protected virtual Type MapJSToCLRType(string tp)
+    {
+      if (tp.EqualsOrdIgnoreCase("string"))   return typeof(string);
+      if (tp.EqualsOrdIgnoreCase("int"))      return typeof(Int64);
+      if (tp.EqualsOrdIgnoreCase("real"))     return typeof(double);
+      if (tp.EqualsOrdIgnoreCase("bool"))     return typeof(bool);
+      if (tp.EqualsOrdIgnoreCase("datetime")) return typeof(DateTime);
+      if (tp.EqualsOrdIgnoreCase("object"))   return typeof(object);
+
+      return typeof(string);
+    }
+
+    protected virtual DataKind MapJSToCLRKind(string kind)
+    {
+      switch (kind)
+      {
+          case "datetime-local": return DataKind.DateTimeLocal;
+          case "tel": return DataKind.Telephone;
+          default: return kind.AsEnum(DataKind.Text);
+      }
+    }
+
+    protected virtual CharCase MapJSToCLRCharCase(string kind)
+    {
+      return kind.AsEnum(CharCase.AsIs);
+    }
   }
-
-
-
-
 }

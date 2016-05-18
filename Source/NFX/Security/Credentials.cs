@@ -24,8 +24,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using NFX.Serialization.JSON;
+
 namespace NFX.Security
 {
+  /// <summary>
+  /// Denotes credentials that can be represented as a string that can be used for example in Authorization header
+  /// </summary>
+  public interface IStringRepresentableCredentials
+  {
+    string RepresentAsString();
+
+    bool Forgotten { get; }
+
+    void Forget();
+  }
+
   /// <summary>
   /// User credentials base class. A credentials may be as simple as user+password, access card codes, door key, Twitter account token etc...
   /// </summary>

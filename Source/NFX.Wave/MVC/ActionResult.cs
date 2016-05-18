@@ -21,6 +21,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 
+using NFX.Web;
 using NFX.DataAccess.CRUD;
 using NFX.Serialization.JSON;
 
@@ -124,7 +125,7 @@ namespace NFX.Wave.MVC
     public void Execute(Controller controller, WorkContext work)
     {
       if (AttachmentFileName.IsNotNullOrWhiteSpace())
-          work.Response.Headers.Add(SysConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(AttachmentFileName));
+          work.Response.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(AttachmentFileName));
 
       var fid = Format.Guid;
       work.Response.ContentType = ImageCodecInfo.GetImageEncoders()
@@ -229,14 +230,14 @@ namespace NFX.Wave.MVC
     
     public void Execute(Controller controller, WorkContext work)
     {
-      var txt = SysConsts.STATUS_404_DESCRIPTION;
+      var txt = WebConsts.STATUS_404_DESCRIPTION;
       if (Description.IsNotNullOrWhiteSpace())
         txt += (": " + Description);
-      work.Response.StatusCode = SysConsts.STATUS_404;
+      work.Response.StatusCode = WebConsts.STATUS_404;
       work.Response.StatusDescription = txt;
 
       if (work.RequestedJSON)
-       work.Response.WriteJSON( new {OK = false, http = SysConsts.STATUS_404, descr = txt});
+       work.Response.WriteJSON( new {OK = false, http = WebConsts.STATUS_404, descr = txt});
       else
        work.Response.Write(txt);
     } 
@@ -257,14 +258,14 @@ namespace NFX.Wave.MVC
     
     public void Execute(Controller controller, WorkContext work)
     {
-      var txt = SysConsts.STATUS_403_DESCRIPTION;
+      var txt = WebConsts.STATUS_403_DESCRIPTION;
       if (Description.IsNotNullOrWhiteSpace())
         txt += (": " + Description);
-      work.Response.StatusCode = SysConsts.STATUS_403;
+      work.Response.StatusCode = WebConsts.STATUS_403;
       work.Response.StatusDescription = txt;
 
       if (work.RequestedJSON)
-       work.Response.WriteJSON( new {OK = false, http = SysConsts.STATUS_403, descr = txt});
+       work.Response.WriteJSON( new {OK = false, http = WebConsts.STATUS_403, descr = txt});
       else
        work.Response.Write(txt);
     } 

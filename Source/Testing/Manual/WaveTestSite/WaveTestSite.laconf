@@ -1,6 +1,6 @@
 ﻿nfx
 {
-       log-root=$(~AUM_HOME_ROOT)disk\
+       log-root=$"c:\nfx\"
        log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
        debug-default-action="Log,Throw"
 	   
@@ -127,11 +127,11 @@
   }
   
 
-  /*geo-lookup
+  geo-lookup
   {
-    data-path=$"d:\geodata"
+    data-path=$(~NFX_GEODATA)
     resolution="city"    
-  }*/
+  }
   
   wave
   {
@@ -289,11 +289,11 @@
                 match{ path="pages/{*type}"}
                 type-location { name="local" assembly="WaveTestSite.exe" ns{ name="WaveTestSite.Pages"} }
                 
-                /*filter
+                filter
                 {
                     name="geoLocation"
                     type="NFX.Wave.Filters.GeoLookupFilter, NFX.Wave"
-                }*/
+                }
                 
             }
             

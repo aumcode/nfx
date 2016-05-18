@@ -22,7 +22,6 @@ using System.Linq;
 using System.Text;
 
 using System.Drawing;
-using NFX.WinForms.Themes;
 
 namespace NFX.WinForms.Elements
 {
@@ -87,13 +86,13 @@ namespace NFX.WinForms.Elements
       {
         base.Paint(gr);
         
-        BaseApplication.Theme.PartRenderer.LabelText(gr,
-                                  Region,
-                                  m_IsHyperlink ? MouseIsOver : false,
-                                  Host.Font,
-                                  FieldControlContext,
-                                  Text,
-                                  m_Alignment);
+        //BaseApplication.Theme.PartRenderer.LabelText(gr,
+        //                          Region,
+        //                          m_IsHyperlink ? MouseIsOver : false,
+        //                          Host.Font,
+        //                          FieldControlContext,
+        //                          Text,
+        //                          m_Alignment);
       }
 
       protected internal override void OnMouseEnter(EventArgs e)

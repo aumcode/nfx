@@ -15,9 +15,6 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 
 using NFX.ApplicationModel;
@@ -48,21 +45,15 @@ namespace NFX.Web.GeoLookup
     /// Returns null when no match could be made
     /// </summary>
     GeoEntity Lookup(IPAddress address);
-
-    /// <summary>
-    /// Tries to lookup the location by its id and returns it or null if no match could be made
-    /// </summary>
-    Location LookupLocation(string locationID);
   }
 
 
   /// <summary>
   /// Represents lookup result
   /// </summary>
-  [Serializable]
   public class GeoEntity
   {
-    protected internal GeoEntity(IPAddress query, IPAddressBlock block, Location location)
+    protected internal GeoEntity(IPAddress query, IPSubnetBlock block, Location? location)
     {
       Query = query;
       Block = block;
@@ -76,12 +67,12 @@ namespace NFX.Web.GeoLookup
     /// <summary>
     /// Information about IP address block
     /// </summary>
-    public readonly IPAddressBlock Block;
+    public readonly IPSubnetBlock Block;
 
     /// <summary>
     /// Information about geo location
     /// </summary>
-    public readonly Location Location;
+    public readonly Location? Location;
 
     /// <summary>
     /// Returns handy name of locality, i.e. "City, Country" if city is available
@@ -90,8 +81,19 @@ namespace NFX.Web.GeoLookup
     {
       get
       {
-        return Location.CityName.IsNotNullOrWhiteSpace() ? "{0}, {1} {2}".Args(Location.CityName, Location.SubdivisionName, Location.CountryName) 
-                                                         : "{0} {1}".Args(Location.SubdivisionName, Location.CountryName);
+        if (!Location.HasValue) return string.Empty;
+
+        return Location.Value.CityName.IsAssigned
+          ? "{0}, {1} {2}".Args(Location.Value.CityName.Value, Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value) 
+          : "{0} {1}".Args(Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value);
+      }
+    }
+
+    public string CountryISOName
+    {
+      get
+      {
+        return Location.HasValue ? Location.Value.CountryISOName.Value : null; 
       }
     }
 

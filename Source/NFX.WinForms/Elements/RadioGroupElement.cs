@@ -192,7 +192,7 @@ namespace NFX.WinForms.Elements
       
       protected internal override void Paint(Graphics gr)
       {
-        BaseApplication.Theme.PartRenderer.RadioGroup(gr, Region, MouseIsOver, FieldControlContext);
+        //BaseApplication.Theme.PartRenderer.RadioGroup(gr, Region, MouseIsOver, FieldControlContext);
       }
 
 

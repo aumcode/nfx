@@ -90,8 +90,6 @@ namespace WinFormsTest
 
 
 
-  var rec = PatientRecord.Make<PatientRecord>();
-
 
         //Frank.Father.Items["Absukov"] = 123;
         //Frank.Father.Items["Bosurxevich"] = true;
@@ -116,12 +114,10 @@ namespace WinFormsTest
         // Dodik.Numbers.Add( 10000-i );
         
 
-        var tr = new TypeRegistry(TypeRegistry.RecordModelTypes, 
-                                  TypeRegistry.CommonCollectionTypes,
+        var tr = new TypeRegistry(TypeRegistry.CommonCollectionTypes,
                                   TypeRegistry.BoxedCommonTypes, 
                                   TypeRegistry.BoxedCommonNullableTypes);
 
-        tr.Add(typeof(PatientRecord));
         tr.Add(typeof(Person));
         tr.Add(typeof(Person2));
         tr.Add(typeof(Person[]));
@@ -132,7 +128,7 @@ namespace WinFormsTest
                 
 
 
-    var data = PatientRecord.Make<PatientRecord>();// make();
+    var data = make();
 
          var clk = Stopwatch.StartNew();
         // for(var i=1; i<1000; i++)
@@ -164,17 +160,17 @@ namespace WinFormsTest
 
         private void button2_Click(object sender, EventArgs e)
         {
-             var tr = new TypeRegistry(TypeRegistry.RecordModelTypes, 
+             var tr = new TypeRegistry(
                                   TypeRegistry.CommonCollectionTypes,
                                   TypeRegistry.BoxedCommonTypes, 
                                   TypeRegistry.BoxedCommonNullableTypes);
-             tr.Add(typeof(PatientRecord));
+             
              tr.Add(typeof(Person2));
              tr.Add(typeof(System.Drawing.Point));
              tr.Add(typeof(TimeSpan));
              tr.Add(typeof(Kozel));
              
-              var p1 = PatientRecord.Make<PatientRecord>();// make();
+              var p1 = make();
 
 
 
@@ -306,7 +302,7 @@ namespace WinFormsTest
              ri_Version = DateTime.Now 
            });
 
-           var tr = new TypeRegistry(TypeRegistry.RecordModelTypes, 
+           var tr = new TypeRegistry(
                                   TypeRegistry.CommonCollectionTypes,
                                   TypeRegistry.BoxedCommonTypes, 
                                   TypeRegistry.BoxedCommonNullableTypes);

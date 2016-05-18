@@ -71,19 +71,22 @@ namespace NFX.Serialization.JSON
                return deserializeObject( read(source, caseSensitiveMaps));
             }
 
-
-            //Future??? does not make sense to deserialize in CLR types
-            //public static TResult Deserialize<TResult>(Stream stream) where TResult : new()
-            //{
-            //    var data = read(stream);
-            //    return default(TResult);
-            //}
-
-            //public TResult Deserialize<TResult>(string source) where TResult : new()
-            //{
-            //    var data = read(source);
-            //    return default(TResult);
-            //}
+            
+            /// <summary>
+            /// Deserializes into Rowset or Table from JSOnDataMap, as serialized by RowsedBase.WriteAsJSON()
+            /// </summary>
+            public static RowsetBase ToRowset(string json, bool schemaOnly = false, bool readOnlySchema = false)
+            {
+              return RowsetBase.FromJSON(json, schemaOnly, readOnlySchema);
+            }
+            
+            /// <summary>
+            /// Deserializes into Rowset or Table from JSONDataMap, as serialized by RowsedBase.WriteAsJSON()
+            /// </summary>
+            public static RowsetBase ToRowset(JSONDataMap jsonMap, bool schemaOnly = false, bool readOnlySchema = false)
+            {
+              return RowsetBase.FromJSON(jsonMap, schemaOnly, readOnlySchema);
+            }
 
             /// <summary>
             /// Converts JSONMap into typed row of the requested type. 
@@ -98,7 +101,7 @@ namespace NFX.Serialization.JSON
             public static TypedRow ToRow(Type type, JSONDataMap jsonMap, bool fromUI = true)
             {
               if (!typeof(TypedRow).IsAssignableFrom(type) || jsonMap==null) 
-               throw new JSONDeserializationException(StringConsts.ARGUMENT_ERROR+"JSONDynamicObject.ToRow(type|jsonMap=null)");
+               throw new JSONDeserializationException(StringConsts.ARGUMENT_ERROR+"JSONReader.ToRow(type|jsonMap=null)");
               var field = "";
               try
               {
@@ -133,7 +136,7 @@ namespace NFX.Serialization.JSON
             public static void ToRow(Row row, JSONDataMap jsonMap, bool fromUI = true)
             {
               if (row == null || jsonMap == null)
-                throw new JSONDeserializationException(StringConsts.ARGUMENT_ERROR + "JSONDynamicObject.ToRow(row|jsonMap=null)");
+                throw new JSONDeserializationException(StringConsts.ARGUMENT_ERROR + "JSONReader.ToRow(row|jsonMap=null)");
               var field = "";
               try
               {

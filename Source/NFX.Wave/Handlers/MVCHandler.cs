@@ -72,8 +72,8 @@ namespace NFX.Wave.Handlers
          
           
           if (mi==null)
-            throw new HTTPStatusException(SysConsts.STATUS_404, 
-                                          SysConsts.STATUS_404_DESCRIPTION,
+            throw new HTTPStatusException(WebConsts.STATUS_404, 
+                                          WebConsts.STATUS_404_DESCRIPTION,
                                           StringConsts.MVCCONTROLLER_ACTION_UNMATCHED_HANDLER_ERROR.Args(target.GetType().FullName, action));
             
           Security.Permission.AuthorizeAndGuardAction(mi, work.Session, () => work.NeedsSession());
@@ -143,8 +143,8 @@ namespace NFX.Wave.Handlers
 
         if (gInfo==null) //action unknown
         {
-          throw new HTTPStatusException(SysConsts.STATUS_404, 
-                                        SysConsts.STATUS_404_DESCRIPTION,
+          throw new HTTPStatusException(WebConsts.STATUS_404, 
+                                        WebConsts.STATUS_404_DESCRIPTION,
                                         StringConsts.MVCCONTROLLER_ACTION_UNKNOWN_ERROR.Args(tp.DisplayNameWithExpandedGenericArgs(), action));
         }
 
@@ -199,8 +199,8 @@ namespace NFX.Wave.Handlers
             }
             catch(Exception error)
             {
-              throw new HTTPStatusException(SysConsts.STATUS_400, 
-                                            SysConsts.STATUS_400_DESCRIPTION,
+              throw new HTTPStatusException(WebConsts.STATUS_400, 
+                                            WebConsts.STATUS_400_DESCRIPTION,
                                             error.ToMessageWithType(),
                                             error);
             }
@@ -234,8 +234,8 @@ namespace NFX.Wave.Handlers
               continue;
             }
             if (strictParamBinding)
-             throw new HTTPStatusException(SysConsts.STATUS_400, 
-                                        SysConsts.STATUS_400_DESCRIPTION,
+             throw new HTTPStatusException(Web.WebConsts.STATUS_400, 
+                                        Web.WebConsts.STATUS_400_DESCRIPTION,
                                         StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
                                                           controller.GetType().DisplayNameWithExpandedGenericArgs(),
@@ -254,8 +254,8 @@ namespace NFX.Wave.Handlers
           {
             const int MAX_LEN = 30;
             if (strVal.Length>MAX_LEN) strVal = strVal.Substring(0, MAX_LEN)+"...";
-            throw new HTTPStatusException(SysConsts.STATUS_400, 
-                                        SysConsts.STATUS_400_DESCRIPTION,
+            throw new HTTPStatusException(WebConsts.STATUS_400, 
+                                         WebConsts.STATUS_400_DESCRIPTION,
                                         StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
                                                           controller.GetType().DisplayNameWithExpandedGenericArgs(),

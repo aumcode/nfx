@@ -61,7 +61,7 @@ namespace NFX.WinForms.Elements
     protected internal override void Paint(Graphics gr)
     {
       base.Paint(gr);
-      BaseApplication.Theme.PartRenderer.CheckBox(gr, Region, MouseIsOver, FieldControlContext, Checked);
+      //BaseApplication.Theme.PartRenderer.CheckBox(gr, Region, MouseIsOver, FieldControlContext, Checked);
     }
 
     protected internal override void OnMouseClick(MouseEventArgs e)

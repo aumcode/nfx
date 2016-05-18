@@ -126,9 +126,9 @@
 
         #container, #container2 {
             display: inline-block;
-            width: 250px;
+            /*width: 250px;
             border: 1px solid red;
-            max-height: 350px;
+            max-height: 350px;*/
             overflow-x: hidden;
             overflow-y: auto;
         }
@@ -178,8 +178,8 @@
     <script>
       
       var data = {
-        "ENG":{"n": "Cream","d": "Yeah cream"},
-        "FRA":{"n": "la cream","d": "lalalal alala"}
+        //ENG:{d: [{}, {}]},
+        //"FRA":{"n": "la cream","d": "lalalal alala"}
       };
 
       document.addEventListener('DOMContentLoaded', function () {
@@ -196,13 +196,20 @@
         var editor = new WAVE.GUI.PropSetEditor({
           DIV: WAVE.id("container"),
           outputFormFieldName: "output",
-          langs: ["RUS", "rus", "eng", "Eng", "eNG", "esP"],
-          //options : {"n": {"type" : "text", "plh": "Name"}, "d": {"type" : "text", "plh": "Description"}},
-          options : {
-            n : {type : "text", plh: "Nam1e"}, 
-            d : {type : "text", plh: "Name2"}, 
-            f : {type : "text", plh: "Name3"}, 
-            b : {type : "text", plh: "Name4"}
+          sets: ["RUS", "rus", "eng", "Eng", "eNG", "esP"],
+          shema : {//"n": {"type" : "text", "plh": "Name"}, "d": {"type" : "text", "plh": "Description"}},
+          //options : {
+            //d : {
+            //  type : "array", 
+            //  options : {
+            //    n: {
+            //      type : "text",
+            //      plh: "Name"
+            //    }
+            //  }
+            //}, 
+            f : {type : "nls", plh: "Name3"}, 
+            b : {type : "nls", plh: "Name4"}
           },
           content: JSON.stringify(data),
           btnClasses: btnClasses
@@ -210,7 +217,7 @@
 
 
         editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED, function (e, d) {
-          WAVE.id('code').innerText = d;
+          WAVE.id('code').innerText = JSON.stringify(d, null, 2);
         })
         var en = false;
         WAVE.id('btnD').onclick = function () {

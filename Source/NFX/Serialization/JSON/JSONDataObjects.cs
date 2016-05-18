@@ -41,36 +41,58 @@ namespace NFX.Serialization.JSON
         /// <summary>
         /// Turns URL encoded content into JSONDataMap
         /// </summary>
-        public static JSONDataMap FromURLEncodedStream(Stream stream, Encoding encoding = null)
+        public static JSONDataMap FromURLEncodedStream(Stream stream, Encoding encoding = null, bool caseSensitive = false)
         {
           using(var reader = encoding==null ? new StreamReader(stream) : new StreamReader(stream, encoding))
           {
-            return FromURLEncodedString(reader.ReadToEnd());
+            return FromURLEncodedString(reader.ReadToEnd(), caseSensitive);
           }
         }
 
         /// <summary>
         /// Turns URL encoded content into JSONDataMap
         /// </summary>
-        public static JSONDataMap FromURLEncodedString(string content)
+        public static JSONDataMap FromURLEncodedString(string content, bool caseSensitive = false)
         {
-          var result = new JSONDataMap(false);
+          var result = new JSONDataMap(caseSensitive);
 
           if (content.IsNullOrWhiteSpace()) return result;
 
-          var segs = content.Split('&');
-
-          foreach(var seg in segs)
+          int queryLen = content.Length;
+          int idx = 0;
+          
+          while (idx < queryLen)
           {
-            if (seg.IsNullOrWhiteSpace()) continue;
-
-            var ieq = seg.IndexOf('=');
-            if (ieq<=0) continue;
-            var name = seg.Substring(0,ieq);
-            var val = ieq<seg.Length-1 ? seg.Substring(ieq+1) : string.Empty;
-              
-            result[Uri.UnescapeDataString(name.Replace('+',' '))] = Uri.UnescapeDataString(val.Replace('+',' '));                
+            int ampIdx = content.IndexOf('&', idx);
+            int kvLen = (ampIdx != -1) ? ampIdx - idx : queryLen - idx;
+          
+            if (kvLen < 1)
+            {
+              idx = ampIdx + 1;
+              continue;
+            }
+          
+            int eqIdx = content.IndexOf('=', idx, kvLen);
+            if (eqIdx == -1)
+            {
+              var key = Uri.UnescapeDataString(content.Substring(idx, kvLen).Replace('+',' '));
+              result.Add(key, null);
+            }
+            else
+            {
+              int keyLen = eqIdx - idx;
+              if (keyLen > 0)
+              {
+                var key = Uri.UnescapeDataString(content.Substring(idx, keyLen).Replace('+',' '));
+                var val = Uri.UnescapeDataString(content.Substring(eqIdx + 1, kvLen - keyLen - 1).Replace('+',' '));
+          
+                result.Add(key, val);
+              }
+            }
+          
+            idx += kvLen + 1;
           }
+          
           return result;
         }
         

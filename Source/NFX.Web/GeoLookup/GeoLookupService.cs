@@ -15,19 +15,19 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Net;
-
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 
 using NFX.Log;
-using NFX.DataAccess.CRUD;
 using NFX.Environment;
+using NFX.Parsing;
 using NFX.ServiceModel;
-
 
 namespace NFX.Web.GeoLookup
 {
@@ -97,7 +97,6 @@ namespace NFX.Web.GeoLookup
 
     #endregion
 
-
     #region .ctor
 
       public GeoLookupService() : base() { }
@@ -105,15 +104,14 @@ namespace NFX.Web.GeoLookup
 
     #endregion
 
-
     #region Fields
 
       private bool m_CancelStart;
       private string m_DataPath;
       private LookupResolution m_Resolution = LookupResolution.Country;
 
-      private Dictionary<string, IPAddressBlock> m_Blocks;
-      private Dictionary<string, Location> m_Locations;
+      private SubnetTree<IPSubnetBlock> m_SubnetBST;
+      private Dictionary<SealedString, Location> m_Locations;
 
     #endregion
 
@@ -161,7 +159,6 @@ namespace NFX.Web.GeoLookup
 
     #endregion
 
-
     #region Public 
 
       /// <summary>
@@ -170,43 +167,13 @@ namespace NFX.Web.GeoLookup
       public GeoEntity Lookup(IPAddress address)
       {
         if (Status!=ControlStatus.Active || address==null) return null;
-        
 
-        var ip = address;//todo add DNS lookup
-
-        var key = ip;
-        var pad = string.Empty;
-        IPAddressBlock block = null;
-        
-        //todo Implement!!!!!!!
-        //while(true)
-        //{
-        //  if (m_Blocks.TryGetValue(key+pad, out block)) break;
-          
-        //  var id = key.LastIndexOf('.');
-        //  if (id>0)
-        //  {
-        //    key = key.Substring(0, id);
-        //    pad+=".0";
-        //  }
-        //  else
-        //    return null;
-        //}
-
-        return null;//new GeoEntity(address, block, LookupLocation(block.LocationID));
+        var block = m_SubnetBST[new Subnet(address)];
+        Location location;
+        m_Locations.TryGetValue(block.LocationID, out location);
+        return new GeoEntity(address, block, location);
       }
-
-      /// <summary>
-      /// Tries to lookup location by id. Returns null if no match could be made
-      /// </summary>
-      public Location LookupLocation(string locationID)
-      {
-        if (Status!=ControlStatus.Active || locationID.IsNullOrWhiteSpace()) return null;
-        Location result;
-        if (m_Locations.TryGetValue(locationID, out result)) return result;
-        return null;
-      }
-
+  
       /// <summary>
       /// Cancels service start. This method may be needed when Start() blocks for a long time due to large volumes of data
       /// </summary>
@@ -239,82 +206,105 @@ namespace NFX.Web.GeoLookup
         if (!Directory.Exists(m_DataPath))
           throw new GeoException(StringConsts.GEO_LOOKUP_SVC_PATH_ERROR.Args(m_DataPath ?? StringConsts.UNKNOWN));
 
-        var fnBlocks    = Path.Combine(m_DataPath, "GeoLite2-{0}-Blocks.csv".Args(m_Resolution));
-        var fnLocations = Path.Combine(m_DataPath, "GeoLite2-{0}-Locations.csv".Args(m_Resolution));
+        var fnBlocks    = Path.Combine(m_DataPath, "GeoLite2-{0}-Blocks-IPv6.csv".Args(m_Resolution));
+        var fnBlocksV4 = Path.Combine(m_DataPath, "GeoLite2-{0}-Blocks-IPv4.csv".Args(m_Resolution));
+        var fnLocations = Path.Combine(m_DataPath, "GeoLite2-{0}-Locations-en.csv".Args(m_Resolution));
 
         if (!File.Exists(fnBlocks))
             throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnBlocks));
-
+        if (!File.Exists(fnBlocksV4))
+            throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnBlocksV4));
         if (!File.Exists(fnLocations))
             throw new GeoException(StringConsts.GEO_LOOKUP_SVC_DATA_FILE_ERROR.Args(fnLocations));
 
         m_CancelStart = false;
-        m_Blocks    = new Dictionary<string, IPAddressBlock>();
-        m_Locations = new Dictionary<string, Location>();
+        m_Locations = new Dictionary<SealedString, Location>();
 
         try
         {
             const int MAX_PARSE_ERRORS = 8;
 
-            using(var fr = new StreamReader(new FileStream(fnBlocks, FileMode.Open, FileAccess.Read, FileShare.Read, 1024*1024)))
+            var tree = new BinaryTree<Subnet, IPSubnetBlock>();
+            var scope = new SealedString.Scope();
+            foreach (var blocksFn in new[] { fnBlocks, fnBlocksV4 })
             {
-              fr.ReadLine();//skip header
-              var line = 1;
-              var errors = 0;
-              while(!fr.EndOfStream && !m_CancelStart && App.Active)
+              using (var stream = new FileStream(blocksFn, FileMode.Open, FileAccess.Read, FileShare.Read, 4*1024*1024))
               {
-                IPAddressBlock row;
+                int errors = 0;
                 try
                 {
-                  var rowLine = fr.ReadLine().Replace('/', ','); //20160202 spol replace mask separator with a comma
-                  row = parseBlock(rowLine);
-                  m_Blocks.Add( row.IPBlockStart, row );
-                }
-                catch(Exception error)
-                {
-                  log(MessageType.Error, "DoStart('{0}')".Args(fnBlocks), "Line: {0} {1}".Args(line, error.ToMessageWithType()), error);
-                  errors++;
-                  if (errors>MAX_PARSE_ERRORS)
+                  foreach (var row in stream.AsCharEnumerable().ParseCSV(skipHeader: true, columns: 10))
                   {
-                    log(MessageType.CatastrophicError, "DoStart('{0}')".Args(fnBlocks), "Errors > {0}. Aborting file '{1}' import".Args(MAX_PARSE_ERRORS, fnBlocks));
+                    if (m_CancelStart || !App.Active) break;
+                    var arr = row.ToArray();
+                    var block = new IPSubnetBlock(
+                      scope.Seal(arr[0]),
+                      scope.Seal(arr[1]),
+                      scope.Seal(arr[2]),
+                      scope.Seal(arr[3]),
+                      arr[4].AsBool(),
+                      arr[5].AsBool(),
+                      scope.Seal(arr[6]),
+                      arr[7].AsFloat(),
+                      arr[8].AsFloat());
+
+                    tree[new Subnet(block.Subnet.Value, true)] = block;
+                  }
+                }
+                catch (Exception error)
+                {
+                  log(MessageType.Error, "DoStart('{0}')".Args(blocksFn), "Line: {0} {1}".Args(0/*line*/, error.ToMessageWithType()), error);
+                  errors++;
+                  if (errors > MAX_PARSE_ERRORS)
+                  {
+                    log(MessageType.CatastrophicError, "DoStart('{0}')".Args(blocksFn), "Errors > {0}. Aborting file '{1}' import".Args(MAX_PARSE_ERRORS, blocksFn));
                     break;
                   }
                 }
-                line++;
               }
-            } 
-        
-            using(var fr = new StreamReader(fnLocations))
+            }
+            m_SubnetBST = new SubnetTree<IPSubnetBlock>(tree.BuildIndex());
+
+            using (var stream = new FileStream(fnLocations, FileMode.Open, FileAccess.Read, FileShare.Read, 4 * 1024 * 1024))
             {
-              fr.ReadLine();//skip header
-              var line = 1;
-              var errors = 0;
-              while(!fr.EndOfStream && !m_CancelStart && App.Active)
+              try
               {
-                Location row;
-                try
+                foreach (var row in stream.AsCharEnumerable().ParseCSV(skipHeader: true, columns: 13))
                 {
-                  row =  parseLocation( fr.ReadLine()); 
-                  m_Locations.Add( row.ID, row );
+                  if (m_CancelStart || !App.Active) break;
+                  var arr = row.ToArray();
+                  var location = new Location(
+                    scope.Seal(arr[0]),
+                    scope.Seal(arr[1]),
+                    scope.Seal(arr[2]),
+                    scope.Seal(arr[3]),
+                    scope.Seal(arr[4]),
+                    scope.Seal(arr[5]),
+                    scope.Seal(arr[6]),
+                    scope.Seal(arr[7]),
+                    scope.Seal(arr[8]),
+                    scope.Seal(arr[9]),
+                    scope.Seal(arr[10]),
+                    scope.Seal(arr[11]),
+                    scope.Seal(arr[12]));
+                  m_Locations.Add(location.ID, location);
                 }
-                catch(Exception error)
-                {
-                  log(MessageType.Error, "DoStart('{0}')".Args(fnLocations), "Line: {0} {1}".Args(line, error.ToMessageWithType()), error);
-                  errors++;
-                  if (errors>MAX_PARSE_ERRORS)
-                  {
-                    log(MessageType.CatastrophicError, "DoStart('{0}')".Args(fnLocations), "Errors > {0}. Aborting file '{1}' import".Args(MAX_PARSE_ERRORS, fnLocations));
-                    break;
-                  }
-                }
-                line++;
+              }
+              catch (CSVParserException error)
+              {
+                log(MessageType.Error, "DoStart('{0}')".Args(fnLocations), "Line: {0} Column: {1} {2}".Args(error.Line, error.Column, error.ToMessageWithType()), error);
+              }
+              catch (Exception error)
+              {
+                log(MessageType.Error, "DoStart('{0}')".Args(fnLocations), "{1}".Args(error.ToMessageWithType()), error);
               }
             }  
         }
         catch
         {
-          m_Blocks = null;
+          m_SubnetBST = null;
           m_Locations = null;
+          m_SubnetBST = null;
           throw;
         }
 
@@ -323,118 +313,13 @@ namespace NFX.Web.GeoLookup
 
       protected override void DoWaitForCompleteStop()
       {
-        m_Blocks = null;
+        m_SubnetBST = null;
         m_Locations = null;
       }
 
     #endregion
 
     #region .pvt
-
-      private IPAddressBlock parseBlock(string data)
-      {
-        var row = new IPAddressBlock();
-        if (data.IsNullOrWhiteSpace()) return row;
-
-        var i = 0;
-        var fc = row.Schema.FieldCount;
-        foreach(var seg in parseCSVLine(data))
-        {
-          if (i==fc) break;
-          
-          var v = seg;
-          if (i==0)
-          {
-            if (v.StartsWith("::ffff:")) 
-              v = v.Substring("::ffff:".Length);
-          }  
-
-          if (row.Schema[i].Type==typeof(Boolean)) v = v=="1"?"true":"false";
-          try
-          {
-            row[i] = v;
-          }
-          catch(Exception error)
-          {
-            throw new GeoException("Block {0}.{1}[{2}] = '{3}' error: {4} ".Args(
-                                   row.Schema.Name,
-                                   row.Schema[i].Name,
-                                   i,
-                                   v,
-                                   error.ToMessageWithType()), error); 
-          }
-          i++;
-        }
-        return row;
-      }
-
-      private Location parseLocation(string data)
-      {
-        var row = new Location();
-        if (data.IsNullOrWhiteSpace()) return row;
-        
-        var i = 0;
-        var fc = row.Schema.FieldCount; 
-        foreach(var seg in parseCSVLine(data))
-        {
-          if (i==fc) break;
-          var v = seg;
-
-          if (row.Schema[i].Type==typeof(Boolean)) v = v=="1"?"true":"false";
-          try
-          {
-            row[i] = v;
-          }
-          catch(Exception error)
-          {
-            throw new GeoException("Location {0}.{1}[{2}] = '{3}' error: {4} ".Args(
-                                   row.Schema.Name,
-                                   row.Schema[i].Name,
-                                   i,
-                                   v,
-                                   error.ToMessageWithType()), error); 
-          }
-          i++;
-        }
-        return row;
-      }
-
-
-        /// <summary>
-        /// Lazily parses CSV data respecting the ""
-        /// </summary>
-        public static IEnumerable<string> parseCSVLine(string line)
-        {
-          if (line.IsNullOrWhiteSpace()) yield break;
-         
-          var sb = new StringBuilder();
-          var quote = false;
-          for(var i=0;i<line.Length;i++)
-          {
-            var c = line[i];
-            if (c==',' && !quote)
-            {
-              yield return sb.ToString();
-              sb.Clear();
-              continue;
-            }
-            if (c=='"' && !quote)
-            {
-              quote = true;
-              continue;
-            }
-            if (c=='"' && quote)
-            {
-              quote = false;
-              continue;
-            }
-
-            sb.Append(line[i]);
-          }
-
-          yield return sb.ToString();
-        }
-
       private static void log(MessageType type, string from, string text, Exception error = null)
       {
          var msg = new Message
@@ -449,7 +334,5 @@ namespace NFX.Web.GeoLookup
       }
 
     #endregion
-   
   }
-
 }

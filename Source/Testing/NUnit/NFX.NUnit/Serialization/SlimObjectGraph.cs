@@ -25,7 +25,6 @@ using NUnit.Framework;
 using NFX.IO;
 using NFX.Environment;
 using NFX.Serialization.Slim;
-using NFX.RecordModel;
 using NFX.ApplicationModel;
 
 namespace NFX.NUnit.Serialization

@@ -31,8 +31,6 @@ using System.Threading.Tasks;
 using NFX.Environment;
 using NFX.DataAccess;
 using NFX.DataAccess.CRUD;
-using NFX.RecordModel;
-using NFX.RecordModel.DataAccess;
 
 using MySql.Data.MySqlClient;
 
@@ -45,7 +43,7 @@ namespace NFX.DataAccess.MySQL
   /// Implements MySQL general data store that auto-generates SQLs for record models and supports CRUD operations.
   /// This class IS thread-safe load/save/delete operations
   /// </summary>
-  public class MySQLDataStore : MySQLDataStoreBase, IModelDataStoreImplementation, ICRUDDataStoreImplementation
+  public class MySQLDataStore : MySQLDataStoreBase, ICRUDDataStoreImplementation
   {
     #region CONSTS
         public const string SCRIPT_FILE_SUFFIX = ".mys.sql";
@@ -68,28 +66,6 @@ namespace NFX.DataAccess.MySQL
     #region Fields
 
         private QueryResolver m_QueryResolver;
-
-    #endregion
-
-    #region IModelDataStore
-
-      public void Load(ModelBase instance, IDataStoreKey key, params object[] extra)
-      {
-        using (var cnn = GetConnection())
-          DoLoad(cnn, instance, key, extra);
-      }
-
-      public void Save(ModelBase instance, IDataStoreKey key, params object[] extra)
-      {
-        using (var cnn = GetConnection())
-          DoSave(cnn, instance, key, extra);
-      }
-
-      public void Delete(ModelBase instance, IDataStoreKey key, params object[] extra)
-      {
-        using (var cnn = GetConnection())
-          DoDelete(cnn, instance, key, extra);
-      }
 
     #endregion
 
@@ -281,37 +257,6 @@ namespace NFX.DataAccess.MySQL
             m_QueryResolver.Configure(node);
             base.Configure(node);
         }
-
-        
-        /// <summary>
-        /// Performs model load from MySQL server by generating appropriate SQL statement automatically.
-        /// Override to do custom loading for particular model instance
-        /// </summary>
-        protected internal virtual void DoLoad(MySqlConnection cnn, ModelBase instance, IDataStoreKey key, object[] extra)
-        {
-          RecordModelGenerator.Load(this, cnn, null, instance, key, extra);
-        }
-
-
-
-        /// <summary>
-        /// Performs model save into MySQL server by generating appropriate SQL statement automatically
-        /// Override to do custom saving for particular model instance
-        /// </summary>
-        protected internal virtual void DoSave(MySqlConnection cnn, ModelBase instance, IDataStoreKey key, object[] extra)
-        {
-          RecordModelGenerator.Save(this, cnn, instance, key, extra);
-        }
-
-        /// <summary>
-        /// Performs delete per model instance  from MySQL server by generating appropriate SQL statement automatically
-        /// Override to do custom deletion for particular model instance
-        /// </summary>
-        protected internal virtual void DoDelete(MySqlConnection cnn, ModelBase instance, IDataStoreKey key, object[] extra)
-        {
-          RecordModelGenerator.Delete(this, cnn, instance, key, extra);
-        }
-
 
         /// <summary>
         ///  Performs CRUD load without fetching data only returning schema. Override to do custom Query interpretation

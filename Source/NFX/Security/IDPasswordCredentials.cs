@@ -24,23 +24,61 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using NFX.Environment;
+using NFX.Serialization.JSON;
+
 namespace NFX.Security
 {
   /// <summary>
   /// Represents simple ID/password textual credentials
   /// </summary>
   [Serializable]
-  public class IDPasswordCredentials : Credentials
+  public class IDPasswordCredentials : Credentials, IStringRepresentableCredentials
   {
+     
+     /// <summary>
+     /// Creates IDPass credentials from base64 encoded auth header content as provided by RepresentAsString() method.
+     /// Returns null if the content is unparsable
+     /// </summary>
+     public static IDPasswordCredentials FromBasicAuth(string basicAuth)
+     {
+        if (basicAuth.IsNullOrWhiteSpace()) return null;
+
+        var bin = Convert.FromBase64String(basicAuth);
+        var concat = Encoding.UTF8.GetString(bin).Trim();
+
+        if (concat.IsNullOrWhiteSpace()) return null;
+
+        var i = concat.IndexOf(':');
+        if (i<0) return new IDPasswordCredentials(concat, null);
+
+        var id = i==0 ? null : concat.Substring(0, i);
+        var pwd = i==concat.Length-1 ? null : concat.Substring(i+1);
+
+        return new IDPasswordCredentials(id, pwd);
+     }
+     
+     
      public IDPasswordCredentials(string id, string pwd)
      {
        m_ID = id; 
        m_Password = pwd;
      }
      
+     /// <summary>
+     /// Warning: storing plain credentials in config file is not secure. Use this method for the most simplistic cases
+     /// like unit testing
+     /// </summary>
+     public IDPasswordCredentials(IConfigSectionNode cfg)
+     {
+       if (cfg == null || !cfg.Exists)
+         throw new SecurityException(StringConsts.ARGUMENT_ERROR + "IDPasswordCredentials.ctor(cfg=null|!exists)");
+
+       ConfigAttribute.Apply(this, cfg);
+     }
      
-     private string m_ID;
-     private string m_Password;
+     [Config] private string m_ID;
+     [Config] private string m_Password;
      
 
      public string ID
@@ -70,13 +108,22 @@ namespace NFX.Security
        base.Forget();
      }
 
+     public string RepresentAsString()
+     {
+       if (Forgotten)
+         throw new SecurityException(StringConsts.SECURITY_REPRESENT_CREDENTIALS_FORGOTTEN);
+
+       var concat = "{0}:{1}".Args(m_ID, m_Password);
+       var encoded = Encoding.UTF8.GetBytes(concat);
+
+       return Convert.ToBase64String(encoded, Base64FormattingOptions.None);
+     }
+
 
 
      public override string ToString()
      {
        return "{0}({1})".Args(GetType().Name, ID);
      }
-  
-  
   }
 }

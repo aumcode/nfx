@@ -43,6 +43,19 @@ namespace NFX.Serialization.JSON
 
 
         /// <summary>
+        /// Writes JSON data to the byte[]
+        /// </summary>
+        public static byte[] WriteToBuffer(object data, JSONWritingOptions options = null, Encoding encoding = null)
+        {
+            using(var ms = new MemoryStream())
+            {
+              Write(data, ms, options, encoding);
+              return ms.ToArray();
+            }
+        }
+
+
+        /// <summary>
         /// Writes JSON data to the stream
         /// </summary>
         public static void Write(object data, Stream stream, JSONWritingOptions options = null, Encoding encoding = null)

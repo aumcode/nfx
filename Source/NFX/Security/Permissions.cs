@@ -240,6 +240,17 @@ namespace NFX.Security
         #region Public
 
             /// <summary>
+            /// Shortcut method that creates a temp/mock BaseSession object thus checking permission in mock BaseSession context
+            /// </summary>
+            public bool Check(User user)
+            {
+              if (user==null || !user.IsAuthenticated) return false;
+              var session = new BaseSession(Guid.NewGuid());
+              session.User = user;
+              return this.Check(session);
+            }
+            
+            /// <summary>
             /// Checks the permission for requested action as specified in particular permission .ctor.
             /// The check is performed in the scope of supplied session, or if no session was supplied then 
             ///  current execution context session is assumed
@@ -258,7 +269,7 @@ namespace NFX.Security
               var access = manager.Authorize(user, this);
               
               if (access==null) return false;
-                                                  
+
               return DoCheckAccessLevel(session, access); 
             }
 

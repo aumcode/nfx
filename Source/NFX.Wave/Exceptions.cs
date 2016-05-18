@@ -24,6 +24,8 @@ using System;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 
+using NFX.Web;
+
 namespace NFX.Wave
 {
 
@@ -155,58 +157,66 @@ namespace NFX.Wave
 
     public static HTTPStatusException BadRequest_400(string descr = null)
     {
-      var d = SysConsts.STATUS_400_DESCRIPTION;
+      var d = WebConsts.STATUS_400_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
       
-      return new HTTPStatusException(SysConsts.STATUS_400, d);
+      return new HTTPStatusException(WebConsts.STATUS_400, d);
+    }
+
+    public static HTTPStatusException Unauthorized_401(string descr = null)
+    {
+      var d = WebConsts.STATUS_401_DESCRIPTION;
+      if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
+      
+      return new HTTPStatusException(WebConsts.STATUS_401, d);
     }
 
     public static HTTPStatusException Forbidden_403(string descr = null)
     {
-      var d = SysConsts.STATUS_403_DESCRIPTION;
+      var d = WebConsts.STATUS_403_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
       
-      return new HTTPStatusException(SysConsts.STATUS_403, d);
+      return new HTTPStatusException(WebConsts.STATUS_403, d);
     }
     
     public static HTTPStatusException NotFound_404(string descr = null)
     {
-      var d = SysConsts.STATUS_404_DESCRIPTION;
+      var d = WebConsts.STATUS_404_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
 
-      return new HTTPStatusException(SysConsts.STATUS_404, d);
+      return new HTTPStatusException(WebConsts.STATUS_404, d);
     }
 
     public static HTTPStatusException MethodNotAllowed_405(string descr = null)
     {
-      var d = SysConsts.STATUS_405_DESCRIPTION;
+      var d = WebConsts.STATUS_405_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
       
-      return new HTTPStatusException(SysConsts.STATUS_405, d);
+      return new HTTPStatusException(WebConsts.STATUS_405, d);
     }
 
     public static HTTPStatusException NotAcceptable_406(string descr = null)
     {
-      var d = SysConsts.STATUS_406_DESCRIPTION;
+      var d = WebConsts.STATUS_406_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
       
-      return new HTTPStatusException(SysConsts.STATUS_406, d);
+      return new HTTPStatusException(WebConsts.STATUS_406, d);
     }
 
     public static HTTPStatusException TooManyRequests_429(string descr = null)
     {
-      var d = SysConsts.STATUS_429_DESCRIPTION;
+      var d = WebConsts.STATUS_429_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
       
-      return new HTTPStatusException(SysConsts.STATUS_429, d);
+      return new HTTPStatusException(WebConsts.STATUS_429, d);
     }
 
     public static HTTPStatusException InternalError_500(string descr = null)
     {
-      var d = SysConsts.STATUS_500_DESCRIPTION;
+      var d = WebConsts.STATUS_500_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
       
-      return new HTTPStatusException(SysConsts.STATUS_500, d);
+      return new HTTPStatusException(WebConsts.STATUS_500, d);
     }
 
 

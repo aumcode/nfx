@@ -57,27 +57,6 @@ namespace NFX.Serialization.Slim
            }
 
            /// <summary>
-           /// Returns Record-model specific types
-           /// </summary>
-           public static IEnumerable<Type> RecordModelTypes
-           {
-             get
-             {
-               var asm = Assembly.GetAssembly(typeof(RecordModel.Record));
-               var types = asm.GetTypes().Where(t => t.Namespace == "NFX.RecordModel" && Attribute.IsDefined(t, typeof(SerializableAttribute))).ToList();
-               types.Add(typeof(List<RecordModel.ModelBase>));
-               types.Add(typeof(RecordModel.ModelBase[]));
-               types.Add(typeof(List<RecordModel.Notification>));
-               types.Add(typeof(RecordModel.Notification[]));
-               types.Add(typeof(List<string>));
-               types.Add(typeof(Exception));
-
-               return types;
-             }
-           }
-
-
-           /// <summary>
            /// Returns Glue protocol specific types
            /// </summary>
            public static IEnumerable<Type> GlueProtocolTypes

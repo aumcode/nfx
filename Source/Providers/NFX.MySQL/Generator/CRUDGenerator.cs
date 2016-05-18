@@ -23,7 +23,6 @@ using System.Text;
 
 using NFX;
 using NFX.DataAccess;
-using NFX.RecordModel;
 using MySql.Data.MySqlClient;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;

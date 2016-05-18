@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using NFX.ApplicationModel;
 using NFX.WinForms;
 
 namespace TelemetryViewer
@@ -31,7 +32,7 @@ namespace TelemetryViewer
         [STAThread]
         static void Main(string[] args)
         {
-            using(new BaseApplication(args, null))
+            using(new ServiceBaseApplication(args, null))
             { 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

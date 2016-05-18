@@ -193,6 +193,8 @@ namespace NFX
     public const string SECURITY_AUTHROIZATION_ERROR =
         "Authorization to '{0}' failed from '{1}'";
 
+    public const string SECURITY_REPRESENT_CREDENTIALS_FORGOTTEN =
+        "Credentials can not be represented as they are forgotten";
 
     public const string NULL_STRING = "<null>";
     public const string UNKNOWN_STRING = "unknown";

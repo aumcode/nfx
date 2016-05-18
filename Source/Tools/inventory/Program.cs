@@ -89,7 +89,6 @@ namespace inventory
           if (manager.Strategies.Count==0)
           {
             manager.Strategies.Add( new BasicInventorization());
-            manager.Strategies.Add( new RecordModelInventorization());
           }
 
 

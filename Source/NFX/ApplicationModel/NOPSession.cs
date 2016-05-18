@@ -69,6 +69,11 @@ namespace NFX.ApplicationModel
            get { return null; }
         }
 
+        public SessionLoginType LastLoginType
+        {
+           get { return SessionLoginType.Unspecified; }
+        }
+
         public bool IsEnded
         {
            get { return false; }
@@ -112,7 +117,7 @@ namespace NFX.ApplicationModel
 
         }
 
-        public void HasJustLoggedIn()
+        public void HasJustLoggedIn(SessionLoginType loginType)
         {
 
         }

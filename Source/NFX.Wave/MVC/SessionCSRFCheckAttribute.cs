@@ -52,7 +52,7 @@ namespace NFX.Wave.MVC
 
       if (session==null || 
           !session.CSRFToken.EqualsOrdSenseCase(supplied))
-        throw new HTTPStatusException(NFX.Wave.SysConsts.STATUS_400, NFX.Wave.SysConsts.STATUS_400_DESCRIPTION, "CSRF failed");
+        throw new HTTPStatusException(NFX.Web.WebConsts.STATUS_400, NFX.Web.WebConsts.STATUS_400_DESCRIPTION, "CSRF failed");
 
       return false;
     }

@@ -331,7 +331,7 @@ namespace NFX.Web
         IDictionary<string, string> headers = null)
       {
         string responseStr = GetString(uri, caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
-        var dict = Utils.ParseQueryString(responseStr);
+        var dict = JSONDataMap.FromURLEncodedString(responseStr);
         return dict;
       }
 
@@ -396,6 +396,6 @@ namespace NFX.Web
 
       #endregion 
 
-    } //SocialWebClient
+    } //WebClient
 
 }

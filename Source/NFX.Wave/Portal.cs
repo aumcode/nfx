@@ -353,9 +353,9 @@ namespace NFX.Wave
           if (session!=null) 
             lang = session.LanguageISOCode;
           
-          if (lang.IsNullOrWhiteSpace() && work.GeoEntity!=null)
+          if (lang.IsNullOrWhiteSpace() && work.GeoEntity!=null && work.GeoEntity.Location.HasValue)
           {
-            var country = work.GeoEntity.Location.CountryISOName;
+            var country = work.GeoEntity.Location.Value.CountryISOName.Value;
             lang =  CountryISOCodeToLanguageISOCode(country);
           }
         }

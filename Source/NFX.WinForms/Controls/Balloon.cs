@@ -415,7 +415,7 @@ namespace NFX.WinForms.Controls
           Point trg = m_TargetPoint;
           trg.Offset(-Location.X, -Location.Y);
 
-          BaseApplication.Theme.PartRenderer.Balloon(e.Graphics, rect, trg, m_BalloonColor, null);
+          //BaseApplication.Theme.PartRenderer.Balloon(e.Graphics, rect, trg, m_BalloonColor, null);
 
           //render Text
 
@@ -428,15 +428,15 @@ namespace NFX.WinForms.Controls
         
           using(Brush txtBrush = new SolidBrush(this.ForeColor))
           {
-            BaseApplication.Theme.PartRenderer.Text(
-                                                 e.Graphics, 
-                                                 rect, 
-                                                 false,
-                                                 Font,
-                                                 txtBrush, 
-                                                 null, 
-                                                 Text,
-                                                 m_BalloonTextAlignment);
+           // BaseApplication.Theme.PartRenderer.Text(
+           //                                      e.Graphics, 
+           //                                      rect, 
+           //                                      false,
+           //                                      Font,
+           //                                      txtBrush, 
+           //                                      null, 
+           //                                      Text,
+           //                                      m_BalloonTextAlignment);
           }                                       
                      
           base.OnPaint(e);

@@ -206,6 +206,8 @@ namespace NFX.Wave
       private NameValuePair[] m_AbsentCookies;
       private NameValuePair[] m_Headers;
       private bool? m_IsLocal;
+      private int?  m_ApiMinVer;
+      private int?  m_ApiMaxVer;
       private IEnumerable<Permission> m_Permissions;
 
       private Registry<Variable> m_Variables = new Registry<Variable>();
@@ -349,6 +351,20 @@ namespace NFX.Wave
         set { m_IsLocal = value; }
       }
 
+      [Config]
+      public int? ApiMinVer
+      {
+        get { return m_ApiMinVer; } 
+        set { m_ApiMinVer = value; }
+      }
+
+      [Config]
+      public int? ApiMaxVer
+      {
+        get { return m_ApiMaxVer; } 
+        set { m_ApiMaxVer = value; }
+      }
+
       public IEnumerable<Permission> Permissions
       {
         get { return m_Permissions;}
@@ -380,7 +396,8 @@ namespace NFX.Wave
             !Check_Permissions(work) ||
             !Check_Cookies(work) || 
             !Check_AbsentCookies(work) || 
-            !Check_Headers(work) 
+            !Check_Headers(work) ||
+            !Check_ApiVersions(work)
            ) return null;
 
         JSONDataMap result = null;
@@ -549,6 +566,23 @@ namespace NFX.Wave
                              pair.Value,
                              StringComparison.InvariantCultureIgnoreCase)) return true;
         return false;
+      }
+
+      protected virtual bool Check_ApiVersions(WorkContext work)
+      {
+        if (!m_ApiMinVer.HasValue && !m_ApiMaxVer.HasValue) return true;
+
+        var hdr = work.Request.Headers[SysConsts.HEADER_API_VERSION];
+
+        if (hdr.IsNullOrWhiteSpace()) return false;
+
+        int v;
+        if (!Int32.TryParse(hdr, out v)) return false;
+
+        if (m_ApiMinVer.HasValue && m_ApiMinVer.Value>v) return false;
+        if (m_ApiMaxVer.HasValue && m_ApiMaxVer.Value<v) return false;
+
+        return true;
       }
 
   }

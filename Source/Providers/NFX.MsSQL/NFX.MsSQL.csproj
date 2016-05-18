@@ -47,8 +47,6 @@
     <Compile Include="DataAccess\MsSQLDataStoreBase.cs" />
     <Compile Include="Log\SQLServerDestination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecordModel\MsSQLModelDataStore.cs" />
-    <Compile Include="RecordModel\MsSQLStatementGenerator.cs" />
     <Compile Include="StringConsts.cs" />
     <Compile Include="Volatile\MsSQLObjectStoreProvider.cs" />
   </ItemGroup>
