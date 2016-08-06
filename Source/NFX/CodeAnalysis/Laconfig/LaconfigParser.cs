@@ -28,13 +28,13 @@ namespace NFX.CodeAnalysis.Laconfig
     /// </summary>
     public sealed partial class LaconfigParser : Parser<LaconfigLexer>
     {
-        
+
         public LaconfigParser(LaconfigData context, LaconfigLexer input,  MessageList messages = null, bool throwErrors = false) :
             base(context, new LaconfigLexer[]{ input }, messages, throwErrors)
         {
             m_Lexer = Input.First();
         }
-        
+
         private LaconfigLexer m_Lexer;
 
         public LaconfigLexer Lexer { get { return m_Lexer;} }
@@ -52,21 +52,21 @@ namespace NFX.CodeAnalysis.Laconfig
         }
 
 
-        
-       
+
+
         protected override void DoParse()
         {
             try
             {
                 var config = ResultContext.ResultObject;
-                
-                tokens = Lexer.GetEnumerator(); 
+
+                tokens = Lexer.GetEnumerator();
                 fetchPrimary();
                 doRoot( config );
 
                 if (config.Root.Exists)
                    config.Root.ResetModified();
-                
+
             }
             catch(abortException)
             {

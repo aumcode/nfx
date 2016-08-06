@@ -28,7 +28,7 @@ using NFX.Serialization.Slim;
 
 namespace NFX.Glue.Native
 {
-  
+
   public interface IMpxTransport
   {
     MpxBinding Binding { get;}
@@ -42,11 +42,11 @@ namespace NFX.Glue.Native
   public sealed class MpxBinding : Binding
   {
        #region CONSTS
-            
+
             public const int DEFAULT_RCV_TIMEOUT = 0;
             public const int DEFAULT_SND_TIMEOUT = 0;
 
-            public const int DEFAULT_PORT = 8237; 
+            public const int DEFAULT_PORT = 8237;
 
             public const string CONFIG_SOCKET_FACTORY_SECT = "socket-factory";
 
@@ -75,13 +75,13 @@ namespace NFX.Glue.Native
 
 
          #region Fields
-            
+
             private ISerializer m_Serializer;
-            private MpxSocketFactory m_SocketFactory; 
+            private MpxSocketFactory m_SocketFactory;
             private List<MemChunk> m_Chunks;
 
             private int m_MaxMsgSize = Consts.DEFAULT_MAX_MSG_SIZE;
-           
+
             private int m_ServerReceiveBufferSize = Consts.DEFAULT_RCV_BUFFER_SIZE;
             private int m_ServerSendBufferSize    = Consts.DEFAULT_SND_BUFFER_SIZE;
             private int m_ClientReceiveBufferSize = Consts.DEFAULT_RCV_BUFFER_SIZE;
@@ -100,7 +100,7 @@ namespace NFX.Glue.Native
 
 
         #region Properties
-  
+
           /// <summary>
           /// Mpx binding is always async by definition
           /// </summary>
@@ -132,7 +132,7 @@ namespace NFX.Glue.Native
             {
                get { return m_MaxMsgSize; }
                set { m_MaxMsgSize = value < Consts.MAX_MSG_SIZE_LOW_BOUND ? Consts.MAX_MSG_SIZE_LOW_BOUND : value;}
-            } 
+            }
 
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_BUF_SIZE_ATTR, Consts.DEFAULT_RCV_BUFFER_SIZE)]
@@ -143,49 +143,49 @@ namespace NFX.Glue.Native
             }
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_BUF_SIZE_ATTR, Consts.DEFAULT_SND_BUFFER_SIZE)]
-            public int ServerSendBufferSize 
+            public int ServerSendBufferSize
             {
                get { return m_ServerSendBufferSize; }
                set { m_ServerSendBufferSize = value <=0 ? Consts.DEFAULT_SND_BUFFER_SIZE : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_BUF_SIZE_ATTR, Consts.DEFAULT_RCV_BUFFER_SIZE)]
-            public int ClientReceiveBufferSize 
+            public int ClientReceiveBufferSize
             {
                get { return m_ClientReceiveBufferSize; }
                set { m_ClientReceiveBufferSize = value <=0 ? Consts.DEFAULT_RCV_BUFFER_SIZE : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_BUF_SIZE_ATTR, Consts.DEFAULT_SND_BUFFER_SIZE)]
-            public int ClientSendBufferSize 
+            public int ClientSendBufferSize
             {
                get { return m_ClientSendBufferSize; }
                set { m_ClientSendBufferSize = value <=0 ? Consts.DEFAULT_SND_BUFFER_SIZE : value;}
             }
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_TIMEOUT_ATTR, DEFAULT_RCV_TIMEOUT)]
-            public int ServerReceiveTimeout 
+            public int ServerReceiveTimeout
             {
                get { return m_ServerReceiveTimeout; }
                set { m_ServerReceiveTimeout = value <0 ? DEFAULT_RCV_TIMEOUT : value;}
             }
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_TIMEOUT_ATTR, DEFAULT_SND_TIMEOUT)]
-            public int ServerSendTimeout 
+            public int ServerSendTimeout
             {
                get { return m_ServerSendTimeout; }
                set { m_ServerSendTimeout = value <0 ? DEFAULT_SND_TIMEOUT : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_TIMEOUT_ATTR, DEFAULT_RCV_TIMEOUT)]
-            public int ClientReceiveTimeout 
+            public int ClientReceiveTimeout
             {
                get { return m_ClientReceiveTimeout; }
                set { m_ClientReceiveTimeout = value <0 ? DEFAULT_RCV_TIMEOUT : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_TIMEOUT_ATTR, DEFAULT_SND_TIMEOUT)]
-            public int ClientSendTimeout 
+            public int ClientSendTimeout
             {
                get { return m_ClientSendTimeout; }
                set { m_ClientSendTimeout = value <0 ? DEFAULT_SND_TIMEOUT : value;}
@@ -194,11 +194,11 @@ namespace NFX.Glue.Native
 
             /// <summary>
             /// Specifies the maximum length of life of an unused memory chunk in the pool.
-            /// The idle chunk will be evicted after this interval. 
+            /// The idle chunk will be evicted after this interval.
             /// This setting is common for both server and client as they share the same pool
             /// </summary>
             [Config(null, DEFAULT_IDLE_CHUNK_LIFE_SEC)]
-            public int IdleChunkLifeSec 
+            public int IdleChunkLifeSec
             {
                get { return m_IdleChunkLifeSec; }
                set { m_IdleChunkLifeSec = value <=0 ? DEFAULT_IDLE_CHUNK_LIFE_SEC : value;}
@@ -210,7 +210,7 @@ namespace NFX.Glue.Native
             /// This setting is common for both server and client as they share the same pool
             /// </summary>
             [Config(null, DEFAULT_MAX_CHUNK_POOL_COUNT)]
-            public int MaxChunkPoolCount 
+            public int MaxChunkPoolCount
             {
                get { return m_MaxChunkPoolCount; }
                set { m_MaxChunkPoolCount = value <=0 ? DEFAULT_MAX_CHUNK_POOL_COUNT : value;}
@@ -222,7 +222,7 @@ namespace NFX.Glue.Native
             /// This setting is common for both server and client as they have the same channel semantics
             /// </summary>
             [Config(null, DEFAULT_SOCKET_LINGER_SEC)]
-            public int SocketLingerSec 
+            public int SocketLingerSec
             {
                get { return m_SocketLingerSec; }
                set { m_SocketLingerSec = value <0 ? DEFAULT_SOCKET_LINGER_SEC : value;}
@@ -340,14 +340,14 @@ namespace NFX.Glue.Native
           internal void ReleaseChunk(MemChunk chunk)
           {
             if (chunk==null || !Running) return;
-         
+
             chunk.Acquired = false;
             chunk._LastReleaseUtc = App.TimeSource.UTCNow;
-         
-            WriteLog(LogSrc.Any, 
-                     Log.MessageType.TraceGlue, 
+
+            WriteLog(LogSrc.Any,
+                     Log.MessageType.TraceGlue,
                      "Chunk released back to pool; Used {0} capacity {1} ".Args(chunk.stat_MaxUsedPosition, chunk.stat_MaxLength));
-  
+
             var chunks = m_Chunks;
             if (chunks==null) return;
 
@@ -357,7 +357,7 @@ namespace NFX.Glue.Native
               {
                 for(var i=0; i<m_Chunks.Count; i++)
                   if (object.ReferenceEquals(m_Chunks[i], chunk))  return;//already in pool
-             
+
                 chunks.Add(chunk);
               }
             }
@@ -387,7 +387,7 @@ namespace NFX.Glue.Native
 
                     var chunks = m_Chunks;
                     if (chunks==null) return;
-                                             
+
                     if ((now - lastChunkStackPurge).TotalSeconds < PURGE_EVERY_SEC) return;
                     lastChunkStackPurge = now;
 
@@ -403,13 +403,13 @@ namespace NFX.Glue.Native
                         }
                         i++;
                       }
-                    }//lock 
+                    }//lock
                   }
 
                   private void visitServerTransports(DateTime now)
                   {
                       foreach(var transport in Transports.Where(t => t is MpxServerTransport).Cast<MpxServerTransport>())
-                       transport.AcceptManagerVisit(this, now); 
+                       transport.AcceptManagerVisit(this, now);
                   }
 
 

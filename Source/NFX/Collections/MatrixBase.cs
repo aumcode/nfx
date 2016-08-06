@@ -35,7 +35,7 @@ using System.Collections;
 
 namespace NFX.Collections
 {
-  
+
   /// <summary>
   /// Provides base for various matrices
   /// </summary>
@@ -48,7 +48,7 @@ namespace NFX.Collections
       public abstract int GetLowerBound(int dimension);
       public abstract int GetUpperBound(int dimension);
 
-      public abstract IEnumerator<T> GetMatrixEnumerator(); 
+      public abstract IEnumerator<T> GetMatrixEnumerator();
 
     #endregion
 
@@ -109,7 +109,7 @@ namespace NFX.Collections
       IEnumerator IEnumerable.GetEnumerator()
       {
         return this.GetEnumerator();
-      } 
+      }
 
 	  #endregion
 
@@ -143,7 +143,7 @@ namespace NFX.Collections
         }
 
         return true;
-      } 
+      }
 
     #endregion
   }

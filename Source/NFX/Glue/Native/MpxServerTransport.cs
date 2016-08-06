@@ -52,7 +52,7 @@ namespace NFX.Glue.Native
         {
           Node = serverEndpoint.Node;
           m_IPAddress = localAddr;
-          m_Port = port;      
+          m_Port = port;
         }
 
 
@@ -71,31 +71,31 @@ namespace NFX.Glue.Native
                           OutQueues = new ConcurrentQueue<ResponseMsg>[GENERATIONS];
                           for(var i=0; i<GENERATIONS; i++) OutQueues[i] = new ConcurrentQueue<ResponseMsg>();
                         }
-                        
+
                         public MpxServerTransport Transport;
                         public readonly ClientSite Site;
-                        
-                        public int LOCK_TOKEN;     
+
+                        public int LOCK_TOKEN;
                         private List<MpxServerSocket> m_Sockets;
 
                         public readonly ConcurrentQueue<ResponseMsg>[] OutQueues;
 
                         public string Name { get{return Site.Name;}}
 
-                        public void AddSocket(MpxServerSocket socket) 
+                        public void AddSocket(MpxServerSocket socket)
                         {
                           if (Transport.Binding.InstrumentServerTransportStat)
-                            Instrumentation.ClientConnectedEvent.Happened(socket.ClientSite.Name);                            
-                         
+                            Instrumentation.ClientConnectedEvent.Happened(socket.ClientSite.Name);
+
                           Interlocked.Increment(ref Transport.m_OpenChannels);
                           lock(m_Sockets) m_Sockets.Add(socket);
                         }
 
-                        public bool RemoveSocket(MpxServerSocket socket) 
+                        public bool RemoveSocket(MpxServerSocket socket)
                         {
                           if (Transport.Binding.InstrumentServerTransportStat)
-                            Instrumentation.ClientDisconnectedEvent.Happened(socket.ClientSite.Name);                                                      
-                         
+                            Instrumentation.ClientDisconnectedEvent.Happened(socket.ClientSite.Name);
+
                           Interlocked.Decrement(ref Transport.m_OpenChannels);
                           lock(m_Sockets) return m_Sockets.Remove(socket);
                         }
@@ -108,10 +108,10 @@ namespace NFX.Glue.Native
                         public void AcceptManageVisit(DateTime now)
                         {
                           List<MpxServerSocket> closing = null;
-                      
+
                           lock(m_Sockets)
                           {
-                           foreach(var socket in m_Sockets)  
+                           foreach(var socket in m_Sockets)
                            {
                              socket.AcceptManagerVisit(now);
                              if (!socket.Active && !socket.Disposed)
@@ -126,7 +126,7 @@ namespace NFX.Glue.Native
                           if (closing!=null)
                            foreach(var socket in closing) socket.Dispose();
                         }
-                     }   
+                     }
     #endregion
 
     #region Fields/Props
@@ -139,7 +139,7 @@ namespace NFX.Glue.Native
 
 
         internal int m_OpenChannels;
-   
+
         private Registry<clientSiteState> m_ClientSites;
 
     #endregion
@@ -199,15 +199,15 @@ namespace NFX.Glue.Native
         {
           if (!Running) return;
 
-          
+
           foreach(var state in m_ClientSites)
           {
 
-            //flush remaining out queue if there is at least one 
+            //flush remaining out queue if there is at least one
             ResponseMsg msg;
             if (state.OutQueues.Any(q => q.TryPeek(out msg)))
                Task.Factory.StartNew(() => sendOutQueue(state, true) );
-            
+
             //Manage states - i.e. close inactive server sockets
             try
             {
@@ -215,20 +215,20 @@ namespace NFX.Glue.Native
             }
             catch(Exception error)
             {
-              Binding.WriteLog(LogSrc.Server, Log.MessageType.Error, 
+              Binding.WriteLog(LogSrc.Server, Log.MessageType.Error,
                                "state.AcceptManageVisit(managerNow) leaked: "+error.ToMessageWithType(),
                                GetType().Name+".DoAcceptManagerVisit", error);
             }
           }
         }
 
-        
+
 
 
         protected override void DoStart()
         {
            base.DoStart();
-           
+
            m_ClientSites = new Registry<clientSiteState>();
 
            m_Listener = Binding.SocketFactory.MakeListener(this, new IPEndPoint(m_IPAddress, m_Port), socketReceiveAction);
@@ -256,18 +256,18 @@ namespace NFX.Glue.Native
 
 
     #region .pvt
-    
+
        //called asynchronously to deliver data from client socket
         private void socketReceiveAction(MpxSocket<MpxServerTransport> socket, WireMsg wm)
-        {                
+        {
           if (!Running) return;
 
           var request = deserialize(ref wm);
-          
+
           request.__setServerTransport(this);
           request.__SetBindingSpecificContext(socket);
 
-          Glue.ServerDispatchRequest(request); 
+          Glue.ServerDispatchRequest(request);
         }
 
 
@@ -275,8 +275,8 @@ namespace NFX.Glue.Native
            {
              var chunk = wmsg.Data;
              chunk.Position = sizeof(int);
-           
-             WireFrame frame;    
+
+             WireFrame frame;
              RequestMsg result = null;
              var arrivalTime = Binding.StatTimeTicks;
 
@@ -318,8 +318,8 @@ namespace NFX.Glue.Native
 
 
               result.__SetArrivalTimeStampTicks(arrivalTime);
-         
-              
+
+
               return result;
            }
 
@@ -333,7 +333,7 @@ namespace NFX.Glue.Native
            catch(Exception error)
            {
               Binding.WriteLog(LogSrc.Server, Log.MessageType.Error, "sendOutQueueCore leaked: " + error.ToMessageWithType(), "MpxServerTransport.sendOutQueue()", error);
-           } 
+           }
         }
 
         private void sendOutQueueCore(clientSiteState state, bool isManager)
@@ -361,7 +361,7 @@ namespace NFX.Glue.Native
                      if (!sendResponse(response))
                      {
                         if (i<GENERATIONS-1)
-                          state.OutQueues[i+1].Enqueue(response);//put back in queue what did not go in older gen queue 
+                          state.OutQueues[i+1].Enqueue(response);//put back in queue what did not go in older gen queue
                      }
                    }//while
              }//for
@@ -387,11 +387,11 @@ namespace NFX.Glue.Native
             catch(Exception err1)
             {
               var commError = err1 is SocketException ||
-                              err1 is System.IO.IOException || 
+                              err1 is System.IO.IOException ||
                               (err1 is ProtocolException && ((ProtocolException)err1).CloseChannel);
               stat_Errors();
               if (commError) throw;//do nothing - just close the channel
-             
+
               if (response != null)
                   try
                   {
@@ -449,15 +449,15 @@ namespace NFX.Glue.Native
               Binding.DumpMsg(true, response, chunk.GetBuffer(), 0, (int)chunk.Position  );
 
               if (size>Binding.MaxMsgSize)
-              {  
+              {
                 Instrumentation.ServerSerializedOverMaxMsgSizeErrorEvent.Happened(Node);
                 throw new MessageSizeException(size, Binding.MaxMsgSize, "sendResponse("+response.RequestID+")");
               }
-                
+
               socket.Send(wm);
 
               stat_MsgSent();
-              stat_BytesSent(size);   
+              stat_BytesSent(size);
             }
             catch
             {
@@ -474,9 +474,9 @@ namespace NFX.Glue.Native
         {
           chunk.Position = sizeof(int);
           frame.Serialize( chunk );
-          Binding.Serializer.Serialize(chunk, msg); 
+          Binding.Serializer.Serialize(chunk, msg);
           var size = (int)chunk.Position;//with 4 byte len
-             
+
           var buff = chunk.GetBuffer();//no stream expansion beyond this point
           buff.WriteBEInt32(0, size);
           return size;
@@ -484,7 +484,7 @@ namespace NFX.Glue.Native
 
 
 
-    #endregion 
+    #endregion
 
   }
 }

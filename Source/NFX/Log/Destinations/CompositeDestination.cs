@@ -71,7 +71,7 @@ namespace NFX.Log.Destinations
             }
 
        #endregion
-        
+
        #region Public
 
             public override void Open()
@@ -137,12 +137,12 @@ namespace NFX.Log.Destinations
        #endregion
 
 
-      #region Protected  
+      #region Protected
 
             protected override void DoConfigure(Environment.IConfigSectionNode node)
             {
                 base.DoConfigure(node);
-               
+
                   foreach (var dnode in node.Children.Where(n => n.Name.EqualsIgnoreCase(LogServiceBase.CONFIG_DESTINATION_SECTION)))
                   {
                     var dest = FactoryUtils.MakeAndConfigure(dnode) as Destination;
@@ -151,7 +151,7 @@ namespace NFX.Log.Destinations
 
             }
 
-            
+
 
             protected internal override void DoSend(Message entry)
             {

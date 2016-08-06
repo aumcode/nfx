@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="MySQLCRUDQueryExecutionContext.cs" />
     <Compile Include="MySQLCRUDScriptQueryHandler.cs" />
+    <Compile Include="MySQLCursor.cs" />
     <Compile Include="MySQLDataStore.cs" />
     <Compile Include="Generator\CRUDGenerator.cs" />
     <Compile Include="Generator\GeneratorUtils.cs" />

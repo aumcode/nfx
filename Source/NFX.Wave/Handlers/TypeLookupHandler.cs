@@ -33,7 +33,7 @@ namespace NFX.Wave.Handlers
     /// </summary>
     public abstract class TypeLookupHandler<TTarget> : WorkHandler where TTarget : class
     {
-       #region CONSTS 
+       #region CONSTS
          public const string VAR_TARGET_TYPE = "type";
          public const string VAR_INSTANCE_ID = "instanceID";
 
@@ -41,9 +41,9 @@ namespace NFX.Wave.Handlers
          public const string CONFIG_CLOAK_TYPE_ATTR = "cloak-type";
          public const string CONFIG_NOT_FOUND_REDIRECT_URL_ATTR = "not-found-redirect-url";
 
-       #endregion 
-       
-       
+       #endregion
+
+
        #region .ctor
 
          protected TypeLookupHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
@@ -56,7 +56,7 @@ namespace NFX.Wave.Handlers
          {
           if (confNode==null)
             throw new WaveException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(confNode==null)");
-         
+
           foreach(var ntl in confNode.Children.Where(cn=>cn.IsSameName(TypeLocation.CONFIG_TYPE_LOCATION_SECTION)))
             m_TypeLocations.Register( FactoryUtils.Make<TypeLocation>(ntl, typeof(TypeLocation), args: new object[]{ ntl }) );
 
@@ -79,7 +79,7 @@ namespace NFX.Wave.Handlers
 
 
        #region Properties
-       
+
             /// <summary>
             /// Indicates whether instance IDs are supported in requests. Default is false.
             /// Override to return true for handlers that support target instance state between requests
@@ -131,7 +131,7 @@ namespace NFX.Wave.Handlers
 
 
        #region Protected
-       
+
             /// <summary>
             /// Sealed. Override DoTargetWork(TTarget, WorkContext) to do actual work
             /// </summary>
@@ -157,11 +157,11 @@ namespace NFX.Wave.Handlers
                             Security.Permission.AuthorizeAndGuardAction(target.GetType(), work.Session, ()=> work.NeedsSession() );
                        }
 
-    
+
                        if (target==null)
-                       {  
+                       {
                            var tt = GetTargetType(work);
-  
+
                            if (tt==null || tt.IsAbstract)
                            {
                              if (m_NotFoundRedirectURL.IsNotNullOrWhiteSpace())
@@ -173,7 +173,7 @@ namespace NFX.Wave.Handlers
                              error = Do404(work);
                              return;
                            }
-                       
+
                            Security.Permission.AuthorizeAndGuardAction(tt, work.Session, ()=> work.NeedsSession() );
 
                            target = CreateTargetInstance(work, tt);
@@ -191,9 +191,9 @@ namespace NFX.Wave.Handlers
                            return;
                        }
 
-  
+
                        DoTargetWork(target, work);
- 
+
                   }
                   catch(Exception err)
                   {
@@ -204,8 +204,8 @@ namespace NFX.Wave.Handlers
                {
                  try
                  {
-                   if (error!=null) 
-                     DoError(work, error); 
+                   if (error!=null)
+                     DoError(work, error);
                  }
                  finally
                  {
@@ -230,7 +230,7 @@ namespace NFX.Wave.Handlers
            /// Performs work on the target instance
            /// </summary>
            protected abstract void DoTargetWork(TTarget target, WorkContext work);
-           
+
 
 
            /// <summary>
@@ -249,12 +249,12 @@ namespace NFX.Wave.Handlers
            {
              var tname = GetTargetTypeNameFromWorkContext(work);
 
-             var result = getTargetType(work, tname); 
+             var result = getTargetType(work, tname);
              if(result!=null && !result.IsAbstract) return result;
 
              if (m_CloakTypeName.IsNotNullOrWhiteSpace())
               result = getTargetType(work, m_CloakTypeName);
-            
+
              return result;
            }
 
@@ -273,16 +273,16 @@ namespace NFX.Wave.Handlers
              if (match!=null && match.TypeNsPrefix.IsNotNullOrWhiteSpace())
              {
                 var pfx = match.TypeNsPrefix;
-                
+
                 if (pfx[pfx.Length-1]!='/' && pfx[pfx.Length-1]!='\\') pfx = pfx + '/';
-                
+
                 result = pfx + result;
              }
 
              return result;
            }
 
-       
+
            /// <summary>
            /// Factory method - Override to create and init more particular template implementation (i.e. based on model)
            /// </summary>
@@ -353,7 +353,7 @@ namespace NFX.Wave.Handlers
               if (k-j < 32) return false;
 
               name = name.Substring(j+1, k-j-2);
-              
+
               if (Guid.TryParse(name, out id)) return true;
 
               return false;
@@ -367,27 +367,27 @@ namespace NFX.Wave.Handlers
               if (typeName.IsNullOrWhiteSpace()) return null;
               Type result = null;
               string key;
-              
+
               if (work.Portal==null)
                 key = typeName;
               else
                 key = PORTAL_PREFIX+work.Portal.Name+typeName;
 
-           
+
               //1 Lookup in cache
               if (m_Lookup.TryGetValue(key, out result)) return result;
-   
+
               //2 Lookup in locations
               result = lookupTargetInLocations(work, typeName);
               if (result!=null)
               {
                 var lookup = new TypeLookup(m_Lookup);//thread safe copy
-                
+
                 lookup[key] =  result;//other thread may have added already
                 m_Lookup = lookup;//atomic
                 return result;
               }
-                    
+
               return null;//404 error - type not found
             }
 
@@ -395,13 +395,13 @@ namespace NFX.Wave.Handlers
             private Type lookupTargetInLocations(WorkContext work, string typeName)
             {
               if (!isValidTypeNameKey(typeName)) return null;
-              
+
               string portal = null;
               if (work.Portal!=null)
                portal = work.Portal.Name;
 
               var clrTName = getCLRTypeName(typeName);
-              
+
               while(true)
               {
                   foreach(var loc in  m_TypeLocations.OrderedValues)
@@ -418,7 +418,7 @@ namespace NFX.Wave.Handlers
                       var asm = loc.Assembly;
                       if (asm==null)
                         asm = Assembly.LoadFrom(loc.AssemblyName);
-               
+
                       var namespaces = loc.Namespaces;
                       if (namespaces!=null && namespaces.Any())
                       {
@@ -433,7 +433,7 @@ namespace NFX.Wave.Handlers
                       }
                       else
                       {
-                          return asm.GetType(clrTName, false, true); 
+                          return asm.GetType(clrTName, false, true);
                       }
                   }
 
@@ -441,7 +441,7 @@ namespace NFX.Wave.Handlers
                   portal = null;
               }//while
 
-              
+
               return null;
             }
 
@@ -457,16 +457,16 @@ namespace NFX.Wave.Handlers
                 if (c > '9' && c < 'A') return false;
                 if (c > 'Z' && c < 'a' && c != '\\') return false;
                 if (c > 'z' && c < 'À') return false;
-              } 
+              }
 
               return true;
             }
-                       
+
             private string getCLRTypeName(string key)
             {
               var cname = Path.GetFileNameWithoutExtension(key);
               var ns = Path.GetDirectoryName(key);
-          
+
               ns = ns.Replace('/','.').Replace('\\','.').Trim('.');
 
               var fullName =  string.IsNullOrWhiteSpace(ns)? cname :  ns + '.'+ cname;
@@ -474,7 +474,7 @@ namespace NFX.Wave.Handlers
               return fullName.Replace('-', '_');
             }
 
-           
+
 
        #endregion
     }

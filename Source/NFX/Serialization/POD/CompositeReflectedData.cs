@@ -31,11 +31,11 @@ namespace NFX.Serialization.POD
     public sealed class CompositeReflectedData : CompositeData
     {
         #region .ctor
-           
+
             internal CompositeReflectedData(PortableObjectDocument document, object data, int metaTypeIndex = -1)
                       : base(document, data, metaTypeIndex)
             {
-                if (!ExistingReference)    
+                if (!ExistingReference)
                     serializeFields(data);
             }
 
@@ -47,7 +47,7 @@ namespace NFX.Serialization.POD
 
 
         #region Properties
-            /// <summary>                                                             
+            /// <summary>
             /// Returns field data that this instance contains, or null if this instance is a reference to another object
             /// </summary>
             public object[] FieldData { get { return m_FieldData;} }
@@ -67,7 +67,7 @@ namespace NFX.Serialization.POD
                     foreach(var fld in mtp)
                     {
                         var fdata = fld.m_FieldInfo.GetValue(compositeData);
-                        
+
                         result[i] = m_Document.NativeDataToPortableData( fdata );
                         i++;
                     }

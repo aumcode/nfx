@@ -35,9 +35,9 @@ namespace NFX.Instrumentation
 
         }
        #endregion
-      
-      
-        
+
+
+
         public override void Write(Datum aggregatedDatum)
         {
         }

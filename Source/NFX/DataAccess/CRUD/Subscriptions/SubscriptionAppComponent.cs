@@ -26,8 +26,8 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     /// Returns named parameters that can be used to control this component
     /// </summary>
     public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-    { 
-      return ExternalParameterAttribute.GetParameters(this, groups); 
+    {
+      return ExternalParameterAttribute.GetParameters(this, groups);
     }
 
           /// <summary>
@@ -37,7 +37,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
           {
               return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
           }
-          
+
           /// <summary>
           /// Sets external parameter value returning true if parameter was found and set
           /// </summary>

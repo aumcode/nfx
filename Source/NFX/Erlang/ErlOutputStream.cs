@@ -562,7 +562,7 @@ namespace NFX.Erlang
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="offset"></param>
     /// <returns></returns>
@@ -585,14 +585,14 @@ namespace NFX.Erlang
     /// <see cref="Position"/>, when is is necessary to insert data into
     /// the stream before it is known what the actual value should be.
     /// For example:
-    /// 
+    ///
     /// <pre>
     /// int pos = s.Position;
     /// s.Write4BE(0); // make space for length data,
     /// // but final value is not yet known
-    /// 
+    ///
     /// [ ...more write statements...]
-    /// 
+    ///
     /// // later... when we know the length value
     /// s.Poke4BE(pos, length);
     /// </pre>

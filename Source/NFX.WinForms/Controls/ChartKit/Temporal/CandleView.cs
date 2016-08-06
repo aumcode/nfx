@@ -54,8 +54,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       }
 
   }
-  
-  
+
+
   /// <summary>
   /// View of candles
   /// </summary>
@@ -71,7 +71,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
               protected internal CandleElement(PlotPane host, CandleSample candle, int x, float minScale, float maxScale, bool bw) : base(host)
               {
                 Candle = candle;
-         
+
               //   m_Style = new Style(null, getBaseStyle());
                 m_ScaleMin = minScale;
                 m_ScaleMax = maxScale;
@@ -97,14 +97,14 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
               private Rectangle m_Lay_Body;
               private bool m_Lay_Inc;
               private bool m_BW;
-    
+
 
 
                  private void computeCoords()
                  {
                    var pxTotalHeight = (int)(m_Host.Height / m_Host.Zoom);
                    var pxPrice = (float)pxTotalHeight / (m_ScaleMax - m_ScaleMin);
-         
+
                    m_Lay_HighTickY = pxTotalHeight - (int)( (Candle.HighPrice - m_ScaleMin) * pxPrice );
                    m_Lay_LowTickY = pxTotalHeight - (int)( (Candle.LowPrice - m_ScaleMin) * pxPrice );
 
@@ -128,25 +128,25 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                  }
 
                  protected internal override void Paint(Graphics gr)
-                 {           
+                 {
                    //for now, no styles
-                     using(var pen = getContourPen(new LineStyle{ Color = Color.Black, 
-                                                                  Width = 1, 
+                     using(var pen = getContourPen(new LineStyle{ Color = Color.Black,
+                                                                  Width = 1,
                                                                   DashStyle = System.Drawing.Drawing2D.DashStyle.Solid}))
                      {
-                  //     gr.DrawLine(pen, m_Lay_X+1, m_Lay_HighTickY, m_Lay_X+m_Lay_W-2, m_Lay_HighTickY); //High tick             
-                  //     gr.DrawLine(pen, m_Lay_X+1, m_Lay_LowTickY, m_Lay_X+m_Lay_W-2, m_Lay_LowTickY); //Low tick             
+                  //     gr.DrawLine(pen, m_Lay_X+1, m_Lay_HighTickY, m_Lay_X+m_Lay_W-2, m_Lay_HighTickY); //High tick
+                  //     gr.DrawLine(pen, m_Lay_X+1, m_Lay_LowTickY, m_Lay_X+m_Lay_W-2, m_Lay_LowTickY); //Low tick
 
                        var x = m_Lay_X + (m_Lay_W/2);
                        gr.DrawLine(pen,x, m_Lay_LowTickY, x, m_Lay_HighTickY); //Vertical
 
 
-             
+
                     // using(var brush = getBrush(m_Style))//body
                      {
                        var brush = m_BW ? Brushes.Silver : ( m_Lay_Inc ? Brushes.LimeGreen : Brushes.Red );
                        gr.FillRectangle(brush, m_Lay_Body);
-                     } 
+                     }
 
                        gr.DrawRectangle(pen, m_Lay_Body);
                      }
@@ -162,7 +162,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
             }
         #endregion
 
-    
+
       public CandleView(string name, int order, string paneName = null) : base(name, order, paneName)
       {
       }
@@ -177,8 +177,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         var elm = new CandleElement(pane, sample, x, minScale, maxScale, BlackWhite);
 
         if (ShowBalloons)
-          elm.MouseClick += elm_MouseClick;  
-        
+          elm.MouseClick += elm_MouseClick;
+
         return elm;
       }
 
@@ -192,11 +192,11 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       //  return base.MakeSeriesElement(chart, pane, data, xStart, minScale, maxScale, maxSampleWidth, out fitSamplesCount);
       //}
 
-      
+
       private Balloon m_Balloon;
 
-      
-      
+
+
       void elm_MouseClick(object sender, EventArgs e)
       {
         if (m_Balloon!=null)
@@ -213,13 +213,13 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         target = elm.Host.PointToScreen(target);
 
         var c = elm.Candle;
-        
-        var body = new Rectangle(target.X-100, target.Y-128, 200, 100); 
+
+        var body = new Rectangle(target.X-100, target.Y-128, 200, 100);
 
         m_Balloon = new Balloon(body, target, Color.FromArgb(200, 255, 255, 50));
 
         m_Balloon.Deactivate += (s, _)=> { DisposableObject.DisposeAndNull(ref m_Balloon); };
-                
+
         m_Balloon.Text =
 @"{0} {1} sec
  Open: {2}
@@ -229,13 +229,13 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
  Buy: {6}
  Sell: {7}
 ".Args(c.TimeStamp, c.TimeSpanMs / 1000, c.OpenPrice, c.ClosePrice, c.LowPrice, c.HighPrice, c.BuyVolume, c.SellVolume);
-        
+
         m_Balloon.DisposeOnFadeOut = true;
-        m_Balloon.FadeIn(); 
+        m_Balloon.FadeIn();
       }
 
-      
+
   }
 
-  
+
 }

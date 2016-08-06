@@ -32,7 +32,7 @@ namespace NFX.IO.FileSystem
     /// Provides a base for various file system abstractions.
     /// FileSystem abstractions are mostly useful for working with components/classes that may need to inter-operate not only with local file system
     ///  but also with distributed systems like ApacheHDFS, SVN, GIT, or Aum Cluster Big-Transactional File System (BoltFS).
-    ///  NFX library provides compatibility wrapper 'NFX.IO.FileSystem.Local.LocalFileSystem' for access to local machine file system  
+    ///  NFX library provides compatibility wrapper 'NFX.IO.FileSystem.Local.LocalFileSystem' for access to local machine file system
     ///  (which is based on this class and is implemented using a traditional System.IO.* set of classes).
     /// The FileSystem abstraction supports the following concepts: versioning, transactions, metadata, security; however it does not guarantee that
     ///  every implementation is capable of providing all of these functions. Query "GeneralCapabilities" and "InstanceCapabilities" to see what functions
@@ -50,7 +50,7 @@ namespace NFX.IO.FileSystem
 
         public const string CONFIG_NAME_ATTR = "name";
         public const string CONFIG_DEFAULT_SESSION_CONNECT_PARAMS_SECTION = "default-session-connect-params";
-      
+
       #endregion
 
       #region static
@@ -92,7 +92,7 @@ namespace NFX.IO.FileSystem
           var node = Configuration.ProviderLoadFromString(cfgStr, format).Root;
           return Make<TParam>(node);
         }
-        
+
       #endregion
 
       #region .ctor
@@ -111,19 +111,19 @@ namespace NFX.IO.FileSystem
             //delete from tail not to re-alloc list
             while(m_Sessions.Count>0)
               m_Sessions[m_Sessions.Count-1].Dispose();
-            
+
             base.Destructor();
           }
-      
-        #endregion   
-        
+
+        #endregion
+
         #region Fields
-          
-          protected readonly string m_Name;        
+
+          protected readonly string m_Name;
           protected internal readonly List<FileSystemSession> m_Sessions;
 
           private FileSystemSessionConnectParams m_DefaultSessionConnectParams = new FileSystemSessionConnectParams();
-        
+
         #endregion
 
         #region Properties
@@ -139,8 +139,8 @@ namespace NFX.IO.FileSystem
           /// </summary>
           public IEnumerable<FileSystemSession> Sessions
           {
-             get{ lock(m_Sessions) return new List<FileSystemSession>(m_Sessions);} 
-          } 
+             get{ lock(m_Sessions) return new List<FileSystemSession>(m_Sessions);}
+          }
 
           /// <summary>
           /// Returns capabilities for this file system in general
@@ -152,7 +152,7 @@ namespace NFX.IO.FileSystem
           /// </summary>
           public abstract IFileSystemCapabilities InstanceCapabilities { get;}
 
-       
+
         #endregion
 
         #region Public Methods
@@ -184,9 +184,9 @@ namespace NFX.IO.FileSystem
                 if (other==null) continue;
 
                 other = other.TrimStart();
-                
+
                 if (other.Length==0) continue;
-                
+
                 if (result.Length>0)
                   foreach(var ps in GeneralCapabilities.PathSeparatorCharacters)
                     if (result.EndsWith( ps.ToString()))
@@ -205,7 +205,7 @@ namespace NFX.IO.FileSystem
                 result += GeneralCapabilities.PathSeparatorCharacters[0];
                 result += other;
                 result = result.TrimEnd();
-            } 
+            }
 
             return result;
           }
@@ -219,8 +219,8 @@ namespace NFX.IO.FileSystem
 
         #region Protected Methods
 
-          protected FileSystemSessionConnectParams DefaultSessionConnectParams 
-          { 
+          protected FileSystemSessionConnectParams DefaultSessionConnectParams
+          {
             get { return m_DefaultSessionConnectParams;}
           }
 
@@ -244,7 +244,7 @@ namespace NFX.IO.FileSystem
           }
 
           /// <summary>
-          /// Override in particular file systems to see if item can change, i.e. 
+          /// Override in particular file systems to see if item can change, i.e.
           ///  for file systems that support versioning throw exception if item is in session
           ///   which "looks" at a sealed/closed version and can not change. This method may be called by miltiple threads
           /// </summary>
@@ -254,7 +254,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoCheckCanChange(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoCheckCanChange(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoCheckCanChange(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoCheckCanChange(FileSystemSessionItem)"/>
                   /// </summary>
                   protected internal virtual Task DoCheckCanChangeAsync(FileSystemSessionItem item)
@@ -273,7 +273,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetLatestVersion(FileSystemSession)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetLatestVersion(FileSystemSession)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetLatestVersion(FileSystemSession)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetLatestVersion(FileSystemSession)"/>
                   /// </summary>
                   protected internal virtual Task<IFileSystemVersion> DoGetLatestVersionAsync (FileSystemSession session)
@@ -293,7 +293,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetVersion(FileSystemSession)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetVersion(FileSystemSession)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetVersion(FileSystemSession)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetVersion(FileSystemSession)"/>
                   /// </summary>
                   protected internal virtual Task<IFileSystemVersion> DoGetVersionAsync (FileSystemSession session)
@@ -309,7 +309,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoSetVersion (FileSystemSession, IFileSystemVersion)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoSetVersion (FileSystemSession, IFileSystemVersion)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoSetVersion (FileSystemSession, IFileSystemVersion)"/> and
                   /// returns already completed Task with result returned by <see cref="DoSetVersion (FileSystemSession, IFileSystemVersion)"/>
                   /// </summary>
                   protected internal virtual Task DoSetVersionAsync (FileSystemSession session, IFileSystemVersion version)
@@ -330,11 +330,11 @@ namespace NFX.IO.FileSystem
             return null;
           }
 
-                        
+
 
                   /// <summary>
                   /// Async version of <see cref="DoBeginTransaction(FileSystemSession)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoBeginTransaction(FileSystemSession)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoBeginTransaction(FileSystemSession)"/> and
                   /// returns already completed Task with result returned by <see cref="DoBeginTransaction(FileSystemSession)"/>
                   /// </summary>
                   protected internal virtual Task<IFileSystemTransactionHandle> DoBeginTransactionAsync(FileSystemSession session)
@@ -350,7 +350,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoCommitTransaction(FileSystemSession)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoCommitTransaction(FileSystemSession)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoCommitTransaction(FileSystemSession)"/> and
                   /// returns already completed Task with result returned by <see cref="DoCommitTransaction(FileSystemSession)"/>
                   /// </summary>
                   protected internal virtual Task  DoCommitTransactionAsync(FileSystemSession session)
@@ -367,7 +367,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoRollbackTransaction(FileSystemSession)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoRollbackTransaction(FileSystemSession)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoRollbackTransaction(FileSystemSession)"/> and
                   /// returns already completed Task with result returned by <see cref="DoRollbackTransaction(FileSystemSession)"/>
                   /// </summary>
                   protected internal virtual Task DoRollbackTransactionAsync(FileSystemSession session)
@@ -375,7 +375,7 @@ namespace NFX.IO.FileSystem
                     return TaskUtils.AsCompletedTask( () => DoRollbackTransaction(session) );
                   }
 
-          
+
           /// <summary>
           /// Override to refresh item state, i.e. re-fetch remote information.
           /// This method may be called by miltiple threads
@@ -384,10 +384,10 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoRefreshAsync(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoRefreshAsync(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoRefreshAsync(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoRefreshAsync(FileSystemSessionItem)"/>
                   /// </summary>
-                  protected internal virtual Task DoRefreshAsync(FileSystemSessionItem item) 
+                  protected internal virtual Task DoRefreshAsync(FileSystemSessionItem item)
                   {
                     return TaskUtils.AsCompletedTask( () => DoRefresh(item) );
                   }
@@ -401,7 +401,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetSubDirectoryNames(FileSystemDirectory, bool)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetSubDirectoryNames(FileSystemDirectory, bool)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetSubDirectoryNames(FileSystemDirectory, bool)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetSubDirectoryNames(FileSystemDirectory, bool)"/>
                   /// </summary>
                   protected internal virtual Task<IEnumerable<string>> DoGetSubDirectoryNamesAsync(FileSystemDirectory directory, bool recursive)
@@ -417,7 +417,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetFileNames(FileSystemDirectory, bool)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetFileNames(FileSystemDirectory, bool)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetFileNames(FileSystemDirectory, bool)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetFileNames(FileSystemDirectory, bool)"/>
                   /// </summary>
                   protected internal virtual Task<IEnumerable<string>> DoGetFileNamesAsync(FileSystemDirectory directory, bool recursive)
@@ -434,7 +434,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoNavigate(FileSystemSession, string)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoNavigate(FileSystemSession, string)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoNavigate(FileSystemSession, string)"/> and
                   /// returns already completed Task with result returned by <see cref="DoNavigate(FileSystemSession, string)"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemSessionItem> DoNavigateAsync(FileSystemSession session, string path)
@@ -450,7 +450,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoRenameItem(FileSystemSessionItem, string)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoRenameItem(FileSystemSessionItem, string)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoRenameItem(FileSystemSessionItem, string)"/> and
                   /// returns already completed Task with result returned by <see cref="DoRenameItem(FileSystemSessionItem, string)"/>
                   /// </summary>
                   protected internal virtual Task<bool> DoRenameItemAsync(FileSystemSessionItem item, string newName)
@@ -466,7 +466,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoDeleteItem(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoDeleteItem(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoDeleteItem(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoDeleteItem(FileSystemSessionItem)"/>
                   /// </summary>
                   protected internal virtual Task DoDeleteItemAsync(FileSystemSessionItem item)
@@ -483,7 +483,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoCreateFile(FileSystemDirectory, string, int)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoCreateFile(FileSystemDirectory, string, int)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoCreateFile(FileSystemDirectory, string, int)"/> and
                   /// returns already completed Task with result returned by <see cref="DoCreateFile(FileSystemDirectory, string, int)"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemFile> DoCreateFileAsync(FileSystemDirectory dir, string name, int size)
@@ -499,7 +499,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoCreateFile(FileSystemDirectory, string, string, bool)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoCreateFile(FileSystemDirectory, string, string, bool)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoCreateFile(FileSystemDirectory, string, string, bool)"/> and
                   /// returns already completed Task with result returned by <see cref="DoCreateFile(FileSystemDirectory, string, string, bool)"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemFile> DoCreateFileAsync(FileSystemDirectory dir, string name, string localFile, bool readOnly)
@@ -515,7 +515,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoCreateDirectory(FileSystemDirectory, string)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoCreateDirectory(FileSystemDirectory, string)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoCreateDirectory(FileSystemDirectory, string)"/> and
                   /// returns already completed Task with result returned by <see cref="DoCreateDirectory(FileSystemDirectory, string)"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemDirectory> DoCreateDirectoryAsync(FileSystemDirectory dir, string name)
@@ -529,10 +529,10 @@ namespace NFX.IO.FileSystem
           /// The specifics of implementation may be dictated by particular file systems, i.e.: asynchronous strategies for getting file
           /// lists may depend on the particular system.
           /// </summary>
-          protected internal virtual Task DoDirectoryDeepCopyAsync(FileSystemDirectory dirFrom, 
+          protected internal virtual Task DoDirectoryDeepCopyAsync(FileSystemDirectory dirFrom,
                                                                    FileSystemDirectory dirTo,
-                                                                   FileSystemDirectory.DirCopyFlags flags = FileSystemDirectory.DirCopyFlags.All, 
-                                                                   int bufferSize = 64 * 1024, 
+                                                                   FileSystemDirectory.DirCopyFlags flags = FileSystemDirectory.DirCopyFlags.All,
+                                                                   int bufferSize = 64 * 1024,
                                                                    Func<FileSystemSessionItem, bool> filter = null,
                                                                    Func<FileSystemSessionItem, bool> cancel = null)
           {
@@ -548,7 +548,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetItemSize(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetItemSize(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetItemSize(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetItemSize(FileSystemSessionItem)"/>
                   /// </summary>
                   protected internal virtual Task<ulong> DoGetItemSizeAsync(FileSystemSessionItem item)
@@ -565,7 +565,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetPermissionsStream(FileSystemSessionItem, Action{FileSystemStream})"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetPermissionsStream(FileSystemSessionItem, Action{FileSystemStream})"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetPermissionsStream(FileSystemSessionItem, Action{FileSystemStream})"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetPermissionsStream(FileSystemSessionItem, Action{FileSystemStream})"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemStream> DoGetPermissionsStreamAsync(FileSystemSessionItem item, Action<FileSystemStream> disposeAction)
@@ -581,7 +581,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetMetadataStream(FileSystemSessionItem, Action{FileSystemStream})"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetMetadataStream(FileSystemSessionItem, Action{FileSystemStream})"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetMetadataStream(FileSystemSessionItem, Action{FileSystemStream})"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetMetadataStream(FileSystemSessionItem, Action{FileSystemStream})"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemStream> DoGetMetadataStreamAsync(FileSystemSessionItem item, Action<FileSystemStream> disposeAction)
@@ -597,7 +597,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetFileStream(FileSystemFile, Action{FileSystemStream})"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetFileStream(FileSystemFile, Action{FileSystemStream})"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetFileStream(FileSystemFile, Action{FileSystemStream})"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetFileStream(FileSystemFile, Action{FileSystemStream})"/>
                   /// </summary>
                   protected internal virtual Task<FileSystemStream> DoGetFileStreamAsync(FileSystemFile file, Action<FileSystemStream> disposeAction)
@@ -631,7 +631,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoSetCreationTimestamp(FileSystemSessionItem, DateTime)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoSetCreationTimestamp(FileSystemSessionItem, DateTime)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoSetCreationTimestamp(FileSystemSessionItem, DateTime)"/> and
                   /// returns already completed Task with result returned by <see cref="DoSetCreationTimestamp(FileSystemSessionItem, DateTime)"/>
                   /// </summary>
                   protected internal virtual Task DoSetCreationTimestampAsync(FileSystemSessionItem item, DateTime timestamp)
@@ -647,7 +647,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoSetModificationTimestamp(FileSystemSessionItem, DateTime)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoSetModificationTimestamp(FileSystemSessionItem, DateTime)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoSetModificationTimestamp(FileSystemSessionItem, DateTime)"/> and
                   /// returns already completed Task with result returned by <see cref="DoSetModificationTimestamp(FileSystemSessionItem, DateTime)"/>
                   /// </summary>
                   protected internal virtual Task DoSetModificationTimestampAsync(FileSystemSessionItem item, DateTime timestamp)
@@ -663,7 +663,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoSetLastAccessTimestamp(FileSystemSessionItem, DateTime)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoSetLastAccessTimestamp(FileSystemSessionItem, DateTime)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoSetLastAccessTimestamp(FileSystemSessionItem, DateTime)"/> and
                   /// returns already completed Task with result returned by <see cref="DoSetLastAccessTimestamp(FileSystemSessionItem, DateTime)"/>
                   /// </summary>
                   protected internal virtual Task DoSetLastAccessTimestampAsync(FileSystemSessionItem item, DateTime timestamp)
@@ -685,7 +685,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoSetReadOnly(FileSystemSessionItem, bool)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoSetReadOnly(FileSystemSessionItem, bool)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoSetReadOnly(FileSystemSessionItem, bool)"/> and
                   /// returns already completed Task with result returned by <see cref="DoSetReadOnly(FileSystemSessionItem, bool)"/>
                   /// </summary>
                   protected internal virtual Task DoSetReadOnlyAsync(FileSystemSessionItem item, bool readOnly)
@@ -705,7 +705,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetCreationUser(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetCreationUser(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetCreationUser(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetCreationUser(FileSystemSessionItem)"/>
                   /// </summary>
                   protected internal virtual Task<User> DoGetCreationUserAsync(FileSystemSessionItem item)
@@ -724,7 +724,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetModificationUser(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetModificationUser(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetModificationUser(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetModificationUser(FileSystemSessionItem)"/>
                   /// </summary>
                   protected internal virtual Task<User> DoGetModificationUserAsync(FileSystemSessionItem item)
@@ -743,7 +743,7 @@ namespace NFX.IO.FileSystem
 
                   /// <summary>
                   /// Async version of <see cref="DoGetLastAccessUser(FileSystemSessionItem)"/>.
-                  /// This base/default implementation just synchronously calls <see cref="DoGetLastAccessUser(FileSystemSessionItem)"/> and 
+                  /// This base/default implementation just synchronously calls <see cref="DoGetLastAccessUser(FileSystemSessionItem)"/> and
                   /// returns already completed Task with result returned by <see cref="DoGetLastAccessUser(FileSystemSessionItem)"/>
                   /// </summary>
                   protected internal virtual Task<User> DoGetLastAccessUserAsync(FileSystemSessionItem item)
@@ -770,7 +770,7 @@ namespace NFX.IO.FileSystem
 
         #endregion
 
-         
+
     }
 
 

@@ -47,8 +47,8 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
           string.Join("&", parameters.Select(p => string.Format("{0}={1}", Uri.EscapeDataString(p.Key), Uri.EscapeDataString(p.Value)))));
       }
 
-      string endpointURL = string.Format("https://{0}s3{1}.amazonaws.com/{2}{3}", bucketURLPart, regionURLPart, 
-        itemRelativePath != null ? itemRelativePath.TrimStart('/') : null, 
+      string endpointURL = string.Format("https://{0}s3{1}.amazonaws.com/{2}{3}", bucketURLPart, regionURLPart,
+        itemRelativePath != null ? itemRelativePath.TrimStart('/') : null,
         queryParametersStr);
 
       return endpointURL;

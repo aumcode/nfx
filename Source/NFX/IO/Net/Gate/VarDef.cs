@@ -23,7 +23,7 @@ using NFX.Environment;
 
 namespace NFX.IO.Net.Gate
 {
-    
+
     /// <summary>
     /// Provides variable definition - the name and parameters how fast a variable decays - loses its value towards 0 when it gets deleted
     /// </summary>
@@ -40,24 +40,24 @@ namespace NFX.IO.Net.Gate
             m_Name = name;
          }
 
-         public VarDef(IConfigSectionNode node) 
+         public VarDef(IConfigSectionNode node)
                   : this(node.NonNull(text: "VarDef.ctor(node==null)").AttrByName(Configuration.CONFIG_NAME_ATTR).Value)
          {
-           ConfigAttribute.Apply(this, node); 
+           ConfigAttribute.Apply(this, node);
          }
 
 
-      
+
          [Config]
          private string m_Name;
          private int m_DecayBy     = DEFAULT_DECAY_BY;
          private int m_IntervalSec = DEFAULT_INTERVAL_SEC;
-      
-      
+
+
          public string Name { get{ return m_Name;}}
-         
+
          [Config]
-         public int DecayBy 
+         public int DecayBy
          {
            get{ return m_DecayBy;}
            set
@@ -66,7 +66,7 @@ namespace NFX.IO.Net.Gate
               m_DecayBy = value<1 ? 1 : value;
            }
          }
-         
+
          [Config(Default=DEFAULT_INTERVAL_SEC)]
          public int IntervalSec
          {
@@ -74,7 +74,7 @@ namespace NFX.IO.Net.Gate
             set
             {
               m_IntervalSec = value<1 ? 1 : value;
-            } 
+            }
          }
     }
 }

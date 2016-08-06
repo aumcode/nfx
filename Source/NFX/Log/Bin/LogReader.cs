@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace NFX.Log.Bin
 {
   /// <summary>
-  /// Provides abstraction for binary object log readers. Use Open(stream method) to obtain the 
+  /// Provides abstraction for binary object log readers. Use Open(stream method) to obtain the
   /// instance of the reader type appropriate for particular content.
   /// This class is NOT thread safe
   /// </summary>
@@ -17,7 +17,7 @@ namespace NFX.Log.Bin
     #region CONSTS
 
     #endregion
-    
+
     #region .ctor
       /// <summary>
       /// Opens the appropriate reader type from the stream
@@ -80,7 +80,7 @@ namespace NFX.Log.Bin
         m_Stream.Seek(m_DataStart, SeekOrigin.Begin);
         return read(includeMetadata);
       }
-     
+
       /// <summary>
       /// Returns the lazy enumerable that fetches data from the point in time, optionally including time stamps
       /// </summary>
@@ -113,7 +113,7 @@ namespace NFX.Log.Bin
                 var pos = Stream.Position;
                 var newPos = IntMath.Align16( pos );
                 var delta = newPos - pos;
-                
+
                 var eof = true;
                 try
                 {
@@ -159,7 +159,7 @@ namespace NFX.Log.Bin
       {
         if (stream==null)
           throw new BinLogException(StringConsts.BINLOG_STREAM_NULL_ERROR + op);
-       
+
         if (!stream.CanSeek || !stream.CanWrite)
           throw new BinLogException(StringConsts.BINLOG_STREAM_CANT_SEEK_WRITE_ERROR + op);
       }

@@ -91,7 +91,7 @@ namespace NFX.Collections
         for (int y = 0; y < Height; y++)
           for (int x = 0; x < Width; x++)
             yield return this[x, y];
-      } 
+      }
 
     #endregion
 

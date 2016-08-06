@@ -21,10 +21,10 @@ namespace NFX.Web.Pay.PayPal
 
         public PayPalOAuthToken AuthorizationToken
         {
-            get 
-            { 
+            get
+            {
                 if (m_User == null || m_User == User.Fake) return null;
-                return m_User.AuthToken.Data as PayPalOAuthToken; 
+                return m_User.AuthToken.Data as PayPalOAuthToken;
             }
         }
     }

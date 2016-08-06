@@ -77,12 +77,12 @@ namespace NFX.Wave.Filters
       /// Returns matches used by the handler to determine whether match should be made before the work processing
       /// </summary>
       public OrderedRegistry<WorkMatch> AfterMatches { get{ return m_AfterMatches;}}
-      
+
     #endregion
 
     #region Protected
       protected sealed override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
          if (m_BeforeMatches.Count>0)
           foreach(var match in m_BeforeMatches.OrderedValues)
           {
@@ -109,12 +109,12 @@ namespace NFX.Wave.Filters
       }
 
       /// <summary>
-      /// Override to do the work when one of the BeforeMatches was matched 
+      /// Override to do the work when one of the BeforeMatches was matched
       /// </summary>
       protected abstract void DoBeforeWork(WorkContext work, JSONDataMap matched);
 
       /// <summary>
-      /// Override to do the work when one of the AfterMatches was matched 
+      /// Override to do the work when one of the AfterMatches was matched
       /// </summary>
       protected abstract void DoAfterWork(WorkContext work, JSONDataMap matched);
 
@@ -126,14 +126,14 @@ namespace NFX.Wave.Filters
       {
         foreach(var cn in confNode[CONFIG_BEFORE_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_BeforeMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.BeforeMatches".Args(GetType().FullName))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.BeforeMatches".Args(GetType().FullName)));
 
         foreach(var cn in confNode[CONFIG_AFTER_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_AfterMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.AfterMatches".Args(GetType().FullName))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.AfterMatches".Args(GetType().FullName)));
       }
 
-    #endregion   
+    #endregion
   }
 
 }

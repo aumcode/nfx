@@ -25,7 +25,7 @@ using System.Diagnostics;
 namespace NFX.Instrumentation.Analytics
 {
     /// <summary>
-    /// References a function that maps input value into a partition index 
+    /// References a function that maps input value into a partition index
     /// in the context of a given Partitioner
     /// </summary>
     public delegate int PartitionFunc<TData>(Dimension<TData> sender, TData value);
@@ -43,7 +43,7 @@ namespace NFX.Instrumentation.Analytics
     public abstract class Dimension
     {
         #region Consts
-            
+
             public static readonly string[] DEFAULT_PARTITION_NAMES = { "low", "medium", "high" };
 
         #endregion
@@ -69,7 +69,7 @@ namespace NFX.Instrumentation.Analytics
         #region Public
 
             /// <summary>
-            /// Number of partitions in 
+            /// Number of partitions in
             /// </summary>
             public readonly int PartitionCount;
 
@@ -101,7 +101,7 @@ namespace NFX.Instrumentation.Analytics
         #region Protected/Internal
 
             internal void SetIndex(int idx) { m_Index = idx; }
-    
+
             /// <summary>
             /// Override to implement a custom mapping logic to return the names of a given
             /// partition when its not passed in the .ctor
@@ -115,7 +115,7 @@ namespace NFX.Instrumentation.Analytics
         #endregion
 
         #region Private
-            
+
             private PartitionNameFunc m_PartitionNameFunc;
             private int m_Index;
 

@@ -29,17 +29,17 @@ using System.Runtime.Serialization;
 namespace NFX.Security
 {
       /// <summary>
-      /// Provides base user functionality. Particular security manager implementations may return users derived from this class 
+      /// Provides base user functionality. Particular security manager implementations may return users derived from this class
       /// </summary>
       [Serializable]
       public class User : IIdentity, IPrincipal, IDeserializationCallback
       {
         #region Static
-          private static readonly User s_FakeUserInstance = new User(BlankCredentials.Instance, 
-                                              new AuthenticationToken(), 
+          private static readonly User s_FakeUserInstance = new User(BlankCredentials.Instance,
+                                              new AuthenticationToken(),
                                               UserStatus.Invalid,
-                                                "John Doe", 
-                                                "Fake user", 
+                                                "John Doe",
+                                                "Fake user",
                                                 NFX.Security.Rights.None);
 
           /// <summary>
@@ -47,14 +47,14 @@ namespace NFX.Security
           /// </summary>
           public static User Fake{ get{ return s_FakeUserInstance; } }
         #endregion
-    
-    
+
+
         #region .ctor
           private User() { } //for quicker serialization
-    
-          public User(Credentials credentials, 
+
+          public User(Credentials credentials,
                       AuthenticationToken token,
-                      UserStatus status, 
+                      UserStatus status,
                       string name,
                       string descr,
                       Rights rights)
@@ -67,17 +67,17 @@ namespace NFX.Security
               m_Rights = rights;
               m_StatusTimeStampUTC = App.TimeSource.UTCNow;
           }
-      
+
           public User(Credentials credentials,
-                      AuthenticationToken token, 
+                      AuthenticationToken token,
                       string name,
                       Rights rights) : this(credentials, token, UserStatus.User, name, null, rights)
           {
-          
+
           }
         #endregion
-  
-  
+
+
         #region Private Props/Members
 
           private DateTime m_StatusTimeStampUTC;
@@ -87,17 +87,17 @@ namespace NFX.Security
 
           private UserStatus m_Status;
           private string m_Name;
-          
+
           private string m_Description;
-          
+
           [NonSerialized]//Important, rights are NOT serializable
           private Rights m_Rights;
-          
+
         #endregion
-  
-  
+
+
         #region Properties
-            
+
           /// <summary>
           /// Captures timestamp when this user was set to current status (created/set rights)
           /// Security managers may elect to reftech user rights after some period
@@ -106,7 +106,7 @@ namespace NFX.Security
           {
             get{ return m_StatusTimeStampUTC;}
           }
-            
+
           public Credentials Credentials
           {
             get { return m_Credentials ?? BlankCredentials.Instance; }
@@ -136,7 +136,7 @@ namespace NFX.Security
           /// <summary>
           /// Returns data bag that contains user rights. This is a framework-only internal property
           ///  which should not be used by application developers. This bag may get populated fully-or-partially
-          ///   by ISecurityManager implementation. Use User[permission] indexer or Application.SecurityManager.Authorize() 
+          ///   by ISecurityManager implementation. Use User[permission] indexer or Application.SecurityManager.Authorize()
           ///    to obtain AccessLevel
           /// </summary>
           public Rights Rights
@@ -157,7 +157,7 @@ namespace NFX.Security
         #endregion
 
         #region Pub
-            
+
           /// <summary>
           /// Makes user invalid
           /// </summary>
@@ -170,7 +170,7 @@ namespace NFX.Security
           /// Framework-internal. Do not call
           /// </summary>
           public void ___update_status(
-                        UserStatus status, 
+                        UserStatus status,
                         string name,
                         string descr,
                         Rights rights)
@@ -221,7 +221,7 @@ namespace NFX.Security
         {
           get { return this; }
         }
-    
+
         /// <summary>
         /// Determines whether the current principal belongs to the specified role.
         /// This method implements IPrincipal and has little application in NFX framework context

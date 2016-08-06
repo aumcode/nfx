@@ -18,10 +18,10 @@ namespace NFX.Wave.MVC
       Force = true;
     }
 
-    public NoCacheAttribute(bool force, int order) : base(order) 
+    public NoCacheAttribute(bool force, int order) : base(order)
     {
       Force = force;
-    } 
+    }
 
     public bool Force{ get; private set; }
 
@@ -36,5 +36,11 @@ namespace NFX.Wave.MVC
       work.Response.SetNoCacheHeaders(Force);
       return false;
     }
+
+    protected internal override void ActionInvocationFinally(Controller controller, WorkContext work, string action, MethodInfo method, object[] args, ref object result)
+    {
+
+    }
+
   }
 }

@@ -88,7 +88,7 @@ namespace NFX.Templatization
 
 
   /// <summary>
-  /// Indicates template source parsing exception 
+  /// Indicates template source parsing exception
   /// </summary>
   [Serializable]
   public class TemplateParseException : TemplateCompilerException
@@ -131,8 +131,8 @@ namespace NFX.Templatization
 
     public override string ToString()
     {
-        return string.Format("#{0} {1} Warn: {2} Line: {3} Column: {4} File: \"{5}\"", 
-                             Error.ErrorNumber,                                   
+        return string.Format("#{0} {1} Warn: {2} Line: {3} Column: {4} File: \"{5}\"",
+                             Error.ErrorNumber,
                              Error.ErrorText,
                              Error.IsWarning,
                              Error.Line,

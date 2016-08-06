@@ -23,7 +23,7 @@ using System.IO;
 
 namespace NFX.Serialization
 {
-   
+
     /// <summary>
     /// Denotes ser/deser operations
     /// </summary>
@@ -39,8 +39,8 @@ namespace NFX.Serialization
       /// </summary>
       Deserializing
     };
-   
-   
+
+
     /// <summary>
     /// Describes an entity that can serialize and deserialize objects
     /// </summary>
@@ -65,6 +65,6 @@ namespace NFX.Serialization
     }
 
 
-    
+
 
 }

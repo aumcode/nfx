@@ -37,7 +37,7 @@ namespace NFX.Wave.Handlers
      public const string VAR_FILE_PATH  = "filePath";
      public const string VAR_ATTACHMENT = "attachment";
      public const string VAR_CHUNKED    = "chunked";
-     
+
      public const string INVALID_ROOT   = @"Invalid-Root-Path:\";
 
      protected FileDownloadHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match) : base(dispatcher, name, order, match)
@@ -49,23 +49,26 @@ namespace NFX.Wave.Handlers
      {
         ConfigAttribute.Apply(this, confNode);
      }
-    
+
      [Config]
      private string m_RootPath;
-     
+
      [Config(Default=true)]
      private bool m_Throw = true;
-     
+
      [Config]
      private int m_CacheMaxAgeSec;
 
      [Config]
      private bool m_UsePortalHub;
 
+     [Config]
+     private string m_VersionSegmentPrefix;
+
      /// <summary>
      /// Specifies local root path
      /// </summary>
-     public string RootPath 
+     public string RootPath
      {
         get {return m_RootPath.IsNullOrWhiteSpace() ? INVALID_ROOT : m_RootPath;}
         set {m_RootPath = value;}
@@ -74,7 +77,7 @@ namespace NFX.Wave.Handlers
      /// <summary>
      /// Specifies whether the handler generates simple 404 text or throws
      /// </summary>
-     public bool Throw 
+     public bool Throw
      {
         get {return m_Throw;}
         set {m_Throw = value;}
@@ -83,7 +86,7 @@ namespace NFX.Wave.Handlers
      /// <summary>
      /// Specifies the maximum age in cache in seconds. Zero means - do not cache the file
      /// </summary>
-     public int CacheMaxAgeSec 
+     public int CacheMaxAgeSec
      {
         get {return m_CacheMaxAgeSec;}
         set {m_CacheMaxAgeSec = value<0 ? 0 : value;}
@@ -98,17 +101,62 @@ namespace NFX.Wave.Handlers
        set { m_UsePortalHub = value;}
      }
 
-    
+     /// <summary>
+     /// When set indicates the case-insensitive prefix of a path segment that should be ignored by the file system.
+     /// Version prefixes are used for attaching a surrogate path "folder" that makes resource differ based on their content.
+     /// For example when prefix is "@",  path '/static/img/@767868768768/picture.png' resolves to actual '/static/img/picture.png'
+     /// </summary>
+     public string VersionSegmentPrefix
+     {
+       get { return m_VersionSegmentPrefix;}
+       set { m_VersionSegmentPrefix = value;}
+     }
+
+
+
+     //Cut the surrogate out of path, i.e. '/static/img/@@767868768768/picture.png' -> '/static/img/picture.png'
+     internal static string CutVersionSegment(string path, string pfxVer)
+     {
+       if (path.IsNotNullOrWhiteSpace() && pfxVer.IsNotNullOrWhiteSpace())
+       {
+         var i = -1;
+         var eatTail = 0;
+         if (path.Trim().IndexOf(pfxVer, StringComparison.OrdinalIgnoreCase)==0)
+         {
+          i=0;
+          eatTail = 1;
+         }
+         else
+          i = path.IndexOf('/'+pfxVer, StringComparison.OrdinalIgnoreCase);
+
+         if (i<0) i = path.IndexOf('\\'+pfxVer, StringComparison.OrdinalIgnoreCase);
+
+         if (i>=0 && i<path.Length-2)
+         {
+           var j = path.IndexOf('/', i+1);
+           if (j<0) j = path.IndexOf('\\', i+1);
+           if (j>i && j<path.Length-1)
+           path = path.Substring(0, i) + path.Substring(j+eatTail);
+         }
+       }
+
+       return path;
+     }
+
+
      protected override void DoHandleWork(WorkContext work)
      {
          var fp         = work.MatchedVars[VAR_FILE_PATH].AsString("none");
-         var attachment = work.MatchedVars[VAR_ATTACHMENT].AsBool(true); 
-         var chunked    = work.MatchedVars[VAR_CHUNKED].AsBool(true); 
+         var attachment = work.MatchedVars[VAR_ATTACHMENT].AsBool(true);
+         var chunked    = work.MatchedVars[VAR_CHUNKED].AsBool(true);
 
          //Sanitize
          fp = fp.Replace("..", string.Empty)
                 .Replace(":/", string.Empty)
                 .Replace(@"\\", @"\");
+
+         //Cut the surrogate out of path, i.e. '/static/img/@@767868768768/picture.png' -> '/static/img/picture.png'
+         fp = CutVersionSegment(fp, m_VersionSegmentPrefix);
 
 
          string fileName = null;
@@ -139,8 +187,8 @@ namespace NFX.Wave.Handlers
              {
                var text = StringConsts.FILE_DL_HANDLER_NOT_FOUND_INFO.Args(fileName);
                if (m_Throw)
-                throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, text);  
-           
+                throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, text);
+
                work.Response.ContentType = ContentType.TEXT;
                work.Response.Write( text );
                work.Response.StatusCode = WebConsts.STATUS_404;
@@ -150,7 +198,7 @@ namespace NFX.Wave.Handlers
 
              if (!work.Response.WasWrittenTo)
                work.Response.Buffered = !chunked;
-    
+
              if (m_CacheMaxAgeSec>0)
               work.Response.Headers[HttpResponseHeader.CacheControl] = "private, max-age={0}, must-revalidate".Args(m_CacheMaxAgeSec);
              else

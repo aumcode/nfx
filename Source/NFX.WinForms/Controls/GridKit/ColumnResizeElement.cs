@@ -58,8 +58,8 @@ namespace NFX.WinForms.Controls.GridKit
       if (MouseIsOver && m_Grid.ColumnResizeAllowed &&  m_Grid.m_RepositioningColumn==null)
         using(var br =  new LinearGradientBrush(Region, Color.Blue, Color.White, LinearGradientMode.ForwardDiagonal))
         {
-          gr.FillRectangle(br, Region); 
-        }  
+          gr.FillRectangle(br, Region);
+        }
     }
     */
 

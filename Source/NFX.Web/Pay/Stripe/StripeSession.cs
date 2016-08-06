@@ -40,35 +40,35 @@ namespace NFX.Web.Pay.Stripe
   {
     #region .ctor
 
-      public StripeSession(PaySystem paySystem, StripeConnectionParameters cParams) 
+      public StripeSession(PaySystem paySystem, StripeConnectionParameters cParams)
         : base(paySystem, cParams) { }
 
     #endregion
 
     #region Properties
 
-      public string Email 
-      { 
-        get 
+      public string Email
+      {
+        get
         {
           if (m_User == null || m_User == User.Fake) return string.Empty;
           var cred = m_User.Credentials as StripeCredentials;
           if (cred == null) return string.Empty;
-          return cred.Email; 
+          return cred.Email;
         }
       }
 
-      public string SecretKey 
-      { 
-        get 
+      public string SecretKey
+      {
+        get
         {
           if (m_User == null || m_User == User.Fake) return string.Empty;
           var cred = m_User.Credentials as StripeCredentials;
           if (cred == null) return string.Empty;
-          return cred.SecretKey; 
+          return cred.SecretKey;
         }
       }
-      
+
     #endregion
 
   } //StripeSession

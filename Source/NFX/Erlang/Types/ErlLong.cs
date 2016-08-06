@@ -43,7 +43,7 @@ namespace NFX.Erlang
     * encoded in Erlang external format.
     *
     * @param buf the stream containing the encoded value.
-    * 
+    *
     * @exception DecodeException if the buffer does not
     * contain a valid external representation of an Erlang integer.
     **/

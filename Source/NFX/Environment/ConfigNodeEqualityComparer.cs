@@ -10,10 +10,10 @@ namespace NFX.Environment
   /// Performs deep structural comparison of IConfigNodes
   /// </summary>
   public sealed class ConfigNodeEqualityComparer : EqualityComparer<IConfigNode>
-  {   
+  {
       private static ConfigNodeEqualityComparer s_Instance = new ConfigNodeEqualityComparer();
 
-      public static ConfigNodeEqualityComparer Instance { get { return s_Instance; }} 
+      public static ConfigNodeEqualityComparer Instance { get { return s_Instance; }}
 
       private ConfigNodeEqualityComparer() {}
 
@@ -43,14 +43,14 @@ namespace NFX.Environment
           {
             var xn = snodex[i];
             var yn = snodey[i];
-            if (!this.Equals(xn, yn)) return false; 
+            if (!this.Equals(xn, yn)) return false;
           }
-          
+
           for (var i=0; i<snodex.AttrCount; i++)
           {
             var xn = snodex.AttrByIndex(i);
             var yn = snodey.AttrByIndex(i);
-            if (!this.Equals(xn, yn)) return false; 
+            if (!this.Equals(xn, yn)) return false;
           }
         }
         else if (y is IConfigSectionNode) return false;
@@ -61,17 +61,17 @@ namespace NFX.Environment
       public override int GetHashCode(IConfigNode node)
       {
         if (node==null || !node.Exists) return 0;
-        
+
         var hc = node.Name.GetHashCodeOrdIgnoreCase();
         if (node.VerbatimValue != null)
           hc ^= node.VerbatimValue.GetHashCodeOrdSenseCase();
-        
+
         var snode = node as IConfigSectionNode;
         if (snode != null)
         {
           foreach (var c in snode.Children)
             hc ^= this.GetHashCode(c);
-            
+
           foreach (var a in snode.Attributes)
             hc ^= this.GetHashCode(a);
         }

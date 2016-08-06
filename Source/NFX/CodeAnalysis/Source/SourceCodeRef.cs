@@ -34,7 +34,7 @@ namespace NFX.CodeAnalysis.Source
             public readonly IProjectItem ProjectItem;
 
 
-            
+
             public SourceCodeRef(string srcName)
             {
               SourceName = srcName ?? CoreConsts.UNNAMED_MEMORY_BUFFER;
@@ -52,7 +52,7 @@ namespace NFX.CodeAnalysis.Source
             {
               return SourceName;
             }
-    
+
 
       }
 

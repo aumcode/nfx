@@ -33,7 +33,7 @@ namespace NFX.IO.FileSystem.GoogleDrive
       public string Email { get; set; }
 
     #endregion
-        
+
     #region .ctor
 
       public GoogleDriveCredentials(string email)
@@ -41,6 +41,6 @@ namespace NFX.IO.FileSystem.GoogleDrive
         Email = email;
       }
 
-    #endregion    
+    #endregion
   }
 }

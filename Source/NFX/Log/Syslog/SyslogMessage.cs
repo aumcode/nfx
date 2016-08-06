@@ -23,13 +23,13 @@ using System.Text;
 
 namespace NFX.Log.Syslog
 {
-    
+
     /// <summary>
     /// Represents a UNIX-standard SYSLOG message
     /// </summary>
     public sealed class SyslogMessage
     {
-        
+
         public static SeverityLevel FromNFXLogMessageType(MessageType type)
         {
           if (type<MessageType.Info) return SeverityLevel.Debug;
@@ -39,18 +39,18 @@ namespace NFX.Log.Syslog
           if (type<MessageType.Critical) return SeverityLevel.Error;
           if (type<MessageType.CriticalAlert) return SeverityLevel.Critical;
           if (type<MessageType.Emergency) return SeverityLevel.Alert;
-         
+
           return SeverityLevel.Emergency;
         }
-        
-        
-        
+
+
+
         public SyslogMessage()
         {
 
         }
 
-        public SyslogMessage(FacilityLevel facility, 
+        public SyslogMessage(FacilityLevel facility,
                              SeverityLevel level,
                              string text)
         {
@@ -67,20 +67,20 @@ namespace NFX.Log.Syslog
            m_LocalTimeStamp = nfxMsg.TimeStamp;
            m_Text = string.Format("{0} - {1} - {2}", nfxMsg.Topic,  nfxMsg.From,  nfxMsg.Text);
         }
-        
-        
-        private FacilityLevel m_Facility; 
+
+
+        private FacilityLevel m_Facility;
         private SeverityLevel m_Severity;
         private string m_Text;
         private DateTime m_LocalTimeStamp = App.LocalizedTime;
-        
-        
+
+
         public FacilityLevel Facility
         {
             get { return m_Facility;}
             set { m_Facility = value; }
         }
-        
+
         public SeverityLevel Severity
         {
             get { return m_Severity;}
@@ -109,7 +109,7 @@ namespace NFX.Log.Syslog
         }
 
 
-       
+
     }
 
 }

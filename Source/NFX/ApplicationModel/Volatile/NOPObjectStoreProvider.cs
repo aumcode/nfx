@@ -41,7 +41,7 @@ using NFX.Serialization.Slim;
 namespace NFX.ApplicationModel.Volatile
 {
   /// <summary>
-  /// Defines a provider that does not do anything - does not store object anywhere but memory 
+  /// Defines a provider that does not do anything - does not store object anywhere but memory
   /// </summary>
   public class NOPObjectStoreProvider : ObjectStoreProvider
   {
@@ -67,12 +67,12 @@ namespace NFX.ApplicationModel.Volatile
 
         public override void Write(ObjectStoreEntry entry)
         {
-          
+
         }
 
         public override void Delete(ObjectStoreEntry entry)
         {
-         
+
         }
 
 

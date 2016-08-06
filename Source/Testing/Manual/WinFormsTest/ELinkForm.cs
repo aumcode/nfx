@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using NFX.DataAccess.Distributed;
 
 using NFX;
+using NFX.Security.CAPTCHA;
 
 namespace WinFormsTest
 {
@@ -115,6 +116,22 @@ namespace WinFormsTest
            var lnk2 = new ELink( lnk.Link );
 
            tbResult.Text = lnk2.ID.ToString(); 
+        }
+
+        
+        public static string a1 = ExternalRandomGenerator.Instance.NextRandomWebSafeString().Substring(0, 2);
+        string a2;
+
+        private void btnPuzzle_Click(object sender, EventArgs e)
+        {
+           var pk = new PuzzleKeypad(NFX.Parsing.NaturalTextGenerator.Generate(16));
+           var img = pk.DefaultRender(Color.White, false);
+           pic.Image = img;
+
+          // a1 = "a";
+           a2 = tbPassword.Text;
+
+           Text = "'{0}' ref eq '{1}' is {2}, == is {3} ".Args(a1, a2, object.ReferenceEquals(a1,a2), a1==a2);
         }
 
         

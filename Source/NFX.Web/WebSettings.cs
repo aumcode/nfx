@@ -23,7 +23,6 @@ using NFX.Web.Social;
 
 namespace NFX.Web
 {
-  using NFX.Web.Pay.Tax;
 
   /// <summary>
   /// Facilitates fast access to important web-related config settings that update their values when underlying config changes
@@ -79,14 +78,12 @@ namespace NFX.Web
           return s_Instance;
         }
       }
-      
+
     #endregion
 
     #region Private fields
 
       private IRegistry<SocialNetwork> m_SocialNetworks;
-
-      //private IRegistry<TaxCalculator> m_TaxCalculators;
 
       private MessageType? m_WebDavLogType;
       private int m_WebDavDefaultTimeoutMs = WEBDAV_DEFAULT_TIMEOUT_MS_DEFAULT;
@@ -119,12 +116,12 @@ namespace NFX.Web
       /// <summary>
       /// Provides settings related to Http traffic handling
       /// </summary>
-      public static ServicePointManagerConfigurator ServicePointManager 
-      { 
-        get 
-        { 
+      public static ServicePointManagerConfigurator ServicePointManager
+      {
+        get
+        {
           RequireInitializedSettings();
-          return ServicePointManagerConfigurator.s_Instance; 
+          return ServicePointManagerConfigurator.s_Instance;
         }
       }
 
@@ -162,7 +159,7 @@ namespace NFX.Web
         var servicePointManagerSection = webSettingsSection[CONFIG_SERVICEPOINTMANAGER_SECTION];
         ((IConfigurable)(ServicePointManagerConfigurator.s_Instance)).Configure(servicePointManagerSection);
       }
-      
+
     #endregion
 
     #region Pvt.

@@ -46,5 +46,5 @@ namespace NFX.Serialization
         get { return false; }
       }
     }
-     
+
 }

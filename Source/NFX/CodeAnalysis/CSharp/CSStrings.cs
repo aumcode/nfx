@@ -24,7 +24,7 @@ using NFX.CodeAnalysis;
 
 namespace NFX.CodeAnalysis.CSharp
 {
-    
+
   /// <summary>
   /// Provides C# string escape parsing
   /// </summary>
@@ -91,7 +91,7 @@ namespace NFX.CodeAnalysis.CSharp
     }
 
 
-   
+
 
 
   }

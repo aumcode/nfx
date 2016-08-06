@@ -62,13 +62,13 @@ namespace NFX
     object Value { get; }
 
     /// <summary>
-    /// Indicates whether parameter has a value, even if Value==null parameter may or 
+    /// Indicates whether parameter has a value, even if Value==null parameter may or
     ///  may not have a value (be assigned) in some scenarious
     /// </summary>
     bool HasValue { get; }
 
     /// <summary>
-    /// Indicates whether parameter is purposed as an input for a target 
+    /// Indicates whether parameter is purposed as an input for a target
     /// </summary>
     bool IsInput { get; }
   }

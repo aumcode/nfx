@@ -372,7 +372,7 @@ namespace NFX.Erlang
     /// exception to be raised. Similarly, if the sending mailbox is
     /// closed, the linked mailbox or process will receive an exit
     /// signal.
-    /// 
+    ///
     /// If the remote process cannot be reached in order to set the
     /// link, the exception is raised immediately.
     /// </remarks>

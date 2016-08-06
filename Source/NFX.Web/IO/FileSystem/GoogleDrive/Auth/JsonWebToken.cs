@@ -31,28 +31,28 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
 {
   /// <summary>
   /// JWT (https://developers.google.com/identity/protocols/OAuth2ServiceAccount).
-  /// 
-  /// A JWT is composed of three parts: a header, a claim set, and a signature. 
-  /// The header and claim set are JSON objects. These JSON objects are serialized to UTF-8 bytes, 
-  /// then encoded using the Base64url encoding. This encoding provides resilience against encoding 
+  ///
+  /// A JWT is composed of three parts: a header, a claim set, and a signature.
+  /// The header and claim set are JSON objects. These JSON objects are serialized to UTF-8 bytes,
+  /// then encoded using the Base64url encoding. This encoding provides resilience against encoding
   /// changes due to repeated encoding operations. The header, claim set, and signature are concatenated
   /// together with a period (.) character.
-  /// 
+  ///
   /// {Base64url encoded header}.{Base64url encoded claim set}.{Base64url encoded signature}
   /// </summary>
   public class JsonWebToken
   {
     #region CONST
-    
+
       private const string TYPE = "JWT";
       private const string SHA256 = "SHA256";
       private const string RS256 = "RS256";
       private const string DELIMETER = ".";
       private const string PASSWORD = "notasecret";
-      private const string SCOPE = "https://www.googleapis.com/auth/drive";  
-      private const string AUD = "https://accounts.google.com/o/oauth2/token";  
+      private const string SCOPE = "https://www.googleapis.com/auth/drive";
+      private const string AUD = "https://accounts.google.com/o/oauth2/token";
 
-      public static readonly string GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer";  
+      public static readonly string GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 
     #endregion
 
@@ -64,7 +64,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
       private class Header
       {
         public string alg { get; set; }
-        public string typ { get; set; }      
+        public string typ { get; set; }
       }
 
       /// <summary>
@@ -78,7 +78,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
         public long exp { get; set; }
         public long iat { get; set; }
       }
-    
+
     #endregion
 
     #region Private Fields
@@ -97,7 +97,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
         Ensure.NotNull(certPath, "certPath");
 
         var certificate = new X509Certificate2(certPath, PASSWORD,  X509KeyStorageFlags.Exportable);
-      
+
         m_Key = FromCertificate(certificate);
 
         m_Claimset = new Claimset
@@ -109,7 +109,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
 
         Refresh();
       }
-    
+
     #endregion
 
     #region Public
@@ -125,7 +125,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
       }
 
       public override string ToString()
-      {      
+      {
         var jwt = new StringBuilder();
 
         jwt.Append(Base64UrlEncode(m_Header));
@@ -135,9 +135,9 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
         var signature = Sign(jwt.ToString());
         jwt.Append(DELIMETER).Append(signature);
 
-        return jwt.ToString();   
+        return jwt.ToString();
       }
-    
+
     #endregion
 
     #region Private
@@ -158,7 +158,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
         var key = new RSACryptoServiceProvider();
         key.ImportCspBlob(privateKeyBlob);
         return key;
-      }      
+      }
 
       private static string Base64UrlEncode(object input)
       {
@@ -169,10 +169,10 @@ namespace NFX.IO.FileSystem.GoogleDrive.Auth
       }
 
       private static string Base64UrlEncode(byte[] input)
-      {        
+      {
         return Convert.ToBase64String(input).Replace("=", String.Empty).Replace('+', '-').Replace('/', '_');
       }
-  
+
     #endregion
   }
 }

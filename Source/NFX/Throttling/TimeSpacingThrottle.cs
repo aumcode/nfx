@@ -94,7 +94,7 @@ namespace NFX.Throttling
             /// </summary>
             [Config("$interval")]
             public int Interval { get { return m_Interval; } internal set { m_Interval = value; } }
-        
+
         #endregion
 
         #region Public
@@ -109,7 +109,7 @@ namespace NFX.Throttling
             }
 
         #endregion
-        
+
         #region Protected
 
             /// <summary>

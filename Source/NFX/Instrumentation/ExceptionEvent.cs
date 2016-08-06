@@ -29,7 +29,7 @@ namespace NFX.Instrumentation
     [Serializable]
     public class ExceptionEvent : Event, IErrorInstrument
     {
-        
+
         /// <summary>
         /// Create event from exception instance
         /// </summary>
@@ -37,7 +37,7 @@ namespace NFX.Instrumentation
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-            inst.Record( new ExceptionEvent(error) );                          
+            inst.Record( new ExceptionEvent(error) );
         }
 
         /// <summary>
@@ -47,24 +47,24 @@ namespace NFX.Instrumentation
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-            inst.Record(  new ExceptionEvent(source, error) );                          
+            inst.Record(  new ExceptionEvent(source, error) );
         }
 
         /// <summary>
-        /// Create event from exception instance as of utcTime 
+        /// Create event from exception instance as of utcTime
         /// </summary>
         public static void Record(string source, Exception error, DateTime utcTime)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-            inst.Record( new ExceptionEvent(source, error, utcTime) );                          
+            inst.Record( new ExceptionEvent(source, error, utcTime) );
         }
-        
+
         private ExceptionEvent()
         {
 
         }
-        
+
         protected ExceptionEvent(Exception error) : base()
         {
           m_ExceptionType = error.GetType().FullName;
@@ -101,7 +101,7 @@ namespace NFX.Instrumentation
         {
             var eevt = evt as ExceptionEvent;
             if (eevt==null) return;
-            
+
             if (m_Errors.ContainsKey(eevt.m_ExceptionType))
               m_Errors[eevt.m_ExceptionType] += 1;
             else
@@ -111,7 +111,7 @@ namespace NFX.Instrumentation
         protected override void SummarizeAggregation()
         {
           var sb = new StringBuilder();
-         
+
           foreach( var s in m_Errors.OrderBy( p => -p.Value).Take(10).Select(p => p.Key))
           {
            sb.Append(s);
@@ -119,7 +119,7 @@ namespace NFX.Instrumentation
           }
 
           m_ExceptionType = sb.ToString();
-           
+
         }
 
 

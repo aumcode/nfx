@@ -23,8 +23,8 @@ namespace NFX.IO.ErrorHandling
 {
     /// <summary>
     /// Implements Adler32 checksum algorithm
-    /// </summary>    
-    public struct Adler32 
+    /// </summary>
+    public struct Adler32
     {
         #region CONSTS
 
@@ -34,7 +34,7 @@ namespace NFX.IO.ErrorHandling
 
             const uint ADLER_BASE = 65521;
             const int NMAX = 5552;
-           
+
         #endregion
 
         #region Static
@@ -43,7 +43,7 @@ namespace NFX.IO.ErrorHandling
           /// </summary>
           public static uint ForEncodedString(string text, System.Text.Encoding encoding)
           {
-            if (encoding==null) encoding = System.Text.Encoding.UTF8; 
+            if (encoding==null) encoding = System.Text.Encoding.UTF8;
             var buff =  encoding.GetBytes( text );
             return Adler32.ForBytes( buff );
           }
@@ -59,7 +59,7 @@ namespace NFX.IO.ErrorHandling
             adler.Add( text );
             return adler.m_Value;
           }
-      
+
            /// <summary>
           /// Computes Adler32 for byte array
           /// </summary>
@@ -68,28 +68,24 @@ namespace NFX.IO.ErrorHandling
             var adler = new Adler32();
             adler.Add( buff );
             return adler.m_Value;
-          } 
+          }
 
         #endregion
-
-        
 
 
         #region Private Fields
           private uint m_Value;
           private bool m_Started;
-        #endregion   
+        #endregion
 
         #region Properties
 
-          public long Value { get { return m_Value;} }
+          public uint Value { get { return m_Value;} }
 
         #endregion
-               
-               
-               
-        #region Public        
-               
+
+        #region Public
+
             /// <summary>
             /// Addes byte[] to checksum
             /// </summary>
@@ -97,7 +93,7 @@ namespace NFX.IO.ErrorHandling
             {
                Add(buff, 0, buff.Length);
             }
-               
+
             public void Add(byte[] buff, int offset, int count)
             {
                 if (!m_Started)
@@ -108,8 +104,8 @@ namespace NFX.IO.ErrorHandling
 
                 uint lo = m_Value & 0xFFFF;
                 uint hi = m_Value >> 16;
-                       
-                while (count > 0) 
+
+                while (count > 0)
                 {
                   // Modulo calc is deferred
                   var n = count < NMAX ? count : NMAX;
@@ -124,7 +120,7 @@ namespace NFX.IO.ErrorHandling
                   lo %= ADLER_BASE;
                   hi %= ADLER_BASE;
                 }
-                       
+
                 m_Value = (hi << 16) | lo;
             }
 
@@ -148,8 +144,8 @@ namespace NFX.IO.ErrorHandling
 
                 uint lo = m_Value & 0xFFFF;
                 uint hi = m_Value >> 16;
-                       
-                while (count > 0) 
+
+                while (count > 0)
                 {
                   // Modulo calc is deferred
                   var n = count < NMAX ? count : NMAX;
@@ -164,14 +160,13 @@ namespace NFX.IO.ErrorHandling
                   lo %= ADLER_BASE;
                   hi %= ADLER_BASE;
                 }
-                       
+
                 m_Value = (hi << 16) | lo;
             }
 
         #endregion
 
 
-               
    }
 
 }

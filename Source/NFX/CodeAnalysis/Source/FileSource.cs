@@ -22,22 +22,22 @@ using System.IO;
 
 namespace NFX.CodeAnalysis.Source
 {
-  
+
       /// <summary>
       /// Represents source code stored in a file
       /// </summary>
       public class FileSource : StreamReader, ISourceText
       {
-        
+
 
             /// <summary>
             /// Constructs file source infering source language from file extension
             /// </summary>
             public FileSource(string fileName)
               : base(fileName)
-            {  
-              m_Language = Language.TryFindLanguageByFileExtension(Path.GetExtension(fileName)); 
-              m_Name = fileName;    
+            {
+              m_Language = Language.TryFindLanguageByFileExtension(Path.GetExtension(fileName));
+              m_Name = fileName;
             }
 
             /// <summary>
@@ -49,17 +49,17 @@ namespace NFX.CodeAnalysis.Source
               m_Language = language;
               m_Name = fileName;
             }
-    
+
 
             private Language m_Language;
             private string m_Name;
 
-    
+
             public void Reset()
             {
               BaseStream.Position = 0;
               DiscardBufferedData();
-            } 
+            }
 
 
             /// <summary>
@@ -95,7 +95,7 @@ namespace NFX.CodeAnalysis.Source
             }
 
       }
-  
+
         /// <summary>
         /// Represents a list of file names
         /// </summary>
@@ -121,8 +121,8 @@ namespace NFX.CodeAnalysis.Source
 
                 return sb.ToString();
             }
-      
+
         }
-  
-  
+
+
 }

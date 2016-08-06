@@ -38,7 +38,7 @@ namespace NFX.Wave.Handlers
         var dump = new{
           About = work.About,
 
-          Server = new 
+          Server = new
           {
              Name = work.Server.Name,
              Type = work.Server.GetType().FullName,
@@ -52,7 +52,7 @@ namespace NFX.Wave.Handlers
              ShowDumpMatches = work.Server.ShowDumpMatches.OrderedValues.Select(m=>m.Name).ToList(),
              LogMatches = work.Server.LogMatches.OrderedValues.Select(m=>m.Name).ToList(),
           },//server
-          Request = new 
+          Request = new
           {
              AcceptTypes = work.Request.AcceptTypes,
              ContentEncoding = work.Request.ContentEncoding!= null?work.Request.ContentEncoding.EncodingName : SysConsts.NULL_STRING,
@@ -104,7 +104,7 @@ namespace NFX.Wave.Handlers
         for(var i=0; i<collection.Count; i++)
           result.Add("{0} = {1}".Args(collection.GetKey(i), collection[i]));
 
-        return result;  
+        return result;
      }
 
   }

@@ -37,36 +37,36 @@ namespace NFX.ApplicationModel
      /// <summary>
      /// Not known
      /// </summary>
-     Unspecified = 0, 
+     Unspecified = 0,
 
      /// <summary>
-     /// A human user has entered/supplied/provider the credentials
+     /// A human user has entered/supplied/provided the credentials
      /// </summary>
-     Human, 
-     
+     Human,
+
      /// <summary>
-     /// A robot/computer/process/API caller  
+     /// A robot/computer/process/API caller
      /// </summary>
      Robot
   }
 
   /// <summary>
-  /// Describes user session 
+  /// Describes user session
   /// </summary>
   public interface ISession : IEndableInstance
   {
      /// <summary>
-     /// Gets unique session identifier 
+     /// Gets unique session identifier
      /// </summary>
      Guid ID { get; }
-    
-    
+
+
      /// <summary>
      /// References a user this session is for
      /// </summary>
      User  User { get; set;}
-     
-     
+
+
      /// <summary>
      /// Returns user's language preference or null
      /// </summary>
@@ -79,7 +79,7 @@ namespace NFX.ApplicationModel
      bool IsNew { get;}
 
      /// <summary>
-     /// Indicates that user login happened in current request processing cycle. This flag is 
+     /// Indicates that user login happened in current request processing cycle. This flag is
      /// useful for long term token assignment on release
      /// </summary>
      bool IsJustLoggedIn { get;}
@@ -95,7 +95,7 @@ namespace NFX.ApplicationModel
      SessionLoginType LastLoginType { get; }
 
      /// <summary>
-     /// References item dictionary that may be used to persist object graphs per session  
+     /// References item dictionary that may be used to persist object graphs per session
      /// </summary>
      IDictionary<object, object> Items { get; }
 
@@ -134,5 +134,5 @@ namespace NFX.ApplicationModel
      /// </summary>
      void RegenerateID();
   }
-  
+
 }

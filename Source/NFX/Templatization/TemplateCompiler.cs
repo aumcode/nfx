@@ -40,14 +40,14 @@ namespace NFX.Templatization
       private Type m_CompiledType;
       private string m_CompiledTypeName;
       private Exception m_CompilationException;
-      
+
       /// <summary>
       /// References original template source such as a string for text-based templates or an image
       /// </summary>
       public ITemplateSource TemplateSource { get { return m_TemplateSource;} }
 
       /// <summary>
-      /// Returns source code in a language that particular TemplateCompiler derivative supports. 
+      /// Returns source code in a language that particular TemplateCompiler derivative supports.
       /// Use TemplateCompiler.LanguageName to determine language polymorphicaly
       /// </summary>
       public string CompiledSource { get { return m_CompiledSource ?? string.Empty;} internal set { m_CompiledSource = value; }}
@@ -59,7 +59,7 @@ namespace NFX.Templatization
       public Type CompiledTemplateType{ get { return m_CompiledType;} internal set { m_CompiledType = value; }}
 
       /// <summary>
-      /// Returns fully-qualified CLR type name that compiler produced 
+      /// Returns fully-qualified CLR type name that compiler produced
       /// </summary>
       public string CompiledTemplateTypeName{ get { return m_CompiledTypeName;} internal set { m_CompiledTypeName = value; }}
 
@@ -70,7 +70,7 @@ namespace NFX.Templatization
     }
 
 
-    
+
     /// <summary>
     /// Represents abstraction of template compilers. This class is not thread-safe
     /// </summary>
@@ -80,9 +80,9 @@ namespace NFX.Templatization
 
 
        #endregion
-       
+
        #region .ctor
-           
+
            protected TemplateCompiler()
            {
               m_ReferencedAssemblies.Add("System.dll");
@@ -92,7 +92,7 @@ namespace NFX.Templatization
               m_ReferencedAssemblies.Add("System.Xml.Linq.dll");
               m_ReferencedAssemblies.Add("NFX.dll");
            }
-           
+
            protected TemplateCompiler(params ITemplateSource[] sources) : this()
            {
              if (sources!=null)
@@ -122,12 +122,12 @@ namespace NFX.Templatization
 
 
             protected IConfigSectionNode m_Options;
-                      
-            
+
+
 
             protected Assembly m_Assembly;
             protected string m_AssemblyFileName;
-       
+
             protected CompileUnits m_Units = new CompileUnits();
             protected List<string> m_ReferencedAssemblies = new List<string>();
 
@@ -135,11 +135,11 @@ namespace NFX.Templatization
 
             protected List<Exception> m_CodeCompilerErrors = new List<Exception>();
        #endregion
-             
+
 
        #region Properties
-           
-           
+
+
            /// <summary>
            /// Gets the name of the language that this compiler supports, i.e. "C#"
            /// </summary>
@@ -165,7 +165,7 @@ namespace NFX.Templatization
              get { return m_Compiled;}
            }
 
-           
+
            /// <summary>
            /// Config options section used for compilation
            /// </summary>
@@ -192,11 +192,11 @@ namespace NFX.Templatization
            /// Gets/sets path for referenced assemblies that do not have a path in their names
            /// </summary>
            [Config("$ref-path")]
-           public string ReferencedAssembliesSearchPath 
+           public string ReferencedAssembliesSearchPath
            {
-              get { return m_ReferencedAssembliesSearchPath; } 
+              get { return m_ReferencedAssembliesSearchPath; }
 
-              set 
+              set
               {
                  EnsureNotCompiled();
                  m_ReferencedAssembliesSearchPath = value;
@@ -208,11 +208,11 @@ namespace NFX.Templatization
            /// Gets/sets filename for assembly, if null then assembly is created in-memory only
            /// </summary>
            [Config("$asm-file")]
-           public string AssemblyFileName 
+           public string AssemblyFileName
            {
-              get { return m_AssemblyFileName; } 
+              get { return m_AssemblyFileName; }
 
-              set 
+              set
               {
                  EnsureNotCompiled();
                  m_AssemblyFileName = value;
@@ -232,12 +232,12 @@ namespace NFX.Templatization
                EnsureNotCompiled();
                m_CompileCode = value;
              }
-           } 
+           }
 
 
            /// <summary>
            /// Sets the name of base type that templates inherit from.
-           /// This type must directly or indirectly inherit from Template 
+           /// This type must directly or indirectly inherit from Template
            /// </summary>
            [Config("$base-type")]
            public string BaseTypeName
@@ -249,10 +249,10 @@ namespace NFX.Templatization
                EnsureNotCompiled();
                m_BaseTypeName = value;
              }
-           } 
+           }
 
            /// <summary>
-           /// Sets the name of namespace that classes compiled into 
+           /// Sets the name of namespace that classes compiled into
            /// </summary>
            [Config("$namespace")]
            public string Namespace
@@ -264,7 +264,7 @@ namespace NFX.Templatization
                EnsureNotCompiled();
                m_Namespace = value;
              }
-           } 
+           }
 
 
 
@@ -320,9 +320,9 @@ namespace NFX.Templatization
             if (m_Compiled)
              throw new TemplateCompilerException(StringConsts.TEMPLATE_COMPILER_ALREADY_COMPILED_ERROR + GetType().FullName);
          }
-         
+
          /// <summary>
-         /// Performs compilation if it has not already been performed 
+         /// Performs compilation if it has not already been performed
          /// </summary>
          public void Compile()
          {
@@ -348,7 +348,7 @@ namespace NFX.Templatization
               {
                 m_CodeCompilerErrors.Add(error);
               }
-           
+
 
            m_Compiled = true;
          }
@@ -369,7 +369,7 @@ namespace NFX.Templatization
            if (source==null)
              throw new TemplateCompilerException(StringConsts.ARGUMENT_ERROR + "IncludeTemplateSource(null)");
            EnsureNotCompiled();
-           m_Units.Add(source, new CompileUnit(source)); 
+           m_Units.Add(source, new CompileUnit(source));
          }
 
          /// <summary>
@@ -380,7 +380,7 @@ namespace NFX.Templatization
            if (source==null)
              throw new TemplateCompilerException(StringConsts.ARGUMENT_ERROR + "ExcludeTemplateSource(null)");
            EnsureNotCompiled();
-           return m_Units.Remove(source); 
+           return m_Units.Remove(source);
          }
 
          /// <summary>
@@ -406,7 +406,7 @@ namespace NFX.Templatization
            if (aname==null)
              throw new TemplateCompilerException(StringConsts.ARGUMENT_ERROR + "UnReferenceAssembly(null)");
            EnsureNotCompiled();
-           
+
            aname = aname.Trim();
            return m_ReferencedAssemblies.Remove(aname);
          }
@@ -414,7 +414,7 @@ namespace NFX.Templatization
 
               private Random m_Rnd = new Random();
               private List<string> m_UniqueNames = new List<string>();
-         
+
          /// <summary>
          /// Generates unique identifier suitable for use in code per compiler instance
          /// </summary>
@@ -431,12 +431,12 @@ namespace NFX.Templatization
            }
          }
 
-           
+
 
 
 
           public IEnumerator<CompileUnit> GetEnumerator()
-          {                             
+          {
              return m_Units.Values.GetEnumerator();
           }
 
@@ -449,7 +449,7 @@ namespace NFX.Templatization
 
 
        #region Protected
-        
+
 
 
 
@@ -486,7 +486,7 @@ namespace NFX.Templatization
        #endregion
 
 
-        
+
     }
 
 

@@ -29,7 +29,7 @@ namespace NFX.Glue
     /// <summary>
     /// Facilititates execution of asynchronous client calls and their corresponding callback functions.
     /// This class introduces callback execution latency and is handy for cases where eventual event flow need to execute regardless of timing.
-    /// The latency depends on other callback implementation as the reactor services all calls from a single thread 
+    /// The latency depends on other callback implementation as the reactor services all calls from a single thread
     /// </summary>
     public sealed class CallReactor
     {
@@ -52,7 +52,7 @@ namespace NFX.Glue
        public CallReactor(Action<CallReactor> finishAction, object context, params Call[] calls) : this(false, finishAction, context, calls)
        {
        }
-       
+
        public CallReactor(IEnumerable<Call> calls, bool isBackground) : this(calls, isBackground, null, null)
        {
 
@@ -62,7 +62,7 @@ namespace NFX.Glue
        {
        }
 
-       public CallReactor(IEnumerable<Call> calls, bool isBackground, Action<CallReactor> finishAction, object context) 
+       public CallReactor(IEnumerable<Call> calls, bool isBackground, Action<CallReactor> finishAction, object context)
          : this(isBackground, finishAction, context, calls.ToArray())
        {
 
@@ -73,13 +73,13 @@ namespace NFX.Glue
              if (calls==null || calls.Length<1)
               throw new InvalidGlueOperationException(StringConsts.ARGUMENT_ERROR + "CallReactor.ctor(null | empty)");
 
-             
+
              foreach(var call in calls)
                if (call.m_Reactor!=null)
                 throw new InvalidGlueOperationException(StringConsts.GLUE_CALL_SERVICED_BY_DIFFERENT_REACTOR_ERROR);
                else
                 call.m_Reactor = this;
-             
+
              m_Calls = calls;
              m_Context = context;
              m_FinishAction = finishAction;
@@ -166,7 +166,7 @@ namespace NFX.Glue
                     call.MakeCallbackAndFinish();
                  }
                  if (!pending) break;
-             
+
                  Thread.Sleep(THREAD_SLEEP_MSEC); //<--- granularity
              }
 
@@ -175,7 +175,7 @@ namespace NFX.Glue
          }
          catch(Exception error)
          {
-            m_Exception = error;  
+            m_Exception = error;
          }
 
          m_Finished = true;
@@ -195,7 +195,7 @@ namespace NFX.Glue
          m_CallSlot=call;
        }
 
-       
+
        public Call(CallSlot call, Action<CallReactor, Call> callback)
        {
          if (call==null || callback==null)
@@ -203,23 +203,23 @@ namespace NFX.Glue
 
          m_CallSlot = call;
          m_Callback = callback;
-       } 
+       }
 
        public Call(CallSlot call, object context, Action<CallReactor, Call, object> callback)
        {
          if (call==null || callback==null)
           throw new InvalidGlueOperationException(StringConsts.ARGUMENT_ERROR + "Call.ctor(null)");
-         
+
          m_CallSlot = call;
          m_Context = context;
          m_CallbackInContext = callback;
-       } 
+       }
 
        internal CallReactor m_Reactor;
        private CallSlot m_CallSlot;
        private object m_Context;
        private Action<CallReactor, Call> m_Callback;
-       private Action<CallReactor, Call, object> m_CallbackInContext;  
+       private Action<CallReactor, Call, object> m_CallbackInContext;
        private bool m_Ended;
 
        private Exception m_CallbackException;
@@ -275,7 +275,7 @@ namespace NFX.Glue
              if (m_CallbackInContext!=null)
                 m_CallbackInContext(m_Reactor, this, m_Context);
              else
-             { 
+             {
                 if (m_Callback!=null)
                     m_Callback(m_Reactor, this);
              }
@@ -287,8 +287,8 @@ namespace NFX.Glue
 
          m_Ended = true;
        }
-         
+
     }
-    
+
 
 }

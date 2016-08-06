@@ -26,7 +26,7 @@ using NFX.Environment;
 
 namespace NFX.ServiceModel
 {
-  
+
   /// <summary>
   /// Child service entry as managed by CompositeServiceHost class
   /// </summary>
@@ -54,9 +54,9 @@ namespace NFX.ServiceModel
     }
 
   }
-  
-  
-  
+
+
+
   /// <summary>
   /// Represents a service that contains other child services.
   /// Start/Stop commands translate into child sub-commands.
@@ -99,7 +99,7 @@ namespace NFX.ServiceModel
 
          /// <summary>
          /// Returns true if child service was registered, false if it was already registered prior tp this call.
-         /// The method may only be called on stopped (this) service 
+         /// The method may only be called on stopped (this) service
          /// </summary>
          public bool RegisterService(Service service, int order, bool abortStart)
          {
@@ -110,7 +110,7 @@ namespace NFX.ServiceModel
 
          /// <summary>
          /// Returns true if child service was unregistered, false if it did not exist.
-         /// The method may only be called on stopped (this) service 
+         /// The method may only be called on stopped (this) service
          /// </summary>
          public bool UnregisterService(Service service)
          {
@@ -127,7 +127,7 @@ namespace NFX.ServiceModel
          {
            if (node==null)
             node = App.ConfigRoot[CONFIG_SERVICE_HOST_SECTION];
-           
+
            foreach( var snode in node.Children
                                      .Where(cn=> cn.IsSameName(CONFIG_SERVICE_SECTION))
                                      .OrderBy(cn=>cn.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0)))//the order here is needed so that child services get CREATED in order,
@@ -150,7 +150,7 @@ namespace NFX.ServiceModel
             {
               logError("{0}.DoStart({1})".Args(GetType().Name, csvc), error);
 
-              if (csvc.AbortStart) 
+              if (csvc.AbortStart)
               {
                 this.AbortStart();
                 throw new SvcHostException(StringConsts.SERVICE_COMPOSITE_CHILD_START_ABORT_ERROR.Args(csvc, error.ToMessageWithType()), error);
@@ -199,7 +199,7 @@ namespace NFX.ServiceModel
          }
 
          protected override void DoAcceptManagerVisit(object manager, DateTime managerNow)
-         { 
+         {
            foreach(var csvc in m_Services.OrderedValues)
              try
              {
@@ -222,7 +222,7 @@ namespace NFX.ServiceModel
                  {
                     Type = MessageType.CatastrophicError,
                     Topic = StringConsts.SVCAPPLICATION_TOPIC,
-                    From = from, 
+                    From = from,
                     Exception = error,
                     Text = error.ToMessageWithType()
                  });

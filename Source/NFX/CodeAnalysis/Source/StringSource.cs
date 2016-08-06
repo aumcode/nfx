@@ -31,12 +31,12 @@ namespace NFX.CodeAnalysis.Source
     private string m_Name;
     private string m_Source;
     private int m_Position;
-    
+
 
     private StringSource()
     {
     }
-    
+
     public StringSource(string source, Language language = null, string name = null)
     {
       m_Language = language;
@@ -51,7 +51,7 @@ namespace NFX.CodeAnalysis.Source
         {
           m_Position = 0;
         }
-        
+
         public bool EOF
         {
           get { return m_Position >= m_Source.Length; }
@@ -70,8 +70,8 @@ namespace NFX.CodeAnalysis.Source
 
           return m_Source[m_Position];
         }
-    
-    
+
+
         public Language Language
         {
           get { return m_Language ?? UnspecifiedLanguage.Instance; }
@@ -85,20 +85,20 @@ namespace NFX.CodeAnalysis.Source
         {
           get { return m_Name ?? string.Empty;}
         }
-    
+
 
     #endregion
   }
 
 
   /// <summary>
-  /// Represents a list of strings used as source text 
+  /// Represents a list of strings used as source text
   /// </summary>
   public class StringSourceList : List<StringSource>
   {
-    
+
   }
-  
-  
+
+
 }
 

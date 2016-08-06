@@ -113,10 +113,13 @@
     <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
     <Compile Include="Collections\LookAheadEnumerable.cs" />
     <Compile Include="Collections\NamedInterlocked.cs" />
+    <Compile Include="Collections\StringMap.cs" />
     <Compile Include="DataAccess\CRUD\CacheParams.cs" />
     <Compile Include="DataAccess\CRUD\iListReadOnly.cs" />
     <Compile Include="DataAccess\CRUD\JSONMappings.cs" />
+    <Compile Include="DataAccess\CRUD\NotImplementedCRUDDataStore.cs" />
     <Compile Include="DataAccess\CRUD\RowEqualityComparer.cs" />
+    <Compile Include="DataAccess\CRUD\Cursor.cs" />
     <Compile Include="DataUtils.cs" />
     <Compile Include="CoreConsts.cs" />
     <Compile Include="DataAccess\CRUD\CRUDOperationCallContext.cs" />
@@ -223,6 +226,7 @@
     <Compile Include="IO\ErrorHandling\GaloisField.cs" />
     <Compile Include="IO\ErrorHandling\GaloisPolynomial.cs" />
     <Compile Include="IO\ErrorHandling\ReedSolomonEncoder.cs" />
+    <Compile Include="IO\FileSystem\DeleteFilesJob.cs" />
     <Compile Include="IO\FileSystem\FileSystemDirectory.cs" />
     <Compile Include="IO\FileSystem\FileSystemException.cs" />
     <Compile Include="IO\FileSystem\FileSystemFile.cs" />
@@ -621,6 +625,7 @@
     <Compile Include="ServiceModel\WorkItem.cs" />
     <Compile Include="ServiceModel\WorkItemAggregatorService.cs" />
     <Compile Include="ServiceModel\WorkQueue.cs" />
+    <Compile Include="Standards\Countries_ISO3166_1.cs" />
     <Compile Include="StringConsts.cs" />
     <Compile Include="StringValueConversion.cs" />
     <Compile Include="TaskUtils.cs" />

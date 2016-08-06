@@ -22,5 +22,5 @@ namespace NFX.Media.PDF.Styling
     Outlined,
     OutlinedBold
   }
-  
+
 }

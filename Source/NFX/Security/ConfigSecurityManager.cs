@@ -24,14 +24,14 @@ using NFX.Environment;
 
 namespace NFX.Security
 {
-    
+
     /// <summary>
     /// Provides security manager implementation that authenticates and authorizes users from configuration
     /// </summary>
     public class ConfigSecurityManager : ApplicationComponent, ISecurityManagerImplementation
     {
         #region CONSTS
-          
+
            public const string CONFIG_USERS_SECTION = "users";
            public const string CONFIG_USER_SECTION = "user";
 
@@ -46,9 +46,9 @@ namespace NFX.Security
 
 
         #endregion
-        
+
         #region .ctor
-          
+
              /// <summary>
              /// Constructs security manager that authenticates users listed in application configuration
              /// </summary>
@@ -56,7 +56,7 @@ namespace NFX.Security
              {
 
              }
-            
+
              /// <summary>
              /// Constructs security manager that authenticates users listed in the supplied configuration section
              /// </summary>
@@ -79,7 +79,7 @@ namespace NFX.Security
         #region Properties
 
             public override string ComponentCommonName { get { return "secman"; }}
-            
+
             /// <summary>
             /// Returns config node that this instance is configured from.
             /// If null is returned then manager performs authentication from application configuration
@@ -97,9 +97,9 @@ namespace NFX.Security
             {
               var sect = m_Config ?? App.ConfigRoot[CommonApplicationLogic.CONFIG_SECURITY_SECTION];
               if (sect.Exists && credentials is IDPasswordCredentials)
-              { 
+              {
                   var idpass = (IDPasswordCredentials)credentials;
-                  
+
                   var usern = findUserNode(sect, idpass);
 
                   if (usern.Exists)
@@ -107,18 +107,18 @@ namespace NFX.Security
                       var name = usern.AttrByName(CONFIG_NAME_ATTR).ValueAsString(string.Empty);
                       var descr = usern.AttrByName(CONFIG_DESCRIPTION_ATTR).ValueAsString(string.Empty);
                       var status = usern.AttrByName(CONFIG_STATUS_ATTR).ValueAsEnum<UserStatus>(UserStatus.Invalid);
-                      
+
                       var rights = Rights.None;
-                      
+
                       var rightsn = usern[CONFIG_RIGHTS_SECTION];
-                      
+
                       if (rightsn.Exists)
                       {
                         var data = new MemoryConfiguration();
                         data.CreateFromNode(rightsn);
                         rights = new Rights(data);
-                      } 
-                      
+                      }
+
                       return new User(credentials,
                                       credToAuthToken(idpass),
                                       status,
@@ -127,13 +127,13 @@ namespace NFX.Security
                                       rights);
                   }
               }
-                
-              return new User(credentials, 
+
+              return new User(credentials,
                               new AuthenticationToken(),
-                              UserStatus.Invalid, 
+                              UserStatus.Invalid,
                               StringConsts.SECURITY_NON_AUTHENTICATED,
                               StringConsts.SECURITY_NON_AUTHENTICATED,
-                              Rights.None); 
+                              Rights.None);
             }
 
 
@@ -156,7 +156,7 @@ namespace NFX.Security
 
             public AccessLevel Authorize(User user, Permission permission)
             {
-                if (user==null || permission==null) 
+                if (user==null || permission==null)
                  throw new SecurityException(StringConsts.ARGUMENT_ERROR+GetType().Name+".Authorize(user==null|permission==null)");
 
                 var node = user.Rights.Root.NavigateSection(permission.FullPath);
@@ -177,11 +177,11 @@ namespace NFX.Security
             private IConfigSectionNode findUserNode(IConfigSectionNode securityRootNode, IDPasswordCredentials cred)
             {
                 var users = securityRootNode[CONFIG_USERS_SECTION];
-                
-                return users.Children.FirstOrDefault( cn => cn.IsSameName(CONFIG_USER_SECTION) && 
+
+                return users.Children.FirstOrDefault( cn => cn.IsSameName(CONFIG_USER_SECTION) &&
                                                      string.Equals(cn.AttrByName(CONFIG_ID_ATTR).Value, cred.ID, StringComparison.InvariantCulture) &&
-                                                     string.Equals(cn.AttrByName(CONFIG_PASSWORD_ATTR).Value, cred.Password.ToMD5String(), StringComparison.InvariantCultureIgnoreCase) 
-                                                    ) ?? users.Configuration.EmptySection;        
+                                                     string.Equals(cn.AttrByName(CONFIG_PASSWORD_ATTR).Value, cred.Password.ToMD5String(), StringComparison.InvariantCultureIgnoreCase)
+                                                    ) ?? users.Configuration.EmptySection;
             }
 
             private AuthenticationToken credToAuthToken(IDPasswordCredentials cred)
@@ -198,7 +198,7 @@ namespace NFX.Security
 
                 if (seg.Length<2)
                     return new IDPasswordCredentials(string.Empty, string.Empty);
-               
+
                 return new IDPasswordCredentials(seg[0], seg[1]);
             }
 

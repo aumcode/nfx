@@ -24,6 +24,7 @@ using NUnit.Framework;
 
 using NFX.IO;
 using NFX.Serialization.JSON;
+using NFX.Collections;
 
 namespace NFX.NUnit.IO
 {
@@ -1388,6 +1389,54 @@ namespace NFX.NUnit.IO
 
                         var map3 = r.ReadNullableNLSMap();
                         Assert.IsFalse( map3.HasValue );
+                    }
+                }
+
+
+                [TestCase]
+                public void StringMap()
+                {
+                    using(var ms = new MemoryStream())
+                    {
+                        var r = SlimFormat.Instance.MakeReadingStreamer();
+                        var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                        r.BindStream(ms);
+                        w.BindStream(ms); 
+             
+                        var mapS = new StringMap(true)
+                        {
+                           {"a", "Alex"},
+                           {"b","Boris"}
+                        };
+
+                        var mapI = new StringMap(false)
+                        {
+                           {"a", "Alex"},
+                           {"b","Boris"},
+                           {"c","Chuck"}
+                        };
+
+
+
+                        w.Write(mapS);
+                        w.Write(mapI);
+                
+                        ms.Seek(0, SeekOrigin.Begin);
+                
+                        
+                        var mapS2 = r.ReadStringMap();
+                        Assert.IsTrue(mapS2.CaseSensitive);
+                        Assert.AreEqual(2, mapS2.Count);
+                        Assert.AreEqual("Alex", mapS2["a"]);
+                        Assert.AreEqual("Boris", mapS2["b"]);
+
+                        var mapI2 = r.ReadStringMap();
+                        Assert.IsFalse(mapI2.CaseSensitive);
+                        Assert.AreEqual(3, mapI2.Count);
+                        Assert.AreEqual("Alex", mapI2["a"]);
+                        Assert.AreEqual("Boris", mapI2["b"]);
+                        Assert.AreEqual("Chuck", mapI2["c"]);
                     }
                 }
 

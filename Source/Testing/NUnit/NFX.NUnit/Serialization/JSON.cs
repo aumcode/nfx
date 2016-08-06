@@ -24,6 +24,7 @@ using NUnit.Framework;
 
 using NFX.IO;
 using NFX.Serialization.JSON;
+using NFX.Collections;
 
 
 
@@ -567,6 +568,52 @@ this \r\n is not escape'
 
             dan = nls.Get(NLSMap.GetParts.DescriptionAndName, "XXX", dfltLangIso: "ZZZ");
             Assert.IsNull(dan);
+        }
+
+
+        [TestCase]
+        public void StringMap_Compact()
+        {
+            var map = new StringMap
+            {
+              {"p1", "v1"},
+              {"p2", "v2"},
+              {"Age", "149"}
+            };
+
+            var json = map.ToJSON(JSONWritingOptions.Compact);
+            Console.WriteLine(json);
+
+            Assert.AreEqual(@"{""p1"":""v1"",""p2"":""v2"",""Age"":""149""}",json);
+
+
+            dynamic read = json.JSONToDynamic();
+            Assert.IsNotNull(read);
+
+            Assert.AreEqual("v1", read.p1);
+            Assert.AreEqual("v2", read.p2);
+            Assert.AreEqual("149", read.Age);
+        }
+
+        [TestCase]
+        public void StringMap_Pretty()
+        {
+            var map = new StringMap
+            {
+              {"p1", "v1"},
+              {"p2", "v2"},
+              {"Age", "149"}
+            };
+
+            var json = map.ToJSON(JSONWritingOptions.PrettyPrint);
+            Console.WriteLine(json);
+
+            dynamic read = json.JSONToDynamic();
+            Assert.IsNotNull(read);
+
+            Assert.AreEqual("v1", read.p1);
+            Assert.AreEqual("v2", read.p2);
+            Assert.AreEqual("149", read.Age);
         }
 
 

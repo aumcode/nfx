@@ -20,11 +20,11 @@ using System.Linq;
 namespace NFX.Erlang
 {
   /// <summary>
-  /// Special class used for passing tracing information in Erlang distributed 
+  /// Special class used for passing tracing information in Erlang distributed
   /// messages SEND_TT, EXIT_TT, REG_SEND_TT, EXIT2_TT
   /// </summary>
   /// <remarks>
-  /// See 
+  /// See
   /// </remarks>
   public class ErlTrace : ErlTuple
   {

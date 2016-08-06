@@ -37,7 +37,7 @@ namespace NFX.CodeAnalysis.Laconfig
             private void errorAndAbort(LaconfigMsgCode code)
             {
                EmitMessage(MessageType.Error, (int)code, Lexer.SourceCodeReference,token: token);
-               throw new abortException(); 
+               throw new abortException();
             }
 
             private void fetch()
@@ -63,7 +63,7 @@ namespace NFX.CodeAnalysis.Laconfig
 
             private void doRoot(Configuration config)
             {
-               if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral) 
+               if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral)
                  errorAndAbort(LaconfigMsgCode.eSectionNameExpected);
 
                config.Create(token.Text);
@@ -71,12 +71,12 @@ namespace NFX.CodeAnalysis.Laconfig
                if (token.Type==LaconfigTokenType.tEQ)
                {
                     fetchPrimary();
-                    if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral) 
+                    if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral)
                           errorAndAbort(LaconfigMsgCode.eSectionOrAttributeValueExpected);
                     config.Root.Value = token.Text;
                     fetchPrimary();
                }
-               
+
                populateSection(config.Root);
 
                if (token.Type!=LaconfigTokenType.tEOF)
@@ -98,13 +98,13 @@ namespace NFX.CodeAnalysis.Laconfig
                       fetchPrimaryOrEOF();//skip }  section ended
                       return;
                     }
-                    
-                    if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral) 
+
+                    if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral)
                       errorAndAbort(LaconfigMsgCode.eSectionOrAttributeNameExpected);
 
                     var name = token.Text;
                     fetchPrimary();
-                
+
                     if (token.Type==LaconfigTokenType.tBraceOpen)//section w/o value
                     {
                        var subsection = section.AddChildNode(name, null);
@@ -112,18 +112,18 @@ namespace NFX.CodeAnalysis.Laconfig
                     }else if (token.Type==LaconfigTokenType.tEQ)//section with value or attribute
                     {
                        fetchPrimary();
-                       if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral) 
+                       if (token.Type!=LaconfigTokenType.tIdentifier && token.Type!=LaconfigTokenType.tStringLiteral)
                           errorAndAbort(LaconfigMsgCode.eSectionOrAttributeValueExpected);
-                       
+
                        var value = token.Text;
                        fetchPrimary();//skip value
-                      
+
                        if (token.Type==LaconfigTokenType.tBraceOpen)//section with value
                        {
                          var subsection = section.AddChildNode(name, value);
                          populateSection(subsection);
                        }
-                       else 
+                       else
                         section.AddAttributeNode(name, value);
 
                     }else

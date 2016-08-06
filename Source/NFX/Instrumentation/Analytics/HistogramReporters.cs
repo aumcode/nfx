@@ -33,7 +33,7 @@ namespace NFX.Instrumentation.Analytics
         public static string ToStringReport(this IHistogram hist)
         {
             const string s_Count = "Count";
- 
+
             SortedList<HistogramKeys, HistogramEntry> m_Data =
                 new SortedList<HistogramKeys, HistogramEntry>();
             foreach (var entry in hist)

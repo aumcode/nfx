@@ -34,9 +34,9 @@ namespace NFX
         public const int IO_WAIT_GRANULARITY_MS = 200;
         public const int IO_WAIT_MIN_TIMEOUT = 100;
         public const int IO_WAIT_DEFAULT_TIMEOUT = 2000;
-        
-        
-        
+
+
+
         /// <summary>
         /// Reads first line from the string
         /// </summary>
@@ -83,7 +83,7 @@ namespace NFX
             int n = 0;
             return ReadBEUInt32(buf, ref n);
         }
-     
+
         /// <summary>
         /// Reads an integer encoded as big endian from buffer at the specified index
         /// and increments the idx by the number of bytes read
@@ -95,14 +95,14 @@ namespace NFX
             idx = n;
             return result;
         }
-      
+
         /// <summary>
         /// Reads an integer encoded as big endian from buffer at the specified index
         /// and increments the idx by the number of bytes read
         /// </summary>
         public static int ReadBEInt32(this byte[] buf, ref int idx)
         {
-            return  ((int)buf[idx++] << 24) + 
+            return  ((int)buf[idx++] << 24) +
                     ((int)buf[idx++] << 16) +
                     ((int)buf[idx++] << 8) +
                      (int)buf[idx++];
@@ -114,7 +114,7 @@ namespace NFX
         /// </summary>
         public static uint ReadBEUInt32(this byte[] buf, ref int idx)
         {
-            return  ((uint)buf[idx++] << 24) + 
+            return  ((uint)buf[idx++] << 24) +
                     ((uint)buf[idx++] << 16) +
                     ((uint)buf[idx++] << 8) +
                      (uint)buf[idx++];
@@ -126,7 +126,7 @@ namespace NFX
         /// </summary>
         public static uint ReadBEUInt32(this byte[] buf, ref long idx)
         {
-            return  ((uint)buf[idx++] << 24) + 
+            return  ((uint)buf[idx++] << 24) +
                     ((uint)buf[idx++] << 16) +
                     ((uint)buf[idx++] << 8) +
                      (uint)buf[idx++];
@@ -139,11 +139,11 @@ namespace NFX
         /// </summary>
         public static UInt64 ReadBEUInt64(this byte[] buf, ref int idx)
         {
-            return ((ulong)buf[idx++] << 56) + 
+            return ((ulong)buf[idx++] << 56) +
                    ((ulong)buf[idx++] << 48) +
                    ((ulong)buf[idx++] << 40) +
                    ((ulong)buf[idx++] << 32) +
-                   ((ulong)buf[idx++] << 24) + 
+                   ((ulong)buf[idx++] << 24) +
                    ((ulong)buf[idx++] << 16) +
                    ((ulong)buf[idx++] << 8 ) +
                    ((ulong)buf[idx++]      );
@@ -155,11 +155,11 @@ namespace NFX
         /// </summary>
         public static UInt64 ReadBEUInt64(this byte[] buf, int idx = 0)
         {
-            return ((ulong)buf[idx++] << 56) + 
+            return ((ulong)buf[idx++] << 56) +
                    ((ulong)buf[idx++] << 48) +
                    ((ulong)buf[idx++] << 40) +
                    ((ulong)buf[idx++] << 32) +
-                   ((ulong)buf[idx++] << 24) + 
+                   ((ulong)buf[idx++] << 24) +
                    ((ulong)buf[idx++] << 16) +
                    ((ulong)buf[idx++] << 8 ) +
                    ((ulong)buf[idx++]      );
@@ -204,7 +204,7 @@ namespace NFX
 
             var b2 = s.ReadByte();
             if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEUShort()");
-            
+
             return (ushort)(
                          (b1 << 8 ) +
                          (b2)
@@ -227,8 +227,8 @@ namespace NFX
 
             var b4 = s.ReadByte();
             if (b4<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEInt32()");
-            
-            return (b1 << 24) + 
+
+            return (b1 << 24) +
                    (b2 << 16) +
                    (b3 << 8 ) +
                    (b4 );
@@ -264,7 +264,7 @@ namespace NFX
            if (b8<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEUInt64()");
 
 
-          
+
           return ((UInt64)b1 << 56) +
                  ((UInt64)b2 << 48) +
                  ((UInt64)b3 << 40) +
@@ -341,7 +341,7 @@ namespace NFX
           buf[idx+6] = (byte)(value >> 8);
           buf[idx+7] = (byte)(value);
         }
-    
+
         /// <summary>
         /// Writes a short encoded as big endian to buffer at the specified index
         /// </summary>
@@ -350,7 +350,7 @@ namespace NFX
             buf[idx+0] = (byte)(value >> 8);
             buf[idx+1] = (byte)(value );
         }
-    
+
         /// <summary>
         /// Writes a short encoded as big endian to the given stream
         /// </summary>
@@ -368,7 +368,7 @@ namespace NFX
             s.WriteByte((byte)(value >> 8));
             s.WriteByte((byte)value);
         }
-    
+
         /// <summary>
         /// Writes an integer encoded as big endian to the given stream
         /// </summary>
@@ -403,7 +403,7 @@ namespace NFX
             int length;
             while ((length = reader.Read(chars, 0, chars.Length)) != 0)
               for (int i = 0; i < length; i++)
-                yield return chars[i];            
+                yield return chars[i];
           }
         }
 
@@ -513,18 +513,18 @@ namespace NFX
 
            var len8 = len >> 3;
 
-           fixed (byte* pb1=buf1, pb2=buf2) 
+           fixed (byte* pb1=buf1, pb2=buf2)
            {
               byte* p1=pb1, p2=pb2;
-              
+
               for (int i=0; i < len8; i++, p1+=8, p2+=8)
                 if (*((long*)p1) != *((long*)p2)) return false;
-             
+
               //remainders after loop
 
               if ((len & 4)!=0)
               {
-                 if (*((int*)p1)!=*((int*)p2)) return false; 
+                 if (*((int*)p1)!=*((int*)p2)) return false;
                  p1+=4; p2+=4;
               }
 
@@ -533,7 +533,7 @@ namespace NFX
                  if (*((short*)p1)!=*((short*)p2)) return false;
                  p1+=2; p2+=2;
               }
-              
+
               if ((len & 1)!=0)
                 if (*((byte*)p1) != *((byte*)p2)) return false;
 
@@ -543,14 +543,14 @@ namespace NFX
 
 
        /// <summary>
-       /// Scales source image so it fits in the desired image size preserving aspect ratio. 
+       /// Scales source image so it fits in the desired image size preserving aspect ratio.
        /// This function is usable for profile picture size/aspect normalization
        /// </summary>
        public static Image NormalizeCenteredImage(this Image srcImage, int targetWidth = 128, int targetHeight = 128, int xDpi = 96, int yDpi = 96)
        {
          if (srcImage==null || targetWidth<1 ||targetHeight<1 || xDpi<1 || yDpi<1)
           throw new NFXException(StringConsts.ARGUMENT_ERROR + "NormalizeCenteredImage(...)");
-         
+
          var result = new Bitmap(targetWidth, targetHeight);
          result.SetResolution(xDpi, yDpi);
          using(var gr = Graphics.FromImage(result))
@@ -563,7 +563,7 @@ namespace NFX
             int sx,sy,sw,sh;
 
 
-                       
+
             if (targetHeight>targetWidth)
             {
                 var ky = srcImage.Height / (double)targetHeight;
@@ -579,13 +579,13 @@ namespace NFX
 
             if (sw>srcImage.Width)
             {
-               var k = (sw-srcImage.Width) / (double)srcImage.Width; 
+               var k = (sw-srcImage.Width) / (double)srcImage.Width;
                sw = srcImage.Width;
                sh = (int)(sh * (1.0-k*sar));
             }
             if (sh>srcImage.Height)
             {
-               var k = (sh-srcImage.Height) / (double)srcImage.Height; 
+               var k = (sh-srcImage.Height) / (double)srcImage.Height;
                sh = srcImage.Height;
                sw = (int)(sw * (1.0-k/sar));
             }
@@ -593,12 +593,12 @@ namespace NFX
 
             sx = scx - sw / 2;
             sy = scy - sh / 2;
-            
+
             gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             gr.DrawImage(srcImage,
-                         new Rectangle(0, 0, targetWidth, targetHeight), 
-                         sx, sy, sw, sh, GraphicsUnit.Pixel); 
-            
+                         new Rectangle(0, 0, targetWidth, targetHeight),
+                         sx, sy, sw, sh, GraphicsUnit.Pixel);
+
 //gr.DrawRectangle(Pens.Red, 0,0,targetWidth-1,targetHeight-1);
          }
          return result;

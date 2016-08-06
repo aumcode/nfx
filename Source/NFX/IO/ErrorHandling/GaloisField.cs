@@ -63,7 +63,7 @@ namespace NFX.IO.ErrorHandling
       private readonly int m_Primitive;
       private readonly int m_GeneratorBase;
       private bool m_Initialized;
-    
+
     #endregion
 
     #region Properties
@@ -95,7 +95,7 @@ namespace NFX.IO.ErrorHandling
           return m_Polynomial1;
         }
       }
-    
+
     #endregion
 
     #region Public
@@ -157,7 +157,7 @@ namespace NFX.IO.ErrorHandling
         int expIndex = logSum % (m_Size - 1);
         return m_ExpTable[expIndex];
       }
-    
+
     #endregion
 
     #region .pvt. impl.

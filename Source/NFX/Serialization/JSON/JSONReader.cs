@@ -30,11 +30,11 @@ namespace NFX.Serialization.JSON
     /// <summary>
     /// Provides deserialization functionality from JSON format
     /// </summary>
-    public static class JSONReader 
+    public static class JSONReader
     {
-        
+
         #region Public
-      
+
             public static dynamic DeserializeDynamic(Stream stream, Encoding encoding = null, bool caseSensitiveMaps = true)
             {
                return deserializeDynamic( read(stream, encoding, caseSensitiveMaps));
@@ -71,7 +71,7 @@ namespace NFX.Serialization.JSON
                return deserializeObject( read(source, caseSensitiveMaps));
             }
 
-            
+
             /// <summary>
             /// Deserializes into Rowset or Table from JSOnDataMap, as serialized by RowsedBase.WriteAsJSON()
             /// </summary>
@@ -79,7 +79,7 @@ namespace NFX.Serialization.JSON
             {
               return RowsetBase.FromJSON(json, schemaOnly, readOnlySchema);
             }
-            
+
             /// <summary>
             /// Deserializes into Rowset or Table from JSONDataMap, as serialized by RowsedBase.WriteAsJSON()
             /// </summary>
@@ -89,7 +89,7 @@ namespace NFX.Serialization.JSON
             }
 
             /// <summary>
-            /// Converts JSONMap into typed row of the requested type. 
+            /// Converts JSONMap into typed row of the requested type.
             /// The requested type must be derived from NFX.DataAccess.CRUD.TypedRow.
             /// The extra data found in JSON map will be placed in AmorphousData dictionary if the row implemets IAmorphousData, discarded otherwise.
             /// Note: This method provides "the best match" and does not guarantee that all data will/can be converted from JSON, i.e.
@@ -100,7 +100,7 @@ namespace NFX.Serialization.JSON
             /// <param name="fromUI">When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</param>
             public static TypedRow ToRow(Type type, JSONDataMap jsonMap, bool fromUI = true)
             {
-              if (!typeof(TypedRow).IsAssignableFrom(type) || jsonMap==null) 
+              if (!typeof(TypedRow).IsAssignableFrom(type) || jsonMap==null)
                throw new JSONDeserializationException(StringConsts.ARGUMENT_ERROR+"JSONReader.ToRow(type|jsonMap=null)");
               var field = "";
               try
@@ -114,7 +114,7 @@ namespace NFX.Serialization.JSON
             }
 
             /// <summary>
-            /// Generic version of 
+            /// Generic version of
             /// <see cref="ToRow(Type, JSONDataMap, bool)"/>
             /// </summary>
             /// <typeparam name="T">TypedRow</typeparam>
@@ -125,7 +125,7 @@ namespace NFX.Serialization.JSON
 
 
             /// <summary>
-            /// Converts JSONMap into supplied row instance. 
+            /// Converts JSONMap into supplied row instance.
             /// The extra data found in JSON map will be placed in AmorphousData dictionary if the row implemets IAmorphousData, discarded otherwise.
             /// Note: This method provides "the best match" and does not guarantee that all data will/can be converted from JSON, i.e.
             ///  it can only convert one dimensional arrays and Lists of either primitive or TypeRow-derived entries
@@ -152,7 +152,7 @@ namespace NFX.Serialization.JSON
 
 
             private static TypedRow toTypedRow(Type type, JSONDataMap jsonMap, ref string field, bool fromUI)
-            { 
+            {
               var row = (TypedRow)Activator.CreateInstance(type);
               toRow(row, jsonMap, ref field, fromUI);
               return row;
@@ -179,10 +179,10 @@ namespace NFX.Serialization.JSON
                     }
 
                     if (fromUI && rfd.NonUI) continue;//skip NonUI fields
-                
-                    if (fv==null) 
+
+                    if (fv==null)
                           row.SetFieldValue(rfd, null);
-                    else    
+                    else
                     if (fv is JSONDataMap)
                     {
                           if (typeof(TypedRow).IsAssignableFrom(rfd.Type))
@@ -193,7 +193,7 @@ namespace NFX.Serialization.JSON
                     else if (rfd.NonNullableType==typeof(TimeSpan) && (fv is ulong || fv is long || fv is int || fv is uint))
                     {
                          var lt = Convert.ToInt64(fv);
-                         row.SetFieldValue(rfd, TimeSpan.FromTicks(lt)); 
+                         row.SetFieldValue(rfd, TimeSpan.FromTicks(lt));
                     }
                     else if (fv is int || fv is long || fv is ulong || fv is double || fv is bool)
                           row.SetFieldValue(rfd, fv);
@@ -207,23 +207,23 @@ namespace NFX.Serialization.JSON
                     else if (fv is JSONDataArray || fv.GetType().IsArray)
                     {
                           JSONDataArray arr;
-                          if (fv is JSONDataArray) 
+                          if (fv is JSONDataArray)
                             arr = (JSONDataArray)fv;
                           else
                           {
                             arr = new JSONDataArray(((Array)fv).Length);
                             foreach(var elm in (System.Collections.IEnumerable)fv) arr.Add(elm);
                           }
-                  
+
                           if (rfd.Type.IsArray)
                           {
-                                var raet = rfd.Type.GetElementType();//row array element type 
+                                var raet = rfd.Type.GetElementType();//row array element type
                                 if (typeof(TypedRow).IsAssignableFrom(raet))
                                 {
                                   var narr = Array.CreateInstance(raet, arr.Count);
                                   for(var i=0; i<narr.Length; i++)
                                     narr.SetValue( ToRow(raet, arr[i] as JSONDataMap), i);
-                                  row.SetFieldValue(rfd, narr);   
+                                  row.SetFieldValue(rfd, narr);
                                 }//else primitives
                                 else
                                 {
@@ -238,9 +238,9 @@ namespace NFX.Serialization.JSON
                           else if (rfd.Type.IsGenericType && rfd.Type.GetGenericTypeDefinition() == typeof(List<>))//List
                           {
                                 var gat = rfd.Type.GetGenericArguments()[0];
-                                
+
                                 var lst = Activator.CreateInstance(rfd.Type) as System.Collections.IList;
-                                
+
                                 if (typeof(TypedRow).IsAssignableFrom(gat))
                                 {
                                   for(var i=0; i<arr.Count; i++)
@@ -262,7 +262,7 @@ namespace NFX.Serialization.JSON
                                     else
                                       lst.Add( null );
                                 }
-                                else if (gat.IsPrimitive || 
+                                else if (gat.IsPrimitive ||
                                     gat==typeof(NFX.DataAccess.Distributed.GDID) ||
                                     gat==typeof(Guid) ||
                                     gat==typeof(DateTime))
@@ -272,14 +272,14 @@ namespace NFX.Serialization.JSON
                                       lst.Add( StringValueConversion.AsType(arr[i].ToString(), gat, false) );
                                 }
                                 else if (gat.IsGenericType && gat.GetGenericTypeDefinition() == typeof(Nullable<>))
-                                { 
+                                {
                                     var nt = gat.GetGenericArguments()[0];
                                     if (nt.IsPrimitive ||
                                         nt==typeof(NFX.DataAccess.Distributed.GDID) ||
                                         nt==typeof(Guid) ||
                                         nt==typeof(DateTime))
                                     {
-                                
+
                                     for(var i=0; i<arr.Count; i++)
                                       if (arr[i]!=null)
                                         lst.Add( StringValueConversion.AsType(arr[i].ToString(), gat, false) );
@@ -287,9 +287,9 @@ namespace NFX.Serialization.JSON
                                         lst.Add( null);
                                     }
                                 }
-                                
+
                                 row.SetFieldValue(rfd, lst);
-                                
+
                           }
                     }
                     else
@@ -298,12 +298,12 @@ namespace NFX.Serialization.JSON
                           if (fv is string)
                           {
                             var sfv = (string)fv;
-                            if (rfd.Type==typeof(string)) 
+                            if (rfd.Type==typeof(string))
                             {
                               row.SetFieldValue(rfd, sfv);
                               continue;
                             }
-                    
+
                             if (typeof(TypedRow).IsAssignableFrom(rfd.Type))
                             {
                              if (sfv.IsNotNullOrWhiteSpace())
@@ -335,18 +335,18 @@ namespace NFX.Serialization.JSON
 
               if (amorph!=null && amorph.AmorphousDataEnabled )
                 amorph.AfterLoad("json");
-            } 
+            }
 
-            
+
         #endregion
 
         #region .pvt .impl
-            
+
             private static dynamic deserializeDynamic(object root)
             {
                 var data = deserializeObject(root);
                 if (data == null) return null;
-                
+
                 return new JSONDynamicObject( data );
             }
 
@@ -355,13 +355,13 @@ namespace NFX.Serialization.JSON
                 if (root==null) return null;
 
                 var data = root as IJSONDataObject;
-                
+
                 if (data == null)
                   data = new JSONDataMap{{"value", root}};
-                
+
                 return data;
             }
-            
+
             private static object read(Stream stream, Encoding encoding, bool caseSensitiveMaps)
             {
                 using(var source = encoding==null ? new StreamSource(stream, JSONLanguage.Instance)
@@ -379,14 +379,14 @@ namespace NFX.Serialization.JSON
             {
                 var lexer = new JSONLexer(source, throwErrors: true);
                 var parser = new JSONParser(lexer, throwErrors: true, caseSensitiveMaps: caseSensitiveMaps);
-                
+
                 parser.Parse();
-                
-                return parser.ResultContext.ResultObject;   
+
+                return parser.ResultContext.ResultObject;
             }
         #endregion
 
 
-            
+
     }
 }

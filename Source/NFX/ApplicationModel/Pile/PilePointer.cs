@@ -17,7 +17,7 @@ namespace NFX.ApplicationModel.Pile
   /// </summary>
   public struct PilePointer : IEquatable<PilePointer>
   {
-    
+
     /// <summary>
     /// Returns a -1:-1 non-valid pointer (either local or distributed)
     /// </summary>
@@ -31,7 +31,7 @@ namespace NFX.ApplicationModel.Pile
       NodeID = nodeId;
       Segment = seg;
       Address = addr;
-    } 
+    }
 
     /// <summary>
     /// Create local pointer
@@ -71,7 +71,7 @@ namespace NFX.ApplicationModel.Pile
 
     public override int GetHashCode()
     {
-      return Address; 
+      return Address;
     }
 
     public override bool Equals(object obj)

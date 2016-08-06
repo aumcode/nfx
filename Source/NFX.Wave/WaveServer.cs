@@ -38,28 +38,28 @@ namespace NFX.Wave
   /// Represents "(W)eb(A)pp(V)iew(E)nhanced" web server which provides DYNAMIC web site services.
   /// This server is not meant to be exposed directly to the public Internet, rather it should be used as an application server
   /// behind the reverse proxy, such as NGINX. This server is designed to serve dynamic data-driven requests/APIs and not meant to be used
-  /// for serving static content files (although it can). 
+  /// for serving static content files (although it can).
   /// The implementation is based on a lightweight HttpListener that processes incoming Http requests via an injectable WorkDispatcher
   /// which governs the threading and WorkContext lifecycle.
   /// The server processing pipeline is purposely designed to be synchronous-blocking (thread per call) which does not mean that the
   /// server is inefficient, to the contrary - this server design is specifically targeting short-called methods relying on a classical thread call stack.
   /// This approach obviates the need to create surrogate message loops/synchro contexts, tasks and other objects that introduce extra GC load.
-  /// The server easily support "dangling"(left open indefinitely) WorkContext instances that can stream events (i.e. SSE/Server Push) and WebSockets from 
+  /// The server easily support "dangling"(left open indefinitely) WorkContext instances that can stream events (i.e. SSE/Server Push) and WebSockets from
   ///  specially-purposed asynchronous notification threads.
   /// </summary>
   /// <remarks>
   /// The common belief that asynchronous non-thread-based web servers always work faster (i.e. Node.js) is not true in the data-oriented systems of high scale because
   ///  eventually multiple web server machines still block on common data access resources, so it is much more important to design the database backend
-  /// in an asynchronous fashion, as it is the real bottle neck of the system. Even if most of the available threads are not physically paused by IO, 
-  ///  they are paused logically as the logical units of work are waiting for IO and the fact that server can accept more socket requests does not mean that they 
-  ///  will not timeout.  The downsides of asynchronous web layers are: 
-  ///   (a) much increased implementation/maintenance complexity 
+  /// in an asynchronous fashion, as it is the real bottle neck of the system. Even if most of the available threads are not physically paused by IO,
+  ///  they are paused logically as the logical units of work are waiting for IO and the fact that server can accept more socket requests does not mean that they
+  ///  will not timeout.  The downsides of asynchronous web layers are:
+  ///   (a) much increased implementation/maintenance complexity
   ///   (b) many additional task/thread context switches and extra objects that facilitate the event loops/messages/tasks etc...
   /// </remarks>
   public class WaveServer : ServiceWithInstrumentationBase<object>
   {
     #region CONSTS
-      
+
       public const string CONFIG_SERVER_SECTION = "server";
 
       public const string CONFIG_PREFIX_SECTION = "prefix";
@@ -95,7 +95,7 @@ namespace NFX.Wave
       public static Registry<WaveServer> s_Servers = new Registry<WaveServer>();
 
       /// <summary>
-      /// Returns the global registry of all server instances that are active in this process 
+      /// Returns the global registry of all server instances that are active in this process
       /// </summary>
       public static IRegistry<WaveServer> Servers
       {
@@ -110,7 +110,7 @@ namespace NFX.Wave
       public WaveServer() : base()
       {
         m_Prefixes = new EventedList<string,WaveServer>(this, true);
-        m_Prefixes.GetReadOnlyEvent = (l) => Status != ControlStatus.Inactive; 
+        m_Prefixes.GetReadOnlyEvent = (l) => Status != ControlStatus.Inactive;
       }
     #endregion
 
@@ -127,7 +127,7 @@ namespace NFX.Wave
       private EventedList<string, WaveServer> m_Prefixes;
 
       private Thread m_AcceptThread;
-      private Thread m_InstrumentationThread; 
+      private Thread m_InstrumentationThread;
       private AutoResetEvent m_InstrumentationThreadWaiter;
 
       private Semaphore m_AcceptSemaphore;
@@ -177,15 +177,15 @@ namespace NFX.Wave
     #endregion
 
 
-    
+
 
     #region Properties
 
-      
+
        public override string ComponentCommonName { get { return "ws-"+Name; }}
 
-      
-      
+
+
       /// <summary>
       /// Provides the name of environment, i.e. DEV,PROD, TEST i.e. some handlers may depend on environment name to serve DEV vs PROD java script files etc.
       /// </summary>
@@ -193,10 +193,10 @@ namespace NFX.Wave
       public string EnvironmentName
       {
         get { return m_EnvironmentName ?? string.Empty;}
-        set 
+        set
         {
           CheckServiceInactive();
-          m_EnvironmentName = value; 
+          m_EnvironmentName = value;
         }
       }
 
@@ -229,10 +229,10 @@ namespace NFX.Wave
       public bool IgnoreClientWriteErrors
       {
         get { return m_IgnoreClientWriteErrors;}
-        set 
+        set
         {
           CheckServiceInactive();
-          m_IgnoreClientWriteErrors = value; 
+          m_IgnoreClientWriteErrors = value;
         }
       }
 
@@ -255,13 +255,13 @@ namespace NFX.Wave
       public int KernelHttpQueueLimit
       {
         get { return m_KernelHttpQueueLimit;}
-        set 
+        set
         {
           CheckServiceInactive();
           if (value < MIN_KERNEL_HTTP_QUEUE_LIMIT) value = MIN_KERNEL_HTTP_QUEUE_LIMIT;
            else
             if (value > MAX_KERNEL_HTTP_QUEUE_LIMIT) value = MAX_KERNEL_HTTP_QUEUE_LIMIT;
-          m_KernelHttpQueueLimit = value; 
+          m_KernelHttpQueueLimit = value;
         }
       }
 
@@ -272,13 +272,13 @@ namespace NFX.Wave
       public int ParallelAccepts
       {
         get { return m_ParallelAccepts;}
-        set 
+        set
         {
           CheckServiceInactive();
           if (value < MIN_PARALLEL_ACCEPTS) value = MIN_PARALLEL_ACCEPTS;
            else
             if (value > MAX_PARALLEL_ACCEPTS) value = MAX_PARALLEL_ACCEPTS;
-          m_ParallelAccepts = value; 
+          m_ParallelAccepts = value;
         }
       }
 
@@ -290,13 +290,13 @@ namespace NFX.Wave
       public int ParallelWorks
       {
         get { return m_ParallelWorks;}
-        set 
+        set
         {
           CheckServiceInactive();
           if (value < MIN_PARALLEL_WORKS) value = MIN_PARALLEL_WORKS;
            else
             if (value > MAX_PARALLEL_WORKS) value = MAX_PARALLEL_WORKS;
-          m_ParallelWorks = value; 
+          m_ParallelWorks = value;
         }
       }
 
@@ -305,33 +305,33 @@ namespace NFX.Wave
       /// </summary>
       public IList<string> Prefixes { get { return m_Prefixes;}}
 
-      
+
       /// <summary>
-      /// Gets/sets network gate 
+      /// Gets/sets network gate
       /// </summary>
-      public INetGate Gate 
-      { 
-        get { return m_Gate;} 
+      public INetGate Gate
+      {
+        get { return m_Gate;}
         set
         {
           CheckServiceInactive();
           m_Gate = value;
-        } 
+        }
       }
-      
+
       /// <summary>
       /// Gets/sets work dispatcher
       /// </summary>
-      public WorkDispatcher Dispatcher 
-      { 
-        get { return m_Dispatcher;} 
+      public WorkDispatcher Dispatcher
+      {
+        get { return m_Dispatcher;}
         set
         {
           CheckServiceInactive();
           if (value!=null && value.ComponentDirector!=this)
             throw new WaveException(StringConsts.DISPATCHER_NOT_THIS_SERVER_ERROR);
           m_Dispatcher = value;
-        } 
+        }
       }
 
       /// <summary>
@@ -377,7 +377,7 @@ namespace NFX.Wave
                      error2,
                      pars: new
                       {
-                        OriginalError = error.ToMessageWithType() 
+                        OriginalError = error.ToMessageWithType()
                       }.ToJSON()
                      );
               }
@@ -399,11 +399,11 @@ namespace NFX.Wave
           Exception = error,
           Parameters = pars
         };
-      
+
         if (related.HasValue)
           msg.RelatedTo = related.Value;
 
-        App.Log.Write(msg);     
+        App.Log.Write(msg);
       }
 
     #endregion
@@ -432,7 +432,7 @@ namespace NFX.Wave
 
 
         ConfigAttribute.Apply(this, node);
-     
+
         m_Prefixes.Clear();
         foreach(var name in node.Children
                              .Where(c=>c.IsSameName(CONFIG_PREFIX_SECTION))
@@ -454,10 +454,10 @@ namespace NFX.Wave
       }
 
       protected override void DoStart()
-      {                 
+      {
         if (m_Prefixes.Count==0)
           throw new WaveException(StringConsts.SERVER_NO_PREFIXES_ERROR.Args(Name));
-        
+
         if (!s_Servers.Register(this))
           throw new WaveException(StringConsts.SERVER_COULD_NOT_GET_REGISTERED_ERROR.Args(Name));
 
@@ -470,7 +470,7 @@ namespace NFX.Wave
 
            if (m_Dispatcher==null)
               m_Dispatcher = new WorkDispatcher(this);
-        
+
            m_Dispatcher.Start();
 
            m_AcceptSemaphore = new Semaphore(m_ParallelAccepts, m_ParallelAccepts);
@@ -482,9 +482,9 @@ namespace NFX.Wave
            m_InstrumentationThread = new Thread(instrumentationThreadSpin);
            m_InstrumentationThread.Name = "{0}-InstrumentationThread".Args(Name);
            m_InstrumentationThreadWaiter = new AutoResetEvent(false);
-  
+
            m_Listener = new HttpListener();
-           
+
            foreach(var prefix in m_Prefixes)
              m_Listener.Prefixes.Add(prefix);
 
@@ -503,12 +503,12 @@ namespace NFX.Wave
         catch
         {
           closeListener();
-          
+
           if (m_AcceptSemaphore!=null) { m_AcceptSemaphore.Dispose(); m_AcceptSemaphore = null;}
           if (m_WorkSemaphore!=null) { m_WorkSemaphore.Dispose(); m_WorkSemaphore = null;}
           if (m_AcceptThread!=null) { m_AcceptThread = null;}
           if (m_Dispatcher!=null) m_Dispatcher.WaitForCompleteStop();
-          
+
           if (m_Gate!=null && m_Gate is Service)
             ((Service)m_Gate).WaitForCompleteStop();
 
@@ -516,14 +516,14 @@ namespace NFX.Wave
 
           throw;
         }
-        
+
         m_InstrumentationThread.Start();
         m_AcceptThread.Start();
       }
 
       protected override void DoSignalStop()
       {
-       // m_Listener.Stop();     
+       // m_Listener.Stop();
         m_Listener.Abort();
         m_Dispatcher.SignalStop();
 
@@ -594,7 +594,7 @@ namespace NFX.Wave
       {
           //this setting does not do anything on Windows 7
           //todo test on Windows 2008/20012
-          m_Listener.TimeoutManager.MinSendBytesPerSecond = 16; 
+          m_Listener.TimeoutManager.MinSendBytesPerSecond = 16;
 
           //todo Need to add server-wide properties for all timeouts
       }
@@ -603,15 +603,15 @@ namespace NFX.Wave
     #endregion
 
     #region .pvt
-     
+
      private void acceptThreadSpin()
      {
         var semaphores = new Semaphore[]{m_AcceptSemaphore, m_WorkSemaphore};
         while(Running)
-        {                
+        {
           //Both semaphores get acquired here
           if (!WaitHandle.WaitAll(semaphores, ACCEPT_THREAD_GRANULARITY_MS)) continue;
-         
+
           if (m_Listener.IsListening)
                m_Listener.BeginGetContext(callback, null);//the BeginGetContext/EndGetContext is called on a different thread (pool IO background)
                                                           // whereas GetContext() is called on the caller thread
@@ -622,17 +622,17 @@ namespace NFX.Wave
      {
        if (m_Listener==null) return;//callback sometime happens when listener is null on shutdown
        if (!m_Listener.IsListening) return;
-       
+
        //This is called on its own pool thread by HttpListener
        bool gateAccessDenied = false;
        HttpListenerContext listenerContext;
        try
        {
-         listenerContext = m_Listener.EndGetContext(result); 
-       
+         listenerContext = m_Listener.EndGetContext(result);
+
          if (m_InstrumentationEnabled) Interlocked.Increment(ref m_Stat_ServerRequest);
-       
-        
+
+
          if (m_Gate!=null)
             try
             {
@@ -679,15 +679,15 @@ namespace NFX.Wave
              }
           }
        }
-       
+
        //no need to call process() asynchronously because this whole method is on its own thread already
        if (Running)
-       { 
+       {
           var workContext = MakeContext(listenerContext);
           m_Dispatcher.Dispatch(workContext);
        }
      }
-     
+
      private void closeListener()
      {
         if (m_Listener!=null)
@@ -700,29 +700,29 @@ namespace NFX.Wave
           m_Listener = null;
         }
      }
-         
-         
+
+
      private void instrumentationThreadSpin()
      {
         var pe = m_InstrumentationEnabled;
         while(Running)
-        {                
+        {
           if (pe!=m_InstrumentationEnabled)
           {
             resetStats();
             pe = m_InstrumentationEnabled;
           }
-          
-          if (m_InstrumentationEnabled && 
+
+          if (m_InstrumentationEnabled &&
               App.Instrumentation.Enabled)
           {
              dumpStats();
              resetStats();
           }
-          
+
           m_InstrumentationThreadWaiter.WaitOne(INSTRUMENTATION_DUMP_PERIOD_MS);
         }
-     }    
+     }
 
      private void resetStats()
      {
@@ -764,10 +764,10 @@ namespace NFX.Wave
         i.Record( new Instrumentation.ServerGateDenial                   (Name, m_Stat_ServerGateDenial                   ));
         i.Record( new Instrumentation.ServerHandleException              (Name, m_Stat_ServerHandleException              ));
         i.Record( new Instrumentation.FilterHandleException              (Name, m_Stat_FilterHandleException              ));
-                                                                                                                           
+
         i.Record( new Instrumentation.ServerAcceptSemaphoreCount         (Name, m_Stat_ServerAcceptSemaphoreCount         ));
         i.Record( new Instrumentation.ServerWorkSemaphoreCount           (Name, m_Stat_ServerWorkSemaphoreCount           ));
-                                                                                                                           
+
         i.Record( new Instrumentation.WorkContextWrittenResponse         (Name, m_Stat_WorkContextWrittenResponse         ));
         i.Record( new Instrumentation.WorkContextBufferedResponse        (Name, m_Stat_WorkContextBufferedResponse        ));
         i.Record( new Instrumentation.WorkContextBufferedResponseBytes   (Name, m_Stat_WorkContextBufferedResponseBytes   ));
@@ -778,15 +778,15 @@ namespace NFX.Wave
         i.Record( new Instrumentation.WorkContextHandled                 (Name, m_Stat_WorkContextHandled                 ));
         i.Record( new Instrumentation.WorkContextNoDefaultClose          (Name, m_Stat_WorkContextNoDefaultClose          ));
         i.Record( new Instrumentation.WorkContextNeedsSession            (Name, m_Stat_WorkContextNeedsSession            ));
-                                                                                                                           
+
         i.Record( new Instrumentation.SessionNew                         (Name, m_Stat_SessionNew                         ));
         i.Record( new Instrumentation.SessionExisting                    (Name, m_Stat_SessionExisting                    ));
         i.Record( new Instrumentation.SessionEnd                         (Name, m_Stat_SessionEnd                         ));
         i.Record( new Instrumentation.SessionInvalidID                   (Name, m_Stat_SessionInvalidID                   ));
-                                                                                                                           
+
         i.Record( new Instrumentation.GeoLookup                          (Name, m_Stat_GeoLookup                          ));
         i.Record( new Instrumentation.GeoLookupHit                       (Name, m_Stat_GeoLookupHit                       ));
-    
+
         foreach(var kvp in m_Stat_PortalRequest.AllLongs)
             i.Record( new Instrumentation.ServerPortalRequest(Name+"."+kvp.Key, kvp.Value) );
 

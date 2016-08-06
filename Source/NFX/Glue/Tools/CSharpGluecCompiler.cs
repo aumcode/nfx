@@ -49,42 +49,42 @@ namespace NFX.Glue.Tools
        [Config("$ns-root")]
        public string RootNamespace
        {
-         get 
+         get
          {
-           return m_RootNamespace ?? string.Empty; 
+           return m_RootNamespace ?? string.Empty;
          }
-         set 
+         set
          {
            if (value!=null) value = value.TrimEnd('.',' ');
-           m_RootNamespace = value; 
+           m_RootNamespace = value;
          }
        }
 
        [Config("$ns-suffix")]
        public string NamespaceSuffix
        {
-         get 
+         get
          {
-           return m_NamespaceSuffix ?? string.Empty; 
+           return m_NamespaceSuffix ?? string.Empty;
          }
-         set 
+         set
          {
            if (value!=null) value = value.TrimStart('.',' ');
-           m_NamespaceSuffix = value; 
+           m_NamespaceSuffix = value;
          }
        }
 
        [Config("$cl-suffix")]
        public string ClassSuffix
        {
-         get 
+         get
          {
-          return m_ClassSuffix ?? string.Empty; 
+          return m_ClassSuffix ?? string.Empty;
          }
-         set 
+         set
          {
            if (value!=null && value.StartsWith(".")) value = value.Remove(0,1);
-           m_ClassSuffix = value; 
+           m_ClassSuffix = value;
          }
        }
 
@@ -99,17 +99,17 @@ namespace NFX.Glue.Tools
            foreach(var ns in Namespaces)
            {
              var types = m_Assembly.GetTypes().Where(t => t.Namespace == ns && t.IsInterface && Attribute.IsDefined(t, typeof(GluedAttribute)));
-             
+
              foreach(var tp in types)
              {
-                var fn = compileContract(sb, tp); 
+                var fn = compileContract(sb, tp);
                 if (FilePerContract)
                 {
                   fpath = Path.Combine(OutPath, fn);
                   writeFile(fpath, sb);
                   sb = new StringBuilder();
                 }
-             } 
+             }
 
              if (!FilePerContract)
                 writeFile(fpath, sb);
@@ -122,7 +122,7 @@ namespace NFX.Glue.Tools
        {
          return TypeToStr(tc);
        }
-       
+
        private void writeFile(string fpath, StringBuilder sb)
        {
          if (sb.Length>0)
@@ -131,9 +131,9 @@ namespace NFX.Glue.Tools
 
        private string compileContract(StringBuilder sb, Type tc)
        {
-         if (tc.IsGenericTypeDefinition) 
+         if (tc.IsGenericTypeDefinition)
           throw new NotSupportedException("Glue does not support contracts that have generic arguments. Contract: '{0}'".Args(tc.FullName));
-         
+
          m_ContractMethods = new List<MethodInfo>();
          var newFile = sb.Length==0;
 
@@ -142,7 +142,7 @@ namespace NFX.Glue.Tools
          var nsname = (m_RootNamespace.IsNullOrWhiteSpace()? tc.Namespace : m_RootNamespace) + (NamespaceSuffix.IsNullOrWhiteSpace() ? string.Empty : ("." + NamespaceSuffix));
          var cname = tc.Name;
          if (cname.StartsWith("I")) cname = cname.Remove(0,1);
-        
+
          cname += ClassSuffix;
 
          var iname = GetClientInterfaceName(tc);
@@ -168,7 +168,7 @@ namespace NFX.Glue.Tools
          sb.AppendLine();
          sb.AppendLine("     private static TypeSpec s_ts_CONTRACT;");
          foreach(var mi in tc.GetMethods())
-           sb.AppendLine("     private static MethodSpec " + msName(mi) + ";"); 
+           sb.AppendLine("     private static MethodSpec " + msName(mi) + ";");
          sb.AppendLine();
          sb.AppendLine("     //static .ctor");
          sb.AppendLine("     static "+cname+"()");
@@ -182,7 +182,7 @@ namespace NFX.Glue.Tools
 
          sb.AppendLine();
          sb.AppendLine("  #region .ctor");
-         
+
          sb.AppendLine("     public "+cname+"(string node, Binding binding = null) : base(node, binding) { ctor(); }");
          sb.AppendLine("     public "+cname+"(Node node, Binding binding = null) : base(node, binding) { ctor(); }");
          sb.AppendLine("     public "+cname+"(IGlue glue, string node, Binding binding = null) : base(glue, node, binding) { ctor(); }");
@@ -201,7 +201,7 @@ namespace NFX.Glue.Tools
          sb.AppendLine("  #endregion");
 
          sb.AppendLine();
-         
+
 
          sb.AppendLine("     public override Type Contract");
          sb.AppendLine("     {");
@@ -213,7 +213,7 @@ namespace NFX.Glue.Tools
          sb.AppendLine();
 
          sb.AppendLine("  #region Contract Methods");
-        
+
          foreach(var mi in tc.GetMethods())
          {
             var oneWay = Attribute.IsDefined(mi, typeof(OneWayAttribute));
@@ -229,8 +229,8 @@ namespace NFX.Glue.Tools
               sb.AppendLine("         public void @"+mi.Name + mSig(mi, true));
               sb.AppendLine("         {");
               sb.AppendLine("            var call = Async_"+mi.Name + mSig(mi, false)+";");
-              sb.AppendLine("            if (call.CallStatus != CallStatus.Dispatched)"); 
-              sb.AppendLine("                throw new ClientCallException(call.CallStatus, \"Call failed: '"+cname+"."+mi.Name+"'\");");                     
+              sb.AppendLine("            if (call.CallStatus != CallStatus.Dispatched)");
+              sb.AppendLine("                throw new ClientCallException(call.CallStatus, \"Call failed: '"+cname+"."+mi.Name+"'\");");
               sb.AppendLine("         }");
             }
             else
@@ -247,7 +247,7 @@ namespace NFX.Glue.Tools
                   sb.AppendLine("         public "+TypeToStr(mi.ReturnType)+" @"+mi.Name + mSig(mi, true));
                   sb.AppendLine("         {");
                   sb.AppendLine("            var call = Async_"+mi.Name + mSig(mi, false)+";");
-                  sb.AppendLine("            return call.GetValue<"+TypeToStr(mi.ReturnType)+">();"); 
+                  sb.AppendLine("            return call.GetValue<"+TypeToStr(mi.ReturnType)+">();");
                   sb.AppendLine("         }");
               }
               else
@@ -262,7 +262,7 @@ namespace NFX.Glue.Tools
                   sb.AppendLine("         public void @"+mi.Name + mSig(mi, true));
                   sb.AppendLine("         {");
                   sb.AppendLine("            var call = Async_"+mi.Name + mSig(mi, false)+";");
-                  sb.AppendLine("            call.CheckVoidValue();"); 
+                  sb.AppendLine("            call.CheckVoidValue();");
                   sb.AppendLine("         }");
               }
             }
@@ -280,7 +280,7 @@ namespace NFX.Glue.Tools
               sb.AppendLine("         /// This is a two-way call per contract specification, meaning - the server sends the result back either");
               sb.AppendLine("         ///  returning no exception or RemoteExceptionData instance.");
             }
-            
+
             if (oneWay)
               sb.AppendLine("         /// CallSlot is returned that can be queried for CallStatus, ResponseMsg.");
             else
@@ -289,7 +289,7 @@ namespace NFX.Glue.Tools
             sb.AppendLine("         ///</summary>");
             sb.AppendLine("         public CallSlot Async_"+mi.Name + mSig(mi, true));
             sb.AppendLine("         {");
-            
+
             //-------------
             var argmatr = mi.GetCustomAttribute(typeof(ArgsMarshallingAttribute)) as ArgsMarshallingAttribute;
             if (argmatr==null)
@@ -306,10 +306,10 @@ namespace NFX.Glue.Tools
                 var fName = "MethodArg_{0}_{1}".Args(i, pars[i].Name);
                 sb.AppendLine("               {0} = @{1},".Args(fName, pars[i].Name));
               }
-              sb.AppendLine("            };"); 
+              sb.AppendLine("            };");
             }
-            //------------- 
-            sb.AppendLine("            return DispatchCall(request);"); 
+            //-------------
+            sb.AppendLine("            return DispatchCall(request);");
             sb.AppendLine("         }");
 
             sb.AppendLine();
@@ -319,7 +319,7 @@ namespace NFX.Glue.Tools
 
          sb.AppendLine();
 
-     
+
          sb.AppendLine("  }//class");
 
          sb.AppendLine("}//namespace");
@@ -333,7 +333,7 @@ namespace NFX.Glue.Tools
                {
 return
 @"
-/* Auto generated by Glue Client Compiler tool (gluec) 
+/* Auto generated by Glue Client Compiler tool (gluec)
 on "+DateTime.Now.ToString()+" at "+System.Environment.MachineName+" by "+System.Environment.UserName+@"
 Do not modify this file by hand if you plan to regenerate this file again by the tool as manual changes will be lost
 */
@@ -346,7 +346,7 @@ using System.IO;
 
 using NFX.Glue;
 using NFX.Glue.Protocol;
-"; 
+";
                }
 
                    private List<MethodInfo> m_ContractMethods;
@@ -359,7 +359,7 @@ using NFX.Glue.Protocol;
                     m_ContractMethods.Add( mi );
                     idx = m_ContractMethods.Count-1;
                  }
-                 
+
                  return "@s_ms_{0}_{1}".Args( mi.Name, idx);
                }
 
@@ -368,7 +368,7 @@ using NFX.Glue.Protocol;
                {
                  var pars = mi.GetParameters();
                  var sb = new StringBuilder();
-                
+
                  for(int i=0; i<pars.Length; i++)
                  {
                    var par = pars[i];
@@ -382,7 +382,7 @@ using NFX.Glue.Protocol;
                    if (i>0) sb.Append(", ");
                    sb.Append( "typeof({0})".Args(TypeToStr(par.ParameterType)) );
                  }
-                   
+
                  return "\"{0}\", new Type[]{{ {1} }}".Args(mi.Name, sb.ToString());
                }
 

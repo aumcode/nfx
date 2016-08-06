@@ -25,7 +25,7 @@ namespace NFX.Erlang
 {
   /// <summary>
   /// Non-garbage collected hash table for atoms.
-  /// 
+  ///
   /// It stores strings as atoms so that atoms can be quickly compared to
   /// with O(1) complexity.  The instance of this table is statically maintained
   /// and its content is never cleared.  The table contains a unique
@@ -96,7 +96,7 @@ namespace NFX.Erlang
       {
         // Note that the common language runtime resolves issues related to using
         // Double-Check Locking that are common in other environments:
-        // http://msdn.microsoft.com/en-us/library/ff650316.aspx 
+        // http://msdn.microsoft.com/en-us/library/ff650316.aspx
         if (s_Instance == null)
           lock (s_InstLock)
           {
@@ -119,7 +119,7 @@ namespace NFX.Erlang
 
     /// <summary>
     /// Lookup an atom in the atom table by name. If the atom is not
-    /// present in the atom table - add it.  Return the index of the 
+    /// present in the atom table - add it.  Return the index of the
     /// atom in the atom table
     /// </summary>
     public int this[string atom]

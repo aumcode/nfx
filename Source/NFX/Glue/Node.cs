@@ -28,7 +28,7 @@ namespace NFX.Glue
     /// An example of some 'mytest' binding: 'mytest://adr=1.1.1.1,nic=eth001:job,chat,backup'
     /// </summary>
     [Serializable]
-    public struct Node : INamed 
+    public struct Node : INamed
     {
       public const string BINDING_SEPARATOR = "://";
       public const string SERVICE_SEPARATOR = ":";
@@ -51,9 +51,9 @@ namespace NFX.Glue
         m_ConnectString = connectString;
       }
 
-      
+
       /// <summary>
-      /// Gets a connection string - a structured URL-like connection descriptor that identifies a host 
+      /// Gets a connection string - a structured URL-like connection descriptor that identifies a host
       ///  along with binding and service. The componets of address are not case-sensitive.
       /// The form of the address is: <code>binding://host:service</code>. The "host" and "service" segment syntaxes depend on binding and may not contain the ':' char.
       /// An example of some 'mytest' binding: 'mytest://adr=1.1.1.1,nic=eth001:job,chat,backup'
@@ -79,13 +79,13 @@ namespace NFX.Glue
       /// Gets binding portion of ConnectString. This value selects binding adapter
       /// </summary>
       public string Binding
-      { 
+      {
         get
         {
           var i = m_ConnectString.IndexOf(BINDING_SEPARATOR);
           if (i<=0) return string.Empty;
           return m_ConnectString.Substring(0, i);
-        } 
+        }
       }
 
       /// <summary>
@@ -147,8 +147,8 @@ namespace NFX.Glue
 
           var other = (Node)obj;
 
-          return this.Assigned && 
-                 other.Assigned &&  
+          return this.Assigned &&
+                 other.Assigned &&
                  this.m_ConnectString.EqualsOrdIgnoreCase(other.m_ConnectString);
       }
 

@@ -27,93 +27,93 @@ namespace NFX.Wave
   /// </summary>
   internal static class StringConsts
   {
-      public const string ARGUMENT_ERROR = 
+      public const string ARGUMENT_ERROR =
         "Error in call arguments: ";
-  
-      public const string DISPATCHER_NOT_THIS_SERVER_ERROR = 
+
+      public const string DISPATCHER_NOT_THIS_SERVER_ERROR =
         "Error assigning WaveServer.Dispatcher. The supplied dispatcher instance was not created to be directed by this server instance";
 
-      public const string SERVER_NO_PREFIXES_ERROR = 
+      public const string SERVER_NO_PREFIXES_ERROR =
         "WaveServer '{0}' can not start as there are no prefixes defined";
 
-      public const string SERVER_COULD_NOT_GET_REGISTERED_ERROR = 
+      public const string SERVER_COULD_NOT_GET_REGISTERED_ERROR =
         "WaveServer '{0}' can not start as there is already a global instance with such name";
-      
-      public const string WRONG_DISPATCHER_FILTER_REGISTRATION_ERROR = 
+
+      public const string WRONG_DISPATCHER_FILTER_REGISTRATION_ERROR =
         "Can not register a filter '{0}' because it does not belong to this dispatcher";
 
-      public const string WRONG_DISPATCHER_FILTER_UNREGISTRATION_ERROR = 
+      public const string WRONG_DISPATCHER_FILTER_UNREGISTRATION_ERROR =
         "Can not unregister a filter '{0}' because it does not belong to this dispatcher";
 
-      public const string WRONG_DISPATCHER_HANDLER_REGISTRATION_ERROR = 
+      public const string WRONG_DISPATCHER_HANDLER_REGISTRATION_ERROR =
         "Can not register a handler '{0}' because it does not belong to this dispatcher";
 
-      public const string WRONG_DISPATCHER_HANDLER_UNREGISTRATION_ERROR = 
+      public const string WRONG_DISPATCHER_HANDLER_UNREGISTRATION_ERROR =
         "Can not unregister a handler '{0}' because it does not belong to this dispatcher";
-     
-      public const string NO_HANDLER_FOR_WORK_ERROR = 
+
+      public const string NO_HANDLER_FOR_WORK_ERROR =
         "No suitable handler for work '{0}' could be matched";
-      
-      public const string URI_PATTERN_PARSE_ERROR = 
+
+      public const string URI_PATTERN_PARSE_ERROR =
         "Uri pattern '{0}' could not be parsed: {1}";
 
-      public const string URI_WILDCARD_PARSE_ERROR = 
+      public const string URI_WILDCARD_PARSE_ERROR =
         "Pattern may contain only one {{*var_name}} wildcard capture variable as the very last pattern segment";
 
-      public const string RESPONSE_WAS_WRITTEN_TO_ERROR = 
+      public const string RESPONSE_WAS_WRITTEN_TO_ERROR =
         "Response object was already written to and can not perform operation: ";
 
-      public const string RESPONSE_CANCEL_NON_BUFFERED_ERROR = 
+      public const string RESPONSE_CANCEL_NON_BUFFERED_ERROR =
         "Response can not be canceled because it was already written to and Buffered=false";
 
-      public const string RESPONSE_WRITE_FILE_DOES_NOT_EXIST_ERROR = 
+      public const string RESPONSE_WRITE_FILE_DOES_NOT_EXIST_ERROR =
         "Can not write non-existing local file '{0}' to response";
 
-      public const string RESPONSE_WRITE_FILE_OVER_MAX_SIZE_ERROR = 
+      public const string RESPONSE_WRITE_FILE_OVER_MAX_SIZE_ERROR =
         "Can not write local file '{0}' to response as it exceeds the maximum size limit of {1} bytes and Buffered = true.\n"+
         "If client allows, set Buffered=false to support chunked response encoding";
 
 
-      public const string FILE_DL_HANDLER_NOT_FOUND_INFO = 
+      public const string FILE_DL_HANDLER_NOT_FOUND_INFO =
         "File not found '{0}'";
 
-      public const string WORK_NO_DEFAULT_AUTO_CLOSE_ERROR = 
+      public const string WORK_NO_DEFAULT_AUTO_CLOSE_ERROR =
         "WorkContext.NoDefaultAutoClose may be set to true only when Response.Buffered=false (chunked transfer) and Response has been written to";
-     
+
       public const string DONT_KNOW_ACTION_ERROR =
         "Dont know how to handle site action: ";
 
       public const string NOT_FOUND_ERROR =
-        "404 Not Found: "; 
+        "404 Not Found: ";
 
-      public const string ERROR_PAGE_TEMPLATE_TYPE_ERROR = 
+      public const string ERROR_PAGE_TEMPLATE_TYPE_ERROR =
         "Custom error page could not be created. Supplied type '{0}'. Error: {1}";
 
-      public const string CONFIG_DUPLICATE_HANDLER_NAME_ERROR = 
+      public const string CONFIG_DUPLICATE_HANDLER_NAME_ERROR =
         "Handler '{0}' is specified more than once in config";
 
-      public const string CONFIG_DUPLICATE_FILTER_NAME_ERROR = 
+      public const string CONFIG_DUPLICATE_FILTER_NAME_ERROR =
         "Filter '{0}' is specified more than once in config";
 
-      public const string CONFIG_HANDLER_DUPLICATE_MATCH_NAME_ERROR = 
+      public const string CONFIG_HANDLER_DUPLICATE_MATCH_NAME_ERROR =
         "Match '{0}' is specified more than once in handler config";
 
-     public const string CONFIG_HANDLER_DUPLICATE_FILTER_NAME_ERROR = 
+     public const string CONFIG_HANDLER_DUPLICATE_FILTER_NAME_ERROR =
         "Filter '{0}' is specified more than once in handler config";
 
-      public const string CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR = 
+      public const string CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR =
         "Match '{0}' is specified more than once in {1} config";
 
-      public const string CONFIG_OTHER_DUPLICATE_PORTAL_NAME_ERROR = 
+      public const string CONFIG_OTHER_DUPLICATE_PORTAL_NAME_ERROR =
         "Portal '{0}' is specified more than once in {1} config";
 
-      public const string SERVER_DEFAULT_ERROR_WC_NULL_ERROR = 
+      public const string SERVER_DEFAULT_ERROR_WC_NULL_ERROR =
         "Server exception could not be responded to as WorkContext is null. Error: ";
 
-      public const string SERVER_DEFAULT_ERROR_HANDLER_ERROR = 
+      public const string SERVER_DEFAULT_ERROR_HANDLER_ERROR =
         "Server default exception handler threw error: ";
 
-      public const string SESSION_NOT_AVAILABLE_ERROR = 
+      public const string SESSION_NOT_AVAILABLE_ERROR =
         "Session context is not available for '{0}'. No SessionFilter (or derivative) injected in the processing chain";
 
       public const string MVCCONTROLLER_ACTION_UNKNOWN_ERROR =
@@ -132,14 +132,14 @@ namespace NFX.Wave
       public const string MVC_CONTROLLER_REFLECTION_ERROR =
         "Error reflecting on MVC controller type '{0}' action '{1}'. Error: {2}";
 
-      public const string CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR = 
+      public const string CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR =
         "The total length of client vars with cookie name is {0} chars, which is over the limit of {1} chars. Reduce the amount of information stored in client vars";
 
-      
-      public const string CONFIG_PORTAL_ROOT_URI_ERROR = 
+
+      public const string CONFIG_PORTAL_ROOT_URI_ERROR =
         "Portal '{0}' has invalid root uri attribute: {1}";
-     
-      public const string CONFIG_PORTAL_DUPLICATE_THEME_NAME_ERROR = 
+
+      public const string CONFIG_PORTAL_DUPLICATE_THEME_NAME_ERROR =
         "Theme '{0}' is specified more than once in portal '{1}' config";
 
       public const string CONFIG_PORTAL_NO_THEMES_ERROR =  "Portal '{0}' does not have any themes specified";

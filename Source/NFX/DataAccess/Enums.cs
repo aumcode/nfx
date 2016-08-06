@@ -25,14 +25,14 @@ namespace NFX.DataAccess
     Debug,
     Trace
   }
-  
+
   /// <summary>
   /// Determines whether entity should be loaded/stored from/to storage
   /// </summary>
   public enum StoreFlag
   {
      LoadAndStore = 0,
-     OnlyLoad, 
+     OnlyLoad,
      OnlyStore,
      None
   }

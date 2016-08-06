@@ -27,7 +27,7 @@ namespace NFX.IO.Net
       {//V4
   //      m_V4 = ip.Address;
       }
-       
+
 
     }
 
@@ -39,7 +39,7 @@ namespace NFX.IO.Net
   //  private long m_V4;
   //  private long m_V6H;
   //  private long m_V6L;
-    
+
 
 
 

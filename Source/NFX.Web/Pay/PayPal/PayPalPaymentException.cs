@@ -38,10 +38,10 @@ namespace NFX.Web.Pay.PayPal
         public static PayPalPaymentException ComposeError(string header, Exception inner)
         {
             var webError = inner as System.Net.WebException;
-            if (webError == null)
+            if (webError == null || webError.Response==null)
                 return new PayPalPaymentException(header, inner);
 
-            var response = (HttpWebResponse)webError.Response; 
+            var response = (HttpWebResponse)webError.Response;
 
             var responseMessage = string.Empty;
             try
@@ -75,14 +75,14 @@ namespace NFX.Web.Pay.PayPal
                 case (415): statusMessage = StringConsts.PAYMENT_PAYPAL_415_STATUSCODE; break;
                 case (422): statusMessage = StringConsts.PAYMENT_PAYPAL_422_STATUSCODE; break;
                 case (429): statusMessage = StringConsts.PAYMENT_PAYPAL_429_STATUSCODE; break;
-                default: statusMessage = StringConsts.PAYMENT_PAYPAL_UNKNOWN_STATUSCODE; break;    
+                default: statusMessage = StringConsts.PAYMENT_PAYPAL_UNKNOWN_STATUSCODE; break;
             }
-            if (statusCode >= 500 && statusCode < 600)   
+            if (statusCode >= 500 && statusCode < 600)
                 statusMessage = StringConsts.PAYMENT_PAYPAL_50x_STATUSCODE;
 
             var message = "{0}{1}Status: {2} - {3}{4}Response: {5}"
                             .Args(
-                                header, System.Environment.NewLine, 
+                                header, System.Environment.NewLine,
                                 statusCode, statusMessage, System.Environment.NewLine,
                                 responseMessage);
 

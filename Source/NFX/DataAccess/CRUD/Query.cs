@@ -23,20 +23,20 @@ namespace NFX.DataAccess.CRUD
 {
     /// <summary>
     /// Defines a query sent into ICRUDDataStore implementor to retrieve data.
-    /// A Query is a named bag of paremeters where every parameter has a name and the value. 
+    /// A Query is a named bag of paremeters where every parameter has a name and the value.
     /// </summary>
     /// <remarks>
-    ///  Keep in mind that a particular datastore implementation may have to deal with hybrid distributed backends where different tables get stored 
+    ///  Keep in mind that a particular datastore implementation may have to deal with hybrid distributed backends where different tables get stored
     ///  in different repositories (different architectures i.e. NoSQL, HDFS, and some RDB SQL all in different locations),
-    ///  consequently one can not make assumption about writing SQLs of any kind in business code - that is what CRUD concept is for as it abstracts 
+    ///  consequently one can not make assumption about writing SQLs of any kind in business code - that is what CRUD concept is for as it abstracts
     ///  this into provider implementation.
-    ///  Architectural note: unlike Hibernate, LinqTo* and the like, the NFX.CRUD architecture purposely does not allow developers 
+    ///  Architectural note: unlike Hibernate, LinqTo* and the like, the NFX.CRUD architecture purposely does not allow developers
     ///  to write query scripts in higher-language like C#. This is because translation of such a high-level language abstraction into
     ///   highly optimized SQL/(and or other script) per particular backend is impossible because such language can not incapsulate
     ///  the optimization features of all possible data backends (i.e. ORACLE vs MongoDB vs Redis vs Files in HDFS).
     /// CRUD queries need to support selects from tables with millions of rows, or reads from collections with millions of documents,
     /// or parse millions of lines from files stored in Hadooop servers, thus every particular provider for every particular business app
-    /// must expose custom-written queries by name. Those queries are usually highly optimized for particular platform 
+    /// must expose custom-written queries by name. Those queries are usually highly optimized for particular platform
     /// (i.e. using db-specific hints, common table subexpressions, groupping sets etc.).
     /// Also, a provider may elect to SELECT * from a table named like Query object, when a hand-written script with such name is not found
     /// </remarks>
@@ -44,7 +44,7 @@ namespace NFX.DataAccess.CRUD
     public class Query : List<Query.Param>, IParameters, INamed, ICacheParams
     {
             #region Inner Classes
-                
+
                 /// <summary>
                 /// Represents a CRUD query parameter
                 /// </summary>
@@ -58,8 +58,8 @@ namespace NFX.DataAccess.CRUD
                     }
 
                     #region Fields
-                        private string m_Name;  
-                        private object m_Value; 
+                        private string m_Name;
+                        private object m_Value;
                     #endregion
 
                     #region Properties
@@ -73,16 +73,16 @@ namespace NFX.DataAccess.CRUD
                     #endregion
                 }
             #endregion
-        
+
         #region .ctor
             public Query(string name, Type resultRowType = null, Dictionary<string, object> extra = null) : this(null, name, resultRowType, extra)
             {
 
             }
-            
+
             public Query(Guid? identity, string name, Type resultRowType = null, Dictionary<string, object> extra = null)
             {
-                m_Identity = identity ?? Guid.NewGuid(); 
+                m_Identity = identity ?? Guid.NewGuid();
                 m_Name = name;
                 m_Extra = extra;
                 m_ResultRowType = resultRowType;
@@ -104,9 +104,9 @@ namespace NFX.DataAccess.CRUD
             }
 
         #endregion
-        
+
         #region Fields
-            
+
             private Guid m_Identity;
             private string m_Name;
             private Dictionary<string, object> m_Extra;
@@ -128,7 +128,7 @@ namespace NFX.DataAccess.CRUD
                get { return m_Identity;}
             }
 
-            
+
             /// <summary>
             /// Returns Query name, providers use it to locate SQL/scripts particular to backend implementation that they represent.
             /// QueryResolver resolves query by its name into ICRUDQueryHandler. Name is case-insensitive
@@ -174,8 +174,8 @@ namespace NFX.DataAccess.CRUD
             {
                 get {return FindParamByName(name) as Param;}
             }
-            
-            
+
+
             public IEnumerable<IParameter> AllParameters
             {
                 get { return this; }
@@ -231,7 +231,7 @@ namespace NFX.DataAccess.CRUD
             {
               var other = obj as Query;
               if (other==null) return false;
-                           
+
               return this.m_Identity == other.Identity;
             }
 
@@ -244,18 +244,18 @@ namespace NFX.DataAccess.CRUD
        #endregion
 
        #region .pvt
-            
+
             private void checkResultRowType()
             {
                 if (m_ResultRowType==null) return;
                 if (!typeof(Row).IsAssignableFrom(m_ResultRowType))
                     throw new CRUDException(StringConsts.CRUD_TYPE_IS_NOT_DERIVED_FROM_ROW_ERROR.Args(m_ResultRowType.FullName));
             }
-        
+
        #endregion
     }
 
-   
+
 
     /// <summary>
     /// Generic version of Query
@@ -267,13 +267,13 @@ namespace NFX.DataAccess.CRUD
         public Query(string name, Dictionary<string, object> extra = null)
           : base(name, typeof(TResultRow), extra) { }
 
-        public Query(Guid? identity, string name, Dictionary<string, object> extra = null) 
+        public Query(Guid? identity, string name, Dictionary<string, object> extra = null)
           : base(identity, name, typeof(TResultRow), extra) { }
 
-        public Query(string name, IDataStoreKey key) 
+        public Query(string name, IDataStoreKey key)
           : base(name, key, typeof(TResultRow))  { }
-        
-        public Query(Guid? identity, string name, IDataStoreKey key) 
+
+        public Query(Guid? identity, string name, IDataStoreKey key)
           : base(identity, name, key, typeof(TResultRow)) { }
     }
 

@@ -46,12 +46,12 @@ namespace NFX.Media.Graphics
       }
 
       public DrawingOutput(int width, int height)
-      { 
+      {
         CreateBitmapNGraphics(width, height);
       }
 
       public DrawingOutput(int width, int height, Brush fillBrush): this(width, height)
-      { 
+      {
         FillRect(0, 0, width, height, fillBrush);
       }
 

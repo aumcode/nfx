@@ -26,7 +26,7 @@ using NFX.Environment;
 namespace NFX.Log.Destinations
 {
     /// <summary>
-    /// Implements a destination group that stops message flood 
+    /// Implements a destination group that stops message flood
     /// </summary>
     public class FloodFilter : CompositeDestination
     {
@@ -38,7 +38,7 @@ namespace NFX.Log.Destinations
         public const int MAX_MAX_COUNT = 1000;
 
       #endregion
-      
+
       #region .ctor
 
             /// <summary>
@@ -105,11 +105,11 @@ namespace NFX.Log.Destinations
            public int MaxCount
            {
              get { return m_MaxCount; }
-             set 
+             set
              {
                if (value<0) value = 0;
                if (value>MAX_MAX_COUNT) value = MAX_MAX_COUNT;
-               m_MaxCount = value; 
+               m_MaxCount = value;
              }
            }
 
@@ -120,10 +120,10 @@ namespace NFX.Log.Destinations
            public int MaxTextLength
            {
              get { return m_MaxTextLength; }
-             set 
+             set
              {
                if (value<0) value = 0;
-               m_MaxTextLength = value; 
+               m_MaxTextLength = value;
              }
            }
 
@@ -159,7 +159,7 @@ namespace NFX.Log.Destinations
 
 
        #endregion
-        
+
        #region Public
 
             public override void Open()
@@ -176,7 +176,7 @@ namespace NFX.Log.Destinations
        #endregion
 
 
-      #region Protected /.pvt 
+      #region Protected /.pvt
 
             protected internal override void DoSend(Message entry)
             {
@@ -202,7 +202,7 @@ namespace NFX.Log.Destinations
                       if (m_Count>0)
                       {
                           Message msg = null;
-                  
+
                           if (m_List.Count==1)
                            msg = m_List[0];
                           else
@@ -224,7 +224,7 @@ namespace NFX.Log.Destinations
                               }
 
                               var txtl = txt.ToString();
-                      
+
                               if (m_MaxTextLength>0)
                                if (txtl.Length > m_MaxTextLength) txtl = txtl.Substring(0, m_MaxTextLength) + "...";
 

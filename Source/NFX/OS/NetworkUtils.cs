@@ -42,7 +42,7 @@ namespace NFX.OS
           var cnt=0;
           var csum = new NFX.IO.ErrorHandling.CRC32();
           foreach(var nic in nics.Where(a => a.NetworkInterfaceType!=NetworkInterfaceType.Loopback))
-          {                       
+          {
             var mac = nic.GetPhysicalAddress().GetAddressBytes();
             csum.Add( mac );
             for(var i=0; i<mac.Length; i++)
@@ -61,20 +61,20 @@ namespace NFX.OS
                for(var i=0 ; i<hash.Length ; i+=2)
                 md5s.Append( (hash[i]^hash[i+1]).ToString("X2"));
           }
-          
+
           return "{0}-{1}-{2}".Args( cnt, csum.Value.ToString("X8"),  md5s );
       }
-      
 
-        
- 
+
+
+
   }
 
 
 
 
 
-        
+
 
         /// <summary>
         /// Provides information about IP network host
@@ -101,7 +101,7 @@ namespace NFX.OS
                                     m_Unicast = addr is UnicastIPAddressInformation;
 
                                     if (m_Unicast)
-                                    { 
+                                    {
                                        var uaddr = (UnicastIPAddressInformation)addr;
                                        m_UnicastIPv4Mask = uaddr.IPv4Mask.GetAddressBytes();
                                        m_UnicastPreferredLifetimeSec = uaddr.AddressPreferredLifetime;
@@ -124,7 +124,7 @@ namespace NFX.OS
                                   private long m_UnicastValidLifetimeSec;
                                   private long m_UnicastDHCPLeaseLifetimeSec;
 
-                                  public string Name        { get { return m_Name;}}  
+                                  public string Name        { get { return m_Name;}}
                                   public int    Order       { get { return m_Order;}}
                                   public byte[] Bytes       { get { return m_Bytes;}}
                                   public bool   Transient   { get { return m_Transient;}}
@@ -134,7 +134,7 @@ namespace NFX.OS
                                   public bool   Unicast     { get { return m_Unicast;}}
                                   public byte[] UnicastIPv4Mask  { get { return m_UnicastIPv4Mask;}}
                                   public long UnicastPreferredLifetimeSec { get{ return m_UnicastPreferredLifetimeSec;}}
-                                  public long UnicastValidLifetimeSec     { get{ return m_UnicastValidLifetimeSec;}} 
+                                  public long UnicastValidLifetimeSec     { get{ return m_UnicastValidLifetimeSec;}}
                                   public long UnicastDHCPLeaseLifetimeSec { get{ return m_UnicastDHCPLeaseLifetimeSec;}}
 
                                   public override int GetHashCode()
@@ -154,7 +154,7 @@ namespace NFX.OS
                                     return m_Name;
                                   }
                               }
-         
+
 
                               /// <summary>
                               /// Describes a network adapter on subordinate host
@@ -162,7 +162,7 @@ namespace NFX.OS
                               [Serializable]
                               public sealed class NetAdapterInfo : INamed, IOrdered
                               {
-            
+
                                   internal NetAdapterInfo(NetworkInterface nic, int order)
                                   {
                                     m_Name = "{0}::{1}".Args(nic.Id, nic.Name);
@@ -170,10 +170,10 @@ namespace NFX.OS
                                     m_Description = nic.Description;
                                     m_ReceiveOnly = nic.IsReceiveOnly;
                                     m_AdapterType =  nic.NetworkInterfaceType.ToString();
-                                    m_Status = nic.OperationalStatus.ToString(); 
+                                    m_Status = nic.OperationalStatus.ToString();
                                     m_Speed = nic.Speed;
                                     m_IPv4Support = nic.Supports( NetworkInterfaceComponent.IPv4 );
-                                    m_IPv6Support = nic.Supports( NetworkInterfaceComponent.IPv6 ); 
+                                    m_IPv6Support = nic.Supports( NetworkInterfaceComponent.IPv6 );
 
                                     var addrs = nic.GetIPProperties().UnicastAddresses;
                                     m_Addresses = new Registry<NetAddrInfo>();
@@ -184,7 +184,7 @@ namespace NFX.OS
                                       ord++;
                                     }
                                   }
-            
+
                                   private string m_Name;
                                   private int m_Order;
                                   private string m_Description;
@@ -196,7 +196,7 @@ namespace NFX.OS
                                   private bool   m_IPv6Support;
                                   private Registry<NetAddrInfo> m_Addresses;
 
-                                  public string Name        { get { return m_Name;}}  
+                                  public string Name        { get { return m_Name;}}
                                   public int    Order       { get { return m_Order;}}
                                   public string Description { get { return m_Description;}}
                                   public bool   ReceiveOnly { get { return m_ReceiveOnly;}}
@@ -230,7 +230,7 @@ namespace NFX.OS
             public static HostNetInfo ForThisHost()
             {
               var computerProps = IPGlobalProperties.GetIPGlobalProperties();
-                              
+
               var result = new HostNetInfo
               {
                 m_Name = "{0}.{1}".Args(computerProps.HostName, computerProps.DomainName),
@@ -243,7 +243,7 @@ namespace NFX.OS
               var ord = 0;
               foreach(var nic in nics)
               {
-                adapters.Register( new NetAdapterInfo(nic, ord) );  
+                adapters.Register( new NetAdapterInfo(nic, ord) );
                 ord++;
               }
 
@@ -253,7 +253,7 @@ namespace NFX.OS
 
 
             private HostNetInfo() {}
-            
+
             private string m_Name;
             private string m_HostNameSegment;
             private string m_DomainNameSegment;

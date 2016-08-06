@@ -31,7 +31,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
   class GoogleDriveRequestBody : Dictionary<string, object>
   {
     #region CONST
-      
+
       private const string RFC3339 = "yyyy-MM-dd'T'HH:mm:ss.fffffffK";
 
     #endregion

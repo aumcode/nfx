@@ -24,7 +24,7 @@ using NFX.CodeAnalysis.Source;
 namespace NFX.CodeAnalysis.XML
 {
     /// <summary>
-    /// Represents XML language 
+    /// Represents XML language
     /// </summary>
     public sealed class XMLLanguage : Language
     {
@@ -42,11 +42,11 @@ namespace NFX.CodeAnalysis.XML
         {
             get
             {
-                yield return "xml"; 
+                yield return "xml";
                 yield return "configuration";
-                yield return "conf"; 
-                yield return "config"; 
-                
+                yield return "conf";
+                yield return "config";
+
             }
         }
 

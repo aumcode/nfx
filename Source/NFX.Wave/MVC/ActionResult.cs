@@ -34,7 +34,7 @@ namespace NFX.Wave.MVC
   {
      void Execute(Controller controller, WorkContext work);
   }
-  
+
   /// <summary>
   /// Represents MVC action result that downloads a local file
   /// </summary>
@@ -77,63 +77,81 @@ namespace NFX.Wave.MVC
   /// </summary>
   public struct Redirect : IActionResult
   {
-    public Redirect(string url)
+    public Redirect(string url, WebConsts.RedirectCode code = WebConsts.RedirectCode.Found_302)
     {
       URL = url;
+      Code = code;
     }
     /// <summary>
     /// Where to redirect user
     /// </summary>
     public readonly string URL;
 
+    /// <summary>
+    /// Redirect code
+    /// </summary>
+    public readonly WebConsts.RedirectCode Code;
+
     public void Execute(Controller controller, WorkContext work)
     {
-      work.Response.Redirect(URL);
+      work.Response.Redirect(URL, Code);
     }
   }
 
   /// <summary>
   /// Represents MVC action result that returns/downloads an image
   /// </summary>
-  public struct Picture : IActionResult
+  public struct Picture : IActionResult, IDisposable
   {
     public Picture(Image image, ImageFormat format, string attachmentFileName = null)
     {
-      Image = image;
-      Format = format;
-      AttachmentFileName = attachmentFileName;
+      m_Image = image;
+      m_Format = format;
+      m_AttachmentFileName = attachmentFileName;
     }
+
+    private Image       m_Image;
+    private ImageFormat m_Format;
+    public  string      m_AttachmentFileName;
+
 
 
     /// <summary>
     /// Picture image
     /// </summary>
-    public readonly Image Image;
+    public Image Image{ get{ return m_Image;} }
 
     /// <summary>
     /// Download buffer size. Leave unchanged in most cases
     /// </summary>
-    public readonly ImageFormat  Format;
+    public ImageFormat  Format{ get{ return m_Format;} }
 
     /// <summary>
     /// When non-null asks user to download picture as a named attached file
     /// </summary>
-    public readonly string  AttachmentFileName;
+    public string  AttachmentFileName{ get{ return m_AttachmentFileName;} }
 
 
 
     public void Execute(Controller controller, WorkContext work)
     {
-      if (AttachmentFileName.IsNotNullOrWhiteSpace())
-          work.Response.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(AttachmentFileName));
+      if (m_Image==null) return;
 
-      var fid = Format.Guid;
+      if (m_AttachmentFileName.IsNotNullOrWhiteSpace())
+          work.Response.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(m_AttachmentFileName));
+
+      var fid = m_Format.Guid;
       work.Response.ContentType = ImageCodecInfo.GetImageEncoders()
                                                 .FirstOrDefault(enc => fid==enc.FormatID)
                                                 .MimeType;
-      Image.Save(work.Response.GetDirectOutputStreamForWriting(), Format);
+      m_Image.Save(work.Response.GetDirectOutputStreamForWriting(), Format);
     }
 
+
+    public void Dispose()
+    {
+      DisposableObject.DisposeAndNull(ref m_Image);
+    }
   }
 
 
@@ -146,7 +164,7 @@ namespace NFX.Wave.MVC
                         Exception validationError,
                         string recID = null,
                         string target = null,
-                        string isoLang = null, 
+                        string isoLang = null,
                         Client.ModelFieldValueListLookupFunc valueListLookupFunc = null)
     {
       RecID = recID;
@@ -174,7 +192,7 @@ namespace NFX.Wave.MVC
       else
         ValueListLookupFunc = null;
     }
-    
+
     public readonly string RecID;
     public readonly Row Row;
     public readonly Exception ValidationError;
@@ -204,7 +222,7 @@ namespace NFX.Wave.MVC
       Data = data;
       Options = options;
     }
-    
+
     public readonly object Data;
     public readonly JSONWritingOptions Options;
 
@@ -214,9 +232,9 @@ namespace NFX.Wave.MVC
       work.Response.WriteJSON( Data, Options);
     }
   }
-  
+
   /// <summary>
-  /// Returns HTTP 404 - not found. 
+  /// Returns HTTP 404 - not found.
   /// This should be used in place of returning exceptions where needed as it is faster
   /// </summary>
   public struct Http404NotFound : IActionResult
@@ -227,7 +245,7 @@ namespace NFX.Wave.MVC
     }
 
     public readonly string Description;
-    
+
     public void Execute(Controller controller, WorkContext work)
     {
       var txt = WebConsts.STATUS_404_DESCRIPTION;
@@ -240,7 +258,7 @@ namespace NFX.Wave.MVC
        work.Response.WriteJSON( new {OK = false, http = WebConsts.STATUS_404, descr = txt});
       else
        work.Response.Write(txt);
-    } 
+    }
   }
 
   /// <summary>
@@ -255,7 +273,7 @@ namespace NFX.Wave.MVC
     }
 
     public readonly string Description;
-    
+
     public void Execute(Controller controller, WorkContext work)
     {
       var txt = WebConsts.STATUS_403_DESCRIPTION;
@@ -268,7 +286,7 @@ namespace NFX.Wave.MVC
        work.Response.WriteJSON( new {OK = false, http = WebConsts.STATUS_403, descr = txt});
       else
        work.Response.Write(txt);
-    } 
+    }
   }
 
 

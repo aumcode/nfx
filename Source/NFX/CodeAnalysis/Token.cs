@@ -40,9 +40,9 @@ namespace NFX.CodeAnalysis
          Operator,
          Symbol
       }
-      
-      
-      
+
+
+
       /// <summary>
       /// Represents a lexical token of the language. This is an abstract class that particular language implementations must extend
       ///  to define language-specific token types
@@ -50,7 +50,7 @@ namespace NFX.CodeAnalysis
       public abstract class Token
       {
         public readonly ILexer Lexer;
-    
+
         public readonly SourcePosition StartPosition;
         public readonly SourcePosition EndPosition;
 
@@ -98,15 +98,15 @@ namespace NFX.CodeAnalysis
 
 
           /// <summary>
-          /// This property is needed due to the fact that language lexers may be used to analyze special supersets of regular 
+          /// This property is needed due to the fact that language lexers may be used to analyze special supersets of regular
           ///  language grammars i.e. for pattern matches, template parser etc. Code compilers may elect to throw errors when this property is true.
           /// Returns true for tokens that are not part of the valid language grammar, however they exist for other reasons,
-          /// for example - for pattern capture match analysis, or for template processing 
+          /// for example - for pattern capture match analysis, or for template processing
           /// </summary>
           public abstract bool IsNonLanguage { get; }
 
           /// <summary>
-          /// Returns token type as a grammar-agnostic ordinal 
+          /// Returns token type as a grammar-agnostic ordinal
           /// </summary>
           public abstract int OrdinalType { get; }
 
@@ -188,7 +188,7 @@ namespace NFX.CodeAnalysis
       /// </summary>
       public class TokenList<TToken> : List<TToken> where TToken : Token
       {
-    
+
         public TokenList()
         {
 
@@ -201,14 +201,14 @@ namespace NFX.CodeAnalysis
 
         public new TToken this[int idx]
         {
-          get 
+          get
           {
             if (idx>=base.Count) idx=base.Count-1;
             return base[idx];
-          }   
+          }
         }
-    
-    
+
+
         public override string ToString()
         {
           StringBuilder sb = new StringBuilder();

@@ -45,13 +45,13 @@ namespace NFX.Serialization.POD
     public abstract class PortableObjectDocumentDeserializationTransform : Attribute
     {
         /// <summary>
-        /// Override to construct new object instance from CompositeData. 
+        /// Override to construct new object instance from CompositeData.
         /// Return null to let the default implementatiom/ctor be invoked by the framework
         /// </summary>
         public abstract object ConstructObjectInstance(CompositeData data);
 
         /// <summary>
-        /// Handles the deserialization of the object instance from CompoisteCustomData bag. Returns true to indicate that 
+        /// Handles the deserialization of the object instance from CompoisteCustomData bag. Returns true to indicate that
         ///  deserialization was handled completely here and default framework implementation should not be called
         /// </summary>
         public abstract bool DeserializeFromCompositeCustomData(object instance, CompositeCustomData data);

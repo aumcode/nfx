@@ -63,7 +63,7 @@ namespace NFX.Serialization.JSON
             using(var writer = new StreamWriter(stream, encoding ?? UTF8Encoding.UTF8))
                Write(data, writer, options);
         }
-        
+
         /// <summary>
         /// Writes JSON data to the string
         /// </summary>
@@ -72,13 +72,13 @@ namespace NFX.Serialization.JSON
             if (options==null) options = JSONWritingOptions.Compact;
 
             var sb = new StringBuilder(0xff);
-            using( var wri =  formatProvider==null ? 
+            using( var wri =  formatProvider==null ?
                                   new StringWriter( sb ) :
                                   new StringWriter( sb, formatProvider ) )
             {
                 writeAny(wri, data, 0, options);
             }
-                                   
+
             return sb.ToString();
         }
 
@@ -134,7 +134,7 @@ namespace NFX.Serialization.JSON
 
 
 
-       
+
 
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace NFX.Serialization.JSON
 
             if (opt==null)
                 opt = JSONWritingOptions.Compact;
-            
+
             wri.Write('"');
 
             for (int i = 0; i < data.Length; i++)
@@ -178,14 +178,14 @@ namespace NFX.Serialization.JSON
                     case (char)CharCodes.CR:        { wri.Write(@"\r"); break; }
                     case (char)CharCodes.Tab:       { wri.Write(@"\t"); break; }
                     case (char)CharCodes.VerticalQuote: { wri.Write(@"\u"); ((int)c).ToString("x4"); break; }
-                                    
+
                     case '"':  { wri.Write(@"\"""); break; }
-                                    
+
                     default: { wri.Write(c); break;}
                 }
 
             }//for
-                          
+
             wri.Write('"');
         }
 
@@ -205,7 +205,7 @@ namespace NFX.Serialization.JSON
                 wri.Write("new Date({0})".Args( data.ToMillisecondsSinceUnixEpochStart() ));
                 return;
             }
-            
+
             wri.Write('"');
             var year = data.Year;
             if (year>999) wri.Write(year);
@@ -224,7 +224,7 @@ namespace NFX.Serialization.JSON
             var day = data.Day;
             if (day>9) wri.Write(day);
             else { wri.Write('0'); wri.Write(day); }
-            
+
             wri.Write('T');
 
             var hour = data.Hour;
@@ -258,15 +258,15 @@ namespace NFX.Serialization.JSON
             else
             {
                 //var offset = utcOffset==null ? TimeZoneInfo.Local.BaseUtcOffset : utcOffset.Value;
-                //dlat 2014/06/15 
+                //dlat 2014/06/15
                 var offset = utcOffset==null ? TimeZoneInfo.Local.GetUtcOffset(data) : utcOffset.Value;
-                
+
                 wri.Write( offset.Ticks<0 ? '-' : '+' );
-                
+
                 hour = Math.Abs(offset.Hours);
                 if (hour>9) wri.Write(hour);
                 else { wri.Write('0'); wri.Write(hour); }
-                
+
                 wri.Write(':');
 
                 minute = Math.Abs(offset.Minutes);
@@ -278,14 +278,14 @@ namespace NFX.Serialization.JSON
             wri.Write('"');
         }
 
-                    
+
                 #region .pvt .impl
-                    
-                       
+
+
                         private static void indent(TextWriter wri, int level, JSONWritingOptions opt)
                         {
                             if (opt.IndentWidth==0) return;
-                            
+
                             var total = level * opt.IndentWidth;
                             for(var i=0; i<total; i++)
                              wri.Write(' ');
@@ -347,27 +347,27 @@ namespace NFX.Serialization.JSON
                                 ((IJSONWritable)data).WriteAsJSON(wri, level, opt);
                                 return;
                             }
-                            
+
                             if (data is Serialization.JSON.JSONDynamicObject)//unwrap dynamic
                             {
                                 writeAny(wri, ((Serialization.JSON.JSONDynamicObject)data).Data, level, opt);
                                 return;
                             }
-                            
-                            
+
+
                             if (data is IDictionary)//must be BEFORE IEnumerable
                             {
                                 writeMap(wri, (IDictionary)data, level, opt);
                                 return;
                             }
-                            
+
                             if (data is IEnumerable)
                             {
                                 writeArray(wri, (IEnumerable)data, level, opt);
                                 return;
                             }
-                            
-                            var tdata = data.GetType();      
+
+                            var tdata = data.GetType();
                             if (tdata.IsPrimitive || tdata.IsEnum)
                             {
                                 string val;
@@ -381,7 +381,7 @@ namespace NFX.Serialization.JSON
                             }
 
                             var fields = SerializationUtils.GetSerializableFields(tdata);
-            
+
                             //20150620 DKh
                             //var dict = new Dictionary<string, object>();
                             //foreach(var f in fields)
@@ -397,7 +397,7 @@ namespace NFX.Serialization.JSON
                             //    dict.Add(name, f.GetValue(data));
                             //}
 
-                            var dict = fields.Select( 
+                            var dict = fields.Select(
                             f =>
                             {
                               var name = f.Name;
@@ -465,11 +465,11 @@ namespace NFX.Serialization.JSON
                             if (level>0) level++;
 
                             if (opt.ObjectLineBreak)
-                            { 
+                            {
                               wri.WriteLine();
                               indent(wri, level, opt);
                             }
-                            
+
                             wri.Write('{');
 
                             var first = true;
@@ -497,7 +497,7 @@ namespace NFX.Serialization.JSON
                               wri.WriteLine();
                               indent(wri, level, opt);
                             }
-                            
+
                             wri.Write('}');
                         }
 
@@ -514,7 +514,7 @@ namespace NFX.Serialization.JSON
                               first = false;
                             }
 
-                            wri.Write(']');     
+                            wri.Write(']');
                         }
 
 

@@ -132,7 +132,7 @@ namespace NFX.Throttling
             /// Return current running sum over the throttling interval
             /// </summary>
             public double Sum { get { return m_Sum; } }
-        
+
             /// <summary>
             /// Return current running average over the throttling interval
             /// </summary>

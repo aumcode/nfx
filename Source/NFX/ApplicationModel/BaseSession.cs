@@ -31,7 +31,7 @@ namespace NFX.ApplicationModel
     public class BaseSession : ISession
     {
         #region .ctor
-            
+
             protected BaseSession() //used by serializer
             {
             }
@@ -46,7 +46,7 @@ namespace NFX.ApplicationModel
 
 
         #region Fields
-        
+
             private Guid m_ID;
             private ulong m_IDSecret;
 
@@ -76,7 +76,7 @@ namespace NFX.ApplicationModel
         #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// Returns Session ID
             /// </summary>
@@ -94,7 +94,7 @@ namespace NFX.ApplicationModel
             {
                 get { return m_IDSecret; }
             }
-            
+
             /// <summary>
             /// When this parameter is not null then RegenerateID() was called and session provider may need to re-stow session object under a new ID
             /// </summary>
@@ -112,7 +112,7 @@ namespace NFX.ApplicationModel
             }
 
             /// <summary>
-            /// Indicates that user login happened in current request processing cycle. This flag is 
+            /// Indicates that user login happened in current request processing cycle. This flag is
             /// useful for long term token assignment on release
             /// </summary>
             public bool IsJustLoggedIn
@@ -160,7 +160,7 @@ namespace NFX.ApplicationModel
             /// </summary>
             public virtual string LanguageISOCode
             {
-                get { return CoreConsts.ISO_LANG_ENGLISH;} 
+                get { return CoreConsts.ISO_LANG_ENGLISH;}
             }
 
             /// <summary>
@@ -168,7 +168,7 @@ namespace NFX.ApplicationModel
             /// </summary>
             public IDictionary<object, object> Items
             {
-                get 
+                get
                 {
                   if (m_Items==null)
                       lock(m_ItemsLock)
@@ -185,7 +185,7 @@ namespace NFX.ApplicationModel
             /// </summary>
             public object this[object key]
             {
-              get 
+              get
               {
                 object result;
                 if (Items.TryGetValue(key, out result)) return result;

@@ -4,7 +4,7 @@ namespace NFX.Media.PDF.Elements
 {
   public class RectangleElement : PdfElement
   {
-    #region .ctor 
+    #region .ctor
 
     public RectangleElement(float x1, float y1, float x2, float y2)
       : this(x1, y1, x2, y2, new PdfDrawStyle())

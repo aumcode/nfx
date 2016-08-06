@@ -202,7 +202,7 @@ namespace NFX.Instrumentation.Analytics
         }
 
         #region Fields
-        
+
             protected HistData m_Data;
             protected long     m_TotalSamples;
             protected string   m_Title;

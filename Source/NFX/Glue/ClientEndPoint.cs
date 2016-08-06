@@ -26,17 +26,17 @@ using NFX.Glue.Protocol;
 namespace NFX.Glue
 {
     /// <summary>
-    /// Represents an ancestor for client classes that make calls to server endpoints. 
+    /// Represents an ancestor for client classes that make calls to server endpoints.
     /// This and descendant classes are thread safe ONLY for making non-constructing/destructing remote calls, unless ReserveTransport is set to true
     /// in which case no operation is thread safe
     /// </summary>
     /// <remarks>
-    /// This class is not thread safe in general, however Glue allows for concurrent remote calls via the same endpoint instance 
+    /// This class is not thread safe in general, however Glue allows for concurrent remote calls via the same endpoint instance
     /// if the following conditions are met:
     ///  1). The endpoint instance has not reserved its transport (ReserveTransport=false)
     ///  2). Either remote contract is stateless OR none of the concurrent calls are constructing/destructing remote instance
-    /// The second condition ensures that stateful remote instance is consistent, otherwise operations may get executed 
-    ///  out-of-order in the multithreaded scenario 
+    /// The second condition ensures that stateful remote instance is consistent, otherwise operations may get executed
+    ///  out-of-order in the multithreaded scenario
     /// </remarks>
     public abstract class ClientEndPoint : EndPoint
     {
@@ -67,8 +67,8 @@ namespace NFX.Glue
             base.Destructor();
         }
 
-       
-      
+
+
         private Guid? m_RemoteInstance; protected internal void __setRemoteInstance(Guid id) { m_RemoteInstance = id; }
 
         private int m_DispatchTimeoutMs;
@@ -181,7 +181,7 @@ namespace NFX.Glue
 
           foreach(var insp in m_MsgInspectors.OrderedValues)
            request = insp.ClientDispatchCall(this, request);
-          
+
           return Binding.DispatchCall(this, request);
         }
 

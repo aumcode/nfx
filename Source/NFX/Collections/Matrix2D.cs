@@ -28,7 +28,7 @@ using NFX;
 namespace NFX.Collections
 {
   /// <summary>
-  /// Represents a two deminsional matrix of T. 
+  /// Represents a two deminsional matrix of T.
   /// This class uses jagged arrays for internal implementation ensuring proper array sizing per matrix structure
   /// </summary>
   /// <typeparam name="T">Any desired type</typeparam>
@@ -67,7 +67,7 @@ namespace NFX.Collections
       }
 
     #endregion
-      
+
   }//class
 
 }

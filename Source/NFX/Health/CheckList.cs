@@ -32,21 +32,21 @@ namespace NFX.Health
     /// Stipulates status for Health.CheckList
     /// </summary>
     public enum CheckListStatus { Created, Running,  Run  }
-    
+
     /// <summary>
     /// Represents a list of health checks to be performed.
     /// Health checks are classes derived from BaseCheck class and must implement DoRun() method
     ///  that performs application-specific checking. CheckList obtains a list of Check instances
-    ///   from assemblies supplied to its constructor. 
+    ///   from assemblies supplied to its constructor.
     /// Health checks are executed in no predictable order.
     /// If particular execution order is necessary then a check has to be written to explicitly
     ///  coordinate sub-checks.
     /// The class is thread safe for all operations.
     /// </summary>
-    public sealed class CheckList 
+    public sealed class CheckList
     {
        #region .ctor
-       
+
         /// <summary>
         /// Initializaes check list from assembly names separated by semicolons.
         /// Optional path will be prepended to every assembly name
@@ -56,7 +56,7 @@ namespace NFX.Health
           path = path ?? string.Empty;
 
           var anames = checkAssemblies.Split(';');
-          
+
           var al = new List<Assembly>();
           foreach(var aname in anames)
             al.Add(Assembly.LoadFrom(Path.Combine(path, aname)));
@@ -65,7 +65,7 @@ namespace NFX.Health
         }
 
         /// <summary>
-        /// Initializaes check list from assemblies 
+        /// Initializaes check list from assemblies
         /// </summary>
         public CheckList(IEnumerable<Assembly> checkAssemblies, ConfigSectionNode config)
         {
@@ -110,7 +110,7 @@ namespace NFX.Health
          {
            get
            {
-             return m_Status == CheckListStatus.Run && 
+             return m_Status == CheckListStatus.Run &&
                     m_Checks.Where(c=> !c.Result.Skipped && !c.Result.Successful).Count()==0;
            }
          }
@@ -122,7 +122,7 @@ namespace NFX.Health
          {
            get
            {
-             return m_Status == CheckListStatus.Run && 
+             return m_Status == CheckListStatus.Run &&
                     m_Checks.Where(c=>!c.Result.Successful).Count()==0;
            }
          }
@@ -153,8 +153,8 @@ namespace NFX.Health
         public void Run(NameValueCollection parameters)
         {
            if (m_Status != CheckListStatus.Created)
-            throw new HealthCheckListException(StringConsts.CHECK_LIST_ALREADY_RUN_ERROR); 
-           
+            throw new HealthCheckListException(StringConsts.CHECK_LIST_ALREADY_RUN_ERROR);
+
            try
            {
              m_Status = CheckListStatus.Running;
@@ -178,17 +178,17 @@ namespace NFX.Health
         public string Report(TextWriter writer, string format)
         {
            var contentType = "text/xml";
-           
+
            format = (format ?? string.Empty).Trim().ToLower();
 
            Reporter reporter = null;
            switch (format)
            {
-             case "html": 
+             case "html":
              case "htm":
                           {
                              contentType = "text/html";
-                             reporter = new HTMLReporter(this); 
+                             reporter = new HTMLReporter(this);
                              break;
                           }
 
@@ -196,7 +196,7 @@ namespace NFX.Health
              case "txt":
                           {
                              contentType = "text/plain";
-                             reporter = new TextReporter(this); 
+                             reporter = new TextReporter(this);
                              break;
                           }
 
@@ -212,19 +212,19 @@ namespace NFX.Health
 
 
         #region .pvt .impl
-         
-         
-         
+
+
+
          private void load(IEnumerable<Assembly> assemblies, ConfigSectionNode config)
          {
            foreach(var assembly in assemblies)
              foreach(var type in assembly.GetExportedTypes().Where(t=>t.IsSubclassOf(typeof(BaseCheck))))
              {
                var check = Activator.CreateInstance(type) as BaseCheck;
-              
+
                if (config!=null)
                 check.Configure(config);
-              
+
                m_Checks.Add(check);
              }
          }

@@ -24,7 +24,7 @@ using NFX.Environment;
 namespace NFX.Inventorization
 {
     /// <summary>
-    /// Defines an abstraction of inventorization  
+    /// Defines an abstraction of inventorization
     /// </summary>
     public interface IInventorization
     {

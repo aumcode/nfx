@@ -28,14 +28,14 @@ namespace NFX.Glue
     /// Provides access to server call context. Use to access Headers
     /// </summary>
     public static class ServerCallContext
-    {   
+    {
         [ThreadStatic]
         private static RequestMsg ts_Request;
 
         [ThreadStatic]
         private static Headers ts_ResponseHeaders;
 
-       
+
         /// <summary>
         /// Returns RequestMsg which is being processed. Access incoming headers through Request.Headers
         /// </summary>
@@ -49,15 +49,15 @@ namespace NFX.Glue
         /// </summary>
         public static Headers ResponseHeaders
         {
-          get 
+          get
           {
             if (ts_ResponseHeaders==null) ts_ResponseHeaders = new Headers();
-            return ts_ResponseHeaders; 
+            return ts_ResponseHeaders;
           }
         }
 
 
-       
+
         /// <summary>
         /// Internal framework-only method to bind thread-level context
         /// </summary>

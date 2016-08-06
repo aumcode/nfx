@@ -71,7 +71,7 @@ namespace NFX.Instrumentation
 
 
         #endregion
-        
+
 
         #region Private Fields
 
@@ -100,9 +100,9 @@ namespace NFX.Instrumentation
         #endregion
 
         #region Properties
-           
+
             public override string ComponentCommonName { get { return "instr"; }}
-           
+
             public bool Enabled
             {
                 get { return true; }
@@ -167,7 +167,7 @@ namespace NFX.Instrumentation
             /// </summary>
             [Config("$self-instrumented|$instrument-self|$instrumented", false)]
             public bool SelfInstrumented
-            { 
+            {
               get { return m_SelfInstrumented; }
               set { m_SelfInstrumented = value;}
             }
@@ -176,7 +176,7 @@ namespace NFX.Instrumentation
             /// Shortcut to SelfInstrumented, implements IInstrumentable
             /// </summary>
             [Config(Default=false)]
-            [ExternalParameter] 
+            [ExternalParameter]
             public override bool InstrumentationEnabled
             {
               get { return this.SelfInstrumented;}
@@ -197,14 +197,14 @@ namespace NFX.Instrumentation
             {
               get{ return m_MaxRecordCount;}
               set
-              {  
+              {
                 if (value<MINIMUM_MAX_REC_COUNT) value = MINIMUM_MAX_REC_COUNT;
                 else
                 if (value>MAXIMUM_MAX_REC_COUNT) value = MAXIMUM_MAX_REC_COUNT;
-               
+
                 m_MaxRecordCount = value;
               }
-            } 
+            }
 
             /// <summary>
             /// Returns the size of the ring buffer where result (aggregated) instrumentation records are kept in memory.
@@ -230,11 +230,11 @@ namespace NFX.Instrumentation
             /// </summary>
             public IEnumerable<Type> DataTypes
             {
-              get 
+              get
               {
                 var bucketed = m_TypeBucketed;
                 if (bucketed == null) return Enumerable.Empty<Type>();
-                return bucketed.Keys.ToArray(); 
+                return bucketed.Keys.ToArray();
               }
             }
 
@@ -260,14 +260,14 @@ namespace NFX.Instrumentation
                srcBucketed.DefaultDatum = datum;
 
               var bag = srcBucketed.GetOrAdd(datum.Source, (src) => new DatumBag());
-                              
+
               bag.Add(datum);
               Interlocked.Increment(ref m_RecordCount);
             }
 
             /// <summary>
             /// Returns the specified number of samples from the ring result buffer in the near-chronological order,
-            /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all 
+            /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all
             ///  result records returned as enumeration is a lazy procedure that does not make copies/take locks.
             /// The enumeration is empty if ResultBufferSize is less or equal to zero entries.
             /// If count is less or equal to zero then the system returns all results available.
@@ -285,13 +285,13 @@ namespace NFX.Instrumentation
               {
                 if (count>m_ResultBufferSize) count = m_ResultBufferSize;
 
-                if (curIdx>=count) 
-                  idx = curIdx - count; 
-                else 
+                if (curIdx>=count)
+                  idx = curIdx - count;
+                else
                   idx = (data.Length-1) - ((count-1) - curIdx);
               }
               //else dump all
-               
+
 
               if (idx>=curIdx)//capture the tail first
               {
@@ -302,7 +302,7 @@ namespace NFX.Instrumentation
                 }
                 idx = 0;
               }
-               
+
               for(;idx<curIdx;idx++)
               {
                  var datum = data[idx];
@@ -312,7 +312,7 @@ namespace NFX.Instrumentation
 
             /// <summary>
             /// Returns samples starting around the the specified UTCdate in the near-chronological order,
-            /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all 
+            /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all
             ///  result records returned as enumeration is a lazy procedure that does not make copies/take locks.
             /// The enumeration is empty if ResultBufferSize is less or equal to zero entries
             /// </summary>
@@ -354,14 +354,14 @@ namespace NFX.Instrumentation
                     taking = true;
                     continue;
                   }
-                  
+
                   var span = (int)(utcStart - datum.UTCTime).TotalSeconds;//can not be negative because of prior if
                   var offset = span<5 ? 1 : span<10 ? FINE_SEC_SAMPLES : span * COARSE_SEC_SAMPLES;
                   idx += offset;
-                }//while 
+                }//while
                 idx=0;
               }//for
-              
+
             }
 
 
@@ -422,11 +422,11 @@ namespace NFX.Instrumentation
                 //pre-flight checks
                 if (m_Provider == null)
                   throw new NFXException(StringConsts.SERVICE_INVALID_STATE + "InstrumentationService.DoStart(Provider=null)");
-        
+
 
                 m_BufferOldestDatumUTC = null;
 
-                m_TypeBucketed = new TypeBucketedData(); 
+                m_TypeBucketed = new TypeBucketedData();
 
                 m_Provider.Start();
 
@@ -549,7 +549,7 @@ namespace NFX.Instrumentation
                              instrumentSelf();
 
                             write();
-                            
+
                             if (m_OSInstrumentationIntervalMS <= 0)
                               m_Trigger.WaitOne(m_ProcessingIntervalMS);
                             else
@@ -571,10 +571,10 @@ namespace NFX.Instrumentation
                 {
                    var rc = this.RecordCount;
                    Self.RecordCount.Record( rc );
-                   Self.RecordLoad.Record( (int)Math.Round( 100d *  (rc / (double)m_MaxRecordCount)) );//cant be 0 
+                   Self.RecordLoad.Record( (int)Math.Round( 100d *  (rc / (double)m_MaxRecordCount)) );//cant be 0
                    Self.ProcessingInterval.Record( m_ProcessingIntervalMS );
 
-                   
+
                    var buf = m_ResultBuffer;
                    if (buf!=null)
                    {
@@ -624,9 +624,9 @@ namespace NFX.Instrumentation
                       if (bag.TryPeek(out datum))
                       {
                         Datum aggregated = null;
-                       
+
                         try
-                        {      
+                        {
                            var lst = new List<Datum>();
                            Datum elm;
                            while(bag.TryTake(out elm))
@@ -644,7 +644,7 @@ namespace NFX.Instrumentation
                                                                 datum.GetType().FullName,
                                                                 et), et);
                         }
-                       
+
                         try
                         {
                           if (aggregated!=null)
@@ -673,15 +673,15 @@ namespace NFX.Instrumentation
                 {
                   var data = m_ResultBuffer;
                   if (data==null || result==null) return;
-                  
+
                   var idx = Interlocked.Increment(ref m_ResultBufferIndex);
-                
+
                   while(idx>=data.Length)//while needed in case VolatileWrite is not properly implemented on platform and does not write-through cache right away
                   {
                     Thread.VolatileWrite(ref m_ResultBufferIndex, -1);
                     idx = Interlocked.Increment(ref m_ResultBufferIndex);
                   }
-                
+
                   if (m_BufferOldestDatumUTC.HasValue)
                   {
                     var existing = data[idx];
@@ -703,7 +703,7 @@ namespace NFX.Instrumentation
 
 
     /// <summary>
-    /// Internal concurrent dictionary used for instrumentation data aggregation 
+    /// Internal concurrent dictionary used for instrumentation data aggregation
     /// </summary>
     internal class TypeBucketedData : ConcurrentDictionary<Type, SrcBucketedData> {}
 
@@ -711,7 +711,7 @@ namespace NFX.Instrumentation
     /// <summary>
     /// Internal concurrent dictionary used for instrumentation data aggregation
     /// </summary>
-    internal class SrcBucketedData : ConcurrentDictionary<string, DatumBag> 
+    internal class SrcBucketedData : ConcurrentDictionary<string, DatumBag>
     {
       internal Datum DefaultDatum;
     }

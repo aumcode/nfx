@@ -34,14 +34,14 @@ namespace NFX.Glue
     /// It is possible to obtain an instance of CallSlot.AsTask in which case that instance is registered with the framework-internal reactor
     ///  so task does complete normally even on timeout, however, in high-throughput apps (10K+ calls per second) this method is not the most efficient one
     ///  as it allocates additional objects (task, list entry etc.) that eventually increase GC load for long runs.
-    ///  Note: A 3.2 Ghz 4-Core I7 server with 8Gb of ram can easily handle 40K 2-way calls a second (given little business server logic and simple payload). 
+    ///  Note: A 3.2 Ghz 4-Core I7 server with 8Gb of ram can easily handle 40K 2-way calls a second (given little business server logic and simple payload).
     ///  See also: CallReactor class
     /// </summary>
     public sealed class CallSlot
     {
-      public const int DEFAULT_TIMEOUT_MS = 20000;   
-      
-      
+      public const int DEFAULT_TIMEOUT_MS = 20000;
+
+
       /// <summary>
       /// INTERNAL METHOD. Developers do not call!
       /// This constructor is used by an Async binding that delivers response after call slot was created
@@ -50,14 +50,14 @@ namespace NFX.Glue
       {
          m_Client = client;
          m_ClientTransport = clientTransport;
-         m_RequestID = request.RequestID;  
+         m_RequestID = request.RequestID;
          m_CallStatus = status;
          m_OneWay = request.OneWay;
          m_StartTime = DateTime.UtcNow;
          m_TimeoutMs = timeoutMs>0 ? timeoutMs : DEFAULT_TIMEOUT_MS;
 
          if (!m_OneWay && client.Binding.MeasureStatTimes)
-         {                            
+         {
            m_StatStartTimeTicks = client.Binding.StatTimeTicks;
            m_StatRoundtripTimeKey = client.Binding.GetClientCallStatTimeKey(client, request);
          }
@@ -68,23 +68,23 @@ namespace NFX.Glue
       /// This constructor is used by a synchronous binding that delivers response right after sending it.
       /// ONLY for OneWayCall = false
       /// </summary>
-      public CallSlot(ClientEndPoint client, 
-                      ClientTransport clientTransport, 
+      public CallSlot(ClientEndPoint client,
+                      ClientTransport clientTransport,
                       long actualStartTimeTicks,
                       DateTime actualStartTimeUtc,
-                      RequestMsg request, 
+                      RequestMsg request,
                       ResponseMsg response,
                       int timeoutMs)
       {
          m_Client = client;
          m_ClientTransport = clientTransport;
-         m_RequestID = request.RequestID;  
+         m_RequestID = request.RequestID;
          m_OneWay=false;
          m_StartTime = actualStartTimeUtc;
          m_TimeoutMs = timeoutMs>0 ? timeoutMs : DEFAULT_TIMEOUT_MS;
 
          if (client.Binding.MeasureStatTimes)
-         {                            
+         {
            m_StatStartTimeTicks = actualStartTimeTicks;
            m_StatRoundtripTimeKey = client.Binding.GetClientCallStatTimeKey(client, request);
          }
@@ -109,7 +109,7 @@ namespace NFX.Glue
       private ClientTransport m_ClientTransport;
       private FID m_RequestID;
       private bool m_OneWay;
-     
+
       internal TaskCompletionSource<CallSlot> m_TaskCompletionSource;
 
       private DateTime m_StartTime;
@@ -151,7 +151,7 @@ namespace NFX.Glue
       /// </summary>
       public CallStatus CallStatus
       {
-        get 
+        get
         {
           if (m_CallStatus==CallStatus.Dispatched && !m_OneWay)
            lock(m_Sync)
@@ -159,11 +159,11 @@ namespace NFX.Glue
               {
                 if ((DateTime.UtcNow - m_StartTime).TotalMilliseconds>m_TimeoutMs)
                 {
-                  m_CallStatus = CallStatus.Timeout; 
+                  m_CallStatus = CallStatus.Timeout;
                   completePendingTask(); //task completes on timeout
                 }
               }
-          return m_CallStatus; 
+          return m_CallStatus;
         }
       }
 
@@ -171,7 +171,7 @@ namespace NFX.Glue
       /// Optionally returns reason of the dispatch message failure
       /// </summary>
       public string DispatchErrorMessage { get { return m_DispatchErrorMessage ?? string.Empty; } }
-      
+
       /// <summary>
       /// Indicates that this call does not expect a response message from the server side
       /// </summary>
@@ -182,13 +182,13 @@ namespace NFX.Glue
 
 
       /// <summary>
-      /// Returns request ID for the request that was sent and generated this slot instance 
+      /// Returns request ID for the request that was sent and generated this slot instance
       /// </summary>
       public FID RequestID
       {
         get { return m_RequestID;}
       }
-      
+
       /// <summary>
       /// Returns timeout for this instance
       /// </summary>
@@ -212,7 +212,7 @@ namespace NFX.Glue
       {
         get { return m_StatStartTimeTicks; }
       }
-      
+
       /// <summary>
       /// When binding's MeasureStatTimes enabled, returns the operation end (when response arrives) tick count
       /// </summary>
@@ -243,7 +243,7 @@ namespace NFX.Glue
           {
             if (m_TaskCompletionSource!=null) return m_TaskCompletionSource.Task;
             var tcs = new TaskCompletionSource<CallSlot>(this);
-                  
+
             if (Available) tcs.SetResult(this);//Complete tasks for OneWay or already completed calls
             else
             if (CallStatus!=CallStatus.Dispatched) tcs.SetResult(this);//Complete task for calls that are not pending - were not dispatched properly or timed out
@@ -266,7 +266,7 @@ namespace NFX.Glue
       }
 
       /// <summary>
-      /// Creates a wrapper task around CallSlot.AsTask and returns CallSlot.CheckVoidValue() 
+      /// Creates a wrapper task around CallSlot.AsTask and returns CallSlot.CheckVoidValue()
       /// Note: the created wrapper task is not cached
       /// </summary>
       public Task AsTaskReturningVoid()
@@ -282,14 +282,14 @@ namespace NFX.Glue
       internal void DeliverResponse(ResponseMsg response)
       {
         lock(m_Sync)
-        {                  
+        {
               m_ResponseMsg = response;
               m_CallStatus = m_ResponseMsg.OK ? CallStatus.ResponseOK : CallStatus.ResponseError;
-              
+
               var remoteInstance = response.RemoteInstance;
               if (remoteInstance.HasValue)
                m_Client.__setRemoteInstance(remoteInstance.Value);
-              
+
               if (m_StatRoundtripTimeKey!=null && m_Client.Binding.MeasureStatTimes)
               {
                  m_StatRoundtripEndTimeTicks = m_Client.Binding.StatTimeTicks;
@@ -301,7 +301,7 @@ namespace NFX.Glue
               completePendingTask();//result arrived - normal case
         }
 
-        
+
       }
 
       /// <summary>
@@ -313,7 +313,7 @@ namespace NFX.Glue
           {
               m_DispatchErrorMessage = errorMessage;
               m_CallStatus = CallStatus.DispatchError;
-              
+
               Monitor.Pulse(m_Sync);
 
               completePendingTask();//dispatch error that became apparent later-on (after CallSlot was created)
@@ -343,7 +343,7 @@ namespace NFX.Glue
            {
                if (m_CallStatus==CallStatus.DispatchError || m_CallStatus==CallStatus.Timeout)
                  throw new ClientCallException(m_CallStatus, m_DispatchErrorMessage);
-           
+
                lock(m_Sync)
                    while (m_ResponseMsg==null &&
                           App.Active &&
@@ -351,15 +351,15 @@ namespace NFX.Glue
                    {
                      Monitor.Wait(m_Sync, 250);
                    }
-           
+
                //lock above ensures memory barrier on checking m_ResponseMsg
                if (m_ResponseMsg==null)
                 throw new ClientCallException(m_CallStatus);
-           }          
+           }
 
-           
+
            if (Interlocked.CompareExchange(ref m_ResponseInspected, 1, 0) == 0)
-           { 
+           {
                 var response = m_ResponseMsg;
 
                 IClientMsgInspector inspector = null;
@@ -378,7 +378,7 @@ namespace NFX.Glue
                         inspector = insp;
                         response = insp.ClientDeliverResponse(this, response);
                     }
-                                  
+
                     //Client level inspectors
                     foreach(var insp in Client.MsgInspectors.OrderedValues)
                     {
@@ -389,7 +389,7 @@ namespace NFX.Glue
                 catch(Exception error)
                 {
                     throw new ClientMsgInspectionException(inspector, error);
-                }       
+                }
                 m_ResponseMsg = response;
            }
 
@@ -400,38 +400,38 @@ namespace NFX.Glue
 
 
        /// <summary>
-       /// Returns a value from the other side, that is - 
+       /// Returns a value from the other side, that is -
        /// gets the response message and checks it for errors,
-       /// throwing RemoteError exception if one came from server.  
+       /// throwing RemoteError exception if one came from server.
        /// Accessing this property blocks calling thread until either ResponseMsg arrives or timeout expires.
        /// Check 'Available' property not to block. Accessing this method for [OneWay] methods throws.
        /// </summary>
        public T GetValue<T>()
        {
-           var value = ResponseMsg.ReturnValue; 
-           
+           var value = ResponseMsg.ReturnValue;
+
            var red = ResponseMsg.ExceptionData;
-           
+
            if (red!=null) throw new RemoteException(red);
-           
+
            return (T)value;
-       } 
+       }
 
        /// <summary>
-       /// Checks for a valid void value returned from the other side, that is - 
+       /// Checks for a valid void value returned from the other side, that is -
        /// gets the response message and checks it for errors,
-       /// throwing RemoteError exception if one came from server. 
+       /// throwing RemoteError exception if one came from server.
        /// Accessing this property blocks calling thread until either ResponseMsg arrives or timeout expires.
        /// Check 'Available' property not to block. Accessing this method for [OneWay] methods throws.
        /// </summary>
        public void CheckVoidValue()
        {
            var red = ResponseMsg.ExceptionData;
-           
-           if (red!=null) throw new RemoteException(red);
-       } 
 
-       
+           if (red!=null) throw new RemoteException(red);
+       }
+
+
        public override int GetHashCode()
        {
          return this.m_RequestID.GetHashCode();
@@ -454,9 +454,9 @@ namespace NFX.Glue
        private void completePendingTask()
        {
           if (m_TaskCompletionSource==null) return; //must be here
-          
+
           if (m_TaskCompletionSource.Task.IsCompleted) return;
-                   
+
           //Invoke asynchronously, as TrySetResult may synchronously run long continuations
           Task.Run( () => m_TaskCompletionSource.TrySetResult(this) );
        }
@@ -477,7 +477,7 @@ namespace NFX.Glue
 
                         static TimeoutReactor()
                         {
-                          for(var i=0; i<BUCKETS; i++) s_Calls[i] = new LinkedList<CallSlot>(); 
+                          for(var i=0; i<BUCKETS; i++) s_Calls[i] = new LinkedList<CallSlot>();
                         }
 
                         public static void Subscribe(CallSlot call)
@@ -515,8 +515,8 @@ namespace NFX.Glue
                                  Text = "Exception leaked: " + err.ToMessageWithType(),
                                  Exception = err
                                });
-                             } 
-                           
+                             }
+
                              Thread.Sleep(GRANULARITY_MS);
                            }
                            s_Thread = null;
@@ -529,7 +529,7 @@ namespace NFX.Glue
                                var  bucket = s_Calls[i];
                                lock(bucket)
                                {
-                                 var node = bucket.First;       
+                                 var node = bucket.First;
                                  while(node!=null)
                                  {
                                     var call = node.Value;
@@ -571,17 +571,17 @@ namespace NFX.Glue
         {
           Call = call;
         }
-        
+
         /// <summary>
         /// Returns the underlying CallSlot object
         /// </summary>
-        public readonly CallSlot Call; 
+        public readonly CallSlot Call;
 
         /// <summary>
         /// Non-blocking call that returns true if result arrived, false otherwise
         /// </summary>
         public bool Available { get{ return Call.Available;} }
-        
+
         /// <summary>
         /// Blocking call that waits for return value. Use non-blocking Available to see if result arrived
         /// </summary>
@@ -591,7 +591,7 @@ namespace NFX.Glue
     /// <summary>
     /// Provides a higher-level wrapper around CallSlot returned by Glue.
     /// All property accessors evaluate synchronously on the calling thread.
-    /// This struct should not be used with One-Way calls 
+    /// This struct should not be used with One-Way calls
     /// </summary>
     public struct FutureVoid
     {
@@ -599,22 +599,22 @@ namespace NFX.Glue
         {
           Call = call;
         }
-        
+
         /// <summary>
         /// Returns the underlying CallSlot object
         /// </summary>
-        public readonly CallSlot Call; 
+        public readonly CallSlot Call;
 
         /// <summary>
         /// Non-blocking call that returns true if result arrived, false otherwise
         /// </summary>
         public bool Available { get{ return Call.Available;} }
-        
+
         /// <summary>
         /// Blocking call that waits for call completion. Use non-blocking Available to see if call has completed
         /// </summary>
         public void Wait() { Call.CheckVoidValue(); }
     }
 
-    
+
 }

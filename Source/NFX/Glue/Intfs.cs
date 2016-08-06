@@ -30,7 +30,7 @@ using NFX.Glue.Protocol;
 namespace NFX.Glue
 {
     /// <summary>
-    /// Represents a contract for Glue - a technology that provides asynchronous distributed component interconnection 
+    /// Represents a contract for Glue - a technology that provides asynchronous distributed component interconnection
     /// </summary>
     public interface IGlue : IApplicationComponent, ILocalizedTimeProvider
     {
@@ -117,7 +117,7 @@ namespace NFX.Glue
         void ClientDispatchedRequest(ClientEndPoint client, RequestMsg request, CallSlot callSlot);
 
         void ClientDeliverAsyncResponse(ResponseMsg response);
-       
+
         /// <summary>
         /// Asynchronously dispatch client request
         /// </summary>

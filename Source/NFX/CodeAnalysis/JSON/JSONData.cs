@@ -26,14 +26,14 @@ namespace NFX.CodeAnalysis.JSON
     /// </summary>
     public sealed class JSONData : ObjectResultAnalysisContext<object>
     {
-        
+
         public JSONData(IAnalysisContext context = null, MessageList messages = null, bool throwErrors = false):
-                                               base(context, messages ?? new MessageList(), throwErrors) 
+                                               base(context, messages ?? new MessageList(), throwErrors)
         {
 
         }
-        
-        
+
+
         public override Language Language
         {
             get { return JSONLanguage.Instance; }

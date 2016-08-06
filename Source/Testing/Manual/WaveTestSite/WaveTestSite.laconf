@@ -3,18 +3,18 @@
        log-root=$"c:\nfx\"
        log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
        debug-default-action="Log,Throw"
-	   
+
     starters
     {
       starter
-      { 
+      {
         name='Payment Processing'
         type='NFX.Web.Pay.PaySystemStarter, NFX.Web'
         application-start-break-on-exception='true'
       }
-    }    
-        
-     
+    }
+
+
  web-settings
  {
     social
@@ -33,34 +33,34 @@
           client-secret="OEb6gMSFwMBLew2BhHp3y6FgK4vxfoQmJBYG2Exb4E"
         }
     }
-    
+
     web-dav {}
-        
+
  }
-     
-  
+
+
   log
-  { 
+  {
     name="LogSvc"
 
     destination
-    {  
+    {
        type=$(/$log-csv)
 	   name="WaveTestSite"
-	   path=$(/$log-root) 
+	   path=$(/$log-root)
        name-time-format='yyyyMMdd'
        generate-failover-msg=false
     }
   }
-  
+
   object-store { name="Main Object Store"
                  guid="A2E59DBB-27AE-4803-A19E-72C99DD8956E"
                  object-life-span-ms="180000"
                  bucket-count="1024"
-                 
+
 
     provider
-    { 
+    {
               name="Disk Object Store Provider"
               type="NFX.ApplicationModel.Volatile.FileObjectStoreProvider"
               load-limit="0"
@@ -69,28 +69,28 @@
 
   }
 
- 
-  /*instrumentation 
+
+  /*instrumentation
   {
       name="Instruments" interval-ms="2000"
       provider
-      { 
+      {
          name="Telemetry Instrumentation Provider"
-         type="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider" 
+         type="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider"
          use-log="false"
          receiver-node="sync://127.0.0.1:8300"
       }
   }*/
-  
-  glue 
+
+  glue
   {
     bindings
     {
       binding { name="sync" type="NFX.Glue.Native.SyncBinding" }
-    } 
+    }
   }//glue
 
-  
+
   payment-processing
   {
     pay-system
@@ -98,7 +98,7 @@
       name="Stripe1"
       type="NFX.Web.Pay.Stripe.StripeSystem, NFX.Web"
       auto-start=true
-        
+
       default-session-connect-params
       {
         type="NFX.Web.Pay.Stripe.StripeConnectionParameters, NFX.Web"
@@ -117,22 +117,22 @@
       {
         type="NFX.Web.Pay.Mock.MockConnectionParameters, NFX.Web"
         email="mock_user@mail.com"
-        cards 
-        { 
+        cards
+        {
           card { number=4242424242424242 exp-year=2017 exp-month=10 cvc=123 }
         }
       }
     }
-  
+
   }
-  
+
 
   geo-lookup
   {
     data-path=$(~NFX_GEODATA)
-    resolution="city"    
+    resolution="city"
   }
-  
+
   wave
   {
     server
@@ -142,64 +142,64 @@
        // parallel-accepts=1024
         environment-name="PROD"
         instrumentation-enabled=true
-        
+
         prefix{ name="http://+:8080/" }
-        
+
         default-error-handler
         {
             show-dump { match{name=all} }
             //log {  match{name=all} }
         }
-      
+
         gate
         {
-            //type="may inject type" 
-            name="Default Gate"             
+            //type="may inject type"
+            name="Default Gate"
             enabled = true
-            
+
             incoming
             {
                 default-action=allow
-                
+
                 rule{name="sessionFlood" order=0 action=deny from-expression="$newSession>3"}
-                
-                
+
+
                 rule{name="all_for_dima"  order=1 action=allow from-addrs="170.12.14.12;170.12.14.13"}
                 rule{name="Suspicious"    order=2 action=deny  from-addrs="170.2.1.*"}
                 rule{name="CC hackers"    order=3 action=deny  from-addrs="170.4.*" from-groups="CCAtackers;Greedy"}
               //  rule{name="Session flood" order=4 action=deny  from-expression="$session<=(?$a<10,$a,12)"}
-                
+
                 group
                 {
-                  name="CCAttackers"  
+                  name="CCAttackers"
                   address{name="Denis Donezk" patterns="170.12.*"}
                   address{name="Denis Deutschland" patterns="3.118.*.12"}
-                }  
-                
-                var-def{name="newSession" decay-by="1" interval-sec="20"} 
-                var-def{name="cc-recharge" decay-by="1" interval-sec="600"} 
+                }
+
+                var-def{name="newSession" decay-by="1" interval-sec="20"}
+                var-def{name="cc-recharge" decay-by="1" interval-sec="600"}
             }
-        }           
-            
+        }
+
         dispatcher
         {
            // type="NFX.Wave.MultithreadedDispatcher"
-            
+
 // filter
 // {
- // name="Log All" order=0 type="NFX.Wave.Filters.LoggingFilter, NFX.Wave"   
+ // name="Log All" order=0 type="NFX.Wave.Filters.LoggingFilter, NFX.Wave"
  // before
  // {
     // match
     // {
-      // path="{*PAZZ}"   
-      // var{name="type" default="TraceD"}                      
+      // path="{*PAZZ}"
+      // var{name="type" default="TraceD"}
     // }
  // }
-//} 
-            
-            
-            
+//}
+
+
+
             filter
             {
               name="Errors" order=0 type="NFX.Wave.Filters.ErrorFilter, NFX.Wave"
@@ -207,52 +207,52 @@
               {
                 match{name="localhost" order=1 is-local=true }
               }
-              
+
              // security-redirect-url="http://lenta.ru"
              // custom-error-page-type="WaveTestSite.Pages.AboutUs, WaveTestSite"
-              
+
               // log
               // {
                 // match{name="all" var{name="aaa" default="1223"} }
               // }
             }
-            
+
             filter
             {
               name="BlockNonDevs" order=1 type="NFX.Wave.Filters.RedirectFilter, NFX.Wave"
               match
-              { 
+              {
                 not-path="/mvc/tester/zekret"
-                absent-cookies="ZEKRET=Hello" 
-                var{name="redirect-url" default="/mvc/tester/zekret"} 
+                absent-cookies="ZEKRET=Hello"
+                var{name="redirect-url" default="/mvc/tester/zekret"}
               }
             }
-             
-            
+
+
             filter
             {
               name="sessions" order=2 type="NFX.Wave.Filters.SessionFilter, NFX.Wave"
              //session-timeout-ms="60000"
              // session-cookie-name="GANBA-BILLY-GATSY"
             }
-            
-            
+
+
             filter
             {
               name="Old Redirects" order=3 type="NFX.Wave.Filters.RedirectFilter, NFX.Wave"
               match{ path="old/w.html" var{name="redirect-url" default="/pages/Welcome"} }
               match{ path="old/au.html" var{name="redirect-url" default="/pages/AboutUs"} }
             }
-            
-            
+
+
             handler
             {
                 name="Mvc Testing"
                 order=0
                 type="NFX.Wave.Handlers.MVCHandler, NFX.Wave"
-                                
-                type-location { name="local" assembly="WaveTestSite.exe" ns{ name="WaveTestSite.Controllers"} }                                
-                                
+
+                type-location { name="local" assembly="WaveTestSite.exe" ns{ name="WaveTestSite.Controllers"} }
+
                 match{ path="mvc/{type}/{mvc-action}" var{query-name="*"} }
             }
 
@@ -261,7 +261,7 @@
                 name="Dumper"
                 order=1
                 type="NFX.Wave.Handlers.ContextDumpHandler, NFX.Wave"
-                                
+
                 match
                 {
                     name="Dump Status"
@@ -269,7 +269,7 @@
                     path="dump"
                 }
             }
-            
+
             handler
             {
                 name="Embedded Site"
@@ -277,26 +277,26 @@
                 type="WaveTestSite.Embedded.EmbeddedTestSiteHandler, WaveTestSite"
                 match{ path="embed/{*path}" }
             }
-            
+
             handler
             {
                 name="Pages"
                 order=3
                 type="NFX.Wave.Handlers.TemplateHandler, NFX.Wave"
-                //default-type="Welcome" 
+                //default-type="Welcome"
                 //cloak-type=$($default-type)
                 not-found-redirect-url="/pages/Welcome"
                 match{ path="pages/{*type}"}
                 type-location { name="local" assembly="WaveTestSite.exe" ns{ name="WaveTestSite.Pages"} }
-                
+
                 filter
                 {
                     name="geoLocation"
                     type="NFX.Wave.Filters.GeoLookupFilter, NFX.Wave"
                 }
-                
+
             }
-            
+
             handler
             {
                 name="Stock Content Embedded Site"
@@ -304,84 +304,84 @@
                 type="NFX.Wave.Handlers.StockContentSiteHandler, NFX.Wave"
                 match{ path="stock/{*path}"}
             }
-            
-            
-            
+
+
+
             handler
             {
-                
+
                 filter
                 {
-                 name="Security" order=0 type="NFX.Wave.Filters.SecurityFilter, NFX.Wave"   
+                 name="Security" order=0 type="NFX.Wave.Filters.SecurityFilter, NFX.Wave"
                  permissions
                    {
-                        permission 
+                        permission
                         {
-                         type="NFX.Security.AdHocPermission, NFX" 
+                         type="NFX.Security.AdHocPermission, NFX"
                          arg0="SpecialPermissions/Cooking"
                          arg1="BBQOperator"
                          arg2=7
-                        } 
-                   }  
+                        }
+                   }
                 }
-                
-                
+
+
                 filter
                 {
-                 name="Stopper" order=1 type="NFX.Wave.Filters.StopFilter, NFX.Wave"   
+                 name="Stopper" order=1 type="NFX.Wave.Filters.StopFilter, NFX.Wave"
                  before
                  {
                     match
                     {
-                      name="all" 
-                      var{query-name="who" match-contains="lenin" match-case-sensitive=false}                      
+                      name="all"
+                      var{query-name="who" match-contains="lenin" match-case-sensitive=false}
                       var{name="error" default="Lenin was stopped!"}
                     }
                  }
                 }
-                
+
                 filter
                 {
-                 name="Logger" order=3 type="NFX.Wave.Filters.LoggingFilter, NFX.Wave"   
+                 name="Logger" order=3 type="NFX.Wave.Filters.LoggingFilter, NFX.Wave"
                  before
                  {
                     match
                     {
-                      var{name="type" default="Trace"}                      
-                      var{name="CODZ" default="10003"}                      
+                      var{name="type" default="Trace"}
+                      var{name="CODZ" default="10003"}
                     }
-                    
+
                  }
                  after
                  {
                     match
                     {
-                      var{name="type" default="Trace"} 
-                      var{name="CODZ" default="100018"}     
+                      var{name="type" default="Trace"}
+                      var{name="CODZ" default="100018"}
                        permissions
                        {
                             permission //only those who have this permission will be logged
                             {
-                             type="NFX.Security.AdHocPermission, NFX" 
+                             type="NFX.Security.AdHocPermission, NFX"
                              arg0="CanLogAfter"
                              arg1="SpecialPermissions"
                              arg2=3
-                            } 
-                       }                      
+                            }
+                       }
                     }
-                    
+
                  }
                 }
-                
+
                 name="Downloader"
                 order=5
                 type="NFX.Wave.Handlers.FileDownloadHandler, NFX.Wave"
-                throw=true   
-                
+                throw=true
+
                 root-path=$"c:\users\anton\desktop"
-                
+
                 //cache-max-age-sec="10"
-                
+
                 match
                 {
                     name="Files"
@@ -390,7 +390,7 @@
                     var{name="attachment" query-name="a" default="false" }
                     var{name="chunked" query-name="c" default="true" }
                 }
-                
+
                 match
                 {
                     name="Files2"
@@ -400,31 +400,31 @@
                     var{name="chunked" query-name="c" default="true" }
                 }
             }//handler
-            
-            
+
+
             handler
             {
                 name="Catch All"
                 order=6
                 type="NFX.Wave.Handlers.NOPHandler, NFX.Wave"
                 match{ }
-                
+
                 filter
                 {
                   name="Default" type="NFX.Wave.Filters.RedirectFilter, NFX.Wave"
                   match{ var{name="redirect-url" default="/pages/Welcome"} }
                 }
             }
-            
-            
-            
+
+
+
         }//dispatcher
     }//server
   }//wave
-  
-  
 
-  security 
+
+
+  security
   {
     type="NFX.Security.ConfigSecurityManager, NFX"
     users
@@ -451,5 +451,5 @@
   }
 
 
-  
+
 }//nfx

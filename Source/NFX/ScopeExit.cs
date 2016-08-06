@@ -36,7 +36,7 @@ namespace NFX
     ///   {
     ///      ... do something ...
     ///   }
-    ///   
+    ///
     ///   using(Scope.OnExit&lt;bool>(
     ///                 ()  => { var old = Tracing.IsOn; Tracing.Off(); return old; },
     ///                 (b) => Tracing.State(b)))

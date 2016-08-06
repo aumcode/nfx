@@ -50,7 +50,7 @@ namespace NFX.Security.CAPTCHA
         if (code.IsNullOrWhiteSpace())
           throw new SecurityException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(code==null|empty)");
         m_Code = code;
-      
+
         if (puzzleBoxWidth<1) puzzleBoxWidth = 1;
         if (minBoxWidth<8) minBoxWidth = 8;
         if (minBoxHeight<8) minBoxHeight = 8;
@@ -67,9 +67,9 @@ namespace NFX.Security.CAPTCHA
                     boxHeight,
                     boxSizeVariance,
                     minBoxWidth,
-                    minBoxHeight ); 
-      }  
-      
+                    minBoxHeight );
+      }
+
       private string m_Code;
       private List<CharBox> m_Boxes = new List<CharBox>();
 
@@ -148,16 +148,16 @@ namespace NFX.Security.CAPTCHA
         {
           if (bgColor.HasValue)
             gr.Clear(bgColor.Value);
-          
-          gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-         
-          var boxPen = new Pen(Color.FromArgb(80,70,40), 1.5f);
 
-          var boxPen2 = new Pen(Color.FromArgb(70,70,70), 1.5f);
+          gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+          var boxPen = new Pen(Color.FromArgb(240, 240, 240), 1.0f);
+
+          var boxPen2 = new Pen(Color.FromArgb(200, 200, 200), 1.3f);
           boxPen2.DashStyle = DashStyle.Dot;
-          
-          var shadowPen = new Pen(Color.FromArgb(80,80,70,40), 2);
-          
+
+          var shadowPen = new Pen(Color.FromArgb(255, 220,220,220), 1.0f);
+
           LinearGradientBrush paperBrush = null;
           Font font = null;
           LinearGradientBrush fntBrush = null;
@@ -172,7 +172,7 @@ namespace NFX.Security.CAPTCHA
                  paperBrush = new LinearGradientBrush(box.Rect, Color.FromArgb(240,240,240), Color.FromArgb(255,255, 255), LinearGradientMode.Vertical);
                  paperBrush.WrapMode = WrapMode.TileFlipXY;
               }
-            
+
               if (fntBrush==null)
               {
                  fntBrush = new LinearGradientBrush(box.Rect, Color.FromArgb(240,240,250), Color.FromArgb(100,80, 150), LinearGradientMode.ForwardDiagonal);
@@ -186,40 +186,57 @@ namespace NFX.Security.CAPTCHA
               {
                  font = new Font("Courier New", box.Rect.Height * 0.65f, FontStyle.Bold, GraphicsUnit.Pixel);
               }
-            
-            
+
+
               gr.ResetTransform();
               gr.TranslateTransform(DEFAULT_RENDER_OFFSET_X, DEFAULT_RENDER_OFFSET_Y);
-              
+
               if (showRects)
                 gr.DrawRectangle(Pens.Red, box.Rect);
-               
-              gr.RotateTransform( (float)(-3d + (6d*ExternalRandomGenerator.Instance.NextRandomDouble))); 
-            
-              var sr = box.Rect;
-              sr.Offset(1,1);
-              gr.DrawRectangle(shadowPen, sr);
-            
-              gr.FillRectangle(paperBrush, box.Rect);
-              gr.DrawRectangle(boxPen, box.Rect);
-              var tr = box.Rect;
-              gr.DrawLine(boxPen2, tr.Left+1, tr.Bottom, tr.Right-1, tr.Bottom);
-              gr.DrawLine(boxPen2, tr.Left, tr.Bottom+1, tr.Right-2, tr.Bottom+1);
-            
+
+              gr.RotateTransform( (float)(-3d + (6d*ExternalRandomGenerator.Instance.NextRandomDouble)));
+
+              var pTL =  new Point(box.Rect.Left + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6),
+                                   box.Rect.Top + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6));
+
+              var pTR =  new Point(box.Rect.Right + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6),
+                                   box.Rect.Top + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6));
+
+              var pBL =  new Point(box.Rect.Left + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6),
+                                   box.Rect.Bottom + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6));
+
+              var pBR =  new Point(box.Rect.Right + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6),
+                                   box.Rect.Bottom + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-6, +6));
+
+              var pa = new []{ pTL, pTR, pBR, pBL};
+              gr.FillPolygon(paperBrush, pa);
+              gr.DrawPolygon(boxPen, pa);
+
+              //gr.FillRectangle(paperBrush, box.Rect);
+              //gr.DrawRectangle(boxPen, box.Rect);
+
+              //var distortedBRX = box.Rect.Right + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-10, +4);
+              //var distortedBRY = box.Rect.Bottom + ExternalRandomGenerator.Instance.NextScaledRandomInteger(-10, +8);
+
+              gr.DrawLine(shadowPen,pTR, pBR);
+
+              gr.DrawLine(boxPen2, pBL.X+1, pBL.Y, pBR.X-1, pBR.Y);
+              gr.DrawLine(boxPen2, pBL.X, pBL.Y+1, pBR.X-2, pBR.Y+1);
+
 
               var tsz = gr.MeasureString(box.Char.ToString(), font);
               var pnt = new PointF((box.Rect.Left + box.Rect.Width / 2f) - tsz.Width / 2f,
                                     (box.Rect.Top + box.Rect.Height / 2f) - tsz.Height / 2f);
 
-           
-              if (ExternalRandomGenerator.Instance.NextScaledRandomInteger(0,100)>50)
+
+              if (ExternalRandomGenerator.Instance.NextScaledRandomInteger(0,100)>40)
               {
                 var bpnt = pnt;
                 bpnt.X +=  ExternalRandomGenerator.Instance.NextScaledRandomInteger(-2, 4);
                 bpnt.Y +=  ExternalRandomGenerator.Instance.NextScaledRandomInteger(-2, 4);
-                gr.DrawString(box.Char.ToString(), font, fntBadBrush, bpnt); 
-                
-                for(var i=0; i<ExternalRandomGenerator.Instance.NextScaledRandomInteger(1,45);i++)
+                gr.DrawString(box.Char.ToString(), font, fntBadBrush, bpnt);
+
+                for(var i=0; i<ExternalRandomGenerator.Instance.NextScaledRandomInteger(8,75);i++)
                 {
                   gr.FillRectangle(fntBadBrush, new Rectangle(box.Rect.Left+ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, box.Rect.Width-4),
                                                               box.Rect.Top +ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, box.Rect.Height-4),
@@ -230,7 +247,7 @@ namespace NFX.Security.CAPTCHA
                 }
               }
 
-              gr.DrawString(box.Char.ToString(), font, fntBrush, pnt); 
+              gr.DrawString(box.Char.ToString(), font, fntBrush, pnt);
             }
           }
           finally
@@ -254,7 +271,7 @@ namespace NFX.Security.CAPTCHA
 
 
 
-      
+
       private void makePuzzle(char[] alphabet,
                               int puzzleBoxWidth,
                               int boxWidth,
@@ -264,7 +281,7 @@ namespace NFX.Security.CAPTCHA
                               int minBoxHeight)
       {
         alphabet = toss(alphabet);
-      
+
         double wvar = boxWidth * boxSizeVariance;
         double hvar = boxHeight * boxSizeVariance;
         double wvar2 = wvar / 2d;
@@ -282,19 +299,19 @@ namespace NFX.Security.CAPTCHA
 
            if (w<minBoxWidth) w = minBoxWidth;
            if (h<minBoxHeight) h = minBoxHeight;
-           
+
            int y = ybase + (int)(-hvar2 + (hvar * ExternalRandomGenerator.Instance.NextRandomDouble));
 
            var cbox = new CharBox();
            cbox.Char = ch;
            cbox.Rect = new Rectangle(x, y, w, h);
            m_Boxes.Add(cbox);
-           
+
            if(cbox.Rect.Bottom-ybase>maxHeight)
            {
               maxHeight = cbox.Rect.Bottom-ybase;
            }
-           
+
            puzzleWidth++;
            if (puzzleWidth==puzzleBoxWidth)
            {
@@ -307,9 +324,9 @@ namespace NFX.Security.CAPTCHA
            x+= w + 2 + (int)(wvar2 * ExternalRandomGenerator.Instance.NextRandomDouble);
         }
 
-      } 
-      
-      
+      }
+
+
 
 
       private char[] toss(char[] arr)
@@ -325,7 +342,7 @@ namespace NFX.Security.CAPTCHA
           result[idx] = c;
         }
         return result;
-      }  
+      }
 
   }
 

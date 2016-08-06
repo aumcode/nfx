@@ -22,15 +22,15 @@ namespace NFX.ApplicationModel.Pile
         s_GetPutLocks[i] = new object();
     }
 
-    
+
     protected LocalCacheTable(LocalCache cache, string name, TableOptions options)
     {
        m_Name = name;
        m_Cache = cache;
        m_Options = options!=null ? options.Clone() : new TableOptions(name);
        m_Options.m_Name = name;
-    } 
-    
+    }
+
     private string m_Name;
     protected internal readonly LocalCache m_Cache;
 
@@ -52,8 +52,8 @@ namespace NFX.ApplicationModel.Pile
     protected internal int m_stat_Grew;
     protected internal int m_stat_Shrunk;
 
-    
-    
+
+
 
     public string Name { get{ return m_Name;} }
 
@@ -71,7 +71,7 @@ namespace NFX.ApplicationModel.Pile
     internal DateTime? SweepWhenBecameEmpty;
 
     public void Purge()
-    { 
+    {
       if (!m_Cache.Running) return;
       DoPurge();
     }
@@ -86,7 +86,7 @@ namespace NFX.ApplicationModel.Pile
     private static readonly int CPU_COUNT = System.Environment.ProcessorCount;
     private const int PROBE_COUNT = 5;
 
-            
+
                    private struct _entry
                    {
                      public TKey Key;
@@ -101,7 +101,7 @@ namespace NFX.ApplicationModel.Pile
                        get{ return new _entry{DataPointer = PilePointer.Invalid};}
                      }
                    }
-    
+
                    private class _bucket
                    {
                      public _bucket(LocalCacheTable<TKey> table)
@@ -109,7 +109,7 @@ namespace NFX.ApplicationModel.Pile
                        Table = table;
                        var capacity = (int)(table.m_Options.InitialCapacity) / BUCKETS;
                        capacity = IntMath.GetPrimeCapacityOfAtLeast(capacity);
-                       Entries = makeEntriesArray(capacity); 
+                       Entries = makeEntriesArray(capacity);
                      }
 
                      public readonly LocalCacheTable<TKey> Table;
@@ -139,7 +139,7 @@ namespace NFX.ApplicationModel.Pile
                      {
                        var loadf = LoadFactor;
                        var options = Table.m_Options;
-                      
+
                        if (loadf > options.LoadFactorHWM)
                        {
                          var newCapacity = IntMath.GetCapacityFactoredToPrime(Entries.Length, options.GrowthFactor);
@@ -148,7 +148,7 @@ namespace NFX.ApplicationModel.Pile
                            var capacityPerBucket = (int)(options.MaximumCapacity / BUCKETS);
                            if (newCapacity>capacityPerBucket) newCapacity = IntMath.GetAdjacentPrimeNumberLessThanOrEqualTo(capacityPerBucket);
                          }
-                         if (resize(newCapacity)) 
+                         if (resize(newCapacity))
                          {
                            Interlocked.Increment(ref Table.m_stat_Grew);
                            m_LastGrownTime = DateTime.UtcNow;
@@ -157,21 +157,21 @@ namespace NFX.ApplicationModel.Pile
                        }
                        return false;
                      }
-                      
+
                       private DateTime m_LastShrunkTime;
 
                      public bool shrinkIfNeeded()//must be called under write lock
                      {
                        const int SHRINK_WAIT_AFTER_LAST_GROW_SEC = 3 * 60;
                        const int SHRINK_WAIT_AFTER_LAST_SHRINK_SEC = 2 * 60;
-                       
+
                        var loadf = LoadFactor;
                        var options = Table.m_Options;
 
                        if (loadf < options.LoadFactorLWM)
                        {
                          var utcNow = DateTime.UtcNow;
-                         
+
                          if (
                              ((utcNow - m_LastGrownTime).TotalSeconds > SHRINK_WAIT_AFTER_LAST_GROW_SEC)&&
                              ((utcNow - m_LastShrunkTime).TotalSeconds > SHRINK_WAIT_AFTER_LAST_SHRINK_SEC)
@@ -198,7 +198,7 @@ namespace NFX.ApplicationModel.Pile
                        return false;
                      }
 
-                    
+
 
                      private bool resize(int newCapacity)
                      {
@@ -216,13 +216,13 @@ namespace NFX.ApplicationModel.Pile
 
                          var hcode = comparer.GetHashCode( entry.Key );
 
-                         var putResult = Table.putEntry(newEntries, 
-                                        entry.Key, 
+                         var putResult = Table.putEntry(newEntries,
+                                        entry.Key,
                                         hcode,
                                         null,
                                         entry.DataPointer,
-                                        entry.AgeSec, 
-                                        entry.MaxAgeSec, 
+                                        entry.AgeSec,
+                                        entry.MaxAgeSec,
                                         entry.Priority,
                                         entry.ExpirationUTC.Ticks!=0 ? (DateTime?)entry.ExpirationUTC : (DateTime?)null,
                                         null);
@@ -277,7 +277,7 @@ namespace NFX.ApplicationModel.Pile
 
                        this.COUNT-=deleted;
                        shrinkIfNeeded();
-                       
+
                        Interlocked.Add(ref Table.m_stat_Sweep, deleted);
                      }
 
@@ -304,21 +304,21 @@ namespace NFX.ApplicationModel.Pile
 
                        this.COUNT = 0;
                      }
-                   } 
+                   }
 
-    
+
 
     public LocalCacheTable(LocalCache cache, string name, IEqualityComparer<TKey> comparer, TableOptions options) : base(cache, name, options)
     {
         m_Comparer = comparer ?? EqualityComparer<TKey>.Default;
         m_Buckets = new _bucket[BUCKETS];
         for(var i=0; i<BUCKETS; i++)
-         m_Buckets[i] = new _bucket(this);  
-    } 
-    
+         m_Buckets[i] = new _bucket(this);
+    }
+
     IEqualityComparer<TKey> m_Comparer;
     private _bucket[] m_Buckets;
-    
+
 
     public IEqualityComparer<TKey> KeyComparer
     {
@@ -339,7 +339,7 @@ namespace NFX.ApplicationModel.Pile
     /// Load factor for the table
     /// </summary>
     public override double LoadFactor {  get { return m_Buckets.Sum( b => b.LoadFactor) / (double)BUCKETS; } }
-    
+
 
     public bool ContainsKey(TKey key, int ageSec = 0)
     {
@@ -357,9 +357,10 @@ namespace NFX.ApplicationModel.Pile
         {
            if (ageSec==0 || entry.AgeSec < ageSec)
            {
+             Interlocked.Increment(ref m_stat_GetHit);
              return true;
            }
-        } 
+        }
       }
       finally
       {
@@ -368,7 +369,38 @@ namespace NFX.ApplicationModel.Pile
 
       return false;
     }
-    
+
+    public long SizeOfValue(TKey key, int ageSec = 0)
+    {
+      if (!m_Cache.Running) return 0;
+      int hashCode;
+      var bucket = getBucket(key, out hashCode);
+
+      if (!getReadLock(bucket)) return 0;//Service shutting down
+      try
+      {
+        int idx;
+        var entry = fetchExistingEntry(bucket, key, hashCode, out idx);
+        var ptr = entry.DataPointer;
+        if (ptr.Valid)
+        {
+           if (ageSec==0 || entry.AgeSec < ageSec)
+           {
+             Interlocked.Increment(ref m_stat_GetHit);
+             return m_Cache.m_Pile.SizeOf(ptr);
+           }
+        }
+      }
+      finally
+      {
+        releaseReadLock(bucket);
+      }
+
+      return 0;
+    }
+
+
+
     public object Get(TKey key, int ageSec = 0)
     {
       if (!m_Cache.Running) return null;
@@ -388,13 +420,13 @@ namespace NFX.ApplicationModel.Pile
              Interlocked.Increment(ref m_stat_GetHit);
              return m_Cache.m_Pile.Get(ptr);
            }
-        } 
+        }
       }
       finally
       {
         releaseReadLock(bucket);
       }
-      
+
       Interlocked.Increment(ref m_stat_GetMiss);
       return null;
     }
@@ -403,10 +435,10 @@ namespace NFX.ApplicationModel.Pile
     {
       if (obj==null) throw new PileException(StringConsts.ARGUMENT_ERROR+GetType().Name+".Put(obj==null)");
       if (!m_Cache.Running) return PutResult.Collision;
-      
+
       int hashCode;
       var bucket = getBucket(key, out hashCode);
-      
+
       var result = PutResult.Collision;
       if (!getWriteLock(bucket)) return PutResult.Collision;//Service shutting down
       try
@@ -458,7 +490,7 @@ namespace NFX.ApplicationModel.Pile
            Interlocked.Increment(ref m_stat_RemoveHit);
        //////    bucket.shrinkIfNeeded(); shrinking is done by sweep thread
            return true;
-        } 
+        }
       }
       finally
       {
@@ -486,22 +518,22 @@ namespace NFX.ApplicationModel.Pile
            bucket.Entries[idx].AgeSec = 0;//reset age to 0
            Interlocked.Increment(ref m_stat_RejuvenateHit);
            return true;
-        } 
+        }
       }
       finally
       {
         releaseWriteLock(bucket);
       }
-      
+
       Interlocked.Increment(ref m_stat_RejuvenateMiss);
       return false;
     }
 
-     
+
 
     public object GetOrPut(TKey key, Func<ICacheTable<TKey>, TKey, object, object> valueFactory, object factoryContext, out PutResult? putNewResult, int ageSec = 0, int putMaxAgeSec = 0, int putPriority = 0, DateTime? putAbsoluteExpirationUTC = null)
-    { 
-      if (valueFactory==null) 
+    {
+      if (valueFactory==null)
        throw new PileCacheException(StringConsts.ARGUMENT_ERROR+GetType().Name+".GetOrPut(valueFactory==null)");
 
       putNewResult = null;
@@ -523,9 +555,9 @@ namespace NFX.ApplicationModel.Pile
       return result;
     }
 
-    
 
-   
+
+
 
 
     #region .pvt/.intr
@@ -536,7 +568,7 @@ namespace NFX.ApplicationModel.Pile
     protected internal override bool Sweep(Stopwatch timer, int maxTimeMs)
     {
       timer.Restart();
-      
+
 
       for(; m_SweepIdx<m_Buckets.Length; m_SweepIdx++)
       {
@@ -547,7 +579,7 @@ namespace NFX.ApplicationModel.Pile
           if (!getWriteLock(bucket)) return false;
           try
           {
-            bucket.sweep();  
+            bucket.sweep();
           }
           finally
           {
@@ -619,7 +651,7 @@ namespace NFX.ApplicationModel.Pile
       private PutResult putEntry(_entry[] entries, TKey key, int hashCode, object data, PilePointer ptrData, int existingAgeSec, int  maxAgeSec,int priority, DateTime? absoluteExpirationUTC, Func<object, PilePointer> fPilePut)
       {
         var entryLocationIdx = (hashCode & CoreConsts.ABS_HASH_MASK) % entries.Length;
-       
+
         var secondPass = false;
         while(true)
         {
@@ -631,7 +663,7 @@ namespace NFX.ApplicationModel.Pile
                 var sameKey = !secondPass && entry.DataPointer.Valid && m_Comparer.Equals(entry.Key, key) ;
 
                 if (
-                      (!secondPass && 
+                      (!secondPass &&
                          ( !entry.DataPointer.Valid ) ||       //slot is free
                          ( sameKey )//same key - replace
                       ) ||
@@ -640,9 +672,9 @@ namespace NFX.ApplicationModel.Pile
                 {
                   if (!ptrData.Valid) ptrData = fPilePut(data);//may throw out-of-memory
                                                                //we do not want to corrupt existing item if the new one fails
-                  
+
                   entry.Key = key;
-                  if (entry.DataPointer.Valid) 
+                  if (entry.DataPointer.Valid)
                     m_Cache.m_Pile.Delete( entry.DataPointer, false );//delete previous pointed-to data
 
                   entry.DataPointer = ptrData;
@@ -651,7 +683,7 @@ namespace NFX.ApplicationModel.Pile
                   entry.Priority = priority;
                   entry.ExpirationUTC = absoluteExpirationUTC ?? new DateTime(0);
                   entries[entryIdx] = entry;//swap value type
-                  if (secondPass) 
+                  if (secondPass)
                   {
                     Interlocked.Increment(ref m_stat_PutOverwrite);
                     return PutResult.Overwritten;
@@ -661,9 +693,9 @@ namespace NFX.ApplicationModel.Pile
                 entryIdx++;
                 if (entryIdx==entries.Length) entryIdx = 0;//wrap
               }
-          
-          if (secondPass) break;//could not find after 2nd pass     
-          
+
+          if (secondPass) break;//could not find after 2nd pass
+
           //could not find at first pass, try second time
           secondPass = true;
         }

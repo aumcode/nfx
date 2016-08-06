@@ -29,7 +29,7 @@ using NFX.Log;
 using NFX.Glue.Protocol;
 
 namespace NFX.Glue.Implementation
-{                  
+{
     /// <summary>
     /// Provides default implementation for IGlue. This is the root context for all other glue objects
     /// </summary>
@@ -61,9 +61,9 @@ namespace NFX.Glue.Implementation
            private const string THREAD_NAME = "GlueService.Manager";
            private const int THREAD_GRANULARITY = 5000;
 
-           
+
         #endregion
-       
+
         #region .ctors
 
             public GlueService() : base()
@@ -99,7 +99,7 @@ namespace NFX.Glue.Implementation
 
           [Config("$client-log-level", DEFAULT_CLIENT_LOG_LEVEL)]
           private MessageType m_ClientLogLevel = DEFAULT_CLIENT_LOG_LEVEL;
-          
+
           [Config("$server-log-level", DEFAULT_SERVER_LOG_LEVEL)]
           private MessageType m_ServerLogLevel = DEFAULT_SERVER_LOG_LEVEL;
 
@@ -117,19 +117,19 @@ namespace NFX.Glue.Implementation
                 #region Properties
 
                     public override string ComponentCommonName { get { return "glue"; }}
-                    
+
                     /// <summary>
                     /// Implements IInstrumentable
                     /// </summary>
                     [Config(Default=false)]
-                    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
+                    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
                     public override bool InstrumentationEnabled
                     {
                       get { return m_InstrumentationEnabled;}
                       set { m_InstrumentationEnabled = value;}
                     }
 
-                    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE)]                                                                          
+                    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE)]
                     public int DefaultDispatchTimeoutMs
                     {
                       get { return m_DefaultDispatchTimeoutMs; }
@@ -179,41 +179,41 @@ namespace NFX.Glue.Implementation
                         get { return m_Servers; }
                     }
 
-                   
 
-                    public IConfigSectionNode GlueConfiguration 
+
+                    public IConfigSectionNode GlueConfiguration
                     {
                       get { return App.ConfigRoot[CommonApplicationLogic.CONFIG_GLUE_SECTION];}
                     }
-                    
-                    public IConfigSectionNode ProvidersConfigurationSection 
+
+                    public IConfigSectionNode ProvidersConfigurationSection
                     {
                       get { return GlueConfiguration[CONFIG_PROVIDERS_SECTION]; }
                     }
-                    
+
                     public IEnumerable<IConfigSectionNode> ProviderConfigurations
-                    { 
-                      get { return ProvidersConfigurationSection.Children.Where(n=> n.IsSameName(CONFIG_PROVIDER_SECTION)); } 
+                    {
+                      get { return ProvidersConfigurationSection.Children.Where(n=> n.IsSameName(CONFIG_PROVIDER_SECTION)); }
                     }
-                    
+
                     public IConfigSectionNode BindingsConfigurationSection
                     {
                       get { return GlueConfiguration[CONFIG_BINDINGS_SECTION]; }
                     }
 
                     public IEnumerable<IConfigSectionNode> BindingConfigurations
-                    { 
-                       get { return BindingsConfigurationSection.Children.Where(n=> n.IsSameName(CONFIG_BINDING_SECTION)); } 
+                    {
+                       get { return BindingsConfigurationSection.Children.Where(n=> n.IsSameName(CONFIG_BINDING_SECTION)); }
                     }
-                   
+
                     public IConfigSectionNode ServersConfigurationSection
-                    { 
+                    {
                       get { return GlueConfiguration[CONFIG_SERVERS_SECTION]; }
                     }
-                    
+
                     public IEnumerable<IConfigSectionNode> ServerConfigurations
-                    { 
-                      get { return ServersConfigurationSection.Children.Where(n=> n.IsSameName(CONFIG_SERVER_SECTION)); } 
+                    {
+                      get { return ServersConfigurationSection.Children.Where(n=> n.IsSameName(CONFIG_SERVER_SECTION)); }
                     }
 
                     /// <summary>
@@ -231,8 +231,8 @@ namespace NFX.Glue.Implementation
 
 
 
-        #region Public 
-            
+        #region Public
+
 
 
             public void RegisterProvider(Provider p)
@@ -266,14 +266,14 @@ namespace NFX.Glue.Implementation
                         "ServerEndPoint = " + ep.Name);
             }
 
-            
+
             public void UnregisterServerEndpoint(ServerEndPoint ep)
             {
                 m_Servers.Unregister(ep);
             }
-                      
 
-           
+
+
 
             public Binding GetNodeBinding(Node node)
             {
@@ -301,7 +301,7 @@ namespace NFX.Glue.Implementation
               //Glue level inspectors
               foreach(var insp in ClientMsgInspectors.OrderedValues)
                     request = insp.ClientDispatchCall(client, request);
-              
+
               return request;
             }
 
@@ -318,8 +318,8 @@ namespace NFX.Glue.Implementation
             }
 
             private void clientDeliverAsyncResponse(ResponseMsg response, bool first)
-            { 
-               var callSlot =  m_Calls.TryGetAndRemove(response.RequestID); 
+            {
+               var callSlot =  m_Calls.TryGetAndRemove(response.RequestID);
 
                if (callSlot!=null)
                    callSlot.DeliverResponse(response);
@@ -353,10 +353,10 @@ namespace NFX.Glue.Implementation
 
         #region Protected
 
-            
-            
-            
-            
+
+
+
+
             protected override void DoStart()
             {
                 const string FROM  = "GlueService.DoStart()";
@@ -372,7 +372,7 @@ namespace NFX.Glue.Implementation
                   m_Calls = new Calls(0);
 
                   run(() => m_ServerHandler.Start(), START, "server handler", m_ServerHandler.Name, m_ServerHandler.GetType());
-                  
+
                   //todo  Add partial failure handling, i.e. what if 2nd binding fails? then Providers that have started already need to stop
                   foreach(var p in m_Providers) run(() => p.Start(), START, "provider", p.Name, p.GetType());
                   foreach(var b in m_Bindings)  run(() => b.Start(), START, "binding",  b.Name, b.GetType());
@@ -382,7 +382,7 @@ namespace NFX.Glue.Implementation
                   m_Thread.Name = THREAD_NAME;
                   m_Thread.Start();
 
-                  log(MessageType.Info, "Started OK", FROM); 
+                  log(MessageType.Info, "Started OK", FROM);
                 }
                 catch(Exception error)
                 {
@@ -455,8 +455,8 @@ namespace NFX.Glue.Implementation
                     catch
                     {
                     }
-                  
-                    log(MessageType.CatastrophicError, "Exception: " + error.ToMessageWithType(), FROM); 
+
+                    log(MessageType.CatastrophicError, "Exception: " + error.ToMessageWithType(), FROM);
                     throw error;
                 }
             }
@@ -480,7 +480,7 @@ namespace NFX.Glue.Implementation
                 {
                     var name = bnode.AttrByName(CONFIG_NAME_ATTR).ValueAsString();
                     run(() => FactoryUtils.MakeAndConfigure<Binding>(bnode, args: new object[] { this, name }), CONFIG, "binding", name);
-                } 
+                }
 
                 foreach (var snode in node[CONFIG_SERVERS_SECTION].Children.Where(n =>  n.IsSameName(CONFIG_SERVER_SECTION)))
                 {
@@ -492,18 +492,18 @@ namespace NFX.Glue.Implementation
                 run(() => MsgInspectorConfigurator.ConfigureClientInspectors(m_ClientMsgInspectors, node), CONFIG, "ClientInspectors");
                 run(() => MsgInspectorConfigurator.ConfigureServerInspectors(m_ServerMsgInspectors, node), CONFIG, "ServerInspectors");
             }
-                
+
 
         #endregion
 
 
 
         #region .pvt. impl
-           
+
                   private void threadSpin()
                   {
                       var cmpName = string.Empty;
-                      
+
                       while(Running)
                           try
                           {
@@ -511,18 +511,18 @@ namespace NFX.Glue.Implementation
 
                                 cmpName = ".Providers";
                                 foreach(var component in Providers)
-                                { 
+                                {
                                     cmpName = component.Name;
                                     component.AcceptManagerVisit(this,  now);
                                 }
-         
+
                                 cmpName = ".Bindings";
                                 foreach(var component in Bindings)
                                 {
                                     cmpName = component.Name;
                                     component.AcceptManagerVisit(this,  now);
                                 }
-                 
+
                                 cmpName = m_ServerHandler.Name;
                                 m_ServerHandler.AcceptManagerVisit(this, now);
 
@@ -591,15 +591,15 @@ namespace NFX.Glue.Implementation
               if ((now - lastPurgeTimedOutCallSlots).TotalSeconds < PURGE_EVERY_SEC) return;
               lastPurgeTimedOutCallSlots = now;
 
-              Task.Factory.StartNew( 
-                 () => 
+              Task.Factory.StartNew(
+                 () =>
                  {
                    var calls = m_Calls;
                    if (calls!=null)
                    {
                      var removed = calls.PurgeTimedOutSlots();
                      if (removed>0)
-                     {                   
+                     {
                        if (m_InstrumentationEnabled)
                         Instrumentation.ClientTimedOutCallSlotsRemoved.Record(removed);
 

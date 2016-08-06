@@ -30,7 +30,7 @@ namespace NFX.Environment
 {
   /// <summary>
   /// Provides implementation of configuration based on arguments supplied from command line
-  ///  which is "string[]". Arguments start with either "/" or "-" prefix. If any argument is not 
+  ///  which is "string[]". Arguments start with either "/" or "-" prefix. If any argument is not
   ///  prefixed then it is written as an auto-named attribute node of the root with its value set, otherwise a section (under root) with
   ///   argument's name is created. Any argument may have options. Any option may either consist of name
   ///    or name value pair delimited by "=".
@@ -42,14 +42,14 @@ namespace NFX.Environment
   ///   <code>
   ///   c:\>dosomething.exe "c:\input.file" "d:\output.file" -compress level=100 method=zip -shadow fast -large
   ///   </code>
-  ///  The following configuration object will be created from the supplied args:  
+  ///  The following configuration object will be created from the supplied args:
   ///  <code>
   ///    [args ?1="c:\input.file" ?2="c:\output.file"]
   ///      [compress level="100" method="zip"]
   ///      [shadow ?1="fast"]
   ///      [large]
-  ///  </code>  
-  ///  
+  ///  </code>
+  ///
   ///  Use args:
   ///  <code>
   ///   var conf = new CmdArgsConfiguration(args);
@@ -60,14 +60,14 @@ namespace NFX.Environment
   ///   .....
   ///   var level = conf.Root["compress"].AttrByName("level").ValueAsInt(DEFAULT_COMPRESSION_LEVEL);
   ///   .....
-  ///  </code> 
-  /// 
+  ///  </code>
+  ///
   /// </example>
   [Serializable]
   public class CommandArgsConfiguration : Configuration
   {
     #region CONSTS
-       
+
         public const string ARG_PREFIX1 = "/";
         public const string ARG_PREFIX2 = "-";
         public const char OPTION_EQ = '=';

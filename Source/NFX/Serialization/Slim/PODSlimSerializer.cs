@@ -27,19 +27,19 @@ namespace NFX.Serialization.Slim
     /// <summary>
     /// Serializes CLR object graphs using PortableObjectDocument container and Slim binary serialization algorithm.
     /// This class is far less performant than SlimSerializer, however it serializes types using document model that
-    ///  allows to transform/change data during serialization/deserialization. 
-    /// This class is needed for upgrades, when object metadata may change but need to be read (maybe partially) back into the new type structure 
+    ///  allows to transform/change data during serialization/deserialization.
+    /// This class is needed for upgrades, when object metadata may change but need to be read (maybe partially) back into the new type structure
     /// </summary>
     public class PODSlimSerializer : ISlimSerializer
     {
         #region .ctor
-            
+
             public PODSlimSerializer()
             {
                 m_Serializer = new SlimSerializer( TypeRegistry.PODTypes );
             }
         #endregion
-       
+
         #region Fields
 
             private SlimSerializer m_Serializer;
@@ -74,7 +74,7 @@ namespace NFX.Serialization.Slim
             {
 
             }
-            
+
             /// <summary>
             /// Serializes a graph of arbitrary CLR objects into stream using PortableObjectDocument container
             /// </summary>
@@ -84,10 +84,10 @@ namespace NFX.Serialization.Slim
             {
               Serialize(stream, root, null, null);
             }
-            
-            
+
+
             /// <summary>
-            /// Serializes a graph of arbitrary CLR objects into stream using PortableObjectDocument container, 
+            /// Serializes a graph of arbitrary CLR objects into stream using PortableObjectDocument container,
             ///  optionally taking document creation attributes
             /// </summary>
             /// <param name="stream">Target stream</param>
@@ -122,7 +122,7 @@ namespace NFX.Serialization.Slim
                return this.Deserialize(stream, null);
             }
 
-            
+
             /// <summary>
             /// Deserializes a PortableObjectDocument container instance
             /// </summary>
@@ -130,7 +130,7 @@ namespace NFX.Serialization.Slim
             /// <returns>PortableObjectDocument instance</returns>
             public PortableObjectDocument DeserializeDocument(Stream stream)
             {
-                return (PortableObjectDocument)m_Serializer.Deserialize(stream); 
+                return (PortableObjectDocument)m_Serializer.Deserialize(stream);
             }
 
         #endregion

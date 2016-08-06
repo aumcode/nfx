@@ -1,17 +1,17 @@
 ﻿"use strict";
-/*jshint devel: true,browser: true, sub: true */ 
+/*jshint devel: true,browser: true, sub: true */
 /*global escape: true */
 
 /*!
- * Wave Java Script Library Core v2.0.0 
+ * Wave Java Script Library Core v2.0.0
  *
- * Based on IT Adapter JS Library 2002-2011 
- * License: Unrestricted use/modification with mandatory reference to IT Adapter Corp. as the original author  
+ * Based on IT Adapter JS Library 2002-2011
+ * License: Unrestricted use/modification with mandatory reference to IT Adapter Corp. as the original author
  * (c) 2002-2011, 2013-2014 IT Adapter Corp.
  * http://www.itadapter.com/
  * Authors: Dmitriy Khmaladze,
  *          Timur Shemsedinov
- * Revision Epoch:  May 1, 2014; Jan 8, 2011; 2007-2009; Mar-Apr 2006; Jan 2005... 
+ * Revision Epoch:  May 1, 2014; Jan 8, 2011; 2007-2009; Mar-Apr 2006; Jan 2005...
  */
 var WAVE = (function(){
 
@@ -21,7 +21,7 @@ var WAVE = (function(){
       Date.now = function() { return new Date().getTime(); };
     }
 
-    var published = { 
+    var published = {
       TUNDEFINED: tUNDEFINED
     };
 
@@ -29,12 +29,12 @@ var WAVE = (function(){
     published.falsefunc = function() { return false; };
 
     published.arrayDelete = function(array, element) {
-	    for (var i in array){
-		    if (array[i] === element){
-			    array.splice(i, 1);
-			    return true;
-		    }
-	    }
+      for (var i in array){
+        if (array[i] === element){
+          array.splice(i, 1);
+          return true;
+        }
+      }
         return false;
     };
 
@@ -44,12 +44,12 @@ var WAVE = (function(){
         for (var i=0, max=source.length; i < max; i++) copy.push(source[i]);
        return copy;
     };
-    
+
     published.arrayClear = function(array) {  while(array.length > 0) array.pop(); };
 
     published.mergeArrays = function(left, right, matcher, transform) {
       if(!published.isArray(left) && !published.isArray(right)) return [];
-      
+
       var m = published.isFunction(matcher) ? matcher : function(a, b) { return a === b; };
       var t = published.isFunction(transform) ? transform : function(a){ return a; };
 
@@ -57,66 +57,74 @@ var WAVE = (function(){
       if(!published.isArray(right)) right = left;
 
       var a = left.concat(right);
-      for (var i = 0; i < a.length; i++) {
-        for (var j = i + 1; j < a.length; j++) {
+      for(var i = 0; i < a.length; i++) {
+        for(var j = i + 1; j < a.length; j++) {
           if (m(a[i],a[j]))
             a.splice(j--, 1);
         }
         a[i] = t(a[i]);
       }
       return a;
-    }
+    };
 
-    published.inArray = Array.prototype.indexOf ? 
-                          function(array, value) { return array.indexOf(value) !== -1;} : 
+    published.inArray = Array.prototype.indexOf ?
+                          function(array, value) { return array.indexOf(value) !== -1;} :
                           function(array, value) {
-	                            var i = array.length;
-	                            while (i--) if (array[i] === value) return true;
-	                            return false;
+                              var i = array.length;
+                              while (i--) if (array[i] === value) return true;
+                              return false;
                           };
 
-    
+    published.isString = function(obj){ return Object.prototype.toString.call(obj) === '[object String]'; };
+
     //Returns true when the passed parameter is a map, not an array or function
     published.isObject  = function(obj){
      if (typeof(obj)===tUNDEFINED) return false;
-     return obj === Object(obj) && !published.isArray(obj) && !published.isFunction(obj); 
+     return obj === Object(obj) && !published.isArray(obj) && !published.isFunction(obj);
     };
 
     //Returns true when the passed parameter is an array, not a map or function
-    published.isArray   = function(obj){ 
+    published.isArray   = function(obj){
      if (typeof(obj)===tUNDEFINED) return false;
-     return Object.prototype.toString.call(obj) === '[object Array]'; 
+     return Object.prototype.toString.call(obj) === '[object Array]';
     };
-    
+
     //Returns true when poassed parameter is a function, not a map object or an array
-    published.isFunction = function(obj){ 
+    published.isFunction = function(obj){
      return typeof(obj)==="function";
     };
 
     //Returns true when the passed parameter is an array, or map but not a function
-    published.isMapOrArray   = function(obj){ 
-     return obj === Object(obj) && !published.isFunction(obj); 
+    published.isMapOrArray   = function(obj){
+     return obj === Object(obj) && !published.isFunction(obj);
     };
-    
+
     //Overrides existing function by wrapping in new one. May call base like so:
     //  object.about = WAVE.overrideFun(object.about, function(){ return this.baseFunction() + "overridden" });
     published.overrideFunction = function(original, fn){
      var superFunction = original;
-	  return function() {
-		this.baseFunction = superFunction;
-		return fn.apply(this, arguments);
+    return function() {
+      this.baseFunction = superFunction;
+      return fn.apply(this, arguments);
       };
     };
-    
+
+    published.each = function (obj, func) {
+      if (typeof(obj) === tUNDEFINED || obj === null) return null;
+      if (!published.isFunction(func)) return obj;
+      for (var i in obj) func(obj[i], i, obj);
+      return obj;
+    };
+
     //Mixin behavior - extend obj with properties of ext. keepExisting=true preserves existing object key, even if it is null
     published.extend = function(obj, ext, keepExisting) {
         var prop;
         if (!keepExisting){
-            for (prop in ext) 
+            for (prop in ext)
               if (ext.hasOwnProperty(prop))
                  obj[prop] = ext[prop];
         }else{
-            for (prop in ext) 
+            for (prop in ext)
               if (ext.hasOwnProperty(prop) && !obj.hasOwnProperty(prop))
                  obj[prop] = ext[prop];
         }
@@ -128,24 +136,41 @@ var WAVE = (function(){
         return JSON.parse( JSON.stringify(obj) );
     };
 
-    // returns true if both objects represent the same scalar value or complex structure/map 
+    // deep clones data object, optionally setting all keys to lower case
+    published.memberClone = function(obj, lowerCaseKeys){
+      var result;
+      if (!published.isObject(obj)) {
+        if(!published.isArray(obj)) return obj;
+        result = [];
+        var l = obj.length;
+        for(var i = 0; i < l; i++)
+          result.push(published.memberClone(obj[i], lowerCaseKeys));
+        return result;
+      }
+
+      result = {};
+      for(var n in obj) result[lowerCaseKeys ? n.toLowerCase() : n] = published.memberClone(obj[n], lowerCaseKeys);
+      return result;
+    };
+
+    // returns true if both objects represent the same scalar value or complex structure/map
     // that is keys/values of maps/arrays. Nulls are considered equivalent
     published.isSame = function(obj1, obj2){
         if (arguments.length<2) return false;
         if (obj1===null && obj2===null) return true;
         if (obj1===null || obj2===null) return false;
         if (typeof(obj1)!==typeof(obj2)) return false;
-        
+
         if (typeof(obj1.getTime)==="function")//Date requires special handling
             return obj1.getTime()===obj2.getTime();
-        
+
         if (published.isMapOrArray(obj1)){
             if (obj1.length!==obj2.length ||
                 Object.keys(obj1).length!==Object.keys(obj2).length) return false;
             for(var i in obj1)
               if (!published.isSame(obj1[i], obj2[i])) return false;
-            return true;  
-        } 
+            return true;
+        }
 
         return obj1===obj2;
     };
@@ -171,17 +196,17 @@ var WAVE = (function(){
 
     //Tries to parse string as json, passing through objects and arrays
     published.tryParseJSON = function(content, dflt) {
-        if (typeof(content)!==tUNDEFINED && content!==null) 
+        if (typeof(content)!==tUNDEFINED && content!==null)
         {
-          if (published.isMapOrArray(content)) 
+          if (published.isMapOrArray(content))
             return {ok: true, obj: content};
           try {
-            return {ok: true, obj: JSON.parse(content)}; 
+            return {ok: true, obj: JSON.parse(content)};
           } catch(e){}
         }
-        
+
         return {ok: false, obj: typeof(dflt)!==tUNDEFINED ? dflt : {}};
-    }
+    };
 
     //returns true if object has no duplicated keys
     published.checkKeysUnique = function(obj){
@@ -193,68 +218,75 @@ var WAVE = (function(){
           if (keys[i].toLowerCase() === keys[j].toLowerCase()) return true;
 
       return false;
-    }
-
-    // deep clones data object (not functions), set all keys to lower case 
-    published.cloneEnsure = function(obj){
-      if (!published.isObject(obj)) return obj;      
-      var result = {};
-      for(var n in obj) result[n.toLowerCase()] = published.cloneEnsure(obj[n]);
-      return result;
-    }
+    };
 
     //true if object has no keys
     published.empty = function(obj) {
         if (typeof(obj)===tUNDEFINED || obj===null) return true;
         for(var n in obj) return false;
         return true;
-    }
+    };
 
     //Test if object has its own property
     published.has = function(obj, prop) {
         return obj ? hasOwnProperty.call(obj, prop) : false;
-    }
+    };
 
     //Reads obj prop OR it doesnt exist return default or null, but never undefined
     published.get = function(obj, prop, dflt) {
-        if (typeof(obj)!==tUNDEFINED && 
+        if (typeof(obj)!==tUNDEFINED &&
             obj!==null &&
             typeof(prop)!==tUNDEFINED &&
             prop!==null &&
             published.has(obj, prop) &&
             typeof(obj[prop])!==tUNDEFINED) return obj[prop];
-        
-        return(typeof(dflt)===tUNDEFINED) ? null : dflt;
-    }
 
+        return(typeof(dflt)===tUNDEFINED) ? null : dflt;
+    };
+
+    published.tryParseInt = function(val, allowReal) {
+      var value;
+      if (typeof(val) === tUNDEFINED || val === null || val.length === 0)
+        value = NaN;
+      else
+        value = Number(val);
+
+      var ok;
+      if (allowReal) {
+        ok = !isNaN(value) && isFinite(value);
+        if (ok) value = value < 0 ? (-Math.floor(-value)) : Math.floor(value);
+      } else {
+        ok = WAVE.isFunction(Number.isInteger) ?
+          Number.isInteger(value) :
+          !isNaN(value) && isFinite(value) && (Math.floor(value) === value);
+      }
+      return {ok: ok, value: value};
+    };
 
     published.intValid = function(val) {
-        if (!val) return false;
-        if (val.length===0) return false;
-        var ival = parseInt(val);
-        if (isNaN(ival)) return false;
-        return true;
+        return published.tryParseInt(val).ok;
     };
 
     published.intValidPositive = function(val) {
-        if (!val) return false;
-        if (val.length===0) return false;
-        var ival = parseInt(val);
-        if (isNaN(ival)) return false;
-        if (ival<=0) return false;
-        return true;
+        var ival = published.tryParseInt(val);
+        return ival.ok && ival.value > 0;
     };
 
     published.intValidPositiveOrZero = function(val) {
-        if (val!==0 && !val) return false;
-        if (val.length===0) return false;
-        var ival = parseInt(val);
-        if (isNaN(ival)) return false;
-        if (ival<0) return false;
-        return true;
+        var ival = published.tryParseInt(val);
+        return ival.ok && ival.value >= 0;
     };
 
+    published.formatMoney = function(amount, d, t){
+      d = typeof(d)===tUNDEFINED ? '.' : d;
+      t = typeof(t)===tUNDEFINED ? ',' : t;
+      amount =  amount < 0 ?(-Math.floor(100 * -amount) / 100).toFixed(2)
+                               :(Math.floor(100 * amount) / 100).toFixed(2);
 
+      if (d!=='.') amount = amount.replace('.', d);
+
+      return amount.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1"+t);
+    };
 
     published.strEmpty = function(str){ return ( !str  ||  0 === str.length  ||  /^\s*$/.test(str) ); };
 
@@ -266,62 +298,66 @@ var WAVE = (function(){
     };
 
 
-    published.strDefault = function(str, dflt){ 
-     return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str; 
+    published.strDefault = function(str, dflt){
+     return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str;
     };
 
-    published.nlsNameDefault = function(nls, dflt){ 
+    published.strEmptyDefault = function(str, dflt){
+     return published.strEmpty(str) ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str;
+    };
+
+    published.nlsNameDefault = function(nls, dflt){
      var v = (typeof(nls)===tUNDEFINED||nls===null) ? null : nls.n;
-     return published.strDefault(v, dflt); 
+     return published.strEmptyDefault(v, dflt);
     };
 
-    published.nlsDescrDefault = function(nls, dflt){ 
+    published.nlsDescrDefault = function(nls, dflt){
      var v = (typeof(nls)===tUNDEFINED||nls===null) ? null : nls.d;
-     return published.strDefault(v, dflt); 
+     return published.strEmptyDefault(v, dflt);
     };
 
-    published.nlsNameOrDescrDefault = function(nls, dflt){ 
+    published.nlsNameOrDescrDefault = function(nls, dflt){
      var v = null;
      if (typeof(nls)!==tUNDEFINED&&nls!==null)
      {
        v = nls.n;
        if (published.strEmpty(v)) v = nls.d;
      }
-     return published.strDefault(v, dflt); 
+     return published.strEmptyDefault(v, dflt);
     };
 
-    published.nlsDescrOrNameDefault = function(nls, dflt){ 
+    published.nlsDescrOrNameDefault = function(nls, dflt){
      var v = null;
      if (typeof(nls)!==tUNDEFINED&&nls!==null)
      {
        v = nls.d;
        if (published.strEmpty(v)) v = nls.n;
      }
-     return published.strDefault(v, dflt); 
+     return published.strEmptyDefault(v, dflt);
     };
 
-    
+
     published.strTrim = function(str){  return str.replace(/^\s+|\s+$/g, ''); };
     published.strLTrim = function(str){  return str.replace(/^\s+/,''); };
     published.strRTrim = function(str){  return str.replace(/\s+$/,''); };
 
     // Truncates str if its length exceeds maxLen and adds endWith string to result end.
-    published.strTrunc = function(str, maxLen, endWith) {  
+    published.strTrunc = function(str, maxLen, endWith) {
       if (!str) return str;
       var len = str.length;
       if (len <= maxLen) return str;
       endWith = endWith || "...";
       return str.substr(0, maxLen - endWith.length) + endWith;
     };
-    
+
     //Capitalizes first chars after spaces or dots, otionally converting chars in between to lower case
-    published.strCaps = function(str, norm){ 
+    published.strCaps = function(str, norm){
         //this does not use Regexp because regexp does not detect words correctly for non-english languages
         if (published.strEmpty(str)) return str;
         var c;
         var result = "";
         var sp = false;
-        for(var i=0;i<str.length;i++)
+        for(var i=0; i<str.length; i++)
         {
            c = str[i];
            if (c===' '||c==='.') {
@@ -338,6 +374,464 @@ var WAVE = (function(){
         }
         return result;
     };
+
+    published.markup = (function () {
+      var State = {
+        NONE:           0,
+        PARAGRAPH:      1,
+        PARAGRAPH_NEXT: 2,
+        SPAN:           3,
+        SPAN_END:       4,
+        CLASS:          5,
+        CLASS_NEXT:     6,
+        HEADING:        7,
+        HEADING_BODY:   8,
+        LIST:           9,
+        LIST_ITEM:     10,
+        LIST_NEXT:     11,
+        KEY:           12,
+        KEY_BODY:      13,
+        VALUE:         14,
+        VALUE_BODY:    15,
+        KEY_NEXT:      16
+      };
+      var entities = {
+        ' ': '&nbsp;',
+        '!': '&#33;',
+        '#': '&#35;',
+        '$': '&#36;',
+        '*': '&#42;',
+        '<': '&lt;',
+        '=': '&#61;',
+        '>': '&gt;',
+        '{': '&#123;',
+        '}': '&#125;'
+      };
+      return function (str) {
+        var out = '';
+        var state = State.NONE;
+        var stack = [];
+        var out_stack = [];
+        var level = 0;
+        var type;
+        var type_last;
+        var list_stack = [];
+        var in_kv;
+
+        for(var i = 0, length = str.length; i < length; i++) {
+          var c = str.charAt(i);
+          var n = str.charAt(i+1);
+          switch (c) {
+            case '\r': if (n === '\n') i++;
+            case '\n': c = '\n'; break;
+            case '<': c = '&lt;'; break;
+            case '>': c = '&gt;'; break;
+            case '&':
+              if (str.charAt(i+2) !== ';') break;
+              var ent = entities[n];
+              if (typeof(ent) !== tUNDEFINED) c = ent;
+              i+=2;
+              break;
+          }
+
+          switch (state) {
+            case /*State.NONE*/ 0:
+            case /*State.PARAGRAPH_NEXT*/ 2:
+            case /*State.LIST_NEXT*/ 11:
+            case /*State.KEY_NEXT*/ 16: {
+              switch (c) {
+                case '\n':
+                  if (state === State.PARAGRAPH_NEXT) out += '</p>';
+                  else {
+                    if (state === State.LIST_NEXT) close_list(0);
+                    if (state === State.KEY_NEXT) close_kv(false);
+                  }
+                  state = State.NONE;
+                  break;
+                case '{':
+                  if (state === State.PARAGRAPH_NEXT) out += ' ';
+                  else {
+                    if (state === State.LIST_NEXT) close_list(0);
+                    if (state === State.KEY_NEXT) close_kv(false);
+                    out += '<p>';
+                  }
+                  stack.push(State.PARAGRAPH);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                case '!':
+                  if (state === State.PARAGRAPH_NEXT) {
+                    state = State.PARAGRAPH;
+                    out += ' ' + c;
+                  } else {
+                    if (state === State.LIST_NEXT) close_list(0);
+                    if (state === State.KEY_NEXT) close_kv(false);
+                    state = State.HEADING;
+                    out_stack.push(out);
+                    out = c;
+                  }
+                  break;
+                case '#':
+                case '*':
+                  if (state === State.PARAGRAPH_NEXT) {
+                    state = State.PARAGRAPH;
+                    out += ' ' + c;
+                  } else {
+                    if (state === State.KEY_NEXT) close_kv(false);
+                    type = c;
+                    state = State.LIST;
+                    out_stack.push(out);
+                    out = c;
+                  }
+                  break;
+                case '$':
+                  if (state === State.PARAGRAPH_NEXT) {
+                    state = State.PARAGRAPH;
+                    out += ' ' + c;
+                  } else {
+                    if (state === State.KEY_NEXT) close_kv(true);
+                    in_kv = state === State.KEY_NEXT;
+                    state = State.KEY;
+                    out_stack.push(out);
+                    out = c;
+                  }
+                  break;
+                default:
+                  if (state === State.PARAGRAPH_NEXT) out += ' ';
+                  else {
+                    if (state === State.LIST_NEXT) close_list(0);
+                    if (state === State.KEY_NEXT) close_kv(false);
+                    out += '<p>';
+                  }
+                  state = State.PARAGRAPH;
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.PARAGRAPH*/ 1: {
+              switch (c) {
+                case '\n':
+                  state = State.PARAGRAPH_NEXT;
+                  break;
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.SPAN*/ 3: {
+              switch (c) {
+                case '\n':
+                  out += ' ';
+                  break;
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                case '}':
+                  state = State.SPAN_END;
+                  out = out.substr(1);
+                  break;
+                default: out += c; break;
+              }
+            } break;
+            case /*State.SPAN_END*/ 4: {
+              switch (c) {
+                case '.':
+                  if (class_start(n)) {
+                    state = State.CLASS;
+                    out_stack.push(out);
+                    out = c;
+                    break;
+                  }
+                default:
+                  state = stack.pop();
+                  out = out_stack.pop() + out;
+                  i--;
+                  break;
+              }
+            } break;
+            case /*State.CLASS*/ 5: {
+              out += c;
+              if (n === '.') state = State.CLASS_NEXT;
+              else if (!class_midle(n)) {
+                state = stack.pop();
+                out = '<span class="' + make_class(out) + '">'
+                    + out_stack.pop() + '</span>';
+                out = out_stack.pop() + out;
+              }
+            } break;
+            case /*State.CLASS_NEXT*/ 6: {
+              switch (c) {
+                case '.':
+                  if (class_start(n)) {
+                    state = State.CLASS;
+                    out += c;
+                    break;
+                  }
+                default:
+                  state = stack.pop();
+                  out = '<span class="' + make_class(out) + '">'
+                      + out_stack.pop() + '</span>.';
+                  out = out_stack.pop() + out;
+                  break;
+              }
+            } break;
+            case /*State.HEADING*/ 7: {
+              if (c === '\n') {
+                out = out_stack.pop() + '<p>' + out;
+                state = State.PARAGRAPH;
+                i--;
+                break;
+              }
+              if (c === '!' && out.length < 6) out += c;
+              else {
+                level = out.length;
+                out = out_stack.pop() + '<h' + level + '>';
+                state = State.HEADING_BODY;
+                switch (c) {
+                  case '{':
+                    stack.push(state);
+                    state = State.SPAN;
+                    out_stack.push(out);
+                    out = c;
+                    break;
+                  default:
+                    out += c;
+                    break;
+                }
+              }
+            } break;
+            case /*State.HEADING_BODY*/ 8: {
+              switch (c) {
+                case '\n':
+                  state = State.NONE;
+                  out += '</h' + level + '>';
+                  level = 0;
+                  break;
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = '{';
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.LIST*/ 9: {
+              if (c === '\n') {
+                out = out_stack.pop() + '<p>' + out;
+                state = State.PARAGRAPH;
+                i--;
+                break;
+              }
+              if (c === type ) out += c;
+              else {
+                state = State.LIST_ITEM;
+                var new_level = out.length;
+                out = out_stack.pop();
+                if (level === new_level && type !== type_last)
+                  close_list(0);
+                if (level === new_level) {
+                  out += '</li><li>';
+                } else if (level < new_level) {
+                  for (; level < new_level; level++) {
+                    switch (type) {
+                      case '#': out += '<ol><li>'; list_stack.push('ol'); break;
+                      case '*': out += '<ul><li>'; list_stack.push('ul'); break;
+                    }
+                  }
+                } else close_list(new_level);
+                switch (c) {
+                  case '{':
+                    stack.push(state);
+                    state = State.SPAN;
+                    out_stack.push(out);
+                    out = c;
+                    break;
+                  default:
+                    out += c;
+                    break;
+                }
+                break;
+              }
+            } break;
+            case /*State.LIST_ITEM*/ 10: {
+              switch (c) {
+                case '\n':
+                  type_last = type;
+                  state = State.LIST_NEXT;
+                  break;
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = '{';
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.KEY*/ 12: {
+              if (c === '\n' || c === '=') {
+                out = out_stack.pop() + (in_kv ? '</dl>' : '') + '<p>' + out;
+                state = State.PARAGRAPH;
+                i--;
+                break;
+              }
+              state = State.KEY_BODY;
+              switch (c) {
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.KEY_BODY*/ 13: {
+              if (c === '\n') {
+                out = out_stack.pop() + (in_kv ? '</dl>' : '') + '<p>' + out;
+                state = State.PARAGRAPH;
+                i--;
+                break;
+              }
+              switch (c) {
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                case '=':
+                  state = State.VALUE;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.VALUE*/ 14: {
+              if (c === '\n') {
+                out = '<p>' + out_stack.pop() + out;
+                out = out_stack.pop() + (in_kv ? '</dl>' : '') + out;
+                state = State.PARAGRAPH;
+                i--;
+                break;
+              }
+              out = '<dt>' + out_stack.pop().substr(1) + '</dt><dd>';
+              out = (in_kv ? out_stack.pop() : out_stack.pop() + '<dl>') + out;
+              state = State.VALUE_BODY;
+              switch (c) {
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = c;
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            case /*State.VALUE_BODY*/ 15: {
+              switch (c) {
+                case '\n':
+                  state = State.KEY_NEXT;
+                  break;
+                case '{':
+                  stack.push(state);
+                  state = State.SPAN;
+                  out_stack.push(out);
+                  out = '{';
+                  break;
+                default:
+                  out += c;
+                  break;
+              }
+            } break;
+            default: throw 'WAVE.markup(state)';
+          }
+        }
+
+        stack.push(state);
+
+        while(typeof(state = stack.pop()) !== tUNDEFINED) {
+          switch(state) {
+            case /*State.NONE*/ 0: break;
+            case /*State.PARAGRAPH*/ 1:
+            case /*State.PARAGRAPH_NEXT*/ 2: out += '</p>'; break;
+            case /*State.VALUE*/ 14: out = out_stack.pop() + out;
+            case /*State.KEY*/ 12:
+            case /*State.KEY_BODY*/ 13: if (in_kv) out_stack.push(out_stack.pop() + '</dl>');
+            case /*State.LIST*/ 9:
+            case /*State.HEADING*/ 7: out = '<p>' + out + '</p>';
+            case /*State.SPAN*/ 3:
+            case /*State.SPAN_END*/ 4: out = out_stack.pop() + out; break;
+            case /*State.HEADING_BODY*/ 8: out += '</h' + level + '>'; break;
+            case /*State.LIST_ITEM*/ 10: close_list(0); break;
+            case /*State.VALUE_BODY*/ 15:
+            case /*State.KEY_NEXT*/ 16: close_kv(false); break;
+            default: throw 'WAVE.markup(last.state)';
+          }
+        }
+
+        return out;
+
+        function close_list(new_level) {
+          var lst;
+          while(level > new_level && typeof(lst = list_stack.pop()) !== tUNDEFINED) {
+            out += '</li></' + lst + '>';
+            level--;
+          }
+          if (level !== 0) out += '</li><li>';
+        }
+        function close_kv(in_kv) {
+          out += '</dd>';
+          if (!in_kv) out += '</dl>';
+        }
+      };
+
+      function class_start(c) {
+        return '_' === c
+          || ('A' <= c && c <= 'Z')
+          || ('a' <= c && c <= 'z');
+      }
+
+      function class_midle(c) {
+        return '_' === c
+          || '-' === c
+          || ('A' <= c && c <= 'Z')
+          || ('a' <= c && c <= 'z')
+          || ('0' <= c && c <= '9');
+      }
+
+      function make_class(str) {
+        var cls = str.substr(1).split(".");
+        var uni = {};
+        for (var i in cls) uni[cls[i]] = 0;
+        cls = [];
+        for (var k in uni) cls.push('wv-markup-'+ k.toLowerCase());
+        return cls.join(' ');
+      }
+    })();
+
 
     var intPrefixes = ["", "k", "M", "G", "T", "P", "E", "Z", "Y"];
     var floatPrefixes = ["", "m", "µ", "n", "p", "f", "a", "z", "y"];
@@ -373,7 +867,7 @@ var WAVE = (function(){
 
       return res;
     };
-    
+
     //True for [a-zA-Z0-9]
     published.charIsAZLetterOrDigit = function(c){
         if (c===null) return false;
@@ -382,49 +876,52 @@ var WAVE = (function(){
 
 
     published.strStartsWith = function(str, s, scase){
-     return scase ? str.slice(0, s.length) === s : str.slice(0, s.length).toLowerCase() === s.toLowerCase(); 
+     return scase ? str.slice(0, s.length) === s : str.slice(0, s.length).toLowerCase() === s.toLowerCase();
     };
-    
-    published.strEndsWith = function(str, s, scase){ 
-      return scase ? str.slice(-s.length) === s : str.slice(-s.length).toLowerCase() === s.toLowerCase(); 
+
+    published.strEndsWith = function(str, s, scase){
+      return scase ? str.slice(-s.length) === s : str.slice(-s.length).toLowerCase() === s.toLowerCase();
     };
 
     // Ensures that string ends with the specified string: strEnsureEnding("path",'/')
     published.strEnsureEnding = function(str, ending) {
-	  return str+(str.slice(-ending.length) === ending ? '' : ending);
+      return str+(str.slice(-ending.length) === ending ? '' : ending);
     };
 
     //Returns true when str contains a seg optionally respecting case
-    published.strContains = function(str, seg, scase) { 
+    published.strContains = function(str, seg, scase) {
       return scase ? str.indexOf(seg)>-1 : str.toLowerCase().indexOf(seg.toLowerCase())>-1;
     };
 
     //Returns true if both string contain the same trimmed case-insensitive value.
     //This method is usefull for tasks like searches of components by name
     published.strSame = function(str1, str2){
-      if (typeof(str1)===tUNDEFINED || typeof(str2)===tUNDEFINED) return false; 
+      if (typeof(str1)===tUNDEFINED || typeof(str2)===tUNDEFINED) return false;
       if (str1===null || str2===null) return false;
-      return published.strTrim(str1).toLowerCase() === published.strTrim(str2).toLowerCase();  
+      return published.strTrim(str1).toLowerCase() === published.strTrim(str2).toLowerCase();
     };
 
     //Returns true if the case-insensitive trimmed string is in the set of values
     //Neither string nor set value may contain delimiter which is '|' by default:
-    //   strOneOf("car",["car","house","tax"],';') 
+    //   strOneOf("car",["car","house","tax"],';')
     published.strOneOf = function(str1, set, del){
       if (str1===null || set===null || !published.isArray(set)) return false;
       if (!del) del = "|";
       str1 = del+published.strTrim(str1).toLowerCase()+del;
       var vset = (del+set.join(del)+del).toLowerCase();
-      return vset.indexOf(str1)>=0;  
+      return vset.indexOf(str1)>=0;
     };
 
     //returns true if an element is a direct or indirect child of the specified parent
     published.isParentOf = function(parent, elem){
-      if (WAVE.isFunction(parent.contains)) return parent.contains(elem);
+      if (WAVE.isFunction(parent.contains)) {
+        try {return parent.contains(elem);}
+        catch(e) {return false;}
+      }
 
       var node = elem;
       while(true){
-        node = node.parentNode; 
+        node = node.parentNode;
         if(node === null) return false;
         if(node === parent) return true;
       }
@@ -432,7 +929,7 @@ var WAVE = (function(){
 
     //returns computed value of specified css style for given elemen
     published.styleOf = function(elem, cssStyle){
-      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !WAVE.isFunction(window.getComputedStyle)) 
+      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !WAVE.isFunction(window.getComputedStyle))
         return "";
 
       return window.getComputedStyle(elem, null).getPropertyValue(cssStyle);
@@ -448,11 +945,18 @@ var WAVE = (function(){
       return false;
     };
 
+    published.addClass = function(elem, className) {
+      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className)) return;
+
+      published.removeClass(elem, className);
+      elem.className += (" " + className);
+    };
+
     published.removeClass = function(elem, className) {
       if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className)) return;
 
       elem.className = elem.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', "g") , '' );
-    }
+    };
 
     var htmlEscapes = {
         "&": "&amp;",
@@ -466,41 +970,41 @@ var WAVE = (function(){
     published.strEscapeHTML = function(content) {
         return String(content).replace(/[&<>"'\/]/g, function (esc) { return htmlEscapes[esc]; });
     };
-    
+
 
     //Turns content like ' <td>@name@</td> ' -> '<td> Alex &amp; Boris </td>' provided that a = 'Alex & Boris'. Data is HTML escaped
     published.strHTMLTemplate = function(tpl, args) {
-	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return published.strEscapeHTML(args[key]); });
-	};
+      return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return published.strEscapeHTML(args[key]); });
+  };
 
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex & Boris"}' provided that a = 'Alex & Boris'. Data is not HTML escaped
     published.strTemplate = function(tpl, args) {
-	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return args[key]; });
-	};
+      return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return args[key]; });
+  };
 
 
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex"}' provided that f = function(s, k){ return "Alex"}). Data is HTML escaped
     published.strHTMLTemplateFun = function(tpl, f) {
-	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) {return published.strEscapeHTML(f(s, key)); });
-	};
+      return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) {return published.strEscapeHTML(f(s, key)); });
+  };
 
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex"}' provided that f = function(s, k){ return "Alex"}). Data is not HTML escaped
     published.strTemplateFun = function(tpl, f) {
-	  return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, f);
-	};
+      return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, f);
+  };
 
     //True if str contains valid email per: a@bc.de
     published.strIsEMail = function(str){
       if (published.strEmpty(str)) return false;
       var iat=str.indexOf("@");
       if (iat<1 || iat===str.length-1) return false;
-     
+
       if (str.indexOf("@", iat+1)>=0) return false;//duplicate @
-     
+
       var ldot=str.lastIndexOf(".");
       var pass =  (ldot>iat+2) && (ldot+2<=str.length);
       if (!pass) return false;
-      
+
       var c;
       for(var i=0; i<str.length; i++){
         c = str[i];
@@ -521,7 +1025,7 @@ var WAVE = (function(){
     };
 
     published.isValidScreenNameLetterOrDigit = function(c){ return published.isValidScreenNameLetter(c) || (c>='0' && c<='9'); };
-   
+
     published.isValidScreenNameSeparator= function(c){   return (c==='.' || c==='-' || c==='_'); };
 
 
@@ -541,7 +1045,7 @@ var WAVE = (function(){
           if (!published.isValidScreenNameLetter(c)) return false;
           continue;
         }
-       
+
         if (published.isValidScreenNameSeparator(c))
         {
           if (wasSeparator) return false;
@@ -622,7 +1126,7 @@ var WAVE = (function(){
                 number += chr;
           }
         }//for
-       
+
        while (number.length < 7)  number += '?';
 
        if (area.length === 0){
@@ -643,12 +1147,12 @@ var WAVE = (function(){
        number = number.substring(0, 3) + "-" + number.substring(3);
 
        if (ext.length > 0) ext = "x" + ext;
-       
+
        return "("+area+") " + number + ext;
     };
 
 
-    published.LOCALIZER = 
+    published.LOCALIZER =
     {
       eng: {},
       rus: {},
@@ -671,13 +1175,13 @@ var WAVE = (function(){
     published.strLocalize = function(iso, schema, fld, val){
       if (arguments.length<4) return val;
       if (published.strEmpty(iso) || published.strEmpty(val)) return val;
-      
+
       var ANYSCHEMA = "--ANY-SCHEMA--";
       var ANYFIELD = "--ANY-FIELD--";
 
       if (published.strEmpty(schema)) schema = ANYSCHEMA;
       if (published.strEmpty(fld)) fld = ANYFIELD;
-      
+
       var node = published.LOCALIZER;
       if (!node.hasOwnProperty(iso)) return val;
       node = node[iso];
@@ -717,8 +1221,8 @@ var WAVE = (function(){
             pad(dt.getDate())+"/"+
             pad(dt.getFullYear())+" "+
             pad(dt.getHours())+':'+
-			pad(dt.getMinutes())+':'+
-			pad(dt.getSeconds());
+            pad(dt.getMinutes())+':'+
+            pad(dt.getSeconds());
     };
 
     // Add MM/DD/YYYY
@@ -732,26 +1236,26 @@ var WAVE = (function(){
 
     // Parses duration string to total seconds: duration("1d 10h 7m 13s")
     published.toSeconds = function(s) {
-	    var result  = 0,
-		    days    = s.match(/(\d+)\s*d/),
-		    hours   = s.match(/(\d+)\s*h/),
-		    minutes = s.match(/(\d+)\s*m/),
-		    seconds = s.match(/(\d+)\s*s/);
-	    if (days)    result += parseInt(days[1])*86400;
-	    if (hours)   result += parseInt(hours[1])*3600;
-	    if (minutes) result += parseInt(minutes[1])*60;
-	    if (seconds) result += parseInt(seconds[1]);
-	    return result;
+      var result  = 0,
+        days    = s.match(/(\d+)\s*d/),
+        hours   = s.match(/(\d+)\s*h/),
+        minutes = s.match(/(\d+)\s*m/),
+        seconds = s.match(/(\d+)\s*s/);
+      if (days)    result += parseInt(days[1])*86400;
+      if (hours)   result += parseInt(hours[1])*3600;
+      if (minutes) result += parseInt(minutes[1])*60;
+      if (seconds) result += parseInt(seconds[1]);
+      return result;
     };
 
     // Generates random key with specified length from the alphabet of possible characters: rndKey(10,"abcdefzq2")
     published.genRndKey = function(keyLen, alphabet) {
-	    var key = "";
-        if (!published.intValidPositive(keyLen)) keyLen = 8;
-        if (published.strEmpty(alphabet)) alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	    while(key.length<keyLen)
-         key += alphabet.charAt(published.rnd(alphabet.length));
-	    return key;
+      var key = "";
+      if (!published.intValidPositive(keyLen)) keyLen = 8;
+      if (published.strEmpty(alphabet)) alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      while(key.length<keyLen)
+        key += alphabet.charAt(published.rnd(alphabet.length));
+      return key;
     };
 
     var _autoInc = {};
@@ -763,7 +1267,7 @@ var WAVE = (function(){
 
         if (seqName in _autoInc)
           current = _autoInc[seqName];
-                
+
         var result = current;
 
         current += num;
@@ -773,44 +1277,44 @@ var WAVE = (function(){
 
     // Returns true for scalar vars and false for arrays and objects
     published.isScalar = function(value) {
-	    return (/boolean|number|string/).test(typeof(value));
+      return (/boolean|number|string/).test(typeof(value));
     };
 
     // Returns random number in the range of min/max where min=0 max =100 by default:  rnd(10,57)
     published.rnd = function() {
-	    var min = 0;
-        var max = 100;
+      var min = 0;
+      var max = 100;
 
-        if (arguments.length === 1)  max = arguments[0];
-	    else if (arguments.length === 2)
-        { 
-          min = arguments[0];
-          max = arguments[1];
-        }
+      if (arguments.length === 1)  max = arguments[0];
+      else if (arguments.length === 2)
+      {
+        min = arguments[0];
+        max = arguments[1];
+       }
 
-	    return min+Math.floor(Math.random()*(max-min+1));
+      return min+Math.floor(Math.random()*(max-min+1));
     };
 
 
     published.id = function(id){
-        return document.getElementById(id); 
+        return document.getElementById(id);
     };
 
     published.getCookie = function(name) {
-		var matches = document.cookie.match(new RegExp(
-			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-		));
-		return matches ? decodeURIComponent(matches[1]) : false;
-	};
+      var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : false;
+    };
 
     published.setCookie = function(name, value) {
-		var cookie = name+"="+escape(value)+"; path=/";
-		document.cookie = cookie;
-	};
+      var cookie = name+"="+escape(value)+"; path=/";
+      document.cookie = cookie;
+    };
 
     published.deleteCookie = function(name) {
-		published.setCookie(name, null, { expires: -1 });
-	};
+      published.setCookie(name, null, { expires: -1 });
+    };
 
     published.isObjectType = function(tp) { return published.strOneOf(tp, ["object", "json", "map", "array"]);};
     published.isIntType = function(tp) { return published.strOneOf(tp, ["int", "integer"]);};
@@ -822,13 +1326,13 @@ var WAVE = (function(){
 
     //Converts scalar value into the specified type: convertScalarType("12/14/2018", "date", true);
     published.convertScalarType = function(nullable, value, type, dflt){
-        
+
          function dfltOrError(){
             if (typeof(dflt)!==tUNDEFINED && dflt!==null) return dflt;
             if (value===null) value = '<null>';
             throw "Can not convert '"+value+"' to type '"+type+"'";
          }
-        
+
         if (published.strEmpty(type)) return value;
 
         var t;
@@ -846,7 +1350,7 @@ var WAVE = (function(){
             return dfltOrError();
         }
         else if (published.isIntType(type)){
-            if (value===null) return nullable ?  null : 0; 
+            if (value===null) return nullable ?  null : 0;
             t = typeof(value);
             if (t==="boolean") return value ? 1 : 0;
             if (published.isFunction(value.getTime)) return value.getTime();
@@ -857,24 +1361,24 @@ var WAVE = (function(){
             }
             if (t==="string"){
                 if (published.strEmpty(value)) return nullable ? null : 0;
-                var i = parseInt(value);
-                if (!isNaN(i)) return i;
+                var i = published.tryParseInt(value, true);
+                if (i.ok) return i.value;
                 return dfltOrError();
             }
-            return dfltOrError();    
+            return dfltOrError();
         }
         else if (published.isStringType(type)){
-            if (value===null) return nullable ?  null : ""; 
+            if (value===null) return nullable ?  null : "";
             t = typeof(value);
             if (t==="string") return value;
             if (t==="boolean") return value ? "true" : "false";
-         
+
             if (published.isFunction(value.getTime)) return published.toUSDateTimeString(value);
 
             return value.toString();
         }
         else if (published.isRealType(type)){
-            if (value===null) return nullable ?  null : 0.0; 
+            if (value===null) return nullable ?  null : 0.0;
             t = typeof(value);
             if (t==="boolean") return value ? 1.0 : 0.0;
             if (published.isFunction(value.getTime)) return value.getTime();
@@ -883,18 +1387,18 @@ var WAVE = (function(){
                 t="string";
                 value = value.toString();
             }
-            if (t==="string"){    
+            if (t==="string"){
                 if (published.strEmpty(value)) return nullable ? null : 0;
                 var num = parseFloat(value);
                 if (!isNaN(num)) return num;
                 return dfltOrError();
             }
-            
-            return dfltOrError();    
+
+            return dfltOrError();
         }
         else if (published.isBoolType(type)){
             if (value) return true;
-            return false;    
+            return false;
         }
         else if (published.isDateType(type)){
             if (value===null) return nullable ?  null : dfltOrError();
@@ -906,7 +1410,7 @@ var WAVE = (function(){
             var ms = Date.parse(value);
             if (!isNaN(ms)) return new Date(ms);
 
-            return dfltOrError();    
+            return dfltOrError();
         }
 
 
@@ -915,14 +1419,14 @@ var WAVE = (function(){
 
 
 
-      
+
     var any_event = "*";
 
     //Event Manager Mixin - keeps track of event subscriptions and invocations
     published.EventManager = {
-       
+
        ANY_EVENT: any_event,
-       
+
        //Binds a function to the named event handler
        eventBind: function(evtName, fun){
          if (published.strEmpty(evtName) || !fun) return false;
@@ -932,7 +1436,7 @@ var WAVE = (function(){
          el.push(fun);
          return true;
        },
-      
+
        //Un-Binds a function from the named event handler
        eventUnbind: function(evtName, fun){
          if (published.strEmpty(evtName)|| !fun) return false;
@@ -940,10 +1444,10 @@ var WAVE = (function(){
          var el = ensureEventList(this, evtName);
          return published.arrayDelete(el, fun);
        },
-       
+
        //Clears all functions from the named event handler
        eventClear: function(evtName){
-         if (published.strEmpty(evtName)) 
+         if (published.strEmpty(evtName))
          {
             deleteEventList(this);
             return true;
@@ -954,7 +1458,7 @@ var WAVE = (function(){
 
          return true;
        },
-       
+
        //Increase to disable event firing for all events, decrease to enable, events are enabled again when value is <=0
        //This property is usefull for batch updates to suppress many event firings that are not needed
        eventInvocationSuspendCount: 0,
@@ -964,10 +1468,10 @@ var WAVE = (function(){
          if (published.strEmpty(evtName)) return false;
 
          if (this.eventInvocationSuspendCount!==0) return false;
-         
+
          //variadic params, remove 'evtName'
          var params = Array.prototype.slice.call(arguments, 1);
-         
+
          //insert 'sender'
          params.splice(0,0,this);
 
@@ -1029,7 +1533,7 @@ var WAVE = (function(){
     };
               var eventListName = "@!WAVE EVENT FUN LIST";
               var eventSinkListName = "@!WAVE EVENT SINK LIST";
-              
+
               function deleteEventList(obj){
                 obj[eventListName] = {};
               }
@@ -1055,6 +1559,7 @@ var WAVE = (function(){
     var utest = {
       CSS_CLASS_AREA:  "wvUTestArea",
       CSS_CLASS_TESTTITLE:  "wvUTestTitle",
+      CSS_CLASS_TESTNUMBER: "wvUTestNumber",
       CSS_CLASS_OK:    "wvUTestOK",
       CSS_CLASS_ERROR: "wvUTestError",
       CSS_CLASS_TABLEERROR: "wvUTestTableError",
@@ -1069,8 +1574,9 @@ var WAVE = (function(){
 
     var _testOut = [];
     var _areaIDs = {};
-    var _testingStarted = false; 
-    
+    var _testingStarted = false;
+    var _testNumber = 0;
+
            function updateHeader()
            {
               var dis = published.id(utest.DIV_SUMMARY);
@@ -1108,24 +1614,24 @@ var WAVE = (function(){
                content += '</table>';
               dis.innerHTML = content;
            }
-    
+
     utest.run = function(area, name, fun) {
         if (!_testingStarted)
         {
            _testingStarted = true;
            setTimeout( updateHeader, 1000);
         }
-        
-        if (published.strEmpty(area)) area = "Unspecified";   
-       
+
+        if (published.strEmpty(area)) area = "Unspecified";
+
         var did = null;
         if (area in _areaIDs)
             did = _areaIDs[area];
         else
-        { 
+        {
             did = utest.DIV_AREA_PREFIX + published.genAutoincKey("UtestingArea");
            _areaIDs[area] = did;
-        } 
+        }
 
         var divArea = published.id(did);
         if (!divArea)
@@ -1135,7 +1641,7 @@ var WAVE = (function(){
             divArea.className = utest.CSS_CLASS_AREA;
             document.body.appendChild(divArea);
             divArea.innerHTML = "<h2>"+area+"</h2>";
-            
+
             divArea.STAT_NAME = area;
             divArea.STAT_TOTAL_TESTS = 0;
             divArea.STAT_FAILED_TESTS = 0;
@@ -1145,6 +1651,7 @@ var WAVE = (function(){
         try
         {
             _testOut = [];
+            _testNumber++;
             divArea.STAT_TOTAL_TESTS += 1;
             fun();
         }
@@ -1159,12 +1666,13 @@ var WAVE = (function(){
         var divTest = document.createElement("div");
         divTest.id = dtid;
         divTest.className = isError ? utest.CSS_CLASS_ERROR : utest.CSS_CLASS_OK;
-        
-        var content = "<div class='"+utest.CSS_CLASS_TESTTITLE+"'>" + name + "&nbsp;&nbsp;:&nbsp;&nbsp;" + (isError ? "FAILED" : "PASSED")+"</div>";
-        
+
+        var content = "<div class='"+utest.CSS_CLASS_TESTTITLE+"'><span class='" + utest.CSS_CLASS_TESTNUMBER + "'>" + _testNumber + "</span>&nbsp;"
+          + name + "&nbsp;&nbsp;:&nbsp;&nbsp;" + (isError ? "FAILED" : "PASSED")+"</div>";
+
         if (isError)
          content += "&nbsp;&nbsp;Error: " + error;
-        
+
 
         if (_testOut.length>0)
         {
@@ -1175,7 +1683,7 @@ var WAVE = (function(){
 
             content += "</pre>";
         }
-       
+
         divTest.innerHTML = content;
         divArea.appendChild(divTest);
     };
@@ -1197,19 +1705,19 @@ var WAVE = (function(){
 
     utest.assertTrue = function(assertion, msg){
         if (published.strEmpty(msg)) msg = "Assertion not true";
-        if (!assertion) throw msg; 
+        if (!assertion) throw msg;
     };
 
     utest.assertFalse = function(assertion, msg){
         if (published.strEmpty(msg)) msg = "Assertion not false";
-        if (assertion) throw msg; 
+        if (assertion) throw msg;
     };
 
 
     published.UTest = utest;
 
 
-    var platform = 
+    var platform =
     {
         iPhone: navigator.userAgent.match(/iPhone/i),
 		iPod: navigator.userAgent.match(/iPod/i),
@@ -1231,15 +1739,15 @@ var WAVE = (function(){
 
     platform.iOS    = platform.iPhone || platform.iPod || platform.iPad;
 
-	platform.Mobile = platform.iOS || platform.Android || 
+	platform.Mobile = platform.iOS || platform.Android ||
                       platform.OperaMini || platform.OperaMobi ||
                       platform.BlackBerry ||
-                      platform.WebOS || 
+                      platform.WebOS ||
                       platform.IEMobile || platform.WinPhone ||
                       platform.Silk;
 
 	platform.WebKit = platform.Chrome || platform.Safari;
-	
+
     published.Platform = platform;
 
 
@@ -1252,7 +1760,7 @@ var WAVE = (function(){
 
 	geometry.PI = pi;
 	geometry.PI2 = pi2;
-    
+
     geometry.MapDirection = {
 		North:     {Name: "North"},
 		NorthEast: {Name: "NorthEast"},
@@ -1278,94 +1786,94 @@ var WAVE = (function(){
     geometry.degToRad = function(deg){ return (deg / 180) * pi; };
 
 
-    // Returns azimuth angle (theta) in radians  
-	geometry.azimuthRad = function(xc, yc, xd, yd) {
-	  var angle = Math.atan2(yd - yc, xd - xc);
-		if (angle < 0) angle = pi2 + angle;
-		return angle;
-	};
+    // Returns azimuth angle (theta) in radians
+  geometry.azimuthRad = function(xc, yc, xd, yd) {
+    var angle = Math.atan2(yd - yc, xd - xc);
+    if (angle < 0) angle = pi2 + angle;
+    return angle;
+  };
 
     // Returns azimuth angle (theta) in radians for two points: center and destination
-	geometry.azimuthRadPoints = function(pc, pd) {  return geometry.azimuthRad(pc.x(), pc.y(),  pd.x(), pd.y()); };
+  geometry.azimuthRadPoints = function(pc, pd) {  return geometry.azimuthRad(pc.x(), pc.y(),  pd.x(), pd.y()); };
 
-    // Returns azimuth angle (theta) in degrees  
-	geometry.azimuthDeg = function(xc, yc, xd, yd){ return (geometry.azimuthRad(xc, yc, xd, yd) / pi2) * 360; };
+    // Returns azimuth angle (theta) in degrees
+  geometry.azimuthDeg = function(xc, yc, xd, yd){ return (geometry.azimuthRad(xc, yc, xd, yd) / pi2) * 360; };
 
-    // Returns azimuth angle (theta) in degrees for twho points: center and destination  
-	geometry.azimuthDegPoints = function(pc, pd){ return geometry.azimuthDeg(pc.x(), pc.y(),  pd.x(), pd.y()); };
+    // Returns azimuth angle (theta) in degrees for twho points: center and destination
+  geometry.azimuthDegPoints = function(pc, pd){ return geometry.azimuthDeg(pc.x(), pc.y(),  pd.x(), pd.y()); };
 
-    // Returns azimuth angle (theta) in radix units  
-	geometry.azimuthOfRadix = function(xc, yc, xd, yd, radix) {
-	  if (radix < 2) radix = 2;
-	  var angle = geometry.azimuthRad(xc, yc, xd, yd);
-	  var half = pi / radix;
-	  angle = geometry.wrapAngle(angle, half);
-	  return Math.floor((angle / pi2) * radix);
-	};
+    // Returns azimuth angle (theta) in radix units
+  geometry.azimuthOfRadix = function(xc, yc, xd, yd, radix) {
+    if (radix < 2) radix = 2;
+    var angle = geometry.azimuthRad(xc, yc, xd, yd);
+    var half = pi / radix;
+    angle = geometry.wrapAngle(angle, half);
+    return Math.floor((angle / pi2) * radix);
+  };
 
-    // Returns azimuth angle (theta) in in radix units for twho points: center and destination  
-	geometry.azimuthOfRadixPoints = function(pc, pd, radix){ return geometry.azimuthOfRadix(pc.x(), pc.y(),  pd.x(), pd.y(), radix); };
+    // Returns azimuth angle (theta) in in radix units for twho points: center and destination
+  geometry.azimuthOfRadixPoints = function(pc, pd, radix){ return geometry.azimuthOfRadix(pc.x(), pc.y(),  pd.x(), pd.y(), radix); };
 
-    //Returns rectangle from coordinate pairs  
-	geometry.toRectXY = function(x1,y1, x2,y2) {
-		return new geometry.Rectangle( new geometry.Point(x1, y1), new geometry.Point(x2, y2) );
-	};
+    //Returns rectangle from coordinate pairs
+  geometry.toRectXY = function(x1,y1, x2,y2) {
+    return new geometry.Rectangle( new geometry.Point(x1, y1), new geometry.Point(x2, y2) );
+  };
 
     // Returns rectangle from coordinats and dimensions
-	geometry.toRectWH = function(x1,y1, w,h) {
-		return new geometry.Rectangle( new geometry.Point(x1, y1), new geometry.Point(x1 + w, y1 + h) );
-	};
+  geometry.toRectWH = function(x1,y1, w,h) {
+    return new geometry.Rectangle( new geometry.Point(x1, y1), new geometry.Point(x1 + w, y1 + h) );
+  };
 
-    // Returns area of overlap between two rectangles	
-	geometry.overlapAreaRect = function(rect1, rect2) {
-		var tl1 = rect1.topLeft();
-		var tl2 = rect2.topLeft();
-		return geometry.overlapAreaWH(
-			tl1.x(), tl1.y(), rect1.width(), rect1.height(),
-			tl2.x(), tl2.y(), rect2.width(), rect2.height()
-		);
-	};
+    // Returns area of overlap between two rectangles
+  geometry.overlapAreaRect = function(rect1, rect2) {
+    var tl1 = rect1.topLeft();
+    var tl2 = rect2.topLeft();
+    return geometry.overlapAreaWH(
+      tl1.x(), tl1.y(), rect1.width(), rect1.height(),
+      tl2.x(), tl2.y(), rect2.width(), rect2.height()
+    );
+  };
 
     // Returns area of overlap between two rectangles expressed as top-left/width-height pairs
-	geometry.overlapAreaWH = function(x1,y1, w1,h1, x2,y2, w2,h2) {
-		var ix;
-		var iy;
+  geometry.overlapAreaWH = function(x1,y1, w1,h1, x2,y2, w2,h2) {
+    var ix;
+    var iy;
 
-		if (w2>=w1) {
-			if (x1<=x2) ix = (x1+w1) - x2;
-			else if ((x1+w1)>=(x2+w2)) ix = (x2+w2)-x1;
-			else ix = w1;
-		} else {
-			if (x2<=x1) ix = (x2+w2) - x1;
-			else if ((x2+w2)>=(x1+w1)) ix = (x1+w1)-x2;	
-			else ix = w2;
-		}
-		
-		if (h2>=h1) {
-			if (y1<=y2) iy = (y1+h1) - y2;
-			else if ((y1+h1)>=(y2+h2)) iy = (y2+h2)-y1;
-			else iy = h1;
-		} else {
-			if (y2<=y1) iy = (y2+h2) - y1;
-			else if ((y2+h2)>=(y1+h1)) iy = (y1+h1)-y2;	
-			else iy = h2;
-		}
+    if (w2>=w1) {
+      if (x1<=x2) ix = (x1+w1) - x2;
+      else if ((x1+w1)>=(x2+w2)) ix = (x2+w2)-x1;
+      else ix = w1;
+    } else {
+      if (x2<=x1) ix = (x2+w2) - x1;
+      else if ((x2+w2)>=(x1+w1)) ix = (x1+w1)-x2;
+      else ix = w2;
+    }
 
-		if (ix<0) ix = 0;
-		if (iy<0) iy = 0;
+    if (h2>=h1) {
+      if (y1<=y2) iy = (y1+h1) - y2;
+      else if ((y1+h1)>=(y2+h2)) iy = (y2+h2)-y1;
+      else iy = h1;
+    } else {
+      if (y2<=y1) iy = (y2+h2) - y1;
+      else if ((y2+h2)>=(y1+h1)) iy = (y1+h1)-y2;
+      else iy = h2;
+    }
 
-		return ix*iy;
-	};
+    if (ix<0) ix = 0;
+    if (iy<0) iy = 0;
 
-    // Returns area of overlap between two rectangles expressed as top-left/bottom-right pairs	
-	geometry.overlapAreaXY = function(left1, top1, right1, bott1, left2, top2, right2, bott2) {
-		return geometry.overlapAreaWH(left1, top1, right1-left1, bott1-top1, left2, top2, right2-left2, bott2-top2);
-	};
+    return ix*iy;
+  };
+
+    // Returns area of overlap between two rectangles expressed as top-left/bottom-right pairs
+  geometry.overlapAreaXY = function(left1, top1, right1, bott1, left2, top2, right2, bott2) {
+    return geometry.overlapAreaWH(left1, top1, right1-left1, bott1-top1, left2, top2, right2-left2, bott2-top2);
+  };
 
     // defines if line has common points with rect
     geometry.lineIntersectsRect = function(rx1, ry1, rx2, ry2, lx1, ly1, lx2, ly2) {
-      var a = ly1 - ly2, 
-          b = lx2 - lx1, 
+      var a = ly1 - ly2,
+          b = lx2 - lx1,
           c = -(a * lx1 + b * ly1);
 
       var r = a * rx1 + b * ry1 + c;
@@ -1382,7 +1890,7 @@ var WAVE = (function(){
 
       return false;
     };
-   
+
     //Returns area of line overlap with rect. Normalizes coordinate direction
     geometry.intersectionLengthRectLineXY = function(rx1, ry1, rx2, ry2, lx1, ly1, lx2, ly2) {
         if (!geometry.lineIntersectsRect(rx1, ry1, rx2, ry2, lx1, ly1, lx2, ly2)) return 0;
@@ -1397,129 +1905,129 @@ var WAVE = (function(){
         return geometry.distance(x1, y1, x2, y2);
     };
 
-    // Modifies an angle by delta value ensuring that resulting angle is always between 0 and 2pi 
-	geometry.wrapAngle = function(angle, delta) {
-		delta = delta % pi2;
-		if (delta<0) delta = pi2 + delta;
-		var result = angle + delta;
-		return result % pi2;
-	};
+    // Modifies an angle by delta value ensuring that resulting angle is always between 0 and 2pi
+  geometry.wrapAngle = function(angle, delta) {
+    delta = delta % pi2;
+    if (delta<0) delta = pi2 + delta;
+    var result = angle + delta;
+    return result % pi2;
+  };
 
     //Converts map direction to angular coordinate in radians
-	geometry.mapDirectionToAngle = function(direction) {
-		switch (direction) {
-			case geometry.MapDirection.North: return 4/16 * pi2;
-			case geometry.MapDirection.South: return 12/16 * pi2;
-			case geometry.MapDirection.East:  return 0.0;
-			case geometry.MapDirection.West:  return 8/16 * pi2;
+  geometry.mapDirectionToAngle = function(direction) {
+    switch (direction) {
+      case geometry.MapDirection.North: return 4/16 * pi2;
+      case geometry.MapDirection.South: return 12/16 * pi2;
+      case geometry.MapDirection.East:  return 0.0;
+      case geometry.MapDirection.West:  return 8/16 * pi2;
 
-			case geometry.MapDirection.NorthEast: return 2/16 * pi2;
-			case geometry.MapDirection.NorthWest: return 6/16 * pi2;
-			case geometry.MapDirection.SouthEast: return 14/16 * pi2;
-			case geometry.MapDirection.SouthWest: return 10/16 * pi2;
-			
-			default: return 0.0;
-		 }
-	};
+      case geometry.MapDirection.NorthEast: return 2/16 * pi2;
+      case geometry.MapDirection.NorthWest: return 6/16 * pi2;
+      case geometry.MapDirection.SouthEast: return 14/16 * pi2;
+      case geometry.MapDirection.SouthWest: return 10/16 * pi2;
+
+      default: return 0.0;
+     }
+  };
 
     // Converts a radian angular coordinate into map direction
-	geometry.angleToMapDirection = function(angle) {
-		angle = geometry.wrapAngle(angle, 0);
-		if ((angle >= 0.0) && (angle < pi2 * 1/16)) return geometry.MapDirection.East;
-		else if ((angle >= pi2 * 1/16) && (angle < pi2 * 3/16)) return geometry.MapDirection.NorthEast;
-		else if ((angle >= pi2 * 3 / 16) && (angle < pi2 * 5 / 16)) return geometry.MapDirection.North;
-		else if ((angle >= pi2 * 5 / 16) && (angle < pi2 * 7 / 16)) return geometry.MapDirection.NorthWest;
-		else if ((angle >= pi2 * 7 / 16) && (angle < pi2 * 9 / 16)) return geometry.MapDirection.West;
-		else if ((angle >= pi2 * 9 / 16) && (angle < pi2 * 11 / 16)) return geometry.MapDirection.SouthWest;
-		else if ((angle >= pi2 * 11 / 16) && (angle < pi2 * 13 / 16)) return geometry.MapDirection.South;
-		else if ((angle >= pi2 * 13 / 16) && (angle < pi2 * 15 / 16)) return geometry.MapDirection.SouthEast;
-		else return geometry.MapDirection.East;
-	};
-    
+  geometry.angleToMapDirection = function(angle) {
+    angle = geometry.wrapAngle(angle, 0);
+    if ((angle >= 0.0) && (angle < pi2 * 1/16)) return geometry.MapDirection.East;
+    else if ((angle >= pi2 * 1/16) && (angle < pi2 * 3/16)) return geometry.MapDirection.NorthEast;
+    else if ((angle >= pi2 * 3 / 16) && (angle < pi2 * 5 / 16)) return geometry.MapDirection.North;
+    else if ((angle >= pi2 * 5 / 16) && (angle < pi2 * 7 / 16)) return geometry.MapDirection.NorthWest;
+    else if ((angle >= pi2 * 7 / 16) && (angle < pi2 * 9 / 16)) return geometry.MapDirection.West;
+    else if ((angle >= pi2 * 9 / 16) && (angle < pi2 * 11 / 16)) return geometry.MapDirection.SouthWest;
+    else if ((angle >= pi2 * 11 / 16) && (angle < pi2 * 13 / 16)) return geometry.MapDirection.South;
+    else if ((angle >= pi2 * 13 / 16) && (angle < pi2 * 15 / 16)) return geometry.MapDirection.SouthEast;
+    else return geometry.MapDirection.East;
+  };
+
     // Calculates a relative area of an inner rectangle that violates outside perimeter.
-    // The area is not 100% geometrically accurate - may be used for relative comparisons only 
-	geometry.perimeterViolationArea = function(perimeter, inner) {
-		var ix = 0;
-		var iy = 0;
+    // The area is not 100% geometrically accurate - may be used for relative comparisons only
+  geometry.perimeterViolationArea = function(perimeter, inner) {
+    var ix = 0;
+    var iy = 0;
 
-		if (inner.left()<perimeter.left()) ix = perimeter.left() - inner.left();
-		else if (inner.right()>perimeter.right()) ix = inner.right() - perimeter.right();
+    if (inner.left()<perimeter.left()) ix = perimeter.left() - inner.left();
+    else if (inner.right()>perimeter.right()) ix = inner.right() - perimeter.right();
 
-		if (inner.top() < perimeter.top()) iy = perimeter.top() - inner.top();
-		else if (inner.bottom() > perimeter.bottom()) iy = inner.bottom() - perimeter.bottom();
+    if (inner.top() < perimeter.top()) iy = perimeter.top() - inner.top();
+    else if (inner.bottom() > perimeter.bottom()) iy = inner.bottom() - perimeter.bottom();
 
-		return (ix * inner.height()) + (iy * inner.width());
-	};
+    return (ix * inner.height()) + (iy * inner.width());
+  };
 
-    // Returns a point of intersection between a ray cast from the center of a rectangle 
-	//	under certain polar coordinate angle and a rectangle side
-	geometry.findRayFromRectangleCenterSideIntersection = function(rect, theta) {
-		var center = new geometry.Point(rect.left() + rect.width() / 2, rect.top() + rect.height() / 2);
+  // Returns a point of intersection between a ray cast from the center of a rectangle
+  // under certain polar coordinate angle and a rectangle side
+  geometry.findRayFromRectangleCenterSideIntersection = function(rect, theta) {
+    var center = new geometry.Point(rect.left() + rect.width() / 2, rect.top() + rect.height() / 2);
 
-		//make ray "infinite" in comparison to rect
-		var rayLength = rect.width() > rect.height() ? rect.width() : rect.height();
-		
-		if (rayLength < 100) rayLength = 100; //safeguard
+    //make ray "infinite" in comparison to rect
+    var rayLength = rect.width() > rect.height() ? rect.width() : rect.height();
 
-		var rayEnd = new geometry.PolarPoint(rayLength, theta);//create ray "end" point
-		var rayEndPoint = rayEnd.toPoint();
+    if (rayLength < 100) rayLength = 100; //safeguard
 
-		//get line incline	aka. y = kx
-		var k = (rayEndPoint.x() !== 0)? (rayEndPoint.y()) / (rayEndPoint.x()) : 0;
+    var rayEnd = new geometry.PolarPoint(rayLength, theta);//create ray "end" point
+    var rayEndPoint = rayEnd.toPoint();
 
-		var x = 0;
-		var y = 0;
-		
-		var lst = [];
-		
-		//north
-		x = center.x() + ((k !== 0) ? ((rect.top() - center.y()) / k) : 0);
-		y = rect.top();
-		if ((x >= rect.left()) && (x <= rect.right())) lst.push(new geometry.Point(x, y));
-		
-		//south
-		x = center.x() + ((k !== 0) ? ((rect.bottom() - center.y()) / k) : 0);
-		y = rect.bottom();
-		if ((x >= rect.left()) && (x <= rect.right())) lst.push(new geometry.Point(x, y));
-		
-		//east
-		x = rect.right();
-		y = center.y() + k * (rect.right() - center.x());
-		if ((y >= rect.top()) && (y <= rect.bottom())) lst.push(new geometry.Point(x, y));
-		
-		//west
-		x = rect.left();
-		y = center.y() + k * (rect.left() - center.x());
-		if ((y >= rect.top()) && (y <= rect.bottom())) lst.push(new geometry.Point(x, y));
-		
-		var minPoint = new geometry.Point(1000000, 1000000);
-		var minDistance = 1000000;
+    //get line incline	aka. y = kx
+    var k = (rayEndPoint.x() !== 0)? (rayEndPoint.y()) / (rayEndPoint.x()) : 0;
 
-		var re = rayEnd.toPoint(); //rayEnd is relative to absolute 0,0
-		re.offset(center.x(), center.y()); // need to make relative to rectangle center
+    var x = 0;
+    var y = 0;
 
-		//find closest point
-		for(var i in lst) {
-			var p = lst[i];
-			var dst = geometry.distancePoints(p, re);
-			if (dst < minDistance) {
-				minPoint = p;
-				minDistance = dst;
-			}
-		}
-		return minPoint;
-	};
+    var lst = [];
+
+    //north
+    x = center.x() + ((k !== 0) ? ((rect.top() - center.y()) / k) : 0);
+    y = rect.top();
+    if ((x >= rect.left()) && (x <= rect.right())) lst.push(new geometry.Point(x, y));
+
+    //south
+    x = center.x() + ((k !== 0) ? ((rect.bottom() - center.y()) / k) : 0);
+    y = rect.bottom();
+    if ((x >= rect.left()) && (x <= rect.right())) lst.push(new geometry.Point(x, y));
+
+    //east
+    x = rect.right();
+    y = center.y() + k * (rect.right() - center.x());
+    if ((y >= rect.top()) && (y <= rect.bottom())) lst.push(new geometry.Point(x, y));
+
+    //west
+    x = rect.left();
+    y = center.y() + k * (rect.left() - center.x());
+    if ((y >= rect.top()) && (y <= rect.bottom())) lst.push(new geometry.Point(x, y));
+
+    var minPoint = new geometry.Point(1000000, 1000000);
+    var minDistance = 1000000;
+
+    var re = rayEnd.toPoint(); //rayEnd is relative to absolute 0,0
+    re.offset(center.x(), center.y()); // need to make relative to rectangle center
+
+    //find closest point
+    for(var i in lst) {
+      var p = lst[i];
+      var dst = geometry.distancePoints(p, re);
+      if (dst < minDistance) {
+        minPoint = p;
+        minDistance = dst;
+      }
+    }
+    return minPoint;
+  };
 
   // Calculates coordinates of rectangle given by width/height ('rw'/'rh')
   // which center is rotated by 'angle' (in radians) relatively to point ('cx'/'cy')
   // respecting reatangle size and 'margin'.
   // Returns coordinates of rotated rectangle (geometry.Rectangle object)
-	geometry.rotateRectAroundCircle = function (cx, cy, cMargin, rw, rh, angle) {
-	  var halfRw = rw / 2, halfRh = rh / 2;
-	  var rcX = cx + Math.cos(angle) * (halfRw + cMargin);
-	  var rcY = cy + Math.sin(angle) * (halfRh + cMargin);
-	  return new geometry.toRectXY(rcX - halfRw, rcY - halfRh, rcX + halfRw, rcY + halfRh);
-	};
+  geometry.rotateRectAroundCircle = function (cx, cy, cMargin, rw, rh, angle) {
+    var halfRw = rw / 2, halfRh = rh / 2;
+    var rcX = cx + Math.cos(angle) * (halfRw + cMargin);
+    var rcY = cy + Math.sin(angle) * (halfRh + cMargin);
+    return new geometry.toRectXY(rcX - halfRw, rcY - halfRh, rcX + halfRw, rcY + halfRh);
+  };
 
   // Returns 2D bounding box (with  for a set of points (array of {x, y})
   geometry.getBBox = function(points) {
@@ -1538,36 +2046,36 @@ var WAVE = (function(){
     return geometry.toRectXY(minX, minY, maxX, maxY);
   };
 
-    // Point class represents x,y pair on a cartesian plane 
-	geometry.Point = function(x, y)
+    // Point class represents x,y pair on a cartesian plane
+  geometry.Point = function(x, y)
     {
-		var fX = x;
-		this.x = function(val){
+    var fX = x;
+    this.x = function(val){
             if (typeof(val)!==tUNDEFINED) fX = val;
-            return fX;    
+            return fX;
         };
-		
-		var fY = y;
-		this.y = function(val){
+
+    var fY = y;
+    this.y = function(val){
             if (typeof(val)!==tUNDEFINED) fY = val;
-            return fY;    
+            return fY;
         };
-									 
-		// Changes point coordinates
-		this.offset = function(dx, dy) { fX += dx; fY += dy; };
-	    
-	}; // Point
+
+    // Changes point coordinates
+    this.offset = function(dx, dy) { fX += dx; fY += dy; };
+
+  }; // Point
 
 
     // Returns point as polar point relative to the specified center
-	geometry.Point.prototype.toPolarPoint = function(center) {
-			var dist = geometry.distancePoints(center, this);
-			var angle = Math.atan2(this.y() - center.y(), this.x() - center.x());
-	    
-			if (angle < 0)	angle = pi2 + angle;
-	    
-			return new geometry.PolarPoint(dist, angle);
-	};	
+  geometry.Point.prototype.toPolarPoint = function(center) {
+      var dist = geometry.distancePoints(center, this);
+      var angle = Math.atan2(this.y() - center.y(), this.x() - center.x());
+
+      if (angle < 0)	angle = pi2 + angle;
+
+      return new geometry.PolarPoint(dist, angle);
+  };
 
 
     //Determines whether the two points contain equivalent coordinates
@@ -1577,39 +2085,39 @@ var WAVE = (function(){
 
     geometry.Point.prototype.toString = function()
     {
-      return "(" + this.x().toString() + " , " + this.y().toString() + ")"; 
+      return "(" + this.x().toString() + " , " + this.y().toString() + ")";
     };
 
 
-    // Polar Point class represents point with polar coordinates  
+    // Polar Point class represents point with polar coordinates
     geometry.PolarPoint = function(radius, theta)
     {
-      var fRadius = radius;  
+      var fRadius = radius;
       this.radius = function(val){
             if (typeof(val)!==tUNDEFINED) fRadius = val;
-            return fRadius;    
+            return fRadius;
       };
 
-      var fTheta = checkangle(theta);  
+      var fTheta = checkangle(theta);
       this.theta = function(val){
             if (typeof(val)!==tUNDEFINED) fTheta = checkangle(val);
-            return fTheta;    
+            return fTheta;
       };
 
       //Returns polar point as simple x,y point
       this.toPoint = function(){
           var x = fRadius * Math.cos(fTheta);
           var y = fRadius * Math.sin(fTheta);
-          return new geometry.Point(x, y);      
+          return new geometry.Point(x, y);
       };
-      
+
       function checkangle(angle){
        if ((angle < 0) || (angle > pi2))
             throw "Invalid polar coordinates angle";
-       return angle;     
+       return angle;
       }
-      
-      
+
+
     };//PolarPoint
 
     geometry.PolarPoint.prototype.isEqual = function(other){
@@ -1617,7 +2125,7 @@ var WAVE = (function(){
     };
 
     geometry.PolarPoint.prototype.toString = function(){
-      return "(" + this.radius().toString() + " , " + geometry.radToDeg(this.theta()).toString() + "°)"; 
+      return "(" + this.radius().toString() + " , " + geometry.radToDeg(this.theta()).toString() + "°)";
     };
 
     // Represents a rectangle
@@ -1630,66 +2138,66 @@ var WAVE = (function(){
 
         this.corner1 = function(val){
             if (typeof(val)!==tUNDEFINED) fCorner1 = val;
-            return fCorner1;    
+            return fCorner1;
         };
 
         this.corner2 = function(val){
             if (typeof(val)!==tUNDEFINED) fCorner2 = val;
-            return fCorner2;    
+            return fCorner2;
         };
 
         // Returns top left corner point per natural axis orientation when x increases from left to right, and y increases from top to bottom
         this.topLeft = function(){
             var lx = fCorner1.x();
             var other = fCorner2.x();
-         
+
             if (other < lx) lx = other;
-         
+
             var ty = fCorner1.y();
             other = fCorner2.y();
-      
+
             if (other < ty) ty = other;
             return new geometry.Point(lx, ty);
-         }; 
+         };
 
        // Returns bottom right corner point per natural axis orientation when x increases from left to right, and y increases from top to bottom
        this.bottomRight = function(){
             var rx = fCorner1.x();
             var other = fCorner2.x();
-         
+
             if (other > rx) rx = other;
-         
+
             var by = fCorner1.y();
             other = fCorner2.y();
-      
+
             if (other > by) by = other;
-          
+
             return new geometry.Point(rx, by);
-       }; 
+       };
 
        // Return rectangle width
        this.width = function(){  return Math.abs(fCorner1.x() - fCorner2.x()); };
 
        // Return rectangle height
        this.height = function(){  return Math.abs(fCorner1.y() - fCorner2.y()); };
-      
+
        // Returns left-most edge coordinate
        this.left = function() {
          var lx = fCorner1.x();
          var other = fCorner2.x();
-         
+
          if (other < lx) lx = other;
-          
+
          return lx;
-       };  
+       };
 
        // Returns right-most edge coordinate
        this.right = function(){
          var rx = fCorner1.x();
          var other = fCorner2.x();
-         
+
          if (other > rx) rx = other;
-          
+
          return rx;
        };
 
@@ -1697,21 +2205,21 @@ var WAVE = (function(){
        this.top = function(){
          var ty = fCorner1.y();
          var other = fCorner2.y();
-         
+
          if (other < ty) ty = other;
-          
+
          return ty;
-       }; 
-       
+       };
+
        // Returns bottom-most edge coordinate
        this.bottom = function(){
          var by = fCorner1.y();
          var other = fCorner2.y();
-         
+
          if (other > by) by = other;
-          
+
          return by;
-       }; 
+       };
 
        // Returns the center point
        this.centerPoint = function(){
@@ -1735,7 +2243,7 @@ var WAVE = (function(){
     };
 
     geometry.Rectangle.prototype.toString = function(){
-      return "(" + this.left().toString() + "," + this.top().toString() + " ; "+ this.width().toString() + "x" + this.height().toString()+")"; 
+      return "(" + this.left().toString() + "," + this.top().toString() + " ; "+ this.width().toString() + "x" + this.height().toString()+")";
     };
 
 
@@ -1745,8 +2253,8 @@ var WAVE = (function(){
      * @param {Rectangle} body Balloon body coordinates
      * @param {Point} target Balloon leg attachment point
      * @param {double} legSweep Length of balloon leg attachment breach at balloon body edge, expressed in radians (arc length). A value such as PI/16 yields good results
-     * @returns An array of vertex points
-     */ 
+     * @returns {array} An array of vertex points
+     */
     geometry.vectorizeBalloon = function(body, target, legSweep)
     {
       var result = [];
@@ -1796,9 +2304,9 @@ var WAVE = (function(){
 
 
     // Mixin that enables function chaining that facilitates lazy evaluation via lambda-funcs
-    published.Walkable = 
+    published.Walkable =
     {
-        wSelect: function(selector) { 
+        wSelect: function(selector) {
                     var srcWalkable = this;
                     var walkable = {
                       getWalker: function() {
@@ -1806,10 +2314,10 @@ var WAVE = (function(){
                         var curr;
                         return {
                           reset: function() { walker.reset(); },
-                          moveNext: function() { 
+                          moveNext: function() {
                             if (!walker.moveNext()) return false;
                             curr = selector(walker.current());
-                            return true; 
+                            return true;
                           },
                           current: function() { return curr; }
                         };
@@ -1861,7 +2369,7 @@ var WAVE = (function(){
                     };
                     WAVE.extend(walkable, WAVE.Walkable);
                     return walkable;
-          
+
         }, //wSelectMany
 
         wWhere: function(filter) {
@@ -1871,7 +2379,7 @@ var WAVE = (function(){
                         var walker = srcWalkable.getWalker();
                         return {
                           reset: function() { walker.reset(); },
-                          moveNext: function() { 
+                          moveNext: function() {
                             while (walker.moveNext()) {
                               var has = filter(walker.current());
                               if (has) return true;
@@ -1901,7 +2409,7 @@ var WAVE = (function(){
                   var walker = this.getWalker();
                   while(walker.moveNext())
                     if (condition) {
-                      if (condition(walker.current())) 
+                      if (condition(walker.current()))
                         return walker.current();
                     } else {
                       return walker.current();
@@ -1938,22 +2446,22 @@ var WAVE = (function(){
                     var walkable = {
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
-                        function WW() 
+                        function WW()
                         {
                           var existing = [], existingWalkable = WAVE.arrayWalkable(existing);
                           this.reset = function() { walker.reset(); existing.splice(0, existing.length); };
 
-                          function filter(e){ 
+                          function filter(e){
                             if (equal)
                                 return equal(e, walker.current());
-                            else 
+                            else
                                 return e === walker.current();
                           }
 
 
-                          this.moveNext = function() { 
+                          this.moveNext = function() {
                             while (walker.moveNext()) {
-                              if (existingWalkable.wFirstIdx(filter) === -1) 
+                              if (existingWalkable.wFirstIdx(filter) === -1)
                               {
                                 existing.push(walker.current());
                                 return true;
@@ -2005,8 +2513,8 @@ var WAVE = (function(){
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
 
-                        function filter(e){ 
-                            if (equal) 
+                        function filter(e){
+                            if (equal)
                                 return equal(walker.current(), e);
                             else
                                 return e === walker.current();
@@ -2014,9 +2522,9 @@ var WAVE = (function(){
 
                         return {
                           reset: function() { walker.reset(); },
-                          moveNext: function() { 
+                          moveNext: function() {
                             while (walker.moveNext()) {
-                              if (other.wFirstIdx(filter) === -1) 
+                              if (other.wFirstIdx(filter) === -1)
                               {
                                 return true;
                               }
@@ -2041,11 +2549,11 @@ var WAVE = (function(){
 
                           this.reset = function() { distinctWalker.reset(); };
                           this.moveNext = function() { return distinctWalker.moveNext(); };
-                          this.current = function() { 
+                          this.current = function() {
                                            return {
                                                     k: keyer(distinctWalker.current()),
-                                                    v: srcWalkable.wWhere(function(e) { return keyer(e) === keyer(distinctWalker.current());}).wSelect(function(e) { return valuer(e); }) 
-                                                  }; 
+                                                    v: srcWalkable.wWhere(function(e) { return keyer(e) === keyer(distinctWalker.current());}).wSelect(function(e) { return valuer(e); })
+                                                  };
                                          };
                         }
 
@@ -2060,15 +2568,15 @@ var WAVE = (function(){
                 var obj = {};
                 this.wEach(function(e) {   obj[e.k] = e.v.wToArray();   });
                 return obj;
-        }, //wGroupIntoObject 
+        }, //wGroupIntoObject
 
         wGroupIntoArray: function(keyer, valuer) {
                 var arr = [];
                 this.wEach(function(e) { arr.push({k: e.k, v: e.v.wToArray()}); } );
                 return arr;
-        }, //wGroupIntoArray 
+        }, //wGroupIntoArray
 
-        wGroupAggregate: function(aggregator, initVal) { 
+        wGroupAggregate: function(aggregator, initVal) {
                     var srcWalkable = this;
                     var walkable = {
                       getWalker: function() {
@@ -2076,10 +2584,10 @@ var WAVE = (function(){
                         return {
                           reset: function() { walker.reset(); },
                           moveNext: function() { return walker.moveNext(); },
-                          current: function() { 
+                          current: function() {
                             var cur = walker.current();
                             return {
-                              k: cur.k, 
+                              k: cur.k,
                               v: cur.v.wAggregate( function(r, e) { return aggregator(cur.k, r, e); })
                             };
                           }
@@ -2088,7 +2596,7 @@ var WAVE = (function(){
                     };
                     WAVE.extend(walkable, WAVE.Walkable);
                     return walkable;
-        }, //wGroupAggregate  
+        }, //wGroupAggregate
 
         wOrder: function(order) {
                 var arr = this.wToArray();
@@ -2096,7 +2604,7 @@ var WAVE = (function(){
                 arr.sort(order);
                 return WAVE.arrayWalkable(arr);
         }, //wOrder
-        
+
         wTake: function(qty) {
                     var srcWalkable=this;
                     var walkable = {
@@ -2145,12 +2653,12 @@ var WAVE = (function(){
                     var walkable = {
                       getWalker: function() {
                         var walker = srcWalkable.getWalker();
-                        
+
                         function WW() {
                           var idx = -1;
                           this.reset = function() { walker.reset(); idx = -1; };
                           this.moveNext = function() {
-                            while(walker.moveNext()) { 
+                            while(walker.moveNext()) {
                               idx++;
                               if (idx >= qty) return true;
                             }
@@ -2252,7 +2760,7 @@ var WAVE = (function(){
                     var walker = walkable.getWalker();
                     var arr = [];
                     while(walker.moveNext()) arr.push(walker.current());
-                    
+
                     return arr;
         }, //wToArray
 
@@ -2268,7 +2776,7 @@ var WAVE = (function(){
 
         // "weight"-based moving average filter (k is kind of "weight" 0..1):
         // if k == 0 - moving object has no weight (hense no momentum) and outbound signal is the same as inbound,
-        // if k == 1 - moving object has infinite weight (hense infinity momentum) 
+        // if k == 1 - moving object has infinite weight (hense infinity momentum)
         // and outbound signal will be permanent (equal to first sample amplitude)
         wWMA: function(k) {
                     var srcWalkable = this;
@@ -2282,11 +2790,11 @@ var WAVE = (function(){
                         return {
                           reset: function() {
                             prevOutA = null;
-                            currOutS = {s: -1, a: 0}; 
-                            walker.reset(); 
+                            currOutS = {s: -1, a: 0};
+                            walker.reset();
                           },
 
-                          moveNext: function() { 
+                          moveNext: function() {
                             if (!walker.moveNext()) return false;
 
                             currOutS.s = walker.current().s;
@@ -2299,7 +2807,7 @@ var WAVE = (function(){
                             }
 
                             prevOutA = currOutS.a;
-                            
+
                             return true;
                           },
 
@@ -2310,10 +2818,10 @@ var WAVE = (function(){
                       }
                     };
                     WAVE.extend(walkable, WAVE.Walkable);
-                    return walkable;          
+                    return walkable;
         }, //wWMA
 
-        // Frequency filter takes: 
+        // Frequency filter takes:
         //  "m"(f=ma Newtons law) -  in virtual units of mass (i.e. kilograms) - the higher the number the more attenuation for high frequencies
         //  "k"(f=-kx Hooks law) - in virtual units of spring mimbrane resistance, the higher the number the more attenuation for low frequencies
         wHarmonicFrequencyFilter: function(m,k) {
@@ -2335,17 +2843,17 @@ var WAVE = (function(){
                             prevOutA = 0;
                             v = 0;
                             prevInA = 0;
-                            currOutS = {s: -1, a: 0}; 
-                            walker.reset(); 
+                            currOutS = {s: -1, a: 0};
+                            walker.reset();
                           },
 
-                          moveNext: function() { 
+                          moveNext: function() {
                             if (!walker.moveNext()) return false;
 
                             currOutS.s = walker.current().s;
                             var inA = walker.current().a;
 
-                           
+
                             var da = inA - prevInA;
                             prevInA = inA;
 
@@ -2357,7 +2865,7 @@ var WAVE = (function(){
 
                             currOutS.a = prevOutA + v;
                             prevOutA = currOutS.a;
-                            
+
                             return true;
                           },
 
@@ -2368,16 +2876,16 @@ var WAVE = (function(){
                       }
                     };
                     WAVE.extend(walkable, WAVE.Walkable);
-                    return walkable;          
+                    return walkable;
         }, //wHarmonicFrequencyFilter
-        
+
         //SA vector definition
-        // {s: int, a: float} 
+        // {s: int, a: float}
         // [s]ample = monotonously increasing integer value
         // [a]mplitude = floating point, the amplitude of the signal
 
         //Ensures that all {s, a} vectors in incoming walkable are equally spaced in time, so {a} component linearly interpolated between
-        //otherwise descret points, i.e. [ {1, -47} , {10, 150} ] => F(2) => yields vectors where 
+        //otherwise descret points, i.e. [ {1, -47} , {10, 150} ] => F(2) => yields vectors where
         // respected components (0 -> 5, -47 -> 150)  get linearly pro-rated
         wConstLinearSampling: function(samplingStep) {
                                 var srcWalkable = this;
@@ -2392,16 +2900,16 @@ var WAVE = (function(){
                                     var outSampleLeftBorder, outSampleRightBorder; // left and right borders of this sample (float point)
                                     var inSamplesBuf = [];
                                     var curr = {};
-                                    
+
                                     function WW() {
-                                      this.reset = function() { 
-                                        inSamplesBuf.splice(0, inSamplesBuf.length); 
+                                      this.reset = function() {
+                                        inSamplesBuf.splice(0, inSamplesBuf.length);
                                         outSampleIdx = 0;
                                         walkerExausted = false; inSampleLastS = null;
                                         walker.reset();
                                       };
 
-                                      this.moveNext = function() { 
+                                      this.moveNext = function() {
 
                                         function cutBufFromLeft(left, right) {
                                           while(inSamplesBuf.length > 1 && inSamplesBuf[0].s < left && inSamplesBuf[1].s < right) inSamplesBuf.shift();
@@ -2500,7 +3008,7 @@ var WAVE = (function(){
                                         return true;
                                       };
 
-                                      this.current = function() { 
+                                      this.current = function() {
                                         return curr;//{int sample, float Amplitude}=> {s,a}
                                       };
                                     }
@@ -2537,14 +3045,14 @@ var WAVE = (function(){
                         walker = srcWalkable.getWalker();
                         function WW() {
                           this.reset = function() { sampleIdx = 0; period = p; walker.reset(); };
-                          this.moveNext = function() { 
+                          this.moveNext = function() {
                             if (!walker.moveNext()) return false;
                             curr.s = sampleIdx++;
                             curr.a = (a * Math.sin(period)) + d + walker.current().a;
                             period = geometry.wrapAngle(period, deltaPeriod);
                             return true;
                           };
-                          this.current = function() { 
+                          this.current = function() {
                             return curr;//{int sample, float Amplitude}=> {s,a}
                           };
 
@@ -2589,13 +3097,13 @@ var WAVE = (function(){
                         walker = srcWalkable.getWalker();
                         function WW() {
                           this.reset = function() { sampleIdx = 0; period = p; walker.reset(); };
-                          this.moveNext = function() { 
+                          this.moveNext = function() {
                             if (!walker.moveNext()) return false;
                             curr.s = sampleIdx++;
                             var unitV;
-                            if (period < pi2 * s) 
+                            if (period < pi2 * s)
                               unitV = k1 * period + a1;
-                            else 
+                            else
                               unitV = k2 * period + a2;
                             curr.a = (a * unitV) + d + walker.current().a;
                             period = geometry.wrapAngle(period, deltaPeriod);
@@ -2646,15 +3154,15 @@ var WAVE = (function(){
                         walker = srcWalkable.getWalker();
                         function WW() {
                           this.reset = function() { sampleIdx = 0; period = p; walker.reset(); };
-                          this.moveNext = function() { 
+                          this.moveNext = function() {
                             if (!walker.moveNext()) return false;
                             curr.s = sampleIdx++;
                             var unitV;
                             if(period < pi) {
-                              if (period < pi * s) unitV = 1; 
+                              if (period < pi * s) unitV = 1;
                               else unitV = k1 * period + a1;
                             } else {
-                              if (period < pi + pi * s) unitV = -1; 
+                              if (period < pi + pi * s) unitV = -1;
                               else unitV = k2 * period + a2;
                             }
                             curr.a = (a * unitV) + d + walker.current().a;
@@ -2689,7 +3197,7 @@ var WAVE = (function(){
                           var curr = {}; // current sample vector {s,a}
 
                           walker = srcWalkable.getWalker();
-                          
+
                           function WW() {
                             this.reset = function() { walker.reset(); sampleIdx = 0; };
                             this.moveNext = function() {
@@ -2713,7 +3221,7 @@ var WAVE = (function(){
 
     // walkable source of constant signal
     published.signalConstSrc = function(conf) {
-    
+
               function WW(cfg) {
                 var a = cfg.a || 0; // Amplitude
                 var qty = cfg.qty; // Values count limit (if no value infinite set of values are genereted)
@@ -2724,14 +3232,14 @@ var WAVE = (function(){
                 var curr = {};
 
                 this.reset = function() { i = 0; };
-                this.moveNext = function() { 
+                this.moveNext = function() {
                   if (qty && i >= qty) return false;
-          
+
                   curr.s = i;
                   curr.a = a;
 
                   i++;
-                  return true; 
+                  return true;
                 };
                 this.current = function() { return curr; };
                 this.samplingRate = function() { return r; };
@@ -2751,7 +3259,7 @@ var WAVE = (function(){
         var idx = -1;
         this.reset = function() { idx = -1; };
         this.moveNext = function() { return (++idx < arr.length); };
-        this.current = function() { return (idx < 0 || idx >= arr.length) ? null : arr[idx]; }; 
+        this.current = function() { return (idx < 0 || idx >= arr.length) ? null : arr[idx]; };
       };
 
       var walkable = { getWalker: function() { return new walker(); }, OriginalArray: arr };
@@ -2765,7 +3273,7 @@ var WAVE = (function(){
         var idx = -1;
         var cur = null;
         this.reset = function() { idx = -1; cur = null; };
-        this.moveNext = function() { 
+        this.moveNext = function() {
           if (++idx < arr.length) {
             var arrCur = arr[idx];
             cur = { k: arrCur.k, v: WAVE.arrayWalkable(arrCur.v) };
@@ -2773,7 +3281,7 @@ var WAVE = (function(){
           } else {
             return false;
           }
-          //Dkh1222015  return (++idx < arr.length); 
+          //Dkh1222015  return (++idx < arr.length);
         };
         this.current = function() { return cur; };
       };
@@ -2900,7 +3408,7 @@ WAVE.RecordModel = (function(){
 
     var tUNDEFINED = "undefined";
 
-    var published = { 
+    var published = {
 
         FIELDDEF_DEFAULTS: {
             Description: '',
@@ -2908,7 +3416,7 @@ WAVE.RecordModel = (function(){
             Type:        'string',
             Key:         false,
             Kind:        'text',
-            Case:        'asis', 
+            Case:        'asis',
             Stored:     true,
             Required:   false,
             Applicable: true,
@@ -2921,11 +3429,12 @@ WAVE.RecordModel = (function(){
             MinSize:    0,
             Size:       0,
             ControlType:  'auto',
+            ScriptType: null,
             DefaultValue: null,
             Hint:       null,
             Marked:     false,
             LookupDict: {},//{key:"description",...}]
-            Lookup:     {}, //complex lookup 
+            Lookup:     {}, //complex lookup
             DeferValidation: false
         },
         EVT_VALIDATION_DEFINITION_CHANGE: "validation-definition-change",
@@ -2941,13 +3450,14 @@ WAVE.RecordModel = (function(){
 
         EVT_PHASE_BEFORE: "before",
         EVT_PHASE_AFTER:  "after",
-        
+
         CTL_TP_AUTO:    "auto",
         CTL_TP_CHECK:   "check",
         CTL_TP_RADIO:   "radio",
         CTL_TP_COMBO:   "combo",
         CTL_TP_TEXT:    "text",
         CTL_TP_NLS:     "nls",
+        CTL_TP_SCRIPT:  "script",
         CTL_TP_TEXTAREA:"textarea",
         CTL_TP_HIDDEN:  "hidden",
         CTL_TP_PUZZLE:  "puzzle",
@@ -2989,12 +3499,12 @@ WAVE.RecordModel = (function(){
     published.isDirty = function(){
         for(var i in fRecords)
           if (fRecords[i].isGUIModified()) return true;
-        return false;  
+        return false;
     };
 
 
     //Record class, either pass just string ID with optional field init func:
-    // var rec = new WAVE.RecordModel.Record("r1",function(rec){ new this.Field()... ) 
+    // var rec = new WAVE.RecordModel.Record("r1",function(rec){ new this.Field()... )
     //or complex init vector:
     // {ID: string, fields: [{def: fieldDef1,val: value1}...}]}
     published.Record = function(init, fieldFunc)
@@ -3002,7 +3512,7 @@ WAVE.RecordModel = (function(){
         if (!init) throw "Record.ctor(need id+fieldFunc or initObject)";
         var record = this;
         var fRecordLoaded = false;
-        
+
         WAVE.extend(record, WAVE.EventManager);
 
         this.eventInvoke(published.EVT_RECORD_LOAD, published.EVT_PHASE_BEFORE);//todo How to subscribe to this event?
@@ -3032,7 +3542,7 @@ WAVE.RecordModel = (function(){
           id = init.toString();
           init = null;
         }
-                
+
         var fID = WAVE.strEmpty(id)? WAVE.genRndKey(16) : id;
         var fISOLang = WAVE.strEmpty(lang) ? "eng" : lang;
 
@@ -3064,9 +3574,9 @@ WAVE.RecordModel = (function(){
         //Returns true when record has finished loading data and constructing fields
         //Field event consumers may reference this flag to exit out of unnecessary event processing
         this.loaded = function() {return fRecordLoaded;};
-                                    
+
         //Returns copy of fields list
-        this.fields = function() { 
+        this.fields = function() {
            return WAVE.arrayShallowCopy(fFields);
         };
 
@@ -3078,16 +3588,16 @@ WAVE.RecordModel = (function(){
 
             for(var i in fFields){
               var fld = fFields[i];
-              if ((!modifiedOnly || 
-                    fld.isModified() || 
+              if ((!modifiedOnly ||
+                    fld.isModified() ||
                     fld.isGUIModified()) &&
                   (includeNonStored || fld.stored())
                  )  result[fld.name()] = fld.value();
-            }      
-            
+            }
+
             if (!WAVE.strEmpty(fFormMode) && fFormMode!=="unspecified")
              result["__FormMode"] = fFormMode;
-            
+
             if (!WAVE.strEmpty(fCSRFToken))
              result["__CSRFToken"] = fCSRFToken;
 
@@ -3131,7 +3641,7 @@ WAVE.RecordModel = (function(){
 
 
         //Validates record and returns true is everything is valid
-        this.validate = function() { 
+        this.validate = function() {
             resetRecValidation();
             fRecValidated = true;
 
@@ -3140,7 +3650,7 @@ WAVE.RecordModel = (function(){
               var f = fFields[i];
               if (!f.validate()) result = false;
             }
-           
+
             if (result)
                 try
                 {
@@ -3163,7 +3673,7 @@ WAVE.RecordModel = (function(){
         this.validationError = function(){ return fRecValidationError;};
 
         //Returns true if record and all its fields have been validated and valid
-        this.valid = function() { 
+        this.valid = function() {
            return fRecValidated &&  fRecValidationError===null && this.fieldsValid();
         };
 
@@ -3176,14 +3686,14 @@ WAVE.RecordModel = (function(){
        };
 
         //Returns true if all field have been validated (but some may be invalid)
-        this.fieldsValidated = function() { 
+        this.fieldsValidated = function() {
            for(var i in fFields)
               if (!fFields[i].validated()) return false;
            return true;
         };
 
         //Returns true if all field have been validated and valid
-        this.fieldsValid = function() { 
+        this.fieldsValid = function() {
             for(var i in fFields)
               if (!fFields[i].valid()) return false;
            return true;
@@ -3191,21 +3701,21 @@ WAVE.RecordModel = (function(){
 
 
         //Returns true is some field have been modified
-        this.isModified = function() { 
+        this.isModified = function() {
            for(var i in fFields)
               if (fFields[i].isModified()) return true;
            return false;
         };
 
         //Returns true is some field have been modified through GUI-attached views
-        this.isGUIModified = function() { 
+        this.isGUIModified = function() {
             for(var i in fFields)
               if (fFields[i].isGUIModified()) return true;
            return false;
         };
 
         //Resets all field modification flags
-        this.resetModified = function() { 
+        this.resetModified = function() {
             for(var i in fFields){
               var f = fFields[i];
               f.resetModified();
@@ -3215,17 +3725,17 @@ WAVE.RecordModel = (function(){
         };
 
         //Resets all field schemas
-        this.resetSchema = function() { 
+        this.resetSchema = function() {
             for(var i in fFields) fFields[i].resetSchema();
         };
 
         //Applies default values to all fields
-        this.applyDefaultValue = function(force) { 
+        this.applyDefaultValue = function(force) {
             for(var i in fFields) fFields[i].applyDefaultValue(force);
         };
 
         //Changes all eventInvocationSuspendCount on all fields and this record
-        this.latchAllEvents = function(delta) { 
+        this.latchAllEvents = function(delta) {
             this.eventInvocationSuspendCount+=delta;
             for(var i in fFields) fFields[i].eventInvocationSuspendCount+=delta;
         };
@@ -3280,7 +3790,7 @@ WAVE.RecordModel = (function(){
             fFields.push( field );//register with parent
             var recPropertyName = "fld"+fieldDef.Name;
             record[recPropertyName] = field;//make rec.fldLastName shortcut
-            
+
             record.eventInvoke(published.EVT_FIELD_LOAD, field, published.EVT_PHASE_BEFORE);
 
             //convert LookupDict to object if it is not an object
@@ -3289,7 +3799,7 @@ WAVE.RecordModel = (function(){
             //convert Lookup to object if it is not an object
             WAVE.propStrAsObject(fieldDef, "Lookup");
 
-            var fSchemaDef = fieldDef;            
+            var fSchemaDef = fieldDef;
             var fDef = WAVE.clone(fieldDef);//make copy
             WAVE.extend(fDef, published.FIELDDEF_DEFAULTS, true);
 
@@ -3299,13 +3809,13 @@ WAVE.RecordModel = (function(){
             var fValidated = false;
             var fValidationError = null;
 
-        
+
             //Owner record
             this.record = function(){return record; };
 
             //Returns true when this field has finished loading
             this.loaded = function() {return fFieldLoaded;};
-            
+
             //Deletes this field from the record
             this.drop = function() {
               if (!record[recPropertyName]) return false;
@@ -3314,17 +3824,17 @@ WAVE.RecordModel = (function(){
               WAVE.arrayDelete(fFields, this);
               delete record[recPropertyName];
               record.eventInvoke(published.EVT_FIELD_DROP, field, published.EVT_PHASE_AFTER);
-              this.eventInvoke(published.EVT_FIELD_DROP, published.EVT_PHASE_AFTER);   
+              this.eventInvoke(published.EVT_FIELD_DROP, published.EVT_PHASE_AFTER);
               return true;
             };
 
-            //Returns the the original schema field def. 
+            //Returns the the original schema field def.
             //DO NOT modify its values, use WAVE.clone() if copy is needed
             this.schemaDef  = function(){return fSchemaDef;};
-            
+
             //Immutable field name
             this.name = function(){return fDef.Name;};
-            
+
             //Immutable field data type
             this.type = function(){return fDef.Type;};
 
@@ -3358,7 +3868,7 @@ WAVE.RecordModel = (function(){
                     if (cnt>4) return published.CTL_TP_COMBO;
                     return published.CTL_TP_RADIO;
                }
-               
+
                if (fDef.Size>50)
                  return published.CTL_TP_TEXTAREA;
                else
@@ -3416,10 +3926,10 @@ WAVE.RecordModel = (function(){
                    if (fValue===null || WAVE.strEmpty(fValue.toString())) throw valError("Field '@f@' must have a value", {f: this.about()});
                   }
 
-                  if (fValue!==null && 
+                  if (fValue!==null &&
                      !WAVE.strEmpty(fValue.toString()))//20140903 DKh+DLat
                   {
-                    
+
                       var min = fDef.MinValue;
                       if (min!==null){
                         try { if (fValue<min) throw 1; }
@@ -3429,7 +3939,7 @@ WAVE.RecordModel = (function(){
                       var max = fDef.MaxValue;
                       if (max!==null){
                         try { if (fValue>max) throw 1; }
-                        catch(e) { throw valError("Field '@f@' value can not be greater than '@b@'", {f: this.about(), b: max}); } 
+                        catch(e) { throw valError("Field '@f@' value can not be greater than '@b@'", {f: this.about(), b: max}); }
                       }
 
                       var sz = fDef.Size;
@@ -3447,7 +3957,7 @@ WAVE.RecordModel = (function(){
                         var sval = WAVE.convertScalarType(false, fValue, "string", "<unconvertible>");
                         if (!WAVE.strOneOf(sval, keys)) throw valError("Field '@f@' value '@v@' is not allowed", {f: this.about(), v: sval});
                       }
-   
+
                       if (fDef.Kind===published.KIND_EMAIL){
                         var evalid = WAVE.strIsEMail(fValue);
                         if (!evalid) throw valError("Field '@f@' must be a valid e-mail address", {f: this.about()});
@@ -3494,11 +4004,11 @@ WAVE.RecordModel = (function(){
                 var old = fValue;
                 //convert value to field's data type
                 var cval = WAVE.convertScalarType(true, val, fDef.Type, fDef.DefaultValue);
-                
+
                 var same = WAVE.isSame(old, cval);
 
                 if (fromGUI){
-                 var prior = cval; 
+                 var prior = cval;
                  cval = this.preProcessValueFromGUI(cval);
                  same = same && WAVE.isSame(prior, cval);
                 }
@@ -3513,7 +4023,7 @@ WAVE.RecordModel = (function(){
                 if (fDef.DeferValidation)
                     resetValidation();
                 else
-                    this.validate(); 
+                    this.validate();
                 this.eventInvoke(published.EVT_DATA_CHANGE, published.EVT_PHASE_AFTER, old, cval);
                 record.eventInvoke(published.EVT_DATA_CHANGE, published.EVT_PHASE_AFTER, field, old, cval);
 
@@ -3556,14 +4066,14 @@ WAVE.RecordModel = (function(){
             };
 
             //sets textual value from control into the field value performing necessary adjustements, i.e.
-            //may adjust the format of the phone number etc. 
+            //may adjust the format of the phone number etc.
             this.setGUIValue = function(val){
                //todo adjust phones, etc..
-               this.value(val, true); 
+               this.value(val, true);
             };
 
 
-            this.applyDefaultValue = function(force){ 
+            this.applyDefaultValue = function(force){
                if (force || this.isNull())
                 this.value(fDef.DefaultValue);
 
@@ -3579,18 +4089,18 @@ WAVE.RecordModel = (function(){
             this.isModified = function() { return fModified; };
             this.resetModified = function() {
               var was = fModified;
-              fModified = false; 
+              fModified = false;
               fireInteractionChange("modified", false);
               return was;
             };
 
             this.isGUIModified = function() { return fGUIModified; };
-            this.resetGUIModified = function() 
-            { 
+            this.resetGUIModified = function()
+            {
               var was = fGUIModified;
               fGUIModified = false;
               fireInteractionChange("guimodified", false);
-              return was; 
+              return was;
             };
 
             //Returns true if field is enabled and applicable
@@ -3687,6 +4197,12 @@ WAVE.RecordModel = (function(){
                 fireInteractionChange("controltype", val);
             };
 
+            this.scriptType = function(val){
+                if (typeof(val)===tUNDEFINED || val===fDef.ScriptType) return fDef.ScriptType;
+                fDef.ScriptType = val;
+                fireInteractionChange("scripttype", val);
+            };
+
             this.defaultValue = function(val){
                 if (typeof(val)===tUNDEFINED || val===fDef.DefaultValue) return fDef.DefaultValue;
                 fDef.DefaultValue = val;
@@ -3727,8 +4243,8 @@ WAVE.RecordModel = (function(){
                 fireInteractionChange("placeholder", val);
             };
 
-            this.toString = function(){ 
-                return "["+this.type()+"]Field("+this.name()+" = '"+this.value()+"')"; 
+            this.toString = function(){
+                return "["+this.type()+"]Field("+this.name()+" = '"+this.value()+"')";
             };
 
 
@@ -3750,15 +4266,15 @@ WAVE.RecordModel = (function(){
           if (init.hasOwnProperty('errorText')) this.setExternalValidationError(WAVE.strDefault(init.error), init.errorText);
 
         }else if (WAVE.isFunction(fieldFunc)) fieldFunc.apply(record);
-        
+
         fRecordLoaded = true;
         fRecords.push(this);
         this.eventInvoke(published.EVT_RECORD_LOAD, published.EVT_PHASE_AFTER);
     };//Record
 
     published.Record.prototype.toString = function(){ return "Record["+this.ID()+"]"; };
-    
-    
+
+
 
     published.DATA_RECVIEW_ID_ATTR = "data-wv-rid";
     published.DATA_FIELD_NAME_ATTR = "data-wv-fname";
@@ -3771,7 +4287,7 @@ WAVE.RecordModel = (function(){
     // gui - GUI library, if null then default script "wv.gui.js" must be included
     // manualViews - if true then view controls will not be auto-constructed
     published.RecordView = function(id, rec, gui, manualViews)
-    {   
+    {
         if (WAVE.strEmpty(id)) throw "RecordView.ctor(id: must specify)";
         if (!WAVE.isObject(rec)) throw "RecordView.ctor(rec: must be Record)";
         if (!WAVE.isObject(gui)) gui = WAVE.RecordModel.GUI;//dflt GUI lib
@@ -3788,14 +4304,14 @@ WAVE.RecordModel = (function(){
 
         //Returns bound record
         this.record = function(){ return fRecord;};
-        
+
         //Returns GUI backend that renders controls for the view
         this.gui = function(){ return fGUI;};
 
         //Returns root element that this record view is building controls under
         this.rootElement = function() { return fRootElement;};
 
-        
+
         //Unbinds and deletes all views
         this.destroyViews = function(){
           while(fViews.length>0) fViews[0].destroy();
@@ -3803,7 +4319,7 @@ WAVE.RecordModel = (function(){
 
         var divHiddenFields = null;
 
-        //Builds and binds view controls to record fields from declarative page markup: <...dava-wv-rid='r1'...> <div data-wv-fld='LastName' ... /> 
+        //Builds and binds view controls to record fields from declarative page markup: <...dava-wv-rid='r1'...> <div data-wv-fld='LastName' ... />
         this.buildViews = function(){
           fRootElement = null;
           this.destroyViews();
@@ -3811,7 +4327,7 @@ WAVE.RecordModel = (function(){
           var allForms = document.getElementsByTagName("form");
           for (var i=0, imax=allForms.length; i < imax; i++) {
             var frm = allForms[i];
-     
+
             var irid = frm.getAttribute(published.DATA_RECVIEW_ID_ATTR);
             if (WAVE.strSame(fID, irid))
             {
@@ -3855,7 +4371,7 @@ WAVE.RecordModel = (function(){
                 }
           }
 
-          
+
           if (!WAVE.strEmpty(fRecord.formMode()) || !WAVE.strEmpty(fRecord.csrfToken()) || !WAVE.strEmpty(fRecord.roundtrip()))
           {
              if (divHiddenFields===null)
@@ -3866,10 +4382,10 @@ WAVE.RecordModel = (function(){
              }
 
              var content = "";
-               
+
              if (!WAVE.strEmpty(fRecord.formMode()))
                 content += "<input type='hidden' name='__FormMode' value='"+fRecord.formMode()+"'>";
-                
+
              if (!WAVE.strEmpty(fRecord.csrfToken()))
                 content +=  "<input type='hidden' name='__CSRFToken' value='"+fRecord.csrfToken()+"'>";
 
@@ -3882,7 +4398,7 @@ WAVE.RecordModel = (function(){
         };
 
         //Returns copy of view list
-        this.views = function() { 
+        this.views = function() {
            return WAVE.arrayShallowCopy(fViews);
         };
 
@@ -3896,15 +4412,15 @@ WAVE.RecordModel = (function(){
             var fieldview = this;
             var fDIV = div;
             fViews.push( fieldview );//register with parent
-            
+
             if (fField!==null)
               fField.eventSinkBind(this);
             else
               fRecord.eventSinkBind(this);
 
-            
+
             var recPropertyName = "";
-            
+
             if (fld!==null)
             {
               recPropertyName = "fld"+fld.name();
@@ -3917,13 +4433,13 @@ WAVE.RecordModel = (function(){
                                           WAVE.RecordModel.EVT_INTERACTION_CHANGE,
                                           WAVE.RecordModel.EVT_VALIDATION_DEFINITION_CHANGE,
                                           WAVE.RecordModel.EVT_VALIDATED])) return;
-                  
+
               if (typeof(phase)===tUNDEFINED) phase = "";
               if (phase === WAVE.RecordModel.EVT_PHASE_BEFORE) return;
 
               if (fField!==null)
                 fDIV.style.visibility = fField.visible() ? "visible" : "hidden";
-              
+
               fGUI.eventNotifyFieldView( fieldview, evtName, sender, phase);
             };
 
@@ -3934,9 +4450,9 @@ WAVE.RecordModel = (function(){
                   fField.eventSinkUnbind(this);
                 else
                   fRecord.eventSinkUnbind(this);
-                
+
                 WAVE.arrayDelete(fViews, this);
-                
+
                 if (fField!==null)
                   delete recview[recPropertyName];
             };
@@ -3944,7 +4460,7 @@ WAVE.RecordModel = (function(){
             this.record = function(){ return fRecord; };
             this.recView = function() { return recview;};
             this.field = function(){ return fField; };
-            
+
 
             //Returns root element in which the "visual control" gets built
             this.DIV = function(){ return fDIV; };
@@ -3975,21 +4491,21 @@ WAVE.RecordModel = (function(){
 
 
 WAVE.Pay = (function () {
-  
+
     var tUNDEFINED = "undefined";
 
     var published = { Providers: { } };
 
     // Credit Card brands
-    published.Brands = 
+    published.Brands =
     {
         VISA: "Visa",
         MASTER_CARD: "MasterCard",
-        AMERICAN_EXPRESS: "American Express",
+        AMERICAN_EXPRESS: "AmEx",
         DISCOVER: "Discover",
         JCB: "JCB",
         DINERS_CLUB: "Diners Club",
-        UNKNOWN: "Unknown" 
+        UNKNOWN: "Card"
     };
 
     // Error types
@@ -4003,7 +4519,7 @@ WAVE.Pay = (function () {
         INVALID_REQUEST_ERROR: 5, // Invalid request errors arise when your request has invalid parameters.
         RATE_LIMIT_ERROR: 6,	    // Too many requests hit the API too quickly.
         GENERAL_ERROR: 100
-    };  
+    };
 
     // Credit Card errors
     published.CardErrors =
@@ -4022,25 +4538,25 @@ WAVE.Pay = (function () {
         PROCESSING_ERROR: 11,    // An error occurred while processing the card.
         GENERAL_ERROR: 100
     };
-    
+
     // Pay Terminal Facade
-    
+
     published.Facade = function (providerName, provider, init) {
-        if (WAVE.strEmpty(providerName)) 
-            throw new WAVE.Pay.RequiredArgumentError("Facade.ctor()", "providerName");    
-        if (WAVE.strEmpty(provider)) 
+        if (WAVE.strEmpty(providerName))
+            throw new WAVE.Pay.RequiredArgumentError("Facade.ctor()", "providerName");
+        if (WAVE.strEmpty(provider))
             throw new WAVE.Pay.RequiredArgumentError("Facade.ctor()", "provider");
         if (WAVE.strEmpty(init))
             throw new WAVE.Pay.RequiredArgumentError("Facade.ctor()", "init");
 
         var facade = this;
         var fProviderName = providerName;
-        
+
         // returns pay provider name
         this.providerName = function(){ return fProviderName; };
 
         WAVE.extend(facade, WAVE.EventManager);
-        
+
         try {
             // Payment provider specific setup
             provider.initialize(init);
@@ -4048,8 +4564,8 @@ WAVE.Pay = (function () {
         catch (error) {
             throw new WAVE.Pay.ProviderInitError(error);
         }
-        
-        // Payment provider tokenization interface: 
+
+        // Payment provider tokenization interface:
         // paymentData - contains CC card data (cc_number, cc_cvc, cc_exp_month, cc_exp_year, cc_holder),
         // callback - a handler function that accepts 'result' object with fields: 'error' and 'token'.
         this.tokenize = function (paymentData, callback) {
@@ -4066,9 +4582,9 @@ WAVE.Pay = (function () {
             }
         };
     };
-    
+
     // Errors
-                
+
     published.RequiredArgumentError = function (srcFuncName, argName, inner) {
         this.name = "RequiredArgumentError";
         this.message = srcFuncName + " requires argument '" + argName + "'";
@@ -4084,7 +4600,7 @@ WAVE.Pay = (function () {
         this.message = message;
         this.inner = inner;
     };
-    published.ProviderInitError.prototype = Error.prototype; 
+    published.ProviderInitError.prototype = Error.prototype;
 
     published.TokenizeError = function (inner) {
         this.name = "TokenizeError";
@@ -4094,7 +4610,7 @@ WAVE.Pay = (function () {
         this.message = message;
         this.inner = inner;
     };
-    published.TokenizeError.prototype = Error.prototype;  
+    published.TokenizeError.prototype = Error.prototype;
 
     published.CardValidationError = function (inner) {
         this.name = "CardValidationError";
@@ -4105,15 +4621,15 @@ WAVE.Pay = (function () {
         this.inner = inner;
     };
     published.CardValidationError.prototype = Error.prototype;
-     
+
     // Utilities
-    
+
     published.validateCardNumber = function (ccNum) {
       if (WAVE.strEmpty(ccNum)) return false;
       ccNum = ccNum.replace(/\s+|-/g, "");
       return ccNum.length >= 10 && ccNum.length <= 16 && published.checkLuhn(ccNum);
     };
-    
+
     published.checkLuhn = function (ccNum) {
       if (WAVE.strEmpty(ccNum)) return false;
 
@@ -4121,51 +4637,51 @@ WAVE.Pay = (function () {
       var nDigit = 0;
       var bEven = false;
       ccNum = ccNum.replace(/\D/g, "");
-      
+
          for (var n = ccNum.length - 1; n >= 0; n--) {
             var cDigit = ccNum.charAt(n);
             nDigit = parseInt(cDigit, 10);
-      
+
             if (bEven) {
                 if ((nDigit *= 2) > 9) nDigit -= 9;
             }
-      
+
             nCheck += nDigit;
             bEven = !bEven;
         }
-      
+
         return (nCheck % 10) === 0;
     };
-    
-    published.validateCVC = function (cvc) { 
+
+    published.validateCVC = function (cvc) {
       if (WAVE.strEmpty(cvc)) return false;
       return cvc.length >= 3 && cvc.length <= 4 && /^\d+$/.test(cvc);
     };
-    
-    published.validateExpirationDate = function (month, year) { 
+
+    published.validateExpirationDate = function (month, year) {
       if (WAVE.strEmpty(month) || WAVE.strEmpty(year)) return false;
       if (year.length === 2) year = "20"+year;
-      
-      return /^\d+$/.test(month) && 
+
+      return /^\d+$/.test(month) &&
              /^\d+$/.test(year) &&
              1 <= month && month <= 12 &&
              year.length === 4 && year > 2015;
     };
-    
-    published.getCardBrand = function (ccNum) { 
-        if (WAVE.strEmpty(ccNum) || !/^\d{2}/.test(ccNum)) 
-            return published.Brands.UNKNOWN; 
-    
+
+    published.getCardBrand = function (ccNum) {
+        if (WAVE.strEmpty(ccNum) || !/^\d{2}/.test(ccNum))
+            return published.Brands.UNKNOWN;
+
         if (/^4/.test(ccNum)) return published.Brands.VISA;
         if (/^5[1-5]/.test(ccNum)) return published.Brands.MASTER_CARD;
         if (/^3[47]/.test(ccNum)) return published.Brands.AMERICAN_EXPRESS;
         if (/^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)/.test(ccNum)) return published.Brands.DISCOVER;
         if (/^35(2[89]|[3-8][0-9])/.test(ccNum)) return published.Brands.JCB;
         if (/^3[0689]/.test(ccNum)) return published.Brands.DINERS_CLUB;
-    
+
         return published.Brands.UNKNOWN;
     };
-    
+
     return published;
 
 }()); // WAVE.Pay

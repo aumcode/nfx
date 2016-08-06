@@ -24,7 +24,7 @@ using System.Text;
 namespace NFX.Glue.Protocol
 {
     /// <summary>
-    /// Represents a response message sent by called party 
+    /// Represents a response message sent by called party
     /// </summary>
     [Serializable]
     public sealed class ResponseMsg : Msg
@@ -52,7 +52,7 @@ namespace NFX.Glue.Protocol
           m_RequestID = inspectedOriginal.m_RequestID;
           m_RemoteInstance = inspectedOriginal.m_RemoteInstance;
           m_ReturnValue = newReturnValue;
-          
+
           CloneState(inspectedOriginal, cloneHeaders, cloneCorrelation);
         }
 
@@ -65,15 +65,15 @@ namespace NFX.Glue.Protocol
 
        private Guid? m_RemoteInstance;
 
-       
+
        /// <summary>
-       /// Returns request ID this response is for 
+       /// Returns request ID this response is for
        /// </summary>
        public override FID RequestID
        {
          get { return m_RequestID;}
        }
-       
+
        /// <summary>
        /// Returns return value of the called method. Note: out and ref params are not supported
        /// </summary>
@@ -84,7 +84,7 @@ namespace NFX.Glue.Protocol
 
 
        /// <summary>
-       /// For stateful servers returns instance ID 
+       /// For stateful servers returns instance ID
        /// </summary>
        public Guid? RemoteInstance
        {
@@ -103,6 +103,6 @@ namespace NFX.Glue.Protocol
     }
 
 
-    
+
 
 }

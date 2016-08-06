@@ -24,7 +24,7 @@ using System.Net.Mail;
 using NFX.Environment;
 
 namespace NFX.Log.Destinations
-{   
+{
 
     /// <summary>
     /// Implements log destination that sends emails
@@ -33,17 +33,17 @@ namespace NFX.Log.Destinations
     {
         #region CONSTS
 
-          
+
              public const int DEFAULT_SMTP_PORT = 587;
-   
+
 
 
         #endregion
 
 
-    
+
         #region .ctor
-       
+
             /// <summary>
             /// Creates a new instance of destination that sends EMails
             /// </summary>
@@ -51,7 +51,7 @@ namespace NFX.Log.Destinations
             {
               SmtpPort = DEFAULT_SMTP_PORT;
             }
-       
+
             /// <summary>
             /// Creates a new instance of destination that sends EMails
             /// </summary>
@@ -67,12 +67,12 @@ namespace NFX.Log.Destinations
               base.Destructor();
             }
       #endregion
-        
+
 
       #region Private Fields
 
         private SmtpClient m_Smtp;
-      
+
       #endregion
 
 
@@ -116,8 +116,8 @@ namespace NFX.Log.Destinations
        public override void Open()
        {
            base.Open();
-          
-           m_Smtp = 
+
+           m_Smtp =
                new SmtpClient
                {
                    Host = this.SmtpHost,
@@ -128,7 +128,7 @@ namespace NFX.Log.Destinations
                    Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword)
                };
        }
-       
+
        public override void Close()
        {
            if (m_Smtp!=null)
@@ -140,9 +140,9 @@ namespace NFX.Log.Destinations
        }
 
       #endregion
-        
-       
-      #region Protected 
+
+
+      #region Protected
 
         protected internal override void DoSend(Message entry)
         {
@@ -150,15 +150,15 @@ namespace NFX.Log.Destinations
 
            var from = new MailAddress(this.FromAddress, this.FromName);
            var to = new MailAddress(ToAddress);
-           
+
 
            using (var email = new MailMessage(from, to))
            {
 
                 email.Subject = this.Subject ?? entry.Topic;
-                email.Body = (this.Body??string.Empty) + entry.ToString();//for now 
+                email.Body = (this.Body??string.Empty) + entry.ToString();//for now
                 email.CC.Add(ToAddress);
-                
+
                 m_Smtp.Send(email);
            }
         }

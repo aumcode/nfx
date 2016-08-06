@@ -29,10 +29,10 @@ namespace NFX.CodeAnalysis.Laconfig
     /// </summary>
     public sealed class LaconfigLexer : Lexer<LaconfigToken>
     {
-        public LaconfigLexer(ISourceText source, MessageList messages = null, bool throwErrors = false) : 
+        public LaconfigLexer(ISourceText source, MessageList messages = null, bool throwErrors = false) :
             base( source, messages, throwErrors)
         {
-             m_FSM = new FSM(this); 
+             m_FSM = new FSM(this);
         }
 
         public LaconfigLexer(IAnalysisContext context, SourceCodeRef srcRef, ISourceText source, MessageList messages = null, bool throwErrors = false) :
@@ -40,7 +40,7 @@ namespace NFX.CodeAnalysis.Laconfig
         {
              m_FSM = new FSM(this);
         }
-       
+
         public override Language Language
         {
             get { return LaconfigLanguage.Instance;}
@@ -51,7 +51,7 @@ namespace NFX.CodeAnalysis.Laconfig
             return ((LaconfigMsgCode)code).ToString();
         }
 
-        
+
 
         private FSM m_FSM;
         private IEnumerator<bool> m_Work;
@@ -59,7 +59,7 @@ namespace NFX.CodeAnalysis.Laconfig
         protected override bool DoLexingChunk()
         {
             if (m_AllAnalyzed) return true;
-            
+
             if (m_Work==null)
             {
               m_Work = m_FSM.Run().GetEnumerator();
@@ -72,7 +72,7 @@ namespace NFX.CodeAnalysis.Laconfig
 
 
 
-        
+
     private class FSM
     {
       public FSM(LaconfigLexer lex)
@@ -82,7 +82,7 @@ namespace NFX.CodeAnalysis.Laconfig
         tokens = lexer.m_Tokens;
         srcRef = lexer.SourceCodeReference;
       }
-      
+
       private readonly LaconfigLexer lexer;
       private readonly ISourceText source;
       private readonly TokenList<LaconfigToken> tokens;
@@ -138,7 +138,7 @@ namespace NFX.CodeAnalysis.Laconfig
         var prevTokenCount = 0;
 
 
-        tokens.Add(new LaconfigToken(    
+        tokens.Add(new LaconfigToken(
                                 lexer,
                                 LaconfigTokenType.tBOF,
                                 srcPos(),
@@ -146,7 +146,7 @@ namespace NFX.CodeAnalysis.Laconfig
                                 String.Empty));
 
         #region Main walk
-        //=======================================================================================================================                
+        //=======================================================================================================================
         while (!source.EOF)
         {
           moveNext();
@@ -218,7 +218,7 @@ namespace NFX.CodeAnalysis.Laconfig
                   }
 
               }
-              else//take care of 'c:\\dir\\' 
+              else//take care of 'c:\\dir\\'
               {
                 bufferAdd(chr); //preserve  \
                 moveNext();
@@ -255,7 +255,7 @@ namespace NFX.CodeAnalysis.Laconfig
                   continue;
                 }
 
-                //turn on comment line mode for directive 
+                //turn on comment line mode for directive
                 //directives MUST be the first non-white char on the line
                 if (freshLine && chr == '#')
                 {
@@ -264,7 +264,7 @@ namespace NFX.CodeAnalysis.Laconfig
                   isDirective = true;
                   continue;
                 }
-                
+
 
                 #endregion
 
@@ -290,7 +290,7 @@ namespace NFX.CodeAnalysis.Laconfig
                 #endregion
 
                 #region Syntactic Separators - Space, colons and Symbols
-            
+
                 if ((chr == ' ') || (chr == '\t')) //space or TAB
                 {
                   flush();
@@ -342,7 +342,7 @@ namespace NFX.CodeAnalysis.Laconfig
           }
 
         }//while
-        //=======================================================================================================================                                
+        //=======================================================================================================================
         #endregion
 
 
@@ -351,15 +351,15 @@ namespace NFX.CodeAnalysis.Laconfig
         #region Post-walk check
             if (tokens.Count < 2)
                lexer.EmitMessage(MessageType.Error, (int)LaconfigMsgCode.ePrematureEOF, srcPos());
-          
+
 
             if (isCommentBlock)
                lexer.EmitMessage(MessageType.Error, (int)LaconfigMsgCode.eUnterminatedComment, srcPos());
-         
+
 
             if (isString)
                lexer.EmitMessage(MessageType.Error, (int)LaconfigMsgCode.eUnterminatedString, srcPos());
-      
+
 
         #endregion
 
@@ -392,7 +392,7 @@ namespace NFX.CodeAnalysis.Laconfig
         if (isString)
         {
           type = LaconfigTokenType.tStringLiteral;
-          
+
 
           if (!isVerbatim)
           {
@@ -419,10 +419,10 @@ namespace NFX.CodeAnalysis.Laconfig
         {
 
             type = LaconfigKeywords.Resolve(text);
-           
+
         }//not comment
 
-        
+
         tokens.Add(new LaconfigToken(lexer, type, tagStartPos, tagEndPos, text, text));
       }
 

@@ -40,7 +40,7 @@ namespace NFX.Wave.MVC
       m_Order =order;
     }
 
-    
+
     /// <summary>
     /// Specifies name override
     /// </summary>
@@ -63,8 +63,8 @@ namespace NFX.Wave.MVC
       m_StrictParamBinding = strictParamBinding;
     }
 
-    private string m_Name; 
-    private int m_Order;    
+    private string m_Name;
+    private int m_Order;
     private string m_MatchScript;
     private OrderedRegistry<WorkMatch> m_Matches;
     private bool m_StrictParamBinding;
@@ -116,7 +116,7 @@ namespace NFX.Wave.MVC
 
             foreach(var cn in root.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
               if(!m_Matches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-               throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "ActionAttribute"));  
+               throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "ActionAttribute"));
           }
           else
            m_Matches.Register(new WorkMatch("*",0));
@@ -160,6 +160,11 @@ namespace NFX.Wave.MVC
     /// Override to add logic/filtering right after the invocation of action method. Must return TRUE to stop processing chain
     /// </summary>
     protected internal abstract bool AfterActionInvocation(Controller controller, WorkContext work, string action, MethodInfo method, object[] args, ref object result);
+
+    /// <summary>
+    /// Override to add logic/filtering finally after the invocation of action method. Must return TRUE to stop processing chain
+    /// </summary>
+    protected internal abstract void ActionInvocationFinally(Controller controller, WorkContext work, string action, MethodInfo method, object[] args, ref object result);
   }
 
 

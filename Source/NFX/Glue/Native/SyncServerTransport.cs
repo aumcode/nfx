@@ -58,7 +58,7 @@ namespace NFX.Glue.Native
            {
              Node = serverEndpoint.Node;
              m_IPAddress = localAddr;
-             m_Port = port;      
+             m_Port = port;
            }
 
         #endregion
@@ -76,8 +76,8 @@ namespace NFX.Glue.Native
             private int m_OpenChannels;
 
         #endregion
-        
-        
+
+
         #region Protected
 
             protected override bool DoSendResponse(ResponseMsg response)
@@ -85,19 +85,19 @@ namespace NFX.Glue.Native
               throw new InvalidGlueOperationException(StringConsts.OPERATION_NOT_SUPPORTED_ERROR + GetType().FullName+".SendResponse()");
             }
 
-        
-          
+
+
             protected override void DoStart()
             {
                 base.DoStart();
-                
+
                 if (IsListener)
                 {
                   m_TcpListener = new TcpListener(m_IPAddress, m_Port);
                   m_TcpListener.Start();
                   m_Thread = new Thread(listenerThreadSpin);
                   m_Thread.Name = THREAD_NAME;
-                  m_Thread.Start(); 
+                  m_Thread.Start();
                 }
             }
 
@@ -109,7 +109,7 @@ namespace NFX.Glue.Native
             protected override void DoWaitForCompleteStop()
             {
                 base.DoWaitForCompleteStop();
-                
+
                 if (m_TcpListener!=null)
                 {
                   m_TcpListener.Stop();//this breaks the blocking call of AcceptTcpClient() in another thread
@@ -142,7 +142,7 @@ namespace NFX.Glue.Native
                     while (Running)
                     {
                        var client = m_TcpListener.AcceptTcpClient();  //the blocking call is broken by close - as expected
-                       
+
                        Task.Factory.StartNew(clientThreadSpin, client, TaskCreationOptions.LongRunning);
                     }
                }
@@ -155,9 +155,9 @@ namespace NFX.Glue.Native
                                       StringConsts.GLUE_LISTENER_EXCEPTION_ERROR + error.Message,
                                       from: "SyncServerTransport.listenerThreadSpin",
                                       exception: error);
-                     
+
                      Instrumentation.ServerListenerErrorEvent.Happened(Node);
-                   } 
+                   }
                }
            }
 
@@ -166,7 +166,7 @@ namespace NFX.Glue.Native
            {
               var client = (TcpClient)c;
               var remoteIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();//DO NOT NEED POrt as it creates 1000s instrumentation messages
-              
+
               if (Binding.InstrumentServerTransportStat)
                 Instrumentation.ClientConnectedEvent.Happened(remoteIP);
 
@@ -202,7 +202,7 @@ namespace NFX.Glue.Native
            {
             const int POLL_WAIT_MS = 5000;
             const int POLL_WAIT_MCRS = POLL_WAIT_MS * 1000;//microsecond
-           
+
               using(var ms = new MemoryStream(Consts.DEFAULT_SERIALIZER_STREAM_CAPACITY))
                  using(client)
                  {
@@ -212,8 +212,8 @@ namespace NFX.Glue.Native
                    client.NoDelay = true;
 
                    client.ReceiveBufferSize =  Binding.ServerReceiveBufferSize;
-                   client.SendBufferSize    =  Binding.ServerSendBufferSize; 
-                   
+                   client.SendBufferSize    =  Binding.ServerSendBufferSize;
+
                    client.ReceiveTimeout    =  Binding.ServerReceiveTimeout;
                    client.SendTimeout       =  Binding.ServerSendTimeout;
 
@@ -230,7 +230,7 @@ namespace NFX.Glue.Native
                       {
                         //20140206 DKh -------------
                         if (!client.Client.Poll(POLL_WAIT_MCRS, SelectMode.SelectRead))//microseconds
-                        { 
+                        {
                           //break loop upon server listener idle timeout
                           var st = Binding.ServerTransportIdleTimeoutMs;
                           if (st>0)
@@ -244,12 +244,12 @@ namespace NFX.Glue.Native
                                        Log.MessageType.DebugZ,
                                       "TCPClient timed out: " + remote,
                                       from: "TIMEOUT_CHECK");
-                              break; 
+                              break;
                             }
                           }
                           continue;
                         }
-                        else 
+                        else
                         {
                           if (client.Client.Receive(check, SocketFlags.Peek)<=0)
                           {
@@ -263,11 +263,11 @@ namespace NFX.Glue.Native
                           idleSpins = 0;//something arrived
                         }
                         //--------------------------
-                        
+
                         request = getRequest(client, ms, serializer);
 
                         request.__setServerTransport(this);
-                        ResponseMsg response = Glue.ServerHandleRequest(request); //This does actual server work 
+                        ResponseMsg response = Glue.ServerHandleRequest(request); //This does actual server work
 
                         if (!request.OneWay && response!=null)
                          putResponse(client, ms, response, serializer);
@@ -275,7 +275,7 @@ namespace NFX.Glue.Native
                       catch(Exception error)
                       {
                         var commError = error is SocketException ||
-                                        error is System.IO.IOException || 
+                                        error is System.IO.IOException ||
                                         (error is ProtocolException && ((ProtocolException)error).CloseChannel)||
                                         (error is SlimDeserializationException) ||
                                         (error is SlimSerializationException && serializer.BatchTypesAdded);
@@ -286,7 +286,7 @@ namespace NFX.Glue.Native
                                                    StringConsts.GLUE_CLIENT_THREAD_ERROR ) + error.Message,
                                       from: "SyncServerTransport.clientThreadSpinBody",
                                       exception: error);
-                        
+
                         stat_Errors();
 
                         if (commError) break;//close the channel
@@ -308,7 +308,7 @@ namespace NFX.Glue.Native
                                 from: "SyncServerTransport.clientThreadSpinBody",
                                 exception: e);
                           }
-                      } 
+                      }
                    }
                  }//using
            }
@@ -317,8 +317,8 @@ namespace NFX.Glue.Native
            private RequestMsg getRequest(TcpClient client, MemoryStream ms, SlimSerializer serializer)
            {
              var nets = client.GetStream();
-             
-             
+
+
              var msb = ms.GetBuffer();
              var frameBegin = Consts.PACKET_DELIMITER_LENGTH;
              SyncBinding.socketRead(nets, msb, 0, frameBegin);
@@ -332,7 +332,7 @@ namespace NFX.Glue.Native
                 throw new MessageSizeException(size, Binding.MaxMsgSize, "getRequest()", closeChannel: true);
               }
 
-             
+
              ms.SetLength(Consts.PACKET_DELIMITER_LENGTH+size);  //this may invalidate msb
              SyncBinding.socketRead(nets, ms.GetBuffer(), Consts.PACKET_DELIMITER_LENGTH, size);
 
@@ -341,7 +341,7 @@ namespace NFX.Glue.Native
              ms.Position = Consts.PACKET_DELIMITER_LENGTH;
              RequestMsg result = null;
 
-              
+
               WireFrame frame;
               object received = null;
               try
@@ -365,13 +365,13 @@ namespace NFX.Glue.Native
 
                   if (result==null)
                     throw new ProtocolException(StringConsts.GLUE_UNEXPECTED_MSG_ERROR + "RequestMsg");
-             
+
               }
               finally
               {
                   Binding.DumpMsg(true, received as Msg, ms.GetBuffer(), 0, size+Consts.PACKET_DELIMITER_LENGTH);
               }
-                 
+
               result.__SetArrivalTimeStampTicks(arrivalTime);
 
 
@@ -386,7 +386,7 @@ namespace NFX.Glue.Native
              ms.Position = frameBegin;
 
              var frame = new WireFrame(WireFrame.SLIM_FORMAT, true, response.RequestID);
- 
+
              // Write the frame
              var frameSize = frame.Serialize(ms);
              // Write the message
@@ -396,15 +396,15 @@ namespace NFX.Glue.Native
 
              var buffer = ms.GetBuffer();//no stream expansion beyond this point
              buffer.WriteBEInt32(0, size);
-            
+
              Binding.DumpMsg(true, response, buffer, 0, (int)ms.Position);
 
              if (size>Binding.MaxMsgSize)
              {
-                 Instrumentation.ServerSerializedOverMaxMsgSizeErrorEvent.Happened(Node);  
+                 Instrumentation.ServerSerializedOverMaxMsgSizeErrorEvent.Happened(Node);
                  throw new MessageSizeException(size, Binding.MaxMsgSize, "putResponse()", serializer.BatchTypesAdded);
              }
-             
+
              client.GetStream().Write(buffer, 0, (int)ms.Position);
 
              stat_MsgSent();

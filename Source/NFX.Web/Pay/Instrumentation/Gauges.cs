@@ -19,105 +19,288 @@ using System;
 using NFX.Instrumentation;
 using NFX.Financial;
 
-namespace NFX.Web.Pay.Tax.Instrumentation
+namespace NFX.Web.Pay.Instrumentation
 {
   [Serializable]
-  public abstract class TaxLongGauge : LongGauge, IFinancialLogic, IWebInstrument
+  public abstract class PayLongGauge : LongGauge, IFinancialLogic, IWebInstrument
   {
-    protected TaxLongGauge(string source, long value) : base(source, value) { }
+    protected PayLongGauge(string source, long value) : base(source, value) { }
   }
 
   [Serializable]
-  public abstract class TaxAmountGauge : AmountGauge, IWebInstrument
+  public abstract class PayAmountGauge : AmountGauge, IWebInstrument
   {
-    protected TaxAmountGauge(string src, Amount value) : base(src, value) { }
+    protected PayAmountGauge(string src, Amount value) : base(src, value) { }
   }
 
   #region Charge
 
     [Serializable]
-    public class TaxCaclulationCount : TaxLongGauge
+    public class ChargeCount : PayLongGauge
     {
-      protected TaxCaclulationCount(string source, long value) : base(source, value) { }
+      protected ChargeCount(string source, long value) : base(source, value) { }
 
       public static void Record(string source, long value)
       {
         var inst = App.Instrumentation;
         if (inst.Enabled)
-          inst.Record(new TaxCaclulationCount(source, value));
+          inst.Record(new ChargeCount(source, value));
       }
 
 
-      public override string Description { get { return "Tax calculation count"; } }
+      public override string Description { get { return "Charge count"; } }
       public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_TIME; } }
 
       protected override Datum MakeAggregateInstance()
       {
-        return new TaxCaclulationCount(this.Source, 0);
+        return new ChargeCount(this.Source, 0);
       }
     }
 
     [Serializable]
-    public class TaxCaclulcationErrorCount : TaxLongGauge
+    public class ChargeErrorCount : PayLongGauge
     {
-      protected TaxCaclulcationErrorCount(string source, long value) : base(source, value) { }
+      protected ChargeErrorCount(string source, long value) : base(source, value) { }
 
       public static void Record(string source, long value)
       {
         var inst = App.Instrumentation;
         if (inst.Enabled)
-          inst.Record(new TaxCaclulcationErrorCount(source, value));
+          inst.Record(new ChargeErrorCount(source, value));
       }
 
 
-      public override string Description { get { return "Tax caluclation error count"; } }
+      public override string Description { get { return "Charge error count"; } }
       public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_ERROR; } }
 
       protected override Datum MakeAggregateInstance()
       {
-        return new TaxCaclulcationErrorCount(this.Source, 0);
+        return new ChargeErrorCount(this.Source, 0);
       }
     }
 
     [Serializable]
-    public class RetailerTaxAmount : TaxAmountGauge
+    public class ChargeAmount : PayAmountGauge
     {
-      protected RetailerTaxAmount(string source, Amount value): base(source, value) { }
+      protected ChargeAmount(string source, Amount value): base(source, value) { }
 
       public static void Record(string source, Amount value)
       {
         var instr = App.Instrumentation;
         if (instr.Enabled)
-          instr.Record(new RetailerTaxAmount(source, value));
+          instr.Record(new ChargeAmount(source, value));
       }
 
-      public override string Description { get { return "Retailer tax amount"; } }
+      public override string Description { get { return "Capture amount"; } }
 
       protected override Datum MakeAggregateInstance()
-      { 
-        return new RetailerTaxAmount(this.Source, new Amount(this.Value.CurrencyISO, 0m)); 
-      }
-    }
-
-    [Serializable]
-    public class WholesellerTaxAmount : TaxAmountGauge
-    {
-      protected WholesellerTaxAmount(string source, Amount value): base(source, value) { }
-
-      public static void Record(string source, Amount value)
       {
-        var instr = App.Instrumentation;
-        if (instr.Enabled)
-          instr.Record(new WholesellerTaxAmount(source, value));
-      }
-
-      public override string Description { get { return "Wholeseller tax amount"; } }
-
-      protected override Datum MakeAggregateInstance()
-      { 
-        return new WholesellerTaxAmount(this.Source, new Amount(this.Value.CurrencyISO, 0m)); 
+        return new ChargeAmount(this.Source, new Amount(this.Value.CurrencyISO, 0m));
       }
     }
 
   #endregion
+
+  #region Capture
+
+    [Serializable]
+    public class CaptureCount : PayLongGauge
+    {
+      protected CaptureCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var inst = App.Instrumentation;
+        if (inst.Enabled)
+          inst.Record(new CaptureCount(source, value));
+      }
+
+
+      public override string Description { get { return "Capture count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_TIME; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new CaptureCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class CaptureErrorCount : PayLongGauge
+    {
+      protected CaptureErrorCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var inst = App.Instrumentation;
+        if (inst.Enabled)
+          inst.Record(new CaptureErrorCount(source, value));
+      }
+
+
+      public override string Description { get { return "Capture error count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_ERROR; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new CaptureErrorCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class CaptureAmount : PayAmountGauge
+    {
+      protected CaptureAmount(string source, Amount value): base(source, value) { }
+
+      public static void Record(string source, Amount value)
+      {
+        var instr = App.Instrumentation;
+        if (instr.Enabled)
+          instr.Record(new CaptureAmount(source, value));
+      }
+
+      public override string Description { get { return "Capture amount"; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new CaptureAmount(this.Source, new Amount(this.Value.CurrencyISO, 0m));
+      }
+    }
+
+  #endregion
+
+  #region Refund
+
+    [Serializable]
+    public class RefundCount : PayLongGauge
+    {
+      protected RefundCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var inst = App.Instrumentation;
+        if (inst.Enabled)
+          inst.Record(new RefundCount(source, value));
+      }
+
+
+      public override string Description { get { return "Refund count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_TIME; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new RefundCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class RefundErrorCount : PayLongGauge
+    {
+      protected RefundErrorCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var instr = App.Instrumentation;
+        if (instr.Enabled)
+          instr.Record(new RefundErrorCount(source, value));
+      }
+
+      public override string Description { get { return "Refund error count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_ERROR; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new RefundErrorCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class RefundAmount : PayAmountGauge
+    {
+      protected RefundAmount(string source, Amount value): base(source, value) { }
+
+      public static void Record(string source, Amount value)
+      {
+        var instr = App.Instrumentation;
+        if (instr.Enabled)
+          instr.Record(new RefundAmount(source, value));
+      }
+
+      public override string Description { get { return "Refund amount"; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new RefundAmount(this.Source, new Amount(this.Value.CurrencyISO, 0m));
+      }
+    }
+
+  #endregion
+
+  #region Transfer
+
+    [Serializable]
+    public class TransferCount : PayLongGauge
+    {
+      protected TransferCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var inst = App.Instrumentation;
+        if (inst.Enabled)
+          inst.Record(new TransferCount(source, value));
+      }
+
+
+      public override string Description { get { return "Transfer total count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_TIME; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new TransferCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class TransferErrorCount : PayLongGauge
+    {
+      protected TransferErrorCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var instr = App.Instrumentation;
+        if (instr.Enabled)
+          instr.Record(new TransferErrorCount(source, value));
+      }
+
+      public override string Description { get { return "Transfer total error count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_ERROR; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new TransferErrorCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class TransferAmount : PayAmountGauge
+    {
+      protected TransferAmount(string source, Amount value): base(source, value) { }
+
+      public static void Record(string source, Amount value)
+      {
+        var instr = App.Instrumentation;
+        if (instr.Enabled)
+          instr.Record(new TransferAmount(source, value));
+      }
+
+      public override string Description { get { return "Transfer total amount"; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new TransferAmount(this.Source, new Amount(Value.CurrencyISO, 0m));
+      }
+    }
+
+  #endregion
+
 }

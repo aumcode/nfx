@@ -30,12 +30,12 @@ namespace NFX.Glue
        Client = 1,
        Server = 2
      }
-     
-     
+
+
      /// <summary>
      /// Stipulates codes returned for contract calls
      /// </summary>
-     public enum CallStatus 
+     public enum CallStatus
      {
          /// <summary>
          /// Indicates that call was sucessfully queued/dispatched for processing by remote server
@@ -52,12 +52,12 @@ namespace NFX.Glue
          /// </summary>
          Timeout,
 
-         
+
          /// <summary>
          /// Indicates that response came with payload that does not contain error
          /// </summary>
          ResponseOK,
-         
+
          /// <summary>
          /// Remote server returned response with exception
          /// </summary>
@@ -91,7 +91,7 @@ namespace NFX.Glue
          /// No dumping
          /// </summary>
          None = 0,
-     
+
          /// <summary>
          /// Message-level dumping
          /// </summary>

@@ -33,15 +33,15 @@ namespace NFX.Health
     [Config("/health-checks")]
     public abstract class BaseCheck : IConfigurable
     {
-       
-       
+
+
        /// <summary>
        /// Results property bag may be used for reporting of additional
        /// health-check parameters i.e. latency, content size etc...
        /// </summary>
        public readonly CheckResult Result = new CheckResult();
-       
-       
+
+
        /// <summary>
        /// Indicates whether this check will be executed
        /// </summary>

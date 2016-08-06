@@ -24,7 +24,7 @@ using NFX.Environment;
 
 namespace NFX.Wave.Handlers
 {
-    
+
     /// <summary>
     /// Represents a location used for dynamic type searches
     /// </summary>
@@ -35,10 +35,10 @@ namespace NFX.Wave.Handlers
        public const string CONFIG_NAMESPACE_SECTION = "ns";
 
        public const string CONFIG_PORTAL_ATTR = "portal";
-       
+
        private string m_Name;
        private int m_Order;
-       
+
        /// <summary>
        /// Location name
        /// </summary>
@@ -54,12 +54,12 @@ namespace NFX.Wave.Handlers
        {
           get { return m_Order;}
        }
-       
+
        /// <summary>
        /// Name of assembly. When this property is set then Assembly==null
        /// </summary>
        public readonly string AssemblyName;
-       
+
        /// <summary>
        /// Assembly reference. When this property is set then AssemblyName==null
        /// </summary>
@@ -67,14 +67,14 @@ namespace NFX.Wave.Handlers
 
        /// <summary>
        /// Name of portal. When this property is set then this location will only be matched if
-       ///  WorkContext.Portal.Name matches for given request. NUll by default 
+       ///  WorkContext.Portal.Name matches for given request. NUll by default
        /// </summary>
        public readonly string Portal;
 
        /// <summary>
        /// A list of namespaces
        /// </summary>
-       public readonly IEnumerable<string> Namespaces; 
+       public readonly IEnumerable<string> Namespaces;
 
 
        public TypeLocation(string name, int order, string portal, string assemblyName, params string[] namespaces)
@@ -112,7 +112,7 @@ namespace NFX.Wave.Handlers
          m_Order = confNode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt();
          Portal = confNode.AttrByName(CONFIG_PORTAL_ATTR).Value;
          AssemblyName = confNode.AttrByName(CONFIG_ASSEMBLY_NAME_ATTR).Value;
-         
+
          if (AssemblyName.IsNullOrWhiteSpace())
           throw new WaveException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(config{$assembly==null|empty})");
 
@@ -128,7 +128,7 @@ namespace NFX.Wave.Handlers
 
          Namespaces = nsList;
        }
-    } 
+    }
 
 
 
@@ -140,17 +140,17 @@ namespace NFX.Wave.Handlers
        public TypeLocations(): base() { }
     }
 
-    
+
     /// <summary>
     /// Lookup table string->Type
     /// </summary>
     internal sealed class TypeLookup : Dictionary<string, Type>
     {
-      public TypeLookup() : base(StringComparer.Ordinal) 
+      public TypeLookup() : base(StringComparer.Ordinal)
       {
 
       }
-      
+
       public TypeLookup(TypeLookup clone) : base(clone, StringComparer.Ordinal)
       {
 

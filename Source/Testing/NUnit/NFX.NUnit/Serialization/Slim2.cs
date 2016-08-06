@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.Serialization;
 
 using NUnit.Framework;
 
 using NFX;
 using NFX.Serialization.Slim;
-using System.Runtime.Serialization;
+
 
 namespace NFX.NUnit.Serialization
 {

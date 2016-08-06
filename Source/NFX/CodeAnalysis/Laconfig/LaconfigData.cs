@@ -28,13 +28,13 @@ namespace NFX.CodeAnalysis.Laconfig
     /// </summary>
     public sealed class LaconfigData : ObjectResultAnalysisContext<LaconicConfiguration>
     {
-        
+
         public LaconfigData(LaconicConfiguration configuration) : base(null)
         {
             m_ResultObject = configuration;
         }
-        
-        
+
+
         public override Language Language
         {
             get { return LaconfigLanguage.Instance; }

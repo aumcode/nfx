@@ -187,7 +187,7 @@ namespace NFX.Log.Destinations
             {
                 if (m_Stream == null)
                     openStream();
-                
+
                 DoWriteMessage(msg);
 
                 if (m_Recreate)

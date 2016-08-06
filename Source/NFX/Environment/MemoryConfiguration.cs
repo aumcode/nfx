@@ -29,9 +29,9 @@ namespace NFX.Environment
       [Serializable]
       public sealed class MemoryConfiguration : Configuration
       {
-        
-        
-        
+
+
+
         public override bool IsReadOnly
         {
           get { return false; }

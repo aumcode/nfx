@@ -29,7 +29,7 @@ namespace NFX.DataAccess.MongoDB
     /// <summary>
     /// A base for ICRUDQueryHandler-derivatives for mongo
     /// </summary>
-    public abstract class MongoDBCRUDQueryHandlerBase : ICRUDQueryHandler   
+    public abstract class MongoDBCRUDQueryHandlerBase : ICRUDQueryHandler
     {
         #region .ctor
             public MongoDBCRUDQueryHandlerBase(MongoDBDataStore store, QuerySource source)
@@ -78,6 +78,16 @@ namespace NFX.DataAccess.MongoDB
             }
 
 
+            public virtual Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
+            {
+              throw new NotImplementedException();
+            }
+
+            public virtual Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
+            {
+              return TaskUtils.AsCompletedTask( () => this.OpenCursor(context, query) );
+            }
+
             public virtual int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
             {
               throw new NotImplementedException();
@@ -118,8 +128,8 @@ namespace NFX.DataAccess.MongoDB
 
     }
 
-    
-    
+
+
 
 
 }

@@ -26,7 +26,7 @@ using System.Reflection;
 
 namespace NFX.IO
 {
-   
+
     /// <summary>
     /// Describes a format - apair of readers/writers along with their capabilities - what types format supports natively
     /// </summary>
@@ -34,26 +34,26 @@ namespace NFX.IO
     {
       public abstract Type ReaderType { get; }
       public abstract Type WriterType { get; }
-      
-      
-      
+
+
+
       /// <summary>
       /// Makes new reader instance
       /// </summary>
-      public abstract ReadingStreamer GetReadingStreamer(Encoding encoding = null); 
-      
+      public abstract ReadingStreamer GetReadingStreamer(Encoding encoding = null);
+
       /// <summary>
       /// Makes new writer instance
       /// </summary>
-      public abstract WritingStreamer GetWritingStreamer(Encoding encoding = null); 
+      public abstract WritingStreamer GetWritingStreamer(Encoding encoding = null);
 
       /// <summary>
-      /// Returns true when the supplied type is natively supported by format 
+      /// Returns true when the supplied type is natively supported by format
       /// </summary>
       public abstract bool IsTypeSupported(Type t);
 
       /// <summary>
-      /// Returns true when the supplied ref type is natively supported by format 
+      /// Returns true when the supplied ref type is natively supported by format
       /// </summary>
       public abstract bool IsRefTypeSupported(Type t);
 
@@ -86,9 +86,9 @@ namespace NFX.IO
     /// Developers may derive new formats that support custom serialization schemes
     /// </summary>
     public abstract class StreamerFormat<TReader, TWriter> : StreamerFormat where TReader : ReadingStreamer
-                                                                            where TWriter : WritingStreamer   
+                                                                            where TWriter : WritingStreamer
     {
-      
+
       //.ctor
        protected StreamerFormat()
        {
@@ -112,28 +112,28 @@ namespace NFX.IO
                 if (pt.IsValueType || pt==typeof(string))//string is treated like a value type
                   m_WriteMethods.Add(pt, mi);
                 else
-                  m_WriteMethodsRefT.Add(pt, mi); 
+                  m_WriteMethodsRefT.Add(pt, mi);
               }
 
           t = this.ReaderType;//typeof(TReader);
-           
+
               var rMethods = t.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                               .Where(mi => mi.Name.StartsWith("Read") && mi.ReturnType!=typeof(void) && !mi.IsConstructor);//do not localize
 
               foreach(var mi in rMethods)
               {
                 var rt = mi.ReturnType;
-               
+
                 if (rt.IsValueType || rt==typeof(string))//string is treated like a value type
                   m_ReadMethods.Add(rt, mi);
                 else
                   m_ReadMethodsRefT.Add(rt, mi);
               }
-       
+
           compileActions();
        }
 
-        
+
         private Dictionary<Type, MethodInfo> m_ReadMethods;
         private Dictionary<Type, MethodInfo> m_WriteMethods;
 
@@ -146,10 +146,10 @@ namespace NFX.IO
 
         private Dictionary<Type, Func<TReader, object>> m_ReadActionsRefT;
         private Dictionary<Type, Action<TWriter, object>> m_WriteActionsRefT;
-      
-      
-      
-      
+
+
+
+
       /// <summary>
       /// Makes new reader instance
       /// </summary>
@@ -157,20 +157,20 @@ namespace NFX.IO
       {
           return MakeReadingStreamer(encoding);
       }
-      
+
       /// <summary>
       /// Makes new writer instance
       /// </summary>
       public sealed override WritingStreamer GetWritingStreamer(Encoding encoding = null)
       {
          return MakeWritingStreamer(encoding);
-      } 
+      }
 
        /// <summary>
       /// Makes new reader instance
       /// </summary>
-      public abstract TReader MakeReadingStreamer(Encoding encoding = null); 
-      
+      public abstract TReader MakeReadingStreamer(Encoding encoding = null);
+
       /// <summary>
       /// Makes new writer instance
       /// </summary>
@@ -178,7 +178,7 @@ namespace NFX.IO
 
 
           /// <summary>
-          /// Returns true when the supplied value type is natively supported by format, that is - when this format 
+          /// Returns true when the supplied value type is natively supported by format, that is - when this format
           ///  can directly write instances of this type without reflection/complex graph walk.
           /// </summary>
           public override bool IsTypeSupported(Type t)
@@ -187,7 +187,7 @@ namespace NFX.IO
           }
 
           /// <summary>
-          /// Returns true when the supplied reference type is natively supported by format, that is - when this format 
+          /// Returns true when the supplied reference type is natively supported by format, that is - when this format
           ///  can directly write instances of this type without reflection/complex graph walk.
           /// </summary>
           public override bool IsRefTypeSupported(Type t)
@@ -264,7 +264,7 @@ namespace NFX.IO
           }
 
           /// <summary>
-          /// Returns an action that writes the value of the specified value type 
+          /// Returns an action that writes the value of the specified value type
           /// </summary>
           public Action<TWriter, object> GetWriteActionForType(Type t)
           {
@@ -274,7 +274,7 @@ namespace NFX.IO
           }
 
           /// <summary>
-          /// Returns an action that writes the value of the specified ref type 
+          /// Returns an action that writes the value of the specified ref type
           /// </summary>
           public Action<TWriter, object> GetWriteActionForRefType(Type t)
           {

@@ -53,7 +53,7 @@ namespace NFX.IO.ErrorHandling
     #endregion
 
     #region Public
-      
+
       public void Encode(int[] src, int errorCorrectionLength)
       {
         if (errorCorrectionLength <= 0)

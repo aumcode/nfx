@@ -22,13 +22,13 @@ using System.Threading.Tasks;
 
 namespace NFX.DataAccess.CRUD
 {
-    
+
     /// <summary>
     /// Specifies how transaction scope behaves on scope exit
     /// </summary>
     public enum TransactionDisposeBehavior
     {
-        CommitOnDispose = 0, 
+        CommitOnDispose = 0,
         RollbackOnDispose
     }
 
@@ -41,7 +41,7 @@ namespace NFX.DataAccess.CRUD
         Comitted,
         RolledBack
     }
-    
+
     /// <summary>
     /// Represents an abstract base for CRUDTransactions that perform particular backend CRUD work in overriden classes
     /// </summary>
@@ -78,11 +78,11 @@ namespace NFX.DataAccess.CRUD
             private TransactionDisposeBehavior m_DisposeBahavior;
 
         #endregion
-        
+
 
         #region Properties
 
-            
+
             /// <summary>
             /// References the store instance that started this transaction
             /// </summary>
@@ -90,7 +90,7 @@ namespace NFX.DataAccess.CRUD
             {
                 get { return m_Store;}
             }
-            
+
             /// <summary>
             /// Returns current transaction status
             /// </summary>
@@ -99,7 +99,7 @@ namespace NFX.DataAccess.CRUD
             /// <summary>
             /// Specifies how transaction should be finalized on dispose: comitted or rolledback if it is still open
             /// </summary>
-            public TransactionDisposeBehavior DisposeBehavior { get{ return m_DisposeBahavior; } } 
+            public TransactionDisposeBehavior DisposeBehavior { get{ return m_DisposeBahavior; } }
 
 
             /// <summary>
@@ -110,9 +110,9 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Public
-       
+
             #region ICRUDOperations
-                
+
                 public Schema GetSchema(Query query)
                 {
                    CheckOpenStatus("GetSchema");
@@ -124,7 +124,7 @@ namespace NFX.DataAccess.CRUD
                    CheckOpenStatus("GetSchema");
                    return DoGetSchemaAsync(query);
                 }
-                
+
                 public List<RowsetBase> Load(params Query[] queries)
                 {
                     CheckOpenStatus("Load");
@@ -169,8 +169,8 @@ namespace NFX.DataAccess.CRUD
 
                 public Task<Row> LoadOneRowAsync(Query query)
                 {
-                    return DoLoadAsync(true, query).ContinueWith( 
-                         antecedent => 
+                    return DoLoadAsync(true, query).ContinueWith(
+                         antecedent =>
                          {
                            var rset = antecedent.Result.FirstOrDefault();
                            if (rset!=null) return rset.FirstOrDefault();
@@ -178,6 +178,15 @@ namespace NFX.DataAccess.CRUD
                          });
                 }
 
+                public Cursor OpenCursor(Query query)
+                {
+                   return DoOpenCursor(query);
+                }
+
+                public Task<Cursor> OpenCursorAsync(Query query)
+                {
+                   return DoOpenCursorAsync(query);
+                }
 
                 public int Save(params RowsetBase[] tables)
                 {
@@ -244,13 +253,13 @@ namespace NFX.DataAccess.CRUD
 
 
             #endregion
-            
+
             public void Commit()
             {
                 CheckOpenStatus("Commit");
                 DoCommit();
                 m_Status = TransactionStatus.Comitted;
-            }   
+            }
 
             public void Rollback()
             {
@@ -261,20 +270,23 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Protected
-            
-            
+
+
             protected void CheckOpenStatus(string operation)
             {
                 if (m_Status!=TransactionStatus.Open)
                     throw new CRUDException(StringConsts.CRUD_TRANSACTION_IS_NOT_OPEN_ERROR.Args(operation, m_Status));
             }
-            
-            
+
+
             protected abstract Schema DoGetSchema(Query query);
             protected abstract Task<Schema> DoGetSchemaAsync(Query query);
 
             protected abstract List<RowsetBase> DoLoad(bool oneRow, params Query[] queries);
             protected abstract Task<List<RowsetBase>> DoLoadAsync(bool oneRow, params Query[] queries);
+
+            protected abstract Cursor DoOpenCursor(Query query);
+            protected abstract Task<Cursor> DoOpenCursorAsync(Query query);
 
             protected abstract int DoExecuteWithoutFetch(params Query[] queries);
             protected abstract Task<int> DoExecuteWithoutFetchAsync(params Query[] queries);

@@ -56,7 +56,7 @@ namespace WinFormsTest
 //         Application.Run(new SerializerForm2());
         
   //      Application.Run(new GlueForm());
-   //    Application.Run(new ELinkForm());
+       Application.Run(new ELinkForm());
    //     Application.Run(new CacheTest());
 
        // Application.Run(new QRTestForm());

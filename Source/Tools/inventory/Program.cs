@@ -41,12 +41,12 @@ namespace inventory
            Environment.ExitCode = -1;
           }
         }
-        
+
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           if (config.Root["?"].Exists ||
               config.Root["h"].Exists ||
               config.Root["help"].Exists)
@@ -55,23 +55,23 @@ namespace inventory
              return;
           }
 
-          
+
           if (!config.Root.AttrByIndex(0).Exists)
           {
             Console.WriteLine("Specify ';'-delimited assembly list");
             return;
           }
 
-         
+
 
           var manager = new InventorizationManager(config.Root.AttrByIndex(0).Value);
-          
+
           var fnode = config.Root["f"];
           if (!fnode.Exists) fnode = config.Root["filter"];
           if (fnode.Exists)
            ConfigAttribute.Apply(manager, fnode);
-           
-          foreach(var n in config.Root.Children.Where(chi=>chi.IsSameName("s") || chi.IsSameName("strat") || chi.IsSameName("strategy"))) 
+
+          foreach(var n in config.Root.Children.Where(chi=>chi.IsSameName("s") || chi.IsSameName("strat") || chi.IsSameName("strategy")))
           {
             var tname = n.AttrByIndex(0).Value ?? "<unspecified>";
             Type t = Type.GetType(tname);
@@ -83,7 +83,7 @@ namespace inventory
             if (strategy == null)
                throw new NFXException("The supplied type is not strategy: " + tname);
 
-            manager.Strategies.Add(strategy); 
+            manager.Strategies.Add(strategy);
           }
 
           if (manager.Strategies.Count==0)
@@ -95,13 +95,13 @@ namespace inventory
 
 
            // if (config.Root["any"].Exists)
-           //  manager.OnlyAttributed = false; 
-    
+           //  manager.OnlyAttributed = false;
+
             var result = new XMLConfiguration();
             result.Create("inventory");
             manager.Run(result.Root);
             Console.WriteLine(result.SaveToString());
-         
+
         }
     }
 }

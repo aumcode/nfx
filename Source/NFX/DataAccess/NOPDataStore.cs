@@ -36,7 +36,7 @@ namespace NFX.DataAccess
   public sealed class NOPDataStore : ApplicationComponent, IDataStoreImplementation
   {
     private static NOPDataStore s_Instance = new NOPDataStore();
-  
+
 
     private NOPDataStore(): base(){}
 
@@ -50,7 +50,7 @@ namespace NFX.DataAccess
 
     public string TargetName{ get{ return NFX.DataAccess.CRUD.TargetedAttribute.ANY_TARGET;}}
 
-    
+
          public bool InstrumentationEnabled{ get{return false;} set{}}
          public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get{ return null;}}
          public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups){ return null;}

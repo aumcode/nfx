@@ -24,7 +24,7 @@ using NFX.Glue.Protocol;
 namespace NFX.Glue.Native
 {
     /// <summary>
-    /// Provides server-side functionality for synchronous communication pattern based on 
+    /// Provides server-side functionality for synchronous communication pattern based on
     ///  in-memory message exchange without serialization
     /// </summary>
     public class InProcServerTransport : ServerTransport<InProcBinding>
@@ -41,7 +41,7 @@ namespace NFX.Glue.Native
         #region Fields/Props
 
         #endregion
-        
+
         #region Protected
 
             protected override bool DoSendResponse(ResponseMsg response)

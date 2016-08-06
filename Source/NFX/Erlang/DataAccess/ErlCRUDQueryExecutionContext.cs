@@ -10,7 +10,7 @@ using NFX.Erlang;
 namespace NFX.DataAccess.Erlang
 {
   /// <summary>
-    /// Provides query execution environment in Erlang context 
+    /// Provides query execution environment in Erlang context
     /// </summary>
     public struct ErlCRUDQueryExecutionContext : ICRUDQueryExecutionContext
     {

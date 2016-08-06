@@ -117,7 +117,7 @@ namespace NFX.Parsing
 
       /// <summary>
       /// A string representing whole token body, in between open and close chars
-      /// </summary>          
+      /// </summary>
       public string Content
       {
         get
@@ -137,8 +137,8 @@ namespace NFX.Parsing
         }
       }
 
-      /// <summary>             
-      /// True if a token represents literal text that gets embedded in response as is 
+      /// <summary>
+      /// True if a token represents literal text that gets embedded in response as is
       /// </summary>
       public bool IsSimpleText
       {
@@ -365,7 +365,7 @@ namespace NFX.Parsing
       if (buf.Length > 0)
         Add(new Token(true, (span ? m_OpenChar.ToString() : "") + buf.ToString()));
 
-    }//TokenParser.Parse	
+    }//TokenParser.Parse
 
 
 

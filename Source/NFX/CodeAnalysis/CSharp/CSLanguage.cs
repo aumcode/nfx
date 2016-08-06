@@ -42,7 +42,7 @@ namespace NFX.CodeAnalysis.CSharp
         {
             get
             {
-                yield return "cs"; 
+                yield return "cs";
             }
         }
 

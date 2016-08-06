@@ -23,7 +23,7 @@ using NFX.Instrumentation;
 
 namespace NFX.Instrumentation.Self
 {
-   
+
     [Serializable]
     public abstract class SelfInstrumentationLongGauge : LongGauge, IInstrumentationInstrument
     {
@@ -39,7 +39,7 @@ namespace NFX.Instrumentation.Self
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new RecordCount(value)); 
+             inst.Record(new RecordCount(value));
         }
 
 
@@ -49,7 +49,7 @@ namespace NFX.Instrumentation.Self
 
         protected override Datum MakeAggregateInstance()
         {
-            return new RecordCount(0); 
+            return new RecordCount(0);
         }
     }
 
@@ -62,7 +62,7 @@ namespace NFX.Instrumentation.Self
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new RecordLoad(value)); 
+             inst.Record(new RecordLoad(value));
         }
 
 
@@ -72,7 +72,7 @@ namespace NFX.Instrumentation.Self
 
         protected override Datum MakeAggregateInstance()
         {
-            return new RecordLoad(0); 
+            return new RecordLoad(0);
         }
     }
 
@@ -85,7 +85,7 @@ namespace NFX.Instrumentation.Self
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ProcessingInterval(value)); 
+             inst.Record(new ProcessingInterval(value));
         }
 
 
@@ -95,7 +95,7 @@ namespace NFX.Instrumentation.Self
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ProcessingInterval(0); 
+            return new ProcessingInterval(0);
         }
     }
 
@@ -109,7 +109,7 @@ namespace NFX.Instrumentation.Self
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new BufferMaxAge(value)); 
+             inst.Record(new BufferMaxAge(value));
         }
 
 
@@ -119,7 +119,7 @@ namespace NFX.Instrumentation.Self
 
         protected override Datum MakeAggregateInstance()
         {
-            return new BufferMaxAge(0); 
+            return new BufferMaxAge(0);
         }
     }
 

@@ -38,7 +38,7 @@ namespace NFX.Time.Instrumentation
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new EventCount(value)); 
+             inst.Record(new EventCount(value));
         }
 
 
@@ -48,7 +48,7 @@ namespace NFX.Time.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new EventCount(0); 
+            return new EventCount(0);
         }
     }
 
@@ -61,7 +61,7 @@ namespace NFX.Time.Instrumentation
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new FiredEventCount(value)); 
+             inst.Record(new FiredEventCount(value));
         }
 
 
@@ -71,7 +71,7 @@ namespace NFX.Time.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new FiredEventCount(0); 
+            return new FiredEventCount(0);
         }
     }
 

@@ -9,7 +9,7 @@ using NFX.Financial.Market;
 
 namespace NFX.WinForms.Controls.ChartKit.Temporal
 {
-  
+
   /// <summary>
   /// Base for time series. This class is NOT thread-safe
   /// </summary>
@@ -34,7 +34,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
             m_Order = order;
             Visible = true;
             AffectsScale = true;
-            HLineStyle = new LineStyle{ Color = style == null ? Color.FromArgb(240, 255, 100, 0) : style.BGColor, 
+            HLineStyle = new LineStyle{ Color = style == null ? Color.FromArgb(240, 255, 100, 0) : style.BGColor,
                                         Width = 1,
                                         DashStyle = System.Drawing.Drawing2D.DashStyle.Dot};
             Style = new Style(null, null);
@@ -43,7 +43,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
           private string m_Name;
           private int    m_Order;
-          
+
           public string  Name { get{ return m_Name; }}
           public int     Order{ get{ return m_Order;}}
 
@@ -59,7 +59,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           {
             get
             {
-              return ValueFormat.IsNotNullOrWhiteSpace() ? 
+              return ValueFormat.IsNotNullOrWhiteSpace() ?
                            Value.ToString(ValueFormat)
                            : Value.ToString();
             }
@@ -71,7 +71,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           public bool Visible { get; set;}
 
           //When true may adjust pane vertical scale size,
-          // i.e. if the value is outside the display range and this value is false, 
+          // i.e. if the value is outside the display range and this value is false,
           //the horizontal level is not going to be visible at a normal zoom
           public bool AffectsScale { get; set;}
 
@@ -105,7 +105,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         m_Parent = null;
       }
     }
-   
+
     private string m_Name;
     private int m_Order;
     private TimeSeries m_Parent;
@@ -122,7 +122,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     /// Returns parent of this series or null
     /// </summary>
     public TimeSeries Parent{ get{ return m_Parent;}}
-    
+
     /// <summary>
     /// Series name
     /// </summary>
@@ -148,8 +148,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     /// <summary>
     /// Returns the registry of horizontal levels on Y access
     /// </summary>
-    public OrderedRegistry<YLevel> YLevels 
-    { 
+    public OrderedRegistry<YLevel> YLevels
+    {
       get{ return m_YLevels;}
     }
 
@@ -165,8 +165,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     /// Views that visualize the series data (may be more than one),
     /// for example a market data may have 3 views that show open.close and volume as 3 views based on the same source
     /// </summary>
-    public OrderedRegistry<SeriesView> Views 
-    { 
+    public OrderedRegistry<SeriesView> Views
+    {
       get{ return m_Views;}
     }
 
@@ -177,7 +177,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     public bool Visible
     {
       get{ return m_Visible;}
-      set{ m_Visible = value;} 
+      set{ m_Visible = value;}
     }
 
     /// <summary>
@@ -194,10 +194,10 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     /// <summary>
     /// Returns data in the series in the reveresed time order
     /// </summary>
-    public IEnumerable<ITimeSeriesSample> DataReveresed 
+    public IEnumerable<ITimeSeriesSample> DataReveresed
     {
       get
-      { 
+      {
           var current = m_Data.Last;
 
           while(current!=null)
@@ -234,8 +234,8 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     /// <summary>
     /// Returns the maximum width of one sample extracted from all views
     /// </summary>
-    public int GetMaxSampleWidth(bool includeChildren = true) 
-    { 
+    public int GetMaxSampleWidth(bool includeChildren = true)
+    {
       if (!this.m_Visible) return 0;
 
       var result = m_Views.Where(v => v.Visible).DefaultIfEmpty().Max( v => v!=null? v.SampleWidth : 0 );
@@ -293,9 +293,9 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     protected void Add(ITimeSeriesSample sample)
     {
       if (sample==null) throw new WFormsException(StringConsts.ARGUMENT_ERROR+"TimeSeries.Add(sample==null)");
-       
+
       //remove data over max samples
-      while(m_Data.Count >= m_MaxSamples) 
+      while(m_Data.Count >= m_MaxSamples)
         m_Data.RemoveFirst();
 
 
@@ -350,7 +350,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
     /// <summary>
     /// Replace last data sample.
-    /// This function requires that the new sample has the same timestamp 
+    /// This function requires that the new sample has the same timestamp
     /// as the last sample in the time series data.
     /// </summary>
     public void ReplaceLast(ITimeSeriesSample sample)
@@ -374,7 +374,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     {
       return m_Data.Remove(sample);
     }
-  
+
     public void Clear()
     {
       m_Data.Clear();
@@ -400,7 +400,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     protected TimeSeries(string name, int order, TimeSeries parent = null) : base(name, order, parent)
     {
     }
-    
+
     public void Add(TSample sample)
     {
       base.Add(sample);

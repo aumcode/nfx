@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,14 +36,14 @@ using NFX.Serialization.JSON;
 namespace NFX.Log
 {
   /// <summary>
-  /// Represents a Log message 
+  /// Represents a Log message
   /// </summary>
   [Serializable]
   public sealed class Message
   {
-    
+
     public static string DefaultHostName;
-    
+
     #region Private Fields
       private Guid m_Guid;
       private Guid m_RelatedTo;
@@ -114,8 +114,8 @@ namespace NFX.Log
           get { return m_Host ?? string.Empty; }
           set { m_Host = value; }
         }
-        
-        
+
+
         /// <summary>
         /// Gets/Sets logical component ID, such as: class name, method name, process instance, that generated the message.
         /// This field is used in the scope of Topic
@@ -148,7 +148,7 @@ namespace NFX.Log
         /// <summary>
         /// Gets/Sets a structured parameter bag, this may be used for additional debug info like source file name, additional context etc.
         /// </summary>
-        public string Parameters 
+        public string Parameters
         {
           get { return m_Parameters ?? string.Empty; }
           set { m_Parameters = value; }
@@ -158,7 +158,7 @@ namespace NFX.Log
         /// Gets/Sets exception associated with message.
         /// Set this property EVEN IF the name/text of exception is already included in Text as log destinations may elect to dump the whole stack trace
         /// </summary>
-        public Exception Exception 
+        public Exception Exception
         {
           get { return m_Exception; }
           set { m_Exception = value; }
@@ -175,7 +175,7 @@ namespace NFX.Log
     }
 
     /// <summary>
-    /// Creates message with Parameters supplanted with caller file name and line # 
+    /// Creates message with Parameters supplanted with caller file name and line #
     /// </summary>
     public Message(object pars, [CallerFilePath] string file = null, [CallerLineNumber] int line = 0) : this()
     {
@@ -199,14 +199,14 @@ namespace NFX.Log
     }
 
     /// <summary>
-    /// Supplants the from string with caller as JSON string 
+    /// Supplants the from string with caller as JSON string
     /// </summary>
-    public static object FormatCallerParams(object pars, 
-                                            [CallerFilePath]  string file = null, 
+    public static object FormatCallerParams(object pars,
+                                            [CallerFilePath]  string file = null,
                                             [CallerLineNumber]int line = 0)
     {
       if (pars==null)
-        return new 
+        return new
           {
             clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
             clrL = line,

@@ -107,7 +107,7 @@ namespace NFX.Erlang
 
       return (o is ErlAtom) && ((ErlAtom) o) == ErlAtom.Undefined;
     }
-    
+
     /// <summary>
     /// Determines if Erlang object is of type ErlByte or ErlLong
     /// </summary>
@@ -320,7 +320,7 @@ namespace NFX.Erlang
     }
 
     private static IErlObject coreToErlObject(object o)
-    { 
+    {
       // Erlang terms
       if      (o is IErlObject) return (IErlObject)o;
       // Native types

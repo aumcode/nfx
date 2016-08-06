@@ -90,7 +90,7 @@ namespace NFX.Glue
          {
            var si = FactoryUtils.MakeAndConfigure<IServerMsgInspector>(inode);
            registry.Register(si);
-         } 
+         }
 
        }
 
@@ -104,7 +104,7 @@ namespace NFX.Glue
          {
            var ci = FactoryUtils.MakeAndConfigure<IClientMsgInspector>(inode);
            registry.Register(ci);
-         } 
+         }
 
        }
 

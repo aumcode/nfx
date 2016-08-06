@@ -91,21 +91,21 @@ namespace NFX.Web.GeoLookup
 
   public class BinaryTree<K, V> where K : IEnumerable<bool>
   {
-    public class Node<K> where K : IEnumerable<bool>
+    public class Node<T> where T : IEnumerable<bool>
     {
-      public Node<K> Left { get; set; }
-      public Node<K> Right { get; set; }
+      public Node<T> Left { get; set; }
+      public Node<T> Right { get; set; }
       public int Index { get; set; }
       public uint Offset { get; set; }
       public Node() { Index = -1; }
 
-      public int this[K key]
+      public int this[T key]
       {
         get { return Find(key).Index; }
         set { Find(key).Index = value; }
       }
 
-      public int FindIndex(K key)
+      public int FindIndex(T key)
       {
         var node = this;
         var index = node.Index;
@@ -119,7 +119,7 @@ namespace NFX.Web.GeoLookup
         return index;
       }
 
-      public Node<K> Find(K key)
+      public Node<T> Find(T key)
       {
         var node = this;
 
@@ -128,7 +128,7 @@ namespace NFX.Web.GeoLookup
           var next = bit ? node.Right : node.Left;
           if (next == null)
           {
-            next = new Node<K>();
+            next = new Node<T>();
             if (bit) node.Right = next;
             else node.Left = next;
           }

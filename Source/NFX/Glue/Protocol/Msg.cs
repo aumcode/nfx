@@ -36,8 +36,8 @@ namespace NFX.Glue.Protocol
         {
           m_ID = FID.Generate();
         }
-        
-        
+
+
         internal FID m_ID;
         internal Headers m_Headers;
 
@@ -80,10 +80,10 @@ namespace NFX.Glue.Protocol
 
 
         /// <summary>
-        /// Returns request ID that relates to this message instance. It is the message ID for RequestMsg and related message ID for ResponseMsg 
+        /// Returns request ID that relates to this message instance. It is the message ID for RequestMsg and related message ID for ResponseMsg
         /// </summary>
         public abstract FID RequestID { get; }
-        
+
 
         /// <summary>
         /// Returns true when this message contains header data
@@ -98,11 +98,11 @@ namespace NFX.Glue.Protocol
         /// Returns a list of headers that this message contains
         /// </summary>
         public Headers Headers
-        { 
+        {
            get
            {
              if (m_Headers==null) m_Headers = new Headers();
-             return m_Headers; 
+             return m_Headers;
            }
            set
            {
@@ -120,7 +120,7 @@ namespace NFX.Glue.Protocol
         }
 
         /// <summary>
-        /// Arbitrary named object collection that can be used to correlate messages and/or attach extra data. 
+        /// Arbitrary named object collection that can be used to correlate messages and/or attach extra data.
         /// This field is NOT transmitted over wire nor is it used by the framework. Message inspectors may use this property
         /// at their own discretion, for example in cases when the same inspector type is registered on multiple levels (endpoint, binding, glue),
         /// inspectors may check this property to execute only once per message.
@@ -132,7 +132,7 @@ namespace NFX.Glue.Protocol
           {
             if (m_CorrelationData==null)
              m_CorrelationData = new Dictionary<string,object>();
-            
+
             return m_CorrelationData;
           }
         }
@@ -143,11 +143,11 @@ namespace NFX.Glue.Protocol
         /// </summary>
         public object BindingSpecificContext
         {
-            get { return m_BindingSpecificContext; } 
+            get { return m_BindingSpecificContext; }
         }
 
         /// <summary>
-        /// Internal method not to be called by app developers. 
+        /// Internal method not to be called by app developers.
         /// Called from custom bindings to inject binding-specific context
         /// </summary>
         public void __SetBindingSpecificContext(object context)
@@ -156,7 +156,7 @@ namespace NFX.Glue.Protocol
         }
 
         /// <summary>
-        /// Internal method not to be called by app developers. 
+        /// Internal method not to be called by app developers.
         /// Called from custom bindings to inject binding-specific context
         /// </summary>
         public void __SetBindingSpecificContext(Msg other)
@@ -179,7 +179,7 @@ namespace NFX.Glue.Protocol
                   if (from.HasCorrelationData)
                     this.m_CorrelationData = new Dictionary<string,object>( from.CorrelationData );
 
-              __SetBindingSpecificContext(from); 
+              __SetBindingSpecificContext(from);
         }
 
         public override string ToString()
@@ -187,6 +187,6 @@ namespace NFX.Glue.Protocol
             return string.Format("{0}(id: {1}, rid: {2})", GetType().Name, m_ID, RequestID);
         }
 
-       
+
     }
 }

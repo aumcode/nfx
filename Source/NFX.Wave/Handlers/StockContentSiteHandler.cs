@@ -33,18 +33,18 @@ namespace NFX.Wave.Handlers
   {
     public StockContentSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
                           : base(dispatcher, name, order, match){}
-     
+
 
     public StockContentSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode)
                           : base(dispatcher, confNode) {}
-    
-    
+
+
     public override string RootResourcePath
     {
       get { return "NFX.Wave.Templatization.StockContent.Embedded"; }
     }
 
-    public override bool SupportsEnvironmentBranching 
+    public override bool SupportsEnvironmentBranching
     {
       get { return false; }
     }

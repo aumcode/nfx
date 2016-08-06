@@ -33,7 +33,7 @@ namespace NFX.Web.Social
         //do not localize
 
         public const string FACEBOOK_PUB_SERVICE_URL = "https://www.facebook.com";
-            
+
         private const string LOGIN_LINK_TEMPLATE = "https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&response_type=code&scope=publish_stream+email";
 
         private const string ACCESSTOKEN_BASEURL = "https://graph.facebook.com/oauth/access_token";
@@ -71,9 +71,9 @@ namespace NFX.Web.Social
         private const string MESSAGE_PARAMNAME = "message";
 
       #endregion
-        
+
       #region Static
-            
+
         private static object s_Lock = new object();
         private static Facebook s_Instance;
 
@@ -96,7 +96,7 @@ namespace NFX.Web.Social
         private Facebook(string name = null, IConfigSectionNode cfg = null) : base(name, cfg) { }
 
       #endregion
-      
+
 
       #region Properties
 
@@ -165,7 +165,7 @@ namespace NFX.Web.Social
         /// Returns service description
         /// </summary>
         public override string Description { get { return "Facebook";} }
-            
+
         /// <summary>
         /// Specifies how service takes user credentials
         /// </summary>
@@ -184,7 +184,7 @@ namespace NFX.Web.Social
 
         private string getAccessToken(string code, string redirectURI)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
+          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
             new Dictionary<string, string>() {
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_REDIRECTURL_PARAMNAME, redirectURI},
@@ -222,7 +222,7 @@ namespace NFX.Web.Social
 
           var birthDateStr = responseObj[USER_BIRTHDAY_PARAMNAME];
           DateTime birthDate;
-          if (DateTime.TryParseExact(birthDateStr, "MM/DD/YYYY", 
+          if (DateTime.TryParseExact(birthDateStr, "MM/DD/YYYY",
             System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out birthDate))
               userInfo.BirthDate = birthDate;
 
@@ -234,7 +234,7 @@ namespace NFX.Web.Social
 
         private string getLongTermAccessToken(string accessToken)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
+          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
             new Dictionary<string, string>() {
               {GRANTTYPE_PARAMNAME, GRANTTYPE_FBEXCHANGETOKEN_PARAMVALUE},
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
@@ -250,16 +250,16 @@ namespace NFX.Web.Social
         {
           string url = PUBLISH_BASEURL_PATTERN.Args(userId);
 
-          dynamic responseObj = WebClient.GetJsonAsDynamic(url, this, HTTPRequestMethod.POST, 
-            queryParameters: new Dictionary<string, string>() { 
+          dynamic responseObj = WebClient.GetJsonAsDynamic(url, this, HTTPRequestMethod.POST,
+            queryParameters: new Dictionary<string, string>() {
               {MESSAGE_PARAMNAME, message},
-              {ACCESSTOKEN_PARAMNAME, accessToken} 
+              {ACCESSTOKEN_PARAMNAME, accessToken}
             }
           );
         }
 
       #endregion
-          
+
     }
 
 
@@ -283,16 +283,16 @@ namespace NFX.Web.Social
     /// <summary>
     /// Token to perform Facebook operations like post (expires in two months)
     /// </summary>
-    public string LongTermAccessToken 
-    { 
-      get; 
-      internal set; 
+    public string LongTermAccessToken
+    {
+      get;
+      internal set;
     }
 
     public override string LongTermProviderToken
     {
       get { return LongTermAccessToken; }
-      internal set 
+      internal set
       {
         LongTermAccessToken = value;
         base.LongTermProviderToken = value;

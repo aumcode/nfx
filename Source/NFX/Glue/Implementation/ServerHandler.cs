@@ -39,12 +39,12 @@ namespace NFX.Glue.Implementation
     {
        #region CONSTS
 
-           public const int DEFAULT_INSTANCE_TIMEOUT_MS = 
+           public const int DEFAULT_INSTANCE_TIMEOUT_MS =
                                                       5 * //min
                                                       60 * //sec
                                                       1000; //msec
 
-           
+
            /// <summary>
            /// Specifies special signature for glue-specific constructors.
            /// If a server implementer class implements a public ctor with this signature then it will be called
@@ -60,11 +60,11 @@ namespace NFX.Glue.Implementation
 
 
        #endregion
-       
+
        #region .ctor
             public ServerHandler(IGlueImplementation glue) : base(glue)
             {
-               
+
             }
        #endregion
 
@@ -76,7 +76,7 @@ namespace NFX.Glue.Implementation
 
        #endregion
 
-        
+
      #region Public
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NFX.Glue.Implementation
           Task.Factory.StartNew(
                 (r) => {
                     var req = (RequestMsg)r;
-                                     
+
                     ResponseMsg response;
                     try
                     {
@@ -103,8 +103,8 @@ namespace NFX.Glue.Implementation
                         }
                         catch(Exception e2)
                         {
-                            this.WriteLog(LogSrc.Server, 
-                                 MessageType.Error,  
+                            this.WriteLog(LogSrc.Server,
+                                 MessageType.Error,
                                  string.Format(StringConsts.GLUE_SERVER_HANDLER_ERROR + e2.ToMessageWithType()),
                                  from: "SrvrHndlr.HndlReqAsnly(ReqMsg:A)",
                                  exception: e2
@@ -112,16 +112,16 @@ namespace NFX.Glue.Implementation
                             return;
                         }
                     }
-                                    
+
                     if (!req.OneWay)
                         try
                         {
-                            req.ServerTransport.SendResponse(response); 
+                            req.ServerTransport.SendResponse(response);
                         }
                         catch(Exception error)
                         {
-                            this.WriteLog(LogSrc.Server, 
-                                 MessageType.Error,  
+                            this.WriteLog(LogSrc.Server,
+                                 MessageType.Error,
                                  string.Format(StringConsts.GLUE_SERVER_HANDLER_ERROR + error.ToMessageWithType()),
                                  from: "SrvrHndlr.HndlReqAsnly(ReqMsg:B)",
                                  exception: error
@@ -135,18 +135,18 @@ namespace NFX.Glue.Implementation
         /// Handles request synchronously in the context of the calling thread. Returns NULL for one-way calls
         /// </summary>
         public ResponseMsg HandleRequestSynchronously(RequestMsg request)
-        { 
+        {
               try
               {
-                 return inspectAndHandleRequest(request); 
+                 return inspectAndHandleRequest(request);
               }
               catch(Exception error) //nothing may leak
               {
                  if (request.OneWay)
                  {
                     //because it is one-way, the caller will never know about it
-                    this.WriteLog(LogSrc.Server, 
-                                 MessageType.Error,  
+                    this.WriteLog(LogSrc.Server,
+                                 MessageType.Error,
                                  string.Format(StringConsts.GLUE_SERVER_ONE_WAY_CALL_ERROR + error.ToMessageWithType()),
                                  from: "SrvrHndlr.HandleRequestSynchronously(ReqMsg)",
                                  exception: error
@@ -154,7 +154,7 @@ namespace NFX.Glue.Implementation
                      return null;
                  }
                  else
-                 {   
+                 {
                      //call goes via Glue because there may be some global event handlers
                      var response = Glue.ServerHandleRequestFailure(request.RequestID, request.OneWay, error, request.BindingSpecificContext);
                      return response;
@@ -165,9 +165,9 @@ namespace NFX.Glue.Implementation
                  NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(null, null, null);
               }
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// Handles request synchronously in the context of the calling thread. Returns NULL for one-way calls
         /// </summary>
@@ -182,12 +182,12 @@ namespace NFX.Glue.Implementation
 
             return response;
        }
-        
+
 
      #endregion
 
 
-     #region Protected 
+     #region Protected
 
             protected override void DoStart()
             {
@@ -203,11 +203,11 @@ namespace NFX.Glue.Implementation
 
 
      #endregion
-        
+
      #region .pvt
 
 
-              
+
         internal class serverImplementer
         {
             public ServerHandler Handler;
@@ -219,7 +219,7 @@ namespace NFX.Glue.Implementation
             public bool ThreadSafe;
             public bool AuthenticationSupport;
             public bool SupportsGlueCtor;
-            
+
             public struct mapping
             {
               public mapping(MethodInfo c, MethodInfo i, Func<object, RequestMsg, object> f)
@@ -239,7 +239,7 @@ namespace NFX.Glue.Implementation
                 Handler = handler;
                 ServerEndPoint = sep;
                 Contract = contract;
-                   
+
                 var implementers = sep.ContractServers.Where(ts => contract.IsAssignableFrom(ts)).ToArray();
 
                 if (implementers.Length==0)
@@ -247,10 +247,10 @@ namespace NFX.Glue.Implementation
 
                 if (implementers.Length>1)
                 {
-                      handler.WriteLog(LogSrc.Server, 
-                                       MessageType.Warning,  
+                      handler.WriteLog(LogSrc.Server,
+                                       MessageType.Warning,
                                        string.Format(StringConsts.GLUE_ENDPOINT_CONTRACT_MANY_SERVERS_WARNING, contract.FullName, sep.Name),
-                                       from: "serverImplementer"); 
+                                       from: "serverImplementer");
                 }
 
                 Implementation = implementers[0];
@@ -262,7 +262,7 @@ namespace NFX.Glue.Implementation
                   var mspec = new MethodSpec(miContract);
                   var miImpl = intfMapping.TargetMethods.FirstOrDefault( tmi => new MethodSpec(tmi).Equals( mspec ));
                   if (miImpl==null)
-                    throw new ServerContractException(StringConsts.GLUE_ENDPOINT_CONTRACT_INTF_MAPPING_ERROR.Args( sep.Name, 
+                    throw new ServerContractException(StringConsts.GLUE_ENDPOINT_CONTRACT_INTF_MAPPING_ERROR.Args( sep.Name,
                                                                                                                    contract.FullName,
                                                                                                                    miContract.Name,
                                                                                                                    Implementation.FullName));
@@ -293,7 +293,7 @@ namespace NFX.Glue.Implementation
                 mapping result;
                 if (methodMap.TryGetValue(spec, out result)) return result;
 
-                throw new ServerContractException(StringConsts.GLUE_ENDPOINT_MSPEC_NOT_FOUND_ERROR.Args( ServerEndPoint.Name, 
+                throw new ServerContractException(StringConsts.GLUE_ENDPOINT_MSPEC_NOT_FOUND_ERROR.Args( ServerEndPoint.Name,
                                                                                                          Contract.FullName,
                                                                                                          spec.ToString()));
             }
@@ -316,7 +316,7 @@ namespace NFX.Glue.Implementation
                    var par = pars[i];
                    if (par.ParameterType.IsByRef || par.IsOut || par.ParameterType.IsGenericParameter)
                      throw new ServerContractException(StringConsts.GLUE_METHOD_SPEC_UNSUPPORTED_ERROR.Args(miContract.DeclaringType.FullName, miContract.Name, par.Name));
-                  
+
                    var fName = "MethodArg_{0}_{1}".Args(i, par.Name);
                    exprArgs.Add( Expression.Field(pCastMsg, fName) );
                 }
@@ -328,7 +328,7 @@ namespace NFX.Glue.Implementation
                  if (isVoid)
                  {
                      return Expression.Lambda<Func<object, RequestMsg, object>>(
-                                        Expression.Block(  
+                                        Expression.Block(
                                                  new ParameterExpression[]{pCastMsg},
                                                  Expression.Assign(pCastMsg, Expression.Convert( pMsg, tReqMsg ) ),
                                                  Expression.Call( Expression.Convert( pInstance, Contract), miContract, exprArgs.ToArray()),
@@ -340,7 +340,7 @@ namespace NFX.Glue.Implementation
                  else
                  {
                      return Expression.Lambda<Func<object, RequestMsg, object>>(
-                                        Expression.Block(  
+                                        Expression.Block(
                                                  new ParameterExpression[]{pCastMsg},
                                                  Expression.Assign(pCastMsg, Expression.Convert( pMsg, tReqMsg ) ),
                                                  Expression.Convert(
@@ -367,11 +367,11 @@ namespace NFX.Glue.Implementation
 
 
                 private ResponseMsg inspectAndHandleRequest(RequestMsg request)
-                {  
+                {
                         NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(request, null, request.Session);
-                       
+
                         //Glue level inspectors
-                        var inspectors = Glue.ServerMsgInspectors; 
+                        var inspectors = Glue.ServerMsgInspectors;
                         for(var i=0; i<inspectors.Count; i++)
                         {
                             var insp = inspectors[i];
@@ -381,7 +381,7 @@ namespace NFX.Glue.Implementation
                         }
 
                         //Binding level inspectors
-                        inspectors = request.ServerTransport.Binding.ServerMsgInspectors; 
+                        inspectors = request.ServerTransport.Binding.ServerMsgInspectors;
                         for(var i=0; i<inspectors.Count; i++)
                         {
                             var insp = inspectors[i];
@@ -389,26 +389,26 @@ namespace NFX.Glue.Implementation
                             request = insp.ServerDispatchRequest(request.ServerTransport.ServerEndpoint, request);
                             NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(request, null, request.Session);
                         }
-                                  
+
                         //Endpoint level inspectors
-                        inspectors = request.ServerTransport.ServerEndpoint.MsgInspectors; 
+                        inspectors = request.ServerTransport.ServerEndpoint.MsgInspectors;
                         for(var i=0; i<inspectors.Count; i++)
                         {
                             var insp = inspectors[i];
                             if (insp==null) continue;
                             request = insp.ServerDispatchRequest(request.ServerTransport.ServerEndpoint, request);
                             NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(request, null, request.Session);
-                        }   
-                                                   
+                        }
+
                       var response = handleRequest(request);
-               
+
                       NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(request, response, request.Session);
 
                       if (!request.OneWay && response!=null)
                       {
-                        
+
                         //Glue level inspectors
-                        inspectors = Glue.ServerMsgInspectors; 
+                        inspectors = Glue.ServerMsgInspectors;
                         for(var i=0; i<inspectors.Count; i++)
                         {
                             var insp = inspectors[i];
@@ -418,7 +418,7 @@ namespace NFX.Glue.Implementation
                         }
 
                         //Binding level inspectors
-                        inspectors = request.ServerTransport.Binding.ServerMsgInspectors; 
+                        inspectors = request.ServerTransport.Binding.ServerMsgInspectors;
                         for(var i=0; i<inspectors.Count; i++)
                         {
                             var insp = inspectors[i];
@@ -426,33 +426,33 @@ namespace NFX.Glue.Implementation
                             response = insp.ServerReturnResponse(request.ServerTransport.ServerEndpoint, request, response);
                             NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(request, response, request.Session);
                         }
-                                  
+
                         //Endpoint level inspectors
-                        inspectors = request.ServerTransport.ServerEndpoint.MsgInspectors; 
+                        inspectors = request.ServerTransport.ServerEndpoint.MsgInspectors;
                         for(var i=0; i<inspectors.Count; i++)
                         {
                             var insp = inspectors[i];
                             if (insp==null) continue;
                             response = insp.ServerReturnResponse(request.ServerTransport.ServerEndpoint, request, response);
                             NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(request, response, request.Session);
-                        }   
+                        }
 
                         return response;
                      }
-             
+
                      return null;
                 }
-                
-                
+
+
                 private ResponseMsg handleRequest(RequestMsg request)
-                {            
+                {
                    try
                    {
                      ServerCallContext.__SetThreadLevelContext(request);
                      try
                      {
                        var response = doWork(request);
-               
+
                        var rhdr = ServerCallContext.GetResponseHeadersOrNull();
 
                        if (rhdr!=null && response!=null)
@@ -469,8 +469,8 @@ namespace NFX.Glue.Implementation
                    {
                      if (request.OneWay)
                      {    //because it is one-way, the caller will never know about it
-                          this.WriteLog(LogSrc.Server, 
-                                       MessageType.Error,  
+                          this.WriteLog(LogSrc.Server,
+                                       MessageType.Error,
                                        string.Format(StringConsts.GLUE_SERVER_ONE_WAY_CALL_ERROR + error.ToMessageWithType()),
                                        from: "SrvrHndlr.handleRequest(ReqMsg)",
                                        exception: error
@@ -479,8 +479,8 @@ namespace NFX.Glue.Implementation
                      }
                      else
                      {
-                         var red = new RemoteExceptionData(error); 
-                         var response = new ResponseMsg(request.RequestID, red); 
+                         var red = new RemoteExceptionData(error);
+                         var response = new ResponseMsg(request.RequestID, red);
                          response.__SetBindingSpecificContext(request);
                          return response;
                      }
@@ -488,7 +488,7 @@ namespace NFX.Glue.Implementation
                 }
 
                 private ResponseMsg doWork(RequestMsg request)
-                {                                            
+                {
                    var contract = request.Contract;//this throws when contract can't be found
                    var server = getServerImplementer(request.ServerTransport.ServerEndpoint, contract);//throws when no implementor match found
 
@@ -501,23 +501,23 @@ namespace NFX.Glue.Implementation
                    Security.Permission.AuthorizeAndGuardAction(server.Implementation);
 
                    serverImplementer.mapping mapped = server.SpecToMethodInfos(request.Method);
-                                                       
-                       
+
+
                    Security.Permission.AuthorizeAndGuardAction(mapped.miContract);
                    Security.Permission.AuthorizeAndGuardAction(mapped.miImplementation);
-                   
-                   
+
+
                    Guid? checkedOutID;
                    bool lockTaken;
                    var instance = getServerInstance(server, request, out checkedOutID, out lockTaken); //throws when instance expired or cant be locked
-                   
+
                    try
-                   {    
+                   {
                        Guid? instanceID = null;
                        bool isCtor = false;
                        bool isDctor = false;
 
-                       if (server.InstanceMode == ServerInstanceMode.Stateful || 
+                       if (server.InstanceMode == ServerInstanceMode.Stateful ||
                            server.InstanceMode == ServerInstanceMode.AutoConstructedStateful)
                        {
                           instanceID = request.RemoteInstance;
@@ -536,7 +536,7 @@ namespace NFX.Glue.Implementation
                                                                                   .Args( contract.FullName, request.MethodName));
                        }
 
-                       //========================================================================================================                                                    
+                       //========================================================================================================
                        object result;
                        try
                        {
@@ -557,14 +557,14 @@ namespace NFX.Glue.Implementation
                             Exception err = bodyError;
                             if (err is TargetInvocationException)//unwrap the inner error which is wrapped by Invoke()
                               if (err.InnerException!=null) err = err.InnerException;
-                            
+
                             throw new ServerMethodInvocationException(StringConsts.GLUE_SERVER_CONTRACT_METHOD_INVOCATION_ERROR
-                                                                                  .Args(contract.FullName, request.MethodName, err.ToMessageWithType()), 
+                                                                                  .Args(contract.FullName, request.MethodName, err.ToMessageWithType()),
                                                                       err);
                        }
                        //========================================================================================================
 
-                       if (server.InstanceMode == ServerInstanceMode.Stateful || 
+                       if (server.InstanceMode == ServerInstanceMode.Stateful ||
                            server.InstanceMode == ServerInstanceMode.AutoConstructedStateful)
                        {
                            if (isCtor || (server.InstanceMode == ServerInstanceMode.AutoConstructedStateful && !isDctor && !instanceID.HasValue))
@@ -594,24 +594,24 @@ namespace NFX.Glue.Implementation
                    finally
                    {
                      if (lockTaken)
-                        Monitor.Exit(instance);  
+                        Monitor.Exit(instance);
                      if (checkedOutID.HasValue)
                         App.ObjectStore.CheckIn(checkedOutID.Value, server.InstanceTimeoutMs);
                    }
                 }
-                
+
 
                 private serverImplementer getServerImplementer(ServerEndPoint sep, Type contract)
                 {
                   serverImplementer server;
                   if (sep.m_ContractImplementers.TryGetValue(contract, out server)) return server;
-                 
+
                   server = new serverImplementer(this, sep, contract); //throws
-                  sep.m_ContractImplementers.TryAdd(contract, server); 
+                  sep.m_ContractImplementers.TryAdd(contract, server);
                   return server;
                 }
 
-                
+
                 private object getServerInstance(serverImplementer server, RequestMsg request, out Guid? checkedOutID, out bool lockTaken)
                 {
                    object result = null;
@@ -633,7 +633,7 @@ namespace NFX.Glue.Implementation
                        }
                    }
                    else
-                   if (server.InstanceMode == ServerInstanceMode.Stateful || 
+                   if (server.InstanceMode == ServerInstanceMode.Stateful ||
                        server.InstanceMode == ServerInstanceMode.AutoConstructedStateful)
                    {
                      if (request.RemoteInstance.HasValue)
@@ -641,7 +641,7 @@ namespace NFX.Glue.Implementation
                        result = App.ObjectStore.CheckOut(request.RemoteInstance.Value);
                        if (result==null || result.GetType()!=server.Implementation)
                         throw new StatefulServerInstanceDoesNotExistException(StringConsts.GLUE_STATEFUL_SERVER_INSTANCE_DOES_NOT_EXIST_ERROR + server.Implementation.FullName);
-                       
+
                        checkedOutID = request.RemoteInstance.Value;
 
                        if (!server.ThreadSafe)
@@ -679,7 +679,7 @@ namespace NFX.Glue.Implementation
                    {
                      throw new ServerInstanceActivationException(StringConsts.GLUE_SERVER_INSTANCE_ACTIVATION_ERROR + server.Implementation.FullName, error);
                    }
-                } 
+                }
 
 
                 private void interpretAuthenticationHeader(RequestMsg request)
@@ -698,11 +698,11 @@ namespace NFX.Glue.Implementation
                    else
                       user = App.SecurityManager.Authenticate(ah.Token);
 
-                   if (NFX.ApplicationModel.ExecutionContext.HasThreadContextSession) 
+                   if (NFX.ApplicationModel.ExecutionContext.HasThreadContextSession)
                         NFX.ApplicationModel.ExecutionContext.Session.User = user;
                    else
                         NFX.ApplicationModel.ExecutionContext.__SetThreadLevelSessionContext( App.Instance.MakeNewSessionInstance(Guid.NewGuid(), user) );
-                   
+
                 }
 
      #endregion

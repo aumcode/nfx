@@ -49,10 +49,10 @@ namespace ntc
 
 
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           ConsoleUtils.WriteMarkupContent( typeof(Program).GetText("Welcome.txt") );
 
           if (config.Root["?"].Exists ||
@@ -63,8 +63,8 @@ namespace ntc
              return;
           }
 
-          
-          
+
+
           if (!config.Root.AttrByIndex(0).Exists)
           {
             ConsoleUtils.Error("Template source path is missing");
@@ -134,8 +134,8 @@ namespace ntc
                                     ConsoleUtils.Info("Compile unit errors:");
                                     foreach(var erru in compiler.CompileUnitsWithErrors)
                                     {
-                                     ConsoleUtils.Error(string.Format("Unit '{0}'. Type '{1}' Text: '{2}'", 
-                                                                         erru.TemplateSource.GetName(16), 
+                                     ConsoleUtils.Error(string.Format("Unit '{0}'. Type '{1}' Text: '{2}'",
+                                                                         erru.TemplateSource.GetName(16),
                                                                          erru.CompilationException.GetType().Name,
                                                                          erru.CompilationException.Message));
                                     }
@@ -150,7 +150,7 @@ namespace ntc
                                   static void writeToDiskCompiledSourceFiles(TemplateCompiler compiler, IConfigSectionNode configRoot)
                                   {
                                      var ext = configRoot["ext"].AttrByIndex(0).ValueAsString(compiler.LanguageSourceFileExtension);
-                                     
+
                                       foreach(var cu in compiler)
                                       {
                                         if (cu.CompilationException!=null) continue;

@@ -37,18 +37,18 @@ namespace NFX.Glue.Native
     public class SyncBinding : Binding
     {
         #region CONSTS
-            
+
             public const int DEFAULT_RCV_TIMEOUT = 0;
             public const int DEFAULT_SND_TIMEOUT = 0;
 
-            public const int DEFAULT_PORT = 8000; 
+            public const int DEFAULT_PORT = 8000;
 
             public static readonly TypeRegistry KNOWN_SERIALIZER_TYPES = new TypeRegistry(
                                                                  TypeRegistry.GlueProtocolTypes,
                                                                  TypeRegistry.BoxedCommonTypes,
                                                                  TypeRegistry.BoxedCommonNullableTypes,
                                                                  TypeRegistry.CommonCollectionTypes,
-                                                                 TypeRegistry.DataAccessCRUDTypes); 
+                                                                 TypeRegistry.DataAccessCRUDTypes);
 
         #endregion
 
@@ -66,9 +66,9 @@ namespace NFX.Glue.Native
 
 
         #region Fields
-            
+
             private int m_MaxMsgSize = Consts.DEFAULT_MAX_MSG_SIZE;
-           
+
             private int m_ServerReceiveBufferSize = Consts.DEFAULT_RCV_BUFFER_SIZE;
             private int m_ServerSendBufferSize = Consts.DEFAULT_SND_BUFFER_SIZE;
             private int m_ClientReceiveBufferSize = Consts.DEFAULT_RCV_BUFFER_SIZE;
@@ -103,7 +103,7 @@ namespace NFX.Glue.Native
             {
                get { return m_MaxMsgSize; }
                set { m_MaxMsgSize = value < Consts.MAX_MSG_SIZE_LOW_BOUND ? Consts.MAX_MSG_SIZE_LOW_BOUND : value;}
-            } 
+            }
 
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_BUF_SIZE_ATTR, Consts.DEFAULT_RCV_BUFFER_SIZE)]
@@ -114,49 +114,49 @@ namespace NFX.Glue.Native
             }
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_BUF_SIZE_ATTR, Consts.DEFAULT_SND_BUFFER_SIZE)]
-            public int ServerSendBufferSize 
+            public int ServerSendBufferSize
             {
                get { return m_ServerSendBufferSize; }
                set { m_ServerSendBufferSize = value <=0 ? Consts.DEFAULT_SND_BUFFER_SIZE : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_BUF_SIZE_ATTR, Consts.DEFAULT_RCV_BUFFER_SIZE)]
-            public int ClientReceiveBufferSize 
+            public int ClientReceiveBufferSize
             {
                get { return m_ClientReceiveBufferSize; }
                set { m_ClientReceiveBufferSize = value <=0 ? Consts.DEFAULT_RCV_BUFFER_SIZE : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_BUF_SIZE_ATTR, Consts.DEFAULT_SND_BUFFER_SIZE)]
-            public int ClientSendBufferSize 
+            public int ClientSendBufferSize
             {
                get { return m_ClientSendBufferSize; }
                set { m_ClientSendBufferSize = value <=0 ? Consts.DEFAULT_SND_BUFFER_SIZE : value;}
             }
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_TIMEOUT_ATTR, DEFAULT_RCV_TIMEOUT)]
-            public int ServerReceiveTimeout 
+            public int ServerReceiveTimeout
             {
                get { return m_ServerReceiveTimeout; }
                set { m_ServerReceiveTimeout = value <0 ? DEFAULT_RCV_TIMEOUT : value;}
             }
 
             [Config(CONFIG_SERVER_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_TIMEOUT_ATTR, DEFAULT_SND_TIMEOUT)]
-            public int ServerSendTimeout 
+            public int ServerSendTimeout
             {
                get { return m_ServerSendTimeout; }
                set { m_ServerSendTimeout = value <0 ? DEFAULT_SND_TIMEOUT : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_RCV_TIMEOUT_ATTR, DEFAULT_RCV_TIMEOUT)]
-            public int ClientReceiveTimeout 
+            public int ClientReceiveTimeout
             {
                get { return m_ClientReceiveTimeout; }
                set { m_ClientReceiveTimeout = value <0 ? DEFAULT_RCV_TIMEOUT : value;}
             }
 
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + Consts.CONFIG_SND_TIMEOUT_ATTR, DEFAULT_SND_TIMEOUT)]
-            public int ClientSendTimeout 
+            public int ClientSendTimeout
             {
                get { return m_ClientSendTimeout; }
                set { m_ClientSendTimeout = value <0 ? DEFAULT_SND_TIMEOUT : value;}
@@ -178,7 +178,7 @@ namespace NFX.Glue.Native
             internal static IPEndPoint ToIPEndPoint(Node node)
             {
                 return (node.Host + ':' + node.Service).ToIPEndPoint(DEFAULT_PORT);
-            } 
+            }
 
 
             protected override void DoStart()

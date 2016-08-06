@@ -54,7 +54,7 @@ namespace NFX.Instrumentation
           {
               return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
           }
-          
+
           /// <summary>
           /// Sets external parameter value returning true if parameter was found and set
           /// </summary>
@@ -70,7 +70,7 @@ namespace NFX.Instrumentation
             {
               base.DoConfigure(node);
             }
-         
+
             protected void WriteLog(MessageType type, string message, string parameters = null, string from = null)
             {
               App.Log.Write(
@@ -98,8 +98,8 @@ namespace NFX.Instrumentation
             /// Returns named parameters that can be used to control this component
             /// </summary>
             public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            { 
-              return ExternalParameterAttribute.GetParameters(this, groups); 
+            {
+              return ExternalParameterAttribute.GetParameters(this, groups);
             }
 
         #endregion

@@ -27,10 +27,10 @@ namespace NFX
     /// Checks for reference equality. Use ReferenceEqualityComparer(T).Instance
     /// </summary>
     public sealed class ReferenceEqualityComparer<T> : EqualityComparer<T>
-    {   
+    {
         private static ReferenceEqualityComparer<T> s_Instance = new ReferenceEqualityComparer<T>();
 
-        public static ReferenceEqualityComparer<T> Instance { get { return s_Instance;}} 
+        public static ReferenceEqualityComparer<T> Instance { get { return s_Instance;}}
 
         private ReferenceEqualityComparer() {}
 

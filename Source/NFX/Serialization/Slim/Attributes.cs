@@ -15,4 +15,15 @@ namespace NFX.Serialization.Slim
   {
     public SlimDeserializationCtorSkipAttribute(){ }
   }
+
+
+  /// <summary>
+  /// When set fails an attempt to serialize the decorated type
+  /// </summary>
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
+  public class SlimSerializationProhibitedAttribute : Attribute
+  {
+    public SlimSerializationProhibitedAttribute(){ }
+  }
+
 }

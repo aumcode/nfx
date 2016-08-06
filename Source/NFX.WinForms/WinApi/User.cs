@@ -72,9 +72,9 @@ namespace NFX.WinApi
             this.Left, this.Top, this.Right - this.Left, this.Bottom - this.Top);
       }
     }
-  
-  
-  
+
+
+
     public delegate int EnumDelegate(IntPtr hwnd, int LParam);
 
     [DllImport(USER32)]
@@ -108,10 +108,10 @@ namespace NFX.WinApi
     public static extern bool MessageBeep(int uType);
 
     [DllImport(USER32)]
-    public static extern IntPtr GetFocus(); 
+    public static extern IntPtr GetFocus();
 
 
-    
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 

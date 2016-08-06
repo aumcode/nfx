@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NFX.WinForms.Controls
 {
     /// <summary>
-    /// Defines horizontal alignment 
+    /// Defines horizontal alignment
     /// </summary>
     public enum HAlignment
     {
@@ -17,8 +17,8 @@ namespace NFX.WinForms.Controls
       Near,
       Far
     }
-    
-    
+
+
     /// <summary>
     /// Defines types of background brushes
     /// </summary>
@@ -31,22 +31,22 @@ namespace NFX.WinForms.Controls
       ForwardDiagonalGradient,
       BackwardDiagonalGradient
     }
-    
-    
+
+
     /// <summary>
     /// Defines directions for sorting in grid columns
     /// </summary>
     public enum SortDirection
     {
       FIRST = 0,
-      
-      
+
+
       None = 0,
       Up,
       Down,
-      
-      
+
+
       LAST = Down
     }
-    
+
 }

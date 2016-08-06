@@ -21,34 +21,34 @@ using System.Text;
 
 namespace NFX.Inventorization
 {
-    
+
     /// <summary>
     /// Designates system architecture tiers
     /// </summary>
     [Flags]
     public enum SystemTiers {
-                               Unspecified=0, 
+                               Unspecified=0,
                                GUI = 1,
-                               AppServer = 2, 
+                               AppServer = 2,
                                DBServer = 4,
                                SystemServer = 8,
                                NotificationBus = 32,
                                All = GUI | AppServer | DBServer | SystemServer | NotificationBus
                               }
-    
+
 
     /// <summary>
     /// Designates item concerns
     /// </summary>
     [Flags]
     public enum SystemConcerns {
-                               Unspecified=0, 
+                               Unspecified=0,
                                Security = 1,
                                Development = 2,
                                Testing = 4,
                                Deployment = 8,
                                Release = 16,
-                               Testability = 32, 
+                               Testability = 32,
                                Configuration = 64,
                                Performance = 128,
                                Maintainability = 256,
@@ -59,8 +59,8 @@ namespace NFX.Inventorization
                                Luck = 8192//yes, luck too
                              }
 
-    
-    
+
+
     /// <summary>
     /// Defines an inventory-related set of data which is used by automatic code/component discovery
     /// such as database schema generation tools and system-global registry servers
@@ -85,12 +85,12 @@ namespace NFX.Inventorization
        public string Technology { get; set; }
 
        /// <summary>
-       /// Provides a name of schema for this item, for example [Inventory(Technology="MongoDB", Schema="UserTransactions")]  
+       /// Provides a name of schema for this item, for example [Inventory(Technology="MongoDB", Schema="UserTransactions")]
        /// </summary>
        public string Schema { get; set; }
 
        /// <summary>
-       /// Provides an optional name of an applicable tool [Inventory(Tool="ErlangModuleGenerator")]  
+       /// Provides an optional name of an applicable tool [Inventory(Tool="ErlangModuleGenerator")]
        /// </summary>
        public string Tool { get; set; }
 
@@ -99,7 +99,7 @@ namespace NFX.Inventorization
        /// </summary>
        public DateTime? StartDate { get; set; }
 
-   
+
        /// <summary>
        /// Provides an optional end date i.e. when this item will be phased out
        /// </summary>

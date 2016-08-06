@@ -24,7 +24,7 @@ using NFX.ApplicationModel;
 namespace NFX.Instrumentation
 {
     /// <summary>
-    /// Provides IInstrumentation implementation that does nothing 
+    /// Provides IInstrumentation implementation that does nothing
     /// </summary>
     public sealed class NOPInstrumentation : ApplicationComponent, IInstrumentationImplementation
     {
@@ -43,7 +43,7 @@ namespace NFX.Instrumentation
            get { return s_Instance; }
          }
 
-         
+
          public bool InstrumentationEnabled{ get{return false;} set{}}
          public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get{ return null;}}
          public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups){ return null;}
@@ -83,7 +83,7 @@ namespace NFX.Instrumentation
            get { return 0; }
          }
 
-         public bool SelfInstrumented 
+         public bool SelfInstrumented
          {
            get { return false;}
          }
@@ -99,7 +99,7 @@ namespace NFX.Instrumentation
 
          public void Record(Datum datum)
          {
-           //does nothing 
+           //does nothing
          }
 
          public IEnumerable<string> GetDatumTypeSources(Type datumType, out Datum defaultInstance)

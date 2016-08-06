@@ -103,9 +103,9 @@
     <Compile Include="Web\Pay\MockTest.cs" />
     <Compile Include="Web\Pay\PayPalTest.cs" />
     <Compile Include="Web\Pay\PayTestCommon.cs" />
+    <Compile Include="Web\Pay\BraintreeTest.cs" />
     <Compile Include="Web\Pay\StripeTest.cs" />
     <Compile Include="Web\Social\AutostarterTest.cs" />
-    <Compile Include="Web\Tax\TaxTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
@@ -152,12 +152,16 @@
     <EmbeddedResource Include="CRUD\Types.Load.mys.sql" />
     <EmbeddedResource Include="CRUD\FullGDID.Load.mys.sql" />
     <EmbeddedResource Include="CRUD\LoadPerzon.mon.json" />
+    <EmbeddedResource Include="CRUD\Tuple.LoadAll.mys.sql" />
     <Content Include="CRUD\CreateTables.txt" />
     <EmbeddedResource Include="CRUD\LoadPerzonsInAgeSpan.mon.json" />
     <EmbeddedResource Include="CRUD\Echo.erl.qry" />
     <EmbeddedResource Include="CRUD\SECDEF.erl.qry" />
     <EmbeddedResource Include="CRUD\SecDef.ByExchange.erl.qry" />
     <EmbeddedResource Include="CRUD\WorldNews.erl.qry" />
+    <EmbeddedResource Include="CRUD\LoadAllMyData.mon.json" />
+    <EmbeddedResource Include="CRUD\LoadInvoice.mon.json" />
+    <EmbeddedResource Include="CRUD\LoadMuchData.mon.json" />
     <None Include="CRUD\ErlSpecific\nfx_crud.erl" />
     <None Include="CRUD\ErlSpecific\nfx_test.erl" />
     <None Include="CRUD\ErlSpecific\StartErlNode.bat" />
@@ -172,9 +176,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Web\Pay\Tax\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

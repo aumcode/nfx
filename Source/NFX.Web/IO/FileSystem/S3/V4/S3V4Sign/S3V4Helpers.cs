@@ -72,6 +72,6 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
 
     public const string DATESTRING_FORMAT = "yyyyMMdd";
     public const string ISO8601_DATESTRING_FORMAT = "yyyyMMddTHHmmssZ";
-    
+
   }
 }

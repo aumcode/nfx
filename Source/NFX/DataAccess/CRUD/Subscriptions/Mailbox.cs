@@ -27,7 +27,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       {
         get{ return Microseconds.FromMicrosecondsSinceUnixEpochStart();}
       }
-  } 
+  }
 
   /// <summary>
   /// Describes row modification
@@ -52,15 +52,15 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       public readonly Row Row;
       public readonly DataTimeStamp Version;
   }
-  
-  
-  
-  
+
+
+
+
   /// <summary>
   /// Describes event handlers that get called when data arrives
   /// </summary>
   public delegate void SubscriptionReceiptEventHandler(Subscription subscription, Mailbox recipient, CRUDSubscriptionEvent data, Exception error);
-  
+
   /// <summary>
   /// Represents CRUD row data recipient
   /// </summary>
@@ -71,7 +71,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       {
         m_Store = store;
         m_Name = name.IsNullOrWhiteSpace() ? Guid.NewGuid().ToString() : name;
-     
+
         var reg = m_Store.Mailboxes as Registry<Mailbox>;
         Mailbox existing;
         if (!reg.RegisterOrReplace(this, out existing))
@@ -82,10 +82,10 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       {
         if (m_Store!=null)
           ((Registry<Mailbox>)m_Store.Mailboxes).Unregister(this);
-        
+
         foreach(var subscription in m_Subscriptions)
           subscription.Dispose();
-        
+
         m_Subscriptions.Clear();
 
         base.Destructor();
@@ -140,8 +140,8 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     #endregion
 
     #region Public
-      
-      
+
+
       /// <summary>
       /// Delivers data to the mailbox. This method is called by subscription
       /// </summary>
@@ -156,8 +156,8 @@ namespace NFX.DataAccess.CRUD.Subscriptions
             m_Buffer.AddLast(data);
             if (m_Buffer.Count>cap)
               m_Buffer.RemoveFirst();
-          } 
-        
+          }
+
         OnReceipt(subscription, data, null);
 
         return true;
@@ -166,7 +166,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       public bool DeliverError(Subscription subscription, Exception error)
       {
         if (subscription.Store!=this.Store) return false;
-        
+
         OnReceipt(subscription, default(CRUDSubscriptionEvent), error);
 
         return true;
@@ -184,7 +184,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
        var result = new List<CRUDSubscriptionEvent>();
 
        if (count<=0) return result;
-       
+
        lock(m_Buffer)
         for(var i=0; i<count; i++)
         {
@@ -193,7 +193,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
           result.Add(first.Value);
           if (keep) continue;
           m_Buffer.RemoveFirst();
-        } 
+        }
 
         return result;
       }

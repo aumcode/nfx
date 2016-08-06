@@ -32,14 +32,14 @@ namespace NFX.Log.Destinations
            public const int BUFFER_SIZE_DEFAULT = 1024;
 
        #endregion
-       
-       
+
+
        #region .ctor
         public MemoryBufferDestination() : base(null)
         {
 
         }
-       
+
         public MemoryBufferDestination(string name) : base(name)
         {
         }
@@ -49,17 +49,17 @@ namespace NFX.Log.Destinations
           base.Destructor();
         }
       #endregion
-        
+
        #region Pvt Fields
-        
+
         private Message[] m_Buffer;
         private int m_Index;
         private int m_BufferSize = BUFFER_SIZE_DEFAULT;
-      #endregion   
-       
-      
+      #endregion
+
+
       #region Properties
-      
+
         [Config]
         [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
         public int BufferSize
@@ -73,7 +73,7 @@ namespace NFX.Log.Destinations
                 m_Buffer = null; //atomic
             }
         }
-        
+
 
         /// <summary>
         /// Returns all buffered log messages, where X = BufferSize property
@@ -111,7 +111,7 @@ namespace NFX.Log.Destinations
 
 
       #endregion
-      
+
       #region Public
 
            /// <summary>
@@ -127,19 +127,19 @@ namespace NFX.Log.Destinations
            {
                base.Open();
            }
-       
+
            public override void Close()
            {
                base.Close();
            }
 
-      #endregion 
-       
-        
-        
+      #endregion
+
+
+
       #region Protected
 
-        
+
         protected internal override void DoSend(Message entry)
         {
           if (m_Buffer==null)
@@ -153,7 +153,7 @@ namespace NFX.Log.Destinations
           if (m_Index>=m_Buffer.Length)
             m_Index = 0;
         }
-     
+
       #endregion
     }
 }

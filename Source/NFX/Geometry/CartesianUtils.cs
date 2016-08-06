@@ -86,11 +86,11 @@ namespace NFX.Geometry
                Math.Pow(y1 - y2, 2)
              );
     }
-    
+
     /// <summary>
     /// Calculates distance between two points
     /// </summary>
-    public static int Distance(Point p1, Point p2)  
+    public static int Distance(Point p1, Point p2)
     {
       return Distance(p1.X, p1.Y, p2.X, p2.Y);
     }
@@ -167,26 +167,26 @@ namespace NFX.Geometry
 
       return new PolarPoint(dist, theta);
     }
-    
+
     /// <summary>
-    /// Modifies an angle by delta value ensuring that resulting angle is always between 0 and 2Pi 
+    /// Modifies an angle by delta value ensuring that resulting angle is always between 0 and 2Pi
     /// </summary>
     public static double WrapAngle(double angle, double delta)
     {
       delta = delta % PI2;
-      
-      if (delta<0) 
+
+      if (delta<0)
         delta =  PI2 + delta;
-      
+
       double result = angle + delta;
-      
+
       return result % PI2;
     }
-    
-    
-    
+
+
+
     /// <summary>
-    /// Returns a point of intersection between a ray cast from the center of a rectangle 
+    /// Returns a point of intersection between a ray cast from the center of a rectangle
     ///  under certain polar coordinate angle and a rectangle side
     /// </summary>
     public static Point FindRayFromRectangleCenterSideIntersection(Rectangle rect, double theta)
@@ -194,66 +194,66 @@ namespace NFX.Geometry
         Point center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2);
 
         double rayLength = rect.Width > rect.Height ? rect.Width : rect.Height; //make ray "infinite" in comparison to rect
-        
-        if (rayLength < 100) rayLength = 100; //safeguard 
+
+        if (rayLength < 100) rayLength = 100; //safeguard
 
         PolarPoint rayEnd = new PolarPoint(rayLength, theta);//create ray "end" point
 
         double k = (rayEnd.Point.X!=0)? ((double)rayEnd.Point.Y) / ((double)rayEnd.Point.X) : 0; //get line incline  aka. y = kx
 
         int x, y;
-        
+
         List<Point> lst = new List<Point>();
-        
+
         //north
         x = center.X + ((k != 0) ? (int)((rect.Top - center.Y) / k) : 0);
         y = rect.Top;
-        if ((x >= rect.Left) && 
+        if ((x >= rect.Left) &&
             (x <= rect.Right))
            lst.Add(new Point(x, y));
-       
+
         //south
         x = center.X + ((k != 0) ? (int)((rect.Bottom - center.Y) / k) : 0);
         y = rect.Bottom;
         if ((x >= rect.Left) &&
             (x <= rect.Right))
           lst.Add(new Point(x, y));
-       
+
         //east
         x = rect.Right;
         y = center.Y + (int)(k * (rect.Right - center.X));
         if ((y >= rect.Top) &&
             (y <= rect.Bottom))
           lst.Add(new Point(x, y));
-       
+
         //west
         x = rect.Left;
         y = center.Y + (int)(k * (rect.Left - center.X));
         if ((y >= rect.Top) &&
             (y <= rect.Bottom))
           lst.Add(new Point(x, y));
-        
+
         Point minPoint = new Point(int.MaxValue, int.MaxValue);
         int minDistance = int.MaxValue;
 
-        Point re = rayEnd.Point; //rayEnd is relative to absolute 0,0 
+        Point re = rayEnd.Point; //rayEnd is relative to absolute 0,0
         re.Offset(center.X, center.Y); // need to make relative to rectangle center
 
         foreach (Point p in lst) //find closest point
         {
            int dst = Distance(p, re);
-           
+
            if (dst < minDistance)
            {
              minPoint = p;
              minDistance = dst;
            }
-        } 
-        
+        }
+
         return minPoint;
       }
-    
-    
+
+
     /// <summary>
     /// Converts map direction to angular coordinate in radians
     /// </summary>
@@ -270,18 +270,18 @@ namespace NFX.Geometry
          case MapDirection.NorthWest: return 6d/16d * PI2;
          case MapDirection.SouthEast: return 14d/16d * PI2;
          case MapDirection.SouthWest: return 10d/16d * PI2;
-         
+
          default: return 0.0d;
        }
     }
-    
+
     /// <summary>
     /// Converts a radian angular coordinate into map direction
     /// </summary>
     public static MapDirection AngleToMapDirection(double angle)
     {
        angle = WrapAngle(angle, 0);
-       
+
        if ((angle >= 0.0d) && (angle < PI2 * 1d/16d)) return MapDirection.East;
        else
        if ((angle >= PI2 * 1d/16d) && (angle < PI2 * 3d/16d)) return MapDirection.NorthEast;
@@ -297,11 +297,11 @@ namespace NFX.Geometry
        if ((angle >= PI2 * 11d / 16d) && (angle < PI2 * 13d / 16d)) return MapDirection.South;
        else
        if ((angle >= PI2 * 13d / 16d) && (angle < PI2 * 15d / 16d)) return MapDirection.SouthEast;
-       else 
+       else
          return MapDirection.East;
-       
+
     }
-    
+
     /// <summary>
     /// Calculates an area of an inner rectangle that violates outside perimeter
     /// </summary>
@@ -309,7 +309,7 @@ namespace NFX.Geometry
     {
       int ix = 0;
       int iy = 0;
-      
+
       if (inner.Left<perimeter.Left) ix += perimeter.Left - inner.Left;
    //    else    fixed 20111102 DKh
         if (inner.Right>perimeter.Right) ix += inner.Right - perimeter.Right;
@@ -317,14 +317,14 @@ namespace NFX.Geometry
       if (inner.Top < perimeter.Top) iy += perimeter.Top - inner.Top;
    //    else    fixed 20111102 DKh
         if (inner.Bottom > perimeter.Bottom) iy += inner.Bottom - perimeter.Bottom;
-      
-      
+
+
       return (ix * inner.Height) + (iy * inner.Width);
     }
-    
-    
-    
-    
+
+
+
+
   }//class
-  
+
 }

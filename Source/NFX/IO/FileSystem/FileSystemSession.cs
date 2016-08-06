@@ -30,28 +30,28 @@ namespace NFX.IO.FileSystem
     /// </summary>
     public class FileSystemSessionConnectParams: INamed, IConfigurable
     {
-      public static TParams Make<TParams>(IConfigSectionNode node) where TParams : FileSystemSessionConnectParams 
+      public static TParams Make<TParams>(IConfigSectionNode node) where TParams : FileSystemSessionConnectParams
       {
         return FactoryUtils.MakeAndConfigure<TParams>(node, typeof(TParams), args: new object[]{ node });
       }
 
-      public static TParams Make<TParams>(string connectString, string format = Configuration.CONFIG_LACONIC_FORMAT) where TParams : FileSystemSessionConnectParams 
+      public static TParams Make<TParams>(string connectString, string format = Configuration.CONFIG_LACONIC_FORMAT) where TParams : FileSystemSessionConnectParams
       {
         var cfg = Configuration.ProviderLoadFromString(connectString, format).Root;
         return Make<TParams>(cfg);
       }
-      
+
       public FileSystemSessionConnectParams() {}
       public FileSystemSessionConnectParams(IConfigSectionNode node) { Configure(node); }
       public FileSystemSessionConnectParams(string connectString, string format = Configuration.CONFIG_LACONIC_FORMAT)
       {
         var cfg = Configuration.ProviderLoadFromString(connectString, format).Root;
-        Configure(cfg); 
+        Configure(cfg);
       }
-      
+
       [Config]
       public string Name {get; set;}
-      
+
       public User User {get; set;}
 
       public IFileSystemVersion Version {get; set;}
@@ -62,14 +62,14 @@ namespace NFX.IO.FileSystem
       }
     }
 
-    
+
     /// <summary>
-    /// Represents a user-impersonated session of working with a file system. This class is NOT thread-safe  
+    /// Represents a user-impersonated session of working with a file system. This class is NOT thread-safe
     /// </summary>
     public class FileSystemSession : DisposableObject, INamed
     {
-      #region .ctor  
-        
+      #region .ctor
+
         /// <summary>
         /// Starts new file system session
         /// </summary>
@@ -77,7 +77,7 @@ namespace NFX.IO.FileSystem
         {
           if (fs==null || cParams==null)
             throw new NFXIOException(StringConsts.FS_SESSION_BAD_PARAMS_ERROR.Args(GetType().FullName));
-         
+
           ValidateConnectParams(cParams);
 
 
@@ -87,7 +87,7 @@ namespace NFX.IO.FileSystem
           m_Items = new List<FileSystemSessionItem>();
           var name = cParams.Name;
           m_Name = name.IsNullOrWhiteSpace() ? "{0}.{1}".Args(m_User.Name, Guid.NewGuid()) : name;
-          
+
           lock(m_FileSystem.m_Sessions)
             m_FileSystem.m_Sessions.Add( this );
         }
@@ -98,18 +98,18 @@ namespace NFX.IO.FileSystem
             m_FileSystem.m_Sessions.Remove( this );
 
           RollbackTransaction();
-          
+
           //delete from tail not to re-alloc list
           while(m_Items.Count>0)
               m_Items[m_Items.Count-1].Dispose();
-          
+
           base.Destructor();
         }
       #endregion
 
 
       #region Fields
-        
+
         protected readonly string m_Name;
         protected readonly FileSystem m_FileSystem;
         protected readonly User m_User;
@@ -131,7 +131,7 @@ namespace NFX.IO.FileSystem
         /// Returns file system handle for this session
         /// </summary>
         public IFileSystemHandle Handle { get{ return m_Handle;} }
-        
+
         /// <summary>
         /// Returns file system instance that this session operates under
         /// </summary>
@@ -141,7 +141,7 @@ namespace NFX.IO.FileSystem
         /// Returns user that this file system session is for
         /// </summary>
         public User User { get { return m_User; } }
-        
+
         /// <summary>
         /// Returns transaction object if transaction has been started or null
         /// </summary>
@@ -192,9 +192,9 @@ namespace NFX.IO.FileSystem
         /// <summary>
         /// Returns latest version for file systems that support versioning, null otherwise
         /// </summary>
-        public virtual IFileSystemVersion LatestVersion 
-        { 
-          get { return m_FileSystem.DoGetLatestVersion( this );} 
+        public virtual IFileSystemVersion LatestVersion
+        {
+          get { return m_FileSystem.DoGetLatestVersion( this );}
         }
 
                 /// <summary>
@@ -211,16 +211,16 @@ namespace NFX.IO.FileSystem
         ///  its own permission structure and user directory
         /// </summary>
         public ISecurityManager SecurityManager { get { return App.SecurityManager; }}
-        
+
         /// <summary>
         /// Returns unique sequence provider for the system or null if it is not supported
         /// </summary>
         public DataAccess.IUniqueSequenceProvider UniqueSequenceProvider { get { return null; }}
 
       #endregion
-      
-      #region Public Methods  
-        
+
+      #region Public Methods
+
         /// <summary>
         /// Starts a transaction returning its' transaction handle object, otherwise does nothing
         /// </summary>
@@ -272,7 +272,7 @@ namespace NFX.IO.FileSystem
                 }
 
         /// <summary>
-        /// Returns specified number of versions going back from the specific version. This call is thread-safe 
+        /// Returns specified number of versions going back from the specific version. This call is thread-safe
         /// </summary>
         public virtual IEnumerable<IFileSystemVersion> GetVersions(IFileSystemVersion from, int countBack)
         {
@@ -295,7 +295,7 @@ namespace NFX.IO.FileSystem
         {
 
         }
-                                                                                              
+
       #endregion
 
     }

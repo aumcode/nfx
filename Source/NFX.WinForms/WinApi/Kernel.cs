@@ -31,6 +31,6 @@ namespace NFX.WinApi
 
     [DllImport(KERNEL32)]
     public static extern bool Beep(UInt32 frequency, UInt32 duration);
-  
+
   }
 }

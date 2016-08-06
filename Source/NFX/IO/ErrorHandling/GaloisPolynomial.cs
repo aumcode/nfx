@@ -46,7 +46,7 @@ namespace NFX.IO.ErrorHandling
         if (coefficients.Length > 1 && coefficients[0] == 0)
         {
           int firstNonZero = 1;
-          while (firstNonZero < coefficients.Length && coefficients[firstNonZero] == 0) 
+          while (firstNonZero < coefficients.Length && coefficients[firstNonZero] == 0)
             firstNonZero++;
 
           if (firstNonZero == coefficients.Length)
@@ -149,7 +149,7 @@ namespace NFX.IO.ErrorHandling
           for (int j = 0; j < factor.Length; j++)
           {
             product[i+j] = GaloisField.Add( product[i+j], m_Field.Multiply(multiplicandCoefficient, factor[j]));
-          } 
+          }
         }
 
         return new GaloisPolynomial( m_Field, product);

@@ -37,11 +37,11 @@ namespace NFX
 
       first.ContinueWith(_ =>
       {
-        if (first.IsCanceled) 
+        if (first.IsCanceled)
         {
           tcs.TrySetCanceled();
         }
-        else if (first.IsFaulted) 
+        else if (first.IsFaulted)
         {
           tcs.TrySetException(first.Exception.InnerExceptions);
         }
@@ -78,7 +78,7 @@ namespace NFX
         }
         else if (first.IsCanceled)
         {
-          tcs.TrySetCanceled();            
+          tcs.TrySetCanceled();
         }
         else
         {
@@ -101,8 +101,8 @@ namespace NFX
     /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes
     /// </summary>
-    public static Task OnOk<T1>(this Task<T1> first, Func<T1, Task> next, 
-                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
+    public static Task OnOk<T1>(this Task<T1> first, Func<T1, Task> next,
+                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously,
                                 TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<object>();
@@ -112,7 +112,7 @@ namespace NFX
         if (first.IsFaulted)
           tcs.TrySetException(first.Exception.InnerExceptions);
         else if (first.IsCanceled)
-          tcs.TrySetCanceled();            
+          tcs.TrySetCanceled();
         else
         {
           try
@@ -127,7 +127,7 @@ namespace NFX
                 if (t.IsFaulted)
                   tcs.TrySetException(first.Exception.InnerExceptions);
                 else if (t.IsCanceled)
-                  tcs.TrySetCanceled();            
+                  tcs.TrySetCanceled();
                 else
                   tcs.TrySetResult(null);
               }, nextOptions);
@@ -137,7 +137,7 @@ namespace NFX
           {
             tcs.TrySetException(ex);
           }
-        }  
+        }
       }, firstOptions);
 
       return tcs.Task;
@@ -147,8 +147,8 @@ namespace NFX
     /// Chains task 'first' with task returned by 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes with result from 'next' task
     /// </summary>
-    public static Task<T1> OnOk<T1>(this Task first, Func<Task<T1>> next, 
-                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
+    public static Task<T1> OnOk<T1>(this Task first, Func<Task<T1>> next,
+                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously,
                                 TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<T1>();
@@ -173,7 +173,7 @@ namespace NFX
                 if (t.IsFaulted)
                   tcs.TrySetException(first.Exception.InnerExceptions);
                 else if (t.IsCanceled)
-                  tcs.TrySetCanceled();            
+                  tcs.TrySetCanceled();
                 else
                   tcs.TrySetResult(t.Result);
               }, nextOptions);
@@ -193,8 +193,8 @@ namespace NFX
     /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes with result from 'next' task
     /// </summary>
-    public static Task<T2> OnOk<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next, 
-                                        TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
+    public static Task<T2> OnOk<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next,
+                                        TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously,
                                         TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<T2>();
@@ -219,7 +219,7 @@ namespace NFX
                 if (t.IsFaulted)
                   tcs.TrySetException(first.Exception.InnerExceptions);
                 else if (t.IsCanceled)
-                  tcs.TrySetCanceled();            
+                  tcs.TrySetCanceled();
                 else
                   tcs.TrySetResult(t.Result);
               }, nextOptions);
@@ -228,7 +228,7 @@ namespace NFX
           catch (Exception ex)
           {
             tcs.TrySetException(ex);
-          }            
+          }
         }
       }, firstOptions);
 
@@ -243,7 +243,7 @@ namespace NFX
       var tcs = new TaskCompletionSource<object>();
 
       task.ContinueWith(_ => {
-        
+
         if (task.IsFaulted || task.IsCanceled)
         {
           try
@@ -254,7 +254,7 @@ namespace NFX
           {
             tcs.TrySetException(ex);
             return;
-          }		 
+          }
         }
 
         if (task.IsFaulted)
@@ -286,7 +286,7 @@ namespace NFX
         {
           tcs.TrySetException(ex);
           return;
-        }		 
+        }
 
         if (task.IsFaulted)
           tcs.TrySetException(task.Exception.InnerExceptions);
@@ -317,7 +317,7 @@ namespace NFX
         {
           tcs.TrySetException(ex);
           return;
-        }		 
+        }
 
         if (task.IsFaulted)
           tcs.TrySetException(task.Exception.InnerExceptions);
@@ -335,7 +335,7 @@ namespace NFX
     /// Non-generic version of <see cref="AsCompletedTask{T}(Func{T})"/>
     /// </summary>
     /// <remarks>
-    /// Because there is no non-generic <see cref="System.Threading.Tasks.TaskCompletionSource{T}"/> version 
+    /// Because there is no non-generic <see cref="System.Threading.Tasks.TaskCompletionSource{T}"/> version
     /// generic version typed by <see cref="System.Object"/> is used (<see cref="System.Threading.Tasks.Task{T}"/> inherits from <see cref="System.Threading.Tasks.Task"/>)
     /// </remarks>
     public static Task AsCompletedTask(this Action act)
@@ -364,6 +364,6 @@ namespace NFX
       }
 
       return tcs.Task;
-    } 
+    }
   }
 }

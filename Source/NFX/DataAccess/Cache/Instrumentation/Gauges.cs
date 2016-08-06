@@ -100,7 +100,7 @@ namespace NFX.DataAccess.Cache.Instrumentation
         public override string Description { get{ return "How many times Get() resulted in cache hit";} }
 
         public override string ValueUnitName  { get { return CoreConsts.UNIT_NAME_TIME; } }
-        
+
         protected override Datum MakeAggregateInstance() { return new HitCount(this.Source, 0); }
     }
 
@@ -191,7 +191,7 @@ namespace NFX.DataAccess.Cache.Instrumentation
         public override string Description { get{ return "How many times Put() was called";} }
 
         public override string ValueUnitName  { get { return CoreConsts.UNIT_NAME_TIME; } }
-        
+
         protected override Datum MakeAggregateInstance() { return new PutCount(this.Source, 0); }
     }
 
@@ -236,7 +236,7 @@ namespace NFX.DataAccess.Cache.Instrumentation
         public override string Description { get{ return "How many times a call to Put() resulted in bucket collision that created a page";} }
 
         public override string ValueUnitName  { get { return CoreConsts.UNIT_NAME_PAGE; } }
-        
+
         protected override Datum MakeAggregateInstance() { return new PutPageCreateCount(this.Source, 0); }
     }
 
@@ -257,7 +257,7 @@ namespace NFX.DataAccess.Cache.Instrumentation
 
 
     /// <summary>
-    /// How many times a call to Put() could have resulted in new value overriding existing one because of collision, however the situation was prevented 
+    /// How many times a call to Put() could have resulted in new value overriding existing one because of collision, however the situation was prevented
     /// because existing item had higher priority than the newer one
     /// </summary>
     [Serializable]
@@ -265,12 +265,12 @@ namespace NFX.DataAccess.Cache.Instrumentation
     {
         internal PutPriorityPreventedCollisionCount(string src, long value) : base(src, value) {}
 
-        public override string Description 
+        public override string Description
         {
-         get{ return 
+         get{ return
           "How many times a call to Put() could have resulted in new value overriding existing one because of collision, "+
           "however the situation was prevented because existing item had higher priority than the newer one"; }
-        } 
+        }
 
         public override string ValueUnitName  { get { return CoreConsts.UNIT_NAME_TIME; } }
 

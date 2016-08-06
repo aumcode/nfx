@@ -30,13 +30,13 @@ namespace NFX.Health
     /// </summary>
     public class TextReporter : Reporter
     {
-        
+
         public TextReporter(CheckList list) : base(list)
         {
 
         }
-        
-                    
+
+
         public override void Report(System.IO.TextWriter writer)
         {
             writer.WriteLine("Health Check List");
@@ -44,18 +44,18 @@ namespace NFX.Health
 
             writer.WriteLine("successful = {0}", CheckList.Successful);
 
-            
+
             if (CheckList.Status == CheckListStatus.Run)
             {
-                writer.WriteLine("started = {0}", CheckList.RunStart); 
+                writer.WriteLine("started = {0}", CheckList.RunStart);
                 writer.WriteLine("finished = {0}", CheckList.RunFinish);
                 writer.WriteLine("duration = {0}", CheckList.RunFinish - CheckList.RunStart);
             }
             else
                 writer.WriteLine("started = {0}", "never ran");
 
-            writer.WriteLine("--------------------------------------------------------------"); 
-            
+            writer.WriteLine("--------------------------------------------------------------");
+
             foreach(var check in CheckList.Checks)
              reportCheck(writer, check);
 

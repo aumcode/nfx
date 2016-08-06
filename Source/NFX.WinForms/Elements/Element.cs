@@ -26,46 +26,46 @@ using System.Drawing;
 
 namespace NFX.WinForms.Elements
 {
-  
-  
+
+
   /// <summary>
   /// Represents an element to be drawn in a host control
   /// </summary>
   public abstract class Element : DisposableObject
   {
      #region .ctor
-     
+
        private Element()
        {
        }
-       
+
        protected Element(ElementHostControl host)
        {
         m_Host = host;
         m_Host.AddElement(this);
        }
-     
+
      #endregion
-     
-     
+
+
      #region Private Fields
         internal ElementHostControl m_Host;
-        
+
         private Dictionary<string, object> m_Tags;
-     
+
         private bool m_Visible = true;
         private bool m_Enabled = true;
         private int m_ZOrder;
-        
-        private bool m_MouseTransparent; 
+
+        private bool m_MouseTransparent;
         private Rectangle m_Region;
-        
+
         private ElementList m_OwnedElements;
-        
+
         private IFieldControlContext m_FieldControlContext;
      #endregion
-     
-     
+
+
      #region Properties
 
 
@@ -84,12 +84,12 @@ namespace NFX.WinForms.Elements
         /// </summary>
         public ElementList OwnedElements
         {
-          get 
+          get
           {
             if (m_OwnedElements==null)
               m_OwnedElements = new ElementList();
-            
-            return m_OwnedElements; 
+
+            return m_OwnedElements;
           }
         }
 
@@ -102,7 +102,7 @@ namespace NFX.WinForms.Elements
         public IFieldControlContext FieldControlContext
         {
           get { return m_FieldControlContext; }
-          set 
+          set
           {
             m_FieldControlContext = value;
             FieldControlContextChanged();
@@ -127,15 +127,15 @@ namespace NFX.WinForms.Elements
             }
           }
         }
-     
-     
+
+
        /// <summary>
        /// Indicates whether an element is displayed
        /// </summary>
        public bool Visible
        {
          get {return m_Visible; }
-         set 
+         set
          {
            if (m_Visible!=value)
            {
@@ -159,7 +159,7 @@ namespace NFX.WinForms.Elements
              m_Enabled = value;
              EnabledChanged();
              Invalidate();
-           }  
+           }
          }
        }
 
@@ -175,7 +175,7 @@ namespace NFX.WinForms.Elements
            {
              m_MouseTransparent = value;
              MouseTransparentChanged();
-           }  
+           }
          }
        }
 
@@ -193,7 +193,7 @@ namespace NFX.WinForms.Elements
            Invalidate();
          }
        }
-       
+
        /// <summary>
        /// Provides graphical region- coordinates of the element in zoomed container. These coordinates are different from Region when Zoom!=1
        ///  because Region returns "normal"/non-zoomed coordinates. Mouse event handlers must use DisplayRegion because mouse is in screen coordinates
@@ -203,21 +203,21 @@ namespace NFX.WinForms.Elements
          get
          {
            var zoom = m_Host!=null? m_Host.Zoom : 1f;
-           
+
            if (zoom==1f) return Region;
-           
+
            var result = m_Region;
-           
+
            result.X = (int)(result.X * zoom);
            result.Y = (int)(result.Y * zoom);
            result.Width = (int)(result.Width * zoom);
            result.Height = (int)(result.Height * zoom);
-           return result; 
+           return result;
          }
        }
-       
-       
-       
+
+
+
        /// <summary>
        /// Shortcut property to element's region
        /// </summary>
@@ -225,11 +225,11 @@ namespace NFX.WinForms.Elements
        {
         get { return m_Region.Left; }
         set
-        {                   
+        {
           m_Region.X = value;
           RegionChanged();
           Invalidate();
-        }  
+        }
        }
 
        /// <summary>
@@ -292,12 +292,12 @@ namespace NFX.WinForms.Elements
           return m_Tags;
          }
        }
-     
+
      #endregion
-     
-     
+
+
      #region Events
-     
+
       public event MouseEventHandler MouseClick;
       public event MouseEventHandler MouseDoubleClick;
       public event MouseEventHandler MouseDown;
@@ -306,16 +306,16 @@ namespace NFX.WinForms.Elements
       public event MouseEventHandler MouseWheel;
       public event EventHandler MouseEnter;
       public event EventHandler MouseLeave;
-      
+
       public event MouseEventHandler MouseDragStart;
       public event MouseEventHandler MouseDrag;
       public event MouseEventHandler MouseDragRelease;
       public event EventHandler MouseDragCancel;
-      
+
      #endregion
-     
+
      #region Public
-     
+
       /// <summary>
       /// Repaints this particular element instance
       /// </summary>
@@ -326,21 +326,21 @@ namespace NFX.WinForms.Elements
          Paint(gr);
         }
       }
-      
+
       /// <summary>
-      /// Invalidates space occupied by this element. 
+      /// Invalidates space occupied by this element.
       /// This causes repaint of any elements overlapped by elements region
       /// </summary>
       public void Invalidate()
-      {    
-        const int SAFE_MARGIN = 2;//repaint a bit more than windows asks       
-        
+      {
+        const int SAFE_MARGIN = 2;//repaint a bit more than windows asks
+
         Rectangle rgn = DisplayRegion;
         rgn.Inflate(SAFE_MARGIN, SAFE_MARGIN);
         m_Host.Invalidate(rgn);
       }
-      
-      
+
+
       /// <summary>
       /// Updates element location by delta x/y without causing invalidate
       /// </summary>
@@ -348,40 +348,40 @@ namespace NFX.WinForms.Elements
       {
         m_Region.Offset(dx, dy);
       }
-     
+
      #endregion
-     
-     
+
+
      #region Protected
 
          protected override void Destructor()
          {
            if (m_Host != null)
             m_Host.RemoveElement(this);
-            
+
            if (m_OwnedElements!=null)
             foreach(Element elm in m_OwnedElements)
-             elm.Dispose(); 
-            
+             elm.Dispose();
+
            base.Destructor();
          }
-        
-        
+
+
          protected virtual void FieldControlContextChanged()
          {
          }
-        
+
          protected internal virtual void Paint(Graphics gr)
          {
-          
+
          }
-         
+
          /// <summary>
          /// Override to take action after element's Z-order changed
          /// </summary>
          protected virtual void ZOrderChanged()
          {
-         
+
          }
 
 
@@ -400,7 +400,7 @@ namespace NFX.WinForms.Elements
          {
 
          }
-         
+
          /// <summary>
          /// Override to take action after element's enabled state change
          /// </summary>
@@ -416,10 +416,10 @@ namespace NFX.WinForms.Elements
          {
 
          }
-         
-         
+
+
        #region Mouse Events
-         
+
          protected internal virtual void OnMouseClick(MouseEventArgs e)
          {
            if (MouseClick!=null) MouseClick(this, e);
@@ -459,41 +459,41 @@ namespace NFX.WinForms.Elements
          {
            if (MouseLeave != null) MouseLeave(this, e);
          }
-         
-         
+
+
          protected internal virtual void OnMouseDragStart(MouseEventArgs e)
          {
            if (MouseDragStart !=null) MouseDragStart(this, e);
-         }  
-         
+         }
+
          protected internal virtual void OnMouseDrag(MouseEventArgs e)
          {
            if (MouseDrag !=null) MouseDrag(this, e);
          }
-         
+
          protected internal virtual void OnMouseDragRelease(MouseEventArgs e)
          {
            if (MouseDragRelease !=null) MouseDragRelease(this, e);
          }
-         
+
          protected internal virtual void OnMouseDragCancel(EventArgs e)
          {
            if (MouseDragCancel !=null) MouseDragCancel(this, e);
          }
 
-         
+
        #endregion
-         
+
      #endregion
-     
-     
+
+
      #region Private Utils
-     
-     
+
+
      #endregion
 
 
-         
+
   }
 
 
@@ -501,6 +501,6 @@ namespace NFX.WinForms.Elements
   /// Represents a list of elements
   /// </summary>
   public class ElementList : List<Element> { }
-  
-  
+
+
 }

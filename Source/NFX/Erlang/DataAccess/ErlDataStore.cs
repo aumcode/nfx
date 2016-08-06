@@ -22,7 +22,7 @@ namespace NFX.DataAccess.Erlang
   /// <summary>
   /// Represents a CRUD data store that uses Erlang backend
   /// </summary>
-  public class ErlDataStore : ServiceWithInstrumentationBase<object>, ICRUDDataStoreImplementation, ICRUDSubscriptionStoreImplementation  
+  public class ErlDataStore : ServiceWithInstrumentationBase<object>, ICRUDDataStoreImplementation, ICRUDSubscriptionStoreImplementation
   {
     #region CONSTS
       public const string ERL_FILE_SUFFIX = ".erl.qry";
@@ -39,7 +39,7 @@ namespace NFX.DataAccess.Erlang
       // Note: Encoding :: xml | gzip
       public static readonly IErlObject BONJOUR_OK_PATTERN =
            ErlObject.Parse("{bonjour, InstanceID::int(), {Encoding::atom(), SchemaContent::binary()}}");
-      
+
       public static readonly IErlObject CRUD_WRITE_OK_PATTERN  = ErlObject.Parse("{ok, Affected::int()}");
 
       public static readonly ErlAtom AFFECTED          = new ErlAtom("Affected");
@@ -49,8 +49,8 @@ namespace NFX.DataAccess.Erlang
 
     #region .ctor
       public ErlDataStore() : this(null) {}
-      
-      public ErlDataStore(object director) : base(director) 
+
+      public ErlDataStore(object director) : base(director)
       {
         m_QueryResolver = new QueryResolver(this);
 
@@ -65,9 +65,9 @@ namespace NFX.DataAccess.Erlang
 
 
     #region Fields
-    
+
       private uint   m_InstanceID;
-      
+
       private bool   m_InstrumentationEnabled;
       private string m_TargetName = DEFAULT_TARGET_NAME;
 
@@ -88,7 +88,7 @@ namespace NFX.DataAccess.Erlang
 
 
     #region Properties
-    
+
       public string ScriptFileSuffix     { get{ return ERL_FILE_SUFFIX; }}
       public CRUDDataStoreType StoreType { get{ return CRUDDataStoreType.Hybrid; }}
       public bool SupportsTrueAsynchrony { get{ return false; }}
@@ -106,7 +106,7 @@ namespace NFX.DataAccess.Erlang
         set
         {
           CheckServiceInactive();
-         
+
           if (value.IsNullOrWhiteSpace())
             value = DEFAULT_TARGET_NAME;
 
@@ -173,8 +173,8 @@ namespace NFX.DataAccess.Erlang
 
 
 
-    #region Public 
-    
+    #region Public
+
       public void TestConnection()
       {
         CheckServiceActiveOrStarting();
@@ -356,16 +356,27 @@ namespace NFX.DataAccess.Erlang
         return TaskUtils.AsCompletedTask( () => Delete(row) );
       }
 
+      public Cursor OpenCursor(Query query)
+      {
+        throw new NotSupportedException("Erl.OpenCursor");
+      }
+
+      public Task<Cursor> OpenCursorAsync(Query query)
+      {
+        throw new NotSupportedException("Erl.OpenCursorAsync");
+      }
+
+
       public virtual CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
       {
         CheckServiceActive();
-        throw new NotImplementedException();
+        throw new NotSupportedException("Erl.BeginTransaction");
       }
 
       public virtual Task<CRUDTransaction> BeginTransactionAsync(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
       {
         CheckServiceActive();
-        throw new NotImplementedException();
+        throw new NotSupportedException("Erl.BeginTransactionAsync");
       }
     #endregion
 
@@ -380,7 +391,7 @@ namespace NFX.DataAccess.Erlang
 
         if (remoteName.IsNullOrWhiteSpace())
           throw new ErlDataAccessException(StringConsts.ERL_DS_START_REMOTE_ABSENT_ERROR);
-        
+
         lock(s_Nodes)
         {
           var added = s_Nodes.Add(remoteName);
@@ -388,7 +399,7 @@ namespace NFX.DataAccess.Erlang
            throw new ErlDataAccessException(StringConsts.ERL_DS_START_REMOTE_DUPLICATE_ERROR.Args(remoteName));
         }
 
-        
+
         var node = ErlApp.Node;
         if (node==null)
           throw new ErlDataAccessException("{0} requires local ERL node to be active".Args(GetType().Name));
@@ -396,7 +407,7 @@ namespace NFX.DataAccess.Erlang
         node.NodeStatusChange += node_NodeStatusChange;
       }
 
-     
+
 
       private void node_NodeStatusChange(ErlLocalNode sender, ErlAtom node, bool up, object info)
       {
@@ -434,15 +445,18 @@ namespace NFX.DataAccess.Erlang
                                  [CallerLineNumber]int    line = 0)
       {
         var correlate = Guid.NewGuid();
-        
-        App.Log.Write(new Log.Message(null, file, line)
-        {
-          Type = Log.MessageType.Error,
-          Topic = CoreConsts.ERLANG_TOPIC,
-          From = GetType().Name+"m_ErlNode.OnNodeStatus()",
-          Text = "Node status is down: "+m_RemoteName.Value,
-          RelatedTo = correlate
-        });
+
+        var log = !m_Map._NeedReconnect;
+
+        if (log)
+          App.Log.Write(new Log.Message(null, file, line)
+          {
+            Type  = Log.MessageType.Error,
+            Topic = CoreConsts.ERLANG_TOPIC,
+            From  = GetType().Name+".asyncReconnect()",
+            Text  = "Node status is down: "+m_RemoteName.Value,
+            RelatedTo = correlate
+          });
 
         m_Map._NeedReconnect = true;
 
@@ -452,15 +466,16 @@ namespace NFX.DataAccess.Erlang
         }
         catch(Exception error)
         {
-          App.Log.Write(new Log.Message(null, file, line)
-          {
-            Type = Log.MessageType.Error,
-            Topic = CoreConsts.ERLANG_TOPIC,
-            From = GetType().Name+"m_ErlNode.OnNodeStatus()",
-            Text = "Attempt to re-connect leaked: "+error.ToMessageWithType(),
-            Exception = error,
-            RelatedTo = correlate
-          });
+          if (log)
+            App.Log.Write(new Log.Message(null, file, line)
+            {
+              Type  = Log.MessageType.Error,
+              Topic = CoreConsts.ERLANG_TOPIC,
+              From  = GetType().Name+".asyncReconnect()",
+              Text  = error.ToMessageWithType(),
+              Exception = error,
+              RelatedTo = correlate
+            });
 
           asyncReconnect();
         }
@@ -478,9 +493,9 @@ namespace NFX.DataAccess.Erlang
 
         m_Mailboxes.Clear();
         m_Subscriptions.Clear();
-        
+
         m_Map = null;
-       
+
         var node = ErlApp.Node;
         if (node!=null)
         {
@@ -521,8 +536,8 @@ namespace NFX.DataAccess.Erlang
             result = m_Map;
             if (result!=null && !result._NeedReconnect) return result;
 
-            var bonjour = executeRPC(NFX_CRUD_MOD, 
-                                     NFX_BONJOUR_FUN, 
+            var bonjour = executeRPC(NFX_CRUD_MOD,
+                                     NFX_BONJOUR_FUN,
                                      new ErlList()
                                      {
                                        new ErlLong(m_InstanceID),   //InstanceID
@@ -532,7 +547,7 @@ namespace NFX.DataAccess.Erlang
 
             if (bonjour==null)
               throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"Bonjour request timeout");
-           
+
             var bind = bonjour.Match(BONJOUR_OK_PATTERN);
             if (bind!=null)
             {
@@ -561,7 +576,7 @@ namespace NFX.DataAccess.Erlang
 
               m_Map._NeedReconnect = false;
             }
-            else 
+            else
               throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"Bonjour(!ok)");
           }
           //Resubscribe
@@ -594,19 +609,19 @@ namespace NFX.DataAccess.Erlang
         var map = Map;
         return executeRPC(module, func, args, mbox);
       }
-     
+
 
       //todo: Implement filter that may be passed here from Insert/Update/Upsert
       protected virtual int CRUDWrite(Row row, bool delete = false)
       {
         var rowTuple = m_Map.RowToErlTuple( row, delete );
         var rowArgs = new ErlList();
-        
+
         rowArgs.Add( rowTuple );
 
         // nfx_crud:write({secdef, {}, ...})
         var result = this.ExecuteRPC(NFX_CRUD_MOD, delete ? NFX_DELETE_FUN : NFX_WRITE_FUN,  rowArgs);
-        
+
         if (result==null)
           throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"CRUDWrite==null");
 
@@ -648,7 +663,7 @@ namespace NFX.DataAccess.Erlang
         catch(Exception error)
         {
           throw new ErlDataAccessException(StringConsts.ERL_DS_RPC_EXEC_ERROR.Args(
-                                              "{0}:{1}({2})".Args(module, func, args.ToString().TakeFirstChars(256)), 
+                                              "{0}:{1}({2})".Args(module, func, args.ToString().TakeFirstChars(256)),
                                               error.ToMessageWithType(), error));
         }
         finally
@@ -666,7 +681,6 @@ namespace NFX.DataAccess.Erlang
         return lnode;
       }
 
-    #endregion  
-
+    #endregion
   }
 }

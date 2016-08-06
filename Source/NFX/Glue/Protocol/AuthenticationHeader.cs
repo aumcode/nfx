@@ -24,7 +24,7 @@ using NFX.Security;
 namespace NFX.Glue.Protocol
 {
     /// <summary>
-    /// Marshalls user authentication information 
+    /// Marshalls user authentication information
     /// </summary>
     [Serializable]
     public sealed class AuthenticationHeader : Header
@@ -36,8 +36,8 @@ namespace NFX.Glue.Protocol
         /// Returns AuthenticationToken
         /// </summary>
         public AuthenticationToken Token { get { return m_Token;} }
-        
-        
+
+
         /// <summary>
         /// Returns Credentials
         /// </summary>
@@ -46,17 +46,17 @@ namespace NFX.Glue.Protocol
 
         public AuthenticationHeader(AuthenticationToken token)
         {
-            m_Token = token; 
+            m_Token = token;
         }
 
         /// <summary>
-        /// Inits header with Credentials instance. 
+        /// Inits header with Credentials instance.
         /// Note: passing IDPasswordCredentials over public wire is not a good practice,
-        /// pass AuthenticationToken instead 
+        /// pass AuthenticationToken instead
         /// </summary>
         public AuthenticationHeader(Credentials credentials)
         {
-            m_Credentials = credentials; 
+            m_Credentials = credentials;
         }
 
     }

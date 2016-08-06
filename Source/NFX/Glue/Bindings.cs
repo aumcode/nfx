@@ -34,7 +34,7 @@ using NFX.Glue.Native;
 namespace NFX.Glue
 {
     /// <summary>
-    /// Represents a particular named binding. 
+    /// Represents a particular named binding.
     /// Binding type defines a protocol by implementing a transport instance management strategy
     /// that support particular technology, such as blocking TCP or async ZeroMQ.
     /// Binding instance retains state/config information about all transports
@@ -45,14 +45,14 @@ namespace NFX.Glue
     public abstract class Binding : GlueComponentService
     {
         #region CONSTS
-        
+
             public const string CONFIG_SERVER_TRANSPORT_SECTION = "server-transport";
             public const string CONFIG_CLIENT_TRANSPORT_SECTION = "client-transport";
 
             public const string ATTR_PATH = "$";
             public const string ATTR_SLASH_PATH = "/$";
 
-            
+
 
             public const string CONFIG_CLIENT_DUMP_ATTR = "client-dump";
             public const string CONFIG_SERVER_DUMP_ATTR = "server-dump";
@@ -64,9 +64,9 @@ namespace NFX.Glue
             private const char SERVER_PREFIX = 'S';
             private const char CLIENT_PREFIX = 'C';
 
-            
+
             public const string CONFIG_STAT_TIMES_EMA_FACTOR_ATTR = "stat-times-ema-factor";
-            
+
             /// <summary>
             /// Defines how much smoothing the timing statistics filter does - the lower the number the more smoothing is done.
             /// Smoothing makes stat times insensitive to some seldom delays that may happen every now and then
@@ -75,20 +75,20 @@ namespace NFX.Glue
 
             public const double MIN_STAT_TIMES_EMA_FACTOR = 0.0001d;
             public const double MAX_STAT_TIMES_EMA_FACTOR = 0.999d;
-            
+
             public const string CONFIG_TRANSPORT_IDLE_TIMEOUT_MS_ATTR                            = "idle-timeout-ms";
             public const string CONFIG_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR     = "existing-acquisition-timeout-ms";
             public const string CONFIG_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_ATTR                = "count-wait-threshold";
             public const string CONFIG_CLIENT_TRANSPORT_MAX_COUNT_ATTR                           = "max-count";
             public const string CONFIG_CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR = "max-existing-acquisition-timeout-ms";
-        
+
             public const int CLIENT_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT = 2 * 60 * 1000;
             public const int SERVER_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT = 10 * 60 * 1000;
-            public const int CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT = 100; 
+            public const int CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT = 100;
             public const int CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT = 8;
             public const int CLIENT_TRANSPORT_MAX_COUNT_DEFAULT = 0;
             public const int CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT = 15 * 1000;
-        
+
         #endregion
 
         #region .ctor
@@ -124,11 +124,11 @@ namespace NFX.Glue
         #endregion
 
         #region Fields
-         
+
             protected Provider m_Provider;
 
             private object m_ListSync = new object();
-            internal volatile List<Transport> m_Transports = new List<Transport>(); 
+            internal volatile List<Transport> m_Transports = new List<Transport>();
 
             private OrderedRegistry<IClientMsgInspector> m_ClientMsgInspectors = new OrderedRegistry<IClientMsgInspector>();
             private OrderedRegistry<IServerMsgInspector> m_ServerMsgInspectors = new OrderedRegistry<IServerMsgInspector>();
@@ -154,7 +154,7 @@ namespace NFX.Glue
             private int m_ClientTransportCountWaitThreshold              = CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT;
             private int m_ClientTransportMaxCount                        = CLIENT_TRANSPORT_MAX_COUNT_DEFAULT;
             private int m_ClientTransportMaxExistingAcquisitionTimeoutMs = CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT;
-           
+
         #endregion
 
 
@@ -178,10 +178,10 @@ namespace NFX.Glue
             /// </summary>
             public IEnumerable<Transport> Transports
             {
-              get 
+              get
               {
                var list = m_Transports;
-               return list; 
+               return list;
               }
             }
 
@@ -189,13 +189,13 @@ namespace NFX.Glue
             /// Returns all client transports in the binding stack
             /// </summary>
             public IEnumerable<ClientTransport> ClientTransports { get{ return Transports.Where( t => t is ClientTransport).Cast<ClientTransport>();} }
-           
+
 
             /// <summary>
             /// Returns all server transports in the binding stack
             /// </summary>
             public IEnumerable<ServerTransport> ServerTransports { get{ return Transports.Where( t => t is ServerTransport).Cast<ServerTransport>();} }
-           
+
 
 
             public Provider Provider { get { return m_Provider; } }
@@ -332,7 +332,7 @@ namespace NFX.Glue
 
                 m_StatTimesEMAFactor = (value<MIN_STAT_TIMES_EMA_FACTOR)? MIN_STAT_TIMES_EMA_FACTOR : (value > MAX_STAT_TIMES_EMA_FACTOR)? MAX_STAT_TIMES_EMA_FACTOR : value;
               }
-               
+
             }
 
 
@@ -364,11 +364,11 @@ namespace NFX.Glue
             /// <summary>
             /// Sets the length of interval for the binding trying to acquire existing client transport instance to make a call.
             /// When this interval is exhausted then binding tries to allocate a new client transport per remote address, unless
-            ///  other limits prohibit (max transport count). The value has to be greater or equal to zero. 
+            ///  other limits prohibit (max transport count). The value has to be greater or equal to zero.
             /// NOTE: this property works in conjunction with ClientTransportCoutWaitThreshold, if the number of active client transports
             ///  is below ClientTransportCoutWaitThreshold, then binding does not wait and allocates a new client transport right away until
             ///   ClientTransportCoutWaitThreshold limit is reached, then binding will try to acquire existing transport for ClientTransportExistingAcquisitionTimeoutMs milliseconds.
-            /// For more info, see 'NFX.Glue: Client Call Concurrency' topic in manual/blog  
+            /// For more info, see 'NFX.Glue: Client Call Concurrency' topic in manual/blog
             /// </summary>
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + CONFIG_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR, CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT)]
             [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE)]
@@ -387,7 +387,7 @@ namespace NFX.Glue
             /// Sets the threshold, expressed as the number of active client transports per remote address, below which binding will always allocate a new instance
             ///  of client transport without trying/waiting to acquire an existing one. When this number is exceeded then binding will try to acquire an existing
             ///  client transport instance for up to ClientTransportExistingAcquisitionTimeoutMs milliseconds.
-            ///  For more info, see 'NFX.Glue: Client Call Concurrency' topic in manual/blog  
+            ///  For more info, see 'NFX.Glue: Client Call Concurrency' topic in manual/blog
             /// </summary>
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + CONFIG_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_ATTR, CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT)]
             [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE)]
@@ -404,7 +404,7 @@ namespace NFX.Glue
             /// <summary>
             /// Imposes a limit on number of active client transports per remote address. Once this limit is reached the binding will block until it can acquire
             /// an existing transport instance. Set value to zero to remove the limit.
-            ///  For more info, see 'NFX.Glue: Client Call Concurrency' topic in manual/blog   
+            ///  For more info, see 'NFX.Glue: Client Call Concurrency' topic in manual/blog
             /// </summary>
             [Config(CONFIG_CLIENT_TRANSPORT_SECTION + ATTR_SLASH_PATH + CONFIG_CLIENT_TRANSPORT_MAX_COUNT_ATTR, CLIENT_TRANSPORT_MAX_COUNT_DEFAULT)]
             [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE)]
@@ -415,7 +415,7 @@ namespace NFX.Glue
                 {
                     if (value<0) value = 0;
                     m_ClientTransportMaxCount = value;
-                } 
+                }
             }
 
             /// <summary>
@@ -431,14 +431,14 @@ namespace NFX.Glue
                 {
                     if (value<0) value = 0;
                     m_ClientTransportMaxExistingAcquisitionTimeoutMs = value;
-                } 
+                }
             }
 
 
         #endregion
 
         #region Public
-            
+
             /// <summary>
             /// Extracts necessary information from client:request pair that characterizes the particular call
             ///  for the purpose of call timing
@@ -465,14 +465,14 @@ namespace NFX.Glue
             public CallSlot DispatchCall(ClientEndPoint client, RequestMsg request)
             {
               CheckRunningState();
-              
+
               //Binding level inspectors
               foreach(var insp in m_ClientMsgInspectors.OrderedValues)
                     request = insp.ClientDispatchCall(client, request);
-              
+
               //Glue level inspectors
               request = Glue.ClientDispatchingRequest(client, request);
-              
+
               //==============================================================
 
               CallOptions  options;
@@ -486,14 +486,14 @@ namespace NFX.Glue
               CallSlot slot = null;
 
               try
-              { 
+              {
                 if (reserve)
                  client.m_ReservedTransport = transport;
 
                 slot = transport.SendRequest(client, request, options);
 
                 // If execution pauses here and server sends response BEFORE call
-                //then Glue.Deliver response will retry to fimnd the missing call slot for some fixed interval 
+                //then Glue.Deliver response will retry to fimnd the missing call slot for some fixed interval
                 if (slot != null)
                   Glue.ClientDispatchedRequest(client, request, slot);
               }
@@ -508,19 +508,19 @@ namespace NFX.Glue
 
 
             /// <summary>
-            /// Ensures that application and binding runtime are running or throws otherwise 
+            /// Ensures that application and binding runtime are running or throws otherwise
             /// </summary>
             public void CheckRunningState(bool client = true)
             {
                 if (!App.Active || !Running)
                     throw client ? (GlueException)new ClientCallException(CallStatus.DispatchError, StringConsts.GLUE_SYSTEM_NOT_RUNNING_ERROR) :
-                                   (GlueException)new ServerNotRunningException(StringConsts.GLUE_SYSTEM_NOT_RUNNING_ERROR); 
+                                   (GlueException)new ServerNotRunningException(StringConsts.GLUE_SYSTEM_NOT_RUNNING_ERROR);
             }
 
         #endregion
 
         #region Protected/Internal
-            
+
             /// <summary>
             /// Conditionally dumps message to disk
             /// </summary>
@@ -557,17 +557,17 @@ namespace NFX.Glue
               internalDumpMsg(server, msg, EncodingFormat, data);
             }
 
-        
+
 
             protected internal void _Register(Transport transport)
             {
               lock(m_ListSync)
               {
                var lst = new List<Transport>(m_Transports);
-               
+
                if (!lst.Contains(transport, ReferenceEqualityComparer<Transport>.Instance))
-                  lst.Add(transport);  
-               
+                  lst.Add(transport);
+
                m_Transports = lst; //atomic
               }
             }
@@ -586,7 +586,7 @@ namespace NFX.Glue
             /// Hash table of locks used during new transport allocation, must be prime size
             /// </summary>
             protected object[] m_ClientTransportAllocatorLocks = new object[997];
-           
+
             /// <summary>
             /// Returns an instance of transport suitable for a call. The implementation may return existing transport or allocate a new instance.
             /// The call is thread-safe
@@ -609,8 +609,8 @@ namespace NFX.Glue
                }
 
                return makeAndLaunchClientTransportForCall(client, request);
-            } 
-              
+            }
+
             private ClientTransport makeAndLaunchClientTransportForCall(ClientEndPoint client , RequestMsg request)
             {
               var transport = MakeNewClientTransport(client);
@@ -623,14 +623,14 @@ namespace NFX.Glue
                 transport.Dispose();
                 throw;
               }
-              return transport; 
+              return transport;
             }
 
             /// <summary>
             /// Factory method - Override to make an instance of a new client transport suitable for particular binding type
             /// </summary>
             protected abstract ClientTransport MakeNewClientTransport(ClientEndPoint client);
-            
+
             /// <summary>
             /// Override to perform custom transport preparation and launch
             /// </summary>
@@ -669,7 +669,7 @@ namespace NFX.Glue
             protected override void DoAcceptManagerVisit(object manager, DateTime managerNow)
             {
                 base.DoAcceptManagerVisit(manager, managerNow);
-               
+
                 closeIdleClientTransports(managerNow);
                 dumpStatistics(managerNow);
             }
@@ -711,7 +711,7 @@ namespace NFX.Glue
             protected virtual ClientTransport TryGetExistingAcquiredTransportPerRemoteNode(Node remoteNode)
             {
                 int GRANULARITY_MS = 5 + ((System.Threading.Thread.CurrentThread.GetHashCode() & CoreConsts.ABS_HASH_MASK) % 15);
-              
+
                 var elapsed = 0;
                 do
                 {
@@ -725,9 +725,9 @@ namespace NFX.Glue
                         count++;//Per destination
                         if (tr.TryAcquire())
                            return tr;
-                    } 
+                    }
 
-                    if (m_ClientTransportMaxCount<=0 || count<m_ClientTransportMaxCount) 
+                    if (m_ClientTransportMaxCount<=0 || count<m_ClientTransportMaxCount)
                     {
                       if (count<= m_ClientTransportCountWaitThreshold) return null;//dont wait - create new one
                       if (elapsed>=m_ClientTransportExistingAcquisitionTimeoutMs) return null;
@@ -766,8 +766,8 @@ namespace NFX.Glue
                              StringConsts.GLUE_MSG_DUMP_PATH_INVALID_ERROR + DumpPath,
                              from: "DumpMsg()", pars: "path="+DumpPath);
                     return;
-                  } 
-              
+                  }
+
                   string fname;
                   char sc = server ? SERVER_PREFIX : CLIENT_PREFIX;
                   string extension = m_DumpMsgFormat == DumpFormat.Binary ? encoding : "log";
@@ -778,7 +778,7 @@ namespace NFX.Glue
                       fname = string.Format("{0}-{1}.{2:N}.{3:N}.ok.{4}", sc, msg.GetType().Name, msg.ID, msg.RequestID, extension);
 
                   var fp = Path.Combine(DumpPath, fname);
-              
+
                   using(var fs = new FileStream(fp, FileMode.CreateNew))
                       dumpData(fs, m_DumpMsgFormat, String.Empty, data);
               }
@@ -807,7 +807,7 @@ namespace NFX.Glue
             private void closeIdleClientTransports(DateTime managerNow)
             {
                 if (m_ClientTransportIdleTimeoutMs==0) return;//nothing to close
-                       
+
                 var lst = m_Transports;
                 foreach(var cltran in lst.Where(t => t is ClientTransport).Cast<ClientTransport>())
                 {
@@ -835,7 +835,7 @@ namespace NFX.Glue
                 }
 
                 //20140228 DKh so Server transports too get ExpirationStart and IdleAgeMs properly stamped
-                foreach(var stran in lst.Where(t => t is ServerTransport).Cast<ServerTransport>()) 
+                foreach(var stran in lst.Where(t => t is ServerTransport).Cast<ServerTransport>())
                 {
                   if (!stran.ExpirationStart.HasValue)
                     stran.ExpirationStart = managerNow;//Expiration gets reset by statistics update on traffic via transport
@@ -846,7 +846,7 @@ namespace NFX.Glue
             private void dumpStatistics(DateTime managerNow)
             {
                 if (!Glue.InstrumentationEnabled || !this.InstrumentationEnabled) return;
-                
+
                 if (!m_InstrumentClientTransportStat && !m_InstrumentServerTransportStat) return;
 
                 var ctr = new Dictionary<Node, int>();
@@ -855,22 +855,22 @@ namespace NFX.Glue
                 {
                   if (tr is ClientTransport)
                   {
-                    if (ctr.ContainsKey(tr.Node)) ctr[tr.Node] += 1; else ctr[tr.Node] = 1; 
+                    if (ctr.ContainsKey(tr.Node)) ctr[tr.Node] += 1; else ctr[tr.Node] = 1;
                   }
                   else
                   {
-                    if (str.ContainsKey(tr.Node)) str[tr.Node] += 1; else str[tr.Node] = 1; 
+                    if (str.ContainsKey(tr.Node)) str[tr.Node] += 1; else str[tr.Node] = 1;
                   }
-                  
+
                   tr.DumpInstrumentationData();
                 }
 
                 if (m_InstrumentClientTransportStat)
-                 foreach(var kvp in ctr) 
+                 foreach(var kvp in ctr)
                   Instrumentation.ClientTransportCount.Record(kvp.Key, kvp.Value);
 
                 if (m_InstrumentServerTransportStat)
-                 foreach(var kvp in str) 
+                 foreach(var kvp in str)
                   Instrumentation.ServerTransportCount.Record(kvp.Key, kvp.Value);
             }
 
@@ -879,7 +879,7 @@ namespace NFX.Glue
                 return LocalizedTime;
             }
 
-        #endregion     
+        #endregion
 
     }
 

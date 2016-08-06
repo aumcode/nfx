@@ -48,7 +48,7 @@ namespace NFX.Wave.Handlers
 
          }
     #endregion
-    
+
 
     #region Fields
 
@@ -69,17 +69,17 @@ namespace NFX.Wave.Handlers
           //2. if controller did not resolve the resolve by framework (most probable case)
           if (mi==null)
            mi = FindMatchingAction(target, work, action, out args);
-         
-          
+
+
           if (mi==null)
-            throw new HTTPStatusException(WebConsts.STATUS_404, 
+            throw new HTTPStatusException(WebConsts.STATUS_404,
                                           WebConsts.STATUS_404_DESCRIPTION,
                                           StringConsts.MVCCONTROLLER_ACTION_UNMATCHED_HANDLER_ERROR.Args(target.GetType().FullName, action));
-            
+
           Security.Permission.AuthorizeAndGuardAction(mi, work.Session, () => work.NeedsSession());
 
           object result = null;
-          
+
           try
           {
             target.m_WorkContext = work;
@@ -94,8 +94,14 @@ namespace NFX.Wave.Handlers
             }
             finally
             {
-              
-              target.m_WorkContext = null;
+              try
+              {
+                target.ActionInvocationFinally(work, action, mi, args, result);
+              }
+              finally
+              {
+                target.m_WorkContext = null;
+              }
             }
           }
           catch(Exception error)
@@ -105,16 +111,30 @@ namespace NFX.Wave.Handlers
               var cause = ((TargetInvocationException)error).InnerException;
               if (cause!=null) error = cause;
             }
-            throw MVCActionException.Wrap(target.GetType().FullName, action, error);
-          } 
+            throw MVCActionException.WrapActionBodyError(target.GetType().FullName, action, error);
+          }
 
           if (mi.ReturnType==typeof(void)) return;
 
-          ProcessResult(target, work, result);
+          try
+          {
+            try
+            {
+              ProcessResult(target, work, result);
+            }
+            catch(Exception error)
+            {
+              throw MVCActionException.WrapActionResultError(target.GetType().FullName, action, result, error);
+            }
+          }
+          finally
+          {
+            if (result is IDisposable) ((IDisposable)result).Dispose();
+          }
       }
 
       /// <summary>
-      /// Gets name of MVC action from work and controller. Controller may override name of variable 
+      /// Gets name of MVC action from work and controller. Controller may override name of variable
       /// </summary>
       protected virtual string GetActionName(Controller controller, WorkContext work)
       {
@@ -131,7 +151,7 @@ namespace NFX.Wave.Handlers
         var tp = controller.GetType();
 
         var cInfo = m_Controllers[ControllerInfo.TypeToKeyName(tp)]; //Lock free lookup
-        
+
         if (cInfo==null)
         {
           cInfo = new ControllerInfo(tp);
@@ -143,7 +163,7 @@ namespace NFX.Wave.Handlers
 
         if (gInfo==null) //action unknown
         {
-          throw new HTTPStatusException(WebConsts.STATUS_404, 
+          throw new HTTPStatusException(WebConsts.STATUS_404,
                                         WebConsts.STATUS_404_DESCRIPTION,
                                         StringConsts.MVCCONTROLLER_ACTION_UNKNOWN_ERROR.Args(tp.DisplayNameWithExpandedGenericArgs(), action));
         }
@@ -159,7 +179,7 @@ namespace NFX.Wave.Handlers
 
               BindParameters(controller, action, attr, result, work, out args);
 
-              return result; 
+              return result;
             }
           }
 
@@ -188,7 +208,7 @@ namespace NFX.Wave.Handlers
           if (ctp==typeof(object) || ctp==typeof(JSONDataMap) || ctp==typeof(Dictionary<string, object>))
           {
             args[i] = requested;
-            continue;  
+            continue;
           }
           if (typeof(TypedRow).IsAssignableFrom(ctp))
           {
@@ -199,12 +219,12 @@ namespace NFX.Wave.Handlers
             }
             catch(Exception error)
             {
-              throw new HTTPStatusException(WebConsts.STATUS_400, 
+              throw new HTTPStatusException(WebConsts.STATUS_400,
                                             WebConsts.STATUS_400_DESCRIPTION,
                                             error.ToMessageWithType(),
                                             error);
             }
-          } 
+          }
         }
 
         for(var i=0; i<args.Length; i++)
@@ -220,7 +240,7 @@ namespace NFX.Wave.Handlers
             if (mp.HasDefaultValue) args[i] = mp.DefaultValue;
             continue;
           }
-          
+
           if (got is byte[])
           {
             if (mp.ParameterType==typeof(byte[]))
@@ -234,7 +254,7 @@ namespace NFX.Wave.Handlers
               continue;
             }
             if (strictParamBinding)
-             throw new HTTPStatusException(Web.WebConsts.STATUS_400, 
+             throw new HTTPStatusException(Web.WebConsts.STATUS_400,
                                         Web.WebConsts.STATUS_400_DESCRIPTION,
                                         StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
@@ -242,19 +262,19 @@ namespace NFX.Wave.Handlers
                                                           strictParamBinding ? "strict" : "relaxed",
                                                           action,
                                                           mp.Name,
-                                                          mp.ParameterType.DisplayNameWithExpandedGenericArgs(), "byte[]" )); 
+                                                          mp.ParameterType.DisplayNameWithExpandedGenericArgs(), "byte[]" ));
           }//got byte[]
 
           var strVal = got.AsString();
           try
-          {      
+          {
             args[i] = strVal.AsType(mp.ParameterType, strictParamBinding);
           }
           catch
           {
             const int MAX_LEN = 30;
             if (strVal.Length>MAX_LEN) strVal = strVal.Substring(0, MAX_LEN)+"...";
-            throw new HTTPStatusException(WebConsts.STATUS_400, 
+            throw new HTTPStatusException(WebConsts.STATUS_400,
                                          WebConsts.STATUS_400_DESCRIPTION,
                                         StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
@@ -298,7 +318,7 @@ namespace NFX.Wave.Handlers
         {
           ((IActionResult)result).Execute(controller, work);
           return;
-        } 
+        }
 
         work.Response.WriteJSON(result, JSONWritingOptions.CompactRowsAsMap ); //default serialize object as JSON
       }

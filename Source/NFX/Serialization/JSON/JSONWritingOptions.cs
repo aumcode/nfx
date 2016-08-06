@@ -23,13 +23,13 @@ using NFX.Environment;
 
 namespace NFX.Serialization.JSON
 {
-    
+
     /// <summary>
     /// Specifies the purpose of JSON serialization so the level of detail may be dynamically adjusted.
     /// Depending on this parameter IJSONWritable implementors may include additional details
     /// that are otherwise not needed
     /// </summary>
-    public enum JSONSerializationPurpose 
+    public enum JSONSerializationPurpose
     {
        Unspecified = 0,
 
@@ -37,15 +37,15 @@ namespace NFX.Serialization.JSON
        /// UI Interface feeding - include only the data needed to show to the user
        /// </summary>
        UIFeed,
-       
+
        /// <summary>
        /// Include as much data as possible for remote object reconstruction
        /// </summary>
        Marshalling
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// Specifies how JSON should be written as text. Use JSONWritingOptions.Compact or JSONWritingOptions.PrettyPrint
     ///  static properties for typical options
@@ -55,7 +55,7 @@ namespace NFX.Serialization.JSON
         private static JSONWritingOptions s_Compact =   new JSONWritingOptions();
 
         private static JSONWritingOptions s_CompacRowsAsMap =  new JSONWritingOptions(){RowsAsMap = true};
-        
+
         private static JSONWritingOptions s_CompactASCII = new JSONWritingOptions{ ASCIITarget = true };
 
         private static JSONWritingOptions s_PrettyPrint =  new JSONWritingOptions{
@@ -79,7 +79,7 @@ namespace NFX.Serialization.JSON
                                                                                    ObjectLineBreak = true,
                                                                                    MemberLineBreak = true,
                                                                                    SpaceSymbols = true,
-                                                                                   ASCIITarget = false, 
+                                                                                   ASCIITarget = false,
                                                                                    RowsAsMap = true
                                                                                  };
 
@@ -95,7 +95,7 @@ namespace NFX.Serialization.JSON
         public static JSONWritingOptions CompactRowsAsMap { get { return s_CompacRowsAsMap;} }
 
         /// <summary>
-        /// Writes JSON without line breaks between members and no indenting escaping any characters 
+        /// Writes JSON without line breaks between members and no indenting escaping any characters
         ///  with codes above 127 suitable for ASCII transmission
         /// </summary>
         public static JSONWritingOptions CompactASCII { get { return s_CompactASCII;} }
@@ -106,7 +106,7 @@ namespace NFX.Serialization.JSON
         public static JSONWritingOptions PrettyPrint { get { return s_PrettyPrint;} }
 
         /// <summary>
-        /// Writes JSON suitable for printing/screen display 
+        /// Writes JSON suitable for printing/screen display
         ///  with codes above 127 suitable for ASCII transmission
         /// </summary>
         public static JSONWritingOptions PrettyPrintASCII { get { return s_PrettyPrintASCII;} }
@@ -120,12 +120,32 @@ namespace NFX.Serialization.JSON
         {
         }
 
+        public JSONWritingOptions(JSONWritingOptions other)
+        {
+          if (other==null) return;
+
+          this.NLSMapLanguageISO        = other.NLSMapLanguageISO;
+          this.NLSMapLanguageISODefault = other.NLSMapLanguageISODefault;
+          this.IndentWidth              = other.IndentWidth;
+          this.SpaceSymbols             = other.SpaceSymbols;
+          this.ObjectLineBreak          = other.ObjectLineBreak;
+          this.MemberLineBreak          = other.MemberLineBreak;
+          this.ASCIITarget              = other.ASCIITarget;
+          this.ISODates                 = other.ISODates;
+          this.MaxNestingLevel          = other.MaxNestingLevel;
+          this.RowsAsMap                = other.RowsAsMap;
+          this.RowsetMetadata           = other.RowsetMetadata;
+          this.Purpose                  = other.Purpose;
+          this.MapSkipNulls             = other.MapSkipNulls;
+          this.RowMapTargetName         = other.RowMapTargetName;
+        }
+
 
         /// <summary>
         /// Specifies language ISO code (3 chars) that is used (when set) by the NLSMap class,
         /// so only entries for that particular language are included. When NLSMap contains entries for more than 1 language,
-        /// but user needs only one entry received for his/her selected language, this option can be set, then NLSMap will only inline 
-        /// Name:Descr pair for that language. If a map does not contain an entry for the reequested lang then NLSMapLanguageISODefault 
+        /// but user needs only one entry received for his/her selected language, this option can be set, then NLSMap will only inline
+        /// Name:Descr pair for that language. If a map does not contain an entry for the reequested lang then NLSMapLanguageISODefault
         /// will be tried
         /// </summary>
         [Config]
@@ -150,19 +170,19 @@ namespace NFX.Serialization.JSON
         /// </summary>
         [Config]
         public bool SpaceSymbols;
-        
+
         /// <summary>
         /// Specifies whether objects need to be separated by line brakes for better readability
         /// </summary>
         [Config]
         public bool ObjectLineBreak;
-        
+
         /// <summary>
         /// Specifies whether every object member must be placed on a separate line for better readability
         /// </summary>
         [Config]
         public bool MemberLineBreak;
-        
+
         /// <summary>
         /// Specifies whether the target of serialization only deals with ASCII characeters,
         /// so any non-ASCII character with code above 127 must be escaped with unicode escape sequence
@@ -212,7 +232,7 @@ namespace NFX.Serialization.JSON
         [Config]
         public bool MapSkipNulls;
 
-        
+
         /// <summary>
         /// When set, specifies the target name for Row's fields when they are written as map
         /// </summary>

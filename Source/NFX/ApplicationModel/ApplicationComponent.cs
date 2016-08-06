@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +28,10 @@ using System.Text;
 
 namespace NFX.ApplicationModel
 {
-    
-   
 
-    
+
+
+
     /// <summary>
     /// Provides marker contract requirement for an ApplicationComponent.
     /// This interface must be implemented only by ApplicationComponent class
@@ -42,8 +42,8 @@ namespace NFX.ApplicationModel
         /// Returns process/instance unique app component system id
         /// </summary>
         ulong ComponentSID { get; }
-          
-          
+
+
         /// <summary>
         /// Returns a reference to an object that this app component services/operates under, or null
         /// </summary>
@@ -56,25 +56,25 @@ namespace NFX.ApplicationModel
         /// </summary>
         string ComponentCommonName { get; }
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// An abstraction of a disposable application component - major implementation/functionality part of an app.
     /// Components logically subdivide application container so their instances may be discovered
     ///  by other parties, for example: one may iterate over all components in an application that support instrumentation and logging.
     ///  Services are sub-types of components.
-    /// Use "ApplicationComponent.AllComponents" to access all components in the container 
+    /// Use "ApplicationComponent.AllComponents" to access all components in the container
     /// </summary>
     public abstract class ApplicationComponent : DisposableObject, IApplicationComponent
     {
         #region .ctor
-          
+
           protected ApplicationComponent()
           {
              ctor();
           }
-         
+
           protected ApplicationComponent(object director)
           {
              m_ComponentDirector = director;
@@ -99,7 +99,7 @@ namespace NFX.ApplicationModel
           }
 
         #endregion
-    
+
         #region Private Fields
 
           private static ulong s_SIDSeed;
@@ -109,9 +109,9 @@ namespace NFX.ApplicationModel
           [NonSerialized] private ulong m_ComponentSID;
           [NonSerialized] private object m_ComponentDirector;
         #endregion
-        
+
         #region Properties
-          
+
           /// <summary>
           /// Returns a thread-safe enumerable( a snapshot) of all known component instances
           /// </summary>
@@ -132,7 +132,7 @@ namespace NFX.ApplicationModel
           public static ApplicationComponent GetAppComponentBySID(ulong sid)
           {
             ApplicationComponent result;
-           
+
             lock(s_Instances)
              if (s_Instances.TryGetValue(sid, out result)) return result;
 
@@ -149,7 +149,7 @@ namespace NFX.ApplicationModel
             name = name.Trim();
 
             ApplicationComponent result;
-           
+
             lock(s_Instances)
              result = s_Instances.Values.FirstOrDefault( c => c.ComponentCommonName!=null && name.EqualsIgnoreCase(c.ComponentCommonName.Trim()));
 
@@ -174,8 +174,8 @@ namespace NFX.ApplicationModel
           /// application restarts like ComponentSID does. Subordinate (non-root) components return null
           /// </summary>
           public virtual string ComponentCommonName { get {return null;}}
-          
-          
+
+
           /// <summary>
           /// Returns a reference to an object that this app component services/operates under, or null
           /// </summary>

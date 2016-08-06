@@ -44,7 +44,7 @@ namespace NFX.IO.FileSystem.GoogleDrive
     public static string GetString(this HttpWebResponse res)
     {
       using (var stream = res.GetResponseStream())
-      {   
+      {
         using (var reader = new StreamReader(stream))
         {
           return reader.ReadToEnd();

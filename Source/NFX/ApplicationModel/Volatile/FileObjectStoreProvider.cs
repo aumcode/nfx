@@ -44,8 +44,8 @@ namespace NFX.ApplicationModel.Volatile
   /// Format of files on disk
   /// </summary>
   public enum FileObjectFormat {Slim = 0, MSBinary }
-  
-  
+
+
   /// <summary>
   /// Defines a file-based provider that stores objects for ObjectStoreService class
   /// </summary>
@@ -88,8 +88,8 @@ namespace NFX.ApplicationModel.Volatile
         private ISerializer m_Serializer;
 
         private List<string> m_KnownTypes = new List<string>();
-        
-        
+
+
         private long m_LoadLimit;
         private string m_RootPath;
         private long m_LoadSize;
@@ -101,15 +101,15 @@ namespace NFX.ApplicationModel.Volatile
     #region Properties
 
         /// <summary>
-        /// Returns file format used for serialization/deserialization into/from files 
+        /// Returns file format used for serialization/deserialization into/from files
         /// </summary>
         public FileObjectFormat Format
         {
           get { return m_Format; }
         }
-       
-       
-       
+
+
+
         /// <summary>
         /// Imposes the limit on number of bytes that can be read from disk on load all.
         /// Once limit is exceeded the rest of objects will not load.
@@ -173,7 +173,7 @@ namespace NFX.ApplicationModel.Volatile
           {
             var fi = new FileInfo(fname);
             if ( (now - fi.LastWriteTime).TotalMilliseconds > ComponentDirector.ObjectLifeSpanMS) continue;//dont need to read
-        
+
             if (m_LoadLimit > 0 && m_LoadSize > m_LoadLimit)
             {
               WriteLog(MessageType.Info, "Load limit imposed", m_LoadLimit.ToString() + " bytes", FROM);
@@ -196,7 +196,7 @@ namespace NFX.ApplicationModel.Volatile
                   if (task.IsCompleted)
                   {
                     tasks[i] = null;
-                    if (task.Result!=null) 
+                    if (task.Result!=null)
                      yield return task.Result;
                   }
                 }
@@ -237,7 +237,7 @@ namespace NFX.ApplicationModel.Volatile
           m_Format = node.AttrByName(CONFIG_FORMAT_ATTR).ValueAsEnum<FileObjectFormat>(FileObjectFormat.Slim);
 
           foreach(var cn in  node[CONFIG_KNOWN_TYPES_SECTION].Children.Where(cn => cn.IsSameName(CONFIG_KNOWN_SECTION)))
-          { 
+          {
             var tn = cn.AttrByName(CONFIG_TYPE_ATTR).ValueAsString(CoreConsts.UNKNOWN);
             m_KnownTypes.Add( tn );
           }
@@ -273,16 +273,16 @@ namespace NFX.ApplicationModel.Volatile
           var treg = new TypeRegistry(TypeRegistry.CommonCollectionTypes,
                                                 TypeRegistry.BoxedCommonTypes,
                                                 TypeRegistry.BoxedCommonNullableTypes);
-          
+
           foreach(var tn in m_KnownTypes)
           {
             var t = Type.GetType(tn, false);
-            if (t!=null) 
+            if (t!=null)
              treg.Add(t);
             else
-             WriteLog(MessageType.Warning, "Specified known type could not be found: " + tn, tn, "getSerializer(slim)"); 
+             WriteLog(MessageType.Warning, "Specified known type could not be found: " + tn, tn, "getSerializer(slim)");
           }
-          return  new SlimSerializer(treg); 
+          return  new SlimSerializer(treg);
         }
 
 
@@ -290,7 +290,7 @@ namespace NFX.ApplicationModel.Volatile
         {
             using (var fs = new FileStream(fname, FileMode.Open))//, FileAccess.Read, FileShare.Read, 64*1024, FileOptions.SequentialScan))
             {
-          
+
               var entry = new ObjectStoreEntry();
               try
               {
@@ -346,7 +346,7 @@ namespace NFX.ApplicationModel.Volatile
         {
           var key = entry.Key.ToString();
           var path = Path.Combine(getStorePath(), key.Substring(0,2), key.Substring(2,2));
-      
+
           if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
 

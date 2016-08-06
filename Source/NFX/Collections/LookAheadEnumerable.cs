@@ -27,7 +27,7 @@ namespace NFX.Collections
       T Next { get; }
     }
 
-    public interface ILookAheadEnumerable<T> : IEnumerable<T> 
+    public interface ILookAheadEnumerable<T> : IEnumerable<T>
     {
       ILookAheadEnumerator<T> GetLookAheadEnumerator();
     }
@@ -68,7 +68,7 @@ namespace NFX.Collections
 
       public T Next
       {
-        get 
+        get
         {
           if (HasNext) return m_Enumerator.Current;
           else throw new NFXException(StringConsts.OPERATION_NOT_SUPPORTED_ERROR + "{0}.Next(!HasNext)".Args(GetType().FullName));
@@ -89,7 +89,7 @@ namespace NFX.Collections
         m_Enumerator.Dispose();
       }
       object IEnumerator.Current { get { return Current; } }
-      public bool MoveNext() 
+      public bool MoveNext()
       {
         if (!m_Fetch) return m_Enumerator.MoveNext();
         else
@@ -104,12 +104,12 @@ namespace NFX.Collections
         m_Fetch = false;
         m_HasNext = false;
         m_BeforeStart = true;
-        m_Current= default(T); 
-        m_Enumerator.Reset(); 
+        m_Current= default(T);
+        m_Enumerator.Reset();
       }
     }
 
-    public sealed class LookAheadEnumerable<T> : ILookAheadEnumerable<T> 
+    public sealed class LookAheadEnumerable<T> : ILookAheadEnumerable<T>
     {
       private readonly IEnumerable<T> m_Enumerable;
       public LookAheadEnumerable(IEnumerable<T> enumerable) { m_Enumerable = enumerable; }
@@ -118,9 +118,9 @@ namespace NFX.Collections
       IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
     }
 
-    public static class LookAheadExtensions 
+    public static class LookAheadExtensions
     {
-      public static ILookAheadEnumerable<T> AsLookAheadEnumerable<T>(this IEnumerable<T> enumerable) 
+      public static ILookAheadEnumerable<T> AsLookAheadEnumerable<T>(this IEnumerable<T> enumerable)
       { return new LookAheadEnumerable<T>(enumerable); }
     }
 }

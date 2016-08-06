@@ -37,7 +37,7 @@ namespace NFX.Web.Social
       /// Specifies that the service does not support any forms of security integration
       /// </summary>
       None = 0,
-        
+
       /// <summary>
       /// Specifies that the service only allows users to enter credentials via browser, in a popup or IFrame
       /// </summary>
@@ -52,8 +52,8 @@ namespace NFX.Web.Social
   /// <summary>
   /// Globally uniquelly identifies social network architypes
   /// </summary>
-  public enum SocialNetID 
-  { 
+  public enum SocialNetID
+  {
     UNS=0, // Unspecified
 
     TWT=1, // Twitter
@@ -77,13 +77,13 @@ namespace NFX.Web.Social
     /// <summary>
     /// Globally uniquelly identifies social network architype
     /// </summary>
-    SocialNetID ID { get; }  
+    SocialNetID ID { get; }
 
     /// <summary>
     /// Provides social network description, this default implementation returns the name of the class
     /// </summary>
     string Description { get; }
-        
+
     /// <summary>
     /// Returns the root public URL for the service
     /// </summary>
@@ -169,7 +169,7 @@ namespace NFX.Web.Social
 
 #pragma warning disable 1570
     /// <summary>
-    /// Takes unescaped regular URL and transforms it in a single escaped parameter string suitable 
+    /// Takes unescaped regular URL and transforms it in a single escaped parameter string suitable
     /// for submission to social network.
     /// For example, incoming "https://aa.bb?nonce=FDAC25&target=123" -> "https%3a%2f%2faa.com%3fnonce%3dFDAC25%26target%3d123"
     /// </summary>

@@ -53,7 +53,7 @@ namespace NFX
 
 
     #region .ctor / .dctor
-     
+
       ~DisposableObject()
       {
         if (!m_Disposed)
@@ -78,7 +78,7 @@ namespace NFX
     #endregion
 
     #region Properties
-    
+
       /// <summary>
       /// Indicates whether this object Dispose() has been called and dispose started but not finished yet
       /// </summary>
@@ -143,7 +143,7 @@ namespace NFX
     #endregion
 
   }
-                                  
+
 
 
   /// <summary>

@@ -39,7 +39,7 @@ namespace NFX.IO.FileSystem.S3.V4
     #region Static /.ctor
 
       private static readonly char[] PATH_SEPARATORS = new char[]{'/'};
-     
+
       private static S3V4FileSystemCapabilities s_Instance = new S3V4FileSystemCapabilities();
 
       public static S3V4FileSystemCapabilities Instance { get { return s_Instance;} }
@@ -173,11 +173,11 @@ namespace NFX.IO.FileSystem.S3.V4
       {
         get { return false; }
       }
-      
-      public bool SupportsAsyncronousAPI 
-      { 
-        get { return false; } 
-      } 
+
+      public bool SupportsAsyncronousAPI
+      {
+        get { return false; }
+      }
 
     #endregion
   } //S3FileSystemCapabilities

@@ -22,7 +22,7 @@ namespace NFX.DataAccess.MongoDB
     #region CONSTS
         public const string SCRIPT_FILE_SUFFIX = ".mon.json";
     #endregion
-    
+
     #region .ctor/.dctor
 
       public MongoDBDataStore() : base()
@@ -46,9 +46,9 @@ namespace NFX.DataAccess.MongoDB
 
     #endregion
 
-    
+
     #region ICRUDDataStore
-        
+
         //WARNING!!!
         //The ASYNC versions of sync call now call TaskUtils.AsCompletedTask( sync_version )
         // which executes synchronously. Because of it CRUDOperationCallContext does not need to be captured
@@ -57,8 +57,8 @@ namespace NFX.DataAccess.MongoDB
         // CRUDOperationCallContext and pass it along the call chain
 
 
-        
-        public virtual CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, 
+
+        public virtual CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted,
                                                 TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
         {
             throw new MongoDBDataAccessException(StringConsts.OP_NOT_SUPPORTED_ERROR.Args("BeginTransaction", GetType().Name));
@@ -103,7 +103,7 @@ namespace NFX.DataAccess.MongoDB
 
         public virtual Task<Schema> GetSchemaAsync(Query query)
         {
-            return TaskUtils.AsCompletedTask( () => this.GetSchema(query) ); 
+            return TaskUtils.AsCompletedTask( () => this.GetSchema(query) );
         }
 
         public virtual List<RowsetBase> Load(params Query[] queries)
@@ -159,6 +159,22 @@ namespace NFX.DataAccess.MongoDB
                         });
         }
 
+        public virtual Cursor OpenCursor(Query query)
+        {
+           var db = GetDatabase();
+
+           var handler = QueryResolver.Resolve(query);
+           var context = new MongoDBCRUDQueryExecutionContext(this, db);
+           var result = handler.OpenCursor( context, query);
+           return result;
+        }
+
+        public virtual Task<Cursor> OpenCursorAsync(Query query)
+        {
+          return TaskUtils.AsCompletedTask( () => this.OpenCursor(query) );
+        }
+
+
         public virtual int Save(params RowsetBase[] rowsets)
         {
            if (rowsets==null) return 0;
@@ -186,7 +202,7 @@ namespace NFX.DataAccess.MongoDB
 
         public virtual Task<int> SaveAsync(params RowsetBase[] rowsets)
         {
-           return TaskUtils.AsCompletedTask( () => this.Save(rowsets) ); 
+           return TaskUtils.AsCompletedTask( () => this.Save(rowsets) );
         }
 
         public virtual int Insert(Row row, FieldFilterFunc filter = null)
@@ -197,7 +213,7 @@ namespace NFX.DataAccess.MongoDB
 
         public virtual Task<int> InsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.Insert(row, filter) ); 
+            return TaskUtils.AsCompletedTask( () => this.Insert(row, filter) );
         }
 
         public virtual int Upsert(Row row, FieldFilterFunc filter = null)
@@ -270,16 +286,16 @@ namespace NFX.DataAccess.MongoDB
 
 
     #region Protected
-                
+
         protected internal RowConverter Converter{ get{return m_Converter;} }
-        
+
         public override void Configure(IConfigSectionNode node)
         {
             m_QueryResolver.Configure(node);
             m_Converter.Configure(node);
             base.Configure(node);
         }
-        
+
         protected internal string GetCollectionName(Schema schema)
         {
           string tableName = schema.Name;
@@ -292,15 +308,15 @@ namespace NFX.DataAccess.MongoDB
           return tableName;
         }
 
-        
+
         protected virtual int DoInsert(Connector.Database db, Row row, FieldFilterFunc filter = null)
         {
           var doc = convertRowToBSONDocumentWith_ID(row, "insert", filter);
-          
+
           var tname = GetCollectionName(row.Schema);
-          
-          var collection = db[tname]; 
-          
+
+          var collection = db[tname];
+
           var result = collection.Insert(doc);
 
           checkCRUDResult(result, row.Schema.Name, "insert");
@@ -311,11 +327,11 @@ namespace NFX.DataAccess.MongoDB
         protected virtual int DoUpsert(Connector.Database db, Row row, FieldFilterFunc filter = null)
         {
           var doc = convertRowToBSONDocumentWith_ID(row, "upsert", filter);
-          
+
           var tname = GetCollectionName(row.Schema);
-          
-          var collection = db[tname]; 
-          
+
+          var collection = db[tname];
+
           var result = collection.Save(doc);
 
           checkCRUDResult(result, row.Schema.Name, "upsert");
@@ -335,13 +351,13 @@ namespace NFX.DataAccess.MongoDB
             if (doc.Count == 0) return 0; // nothing to update
             var wrapDoc = new BSONDocument();
             wrapDoc.Set(new BSONDocumentElement(Connector.Protocol.SET, doc));
-            doc = wrapDoc; 
+            doc = wrapDoc;
           }
 
           var tname = GetCollectionName(row.Schema);
-          
-          var collection = db[tname]; 
-          
+
+          var collection = db[tname];
+
           var qry = new Connector.Query();
           qry.Set( _id );
           var upd = new Connector.UpdateEntry(qry, doc, false, false);
@@ -356,16 +372,16 @@ namespace NFX.DataAccess.MongoDB
         protected virtual int DoDelete(Connector.Database db, Row row, IDataStoreKey key)
         {
           var doc = convertRowToBSONDocumentWith_ID(row, "delete");
-          
+
           var tname = GetCollectionName(row.Schema);
-          
-          var collection = db[tname]; 
-          
+
+          var collection = db[tname];
+
           var qry = new Connector.Query();
           qry.Set( doc[Connector.Protocol._ID] );
 
           var result = collection.Delete( new Connector.DeleteEntry( qry, Connector.DeleteLimit.OnlyFirstMatch) );
-         
+
           checkCRUDResult(result, row.Schema.Name, "delete");
 
           return result.TotalDocumentsAffected;
@@ -389,12 +405,22 @@ namespace NFX.DataAccess.MongoDB
 
       private void checkCRUDResult(Connector.CRUDResult result, string schema, string operation)
       {
-        if (result.WriteErrors==null || 
+        if (result.WriteErrors==null ||
             result.WriteErrors.Length==0) return;
 
         var dump = NFX.Serialization.JSON.JSONWriter.Write(result.WriteErrors, Serialization.JSON.JSONWritingOptions.PrettyPrint);
 
-        throw new MongoDBDataAccessException(StringConsts.OP_CRUD_ERROR.Args(operation, schema, dump));
+        string kv = null;
+        KeyViolationKind kvKind = KeyViolationKind.Unspecified;
+
+        if (result.WriteErrors[0].Code==11000)
+        {
+          kv = result.WriteErrors[0].Message;
+          kvKind =  kv.IndexOf("_id")>0 ? KeyViolationKind.Primary : KeyViolationKind.Secondary;
+        }
+
+
+        throw new MongoDBDataAccessException(StringConsts.OP_CRUD_ERROR.Args(operation, schema, dump), kvKind, kv);
       }
 
 

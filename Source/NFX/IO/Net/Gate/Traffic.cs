@@ -22,9 +22,9 @@ using System.Net;
 
 namespace NFX.IO.Net.Gate
 {
-  
+
   public enum TrafficDirection { Incoming=0, Outgoing}
-  
+
   /// <summary>
   /// Represents a traffic that passes through network gate
   /// </summary>
@@ -38,7 +38,7 @@ namespace NFX.IO.Net.Gate
     string RequestURL {get;}
     IDictionary<string, object> Items {get;}
   }
-  
+
 
   /// <summary>
   /// Represents HTTP traffic that arrives via HttpListener
@@ -48,7 +48,7 @@ namespace NFX.IO.Net.Gate
     public HTTPIncomingTraffic(HttpListenerRequest request)
     {
       m_Request = request;
-      m_Items = null; 
+      m_Items = null;
     }
 
     private HttpListenerRequest m_Request;
@@ -69,14 +69,14 @@ namespace NFX.IO.Net.Gate
     public IDictionary<string, object> Items
     {
       get
-      { 
+      {
         if (m_Items==null)
         {
           m_Items = new Dictionary<string,object>();
           foreach(var key in m_Request.QueryString.AllKeys.Where(k=>k.IsNotNullOrWhiteSpace()))
             m_Items[key] = m_Request.QueryString.Get(key);
         }
-       
+
         return m_Items;
       }
     }

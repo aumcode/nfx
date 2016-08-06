@@ -28,9 +28,9 @@ namespace NFX.Instrumentation
     /// <summary>
     /// Stipulates instrumentation contract
     /// </summary>
-    public interface IInstrumentation : IApplicationComponent, ILocalizedTimeProvider 
+    public interface IInstrumentation : IApplicationComponent, ILocalizedTimeProvider
     {
-      
+
       /// <summary>
       /// Indicates whether instrumentation is enabled
       /// </summary>
@@ -50,7 +50,7 @@ namespace NFX.Instrumentation
       /// Gets/Sets the maximum record count that this instance can store
       /// </summary>
       int MaxRecordCount{ get; }
-      
+
       /// <summary>
       /// Specifies how often aggregation is performed
       /// </summary>
@@ -66,7 +66,7 @@ namespace NFX.Instrumentation
       /// When true, outputs instrumentation data about the self (how many datum buffers, etc.)
       /// </summary>
       bool SelfInstrumented{ get;}
-      
+
       /// <summary>
       /// Returns the size of the ring buffer where result (aggregated) instrumentation records are kept in memory.
       /// The maximum buffer capacity is returned, not how many results have been buffered so far.
@@ -96,7 +96,7 @@ namespace NFX.Instrumentation
 
       /// <summary>
       /// Returns the specified number of samples from the ring result buffer in the near-chronological order,
-      /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all 
+      /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all
       ///  result records returned as enumeration is a lazy procedure that does not make copies/take locks.
       /// The enumeration is empty if ResultBufferSize is less or equal to zero entries.
       /// If count is less or equal to zero then the system returns all results available.
@@ -105,7 +105,7 @@ namespace NFX.Instrumentation
 
       /// <summary>
       /// Returns samples starting around the the specified UTCdate in the near-chronological order,
-      /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all 
+      /// meaning that data is already sorted by time MOST of the TIME, however sorting is NOT GUARANTEED for all
       ///  result records returned as enumeration is a lazy procedure that does not make copies/take locks.
       /// The enumeration is empty if ResultBufferSize is less or equal to zero entries
       /// </summary>
@@ -132,6 +132,6 @@ namespace NFX.Instrumentation
       /// </summary>
       bool InstrumentationEnabled { get; set;}
     }
-      
+
 
 }

@@ -73,3 +73,11 @@ create table TBL_FULLGDID
 	PRIMARY KEY (GDID)
 );
 
+
+create table TBL_TUPLE
+(
+    COUNTER   BIGINT  not null,
+    DATA  varchar(25) not null,
+    PRIMARY KEY (COUNTER)
+);
+

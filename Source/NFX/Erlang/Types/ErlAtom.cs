@@ -32,7 +32,7 @@ namespace NFX.Erlang
     public static readonly ErlAtom False     = new ErlAtom(AtomTable.FALSE_INDEX);
     public static readonly ErlAtom Undefined = new ErlAtom(AtomTable.UNDEFINED_INDEX);
     public static readonly ErlAtom Normal    = new ErlAtom("normal");
-  
+
   #endregion
 
   #region .ctor

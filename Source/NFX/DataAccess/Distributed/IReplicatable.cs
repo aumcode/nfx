@@ -30,13 +30,13 @@ namespace NFX.DataAccess.Distributed
     {
         /// <summary>
         /// Provides the information about this version of data that this isntance represents.
-        /// Usually this object contains the name of the user who made a change, server/cluster node ID and/or machine name  
+        /// Usually this object contains the name of the user who made a change, server/cluster node ID and/or machine name
         /// </summary>
         IReplicationVersionInfo ReplicationVersionInfo { get; }
 
 
         /// <summary>
-        /// Returns the relative priority of replication, where 0=highest priority 
+        /// Returns the relative priority of replication, where 0=highest priority
         /// </summary>
         int ReplicationPriority { get;}
     }

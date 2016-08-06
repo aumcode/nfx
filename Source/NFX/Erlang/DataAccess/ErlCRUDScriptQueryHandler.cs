@@ -34,7 +34,7 @@ namespace NFX.DataAccess.Erlang
        public static readonly ErlAtom ATOM_Subscriber = new ErlAtom("Subscriber");
        public static readonly ErlAtom ATOM_Timestamp = new ErlAtom("Timestamp");
 
-    
+
     //public static readonly IErlObject EXECUTE_OK_PATTERN =
     //new ErlPatternMatcher {
     //    {"stop", (p, t, b, _args) => { active = false; return null; } },
@@ -43,7 +43,7 @@ namespace NFX.DataAccess.Erlang
 
 
     #endregion
-    
+
     #region .ctor
         public ErlCRUDScriptQueryHandler(ErlDataStore store, QuerySource source)
         {
@@ -58,7 +58,7 @@ namespace NFX.DataAccess.Erlang
     #endregion
 
     #region ICRUDQueryHandler
-    
+
 
       public string Name{ get { return m_Source.Name; }}
 
@@ -83,7 +83,7 @@ namespace NFX.DataAccess.Erlang
         var parsed = prepareQuery(m_Source);
 
         var reqID = m_Store.NextRequestID;
-        
+
         var bind = new ErlVarBind();
 
         foreach(var erlVar in parsed.ArgVars)
@@ -107,10 +107,10 @@ namespace NFX.DataAccess.Erlang
           request
         };
 
-        var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD, 
+        var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD,
                                        ErlDataStore.NFX_RPC_FUN, args, mbox);
-                                        
-        var response = rawResp as ErlTuple; 
+
+        var response = rawResp as ErlTuple;
 
         // {ReqID, {ok, SchemaID, [{row},{row}...]}}
         // {ReqID, {error, Reason}}
@@ -133,8 +133,8 @@ namespace NFX.DataAccess.Erlang
         //{ok, "tca_jaba",
         //[
         //  {tca_jaba, 1234, tav, "User is cool", true},
-        //  {tca_jaba, 2344, zap, "Zaplya xochet pit", false}, 
-        //  {tca_jaba, 8944, tav, "User is not good", false} 
+        //  {tca_jaba, 2344, zap, "Zaplya xochet pit", false},
+        //  {tca_jaba, 8944, tav, "User is not good", false}
         //]};
         return m_Store.Map.ErlCRUDResponseToRowset(schema, rows, query.ResultRowType);
       }
@@ -157,7 +157,7 @@ namespace NFX.DataAccess.Erlang
         var parsed = prepareQuery(m_Source);
 
         var reqID = m_Store.NextRequestID;
-        
+
         var bind = new ErlVarBind();
 
         var wass = false;
@@ -166,7 +166,7 @@ namespace NFX.DataAccess.Erlang
         {
            var name = erlVar.Name.Value;
 
-           if (erlVar.Name==ATOM_Subscriber && 
+           if (erlVar.Name==ATOM_Subscriber &&
                erlVar.ValueType==ErlTypeOrder.ErlPid)
            {
              bind.Add(ATOM_Subscriber, mbox.Self);
@@ -174,7 +174,7 @@ namespace NFX.DataAccess.Erlang
              continue;
            }
 
-           if (erlVar.Name==ATOM_Timestamp && 
+           if (erlVar.Name==ATOM_Timestamp &&
                erlVar.ValueType==ErlTypeOrder.ErlLong)
            {
              bind.Add(ATOM_Timestamp, new ErlLong(ts.Value.Microseconds));
@@ -205,10 +205,10 @@ namespace NFX.DataAccess.Erlang
           request
         };
 
-        var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD, 
+        var rawResp = store.ExecuteRPC(ErlDataStore.NFX_CRUD_MOD,
                                        ErlDataStore.NFX_SUBSCRIBE_FUN, args, null);
-                                        
-        var response = rawResp as ErlTuple; 
+
+        var response = rawResp as ErlTuple;
 
         // {ReqID, {ok, SchemaID, [{row},{row}...]}}
         // {ReqID, {ReqID::int(), {error, Code::int(), Msg}}}
@@ -227,6 +227,17 @@ namespace NFX.DataAccess.Erlang
       public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
       {
         return TaskUtils.AsCompletedTask(() => ExecuteWithoutFetch(context, query) );
+      }
+
+
+      public Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
+      {
+        throw new NotSupportedException("Erl.OpenCursor");
+      }
+
+      public Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
+      {
+        throw new NotSupportedException("Erl.OpenCursorAsync");
       }
 
     #endregion
@@ -325,5 +336,7 @@ namespace NFX.DataAccess.Erlang
 
 
     #endregion
+
+
   }
 }

@@ -14,14 +14,14 @@ namespace NFX.DataAccess.CRUD
   /// </summary>
   public static class JSONMappings
   {
+    public const string JTP_STRING = "string";
     public const string JTP_ARRAY = "array";
     public const string JTP_MAP = "map";
     public const string JTP_OBJECT = "object";
 
     private static readonly Dictionary<Type, string> s_CLR = new Dictionary<Type, string>()
     {
-       {typeof(string), "string"},
-       {typeof(char), "string"},
+       {typeof(char), JTP_STRING},
        {typeof(bool), "bool"},
        {typeof(byte), "byte"},{typeof(sbyte), "sbyte"},
        {typeof(short), "short"},{typeof(ushort), "ushort"},
@@ -40,18 +40,18 @@ namespace NFX.DataAccess.CRUD
       {JTP_ARRAY, typeof(List<object>)},
       {JTP_MAP, typeof(Dictionary<string, object>)},
 
-      {"string", typeof(string)}, {"str", typeof(string)}, {"char", typeof(string)}, {"text", typeof(string)},
+      {JTP_STRING, typeof(string)}, {"str", typeof(string)}, {"char", typeof(string)}, {"text", typeof(string)},
 
       {"bool", typeof(bool)}, {"boolean", typeof(bool)}, {"logical", typeof(bool)}, {"logic", typeof(bool)},
 
       {"sbyte", typeof(int)}, {"short", typeof(int)}, {"int16", typeof(int)}, {"int", typeof(int)}, {"integer", typeof(int)}, {"int32", typeof(int)},
 
       {"byte", typeof(uint)}, {"ushort", typeof(uint)}, {"uint16", typeof(uint)}, {"uint", typeof(uint)}, {"uinteger", typeof(uint)}, {"uint32", typeof(uint)},
-      
+
       {"long", typeof(long)}, {"int64", typeof(long)},
 
       {"ulong", typeof(ulong)}, {"uint64", typeof(ulong)},
-     
+
       {"float", typeof(double)}, {"single", typeof(double)}, {"real", typeof(double)}, {"double", typeof(double)}, {"number", typeof(double)}, {"numeric", typeof(double)},
 
       {"dec", typeof(decimal)}, {"decimal", typeof(decimal)}, {"money", typeof(decimal)}, {"fixed", typeof(decimal)},
@@ -65,10 +65,9 @@ namespace NFX.DataAccess.CRUD
       isNullable = false;
       if (type==null) return JTP_OBJECT;
 
-      if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+      if (typeof(string).IsAssignableFrom(type))
       {
-         isNullable = true;
-         type = type.GetGenericArguments()[0];
+        return JTP_STRING;
       }
 
       if (typeof(Row).IsAssignableFrom(type))
@@ -84,6 +83,12 @@ namespace NFX.DataAccess.CRUD
       if (typeof(IEnumerable).IsAssignableFrom(type))
       {
         return JTP_ARRAY;
+      }
+
+      if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+      {
+         isNullable = true;
+         type = type.GetGenericArguments()[0];
       }
 
       //dictionary lookup

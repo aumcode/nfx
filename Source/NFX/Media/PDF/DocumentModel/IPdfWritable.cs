@@ -8,6 +8,6 @@
     /// <summary>
     /// Returns PDF string representation
     /// </summary>
-    string ToPdfString(); 
+    string ToPdfString();
   }
 }

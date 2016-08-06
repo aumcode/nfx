@@ -37,7 +37,7 @@ namespace NFX.Glue.Tools
 
 
         protected Assembly m_Assembly;
-        private List<string> m_NamespaceFilter; 
+        private List<string> m_NamespaceFilter;
         private string m_OutPath;
         private bool m_FilePerContract;
 
@@ -60,10 +60,10 @@ namespace NFX.Glue.Tools
         public string NamespaceFilter
         {
           get { return (m_NamespaceFilter==null || m_NamespaceFilter.Count==0)
-                       ? string.Empty 
+                       ? string.Empty
                        : m_NamespaceFilter.Aggregate(new StringBuilder(), (a, s) => a.Append(";" + s), a => a.ToString().Remove(0,1)); }
           set
-          { 
+          {
              if (value==null)
               m_NamespaceFilter = null;
              else
@@ -72,7 +72,7 @@ namespace NFX.Glue.Tools
                      .Where( ns => !string.IsNullOrEmpty(ns)).ToList();
           }
         }
-        
+
 
         public IEnumerable<string> Namespaces
         {

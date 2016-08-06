@@ -10,7 +10,7 @@ using NFX.Serialization.Slim;
 namespace NFX.Log.Bin
 {
   /// <summary>
-  /// Writes bin log in Slim format. The format does not support object versioning however it is 
+  /// Writes bin log in Slim format. The format does not support object versioning however it is
   /// very efficient in both space and speed
   /// </summary>
   public class SlimLogWriter : LogWriter

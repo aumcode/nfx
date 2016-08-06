@@ -104,10 +104,15 @@
     <Compile Include="WorkMatch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BUILD_INFO.txt" />
+    <EmbeddedResource Include="BUILD_INFO.txt" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.image-view.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.markup.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.object-editor.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -127,16 +132,13 @@
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.tests.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.default.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.modern.css" />
-    <None Include="Templatization\StockContent\Embedded\script\image-box.test.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\wv.objectinspector.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.ruler.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.tree.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.ideas.utest.htm" />
     <None Include="Templatization\StockContent\Embedded\script\CLOSURE_ERROR_OUT.txt" />
-    <Content Include="Templatization\StockContent\Embedded\script\ideas.js" />
     <None Include="Templatization\StockContent\Embedded\script\signal.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.chart.svg.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

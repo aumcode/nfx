@@ -39,8 +39,8 @@ namespace NFX.IO.FileSystem.SVN
   {
     #region CONSTS
 
-      private const string LIST_CONTENT_BODY = 
-        "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + 
+      private const string LIST_CONTENT_BODY =
+        "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" +
         "<propfind xmlns=\"DAV:\"> xmlns:in=\"http://sapportals.com/xmlns/cm/webdav\"" +
         //"<allprop/>" +
         "  <prop>" +
@@ -57,7 +57,7 @@ namespace NFX.IO.FileSystem.SVN
       private const string LIST_CONTENT_METHOD = "PROPFIND";
       private const int HTTP_STATUS_CODE_MULTISTATUS = 207;
 
-      private const string REPORT_CONTENT_BODY = 
+      private const string REPORT_CONTENT_BODY =
         "<?xml version=\"1.0\"?>" +
         "<S:log-report xmlns:S=\"svn:\">" +
         "<S:start-revision>1</S:start-revision>" +
@@ -171,7 +171,7 @@ namespace NFX.IO.FileSystem.SVN
       /// </summary>
       public sealed class Directory: Item
       {
-        internal Directory(WebDAV client, string name, string version, DateTime creationDate, DateTime lastModificationDate, string contentType, 
+        internal Directory(WebDAV client, string name, string version, DateTime creationDate, DateTime lastModificationDate, string contentType,
           Directory parent)
           : base(client, name, version, creationDate, lastModificationDate, contentType, parent) {}
 
@@ -180,38 +180,38 @@ namespace NFX.IO.FileSystem.SVN
         /// <summary>
         /// Lists subitems contained in this remote Dav directory. Items are fetched lazily and then cached until Refresh() is called
         /// </summary>
-        public IEnumerable<Item> Children 
-        { 
-          get 
+        public IEnumerable<Item> Children
+        {
+          get
           {
             if (m_Children == null)
             {
               m_Children = Client.listDirectoryContent(this);
             }
             return m_Children;
-          } 
+          }
         }
 
         /// <summary>
         /// Lists subdirectories of this directory
         /// </summary>
         public IEnumerable<Item> Directories
-        { 
-          get 
+        {
+          get
           {
             return Children.Where(c => c is Directory);
-          } 
+          }
         }
 
         /// <summary>
         /// Lists files contained in this directory
         /// </summary>
         public IEnumerable<Item> Files
-        { 
-          get 
+        {
+          get
           {
             return Children.Where(c => c is File);
-          } 
+          }
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace NFX.IO.FileSystem.SVN
             string seg = segs[i];
 
             Directory dir = item[seg] as Directory;
-            if (dir != null) 
+            if (dir != null)
             {
               item = dir;
               continue;
@@ -267,9 +267,9 @@ namespace NFX.IO.FileSystem.SVN
       /// </summary>
       public sealed class File: Item
       {
-        internal File(WebDAV client, string name, ulong size, string version, DateTime creationDate, DateTime lastModificationDate, string contentType, 
+        internal File(WebDAV client, string name, ulong size, string version, DateTime creationDate, DateTime lastModificationDate, string contentType,
           Directory parent)
-          : base(client, name, version, creationDate, lastModificationDate, contentType, parent) 
+          : base(client, name, version, creationDate, lastModificationDate, contentType, parent)
         {
           m_Size = size;
         }
@@ -284,7 +284,7 @@ namespace NFX.IO.FileSystem.SVN
         /// <summary>
         /// Writes contents of the remote file into a stream. No caching is done
         /// </summary>
-        public void GetContent(Stream stream) 
+        public void GetContent(Stream stream)
         {
           Client.getFileContent(this, stream);
         }
@@ -357,7 +357,7 @@ namespace NFX.IO.FileSystem.SVN
       public WebDAV(string rootURL, int timeoutMs = 0, string uName = null, string uPwd = null, Version version = null)
       {
         NFX.Web.WebSettings.RequireInitializedSettings();
-        
+
         if (rootURL.IsNullOrWhiteSpace())
           throw new NFXException(NFX.Web.StringConsts.ARGUMENT_ERROR + this.GetType().Name + ".ctor(path == null|empty)");
 
@@ -377,7 +377,7 @@ namespace NFX.IO.FileSystem.SVN
       private Uri m_RootUri;
 
       private Directory m_Root;
-      
+
       private string m_UName;
       private string m_UPwd;
 
@@ -397,15 +397,15 @@ namespace NFX.IO.FileSystem.SVN
       /// <summary>
       /// Returns top-level directory as of root Uri mount point
       /// </summary>
-      public Directory Root 
-      { 
-        get 
+      public Directory Root
+      {
+        get
         {
           if (m_Root == null)
             m_Root = (Directory)listDirectoryContent(depth: 0).First();
 
-          return m_Root; 
-        } 
+          return m_Root;
+        }
       }
 
       /// <summary>
@@ -426,10 +426,10 @@ namespace NFX.IO.FileSystem.SVN
       /// <summary>
       /// Get or sets current version
       /// </summary>
-      public Version CurrentVersion 
-      { 
-        get { return m_CurrentVersion; } 
-        set 
+      public Version CurrentVersion
+      {
+        get { return m_CurrentVersion; }
+        set
         {
           if (m_CurrentVersion != null && value != null && m_CurrentVersion.Equals(value)) return;
 
@@ -486,12 +486,12 @@ namespace NFX.IO.FileSystem.SVN
       {
         return m_RootUri.AbsoluteUri;
       }
-      
+
     #endregion
 
     #region .pvt. impl.
 
-      private static List<Version> doListVersions(string rootURL, string uName, string uPwd, 
+      private static List<Version> doListVersions(string rootURL, string uName, string uPwd,
         string startVersion = "1", string endVersion = null, int? limit = null)
       {
         var sb = new StringBuilder();
@@ -542,7 +542,7 @@ namespace NFX.IO.FileSystem.SVN
             }
           }
           else
-            throw new NFXException(NFX.Web.StringConsts.HTTP_OPERATION_ERROR + typeof(WebDAV).Name + 
+            throw new NFXException(NFX.Web.StringConsts.HTTP_OPERATION_ERROR + typeof(WebDAV).Name +
               ".listVersions: response.StatusCode=\"{0}\"".Args(response.StatusCode));
         }
       }
@@ -603,7 +603,7 @@ namespace NFX.IO.FileSystem.SVN
             }
           }
           else
-            throw new NFXException(NFX.Web.StringConsts.HTTP_OPERATION_ERROR + this.GetType().Name + 
+            throw new NFXException(NFX.Web.StringConsts.HTTP_OPERATION_ERROR + this.GetType().Name +
               ".getFileContent: response.StatusCode=\"{0}\"".Args(response.StatusCode));
         }
       }
@@ -667,7 +667,7 @@ namespace NFX.IO.FileSystem.SVN
             }
           }
           else
-            throw new NFXException(NFX.Web.StringConsts.HTTP_OPERATION_ERROR + this.GetType().Name + 
+            throw new NFXException(NFX.Web.StringConsts.HTTP_OPERATION_ERROR + this.GetType().Name +
               "getFileContent: response.StatusCode=\"{0}\"".Args(response.StatusCode));
         }
       }
@@ -682,7 +682,7 @@ namespace NFX.IO.FileSystem.SVN
       private static void log(string text, string from)
       {
         var ltp = NFX.Web.WebSettings.WebDavLogType;
-        
+
         if (ltp.HasValue)
           App.Log.Write(
             new Log.Message
@@ -697,7 +697,7 @@ namespace NFX.IO.FileSystem.SVN
 
       private HttpWebRequest makeRequest(Uri uri, string method = "GET")
       {
-        return makeRequest(uri, m_UName, m_UPwd, m_TimeoutMs, method); 
+        return makeRequest(uri, m_UName, m_UPwd, m_TimeoutMs, method);
       }
 
       private static HttpWebRequest makeRequest(Uri uri, string uName, string uPwd, int timeout = 0, string method = "GET")

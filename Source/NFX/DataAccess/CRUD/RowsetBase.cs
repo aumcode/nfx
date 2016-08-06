@@ -24,7 +24,7 @@ using NFX.Serialization.JSON;
 namespace NFX.DataAccess.CRUD
 {
     /// <summary>
-    /// Provides base for rowset implementation. 
+    /// Provides base for rowset implementation.
     /// Rowsets are mutable lists of rows where all rows must have the same schema, however a rowset may contain a mix of
     ///  dynamic and typed rows as long as they have the same schema.
     /// Rowsets are not thread-safe
@@ -56,7 +56,7 @@ namespace NFX.DataAccess.CRUD
             /// Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present.
             /// allMatched==false when some data did not match schema (i.e. too little fields or extra fields supplied)
             /// </summary>
-            public static RowsetBase FromJSON(JSONDataMap jsonMap, 
+            public static RowsetBase FromJSON(JSONDataMap jsonMap,
                                               out bool allMatched,
                                               bool schemaOnly = false,
                                               bool readOnlySchema = false,
@@ -67,7 +67,7 @@ namespace NFX.DataAccess.CRUD
 
               var schMap = jsonMap["Schema"] as JSONDataMap;
               if (schMap==null)
-                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(jsonMap!schema)"); 
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(jsonMap!schema)");
 
               var schema = Schema.FromJSON(schMap, readOnlySchema);
               var isTable = jsonMap["IsTable"].AsBool();
@@ -78,8 +78,8 @@ namespace NFX.DataAccess.CRUD
 
               var rows = jsonMap["Rows"] as JSONDataArray;
               if (rows==null) return result;
-              
-              
+
+
               foreach(var jrow in rows)
               {
                 var jdo = jrow as IJSONDataObject;
@@ -88,18 +88,18 @@ namespace NFX.DataAccess.CRUD
                   allMatched = false;
                   continue;
                 }
-                
+
                 var row = new DynamicRow(schema);
-           
+
                 if (!Row.TryFillFromJSON(row, jdo, setFieldFunc)) allMatched = false;
 
                 result.Add( row );
               }
-              
+
               return result;
             }
 
-           
+
 
             /// <summary>
             /// Creates an empty rowset
@@ -124,14 +124,14 @@ namespace NFX.DataAccess.CRUD
 
 
         #region Properties
-            
+
             /// <summary>
             /// Returns globaly-unique instance ID.
             /// This ID is useful as a key for storing rowsets in object stores and posting data back from web client to server.
             /// </summary>
             public Guid InstanceGUID { get { return m_InstanceGUID;} }
-            
-            
+
+
             /// <summary>
             /// Returns a schema for rows that this rowset contains
             /// </summary>
@@ -149,7 +149,7 @@ namespace NFX.DataAccess.CRUD
             public System.Collections.IList AsReadonlyIList{ get{ return new iListReadOnly(m_List);}}
 
             /// <summary>
-            /// Gets/Sets whether this rowset keeps track of all modifications done to it. 
+            /// Gets/Sets whether this rowset keeps track of all modifications done to it.
             /// This property must be set to true to be able to save changes into ICRUDDataStore
             /// </summary>
             public bool LogChanges
@@ -171,7 +171,7 @@ namespace NFX.DataAccess.CRUD
             {
                 get { return m_Changes ?? Enumerable.Empty<RowChange>(); }
             }
-            
+
             /// <summary>
             /// Returns a count of accumulated modifications performed on the rowset, or zero when no modifications have been made or
             ///  LogModifications = false
@@ -190,7 +190,7 @@ namespace NFX.DataAccess.CRUD
                 get
                 {
                   var data = this.Context;//laizily created if needed
-                 
+
                   return m_DataContext.Data as JSONDataMap;
                 }
             }
@@ -202,9 +202,9 @@ namespace NFX.DataAccess.CRUD
             {
                get
                {
-                  if (m_DataContext==null) 
+                  if (m_DataContext==null)
                     m_DataContext = new JSONDynamicObject(JSONDynamicObjectKind.Map, false);
-                 
+
                   return m_DataContext;
                }
             }
@@ -234,7 +234,7 @@ namespace NFX.DataAccess.CRUD
                 if (idx>=0 && m_Changes!=null) m_Changes.Add( new RowChange(RowChangeType.Update, row, key) );
                 return idx;
             }
-            
+
 
             /// <summary>
             /// Tries to find a row for update and if found, updates it and returns true,
@@ -265,7 +265,7 @@ namespace NFX.DataAccess.CRUD
             /// </summary>
             public int Delete(params object[] keys)
             {
-               return Delete(KeyRowFromValues(keys));   
+               return Delete(KeyRowFromValues(keys));
             }
 
             /// <summary>
@@ -285,7 +285,7 @@ namespace NFX.DataAccess.CRUD
                if (m_Changes!=null)
                    foreach(var row in m_List)
                      m_Changes.Add( new RowChange(RowChangeType.Delete, row, null) );
-               
+
                Purge();
             }
 
@@ -308,7 +308,7 @@ namespace NFX.DataAccess.CRUD
                {
                     if (idx>keys.Length-1) throw new CRUDException(StringConsts.CRUD_FIND_BY_KEY_LENGTH_ERROR);
                     krow[kdef.Order] = keys[idx];
-                    idx++; 
+                    idx++;
                }
 
                return krow;
@@ -342,17 +342,17 @@ namespace NFX.DataAccess.CRUD
             public Row FindByKey(Row row, Func<Row, bool> extraWhere)
             {
                Check(row);
-         
+
                int insertIndex;
                int idx = SearchForRow(row, out insertIndex);
                if (idx<0)
                   return null;
-         
+
                if (extraWhere!=null)
                {
                  if (!extraWhere(m_List[idx])) return null;//where did notmatch
                }
-         
+
                return m_List[idx];
             }
 
@@ -389,7 +389,7 @@ namespace NFX.DataAccess.CRUD
                 {
                     var error = row.Validate(targetName);
                     if (error!=null) return error;
-                }   
+                }
 
                 return null;
             }
@@ -420,9 +420,9 @@ namespace NFX.DataAccess.CRUD
             }
          #endregion
 
-         
+
          #region IList
-    
+
            public int IndexOf(Row row)
            {
                Check(row);
@@ -536,14 +536,14 @@ namespace NFX.DataAccess.CRUD
                 }
 
                 JSONWriter.WriteMap(wri, map, nestingLevel, options);
-            } 
+            }
 
 
         #endregion
 
 
          #region .Protected
-     
+
            /// <summary>
            /// Checks argument for being non-null and of the same schema with this rowset
            /// </summary>
@@ -551,8 +551,8 @@ namespace NFX.DataAccess.CRUD
            {
              if (row==null || m_Schema!=row.Schema) throw new CRUDException(StringConsts.CRUD_ROWSET_OPERATION_ROW_IS_NULL_OR_SCHEMA_MISMATCH_ERROR);
            }
-           
-           
+
+
            /// <summary>
            /// Provides rowsearching. Override to do binary search in sorted rowsets
            /// </summary>
@@ -567,12 +567,12 @@ namespace NFX.DataAccess.CRUD
                      index = i;
                      return i;
                 }
-              }   
-              
+              }
+
               index = m_List.Count;
-              return -1; 
+              return -1;
            }
-     
+
 
            /// <summary>
             /// Tries to insert a row. If another row with the same set of key fields already in the table returns -1, otherwise
@@ -582,9 +582,9 @@ namespace NFX.DataAccess.CRUD
             {
                 int idx = 0;
                 if (SearchForRow(row, out idx) >=0) return -1;
-       
+
                 m_List.Insert(idx, row);
-        
+
                 return idx;
             }
 
@@ -597,13 +597,13 @@ namespace NFX.DataAccess.CRUD
                int dummy;
                int idx = SearchForRow(row, out dummy);
                if (idx<0) return -1;
-         
+
                m_List[idx] = row;
 
-               return idx;     
+               return idx;
             }
 
-            
+
             /// <summary>
             /// Tries to find a row with the same set of key fields in this table and if found, replaces it and returns true,
             ///  otherwise inserts the row (if schemas match) and returns false. Optionally pass updateWhere condition
@@ -618,13 +618,13 @@ namespace NFX.DataAccess.CRUD
                   m_List.Insert(insertIndex, row);
                   return false;
                }
-         
+
                if (updateWhere!=null)
                {
                  if (!updateWhere(m_List[idx])) return false;//where did not match
                }
-         
-               m_List[idx] = row;  
+
+               m_List[idx] = row;
                return true;
             }
 
@@ -636,23 +636,23 @@ namespace NFX.DataAccess.CRUD
                int dummy;
                int idx = SearchForRow(row, out dummy);
                if (idx<0) return -1;
-         
+
                m_List.RemoveAt(idx);
-               return idx;    
+               return idx;
             }
 
 
-         #endregion 
+         #endregion
 
-    
-            
-    
-           
+
+
+
+
     }
 
 
 
-    
+
 
 
 }

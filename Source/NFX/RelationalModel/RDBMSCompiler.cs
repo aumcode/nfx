@@ -25,7 +25,7 @@ using NFX.RelationalModel.DataTypes;
 
 namespace NFX.RelationalModel
 {
-    
+
     /// <summary>
     /// Denotes a type of RDBMS entity
     /// </summary>
@@ -45,7 +45,7 @@ namespace NFX.RelationalModel
         Reference
     }
 
-    public enum RDBMSSortOrder 
+    public enum RDBMSSortOrder
     {
         Asc=0,
         Ascending=Asc,
@@ -58,8 +58,8 @@ namespace NFX.RelationalModel
         public readonly RDBMSEntity ParentEntity;
         public readonly IConfigNode SourceNode;
         public readonly RDBMSEntityType EntityType;
-        public readonly string OriginalName; 
-        public readonly string OriginalShortName; 
+        public readonly string OriginalName;
+        public readonly string OriginalShortName;
         public string TransformedName;
         public string TransformedShortName;
         public RDBMSDomain Domain;//used for columns
@@ -118,7 +118,7 @@ namespace NFX.RelationalModel
         #endregion
 
         #region .ctor
-            
+
             public RDBMSCompiler(Schema schema) : base(schema)
             {
 
@@ -128,7 +128,7 @@ namespace NFX.RelationalModel
         #endregion
 
         #region Fields
-            
+
             private string m_DomainSearchPaths = DEFAULT_DOMAIN_SEARCH_PATHS;
 
             private bool m_SeparateIndexes;
@@ -144,21 +144,21 @@ namespace NFX.RelationalModel
             {
                 get { return TargetType.GenericSQL; }
             }
-            
+
             /// <summary>
             /// Gets/sets ';' separated list of domain search namespaces paths
             /// </summary>
             [Config("$domain-search-paths", DEFAULT_DOMAIN_SEARCH_PATHS)]
             public virtual string DomainSearchPaths
             {
-                get { return m_DomainSearchPaths ?? string.Empty;}   
-                set 
+                get { return m_DomainSearchPaths ?? string.Empty;}
+                set
                 {
                     EnsureNotCompiled();
                     m_DomainSearchPaths = value;
                 }
             }
-            
+
             /// <summary>
             /// Gets/sets the flag that indicates whether indexes should be written in the separate output from tables
             /// </summary>
@@ -189,7 +189,7 @@ namespace NFX.RelationalModel
             }
 
 
-            
+
         #endregion
 
 
@@ -214,25 +214,25 @@ namespace NFX.RelationalModel
                 if (node.IsSameName(TABLE_SECTION)) DoTable(node, outputs);
                 else
                      m_CompileErrors.Add(new SchemaCompilationException(node.RootPath, "Unrecognized item: " + node.Name));
-                
+
             }
-             
+
             /// <summary>
             /// Turns domain name into domain instance
             /// </summary>
             protected virtual RDBMSDomain CreateDomain(string sourcePath, string name, IConfigNode node)
             {
                try
-               { 
+               {
                 string argsLine = null;
                 var iop = name.LastIndexOf('(');
                 var icp = name.LastIndexOf(')');
                 if (iop>0 && icp>iop)
                 {
                   argsLine = name.Substring(iop+1, icp-iop-1);
-                  name = name.Substring(0, iop);  
+                  name = name.Substring(0, iop);
                 }
-                
+
                 Type dtype = Type.GetType(name, false, true);
                 if (dtype==null)
                 {
@@ -243,8 +243,8 @@ namespace NFX.RelationalModel
                         dtype = Type.GetType(fullName, false, true);
                         if (dtype!=null) break;
                     }
-                }  
-                
+                }
+
                 if (dtype==null)
                 {
                       m_CompileErrors.Add(new SchemaCompilationException(sourcePath, "Domain type not found in any paths: " + name));
@@ -270,7 +270,7 @@ namespace NFX.RelationalModel
                     {
                         args[i] = argsStrings[i].Trim().AsType(pi.ParameterType);
                         i++;
-                    }    
+                    }
                 }
 
                 var result = Activator.CreateInstance(dtype, args) as RDBMSDomain;
@@ -285,7 +285,7 @@ namespace NFX.RelationalModel
                }
             }
 
-            
+
             /// <summary>
             /// Override to map a name from schema into the name that should be used in the output (i.e. real table name)
             /// </summary>
@@ -329,7 +329,7 @@ namespace NFX.RelationalModel
                     entity.TransformedName = entity.TransformedName.ToUpperInvariant();
                     entity.TransformedShortName = entity.TransformedShortName.ToUpperInvariant();
                 }
-                
+
             }
 
 
@@ -345,7 +345,7 @@ namespace NFX.RelationalModel
             /// Override to return statement delimiter script for particular target , i.e. "Go" at the statementend for MsSQL Server T-SQL
             /// </summary>
             public virtual string GetStatementDelimiterScript(RDBMSEntityType type, bool start)
-            {   
+            {
                 return start ? string.Empty : ";";
             }
 
@@ -410,14 +410,14 @@ namespace NFX.RelationalModel
                 var table = new RDBMSEntity(m_All, tableNode, RDBMSEntityType.Table, tname, tableNode.AttrByName(SHORT_NAME_ATTR).Value);
 
                 TransformEntityName(table);
-                
+
 
                 var sb = outputs[RDBMSCompiler.TABLES_OUTPUT];
                 sb.AppendLine(GetStatementDelimiterScript(RDBMSEntityType.Table, true));
 
 
                 sb.AppendLine("-- {0}".Args( tableNode.AttrByName(SCRIPT_COMMENT_ATTR).ValueAsString("Table " + table.TransformedName)));
-                
+
                 sb.AppendLine("{0} {1}".Args( TransformKeywordCase("create table"),
                                               GetQuotedIdentifierName(RDBMSEntityType.Table, table.TransformedName) ));
                 sb.AppendLine("(");
@@ -431,8 +431,8 @@ namespace NFX.RelationalModel
                     else if (node.IsSameName(SCRIPT_INCLUDE_SECTION)) { IncludeScriptFile(node, outputs); sb.AppendLine(); }
                     else if (node.IsSameName(SCRIPT_TEXT_SECTION))    { IncludeScriptText(node, outputs); sb.AppendLine(); }
                     else
-                       m_CompileErrors.Add(new SchemaCompilationException(node.RootPath, "Unrecognized item inside '{0}' table section '{1}'".Args(tname, node.Name)));   
-                         
+                       m_CompileErrors.Add(new SchemaCompilationException(node.RootPath, "Unrecognized item inside '{0}' table section '{1}'".Args(tname, node.Name)));
+
                 }
 
                 DoPrimaryKeys(table, sb, ref firstItem);
@@ -466,8 +466,8 @@ namespace NFX.RelationalModel
                 foreach(var idx in indexes)
                 {
                    var node = (IConfigSectionNode)idx.SourceNode;
-                   var unique = node.AttrByName(UNIQUE_ATTR).ValueAsBool(); 
-                   
+                   var unique = node.AttrByName(UNIQUE_ATTR).ValueAsBool();
+
                    var colNames = new List<string>();
                    foreach(var col in node.Children.Where(c=>c.IsSameName(COLUMN_SECTION)))
                    {
@@ -475,7 +475,7 @@ namespace NFX.RelationalModel
                        var column = table.Children.FirstOrDefault(c=>c.EntityType==RDBMSEntityType.Column && c.OriginalName.Equals(cn, NameComparison));
                        if (column==null)
                        {
-                            m_CompileErrors.Add(new SchemaCompilationException(table.SourceNode.RootPath, 
+                            m_CompileErrors.Add(new SchemaCompilationException(table.SourceNode.RootPath,
                                                                      "Table '{0}' defines index '{1}' which references column by name '{2}' which does not exist"
                                                                      .Args(table.OriginalName, idx.OriginalName, cn)));
                             return;
@@ -490,29 +490,29 @@ namespace NFX.RelationalModel
                        var ord = TransformSortOrder( colOrder );
                        if (ord.IsNotNullOrWhiteSpace())
                          colName = "{0} {1}".Args(colName, ord);
-                      
+
                        colNames.Add( colName );
-                   }  
+                   }
 
                    var colNamesLine = string.Join(", ",colNames);
 
                    var comment = node.AttrByName(COMMENT_ATTR).Value;
                    var commentClause = comment.IsNullOrWhiteSpace()? string.Empty :
-                                       TransformKeywordCase(" comment {0}").Args( EscapeString(comment) ); 
-                   
+                                       TransformKeywordCase(" comment {0}").Args( EscapeString(comment) );
+
                    sb.AppendLine(GetStatementDelimiterScript(RDBMSEntityType.Index, true));
 
                    sb.Append(TransformKeywordCase("  create {0} index {1} on {2}({3}){4}")
-                                                        .Args( 
+                                                        .Args(
                                                           TransformKeywordCase( unique?"unique":string.Empty ),
                                                           GetQuotedIdentifierName( RDBMSEntityType.Index, idx.TransformedName ),
                                                           GetQuotedIdentifierName( RDBMSEntityType.Table, table.TransformedName ),
                                                           colNamesLine,
                                                           commentClause
                                                         )
-                               ); 
+                               );
 
-                   sb.AppendLine(GetStatementDelimiterScript(RDBMSEntityType.Index, false));  
+                   sb.AppendLine(GetStatementDelimiterScript(RDBMSEntityType.Index, false));
                 }
             }
 
@@ -524,37 +524,47 @@ namespace NFX.RelationalModel
                 var colComment = columnNode.AttrByName(SCRIPT_COMMENT_ATTR).Value;
                 if (colComment.IsNotNullOrWhiteSpace())
                     sb.AppendLine("  -- {0}".Args( colComment ) );
-                
+
                 var columnName = columnNode.Value;
+                if (columnName.IsNullOrWhiteSpace())
+                {
+                  m_CompileErrors.Add(new SchemaCompilationException(columnNode.RootPath, "Table '{0}' missing column name.".Args(table.OriginalName)));
+                  return;
+                }
 
                 var column = new RDBMSEntity(table, columnNode, RDBMSEntityType.Column, columnName, columnNode.AttrByName(SHORT_NAME_ATTR).Value ?? columnName);
                 TransformEntityName(column);
-                         
+
                 var typeNode = columnNode.Navigate(TYPE_ATTR + "|$"+TYPE_ATTR);
+                if (typeNode==null || typeNode.VerbatimValue.IsNullOrWhiteSpace())
+                {
+                  m_CompileErrors.Add(new SchemaCompilationException(columnNode.RootPath, "Column '{0}' missing {1} attribute.".Args(columnName, TYPE_ATTR)));
+                  return;
+                }
+
                 var columnType = typeNode.Value;
                 var type = new RDBMSEntity(column, typeNode, RDBMSEntityType.Domain, columnType);
-                TransformEntityName(type); 
+                TransformEntityName(type);
 
                 var domain = CreateDomain("{0}.{1}::{2}".Args(table.OriginalName, column.OriginalName, type.OriginalName), type.OriginalName, typeNode);
-
                 if (domain==null)
                 {
                     m_CompileErrors.Add(new SchemaCompilationException(columnNode.RootPath, "Domain could not be created: " +type.TransformedName ));
                     return;
                 }
-                       
+
                 domain.TransformColumnName(this, column);
 
                 if (!firstColumn) sb.AppendLine(",");
-                        
+
                 #region Column Line
                 {
                     var cn = GetQuotedIdentifierName(RDBMSEntityType.Column, column.TransformedName);
                     var tn = GetQuotedIdentifierName(RDBMSEntityType.Domain, domain.GetTypeName(this));
                     var required = (domain.GetColumnRequirement(this) ?? false) || columnNode.AttrByName(REQUIRED_ATTR).ValueAsBool();
                     var nn = TransformKeywordCase( GetColumnNullNotNullClause(column, required) );
-                    var auto = domain.GetColumnAutoGeneratedScript(this, column, outputs); 
-                    var dfltValue = columnNode.AttrByName(DEFAULT_ATTR).Value ?? domain.GetColumnDefaultScript(this, column, outputs);   
+                    var auto = domain.GetColumnAutoGeneratedScript(this, column, outputs);
+                    var dfltValue = columnNode.AttrByName(DEFAULT_ATTR).Value ?? domain.GetColumnDefaultScript(this, column, outputs);
                     var dflt = dfltValue.IsNotNullOrWhiteSpace()? "{0} {1}".Args(TransformKeywordCase("default"), EscapeString(dfltValue)) : string.Empty;
                     var chk = domain.GetColumnCheckScript(this, column, outputs);
                     var cmntValue = columnNode.AttrByName(COMMENT_ATTR).Value;
@@ -578,7 +588,7 @@ namespace NFX.RelationalModel
                     }
                     else  if (colSubNode.IsSameName(TYPE_ATTR)) { } //type may be used as section as well
                     else
-                        m_CompileErrors.Add(new SchemaCompilationException(colSubNode.RootPath, 
+                        m_CompileErrors.Add(new SchemaCompilationException(colSubNode.RootPath,
                                                                            "Unrecognized item inside '{0}.{1}' column, section '{2}'"
                                                                            .Args(table.OriginalName, columnName, colSubNode.Name)));
                 }
@@ -606,28 +616,28 @@ namespace NFX.RelationalModel
             {
                 var tableLevelKeys =  table.Children.Where(c=>c.EntityType==RDBMSEntityType.PrimaryKey);
 
-                           
+
                 var columnLevelKeys = table.Children.Where(c=>c.EntityType==RDBMSEntityType.Column)
                                                 .SelectMany(col=>col.Children)
                                                 .Where(c=>c.EntityType==RDBMSEntityType.PrimaryKey);
-                           
+
 
                 var allKeys = tableLevelKeys.Concat(columnLevelKeys);
-                
+
                 var pk = allKeys.FirstOrDefault();
                 if (pk==null) return;
                 if (allKeys.Count()>1)
-                  m_CompileErrors.Add(new SchemaCompilationException(table.SourceNode.RootPath, 
+                  m_CompileErrors.Add(new SchemaCompilationException(table.SourceNode.RootPath,
                                                                      "Table '{0}' defines more than one primary key. Only first on '{1}' is used"
                                                                      .Args(table.OriginalName, pk.ParentEntity.OriginalName)));
 
 
 
                 if (pk.ParentEntity.EntityType==RDBMSEntityType.Column)
-                { 
+                {
                     if (!firstItem) sb.AppendLine(",");
                     sb.Append(TransformKeywordCase("  constraint {0} primary key ({1})")
-                                                        .Args( 
+                                                        .Args(
                                                           GetQuotedIdentifierName( RDBMSEntityType.PrimaryKey, pk.TransformedName ),
                                                           GetQuotedIdentifierName( RDBMSEntityType.Column, pk.ParentEntity.TransformedName )
                                                         )
@@ -642,27 +652,27 @@ namespace NFX.RelationalModel
                        var column = table.Children.FirstOrDefault(c=>c.EntityType==RDBMSEntityType.Column && c.OriginalName.Equals(cn, NameComparison));
                        if (column==null)
                        {
-                            m_CompileErrors.Add(new SchemaCompilationException(table.SourceNode.RootPath, 
+                            m_CompileErrors.Add(new SchemaCompilationException(table.SourceNode.RootPath,
                                                                      "Table '{0}' defines primary key which references column by name '{1}' which does not exist"
                                                                      .Args(table.OriginalName, cn)));
                             return;
                        }
 
                        colNames.Add(GetQuotedIdentifierName(RDBMSEntityType.Column, column.TransformedName));
-                   }  
+                   }
 
                    var colNamesLine = string.Join(", ",colNames);
-                 
+
                    if (!firstItem) sb.AppendLine(",");
                    sb.Append(TransformKeywordCase("  constraint {0} primary key ({1})")
-                                                        .Args( 
+                                                        .Args(
                                                           GetQuotedIdentifierName( RDBMSEntityType.PrimaryKey, pk.TransformedName ),
                                                           colNamesLine
                                                         )
                                );
 
                 }
-                
+
                 firstItem = false;
             }
 
@@ -674,11 +684,11 @@ namespace NFX.RelationalModel
             {
                 var tableLevelKeys =  table.Children.Where(c=>c.EntityType==RDBMSEntityType.Reference);
 
-                           
+
                 var columnLevelKeys = table.Children.Where(c=>c.EntityType==RDBMSEntityType.Column)
                                                 .SelectMany(col=>col.Children)
                                                 .Where(c=>c.EntityType==RDBMSEntityType.Reference);
-                           
+
 
                 var allKeys = tableLevelKeys.Concat(columnLevelKeys);
 
@@ -690,9 +700,9 @@ namespace NFX.RelationalModel
 
                     if (rt.IsNullOrWhiteSpace() || rc.IsNullOrWhiteSpace())
                     {
-                      m_CompileErrors.Add(new SchemaCompilationException(fke.SourceNode.RootPath, 
-                                               "Both table and column names are required for reference '{0}' table section '{1}'".Args(table.OriginalName, fke.SourceNode.Name)));   
-                      continue;  
+                      m_CompileErrors.Add(new SchemaCompilationException(fke.SourceNode.RootPath,
+                                               "Both table and column names are required for reference '{0}' table section '{1}'".Args(table.OriginalName, fke.SourceNode.Name)));
+                      continue;
                     }
 
                     var refTable = new RDBMSEntity(null, null, RDBMSEntityType.Table, rt);
@@ -707,25 +717,25 @@ namespace NFX.RelationalModel
                     var useAlterStatement = !refTableWasAltreadyDeclared || m_SeparateForeignKeys;
 
                     var constraint =  TransformKeywordCase("  constraint {0} foreign key ({1}) references {2}({3})")
-                                                        .Args( 
+                                                        .Args(
                                                           GetQuotedIdentifierName( RDBMSEntityType.Reference, fke.TransformedName ),
                                                           GetQuotedIdentifierName( RDBMSEntityType.Column, fke.ParentEntity.TransformedName ),
                                                           GetQuotedIdentifierName( RDBMSEntityType.Table, refTable.TransformedName ),
                                                           GetQuotedIdentifierName( RDBMSEntityType.Column, refColumn.TransformedName )
                                                         );
-                    
-                    
+
+
                     if (useAlterStatement)
                     {
                         var ksb = outputs[RDBMSCompiler.FOREIGN_KEYS_OUTPUT];
                         ksb.AppendLine(GetStatementDelimiterScript(RDBMSEntityType.Reference, true));
 
                         ksb.AppendLine(TransformKeywordCase("  alter table {0} add {1}")
-                                                        .Args( 
+                                                        .Args(
                                                           GetQuotedIdentifierName( RDBMSEntityType.Table, table.TransformedName ),
                                                           constraint
                                                         )
-                               ); 
+                               );
 
                         ksb.AppendLine(GetStatementDelimiterScript(RDBMSEntityType.Reference, false));
                     }
@@ -735,7 +745,7 @@ namespace NFX.RelationalModel
                         sb.Append( constraint );
                         firstItem = false;
                     }
-                } 
+                }
 
             }
 
@@ -748,14 +758,14 @@ namespace NFX.RelationalModel
                 var idxName = idxNode.Value;
                 if (idxName.IsNullOrWhiteSpace())
                 {
-                    m_CompileErrors.Add(new SchemaCompilationException(idxNode.RootPath, 
-                                               "Table '{0}' declares an index without a name '{1}'".Args(table.OriginalName, idxNode.RootPath)));  
-                    return;                                  
+                    m_CompileErrors.Add(new SchemaCompilationException(idxNode.RootPath,
+                                               "Table '{0}' declares an index without a name '{1}'".Args(table.OriginalName, idxNode.RootPath)));
+                    return;
                 }
                 var idx = new RDBMSEntity(table, idxNode, RDBMSEntityType.Index, idxName);
                 TransformEntityName(idx);
             }
-              
+
 
         #endregion
 
@@ -764,12 +774,12 @@ namespace NFX.RelationalModel
 
         #endregion
 
-        
+
 
     }
 
 
-    
+
 
 
 }

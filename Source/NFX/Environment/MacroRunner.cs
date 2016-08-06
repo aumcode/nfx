@@ -79,37 +79,37 @@ namespace NFX.Environment
             public static string GetValueAs(string value, string type, string dflt = null, string fmt = null)
             {
               var mi = typeof(StringValueConversion).GetMethod("As"+type.CapitalizeFirstChar(), BindingFlags.Public | BindingFlags.Static);
-              
+
               object result;
               if (!string.IsNullOrWhiteSpace(dflt))
               {
                   var dval = mi.Invoke(null, new object[] { dflt, null});
-                   
-                  result = mi.Invoke(null, new object[] { value, dval}); 
-              }            
+
+                  result = mi.Invoke(null, new object[] { value, dval});
+              }
               else
-                result = mi.Invoke(null, new object[] { value, null});   
-                
-                
-              if (result==null) return string.Empty;    
+                result = mi.Invoke(null, new object[] { value, null});
+
+
+              if (result==null) return string.Empty;
 
               if (!string.IsNullOrWhiteSpace(fmt))
                 return string.Format(fmt, result);
-              else                               
+              else
                 return result.ToString();
-            } 
+            }
 
         #endregion
 
 
         public string Run(IConfigSectionNode node, string inputValue, string macroName, IConfigSectionNode macroParams, object context = null)
         {
-            
+
             if (macroName.StartsWith(AS_PREFIX, StringComparison.InvariantCultureIgnoreCase) && macroName.Length > AS_PREFIX.Length)
             {
                var type = macroName.Substring(AS_PREFIX.Length);
 
-               return GetValueAs(inputValue, 
+               return GetValueAs(inputValue,
                                  type,
                                  macroParams.Navigate("$dflt|$default").Value,
                                  macroParams.Navigate("$fmt|$format").Value);
@@ -120,20 +120,20 @@ namespace NFX.Environment
                var utc = macroParams.AttrByName("utc").ValueAsBool(false);
 
                var fmt = macroParams.Navigate("$fmt|$format").ValueAsString();
-               
+
                var valueAttr = macroParams.AttrByName("value");
 
-                             
+
                DateTime now;
-               
+
                if (utc)
                     now = App.TimeSource.UTCNow;
                else
                {
                     ILocalizedTimeProvider timeProvider = App.Instance;
-                   
+
                     if (context is ILocalizedTimeProvider)
-                        timeProvider = (ILocalizedTimeProvider) context; 
+                        timeProvider = (ILocalizedTimeProvider) context;
 
                     now = timeProvider.LocalizedTime;
                }
@@ -142,7 +142,7 @@ namespace NFX.Environment
                if (valueAttr.Exists)
                    now = valueAttr.Value.AsDateTimeFormat(now, fmt,
                             utc ? DateTimeStyles.AssumeUniversal : DateTimeStyles.AssumeLocal);
-               
+
                return fmt == null ? now.ToString() : now.ToString(fmt);
             }
             else if (string.Equals(macroName, "ctx-name", StringComparison.InvariantCultureIgnoreCase))

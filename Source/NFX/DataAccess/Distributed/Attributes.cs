@@ -23,7 +23,7 @@ using NFX.Environment;
 
 namespace NFX.DataAccess.Distributed
 {
-    
+
     /// <summary>
     /// Provides information about targetname->table name, sequence name(and possibly other) mappings
     /// </summary>
@@ -37,7 +37,7 @@ namespace NFX.DataAccess.Distributed
         m_TableName = node.Value;
         m_GDIDSequenceName = node.AttrByName(CONFIG_GDID_SEQUENCE_NAME_ATTR).Value;
       }
-      
+
       private string m_Name;
       private string m_TableName;
       private string m_GDIDSequenceName;
@@ -48,14 +48,14 @@ namespace NFX.DataAccess.Distributed
       public string GDIDSequenceName { get { return m_GDIDSequenceName;} }
     }
 
-    
-    
+
+
     /// <summary>
     /// Decorates Pacel-derivative classes specifying distributed data store options.
     /// Unlike the CRUD family of metadata attributes this attributed is NOT TARGETABLE on purpose
     /// beacause different sharding definitions would have affected the properties of the parcel which could have been
     /// very complex to maintain/account for. So, every parcel has ONLY ONE set opf metadata definition.
-    /// In case when different parcel definitions needed a new parcel type should be created which can reuse the payload - this is much 
+    /// In case when different parcel definitions needed a new parcel type should be created which can reuse the payload - this is much
     ///  easier to implement (two parcels) than targeting within the same parcel.
     /// Table mappings are targetable
     /// </summary>
@@ -64,7 +64,7 @@ namespace NFX.DataAccess.Distributed
     {
 
         /// <summary>
-        /// Returns DataParcelAttribute for a parcel type. Use Parcel.MetadataAttribute to 
+        /// Returns DataParcelAttribute for a parcel type. Use Parcel.MetadataAttribute to
         ///  obtain the attribute instance polymorphically for instance.
         ///  If parcel is not decorated by the attribute then exception is thrown
         /// </summary>
@@ -76,7 +76,7 @@ namespace NFX.DataAccess.Distributed
           var result = getParcelAttrCore(tparcel);
           if (result==null)
             throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_PARCEL_MISSING_ATTRIBUTE_ERROR.Args(tparcel));
-         
+
           return result;
         }
 
@@ -93,7 +93,7 @@ namespace NFX.DataAccess.Distributed
             {
               var dict = new Dictionary<Type,DataParcelAttribute>(s_Cache);
               dict[tparcel] = result;
-              s_Cache = dict;//atomic 
+              s_Cache = dict;//atomic
             }
           }
           return result;
@@ -104,7 +104,7 @@ namespace NFX.DataAccess.Distributed
         public DataParcelAttribute(
                              string schemaName,
                              string areaName,
-                             
+
                              bool supportsMerge = false,
                              Type shardingParcel = null,
                              string replicationChannel = null,
@@ -114,25 +114,25 @@ namespace NFX.DataAccess.Distributed
                              int cachePriority = -1,
                              string targetTableMappings = null)
         {
-            if (schemaName.IsNullOrWhiteSpace() || 
+            if (schemaName.IsNullOrWhiteSpace() ||
                 areaName.IsNullOrWhiteSpace()
                 )
-             throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(schemaName|areaName=null|empty)");    
+             throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(schemaName|areaName=null|empty)");
 
             SchemaName = schemaName;
             AreaName = areaName;
-            
+
             if (shardingParcel!=null)
              if (!typeof(Parcel).IsAssignableFrom(shardingParcel))
               throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(shardingParcel='"+shardingParcel.FullName+"' isnot Parcel-derived)");
-            
+
             SupportsMerge = supportsMerge;
             ShardingParcel = shardingParcel;
             ReplicationChannel = replicationChannel;
             CacheTableName = cacheTableName;
             CacheWriteMaxAgeSec = cacheWriteMaxAgeSec <0 ? (int?)null : cacheWriteMaxAgeSec;
             CacheReadMaxAgeSec  = cacheReadMaxAgeSec  <0 ? (int?)null : cacheReadMaxAgeSec;
-            CachePriority       = cachePriority       <0 ? (int?)null : cachePriority;    
+            CachePriority       = cachePriority       <0 ? (int?)null : cachePriority;
 
             if (targetTableMappings.IsNotNullOrWhiteSpace())
             {
@@ -140,22 +140,22 @@ namespace NFX.DataAccess.Distributed
                if (data==null) data = targetTableMappings.AsLaconicConfig();
                if (data==null)
                 throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(targetTableMappings='"+targetTableMappings+"' Laconic parse error)");
-              
+
                foreach(var cn in data.Children)
-                m_TableMappings.Register( new TargetTableMapping( cn ) ); 
+                m_TableMappings.Register( new TargetTableMapping( cn ) );
             }
         }
-       
+
 
         private Registry<TargetTableMapping> m_TableMappings = new Registry<TargetTableMapping>();
 
         /// <summary>
-        /// Returns true if parcel supports merge with other versions. 
+        /// Returns true if parcel supports merge with other versions.
         /// Server may merge multiple parcel versions to resolve versioning conflict.
         /// Default implementation returns false
         /// </summary>
         public bool SupportsMerge { get; private set;}
-               
+
 
         /// <summary>
         /// Specifies the type of Parcel that is used for sharding. By default this parameter is null, so
@@ -163,7 +163,7 @@ namespace NFX.DataAccess.Distributed
         ///  and specifies ShardingParcel type via this member so it gets stored along with the specified parcel
         /// </summary>
         public Type ShardingParcel { get; private set;}
-        
+
 
         /// <summary>
         /// Specifies the name for logical schema that parcel decorated by this attribute belongs to.
@@ -196,26 +196,26 @@ namespace NFX.DataAccess.Distributed
 
         /// <summary>
         /// Specifies for how long should this parcel be cached in RAM after a write (after a saved change).
-        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute 
+        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute
         /// </summary>
         public int? CacheWriteMaxAgeSec { get; private set; }
 
         /// <summary>
         /// Specifies the maximum age of parcel instance in cache to be suitable for reading
-        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute 
+        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute
         /// </summary>
         public int? CacheReadMaxAgeSec { get; private set; }
 
         /// <summary>
         /// Specifies the relative cache priority of this parcel
-        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute 
+        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute
         /// </summary>
         public int? CachePriority { get; private set; }
 
-        
+
         /// <summary>
         /// Specifies the name of the cache table for this parcel
-        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute 
+        /// This property acts as a default, the runtime first checks parcel instance properties then reverts to this attribute
         /// </summary>
         public string CacheTableName { get; private set;}
 

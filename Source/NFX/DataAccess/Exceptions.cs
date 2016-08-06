@@ -25,30 +25,30 @@ using System.Runtime.Serialization;
 
 namespace NFX.DataAccess
 {
-      
+
       /// <summary>
       /// Specifies the sub-type of key violation
       /// </summary>
       public enum KeyViolationKind { Unspecified = 0, Primary, Secondary}
-      
-      
+
+
       /// <summary>
       /// Thrown by data access classes
       /// </summary>
       [Serializable]
       public class DataAccessException : NFXException
       {
-            
+
             /// <summary>
             /// Spcifies the sub-type of key violation
             /// </summary>
             public readonly KeyViolationKind KeyViolationKind;
-            
+
             /// <summary>
             /// Provides the name of entity/index/field that was violated and resulted in this exception
             /// </summary>
             public readonly string KeyViolation;
-            
+
 
             public DataAccessException()
             {

@@ -40,7 +40,7 @@ namespace NFX.Web.Social
       public const string OAUTH_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
       public const string USER_SHOW_URL = "https://api.twitter.com/1.1/users/show.json";
       public const string UPDATE_STATUS_INFO_URL = "https://api.twitter.com/1.1/statuses/update.json";
-            
+
       private const string OAUTH_CALLBACK_PARAMNAME = "oauth_callback";
       private const string OAUTH_CONSUMERKEY_PARAMNAME = "oauth_consumer_key";
       private const string OAUTH_NONCE_PARAMNAME = "oauth_nonce";
@@ -66,9 +66,9 @@ namespace NFX.Web.Social
       private const string STATUS_PARAMNAME = "status";
 
     #endregion
-        
+
     #region Static
-            
+
       private static object s_Lock = new object();
       private static Twitter s_Instance;
 
@@ -143,7 +143,7 @@ namespace NFX.Web.Social
       }
 
       public override bool RequiresSpecifiedExternalLoginReference { get { return true; } }
-        
+
     #endregion
 
     #region Protected
@@ -185,7 +185,7 @@ namespace NFX.Web.Social
 
       private void getOAuthRequestToken(string returnURL, TwitterSocialUserInfo twUserInfo)
       {
-        Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() { 
+        Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() {
           {OAUTH_CALLBACK_PARAMNAME, returnURL},
           {OAUTH_CONSUMERKEY_PARAMNAME, ClientCode},
           {OAUTH_NONCE_PARAMNAME, GenerateNonce()},
@@ -202,7 +202,7 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        var responseDictionary = WebClient.GetValueMap(OAUTH_REQUEST_TOKEN_URL, this, HTTPRequestMethod.POST, 
+        var responseDictionary = WebClient.GetValueMap(OAUTH_REQUEST_TOKEN_URL, this, HTTPRequestMethod.POST,
           headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
         );
 
@@ -212,7 +212,7 @@ namespace NFX.Web.Social
 
       private void getOAuthAccessToken(TwitterSocialUserInfo twUserInfo)
       {
-        Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() { 
+        Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() {
           {OAUTH_CONSUMERKEY_PARAMNAME, ClientCode},
           {OAUTH_NONCE_PARAMNAME, GenerateNonce()},
           {OAUTH_SIGNATUREMETHOD_PARAMNAME, OAUTH_SIGNATUREMETHOD_PARAMVALUE},
@@ -232,7 +232,7 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        var responseDictionary = WebClient.GetValueMap(OAUTH_ACCESS_TOKEN_URL, this, HTTPRequestMethod.POST, 
+        var responseDictionary = WebClient.GetValueMap(OAUTH_ACCESS_TOKEN_URL, this, HTTPRequestMethod.POST,
           bodyParameters: new Dictionary<string, string>() { { OAUTH_VERIFIER_PARAMNAME, twUserInfo.OAuthVerifier} },
           headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
         );
@@ -249,7 +249,7 @@ namespace NFX.Web.Social
         var oauthVerifier = inboundParams[OAUTH_VERIFIER_PARAMNAME].AsString();
 
         if (oauthToken.IsNullOrWhiteSpace() || oauthVerifier.IsNullOrWhiteSpace())
-            throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name 
+            throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name
               + ".ExtractVerifier(inboundParams.Contains({0}&{1}))".Args(OAUTH_TOKEN_PARAMNAME, OAUTH_VERIFIER_PARAMNAME));
 
         return oauthVerifier;
@@ -259,7 +259,7 @@ namespace NFX.Web.Social
       // For details see https://dev.twitter.com/rest/reference/get/users/show
       private void fillShowUserInfo(TwitterSocialUserInfo twUserInfo)
       {
-        Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() { 
+        Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() {
           {OAUTH_CONSUMERKEY_PARAMNAME, ClientCode},
           {OAUTH_NONCE_PARAMNAME, GenerateNonce()},
           {OAUTH_SIGNATUREMETHOD_PARAMNAME, OAUTH_SIGNATUREMETHOD_PARAMVALUE},
@@ -303,7 +303,7 @@ namespace NFX.Web.Social
       // Updates the authenticating user's status, AKA tweeting
       private long twit(string acessToken, string tokenSecret, string text)
       {
-          Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() { 
+          Dictionary<string, string> oauthHeaderDictionary = new Dictionary<string, string>() {
           {OAUTH_CONSUMERKEY_PARAMNAME, ClientCode},
           {OAUTH_NONCE_PARAMNAME, GenerateNonce()},
           {OAUTH_SIGNATUREMETHOD_PARAMNAME, OAUTH_SIGNATUREMETHOD_PARAMVALUE},
@@ -323,7 +323,7 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        dynamic response = WebClient.GetJsonAsDynamic(UPDATE_STATUS_INFO_URL, this, HTTPRequestMethod.POST, 
+        dynamic response = WebClient.GetJsonAsDynamic(UPDATE_STATUS_INFO_URL, this, HTTPRequestMethod.POST,
           bodyParameters: new Dictionary<string, string>() { { STATUS_PARAMNAME, RFC3986.Encode( text)}},
           headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
         );
@@ -409,7 +409,7 @@ namespace NFX.Web.Social
 
         var other = obj as TwitterSocialUserInfo;
         return this.UserName == other.UserName &&
-          this.OAuthAccessToken == other.OAuthAccessToken && 
+          this.OAuthAccessToken == other.OAuthAccessToken &&
           this.OAuthAccessTokenSecret == other.OAuthAccessTokenSecret &&
           this.OAuthVerifier == other.OAuthVerifier;
       }

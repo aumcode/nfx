@@ -14,10 +14,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NFX.CodeAnalysis.CSharp
 {
@@ -33,7 +29,7 @@ namespace NFX.CodeAnalysis.CSharp
                 tEOF,
                 tDirective,
          NONLANG_END,
-                
+
                 tComment,
                 tIdentifier,
 
@@ -43,15 +39,15 @@ namespace NFX.CodeAnalysis.CSharp
                     tColon,
                     tBraceOpen,
                     tBraceClose,
-       
+
                     tBracketOpen,
                     tBracketClose,
                     tSqBracketOpen,
                     tSqBracketClose,
-    
+
          SYMBOLS_END,
-  
-  
+
+
          OPERATORS_START,
 
                     tPlus,
@@ -108,13 +104,13 @@ namespace NFX.CodeAnalysis.CSharp
                     tLambda, // =>
 
          OPERATORS_END,
-    
+
          KEYWORDS_START,
-                    tAbstract,        
+                    tAbstract,
                     tBase,
                     tBreak,
-                    tCase,     
-                    tCatch, 
+                    tCase,
+                    tCatch,
                     tChecked,
                     tClass,
                     tConst,
@@ -183,7 +179,7 @@ namespace NFX.CodeAnalysis.CSharp
                     tULong,
                     tUShort,
          TYPES_END,
-   
+
          LITERALS_START,
                 NUMLITERALS_START,
                     tIntLiteral,
@@ -191,19 +187,19 @@ namespace NFX.CodeAnalysis.CSharp
 
                     tUIntLiteral,
                     tULongIntLiteral,
-    
+
                     tFloatLiteral,
                     tDoubleLiteral,
-   
+
                     tDecimalLiteral,
                 NUMLITERALS_END,
 
                     tNull,
                     tStringLiteral,
-    
+
                     tTrue,
                     tFalse,
-    
+
          LITERALS_END
      }
 }

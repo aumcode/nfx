@@ -27,8 +27,8 @@ namespace NFX.Wave
 {
   public static class PlatformUtils
   {
-        
-       
+
+
         /// <summary>
         /// Must be called after Listener.Start();
         /// </summary>
@@ -42,10 +42,10 @@ namespace NFX.Wave
                                                               .First(p => p.Name.Equals("RequestQueueHandle"));
 
             var requestQueueHandle = (CriticalHandle)prop_RequestQueueHandle.GetValue(listener, null);
-            var result = HttpSetRequestQueueProperty(requestQueueHandle, 
+            var result = HttpSetRequestQueueProperty(requestQueueHandle,
                                                      HTTP_SERVER_PROPERTY.HttpServerQueueLengthProperty,
                                                      new IntPtr((void*)&len),
-                                                     (uint)Marshal.SizeOf(len), 
+                                                     (uint)Marshal.SizeOf(len),
                                                      0,
                                                      IntPtr.Zero);
 
@@ -56,7 +56,7 @@ namespace NFX.Wave
         }
 
         #if LINUX
-        
+
         #else
 
                 [DllImport("httpapi.dll", CallingConvention = CallingConvention.StdCall, SetLastError = true)]
@@ -66,7 +66,7 @@ namespace NFX.Wave
                     IntPtr pPropertyInfo,
                     uint propertyInfoLength,
                     uint reserved,
-                    IntPtr pReserved); 
+                    IntPtr pReserved);
 
                 internal enum HTTP_SERVER_PROPERTY
                 {
@@ -83,7 +83,7 @@ namespace NFX.Wave
                     HttpServerChannelBindProperty,
                     HttpServerProtectionLevelProperty,
                 }
-        #endif            
+        #endif
 
 
   }

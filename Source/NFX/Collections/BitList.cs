@@ -153,7 +153,7 @@ namespace NFX.Collections
       public bool Equals(BitList otherObj)
       {
         return m_BitArray.Equals( otherObj.m_BitArray);
-      }      
+      }
 
     #endregion
 
@@ -169,7 +169,7 @@ namespace NFX.Collections
       }
 
     #endregion
-      
+
   }//class
 
 }

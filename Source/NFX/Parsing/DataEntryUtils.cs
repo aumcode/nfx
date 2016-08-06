@@ -65,7 +65,7 @@ namespace NFX.Parsing
           if (prevIsDot) return false;
           prevIsDot = true;
         }
-        else 
+        else
         {
           if (!IsValidEMailLocalPartChar(c)) return false;
           prevIsDot = false;
@@ -133,7 +133,7 @@ namespace NFX.Parsing
             area = true;
         }
         if (i == (phone.Length - 1) && !IsLatinLetterOrDigit(c)) return false;
-          
+
 
         if (c == '(')
         {
@@ -187,7 +187,7 @@ namespace NFX.Parsing
 
       return true;
     }
-    
+
     /// <summary>
     /// Returns true if the value starts from primary language char and contains only those chars separated by one of ['.','-','_'].
     /// Subsequent separators not to occur more than once and can not be at the very end. This function supports Latin/Cyrrilic char sets
@@ -206,7 +206,7 @@ namespace NFX.Parsing
           if (!IsValidScreenNameLetter(c)) return false;
           continue;
         }
-       
+
         if (IsValidScreenNameSeparator(c))
         {
           if (wasSeparator) return false;
@@ -251,11 +251,11 @@ namespace NFX.Parsing
     {
       return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
     }
-     
+
     /// <summary>
-    /// Allows only safe characters and digits replacing characters that may be used in SQL injection. 
+    /// Allows only safe characters and digits replacing characters that may be used in SQL injection.
     /// This method may be used to generate column names from entity IDs
-    /// </summary>   
+    /// </summary>
     public static string SQLSafeSubstitute(string str, char subst = ' ')
     {
       if (str.IsNullOrWhiteSpace()) return null;

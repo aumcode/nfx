@@ -85,7 +85,7 @@ namespace NFX.WinForms.Elements
       protected internal override void Paint(System.Drawing.Graphics gr)
       {
         base.Paint(gr);
-        
+
         //BaseApplication.Theme.PartRenderer.LabelText(gr,
         //                          Region,
         //                          m_IsHyperlink ? MouseIsOver : false,
@@ -98,7 +98,7 @@ namespace NFX.WinForms.Elements
       protected internal override void OnMouseEnter(EventArgs e)
       {
         base.OnMouseEnter(e);
-        
+
         if (m_IsHyperlink)
           Invalidate();
       }
@@ -106,7 +106,7 @@ namespace NFX.WinForms.Elements
       protected internal override void OnMouseLeave(EventArgs e)
       {
         base.OnMouseLeave(e);
-        
+
         if (m_IsHyperlink)
           Invalidate();
       }
@@ -114,18 +114,18 @@ namespace NFX.WinForms.Elements
       protected internal override void OnMouseClick(System.Windows.Forms.MouseEventArgs e)
       {
         base.OnMouseClick(e);
-        
-        if (m_IsHyperlink) 
+
+        if (m_IsHyperlink)
              OnHyperlink(EventArgs.Empty);
       }
-      
+
       protected virtual void OnHyperlink(EventArgs e)
       {
         if (Hyperlink!=null)
                  Hyperlink(this, e);
       }
-     
-     
+
+
     #endregion
 
 

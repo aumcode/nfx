@@ -57,7 +57,7 @@ namespace NFX.IO.FileSystem.S3
     {
       return m_AccessKey;
     }
-    
+
   } //S3Credentials
 
 }

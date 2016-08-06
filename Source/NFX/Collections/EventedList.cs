@@ -55,33 +55,33 @@ namespace NFX.Collections
 
 
         #region .ctor
-            
+
             /// <summary>
             ///  Initializes a new instance that is empty and has the default initial capacity.
-            /// </summary>    
+            /// </summary>
             public EventedList() : base () { m_List = new List<TData>(); }
 
             /// <summary>
             ///  Initializes a new instance that is empty and has the default initial capacity.
-            /// </summary>    
+            /// </summary>
             public EventedList(TContext context, bool contextReadOnly) : base (context, contextReadOnly) { m_List = new List<TData>(); }
-        
+
             ///<summary>
             /// Initializes a new instance that contains elements copied from the specified collection and has sufficient
             ///  capacity to accommodate the number of elements copied.
             ///</summary>
             public EventedList(TContext context, bool contextReadOnly, IEnumerable<TData> collection) : base (context, contextReadOnly) { m_List = new List<TData>(collection);}
-        
+
             ///<summary>
             /// Initializes a new instance that is empty and has the specified initial capacity.
             ///</summary>
-            public EventedList(TContext context, bool contextReadOnly, int capacity): base (context, contextReadOnly)  { m_List = new List<TData>(capacity); } 
+            public EventedList(TContext context, bool contextReadOnly, int capacity): base (context, contextReadOnly)  { m_List = new List<TData>(capacity); }
 
         #endregion
 
 
         #region Private Fields
-            
+
             private List<TData> m_List;
 
         #endregion

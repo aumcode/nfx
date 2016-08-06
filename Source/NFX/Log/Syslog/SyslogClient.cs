@@ -36,7 +36,7 @@ namespace NFX.Log.Syslog
        #region CONSTS
 
          public const int SYSLOG_PORT = 514;
-          
+
        #endregion
 
 
@@ -44,7 +44,7 @@ namespace NFX.Log.Syslog
 
          public SyslogClient()
          {
-             
+
          }
 
          public SyslogClient(string host): this(host, SYSLOG_PORT)
@@ -55,7 +55,7 @@ namespace NFX.Log.Syslog
          public SyslogClient(string host, int port)
          {
             m_Host = host;
-            m_Port = port; 
+            m_Port = port;
          }
 
          protected override void Destructor()
@@ -69,10 +69,10 @@ namespace NFX.Log.Syslog
 
 
        #region Private Fields
-         
+
          private string m_Host;
          private int m_Port = SYSLOG_PORT;
-          
+
          private object m_SocketSync = new Object();
          private UdpClient m_UdpClient;
        #endregion
@@ -84,7 +84,7 @@ namespace NFX.Log.Syslog
          public string Host
          {
            get { return m_Host;}
-           set 
+           set
            {
              if (m_Host != value)
              {
@@ -98,7 +98,7 @@ namespace NFX.Log.Syslog
          public int Port
          {
            get { return m_Port;}
-           set 
+           set
            {
              if (m_Port != value)
              {
@@ -114,7 +114,7 @@ namespace NFX.Log.Syslog
 
        #region Public
 
-         
+
          public void Configure(IConfigSectionNode node)
          {
              ConfigAttribute.Apply(this, node);
@@ -129,10 +129,10 @@ namespace NFX.Log.Syslog
                                     message.LocalTimeStamp.ToString("MMM dd HH:mm:ss"),
                                     System.Environment.MachineName,
                                     message.Text);
-                    
+
 
            var buf = System.Text.Encoding.ASCII.GetBytes(dgram);
-           
+
            lock(m_SocketSync)
            {
              open();
@@ -158,7 +158,7 @@ namespace NFX.Log.Syslog
            lock (m_SocketSync)
            {
              if (m_UdpClient!=null)
-             {         
+             {
                m_UdpClient.Close();
                m_UdpClient = null;
              }
@@ -178,12 +178,12 @@ namespace NFX.Log.Syslog
            }
          }
 
-         
+
 
        #endregion
 
 
-         
+
     }
 
 }

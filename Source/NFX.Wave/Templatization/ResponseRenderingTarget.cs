@@ -34,12 +34,12 @@ namespace NFX.Wave.Templatization
           Context = work;
           Response = work.Response;
         }
-       
+
         /// <summary>
         /// Returns HttpContext for current request
         /// </summary>
         public readonly WorkContext Context;
-        
+
         /// <summary>
         /// Returns Response object for WorkContext
         /// </summary>

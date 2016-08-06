@@ -77,5 +77,5 @@ namespace NFX.WinForms.Elements
     #endregion
 
   }
-  
+
 }

@@ -27,7 +27,7 @@ namespace NFX.Erlang
 {
   public class ErlApp : IApplicationStarter
   {
-    public static ErlTraceLevel MinTraceLevel = ErlTraceLevel.Off;
+    public static ErlTraceLevel DefaultTraceLevel = ErlTraceLevel.Off;
     public static bool UseExtendedPidsPorts = true;
 
     public static bool IgnoreLocalEpmdConnectErrors = false;
@@ -41,13 +41,12 @@ namespace NFX.Erlang
 
     public static bool TraceEnabled(ErlTraceLevel level, ErlTraceLevel minLevel)
     {
-      var lv = (ErlTraceLevel)Math.Max((int)MinTraceLevel, (int)level);
-      return minLevel >= level || (MinTraceLevel != ErlTraceLevel.Off && MinTraceLevel >= minLevel);
+      return level != ErlTraceLevel.Off && level >= minLevel;
     }
 
   #region Application Startup (Erlang node)
 
-    private IConfigSectionNode[] m_RemoteNodes;
+    private ConfigSectionNode m_AllNodes;
 
     //---------------------------------------------------------------------
     // Application model startup
@@ -56,15 +55,18 @@ namespace NFX.Erlang
     public bool ApplicationStartBreakOnException { get { return true; } }
 
     public void ApplicationStartBeforeInit(IApplication application)
-    { 
+    {
       s_Node.Start();
 
-      foreach (var dn in m_RemoteNodes)
-        if (dn.AttrByName(ErlConsts.ERLANG_CONNECT_ON_STARUP).ValueAsBool(true))
-          s_Node.Connection(dn.Value, dn);
+      // Establish connections to all listed remote nodes
+      m_AllNodes.Children
+                .Where(n => n.Name.EqualsSenseCase("node")
+                         && !n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool()
+                         &&  n.AttrByName(ErlConsts.ERLANG_CONNECT_ON_STARUP).ValueAsBool(true))
+                .ForEach(n => s_Node.Connection(n.Value, n));
 
       //remember configs for remote nodes
-      s_Node.RemoteNodeConfigs = (IConfigSectionNode[])m_RemoteNodes.Clone();
+      s_Node.AllNodeConfigs = m_AllNodes;
 
       // Ensure proper cleanup of local node's global state
       application.RegisterAppFinishNotifiable(s_Node);
@@ -75,9 +77,9 @@ namespace NFX.Erlang
 
     public void Configure(IConfigSectionNode node)
     {
-      var root = node.NavigateSection("/" + ErlConsts.ERLANG_CONFIG_SECTION);
+      var appRoot = node.NavigateSection("/" + ErlConsts.ERLANG_CONFIG_SECTION);
 
-      if (root == null)
+      if (appRoot == null)
         throw new ErlException(
           StringConsts.CONFIGURATION_NAVIGATION_SECTION_REQUIRED_ERROR,
           ErlConsts.ERLANG_CONFIG_SECTION);
@@ -85,22 +87,25 @@ namespace NFX.Erlang
       // Configure global node variables
 
       ErlAbstractNode.s_DefaultCookie = new ErlAtom(
-        root.AttrByName(ErlConsts.ERLANG_COOKIE_ATTR)
+        appRoot.AttrByName(ErlConsts.ERLANG_COOKIE_ATTR)
             .ValueAsString(ErlAbstractNode.s_DefaultCookie.Value));
 
       ErlAbstractNode.s_UseShortNames =
-        root.AttrByName(ErlConsts.ERLANG_SHORT_NAME_ATTR)
+        appRoot.AttrByName(ErlConsts.ERLANG_SHORT_NAME_ATTR)
             .ValueAsBool(ErlAbstractNode.s_UseShortNames);
 
       ErlAbstractConnection.ConnectTimeout =
-        root.AttrByName(ErlConsts.ERLANG_CONN_TIMEOUT_ATTR)
+        appRoot.AttrByName(ErlConsts.ERLANG_CONN_TIMEOUT_ATTR)
             .ValueAsInt(ErlAbstractConnection.ConnectTimeout);
 
       // Configure local node and remote connections
 
+      var cfg = new MemoryConfiguration();
+      cfg.CreateFromNode(appRoot);
+
+      var root  = cfg.Root;
       var nodes = root.Children
-          .Where(n => n.Name.EqualsIgnoreCase(ErlConsts.ERLANG_NODE_SECTION))
-          .ToArray();
+                      .Where(n => n.Name.EqualsIgnoreCase(ErlConsts.ERLANG_NODE_SECTION));
 
       var localNodes = nodes.Where(n => n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool()).ToArray();
       if (localNodes.Length != 1)
@@ -114,7 +119,8 @@ namespace NFX.Erlang
 
       // Configure connections to all remote nodes
 
-      m_RemoteNodes = nodes.Where(n => !n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool()).ToArray();
+      //m_AllNodes = nodes.Where(n => !n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool());
+      m_AllNodes = root;
     }
 
   #endregion

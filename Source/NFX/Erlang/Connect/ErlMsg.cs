@@ -30,7 +30,7 @@ namespace NFX.Erlang
   /// payload information in received Erlang messages so that the
   /// recipient can obtain both parts with a single call to
   /// <see cref="ErlMbox.receiveMsg()"/>
-  /// 
+  ///
   /// The header information that is available is as follows:
   /// <ul>
   /// <li>a tag indicating the type of message</li>
@@ -42,7 +42,7 @@ namespace NFX.Erlang
   ///     particular, only messages whose tag is <see cref="ErlMsg.Tag.RegSend"/>
   ///     contain sender information.</li>
   /// </ul>
-  /// 
+  ///
   /// Message are sent using the Erlang external format (see separate
   /// documentation). When a message is received and delivered to the
   /// recipient <see cref="ErlMbox"/>, the body of the message is still

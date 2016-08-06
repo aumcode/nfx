@@ -63,17 +63,17 @@ namespace NFX.Web.Pay
       /// <summary>
       /// Returns process-global pay system host used to resolve accounts and transactions
       /// or throws if host is not set. Check IsPaySystemHost to see if host is set.
-      /// This design provides an indirection level between pay systems (like Stripe, PayPal, Bank etc.) and 
-      /// particular application data store implementation as it decouples system-internal formats of transaction and 
+      /// This design provides an indirection level between pay systems (like Stripe, PayPal, Bank etc.) and
+      /// particular application data store implementation as it decouples system-internal formats of transaction and
       /// account storage from provider-internal data (i.e. PayPal payment token string)
       /// </summary>
-      public static IPaySystemHost PaySystemHost 
-      { 
-        get 
+      public static IPaySystemHost PaySystemHost
+      {
+        get
         {
           var result = s_PaySystemHost;
 
-          if (result == null) 
+          if (result == null)
             throw new PaymentException(StringConsts.PAYMENT_SYSTEM_HOST_NULL_ERROR);
 
           return result;
@@ -112,8 +112,9 @@ namespace NFX.Web.Pay
         var pHost = App.ConfigRoot[WebSettings.CONFIG_WEBSETTINGS_SECTION][CONFIG_PAYMENT_PROCESSING_SECTION][CONFIG_PAY_SYSTEM_HOST_SECTION];
         if (pHost.Exists)
         {
-          var host = FactoryUtils.MakeAndConfigure<IPaySystemHostImplementation>(pHost);
-          ___SetPaySystemHost(host);          
+          var host = FactoryUtils.MakeAndConfigure<PaySystemHost>(pHost, typeof(PaySystemHost), new object[] { null, pHost });
+          host.Start();
+          ___SetPaySystemHost(host);
         }
 
         foreach (var psNode in App.ConfigRoot[WebSettings.CONFIG_WEBSETTINGS_SECTION][CONFIG_PAYMENT_PROCESSING_SECTION]
@@ -207,7 +208,7 @@ namespace NFX.Web.Pay
     #endregion
 
     #region Pvt/Prot/Int Fields
-      
+
       private bool m_InstrumentationEnabled;
       private Time.Event m_InstrumentationEvent;
 
@@ -237,18 +238,20 @@ namespace NFX.Web.Pay
 
     #region Public properties
 
-      public virtual ProcessingFeeKind ChargeFeeKind 
-      { 
-        get { return ProcessingFeeKind.IncludedInAmount; } 
-      }
-          
-      public virtual ProcessingFeeKind TransferFeeKind 
-      { 
-        get { return ProcessingFeeKind.Surcharged; } 
+      public virtual IPayWebTerminal WebTerminal { get { return null; } }
+
+      public virtual ProcessingFeeKind ChargeFeeKind
+      {
+        get { return ProcessingFeeKind.IncludedInAmount; }
       }
 
-      public virtual IEnumerable<string> SupportedCurrencies 
-      { 
+      public virtual ProcessingFeeKind TransferFeeKind
+      {
+        get { return ProcessingFeeKind.Surcharged; }
+      }
+
+      public virtual IEnumerable<string> SupportedCurrencies
+      {
         get { return CurrenciesCfg.Children.Select(c => c.Name).Distinct().ToList(); }
       }
 
@@ -261,12 +264,11 @@ namespace NFX.Web.Pay
       {
         get { return m_InstrumentationEnabled;}
         set
-        { 
+        {
             m_InstrumentationEnabled = value;
             if (m_InstrumentationEvent==null)
             {
               if (!value) return;
-              resetStats();
               m_InstrumentationEvent = new Time.Event(App.EventTimer, null, e => AcceptManagerVisit(this, e.LocalizedTime), INSTR_INTERVAL);
             }
             else
@@ -290,7 +292,7 @@ namespace NFX.Web.Pay
 
       [Config(CONFIG_CURRENCIES_SECTION)]
       public IConfigSectionNode CurrenciesCfg { get; set; }
-   
+
       /// <summary>
       /// Specifies the log level for operations performed by Pay System.
       /// </summary>
@@ -325,7 +327,7 @@ namespace NFX.Web.Pay
       public virtual bool IsTransactionTypeSupported(TransactionType type, string currencyISO = null)
       {
         // 1. Get currencies.
-        var currencies = currencyISO.IsNotNullOrEmpty() ? 
+        var currencies = currencyISO.IsNotNullOrEmpty() ?
           CurrenciesCfg.Children.Where(c => c.IsSameName(currencyISO)) :
           CurrenciesCfg.Children;
 
@@ -333,7 +335,7 @@ namespace NFX.Web.Pay
         var types = currencies.Select(c => c.AttrByName(CONFIG_FEE_TRAN_TYPE_ATTR));
 
         // 3. Check explicit tran-types first then implicit ones.
-        return 
+        return
           types.Any(t => t.Exists && t.Value.EqualsOrdIgnoreCase(type.ToString())) ||
           types.Any(t => !t.Exists);
       }
@@ -347,9 +349,9 @@ namespace NFX.Web.Pay
       public virtual int GetTransactionPct(string currencyISO, TransactionType type)
       {
         var fee = getCurrencyFee(currencyISO, type);
-        return (fee.Pct * 10000).AsInt();        
-      }    
-      
+        return (fee.Pct * 10000).AsInt();
+      }
+
     #endregion
 
     #region IWebClientCaller
@@ -397,7 +399,7 @@ namespace NFX.Web.Pay
 
         ConfigAttribute.Apply(this, node);
 
-        configureCurrencies(node);        
+        configureCurrencies(node);
       }
 
       protected override void DoStart()
@@ -418,10 +420,10 @@ namespace NFX.Web.Pay
 
       protected abstract PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection);
 
-      protected Guid Log(MessageType type, 
-                         string from, 
-                         string message, 
-                         Exception error = null, 
+      protected Guid Log(MessageType type,
+                         string from,
+                         string message,
+                         Exception error = null,
                          Guid? relatedMessageID = null,
                          string parameters = null)
       {
@@ -541,7 +543,7 @@ namespace NFX.Web.Pay
                           }
 
                           Instrumentation.ChargeAmount.Record(src, new Amount(key, val));
-                        } 
+                        }
 
                       #endregion
 
@@ -565,7 +567,7 @@ namespace NFX.Web.Pay
                           }
 
                           Instrumentation.CaptureAmount.Record(src, new Amount(key, val));
-                        } 
+                        }
 
                       #endregion
 
@@ -589,7 +591,7 @@ namespace NFX.Web.Pay
                           }
 
                           Instrumentation.RefundAmount.Record(src, new Amount(key, val));
-                        } 
+                        }
 
                       #endregion
 
@@ -613,7 +615,7 @@ namespace NFX.Web.Pay
                           }
 
                           Instrumentation.TransferAmount.Record(src, new Amount(key, val));
-                        } 
+                        }
 
                       #endregion
                     }

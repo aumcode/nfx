@@ -45,14 +45,14 @@ namespace NFX.CodeAnalysis.CSharp
       s_KeywordList["ushort"] = CSTokenType.tUShort;
       s_KeywordList["uint"] = CSTokenType.tUInt;
       s_KeywordList["ulong"] = CSTokenType.tULong;
-      
+
 
 
       s_KeywordList[";"] = CSTokenType.tTerminator;
       s_KeywordList["."] = CSTokenType.tDot;
       s_KeywordList[","] = CSTokenType.tComma;
       s_KeywordList[":"] = CSTokenType.tColon;
-                                           
+
       s_KeywordList["{"] = CSTokenType.tBraceOpen;
       s_KeywordList["}"] = CSTokenType.tBraceClose;
       s_KeywordList["("] = CSTokenType.tBracketOpen;
@@ -60,11 +60,11 @@ namespace NFX.CodeAnalysis.CSharp
       s_KeywordList["["] = CSTokenType.tSqBracketOpen;
       s_KeywordList["]"] = CSTokenType.tSqBracketClose;
 
-      s_KeywordList["abstract"] = CSTokenType.tAbstract;        
+      s_KeywordList["abstract"] = CSTokenType.tAbstract;
       s_KeywordList["base"] = CSTokenType.tBase;
       s_KeywordList["break"] = CSTokenType.tBreak;
-      s_KeywordList["case"] = CSTokenType.tCase;     
-      s_KeywordList["catch"] = CSTokenType.tCatch; 
+      s_KeywordList["case"] = CSTokenType.tCase;
+      s_KeywordList["catch"] = CSTokenType.tCatch;
       s_KeywordList["checked"] = CSTokenType.tChecked;
       s_KeywordList["class"] = CSTokenType.tClass;
       s_KeywordList["const"] = CSTokenType.tConst;
@@ -176,9 +176,9 @@ namespace NFX.CodeAnalysis.CSharp
     public static CSTokenType Resolve(string str)
     {
       CSTokenType tt;
-      
+
       s_KeywordList.TryGetValue(str, out tt);
-      
+
       return (tt != CSTokenType.tUnknown) ? tt : CSTokenType.tIdentifier;
     }
 

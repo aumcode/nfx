@@ -39,7 +39,7 @@ namespace NFX.Instrumentation.Analytics
         /// <param name="dimension2">Dimension of the 2nd histogram dimension</param>
         public Histogram(string title,
             Dimension<TData1> dimension1,
-            Dimension<TData2> dimension2) 
+            Dimension<TData2> dimension2)
             : base(title, 1, dimension1.PartitionCount + dimension2.PartitionCount)
         {
             m_Dimension1 = dimension1;
@@ -109,7 +109,7 @@ namespace NFX.Instrumentation.Analytics
         #endregion
 
         #region Fields
-        
+
             protected Dimension<TData1> m_Dimension1;
             protected Dimension<TData2> m_Dimension2;
 

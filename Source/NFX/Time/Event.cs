@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NFX.Log;
 using NFX.Environment;
 using NFX.ApplicationModel;
 
@@ -41,20 +42,20 @@ namespace NFX.Time
     /// <summary>
     /// The body should be called as a short-lived (less than 1 sec) task
     /// </summary>
-    AsyncTask = 0, 
+    AsyncTask = 0,
 
     /// <summary>
     /// The body should be called as a long-runnig task. The system may dedicate it a thread.
     /// Use this ONLY for events that fire infrequently (i.e. once every X minutes+) and take long time to execute (seconds+)
     /// </summary>
-    LongRunningAsyncTask, 
-    
+    LongRunningAsyncTask,
+
     /// <summary>
-    /// ADVANCED FEATURE. Run task synchronously on the timer thread. 
+    /// ADVANCED FEATURE. Run task synchronously on the timer thread.
     /// Use this option ONLY if the task body is very short (less than 10 ms).
     /// In most cases do not use this option as event body blocks the whole global application timer thread
     /// </summary>
-    Sync 
+    Sync
   }
 
   /// <summary>
@@ -91,8 +92,13 @@ namespace NFX.Time
   {
     public const string CONFIG_EVENT_SECTION = "event";
     public const string CONFIG_HANDLER_SECTION = "handler";
-    
+
     #region .ctor
+
+      public Event(IEventTimer timer, IConfigSectionNode config) : this(timer, null, null, null, config)
+      {
+
+      }
 
       public Event(IEventTimer timer, string name = null, TimerEvent body = null, TimeSpan? interval = null, IConfigSectionNode config = null) : base(timer)
       {
@@ -106,13 +112,13 @@ namespace NFX.Time
 
          if (interval.HasValue)
           m_Interval = interval.Value;
-      
+
          if (config!=null)
          {
            Configure(config);
            m_Name = config.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
          }
-      
+
          if (name.IsNotNullOrWhiteSpace())
            m_Name = name;
 
@@ -120,14 +126,14 @@ namespace NFX.Time
 
          ((IEventTimerImplementation)timer).__InternalRegisterEvent(this);
       }
-    
+
       protected override void Destructor()
       {
         if (!this.Disposed)
           lock(m_Lock)
           {
             ((IEventTimerImplementation)m_Timer).__InternalUnRegisterEvent(this);
-         
+
             m_Context = null;
             Body = null;
             StatusChange = null;
@@ -149,36 +155,35 @@ namespace NFX.Time
       private EventStatus m_Status = EventStatus.NotStarted;
 
       private bool m_Enabled = true;
-      
+
       private DateTime?   m_StartDate;
       private DateTime?   m_EndDate;
       private TimeSpan    m_Interval;
       private int         m_MaxCount;
-      
+
       private object m_Context;
       private int m_CallCount;
       private DateTime m_LastCall;
       private Exception m_LastError;
 
-      private EventBodyAsyncModel m_BodyAsyncModel;
-    #endregion  
+    #endregion
 
     #region Properties
 
 
-      public IEventTimer Timer  { get { return m_Timer; }} 
+      public IEventTimer Timer  { get { return m_Timer; }}
       public string      Name   { get { return m_Name;  }}
       public EventStatus Status { get { return m_Status;}}
-      
+
       /// <summary>
       /// Returns time location that this Event instance operates under.
       /// </summary>
       public TimeLocation TimeLocation
       {
          get { return m_TimeLocation ?? TimeLocation.Parent;}
-         set 
+         set
          {
-           lock(m_Lock) 
+           lock(m_Lock)
            {
             if (m_TimeLocation==value) return;
             m_TimeLocation = value;
@@ -208,7 +213,7 @@ namespace NFX.Time
       public event TimerEvent Body;
 
       /// <summary>
-      /// Invoked when timer event status changes. Always called synchronously by the timer thread. 
+      /// Invoked when timer event status changes. Always called synchronously by the timer thread.
       /// Subscribers should not block for long
       /// </summary>
       public event TimerEventStatusChange StatusChange;
@@ -230,7 +235,7 @@ namespace NFX.Time
          get { return m_Enabled; }
          set
          {
-           lock(m_Lock) 
+           lock(m_Lock)
            {
             if (m_Enabled==value) return;
             m_Enabled = value;
@@ -245,10 +250,10 @@ namespace NFX.Time
       /// </summary>
       [Config]
       [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_TIME)]
-      public EventBodyAsyncModel BodyAsyncModel
+      public virtual EventBodyAsyncModel BodyAsyncModel
       {
-         get { return m_BodyAsyncModel; }
-         set { m_BodyAsyncModel = value; }
+         get;
+         set;
       }
 
       /// <summary>
@@ -262,7 +267,7 @@ namespace NFX.Time
          set
          {
            lock(m_Lock)
-           {   
+           {
             value = AdjustDate(value);
             if (m_StartDate==value) return;
             m_StartDate = value;
@@ -283,7 +288,7 @@ namespace NFX.Time
          set
          {
            lock(m_Lock)
-           {   
+           {
             value = AdjustDate(value);
             if (m_EndDate==value) return;
             m_EndDate = value;
@@ -304,7 +309,7 @@ namespace NFX.Time
          set
          {
            lock(m_Lock)
-           {   
+           {
             if (m_Interval==value) return;
             m_Interval = value;
             definitionChange("Interval");
@@ -323,7 +328,7 @@ namespace NFX.Time
          set
          {
            lock(m_Lock)
-           {   
+           {
             if (m_MaxCount==value) return;
             m_MaxCount = value;
             definitionChange("MaxCount");
@@ -342,7 +347,7 @@ namespace NFX.Time
          get { return m_Context; }
          set
          {
-           lock(m_Lock)   
+           lock(m_Lock)
            {
             if (m_Context==value) return;
             m_Context = value;
@@ -391,25 +396,25 @@ namespace NFX.Time
 
       /// <summary>
       /// Calls event regardless of any constraints.
-      /// Invokes a handler right away if syncInvoke is true or BodyAsyncModel is Sync, 
+      /// Invokes a handler right away if syncInvoke is true or BodyAsyncModel is Sync,
       /// otherwise queues the task on a thread pool either as a regular or long-running task depending on BodyAsyncModel
       /// </summary>
       public void Fire(bool syncInvoke = false)
       {
         if (Disposed) return;
 
-        if (syncInvoke || m_BodyAsyncModel==EventBodyAsyncModel.Sync)
+        if (syncInvoke || BodyAsyncModel==EventBodyAsyncModel.Sync)
          fireBody();
         else
         {
-          if (m_BodyAsyncModel==EventBodyAsyncModel.LongRunningAsyncTask)
-            Task.Factory.StartNew( fireBody, TaskCreationOptions.LongRunning ); 
-          else 
+          if (BodyAsyncModel==EventBodyAsyncModel.LongRunningAsyncTask)
+            Task.Factory.StartNew( fireBody, TaskCreationOptions.LongRunning );
+          else
             Task.Factory.StartNew( fireBody );
         }
       }
 
-           
+
 
       public virtual void Configure(IConfigSectionNode config)
       {
@@ -419,11 +424,11 @@ namespace NFX.Time
         ConfigAttribute.Apply(this, config);
 
         var loc = config[TimeLocation.CONFIG_TIMELOCATION_SECTION];
-        if (loc.Exists) 
+        if (loc.Exists)
           m_TimeLocation = FactoryUtils.MakeAndConfigure<TimeLocation>(loc, typeof(TimeLocation));
 
         var ehnode = config[CONFIG_HANDLER_SECTION];
-        if (ehnode.Exists) 
+        if (ehnode.Exists)
           EventHandler = FactoryUtils.MakeUsingCtor<IEventHandler>(ehnode);
       }
 
@@ -469,8 +474,8 @@ namespace NFX.Time
       /// Returns named parameters that can be used to control this component
       /// </summary>
       public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-      { 
-        return ExternalParameterAttribute.GetParameters(this, groups); 
+      {
+        return ExternalParameterAttribute.GetParameters(this, groups);
       }
 
       /// <summary>
@@ -480,7 +485,7 @@ namespace NFX.Time
       {
           return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
       }
-          
+
       /// <summary>
       /// Sets external parameter value returning true if parameter was found and set
       /// </summary>
@@ -504,7 +509,7 @@ namespace NFX.Time
          return this.UniversalTimeToLocalizedTime(date.Value);
 
         return date;
-      } 
+      }
 
       /// <summary>
       /// Invoked by timer, checks all conditions and fires/expires event depending on the status.
@@ -532,8 +537,8 @@ namespace NFX.Time
       {
         //check validity
         if (
-             (m_StartDate.HasValue && 
-              m_EndDate.HasValue && 
+             (m_StartDate.HasValue &&
+              m_EndDate.HasValue &&
               m_StartDate.Value>=m_EndDate.Value) ||
              (m_MaxCount<0)||
              (m_Interval==TimeSpan.Zero)
@@ -565,7 +570,21 @@ namespace NFX.Time
 
         return (localNow-m_LastCall)>=m_Interval;
       }
-     
+
+
+
+      protected virtual void DoFire()
+      {
+        var body = Body;//thread-safe ref swap
+        if (body!=null) body(this);
+        var ih = EventHandler;//thread-safe ref swap
+        if (ih!=null) ih.EventHandlerBody(this);
+      }
+
+      protected virtual void DoHandleError(Exception error)
+      {
+
+      }
 
     #endregion
 
@@ -604,27 +623,40 @@ namespace NFX.Time
       }
 
 
-            private void fireBody()
+      private void fireBody()
+      {
+        try
+        {
+          DoFire();
+          m_LastError = null;
+        }
+        catch(Exception error)
+        {
+          //set task error exception
+          m_LastError = error;
+          try
+          {
+            DoHandleError(error);
+          }
+          catch(Exception another)
+          {
+            App.Log.Write(new Message
             {
-              var body = Body;//thread-safe ref swap
-              try
-              {
-                if (body!=null) body(this);
-                var ih = EventHandler;
-                if (ih!=null) ih.EventHandlerBody(this);
-                m_LastError = null;
-              }
-              catch(Exception error)
-              {
-                //set task error exception
-                m_LastError = error;
-              }
-              finally
-              {
-                m_CallCount++;
-                m_LastCall = LocalizedTime;
-              }
-            }
+              Type = MessageType.CatastrophicError,
+              Topic = CoreConsts.TIME_TOPIC,
+              From = "{0}.{1}".Args(GetType().Name, "fireBody.DoHandleError()"),
+              Text = "{0} caused DoHandleError() which leaked {1}".Args(error.ToMessageWithType(),
+                                                                        another.ToMessageWithType()),
+              Exception = another
+            });
+          }
+        }
+        finally
+        {
+          m_CallCount++;
+          m_LastCall = LocalizedTime;
+        }
+      }
 
     #endregion
 

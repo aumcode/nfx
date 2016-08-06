@@ -51,8 +51,8 @@ namespace NFX.Glue.Native
            private int m_PriorTimeoutMs;
 
       #endregion
- 
-      #region Protected 
+
+      #region Protected
         protected override CallSlot DoSendRequest(ClientEndPoint endpoint, RequestMsg request, CallOptions options)
         {
           try
@@ -63,7 +63,7 @@ namespace NFX.Glue.Native
           catch(Exception error)
           {
             var commError = error is SocketException ||
-                            error is System.IO.IOException || 
+                            error is System.IO.IOException ||
                             (typeof(ProtocolException).IsAssignableFrom(error.GetType()) && ((ProtocolException)error).CloseChannel);
 
             Binding.WriteLog( LogSrc.Client,
@@ -97,7 +97,7 @@ namespace NFX.Glue.Native
            private void ensureClient()
            {
              if (m_Client!=null && m_Client.Active) return;
-             
+
              finClient();
 
              var ep = MpxBinding.ToIPEndPoint(Node);
@@ -114,19 +114,19 @@ namespace NFX.Glue.Native
 
 
            private CallSlot sendRequest(ClientEndPoint endpoint, RequestMsg request, CallOptions options)
-           { 
+           {
               if (m_PriorDispatchTimeoutMs!=options.DispatchTimeoutMs)
               {
                 m_Client.Socket.SendTimeout = options.DispatchTimeoutMs;
                 m_PriorDispatchTimeoutMs = options.DispatchTimeoutMs;
               }
-          
+
               if (m_PriorTimeoutMs!=options.TimeoutMs)
               {
                 m_Client.Socket.ReceiveTimeout = options.TimeoutMs;
                 m_PriorTimeoutMs = options.TimeoutMs;
               }
-              
+
 
               var chunk = m_Client.GetSendChunk();
               try
@@ -139,11 +139,11 @@ namespace NFX.Glue.Native
                 Binding.DumpMsg(false, request, chunk.GetBuffer(), 0, (int)chunk.Position );
 
                 if (size>Binding.MaxMsgSize)
-                {  
+                {
                   Instrumentation.ClientSerializedOverMaxMsgSizeErrorEvent.Happened(Node);
                   throw new MessageSizeException(size, Binding.MaxMsgSize, "sendRequest("+request.RequestID+")");
                 }
-                
+
                 m_Client.Send(wm);
 
                 stat_MsgSent();
@@ -158,40 +158,40 @@ namespace NFX.Glue.Native
               {
                 m_Client.ReleaseSendChunk();
               }
-             
+
 
               //regardless of (request.OneWay) we return callslot anyway
               return new CallSlot(endpoint, this, request, CallStatus.Dispatched, options.TimeoutMs);
-           } 
+           }
 
 
            //called asynchronously to deliver data from server
            private void receiveAction(MpxSocket<MpxClientTransport> socket, WireMsg wm)
-           {                
+           {
              if (!Running) return;
              var response = deserialize(ref wm);
-           
+
              Glue.ClientDeliverAsyncResponse(response);
            }
-        
+
            private int serialize(MemChunk chunk, WireFrame frame, Msg msg)
            {
              chunk.Position = sizeof(int);
              frame.Serialize( chunk );
-             Binding.Serializer.Serialize(chunk, msg); 
+             Binding.Serializer.Serialize(chunk, msg);
              var size = (int)chunk.Position;//includes 4 byte len prefix
-             
+
              var buff = chunk.GetBuffer();//no stream expansion beyond this point
              buff.WriteBEInt32(0, size);
              return size;
            }
-           
+
            private ResponseMsg deserialize(ref WireMsg wmsg)
            {
              var chunk = wmsg.Data;
              chunk.Position = sizeof(int);
-           
-             WireFrame frame;    
+
+             WireFrame frame;
              ResponseMsg result = null;
              var arrivalTime = Binding.StatTimeTicks;
 
@@ -209,7 +209,7 @@ namespace NFX.Glue.Native
                   Instrumentation.ClientDeserializationErrorEvent.Happened(Node);
                   throw;
                 }
-              
+
 
                 if (received==null)
                   throw new ProtocolException(StringConsts.GLUE_UNEXPECTED_MSG_ERROR + "ResponseMsg. Got <null>");
@@ -229,7 +229,7 @@ namespace NFX.Glue.Native
              }
              finally
              {
-              Binding.DumpMsg(false, received as Msg, chunk.GetBuffer(), 0, (int)chunk.Position ); 
+              Binding.DumpMsg(false, received as Msg, chunk.GetBuffer(), 0, (int)chunk.Position );
              }
 
               result.__SetArrivalTimeStampTicks(arrivalTime);
@@ -237,6 +237,6 @@ namespace NFX.Glue.Native
            }
 
       #endregion
-   
+
   }
 }

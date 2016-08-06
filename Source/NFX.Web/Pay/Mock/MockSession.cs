@@ -25,7 +25,7 @@ namespace NFX.Web.Pay.Mock
   public class MockSession: PaySession
   {
     public MockSession(PaySystem paySystem, MockConnectionParameters cParams)
-      : base(paySystem, cParams) 
+      : base(paySystem, cParams)
     {
       //AccountActualDatas = cParams.AccountActualDatas;
     }

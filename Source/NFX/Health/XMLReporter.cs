@@ -26,17 +26,17 @@ using NFX.Environment;
 namespace NFX.Health
 {
     /// <summary>
-    /// Reports XML health check results 
+    /// Reports XML health check results
     /// </summary>
     public class XMLReporter : Reporter
     {
-        
+
         public XMLReporter(CheckList list) : base(list)
         {
 
         }
-        
-                    
+
+
         public override void Report(System.IO.TextWriter writer)
         {
             var conf = new XMLConfiguration();
@@ -50,21 +50,21 @@ namespace NFX.Health
             var runNode = conf.Root.AddChildNode("run", null);
             if (CheckList.Status == CheckListStatus.Run)
             {
-                runNode.AddAttributeNode("started", CheckList.RunStart); 
+                runNode.AddAttributeNode("started", CheckList.RunStart);
                 runNode.AddAttributeNode("finished", CheckList.RunFinish);
                 runNode.AddAttributeNode("duration", CheckList.RunFinish - CheckList.RunStart);
             }
             else
                 runNode.AddAttributeNode("started", "never ran");
 
-            var checksNode = conf.Root.AddChildNode("checks", null); 
-            
+            var checksNode = conf.Root.AddChildNode("checks", null);
+
             foreach(var check in CheckList.Checks)
              reportCheck(checksNode, check);
-             
-            
-            
-            writer.Write(conf.ToString());  
+
+
+
+            writer.Write(conf.ToString());
         }
 
 

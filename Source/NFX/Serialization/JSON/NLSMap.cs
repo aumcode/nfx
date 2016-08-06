@@ -29,7 +29,7 @@ namespace NFX.Serialization.JSON
 
         public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
         {
-          JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", Name), 
+          JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", Name),
                                                           new System.Collections.DictionaryEntry("d", Description));
         }
       }
@@ -59,7 +59,7 @@ namespace NFX.Serialization.JSON
         m_Data = makeDict();
         if (nlsNode==null || !nlsNode.Exists) return;
         ctor(nlsNode);
-      } 
+      }
 
       private static Dictionary<string, NDPair> makeDict()
       {
@@ -72,14 +72,14 @@ namespace NFX.Serialization.JSON
           foreach(var ison in nlsNode.Children)
             m_Data[ison.Name] = new NDPair(ison.AttrByName("n").Value, ison.AttrByName("d").Value);
         else
-          m_Data[nlsNode.Name] = new NDPair(nlsNode.AttrByName("n").Value, nlsNode.AttrByName("d").Value); 
+          m_Data[nlsNode.Name] = new NDPair(nlsNode.AttrByName("n").Value, nlsNode.AttrByName("d").Value);
       }
 
       internal Dictionary<string, NDPair> m_Data;
-      
+
       public NDPair this[string langIso]
       {
-        get 
+        get
         {
           if (m_Data!=null)
           {
@@ -115,7 +115,7 @@ namespace NFX.Serialization.JSON
 
         if (dfltLangIso.IsNullOrWhiteSpace()) dfltLangIso = CoreConsts.ISO_LANG_ENGLISH;
         if (langIso.EqualsIgnoreCase(dfltLangIso)) return null;
-      
+
         p = this[dfltLangIso];
         result = getSwitch(p, tp, concat);
         if (result.IsNotNullOrWhiteSpace()) return result;
@@ -163,7 +163,7 @@ namespace NFX.Serialization.JSON
 
                                                  if (isName && isDescr)
                                                   return p.Name+concat+p.Description;
-                                             
+
                                                  if (isName) return p.Name;
                                                  if (isDescr) return p.Description;
                                                  return null;
@@ -174,7 +174,7 @@ namespace NFX.Serialization.JSON
 
                                                  if (isName && isDescr)
                                                   return p.Description+concat+p.Name;
-                                             
+
                                                  if (isDescr) return p.Description;
                                                  if (isName) return p.Name;
                                                  return null;
@@ -196,7 +196,7 @@ namespace NFX.Serialization.JSON
           return;
         }
 
-        if (options==null || 
+        if (options==null ||
             options.Purpose==JSONSerializationPurpose.Marshalling ||
             options.NLSMapLanguageISO.IsNullOrWhiteSpace())
         {
@@ -205,15 +205,15 @@ namespace NFX.Serialization.JSON
         }
 
         var pair = this[options.NLSMapLanguageISO];
-          
+
         if (!pair.IsAssigned && !options.NLSMapLanguageISODefault.EqualsOrdIgnoreCase(options.NLSMapLanguageISO))
           pair = this[options.NLSMapLanguageISODefault];
 
         if (pair.IsAssigned)
-          JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", pair.Name), 
+          JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", pair.Name),
                                                           new System.Collections.DictionaryEntry("d", pair.Description));
         else
-          JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", null), 
+          JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", null),
                                                           new System.Collections.DictionaryEntry("d", null));
       }
 

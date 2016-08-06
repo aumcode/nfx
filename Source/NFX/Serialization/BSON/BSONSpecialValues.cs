@@ -11,7 +11,7 @@ using NFX.Serialization.JSON;
 
 namespace NFX.Serialization.BSON
 {
-  
+
   /// <summary>
   /// Represents an ObjectId as a 12-byte BSON type
   /// </summary>
@@ -67,7 +67,7 @@ namespace NFX.Serialization.BSON
 
     public uint MachineID
     {
-      get { return BinUtils.ReadUInt24(Bytes, 4); }               
+      get { return BinUtils.ReadUInt24(Bytes, 4); }
     }
 
     public ushort ProcessID
@@ -86,11 +86,11 @@ namespace NFX.Serialization.BSON
     /// Interprets BSON/MongoDB object ID as NFX GDID
     /// </summary>
     public GDID AsGDID { get { return new GDID(Bytes); } }
-    
+
     public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
     {
-      JSONWriter.WriteMap(wri, 
-           nestingLevel+1, 
+      JSONWriter.WriteMap(wri,
+           nestingLevel+1,
            options,
            new DictionaryEntry("$oid", Convert.ToBase64String(Bytes))
       );
@@ -106,7 +106,7 @@ namespace NFX.Serialization.BSON
     {
       if (data==null)
          throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONBinary.ctor(data==null)");
-      
+
       Type = type;
       Data = data;
     }
@@ -116,10 +116,10 @@ namespace NFX.Serialization.BSON
 
     public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
     {
-      JSONWriter.WriteMap(wri, 
-           nestingLevel+1, 
+      JSONWriter.WriteMap(wri,
+           nestingLevel+1,
            options,
-           new DictionaryEntry("$type", Type), 
+           new DictionaryEntry("$type", Type),
            new DictionaryEntry("$binary", Convert.ToBase64String(Data))
       );
     }
@@ -134,7 +134,7 @@ namespace NFX.Serialization.BSON
     {
       if (pattern==null)
          throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONRegularExpression.ctor(pattern==null)");
-      
+
       Pattern = pattern;
       Options = options;
     }
@@ -143,11 +143,11 @@ namespace NFX.Serialization.BSON
     public readonly BSONRegularExpressionOptions Options;
 
     public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
-    {  
-      JSONWriter.WriteMap(wri, 
-           nestingLevel+1, 
+    {
+      JSONWriter.WriteMap(wri,
+           nestingLevel+1,
            options,
-           new DictionaryEntry("$regex", Pattern), 
+           new DictionaryEntry("$regex", Pattern),
            new DictionaryEntry("$options", Options.ToBSONString())
       );
     }
@@ -162,8 +162,8 @@ namespace NFX.Serialization.BSON
     {
       if (code==null || scope == null)
          throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONCodeWithScope.ctor(code==null | scope==null)");
-      
-      Code = code; 
+
+      Code = code;
       Scope = scope;
     }
 
@@ -192,12 +192,12 @@ namespace NFX.Serialization.BSON
     public readonly uint Increment;
 
     public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
-    { 
-      JSONWriter.WriteMap(wri, 
-           nestingLevel+1, 
-           options,     
-           new DictionaryEntry("$timestamp", new {t = EpochSeconds, i = Increment }) 
-      );   
+    {
+      JSONWriter.WriteMap(wri,
+           nestingLevel+1,
+           options,
+           new DictionaryEntry("$timestamp", new {t = EpochSeconds, i = Increment })
+      );
     }
   }
 

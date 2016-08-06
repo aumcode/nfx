@@ -25,6 +25,7 @@ using NUnit.Framework;
 using NFX;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
+using NFX.Serialization.JSON;
 
 namespace NFX.NUnit.Integration.CRUD
 {
@@ -842,6 +843,164 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(persisted.First_Name, updated.First_Name);
             Assert.AreEqual(persisted.Last_Name, updated.Last_Name); 
             Assert.AreEqual(patient.Zip, updated.Zip); // notice ZIP remains the same
+        }
+
+
+        public static void Populate_OpenCursor(ICRUDDataStore store)
+        {
+            const int CNT = 1000;
+           
+            for(var i=0; i<CNT; i++)
+            {
+              var patient = new TupleData
+              {
+                 COUNTER = i,
+                 DATA = i.ToString()+"-DATA"
+              };
+              store.Insert( patient );
+            }
+           
+           
+           
+            var query = new Query<TupleData>("CRUD.Tuple.LoadAll");
+            var result = store.LoadOneRowset( query );
+
+            Assert.AreEqual(CNT, result.Count);
+            
+            Assert.AreEqual(0, result[0]["COUNTER"]);
+            Assert.AreEqual(CNT-1, result[result.Count-1]["COUNTER"]);
+
+            {
+                using(var cursor = store.OpenCursor( query ))
+                {
+                   Assert.IsFalse( cursor.Disposed );
+                   var cnt = 0;
+                   foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                    cnt++;
+
+                   Assert.AreEqual(CNT, cnt);
+                   Assert.IsTrue( cursor.Disposed );//foreach must have closed the cursor
+                }
+            }
+
+            {
+                var cursor = store.OpenCursor( query );
+
+                Assert.IsFalse( cursor.Disposed );
+
+                var cen = cursor.GetEnumerator();
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+
+                Console.WriteLine( cen.Current.Schema.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap) );
+
+                Assert.AreEqual(0, cen.Current["COUNTER"]);
+                Assert.AreEqual("0-DATA", cen.Current["DATA"]);
+
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+                Assert.AreEqual(1, cen.Current["COUNTER"]);
+                Assert.AreEqual("1-DATA", cen.Current["DATA"]);
+
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+                Assert.AreEqual(2, cen.Current["COUNTER"]);
+                Assert.AreEqual("2-DATA", cen.Current["DATA"]);
+
+
+                cursor.Dispose();
+                Assert.IsTrue( cursor.Disposed );
+            }
+
+            {
+                using(var cursor = store.OpenCursor( query ))
+                {
+                   Assert.IsFalse( cursor.Disposed );
+                   var cnt = 0;
+                   foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                    cnt++;
+
+                   Assert.AreEqual(CNT, cnt);
+                   Assert.IsTrue( cursor.Disposed );//foreach must have closed the cursor
+                   try
+                   {
+                     foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                     Assert.Fail("Must have failed");
+                   }
+                   catch
+                   {
+
+                   }
+                   
+                }
+            }
+
+            {
+               var cursor = store.OpenCursor( query );
+
+                Assert.IsFalse( cursor.Disposed );
+
+                var cen = cursor.GetEnumerator();
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+                Assert.AreEqual(0, cen.Current["COUNTER"]);
+
+                try
+                {
+                  Assert.IsFalse( cursor.Disposed );
+
+                  var cen2 = cursor.GetEnumerator();
+                  Assert.Fail("This should not have heppened as cant iterate cursor the second time");
+                }
+                catch
+                {
+
+                }
+
+                cursor.Dispose();
+                Assert.IsTrue( cursor.Disposed );
+            }
+
+        }
+
+        public static void Populate_ASYNC_OpenCursor(ICRUDDataStore store)
+        {
+            const int CNT = 1000;
+           
+            for(var i=0; i<CNT; i++)
+            {
+              var patient = new TupleData
+              {
+                 COUNTER = i,
+                 DATA = i.ToString()+"-DATA"
+              };
+              store.Insert( patient );
+            }
+           
+           
+           
+            var query = new Query<TupleData>("CRUD.Tuple.LoadAll");
+            var result = store.LoadOneRowset( query );
+
+            Assert.AreEqual(CNT, result.Count);
+            
+            Assert.AreEqual(0, result[0]["COUNTER"]);
+            Assert.AreEqual(CNT-1, result[result.Count-1]["COUNTER"]);
+
+            var task = store.OpenCursorAsync( query )
+                              .ContinueWith( antecedent =>
+                                {
+                                    var cursor = antecedent.Result;;
+                                    Assert.IsFalse( cursor.Disposed );
+                                    var cnt = 0;
+                                    foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                                    cnt++;
+
+                                    Assert.AreEqual(CNT, cnt);
+                                    Assert.IsTrue( cursor.Disposed );//foreach must have closed the cursor
+                                });
+            task.Wait();
+
         }
 
 

@@ -32,7 +32,7 @@ namespace NFX.CodeAnalysis.CSharp
     {
         public CSLexer(ISourceText source, MessageList messages = null, bool throwErrors = false) : base( source, messages, throwErrors)
         {
-             m_FSM = new FSM(this); 
+             m_FSM = new FSM(this);
         }
 
         public CSLexer(IAnalysisContext context, SourceCodeRef srcRef, ISourceText source, MessageList messages = null, bool throwErrors = false) :
@@ -40,7 +40,7 @@ namespace NFX.CodeAnalysis.CSharp
         {
              m_FSM = new FSM(this);
         }
-       
+
         public override Language Language
         {
             get { return CSLanguage.Instance;}
@@ -51,7 +51,7 @@ namespace NFX.CodeAnalysis.CSharp
             return ((CSMsgCode)code).ToString();
         }
 
-        
+
 
         private FSM m_FSM;
         private IEnumerator<bool> m_Work;
@@ -59,7 +59,7 @@ namespace NFX.CodeAnalysis.CSharp
         protected override bool DoLexingChunk()
         {
             if (m_AllAnalyzed) return true;
-            
+
             if (m_Work==null)
             {
               m_Work = m_FSM.Run().GetEnumerator();
@@ -75,7 +75,7 @@ namespace NFX.CodeAnalysis.CSharp
 
 
 
-    private class FSM  
+    private class FSM
     {
       public FSM(CSLexer lex)
       {
@@ -84,8 +84,8 @@ namespace NFX.CodeAnalysis.CSharp
         tokens = lexer.m_Tokens;
         srcRef = lexer.SourceCodeReference;
       }
-      
-      
+
+
       private readonly CSLexer lexer;
       private readonly ISourceText source;
       private readonly TokenList<CSToken> tokens;
@@ -160,7 +160,7 @@ namespace NFX.CodeAnalysis.CSharp
                                 String.Empty));
 
         #region Main walk
-        //=======================================================================================================================                
+        //=======================================================================================================================
         while (!source.EOF)
         {
           moveNext();
@@ -231,7 +231,7 @@ namespace NFX.CodeAnalysis.CSharp
                   continue; // eat terminating string char
                 }
             }
-            else//take care of 'c:\\dir\\' 
+            else//take care of 'c:\\dir\\'
             {
               bufferAdd(chr); //preserve  \
               moveNext();
@@ -248,7 +248,7 @@ namespace NFX.CodeAnalysis.CSharp
               {
                 #region Not inside comments
 
-                #region Turn On Comments   
+                #region Turn On Comments
                 //turn on comment block
                 if (((chr == '/') /*|| (chr == '|')*/) && (nchr == '*'))
                 {
@@ -265,10 +265,10 @@ namespace NFX.CodeAnalysis.CSharp
                   flush();
                   isCommentLine = true;
                   moveNext();
-                  continue;         
+                  continue;
                 }
 
-                //turn on comment line mode for directive 
+                //turn on comment line mode for directive
                 //directives MUST be the first non-white char on the line
                 if (freshLine && chr == '#')
                 {
@@ -321,13 +321,13 @@ namespace NFX.CodeAnalysis.CSharp
                     (chr == ':') ||
                     ((chr == '.') && (!CSIdentifiers.ValidateDigit(nchr)))
                    )
-                 {        
+                 {
                    flush();
                    bufferAdd(chr);
                    flush();
                    continue;
-                 }   
-                
+                 }
+
          //Scientific numbers like:   2e+30, 45E-10
          if ( buffer.Length>0 &&
               CSIdentifiers.ValidateDigit(buffer[0])&&
@@ -336,7 +336,7 @@ namespace NFX.CodeAnalysis.CSharp
              )
          {
             bufferAdd(chr); //e
-            moveNext();     
+            moveNext();
             bufferAdd(chr); //+ or -
             moveNext();
             bufferAdd(chr); // add digit after + or -
@@ -344,7 +344,7 @@ namespace NFX.CodeAnalysis.CSharp
          }
 
 
-                
+
                 //for operators like -- /= += etc...
                 if ( (buffer.Length > 0) && (isSymbol(chr) != isSymbol(buffer[0])) )
                 {
@@ -383,7 +383,7 @@ namespace NFX.CodeAnalysis.CSharp
                 yield return true;
           }
         }//while
-        //=======================================================================================================================                                
+        //=======================================================================================================================
         #endregion
 
 
@@ -393,7 +393,7 @@ namespace NFX.CodeAnalysis.CSharp
         #region Post-walk check
         if (tokens.Count < 2)
           lexer.EmitMessage(MessageType.Error, (int)CSMsgCode.ePrematureEOF, srcPos());
-          
+
 
         if (isCommentBlock)
           lexer.EmitMessage(MessageType.Error, (int)CSMsgCode.eUnterminatedComment, srcPos());
@@ -433,7 +433,7 @@ namespace NFX.CodeAnalysis.CSharp
         if (isString)
         {
           type = CSTokenType.tStringLiteral;
-          
+
 
           if (!isVerbatim)
           {
@@ -468,18 +468,18 @@ namespace NFX.CodeAnalysis.CSharp
             return;
           }
 
-          if (value == null)  //not number          
+          if (value == null)  //not number
           {
                     type = CSKeywords.Resolve(text);
-            
+
                     if (type == CSTokenType.tIdentifier)
                     {
                       if (text.StartsWith("@"))
                       {
                          text = text.Remove(0, 1); //take care of verbatim names like: @class, @void, @var etc..
                          tagStartPos = new SourcePosition(tagStartPos.LineNumber, tagStartPos.ColNumber+1, tagStartPos.CharNumber+1);
-                      }   
-             
+                      }
+
                       if (!CSIdentifiers.Validate(text))
                       {
                         lexer.EmitMessage(MessageType.Error, (int)CSMsgCode.eInvalidIdentifier, tagStartPos, null, text);
@@ -491,7 +491,7 @@ namespace NFX.CodeAnalysis.CSharp
 
 
         if (type==CSTokenType.tStringLiteral) value = text;
-        
+
         tokens.Add(new CSToken(lexer, type, tagStartPos, tagEndPos, text, value));
 
       }

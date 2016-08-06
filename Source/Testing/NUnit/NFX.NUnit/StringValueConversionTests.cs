@@ -34,10 +34,58 @@ namespace NFX.NUnit
         [TestCase]
         public void GDID()
         {
+           var link1 = new ELink(new GDID(5,1,2));
+           var link2 = new ELink(new GDID(0,1,2));
+
+
            Assert.AreEqual( new GDID(5, 1, 2),  "5:1:2".AsGDID());
            Assert.AreEqual( new GDID(5, 1, 2),  "5:1:2".AsType(typeof(GDID)));
+           Assert.AreEqual( new GDID(5, 1, 2),  link1.Link.AsType(typeof(GDID), false));
+
+
            Assert.AreEqual( new GDID(0, 1, 2),  "0:1:2".AsGDID());
            Assert.AreEqual( new GDID(0, 1, 2),  "0:1:2".AsType(typeof(GDID)));
+           Assert.AreEqual( new GDID(0, 1, 2),  link2.Link.AsType(typeof(GDID), false));
+
+           string ns = null;
+           Assert.IsNull( ns.AsNullableGDID());
+           Assert.IsNull( ns.AsNullableGDID(new GDID(7, 8, 9)));
+           Assert.AreEqual( new GDID(7,8,9), "dewsdfwefwerf".AsNullableGDID(new GDID(7, 8, 9)));
+        }
+
+        [TestCase]
+        public void GDIDSymbol()
+        {
+           var link1 = new ELink(new GDID(5,1,2));
+           var link2 = new ELink(new GDID(0,1,2));
+
+           Assert.AreEqual( new GDIDSymbol(new GDID(5, 1, 2), "5:1:2"),  "5:1:2".AsGDIDSymbol());
+           Assert.AreEqual( new GDIDSymbol(new GDID(5, 1, 2), "5:1:2"),  "5:1:2".AsType(typeof(GDIDSymbol)));
+           Assert.AreEqual( link1.AsGDIDSymbol, link1.Link.AsType(typeof(GDIDSymbol), false));
+
+
+           Assert.AreEqual( new GDIDSymbol(new GDID(0, 1, 2), "0:1:2"),  "0:1:2".AsGDIDSymbol());
+           Assert.AreEqual( new GDIDSymbol(new GDID(0, 1, 2), "0:1:2"),  "0:1:2".AsType(typeof(GDIDSymbol)));
+           Assert.AreEqual( link2.AsGDIDSymbol, link2.Link.AsType(typeof(GDIDSymbol), false));
+
+           string ns = null;
+           Assert.IsNull( ns.AsNullableGDIDSymbol());
+           Assert.IsNull( ns.AsNullableGDIDSymbol(new GDIDSymbol(new GDID(7, 8, 9), "AAA")));
+           Assert.AreEqual( new GDIDSymbol(new GDID(7,8,9), "AAA"), "wdef8we9f9u8".AsNullableGDIDSymbol(new GDIDSymbol(new GDID(7, 8, 9), "AAA")));
+        }
+
+        [TestCase]
+        public void GDIDSymbol_from_string()
+        {
+           //1280:2:8902382::'AUCKIR-ABASVITILT'
+           var slink = "AUCKIR-ABASVITILT";
+           var gs = slink.AsGDIDSymbol();
+           Assert.AreEqual(new GDID(1280, 2, 8902382), gs.GDID);
+           Assert.AreEqual(slink, gs.Symbol);
+
+           var gs2 = slink.AsType(typeof(GDIDSymbol?), false);
+           Assert.AreEqual(new GDID(1280, 2, 8902382), ((GDIDSymbol)gs2).GDID);
+           Assert.AreEqual(slink, ((GDIDSymbol)gs2).Symbol);
         }
 
          [TestCase]
@@ -55,8 +103,8 @@ namespace NFX.NUnit
            Assert.IsTrue( new byte[]{0x2f, 0x3d, 0xea, 0x22}.SequenceEqual("2f,3d,ea,22".AsByteArray()));
            Assert.IsTrue( new byte[]{1,2,3,4,5,6,7,8,9,0}.SequenceEqual("1,2,3,4, 5,    6,7,8,9, 0".AsByteArray()));
         }
-        
-        
+
+
         [TestCase]
         public void Int()
         {
@@ -98,7 +146,7 @@ namespace NFX.NUnit
            Assert.AreEqual( -10,  "-10".AsType(typeof(int)));
            Assert.AreEqual( -10f, "-10".AsType(typeof(float)));
            Assert.AreEqual( -10d, "-10".AsType(typeof(double)));
-           Assert.AreEqual( -10m, "-10".AsType(typeof(decimal))); 
+           Assert.AreEqual( -10m, "-10".AsType(typeof(decimal)));
         }
 
         [TestCase]
@@ -110,6 +158,8 @@ namespace NFX.NUnit
            Assert.AreEqual( true, "true".AsBool());
            Assert.AreEqual( true, "True".AsBool());
            Assert.AreEqual( true, "TRUE".AsBool());
+           Assert.AreEqual( true, "on".AsBool());
+           Assert.AreEqual( true, "ON".AsBool());
         }
 
         [TestCase]
@@ -178,7 +228,7 @@ namespace NFX.NUnit
            Assert.AreEqual( 0,  data.AsType(typeof(int?),     false));
            Assert.AreEqual( 0f, data.AsType(typeof(float?),   false));
            Assert.AreEqual( 0d, data.AsType(typeof(double?),  false));
-           Assert.AreEqual( 0m, data.AsType(typeof(decimal?), false)); 
+           Assert.AreEqual( 0m, data.AsType(typeof(decimal?), false));
         }
 
         [TestCase]
@@ -195,7 +245,7 @@ namespace NFX.NUnit
            Assert.AreEqual( 0,  data.AsType(typeof(int),     false));
            Assert.AreEqual( 0f, data.AsType(typeof(float),   false));
            Assert.AreEqual( 0d, data.AsType(typeof(double),  false));
-           Assert.AreEqual( 0m, data.AsType(typeof(decimal), false)); 
+           Assert.AreEqual( 0m, data.AsType(typeof(decimal), false));
 
            Assert.AreEqual( null, data.AsNullableShort());
            Assert.AreEqual( null, data.AsNullableInt());
@@ -279,6 +329,26 @@ namespace NFX.NUnit
         }
 
 
+        [TestCase]
+        public void Uri()
+        {
+          Assert.AreEqual(new Uri("https://example.org/absolute/URI/resource.txt"), "https://example.org/absolute/URI/resource.txt".AsUri());
+          Assert.AreEqual(new Uri("ftp://example.org/resource.txt"), "ftp://example.org/resource.txt".AsUri());
+          Assert.AreEqual(new Uri("urn:ISSN:1535–3613"), "urn:ISSN:1535–3613".AsType(typeof(Uri)));
+          Assert.AreEqual(null, "   ".AsType(typeof(Uri)));
 
+          Assert.Throws<UriFormatException>(() => "resource.txt".AsUri(handling: ConvertErrorHandling.Throw));
+
+          var uri = "schema://username:password@example.com:123/path/data?key=value#fragid".AsUri();
+          Assert.AreEqual(uri.Scheme, "schema");
+          Assert.AreEqual(uri.Authority, "example.com:123");
+          Assert.AreEqual(uri.UserInfo, "username:password");
+          Assert.AreEqual(uri.Host, "example.com");
+          Assert.AreEqual(uri.Port, 123);
+          Assert.AreEqual(uri.PathAndQuery, "/path/data?key=value");
+          Assert.AreEqual(uri.AbsolutePath, "/path/data");
+          Assert.AreEqual(uri.Query, "?key=value");
+          Assert.AreEqual(uri.Fragment, "#fragid");
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace NFX.Glue.Protocol
     {
 
         /// <summary>
-        /// Constructs request message from method information and arguments for call invocation. 
+        /// Constructs request message from method information and arguments for call invocation.
         /// This constructor is slower as it uses reflection
         /// </summary>
         protected RequestMsg(MethodInfo method, Guid? instance) : base()
@@ -39,13 +39,13 @@ namespace NFX.Glue.Protocol
             m_Contract = new TypeSpec(method.DeclaringType);
             m_Method = new MethodSpec(method);
             m_OneWay = Attribute.IsDefined(method, typeof(OneWayAttribute));
-            
+
             m_RemoteInstance = instance;
         }
 
 
         /// <summary>
-        /// Constructs request message from pre-computed  specs obtained by reflection. 
+        /// Constructs request message from pre-computed  specs obtained by reflection.
         /// This constructor is the fastest as it does not use reflection
         /// </summary>
         protected RequestMsg(TypeSpec contract, MethodSpec method, bool oneWay, Guid? instance) : base()
@@ -77,14 +77,14 @@ namespace NFX.Glue.Protocol
         /// Binding-specific context is cloned and headers/correlation data are cloned conditionaly
         /// </summary>
         protected RequestMsg(RequestMsg inspectedOriginal,
-                          TypeSpec contract, MethodSpec method, bool oneWay, Guid? instance, 
+                          TypeSpec contract, MethodSpec method, bool oneWay, Guid? instance,
                           bool cloneHeaders = true, bool cloneCorrelation = true) : this(contract, method, oneWay, instance)
         {
           m_ServerTransport = inspectedOriginal.m_ServerTransport;
           CloneState(inspectedOriginal, cloneHeaders, cloneCorrelation);
         }
 
-        
+
 
 
 
@@ -95,25 +95,25 @@ namespace NFX.Glue.Protocol
         /// </summary>
         public void __setServerTransport(ServerTransport t) { m_ServerTransport = t; }
 
-       
-       
-        
+
+
+
         private TypeSpec m_Contract;
-       
+
         private Guid? m_RemoteInstance;
 
         private MethodSpec m_Method;
 
         private bool m_OneWay;
 
-        
+
 
         [NonSerialized]
         private ApplicationModel.ISession m_Session;
 
 
            /// <summary>
-           /// Returns request ID for this instance. Every request is uniquely identified 
+           /// Returns request ID for this instance. Every request is uniquely identified
            /// </summary>
            public override FID RequestID
            {
@@ -126,7 +126,7 @@ namespace NFX.Glue.Protocol
            /// </summary>
            public Guid? RemoteInstance
            {
-             get { return m_RemoteInstance; } 
+             get { return m_RemoteInstance; }
            }
 
 
@@ -149,7 +149,7 @@ namespace NFX.Glue.Protocol
            /// <summary>
            /// Gets a name of method to be invoked on the other side
            /// </summary>
-           public string MethodName 
+           public string MethodName
            {
              get {return m_Method.MethodName; }
            }
@@ -157,7 +157,7 @@ namespace NFX.Glue.Protocol
            /// <summary>
            /// Gets a method specification to be invoked on the other side
            /// </summary>
-           public MethodSpec Method 
+           public MethodSpec Method
            {
              get {return m_Method; }
            }
@@ -179,7 +179,7 @@ namespace NFX.Glue.Protocol
            /// Session reference that can be used to pass session object that was already determined by transport (i.e. HttpServerTransport)
            ///  into Glue server handler. This property is NOT transmitted/serialized over wire
            /// </summary>
-           public ApplicationModel.ISession Session { get{ return m_Session; }  set{ m_Session = value;} } 
+           public ApplicationModel.ISession Session { get{ return m_Session; }  set{ m_Session = value;} }
 
     }
 
@@ -193,7 +193,7 @@ namespace NFX.Glue.Protocol
     {
 
         /// <summary>
-        /// Constructs request message from method information and arguments for call invocation. 
+        /// Constructs request message from method information and arguments for call invocation.
         /// This constructor is slower as it uses reflection
         /// </summary>
         public RequestAnyMsg(MethodInfo method, Guid? instance, object[] args) : base(method, instance)
@@ -202,7 +202,7 @@ namespace NFX.Glue.Protocol
         }
 
         /// <summary>
-        /// Constructs request message from pre-computed  specs obtained by reflection. 
+        /// Constructs request message from pre-computed  specs obtained by reflection.
         /// This constructor is the fastest as it does not use reflection
         /// </summary>
         public RequestAnyMsg(TypeSpec contract, MethodSpec method, bool oneWay, Guid? instance, object[] args) : base(contract, method, oneWay, instance)

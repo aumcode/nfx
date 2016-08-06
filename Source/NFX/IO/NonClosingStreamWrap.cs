@@ -39,20 +39,20 @@ namespace NFX.IO
 
     protected override void Dispose(bool disposing)
     {
-      
+
     }
 
     /// <summary>
     /// Target stream that this stream wraps
     /// </summary>
     public readonly Stream Target;
-    
+
 
     public override void Close()
     {
-      
+
     }
-    
+
     public override bool CanRead
     {
       get { return Target.CanRead; }
@@ -110,7 +110,7 @@ namespace NFX.IO
       Target.Write(buffer, offset, count);
     }
 
-    
+
 
   }
 }

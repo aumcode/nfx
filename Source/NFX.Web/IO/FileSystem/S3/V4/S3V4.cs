@@ -77,15 +77,15 @@ namespace NFX.IO.FileSystem.S3.V4
         return GetItemMetadata(uri.LocalPath, accessKey, secretKey, uri.Bucket, uri.Region, timeoutMs);
       }
 
-      public static IDictionary<string, string> GetItemMetadata(string itemLocalPath, string accessKey, string secretKey, 
+      public static IDictionary<string, string> GetItemMetadata(string itemLocalPath, string accessKey, string secretKey,
         string bucket, string region, int timeoutMs)
       {
         Uri uri = S3V4URLHelpers.CreateURI(region, bucket, itemLocalPath);
 
-        S3V4Signer signer = new S3V4Signer() 
-        { 
-          AccessKey = accessKey, SecretKey = secretKey, 
-          Bucket = bucket, Region = region, 
+        S3V4Signer signer = new S3V4Signer()
+        {
+          AccessKey = accessKey, SecretKey = secretKey,
+          Bucket = bucket, Region = region,
           Method = "HEAD",
           ItemLocalPath = itemLocalPath
         };
@@ -103,7 +103,7 @@ namespace NFX.IO.FileSystem.S3.V4
         GetFile(uri.LocalPath, accessKey, secretKey, uri.Bucket, uri.Region, stream, timeoutMs);
       }
 
-      public static void GetFile(string itemLocalPath, string accessKey, string secretKey, string bucket, string region, Stream stream, 
+      public static void GetFile(string itemLocalPath, string accessKey, string secretKey, string bucket, string region, Stream stream,
         int timeoutMs)
       {
         Uri uri = S3V4URLHelpers.CreateURI(region, bucket, itemLocalPath);
@@ -253,7 +253,7 @@ namespace NFX.IO.FileSystem.S3.V4
         return ListBucket(uri.LocalPath, accessKey, secretKey, uri.Bucket, uri.Region, timeoutMs, prefix, marker, maxKeys);
       }
 
-      public static string ListBucket(string itemLocalPath, string accessKey, string secretKey, string bucket, string region, int timeoutMs, 
+      public static string ListBucket(string itemLocalPath, string accessKey, string secretKey, string bucket, string region, int timeoutMs,
         string prefix = null, string marker = null, int? maxKeys = null)
       {
         var queryParams = new Dictionary<string, string>();

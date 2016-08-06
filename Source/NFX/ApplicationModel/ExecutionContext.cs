@@ -29,13 +29,13 @@ namespace NFX.ApplicationModel
     /// of Record Models i.e. in a Record class one may write:  " if (ExecutionContext.Session.User.Kind==UserKind.Administrator)..."
     /// </summary>
     public static class ExecutionContext
-    {   
+    {
         [ThreadStatic]
         private static object ts_Request;
-        
+
         [ThreadStatic]
         private static object ts_Response;
-        
+
         [ThreadStatic]
         private static ISession ts_Session;
 
@@ -43,7 +43,7 @@ namespace NFX.ApplicationModel
         private static object s_Request;
         private static object s_Response;
         private static ISession s_Session;
-        
+
 
         /// <summary>
         /// Returns global application context
@@ -52,7 +52,7 @@ namespace NFX.ApplicationModel
         {
           get { return s_Application ?? NOPApplication.Instance; }
         }
-        
+
         /// <summary>
         /// Returns Request object for current thread, or if it is null, app-global-level object is returned
         /// </summary>
@@ -76,14 +76,14 @@ namespace NFX.ApplicationModel
         {
           get { return ts_Session ?? s_Session ?? NOPSession.Instance; }
         }
-        
+
         /// <summary>
-        /// Returns true when thread-level session object is available and not a NOPSession instance 
+        /// Returns true when thread-level session object is available and not a NOPSession instance
         /// </summary>
         public static bool HasThreadContextSession
         {
           get { return ts_Session != null && ts_Session.GetType()!=typeof(NOPSession); }
-        } 
+        }
 
         /// <summary>
         /// Internal framework-only method to bind application-level context
@@ -92,7 +92,7 @@ namespace NFX.ApplicationModel
         {
           if (s_Application==null || !(application is NOPApplication))
             s_Application = application;
-          
+
           s_Request = request;
           s_Response = response;
           s_Session = session;

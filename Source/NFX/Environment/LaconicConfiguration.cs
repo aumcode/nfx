@@ -36,24 +36,24 @@ namespace NFX.Environment
     ///   log-root=$"c:\nfx\"
     ///   log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
     ///   debug-default-action="Log,Throw"
-    ///     
+    ///
     ///   log
-    ///   { 
+    ///   {
     ///     name="Logger"
-    /// 
+    ///
     ///     destination
-    ///     {  
+    ///     {
     ///       type=$(/$log-csv)
 	  ///       name="WinFormsTest Log"//strings in dblquotes
-	  ///       path=$(/$log-root) 
+	  ///       path=$(/$log-root)
     ///       name-time-format='yyyyMMdd'//strings in snglquotes
     ///       generate-failover-msg=false
     ///     }
     ///   }
     ///   /* multiline comments
-    ///    data-store {type="NFX.RecordModel.DataAccess.MongoDB.MongoDBModelDataStore, NFX.MongoDB" 
+    ///    data-store {type="NFX.RecordModel.DataAccess.MongoDB.MongoDBModelDataStore, NFX.MongoDB"
     ///                connect-string="mongodb://localhost"
-    ///                db-name="test"}  
+    ///                db-name="test"}
     ///   */
     /// }
     /// </example>
@@ -88,7 +88,7 @@ namespace NFX.Environment
 
               return result;
             }
-            
+
 
        #endregion
 
@@ -102,7 +102,7 @@ namespace NFX.Environment
                 this.SaveAs(filename, null);
               }
 
-               
+
               /// <summary>
               /// Saves configuration into a file
               /// </summary>
@@ -113,7 +113,7 @@ namespace NFX.Environment
                 base.SaveAs(filename);
               }
 
-      
+
               /// <summary>
               /// Saves laconic configuration into string in Laconfig format and returns it
               /// </summary>
@@ -121,7 +121,7 @@ namespace NFX.Environment
               {
                 return LaconfigWriter.Write(this, options);
               }
-      
+
 
               public override void Refresh()
               {
@@ -133,7 +133,7 @@ namespace NFX.Environment
               {
                 SaveAs(m_FileName);
               }
-    
+
               public override string ToString()
               {
                 return SaveToString();
@@ -146,10 +146,10 @@ namespace NFX.Environment
 
           //for Laconfig we dont need to adjust names as the are properly escaped
           //protected override string AdjustNodeName(string name)
-          //{   
-             
+          //{
+
           //}
-    
+
        #endregion
 
        #region .pvt

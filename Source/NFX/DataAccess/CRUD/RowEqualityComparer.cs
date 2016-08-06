@@ -10,10 +10,10 @@ namespace NFX.DataAccess.CRUD
   /// Checks for reference equality. Use RowEqualityComparer.Instance
   /// </summary>
   public sealed class RowEqualityComparer : EqualityComparer<Row>
-  {   
+  {
       private static RowEqualityComparer s_Instance = new RowEqualityComparer();
 
-      public static RowEqualityComparer Instance { get { return s_Instance;}} 
+      public static RowEqualityComparer Instance { get { return s_Instance;}}
 
       private RowEqualityComparer() {}
 

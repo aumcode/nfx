@@ -11,11 +11,11 @@ namespace NFX.DataAccess.CRUD.Subscriptions
   /// <summary>
   /// Thrown by provider to indicate that such a subscribtion can not be established in principle,
   /// i.e. you may have passed a zero size of populus group, the server may respond with this error
-  /// to indicate the principal error in request 
+  /// to indicate the principal error in request
   /// </summary>
   public class InvalidSubscriptionRequestException : CRUDException
   {
-    public InvalidSubscriptionRequestException(string message, Exception inner) : base(message, inner) {} 
+    public InvalidSubscriptionRequestException(string message, Exception inner) : base(message, inner) {}
     protected InvalidSubscriptionRequestException(SerializationInfo info, StreamingContext context) : base(info, context) {}
   }
 
@@ -29,7 +29,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     {
       if (store==null ||
           query==null||
-          mailbox==null) 
+          mailbox==null)
         throw new CRUDException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(args...null)");
 
       if (mailbox.Store!=store)
@@ -53,7 +53,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     {
       if (m_Mailbox!=null)
        ((Registry<Subscription>)m_Mailbox.Subscriptions).Unregister(this);
-      
+
       if (m_Store!=null)
        ((Registry<Subscription>)m_Store.Subscriptions).Unregister(this);
 

@@ -39,7 +39,7 @@ namespace NFX.Financial.Market.SecDb
     {
       var buf = getBuff32();
       readFromStream(stream, buf, 4);
-      return  (int)buf[0] | 
+      return  (int)buf[0] |
              ((int)buf[1] << 8) |
              ((int)buf[2] << 16) |
              ((int)buf[3] << 24);
@@ -49,7 +49,7 @@ namespace NFX.Financial.Market.SecDb
     {
       var buf = getBuff32();
       readFromStream(stream, buf, 4);
-      return  (uint)buf[0] | 
+      return  (uint)buf[0] |
              ((uint)buf[1] << 8) |
              ((uint)buf[2] << 16) |
              ((uint)buf[3] << 24);
@@ -59,7 +59,7 @@ namespace NFX.Financial.Market.SecDb
     {
       var buf = getBuff32();
       readFromStream(stream, buf, 8);
-      return  (long)buf[0] | 
+      return  (long)buf[0] |
              ((long)buf[1] << 8) |
              ((long)buf[2] << 16) |
              ((long)buf[3] << 24) |
@@ -73,7 +73,7 @@ namespace NFX.Financial.Market.SecDb
     {
       var buf = getBuff32();
       readFromStream(stream, buf, 8);
-      return  (ulong)buf[0] | 
+      return  (ulong)buf[0] |
              ((ulong)buf[1] << 8) |
              ((ulong)buf[2] << 16) |
              ((ulong)buf[3] << 24) |
@@ -87,15 +87,15 @@ namespace NFX.Financial.Market.SecDb
     {
       var buf = getBuff32();
       readFromStream(stream, buf, 8);
-          
-      uint seg1 =  (uint)((int)buf[0] | 
-                          (int)buf[1] << 8 | 
-                          (int)buf[2] << 16 | 
+
+      uint seg1 =  (uint)((int)buf[0] |
+                          (int)buf[1] << 8 |
+                          (int)buf[2] << 16 |
                           (int)buf[3] << 24);
 
-	    uint seg2 =  (uint)((int)buf[4] | 
+	    uint seg2 =  (uint)((int)buf[4] |
                           (int)buf[5] << 8 |
-                          (int)buf[6] << 16 | 
+                          (int)buf[6] << 16 |
                           (int)buf[7] << 24);
 
 	    ulong core = (ulong)seg2 << 32 | (ulong)seg1;
@@ -162,7 +162,7 @@ namespace NFX.Financial.Market.SecDb
 
     #region buf readers
       [ThreadStatic] private static byte[] ts_Buff32;
-                       
+
       [System.Runtime.CompilerServices.MethodImpl(
         System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining
       )]
@@ -194,7 +194,7 @@ namespace NFX.Financial.Market.SecDb
         }while(total<count);
 
         return total;
-      } 
+      }
     #endregion
 
   }

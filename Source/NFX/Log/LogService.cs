@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,8 +67,8 @@ namespace NFX.Log
         /// Creates a new logging service instance
         /// </summary>
         public LogService() : base(null) {}
-        
-        
+
+
         /// <summary>
         /// Creates a new logging service instance
         /// </summary>
@@ -115,7 +115,7 @@ namespace NFX.Log
         public string FileExtension
         {
           get
-          {                
+          {
             return m_FileExtension ?? string.Empty;
           }
           set
@@ -153,13 +153,13 @@ namespace NFX.Log
             if (urgent && n == 1)
                 m_Wakeup.Set();
         }
-      
+
         protected override void DoStart()
         {
             try
             {
                 base.DoStart();
-                                
+
                 m_Wakeup = new AutoResetEvent(false);
 
                 m_Thread = new Thread(threadSpin);
@@ -203,7 +203,7 @@ namespace NFX.Log
                 Interlocked.Exchange(ref m_QueuedCount, 0);
                 write();
                 Pulse();
-                
+
                 var now = this.Now;
 
                 if (m_InstrumentationEnabled && (now-lastInstr).TotalMilliseconds > INSTRUMENTATION_GRANULARITY_MSEC)

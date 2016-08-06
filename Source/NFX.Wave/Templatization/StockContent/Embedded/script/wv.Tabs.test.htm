@@ -172,8 +172,16 @@
           color: #ff8282!important;
           cursor: default!important;
         }
+
+        .wvTabsContentDivHidden {
+          display: none;
+        }
+        .wvTabsContentDivShown {
+          display: block;
+        }
     </style>
     <script>
+      var tabs;
        document.addEventListener('DOMContentLoaded', function () {
 //{
 //  "DIV" : DIV,
@@ -186,7 +194,7 @@
 //    }
 //  ]
 //}
-      var tabs = new WAVE.GUI.Tabs({
+        tabs = new WAVE.GUI.Tabs({
         DIV: WAVE.id("cont"), 
         tabs: [
           {
@@ -211,27 +219,36 @@
         ]});
 
         WAVE.id('act').onclick = function() {
-          tabs.addTab({
+          tabs.tabAdd({
           title: WAVE.id('title').value,
           content: WAVE.id('content').value
           });
         }
 
         WAVE.id('del').onclick = function() {
-          tabs.deleteTab(tabs.activeTab());
+          tabs.tabDelete(tabs.tabActive());
         }
 
         WAVE.id('get').onclick = function() {
-          WAVE.GUI.toast(tabs.activeTab());
+          WAVE.GUI.toast(tabs.tabActive());
         }
 
         WAVE.id('toggle').onclick =function(){
           tabs.unswitchable(!tabs.unswitchable());
         }
 
+        WAVE.id('uc').onclick =function(){
+          alert(tabs.tabContent('1', WAVE.id('nc').value));
+        }
+
         tabs.eventBind(WAVE.GUI.EVT_TABS_TAB_CHANGED, function (e, d) {
           WAVE.id('text').value = "active tab name: " + d;
         })
+
+        new WAVE.GUI.Tabs({
+          DIV: WAVE.id("parse-tabs"), 
+          parse: true
+        });
 
       }, false);
       
@@ -251,12 +268,32 @@
   <br />
   <button id="toggle">Toggle switchability</button>
   <br />
+  <button id="uc">Update Content</button>
+  <br />
   <input id="text" type="text"/>
+  <textarea id="nc"></textarea>
   <br />
   <br />
   <div id="cont"></div>
 
-  
+  <h1>attribte build</h1>
+
+  <div id="parse-tabs">
+    <ul data-tabs>
+      <li data-tabs-contId="cont1" data-tabs-name="Tabolusha1">Tab 1</li>
+      <li data-tabs-contId="cont2">Tab 2</li>
+      <li data-tabs-contId="cont3">Tab 3</li>
+    </ul>
+    <div id="cont1">
+      Div 1
+    </div>
+    <div id="cont2">
+      Div 2
+    </div>
+    <div id="cont3">
+      Div 3
+    </div>
+  </div>
 
 </body>
 

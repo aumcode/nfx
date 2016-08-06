@@ -52,6 +52,6 @@ namespace NFX.Instrumentation
            get { return CoreConsts.UNIT_NAME_OCCURENCE; }
        }
 
-        
+
     }
 }

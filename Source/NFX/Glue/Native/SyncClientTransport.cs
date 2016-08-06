@@ -39,8 +39,8 @@ namespace NFX.Glue.Native
 
 
         #endregion
-        
-        
+
+
         #region .ctor
 
            public SyncClientTransport(SyncBinding binding, Node node) : base(binding)
@@ -50,7 +50,7 @@ namespace NFX.Glue.Native
 
 
         #endregion
-       
+
 
         #region Fields/Props
 
@@ -79,7 +79,7 @@ namespace NFX.Glue.Native
                   catch(Exception error)
                   {
                     var commError = error is SocketException ||
-                                    error is System.IO.IOException || 
+                                    error is System.IO.IOException ||
                                     (typeof(ProtocolException).IsAssignableFrom(error.GetType()) && ((ProtocolException)error).CloseChannel)||
                                     (error is SlimSerializationException && m_Serializer.BatchTypesAdded) ||
                                     (error is SlimDeserializationException);
@@ -95,9 +95,9 @@ namespace NFX.Glue.Native
                     throw error;
                   }
                 }
-        
-        
-          
+
+
+
             protected override void DoStart()
             {
                 base.DoStart();
@@ -129,7 +129,7 @@ namespace NFX.Glue.Native
            private void ensureClient()
            {
              if (m_Client!=null) return;
-             
+
              var ep = SyncBinding.ToIPEndPoint(Node);
 
              m_Client = new TcpClient();
@@ -139,8 +139,8 @@ namespace NFX.Glue.Native
              m_Client.LingerState.Enabled = false;
 
              m_Client.ReceiveBufferSize =  Binding.ClientReceiveBufferSize;
-             m_Client.SendBufferSize    =  Binding.ClientSendBufferSize; 
-            
+             m_Client.SendBufferSize    =  Binding.ClientSendBufferSize;
+
              m_Client.ReceiveTimeout    =  Binding.ClientReceiveTimeout;
              m_Client.SendTimeout       =  Binding.ClientSendTimeout;
 
@@ -156,7 +156,7 @@ namespace NFX.Glue.Native
 
 
         private CallSlot doRequest(ClientEndPoint endpoint, RequestMsg request, CallOptions options)
-        {  
+        {
           long actualStartTimeTicks = Binding.StatTimeTicks;
           DateTime actualStartTimeUtc = DateTime.UtcNow;
 
@@ -165,28 +165,28 @@ namespace NFX.Glue.Native
             m_Client.SendTimeout = options.DispatchTimeoutMs;
             m_PriorDispatchTimeoutMs = options.DispatchTimeoutMs;
           }
-          
+
           if (m_PriorTimeoutMs!=options.TimeoutMs)
           {
             m_Client.ReceiveTimeout = options.TimeoutMs;
             m_PriorTimeoutMs = options.TimeoutMs;
           }
-           
+
           putRequest(request);
           if (request.OneWay) return new CallSlot(endpoint, this, request, CallStatus.Dispatched, options.TimeoutMs);
 
           var response = getResponse();
 
-          return  new CallSlot(endpoint, 
-                                    this, 
+          return  new CallSlot(endpoint,
+                                    this,
                                     actualStartTimeTicks,
                                     actualStartTimeUtc,
-                                    request, 
+                                    request,
                                     response,
                                     options.TimeoutMs);
        }
 
-         
+
             private void putRequest(RequestMsg request)
             {
                var ms = m_MemStream;
@@ -209,7 +209,7 @@ namespace NFX.Glue.Native
                Binding.DumpMsg(false, request, buffer, 0, (int)ms.Position);
 
                if (size>Binding.MaxMsgSize)
-               {  
+               {
                   Instrumentation.ClientSerializedOverMaxMsgSizeErrorEvent.Happened(Node);
                   //do not tear the socket, however we may have added extra types to Serializer typereg that server never received
                   //so in thatcase we do close the channel
@@ -227,7 +227,7 @@ namespace NFX.Glue.Native
               var ms = m_MemStream;
 
               var nets = m_Client.GetStream();
-             
+
               var msb = ms.GetBuffer();
               var frameBegin = Consts.PACKET_DELIMITER_LENGTH;
               SyncBinding.socketRead(nets, msb, 0, frameBegin);
@@ -243,14 +243,14 @@ namespace NFX.Glue.Native
 
               ms.SetLength(frameBegin+size);  //this may invalidate msb
               SyncBinding.socketRead(nets, ms.GetBuffer(), frameBegin, size);
-              
+
               var arrivalTime = Binding.StatTimeTicks;
-              
+
               ms.Position = Consts.PACKET_DELIMITER_LENGTH;
 
               ResponseMsg result = null;
               WireFrame frame;
-              
+
               object received = null;
               try
               {

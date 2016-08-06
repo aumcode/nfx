@@ -24,7 +24,7 @@ using NFX.IO.ErrorHandling;
 
 namespace NFX.IO.FileSystem.Packaging
 {
-  
+
   /// <summary>
   /// Provides utilities for manifest generation
   /// </summary>
@@ -63,14 +63,14 @@ namespace NFX.IO.FileSystem.Packaging
          throw new NFXIOException(StringConsts.ARGUMENT_ERROR + "GeneratePackagingManifest(directory==null)");
 
         var conf = new MemoryConfiguration();
-        conf.Create(rootNodeName.IsNullOrWhiteSpace()?CONFIG_PACKAGE_SECTION : rootNodeName); 
-        var root = conf.Root; 
+        conf.Create(rootNodeName.IsNullOrWhiteSpace()?CONFIG_PACKAGE_SECTION : rootNodeName);
+        var root = conf.Root;
         if (packageName.IsNotNullOrWhiteSpace())
           root.AddAttributeNode(CONFIG_NAME_ATTR, packageName);
-        
+
         if (packageLocalPath.IsNotNullOrWhiteSpace())
           root.AddAttributeNode(CONFIG_LOCAL_PATH_ATTR, packageLocalPath);
-        
+
         buildDirLevel(root, directory);
 
         root.ResetModified();
@@ -92,7 +92,7 @@ namespace NFX.IO.FileSystem.Packaging
 
         return hasTheSameContent(comparand, master);
       }
-      
+
       private static bool hasTheSameContent(IConfigSectionNode master, IConfigSectionNode comparand)
       {
         if (master==null | comparand==null)
@@ -132,7 +132,7 @@ namespace NFX.IO.FileSystem.Packaging
           {
             var fnode = pNode.AddChildNode(CONFIG_FILE_SECTION);
             fnode.AddAttributeNode(CONFIG_NAME_ATTR, file.Name);
-          
+
             long size = 0;
             var csum = new Adler32();
             var buff = new byte[BUFF_SIZE];
@@ -142,14 +142,14 @@ namespace NFX.IO.FileSystem.Packaging
                 var read = fs.Read(buff, 0, BUFF_SIZE);
                 if (read<=0) break;
                 size += read;
-                csum.Add(buff, 0, read); 
+                csum.Add(buff, 0, read);
               }
 
             fnode.AddAttributeNode(CONFIG_SIZE_ATTR, size);
             fnode.AddAttributeNode(CONFIG_CSUM_ATTR, csum.Value);
           }
-      
-      } 
+
+      }
 
   }
 }

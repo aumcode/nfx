@@ -45,7 +45,7 @@ namespace NFX.Wave.Handlers
 
       protected override void DoHandleWork(WorkContext work)
       {
-       
+
       }
 
      #endregion

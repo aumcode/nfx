@@ -31,7 +31,7 @@ namespace TelemetryViewer
     public class Receiver : ITelemetryReceiver
     {
         private static Registry<SiteData> s_Sites = new Registry<SiteData>();
-        
+
 
         public static IEnumerable<SiteData> Sites
         {
@@ -39,16 +39,16 @@ namespace TelemetryViewer
         }
 
 
-        
+
         public Receiver() {}
-               
+
         public void Send(string siteName, Datum data)
         {
-     //   System.Windows.Forms.MessageBox.Show("Arrived from: " + siteName + "  " + data.ToString()); 
-         
-           if (siteName.IsNullOrWhiteSpace()) siteName = "<unnamed>"; 
+     //   System.Windows.Forms.MessageBox.Show("Arrived from: " + siteName + "  " + data.ToString());
+
+           if (siteName.IsNullOrWhiteSpace()) siteName = "<unnamed>";
            var site = s_Sites.GetOrRegister(siteName, (name) => new SiteData(name), siteName);
-           
+
            site.Put( data );
         }
     }
@@ -63,8 +63,8 @@ namespace TelemetryViewer
        /// How many samples to cache in ram
        /// </summary>
        public const int BUFFER_SIZE = 1024;
-       
-       
+
+
                 class bucket
                 {
                     public Datum[] m_Data;
@@ -75,12 +75,12 @@ namespace TelemetryViewer
                 {
 
                 }
-   
-   
+
+
         public SiteData(string name)
         {
             m_Name = name;
-            m_LastTraffic = App.TimeSource.Now;  
+            m_LastTraffic = App.TimeSource.Now;
         }
 
         private string m_Name;
@@ -138,7 +138,7 @@ namespace TelemetryViewer
                 {
                     sources s;
                     if (!m_Data.TryGetValue(tp, out s)) return new List<Datum>();
-                    
+
                     bucket b;
                     if (!s.TryGetValue(src, out b)) return new List<Datum>();
                     return b.m_Data.Where(d => d!=null).OrderBy(d => d.UTCTime).ToList();
@@ -150,10 +150,10 @@ namespace TelemetryViewer
         public void Put(Datum datum)
         {
             var tp = datum.GetType();
-            m_LastTraffic = App.TimeSource.Now;  
+            m_LastTraffic = App.TimeSource.Now;
             lock(m_Data)
             {
-    
+
                 sources src;
                 if (!m_Data.TryGetValue( tp, out src))
                 {
@@ -167,7 +167,7 @@ namespace TelemetryViewer
                     b = new bucket();
                     b.m_Data = new Datum[BUFFER_SIZE];
                     src[datum.Source] = b;
-                }   
+                }
 
                 b.m_Data[b.m_Index] = datum;
                 b.m_Index++;
@@ -176,6 +176,6 @@ namespace TelemetryViewer
 
         }
     }
-      
+
 
 }

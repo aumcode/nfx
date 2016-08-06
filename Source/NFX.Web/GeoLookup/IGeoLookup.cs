@@ -22,9 +22,9 @@ using NFX.ApplicationModel;
 
 namespace NFX.Web.GeoLookup
 {
-  
+
   public enum LookupResolution{Planet, Continent, Country, City, Street }
-  
+
   /// <summary>
   /// Looks-up entities by their ip addr
   /// </summary>
@@ -51,6 +51,7 @@ namespace NFX.Web.GeoLookup
   /// <summary>
   /// Represents lookup result
   /// </summary>
+  [NFX.Serialization.Slim.SlimSerializationProhibited]
   public class GeoEntity
   {
     protected internal GeoEntity(IPAddress query, IPSubnetBlock block, Location? location)
@@ -84,7 +85,7 @@ namespace NFX.Web.GeoLookup
         if (!Location.HasValue) return string.Empty;
 
         return Location.Value.CityName.IsAssigned
-          ? "{0}, {1} {2}".Args(Location.Value.CityName.Value, Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value) 
+          ? "{0}, {1} {2}".Args(Location.Value.CityName.Value, Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value)
           : "{0} {1}".Args(Location.Value.SubdivisionName.Value, Location.Value.CountryName.Value);
       }
     }
@@ -93,7 +94,15 @@ namespace NFX.Web.GeoLookup
     {
       get
       {
-        return Location.HasValue ? Location.Value.CountryISOName.Value : null; 
+        return Location.HasValue ? Location.Value.CountryISOName.Value : null;
+      }
+    }
+
+    public string CountryName
+    {
+      get
+      {
+        return Location.HasValue ? Location.Value.CountryName.Value : null;
       }
     }
 

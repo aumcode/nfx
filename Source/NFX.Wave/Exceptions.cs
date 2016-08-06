@@ -36,7 +36,7 @@ namespace NFX.Wave
   public class WaveException : NFXException
   {
     public WaveException()
-    {       
+    {
     }
 
     public WaveException(string message) : base(message)
@@ -61,26 +61,41 @@ namespace NFX.Wave
   [Serializable]
   public class MVCActionException : WaveException
   {
-    
+
     public readonly string Controller;
-    public readonly string Action;  
-      
-       
-    public static MVCActionException Wrap(string controller, string action, Exception src) 
-    {                      
+    public readonly string Action;
+
+
+    public static MVCActionException WrapActionBodyError(string controller, string action, Exception src)
+    {
       if (src==null) throw new WaveException(StringConsts.ARGUMENT_ERROR+typeof(MVCActionException).Name+"Wrap(src=null)");
 
       var trace = src.StackTrace;
       return new MVCActionException(controller,
                                     action,
-                                    "Controller action: '{0}'.'{1}'. Exception: {2} Trace: \r\n {3}".Args(controller, action, src.ToMessageWithType(), trace),
+                                    "Controller action body: '{0}'.'{1}'. Exception: {2} Trace: \r\n {3}".Args(controller, action, src.ToMessageWithType(), trace),
+                                    src);
+    }
+
+    public static MVCActionException WrapActionResultError(string controller, string action, object result, Exception src)
+    {
+      if (src==null) throw new WaveException(StringConsts.ARGUMENT_ERROR+typeof(MVCActionException).Name+"Wrap(src=null)");
+
+      var trace = src.StackTrace;
+      return new MVCActionException(controller,
+                                    action,
+                                    "Controller action result processing: '{0}'.'{1}' -> {2}. Exception: {3} Trace: \r\n {4}".Args(controller,
+                                                                                                                                 action,
+                                                                                                                                 result==null ? "<null>" : result.GetType().FullName,
+                                                                                                                                 src.ToMessageWithType(),
+                                                                                                                                 trace),
                                     src);
     }
 
     protected MVCActionException(string controller, string action, string msg, Exception inner): base(msg, inner)
     {
       Controller = controller;
-      Action = action;            
+      Action = action;
     }
 
     protected MVCActionException(SerializationInfo info, StreamingContext context): base(info, context)
@@ -88,6 +103,23 @@ namespace NFX.Wave
 
     }
 
+  }
+
+  /// <summary>
+  /// Wraps WAVE template rendering execptions
+  /// </summary>
+  [Serializable]
+  public class WaveTemplateRenderingException : WaveException
+  {
+
+    public WaveTemplateRenderingException(string message, Exception inner): base(message, inner)
+    {
+    }
+
+    protected WaveTemplateRenderingException(SerializationInfo info, StreamingContext context): base(info, context)
+    {
+
+    }
   }
 
 
@@ -102,18 +134,18 @@ namespace NFX.Wave
       Filter = filter;
     }
 
-    
+
     /// <summary>
     /// Returns a mnemonic filter sequence where the root exception originated from
     /// </summary>
     public string FilterPath
     {
-      get 
+      get
       {
          var result = "> ";
 
          Exception error = this;//.InnerException;
-         while(error is FilterPipelineException) 
+         while(error is FilterPipelineException)
          {
             result += "{0} > ".Args(((FilterPipelineException)error).Filter.Name);
             error = error.InnerException;
@@ -122,16 +154,16 @@ namespace NFX.Wave
          return result;
       }
     }
-    
+
     /// <summary>
     /// Returns unwound root exception - unwrapping it from FilterPipelineException
     /// </summary>
     public Exception RootException
     {
-      get 
+      get
       {
-         if (InnerException is FilterPipelineException) 
-           return (InnerException as FilterPipelineException).RootException;
+         if (InnerException is FilterPipelineException)
+           return ((FilterPipelineException)InnerException).RootException;
          else
            return InnerException;
       }
@@ -159,7 +191,7 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_400_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_400, d);
     }
 
@@ -167,7 +199,7 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_401_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_401, d);
     }
 
@@ -175,10 +207,10 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_403_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_403, d);
     }
-    
+
     public static HTTPStatusException NotFound_404(string descr = null)
     {
       var d = WebConsts.STATUS_404_DESCRIPTION;
@@ -191,7 +223,7 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_405_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_405, d);
     }
 
@@ -199,7 +231,7 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_406_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_406, d);
     }
 
@@ -207,7 +239,7 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_429_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_429, d);
     }
 
@@ -215,7 +247,7 @@ namespace NFX.Wave
     {
       var d = WebConsts.STATUS_500_DESCRIPTION;
       if (descr.IsNotNullOrWhiteSpace()) d += (": "+descr);
-      
+
       return new HTTPStatusException(WebConsts.STATUS_500, d);
     }
 
@@ -233,19 +265,19 @@ namespace NFX.Wave
     public HTTPStatusException(int statusCode, string statusDescription) : base()
     {
       StatusCode = statusCode;
-      StatusDescription = statusDescription; 
+      StatusDescription = statusDescription;
     }
 
     public HTTPStatusException(int statusCode, string statusDescription, string message) : base(message)
     {
       StatusCode = statusCode;
-      StatusDescription = statusDescription; 
+      StatusDescription = statusDescription;
     }
 
     public HTTPStatusException(int statusCode, string statusDescription, string message, Exception inner) : base(message, inner)
     {
       StatusCode = statusCode;
-      StatusDescription = statusDescription; 
+      StatusDescription = statusDescription;
     }
 
 

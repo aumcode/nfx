@@ -33,7 +33,7 @@ namespace NFX.Health
        {
          m_List = list;
        }
-       
+
        private CheckList m_List;
 
 
@@ -41,9 +41,9 @@ namespace NFX.Health
        {
          get { return m_List; }
        }
-      
-      
+
+
        public abstract void Report(TextWriter writer);
-       
+
     }
 }

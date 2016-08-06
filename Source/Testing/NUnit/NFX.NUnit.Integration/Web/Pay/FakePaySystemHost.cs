@@ -20,16 +20,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NFX.Environment;
 using NFX.Web.Pay;
 using NFX.Web.Pay.Mock;
-using NFX.Web.Pay.Tax;
-using NFX.Web.Pay.Tax.NOP;
 
 namespace NFX.NUnit.Integration.Web.Pay
 {
   
 
-  internal class FakePaySystemHost : IPaySystemHostImplementation
+  internal class FakePaySystemHost : PaySystemHost
   {
     #region Consts
 
@@ -241,6 +240,18 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #endregion
 
+    #region .ctor
+
+      public FakePaySystemHost() : base(typeof(FakePaySystemHost).Name, null) {}
+
+      public FakePaySystemHost(string name, IConfigSectionNode node): base(name, node) { }
+      
+      public FakePaySystemHost(string name, IConfigSectionNode node, object director): base(name, node, director)
+      {
+      }
+
+    #endregion
+
     #region Pvt. fields
 
       private static List<Transaction> m_TransactionList = new List<Transaction>();
@@ -250,8 +261,6 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #region Properties
 
-      public ITaxCalculator TaxCalc { get { return NOPTaxCalculator.Instance;} }
-      
     #endregion
 
     #region Public
@@ -269,7 +278,7 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #region IPaySystemHostImplementation
 
-      public object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type)
+      public override object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type)
       {
         return generateUniqueID();
       }
@@ -277,17 +286,17 @@ namespace NFX.NUnit.Integration.Web.Pay
       /// <summary>
       /// In this implementation returns transaction from memory list by id
       /// </summary>
-      public Transaction FetchTransaction(ITransactionContext context, object id)
+      public override Transaction FetchTransaction(ITransactionContext context, object id)
      { 
         return m_TransactionList.FirstOrDefault(ta => ta.ID == id);
       }
 
-      public IActualAccountData AccountToActualData(ITransactionContext context, Account account)
+      public override IActualAccountData AccountToActualData(ITransactionContext context, Account account)
       {
         return MockActualAccountDatas.FirstOrDefault(m => m.Account == account);
       }
 
-      public void Configure(Environment.IConfigSectionNode node)
+      protected override void DoConfigure(Environment.IConfigSectionNode node)
       {
         NFX.Environment.ConfigAttribute.Apply(this, node);
 
@@ -296,9 +305,7 @@ namespace NFX.NUnit.Integration.Web.Pay
         validPayPalAccound.PrimaryEMail = node.AttrByName("paypal-valid-account").Value;
       }
 
-      public string Name { get { return this.GetType().Name; } }
-
-      public ICurrencyMarket CurrencyMarket { get{ return m_Market;}}
+      public override ICurrencyMarket CurrencyMarket { get{ return m_Market;}}
 
     #endregion
 

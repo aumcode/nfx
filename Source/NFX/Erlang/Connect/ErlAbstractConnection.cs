@@ -53,9 +53,9 @@ namespace NFX.Erlang
 
     protected const int HEADER_LEN = 2048; // more than enough
     protected const int DEFAULT_MAX_PAYLOAD_LENGTH = 128 * 1024 * 1024; // max size of the payload sent by peer
-        
+
     protected const byte PASS_THROUGH           = 0x70;
-        
+
     // MD5 challenge messsage tags
     protected const int CHALLENGE_REPLY         = 'r';
     protected const int CHALLENGE_ACK           = 'a';
@@ -267,7 +267,7 @@ namespace NFX.Erlang
     /// <param>args a list of Erlang terms, to be used as arguments to the function</param>
     /// <remarks>This convenience function creates the following message
     /// and sends it to 'rex' on the remote node:
-    /// 
+    ///
     /// <code>
     /// { Self, { call, Mod, Fun, Args, user }}
     /// </code>

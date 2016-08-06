@@ -21,44 +21,44 @@ using System.Text;
 
 namespace NFX.Environment
 {
-    
+
     /// <summary>
     /// Override specifications that dictate what to do when another node supplies entity with the same name
     /// </summary>
-    public enum OverrideSpec 
+    public enum OverrideSpec
     {
       /// <summary>
       /// Override everything: attributes, sections, and value
       /// </summary>
       All=0,
-      
+
       /// <summary>
       /// Ovveride attributes only
       /// </summary>
-      Attributes, 
+      Attributes,
 
       /// <summary>
       /// Override sections only
       /// </summary>
-      Sections, 
-      
+      Sections,
+
       /// <summary>
       /// Completely replace node
       /// </summary>
-      Replace, 
-      
+      Replace,
+
       /// <summary>
       /// Stop override at this level
       /// </summary>
-      Stop, 
+      Stop,
 
       /// <summary>
       /// Fail the process
       /// </summary>
-      Fail 
+      Fail
     }
-    
-    
+
+
     /// <summary>
     /// Contains node override rule definitions such as override specifier names and values.
     /// This class is used for merging/override of configurations/nodes
@@ -66,7 +66,7 @@ namespace NFX.Environment
     public sealed class NodeOverrideRules
     {
        #region CONST
-       
+
         public const string DEFAULT_OVERRIDE_ATTR_NAME = "_override";
         public const string DEFAULT_OVERRIDE_VALUE_ATTRIBUTES = "attributes";
         public const string DEFAULT_OVERRIDE_VALUE_SECTIONS = "sections";
@@ -187,7 +187,7 @@ namespace NFX.Environment
 
 
         /// <summary>
-        /// Provides attribute name for matching of multiple sections with the same name, i.e. a logger may have many 'destinations' 
+        /// Provides attribute name for matching of multiple sections with the same name, i.e. a logger may have many 'destinations'
         /// subnodes each with different 'name' attribute
         /// </summary>
         public string SectionMatchAttrName
@@ -220,7 +220,7 @@ namespace NFX.Environment
        #region Public
 
           /// <summary>
-          /// Tries to convert a string to OverrideSpec enum. If string is null or empty then "All" is returned, otherwise exception is thrown if 
+          /// Tries to convert a string to OverrideSpec enum. If string is null or empty then "All" is returned, otherwise exception is thrown if
           ///  the value does not match any of the expected values. The comparison is case-insensitive
           /// </summary>
           public OverrideSpec StringToOverrideSpec(string str)

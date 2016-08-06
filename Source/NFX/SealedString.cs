@@ -14,6 +14,7 @@ namespace NFX
   ///  store unique strings only (do not store the repetitions).
   /// This struct is THREAD SAFE and NOT SERIALIZABLE.
   /// </summary>
+  [NFX.Serialization.Slim.SlimSerializationProhibited]
   public struct SealedString : IEquatable<SealedString>
   {
             /// <summary>
@@ -108,8 +109,8 @@ namespace NFX
                 return result;
               }
             }
-    
-    
+
+
     private const int SEG_START_SIZE = 4 * 1024 * 1024;
 
     private const int SEG_INC_FROM_COUNT = 250;
@@ -124,7 +125,7 @@ namespace NFX
     [ThreadStatic]
     private static byte[] ts_StrBuff;
 
-    private static Encoding s_Encoding = new UTF8Encoding(false, false); 
+    private static Encoding s_Encoding = new UTF8Encoding(false, false);
     private static OS.ManyReadersOneWriterSynchronizer s_Sync = new OS.ManyReadersOneWriterSynchronizer();
 
     private static byte[][] s_Data = new byte[ushort.MaxValue][];
@@ -172,7 +173,7 @@ namespace NFX
     {
       if (value==null) throw new NFXException(StringConsts.ARGUMENT_ERROR+"SealedString.ctor(value==null)");
 
-      
+
       byte[] encoded;
       int size = 0;
 
@@ -188,7 +189,7 @@ namespace NFX
         encoded = ts_StrBuff;
         size = s_Encoding.GetBytes(value, 0, len, encoded, 0);
       }
-      
+
 
 
       var totalSize = sizeof(int) + size;
@@ -209,7 +210,7 @@ namespace NFX
 //Console.WriteLine("NEW SIZE IS: {0:n0}", newSize);
           array = new byte[newSize];
           s_CurrentSegment++;
-          
+
           s_CurrentAddress = s_CurrentSegment==0 ? 1 : 0;
           s_Data[s_CurrentSegment] = array;
         }
@@ -234,7 +235,7 @@ namespace NFX
     public readonly ushort Segment;
     public readonly int Address;
 
-    
+
     /// <summary>
     /// Returns true if this instance represents an assigned valid string (is not equal to Unassigned)
     /// </summary>
@@ -242,14 +243,14 @@ namespace NFX
     {
       get{ return Segment!=0 || Address!=0;}
     }
-    
+
     /// <summary>
     /// Returns the original string copy
     /// </summary>
     public string Value
     {
       get
-      { 
+      {
         if (Segment==0 && Address==0) return null;
 
         //there is no need to lock anything on read as the structure is read-only
@@ -260,7 +261,7 @@ namespace NFX
       }
     }
 
-    
+
     public override bool Equals(object obj)
     {
       if (obj is SealedString)
@@ -273,10 +274,10 @@ namespace NFX
     {
       return (this.Segment == other.Segment) && (this.Address == other.Address);
     }
-    
+
     public override int GetHashCode()
     {
-      return Address; 
+      return Address;
     }
 
     public override string ToString()
@@ -302,8 +303,8 @@ namespace NFX
       if (s_CurrentSegment>SEG_INC_FROM_COUNT)
       {
         result = 2L * s_Data[s_CurrentSegment].LongLength;
-      } 
-       
+      }
+
       if (result < atLeast) result = atLeast;
 
       if (result > SEG_MAX_SIZE)
@@ -311,7 +312,7 @@ namespace NFX
         result = SEG_MAX_SIZE;
         if (result < atLeast) throw new NFXException(StringConsts.SEALED_STRING_TOO_BIG_ERROR.Args(atLeast));
       }
-       
+
       return (int)result;
     }
 

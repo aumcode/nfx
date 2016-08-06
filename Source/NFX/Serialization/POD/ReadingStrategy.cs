@@ -30,28 +30,28 @@ namespace NFX.Serialization.POD
     public class ReadingStrategy
     {
         #region .ctor/static
-            
+
             private static ReadingStrategy s_DefaultInstance = new ReadingStrategy();
 
             /// <summary>
             /// Returns an instance of default strategy
             /// </summary>
             public static ReadingStrategy Default { get {return s_DefaultInstance;}}
-            
-            
+
+
             protected ReadingStrategy()
             {
-            
-            }                    
+
+            }
         #endregion
-        
-        
-        
+
+
+
         /// <summary>
         /// Resolves a MetaType instance from a particular document into CLR Type, i.e. an obsolete class named "ABC" may be resolved into
         ///  newer class "ABCX"
         /// </summary>
-        public virtual Type ResolveType(MetaType metaType)  
+        public virtual Type ResolveType(MetaType metaType)
         {
             if (metaType.__CLRType!=null) return metaType.__CLRType;
 
@@ -60,7 +60,7 @@ namespace NFX.Serialization.POD
 
             return result;
         }
-        
+
         /// <summary>
         /// Constructs object out of CompositeData. This implementation calls ResolveType then tries to invoke attribute constructor first
         /// then create instance using default ctor
@@ -70,7 +70,7 @@ namespace NFX.Serialization.POD
             object result = null;
 
             var clrType =  ResolveType( data.Type );
-          
+
             //1 check for attribute ---------------
             var attr = (PortableObjectDocumentDeserializationTransform)clrType
                                                                        .GetCustomAttributes(typeof(PortableObjectDocumentDeserializationTransform), false)
@@ -78,7 +78,7 @@ namespace NFX.Serialization.POD
 
             if (attr!=null)
                 result = attr.ConstructObjectInstance(data);
-            
+
             if (result==null)
             {
                 //2 call the dfault .ctor
@@ -87,7 +87,7 @@ namespace NFX.Serialization.POD
                 else
                     result = MakeNewObjectInstanceUsingDefaultCtor( clrType );
             }
-            
+
             //3 call OnDeserializing
             if (result!=null)
             {
@@ -95,12 +95,12 @@ namespace NFX.Serialization.POD
                 if (methodsOnDeserializing!=null)
                     SerializationUtils.InvokeSerializationAttributedMethods(methodsOnDeserializing, result, data.Document.m_StreamingContext);
             }
-            
-            return result; 
-        }  
 
-        
-        
+            return result;
+        }
+
+
+
         /// <summary>
         /// Creates an object using its default .ctor. This implementation uses "magic" to create uninit buffer first
         /// </summary>
@@ -120,7 +120,7 @@ namespace NFX.Serialization.POD
 
 
         /// <summary>
-        /// Resolves composite data into CLR object 
+        /// Resolves composite data into CLR object
         /// </summary>
         public virtual object CompositeToNative(CompositeData data)
         {
@@ -129,7 +129,7 @@ namespace NFX.Serialization.POD
                return CompositeToNative(data.Referenced);
 
             var result = data.__CLRObject;
-            
+
             if (result==null)
             {
                 //1. Construct
@@ -140,7 +140,7 @@ namespace NFX.Serialization.POD
                 if (data is CompositeCustomData)
                     DeserializeObjectFromCompositeCustomData(result, (CompositeCustomData)data);
                 else if (data is CompositeArrayData)
-                    DeserializeArray((Array)result, (CompositeArrayData)data); 
+                    DeserializeArray((Array)result, (CompositeArrayData)data);
                 else
                     DeserializeObjectFromCompositeReflectedData(result, (CompositeReflectedData)data);
             }
@@ -169,16 +169,16 @@ namespace NFX.Serialization.POD
                 var info = DeserializeSerializationInfo(t, data, scontext);
 
                 //Get ctor and invoke
-                var ctor = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, 
+                var ctor = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                                              null,
                                              new Type[] { typeof(SerializationInfo), typeof(StreamingContext)},
                                              null);
                  if (ctor==null)
-                  throw new PODDeserializationException(StringConsts.POD_ISERIALIZABLE_MISSING_CTOR_ERROR + t.FullName); 
+                  throw new PODDeserializationException(StringConsts.POD_ISERIALIZABLE_MISSING_CTOR_ERROR + t.FullName);
                  ctor.Invoke(iser, new object[]{ info, scontext} );
             }
             else
-                throw new PODDeserializationException(StringConsts.POD_DONT_KNOW_HOWTO_DESERIALIZE_FROM_CUSTOM_DATA.Args( t.FullName )); 
+                throw new PODDeserializationException(StringConsts.POD_DONT_KNOW_HOWTO_DESERIALIZE_FROM_CUSTOM_DATA.Args( t.FullName ));
         }
 
         public virtual void DeserializeObjectFromCompositeReflectedData(object instance, CompositeReflectedData data)
@@ -197,20 +197,20 @@ namespace NFX.Serialization.POD
             foreach(var mfld in mfields)
             {
                 if (alreadyHandled!=null && alreadyHandled.Contains(mfld)) continue;
-               
+
                 //find field
                 if (mfld.m_FieldInfo==null)
                 {
                     //1. try attr
                     if (attr!=null) mfld.m_FieldInfo = attr.ResolveField(t, mfld);
-                    
+
                     //2. try built in method
                     if (mfld.m_FieldInfo==null) mfld.m_FieldInfo = ResolveField(t, mfld);
 
                     //3. skip this field altogether if it can not be read
                     if (mfld.m_FieldInfo==null) continue;
                 }
-               
+
                 var handled = false;
                 if (attr!=null)
                     handled = attr.SetFieldValue(this, instance, mfld.m_FieldInfo, data, mfld);
@@ -254,7 +254,7 @@ namespace NFX.Serialization.POD
         protected virtual SerializationInfo DeserializeSerializationInfo(Type objType, CompositeCustomData data, StreamingContext context)
         {
             var info = new SerializationInfo(objType, new FormatterConverter());
-                 
+
             foreach(var pair in data.CustomData)
             {
                 var name = pair.Key;
@@ -262,7 +262,7 @@ namespace NFX.Serialization.POD
                 var obj = data.Document.PortableDataToNativeData(this, pair.Value.Data);
 
                 info.AddValue(name, obj, type);
-            }   
+            }
 
             return info;
         }

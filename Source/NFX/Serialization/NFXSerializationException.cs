@@ -22,7 +22,7 @@ namespace NFX.Serialization
 {
 
   /// <summary>
-  /// Base exception thrown by the serialization-related classes 
+  /// Base exception thrown by the serialization-related classes
   /// </summary>
   [Serializable]
   public class NFXSerializationException : NFXException

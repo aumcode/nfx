@@ -34,7 +34,7 @@ namespace NFX.DataAccess.Cache
         /// <summary>
         /// How many times hash will be adjusted while chaining
         /// </summary>
-        public const int MAX_CACHE_CHAIN_LENGTH = 5; 
+        public const int MAX_CACHE_CHAIN_LENGTH = 5;
 
 
         public ComplexKeyHashingStrategy(CacheStore store)
@@ -49,7 +49,7 @@ namespace NFX.DataAccess.Cache
         public readonly CacheStore Store;
 
         /// <summary>
-        /// Default implementation that converts complex object to uint64 key. 
+        /// Default implementation that converts complex object to uint64 key.
         /// The default implementation returns the hashcode of the object unless the key is string
         /// in which case it calls DefaultStringKeyToCacheKey() or IULongHashProvider(GDID and parcels).
         /// The function is not deterministic due to the use of .GetHashCode() that may change between release for some objects (depends on object implementation),
@@ -60,7 +60,7 @@ namespace NFX.DataAccess.Cache
             if (key==null) return 0;
             if (key is string)
               return DefaultStringKeyToCacheKey((string)key);
-           
+
             if (key is IDistributedStableHashProvider)
               return ((IDistributedStableHashProvider)key).GetDistributedStableHash();//covers GDID and parcels as well
 
@@ -77,8 +77,8 @@ namespace NFX.DataAccess.Cache
             if (key==null) return 0;
             var sl = key.Length;
             if (sl==0) return 0;
-                                     
-            ulong hash1 = 0;         
+
+            ulong hash1 = 0;
             for(int i=sl-1; i>sl-1-sizeof(ulong) && i>=0; i--)//take 8 chars from end (string suffix), for most string the
             {                                                 //string tail is the most changing part (i.e. 'Alex Kozloff'/'Alex Richardson'/'System.A'/'System.B'
               if (i<sl-1) hash1 <<= 8;
@@ -88,14 +88,14 @@ namespace NFX.DataAccess.Cache
               hash1 |= (byte)(b1 ^ b2);
             }
 
-            ulong hash2 = 1566083941ul * (ulong)key.GetHashCode();         
-                                                
+            ulong hash2 = 1566083941ul * (ulong)key.GetHashCode();
+
             return hash1 ^ hash2;
         }
-        
-        
+
+
         /// <summary>
-        /// Override to convert complex object to uint64 key. 
+        /// Override to convert complex object to uint64 key.
         /// The default implementation returns DefaultComplexKeyToCacheKey(key)
         /// </summary>
         public virtual ulong ComplexKeyToCacheKey(object key)
@@ -125,10 +125,10 @@ namespace NFX.DataAccess.Cache
               id++;
               cnt++;
             }
-         
+
             CacheRec rec;
             var result = tbl.Put(id, value, out rec, maxAgeSec, priority, absoluteExpirationUTC);
-            rec.Metadata = key; 
+            rec.Metadata = key;
             return result;
         }
 
@@ -141,7 +141,7 @@ namespace NFX.DataAccess.Cache
              throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().FullName+"Get(key=null)");
 
           ulong id = ComplexKeyToCacheKey(key);
-         
+
           var tbl = Store[tableName];
 
           int cnt = 0;
@@ -174,7 +174,7 @@ namespace NFX.DataAccess.Cache
              throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().FullName+"Remove(key=null)");
 
           ulong id = ComplexKeyToCacheKey(key);
-         
+
           var tbl = Store[tableName];
 
           int cnt = 0;
@@ -193,8 +193,8 @@ namespace NFX.DataAccess.Cache
             id++;
             cnt++;
           }
-          
-          if (removed) 
+
+          if (removed)
               System.Threading.Interlocked.Increment(ref tbl.stat_ComplexHitCount);
           else
               System.Threading.Interlocked.Increment(ref tbl.stat_ComplexMissCount);

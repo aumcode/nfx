@@ -24,7 +24,7 @@ using NFX.CodeAnalysis.Source;
 namespace NFX.CodeAnalysis.Laconfig
 {
     /// <summary>
-    /// Represents Laconic + Config = Laconfig terse configuration language 
+    /// Represents Laconic + Config = Laconfig terse configuration language
     /// </summary>
     public sealed class LaconfigLanguage : Language
     {
@@ -42,12 +42,12 @@ namespace NFX.CodeAnalysis.Laconfig
         {
             get
             {
-                yield return "lac"; 
-                yield return "lacon"; 
-                yield return "laconf"; 
+                yield return "lac";
+                yield return "lacon";
+                yield return "laconf";
                 yield return "laconfig";
                 yield return "rschema";
-                yield return "acmb"; 
+                yield return "acmb";
             }
         }
 

@@ -97,7 +97,7 @@ namespace NFX.WinForms.Controls.GridKit
 
     /// <summary>
     /// Returns a style for this cell. Cell style inherit from column style, which in turn inherits from grid style.
-    /// Changing cell style does not automatically repaint the element 
+    /// Changing cell style does not automatically repaint the element
     /// </summary>
     public Style Style
     {

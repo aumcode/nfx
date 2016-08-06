@@ -52,9 +52,9 @@ namespace NFX.CodeAnalysis.JSON
     public static JSONTokenType Resolve(string str)
     {
       JSONTokenType tt;
-      
+
       s_KeywordList.TryGetValue(str, out tt);
-      
+
       return (tt!=JSONTokenType.tUnknown) ? tt : JSONTokenType.tIdentifier;
     }
 

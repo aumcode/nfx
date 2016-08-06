@@ -36,7 +36,7 @@ namespace NFX.ApplicationModel
         bool ApplicationStartBreakOnException { get; }
 
         void ApplicationStartBeforeInit(IApplication application);
-        
+
         void ApplicationStartAfterInit(IApplication application);
     }
 

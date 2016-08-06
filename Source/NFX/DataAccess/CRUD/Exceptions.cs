@@ -28,7 +28,7 @@ using NFX;
 namespace NFX.DataAccess.CRUD
 {
       /// <summary>
-      /// Thrown by CRUD data access classes 
+      /// Thrown by CRUD data access classes
       /// </summary>
       [Serializable]
       public class CRUDException : DataAccessException
@@ -78,10 +78,10 @@ namespace NFX.DataAccess.CRUD
       public class CRUDRowValidationException : CRUDValidationException
       {
             public const string WHAT = "Schema: '{0}'; ";
-            
+
             public readonly string SchemaName;
-            
-            public CRUDRowValidationException(string schemaName) 
+
+            public CRUDRowValidationException(string schemaName)
               : base(WHAT.Args(schemaName))
             {
                 SchemaName = schemaName;
@@ -114,19 +114,19 @@ namespace NFX.DataAccess.CRUD
       public class CRUDFieldValidationException : CRUDValidationException
       {
             public const string WHAT = "Schema field: '{0}'.{1}; ";
-            
+
             public readonly string SchemaName;
             public readonly string FieldName;
             public readonly string ClientMessage;
-            
 
-            public CRUDFieldValidationException(Row row, string fieldName, string message) 
-              : this(row.NonNull(text: "row").Schema.Name, 
+
+            public CRUDFieldValidationException(Row row, string fieldName, string message)
+              : this(row.NonNull(text: "row").Schema.Name,
                      row.Schema[fieldName].NonNull(text: "field {0} not found in schema".Args(fieldName)).Name, message)
             {
             }
 
-            public CRUDFieldValidationException(string schemaName, string fieldName) 
+            public CRUDFieldValidationException(string schemaName, string fieldName)
               : base(WHAT.Args(schemaName, fieldName))
             {
                 SchemaName = schemaName;

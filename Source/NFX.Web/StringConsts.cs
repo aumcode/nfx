@@ -60,10 +60,10 @@ namespace NFX.Web
           "Requested context is not available: ";
 
     public const string APP_INIT_CONFIG_ERROR = "Application init configuration error: ";
-   
+
     public const string APP_INSTANCE_ALREADY_CREATED_ERROR =
          "Application instance has already been created";
-         
+
     public const string APP_INSTANCE_NULL_ERROR =
          "Application instance has not been created";
 
@@ -87,7 +87,7 @@ namespace NFX.Web
           "Application session strategy initApplication error: ";
 
     public const string WEB_HANDLER_TOPIC =
-          "WebHandler";                       
+          "WebHandler";
 
     public const string NO_RECORD_IN_VOLATILE_STORE_ERROR =
             "Volatile store returned no record instance. It may have expired " ;
@@ -96,9 +96,9 @@ namespace NFX.Web
         "Dont know how to handle site action: ";
 
     public const string NOT_FOUND_ERROR =
-        "404 Not Found: ";     
-         
-         
+        "404 Not Found: ";
+
+
 
     public const string BASE_HANDLER_EXCEPTION_ERROR = "Error exception leaked into BaseHandler: ";
 
@@ -114,8 +114,8 @@ namespace NFX.Web
     public const string SCRIPT_ROUTE_HANDLER_ERROR = "Error in ScriptRouteHandler: ";
     public const string SCRIPT_READ_ERROR = "Script cound not be read, check name: ";
     public const string SCRIPT_NAME_MISSING_ERROR = "Script name missing";
-    
-    
+
+
     public const string TYPELOOKUP_404_LOG_MSG = "Type lookup failed. User IP='{0}' FilePath='{1}' PathInfo='{2}'";
 
 
@@ -146,7 +146,7 @@ namespace NFX.Web
     public const string SOCIAL_NETWORK_DUPLICATE_NAME = "Can not have social network instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
     public const string PAYMENT_CURRENCY_CONVERSION_MAPPING_ERROR = "Currency mapping for '{0}' -> '{1}' is not found by provider '{2}' or rate attr missing";
-    
+
     public const string PAYMENT_CURRENCY_NOT_SUPPORTED_ERROR = "Currency '{0}' is not supported by provider '{1}' or currency attr missing";
 
     public const string PAYMENT_SYSTEM_HOST_NULL_ERROR = "Payment system host is not set";
@@ -188,6 +188,10 @@ namespace NFX.Web
     public const string PAYMENT_PAYPAL_50x_STATUSCODE = "PayPal server error";
     public const string PAYMENT_PAYPAL_UNKNOWN_STATUSCODE = "PayPal unknown error";
 
+    //public const string PAYMENT_BRAINTREE_MERCHANT_ID_REQUIRED = "merchant-id is required in {0}";
+    //public const string PAYMENT_BRAINTREE_CREDENTIALS_REQUIRED = "credentials is required in {0}";
+    public const string PAYMENT_BRAINTREE_SESSION_INVALID = "session not valid in {0}";
+
     public const string PAYPAL_UNAUTHORIZED_MESSAGE = "Unauthorized payment. Trying to refresh OAuth token.";
     public const string PAYPAL_REFRESH_TOKEN_MESSAGE = "Refreshing OAuth token";
     public const string PAYPAL_TOKEN_REFRESHED_MESSAGE = "OAuth token successfully refreshed.";
@@ -200,7 +204,7 @@ namespace NFX.Web
     public const string TAX_TAXJAR_TOADDRESS_ISNT_SUPPLIED_ERROR = "Either retailerAddress or wholesellerAddress must be provided. ";
     public const string TAX_CALC_ERROR = "Calculation failed. ";
     public const string TAX_CALC_DIFFERENT_CURRENCIES_ERROR = "Prices and shipping must be represented in the same currency. ";
-   
+
     public const string MULTIPART_DOUBLE_EOL_ISNT_FOUND_AFTER_HEADER_ERROR = "Multipart: Double \\r\\n isn't found after header.";
     public const string MULTIPART_PARTS_COULDNT_BE_EMPTY_ERROR = "Multipart: Parts couldn't be null or empty.";
     public const string MULTIPART_PART_COULDNT_BE_EMPTY_ERROR = "Multipart: Part couldn't empty.";
@@ -217,14 +221,16 @@ namespace NFX.Web
     public const string MULTIPART_STREAM_NOT_NULL_MUST_SUPPORT_READ_ERROR = "Multipart: Stream couldn't be null and must support read operation.";
     public const string MULTIPART_STREAM_NOT_NULL_MUST_SUPPORT_WRITE_ERROR = "Multipart: Stream couldn't be null and must support write operation.";
     public const string MULTIPART_SPECIFIED_BOUNDARY_ISNT_FOUND_ERROR = "Specified boundary not found. Invalid multipart stream.";
-    
+
     public const string GEO_LOOKUP_SVC_CANCELED_ERROR =
           "GEO lookup service start canceled";
 
     public const string MAILER_SINK_IS_NOT_SET_ERROR = "Mailer sink is not set";
     public const string MAILER_SINK_IS_NOT_OWNED_ERROR = "Mailer sink being set is not owned by this mailer service";
 
-    public const string FS_SESSION_BAD_PARAMS_ERROR = 
+    public const string MAILER_SINK_SMTP_IS_NOT_CONFIGURED_ERROR = "SMTP Mailer sink is not configured: ";
+
+    public const string FS_SESSION_BAD_PARAMS_ERROR =
       "Can not create an instance of file system session '{0}'. Make sure that suitable derivative of FileSystemSessionConnectParams is passed for the particular file system";
 
     public const string DELETE_MODIFY_ERROR = "Can not modify field value while in deleting operation. Field <{0}>";

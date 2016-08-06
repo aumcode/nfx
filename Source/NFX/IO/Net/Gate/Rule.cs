@@ -44,13 +44,13 @@ namespace NFX.IO.Net.Gate
       ConfigAttribute.Apply(this, node);
       if (m_Name.IsNullOrWhiteSpace()) m_Name = Guid.NewGuid().ToString();
     }
-    
+
     [Config]
     private string m_Name;
-    
+
     [Config]
     private int m_Order;
-    
+
     [Config(Default=GateAction.Deny)]
     private GateAction m_Action = GateAction.Deny;
 
@@ -74,64 +74,64 @@ namespace NFX.IO.Net.Gate
       [Config]
       public string FromAddrs
       {
-        get { return m_FromAddrs==null ? null : string.Join(",", m_FromAddrs); } 
+        get { return m_FromAddrs==null ? null : string.Join(",", m_FromAddrs); }
         set { m_FromAddrs = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string ToAddrs
       {
-        get { return m_ToAddrs==null ? null : string.Join(",", m_ToAddrs); } 
+        get { return m_ToAddrs==null ? null : string.Join(",", m_ToAddrs); }
         set { m_ToAddrs = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string Methods
       {
-        get { return m_Methods==null ? null : string.Join(",", m_Methods); } 
+        get { return m_Methods==null ? null : string.Join(",", m_Methods); }
         set { m_Methods = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string Services
       {
-        get { return m_Services==null ? null : string.Join(",", m_Services); } 
+        get { return m_Services==null ? null : string.Join(",", m_Services); }
         set { m_Services = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string URLFragments
       {
-        get { return m_URLFragments==null ? null : string.Join(",", m_URLFragments); } 
+        get { return m_URLFragments==null ? null : string.Join(",", m_URLFragments); }
         set { m_URLFragments = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string FromGroups
       {
-        get { return m_FromGroups==null ? null : string.Join(",", m_FromGroups); } 
+        get { return m_FromGroups==null ? null : string.Join(",", m_FromGroups); }
         set { m_FromGroups = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string ToGroups
       {
-        get { return m_ToGroups==null ? null : string.Join(",", m_ToGroups); } 
+        get { return m_ToGroups==null ? null : string.Join(",", m_ToGroups); }
         set { m_ToGroups = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string FromExpression
       {
-        get { return m_FromExpression==null ? null : m_FromExpression.Expression; } 
-        set { m_FromExpression = value.IsNullOrWhiteSpace() ? null :  new Evaluator(value); } 
+        get { return m_FromExpression==null ? null : m_FromExpression.Expression; }
+        set { m_FromExpression = value.IsNullOrWhiteSpace() ? null :  new Evaluator(value); }
       }
 
       [Config]
       public string ToExpression
       {
-        get { return m_ToExpression==null ? null : m_ToExpression.Expression; } 
-        set { m_ToExpression = value.IsNullOrWhiteSpace() ? null :  new Evaluator(value); } 
+        get { return m_ToExpression==null ? null : m_ToExpression.Expression; }
+        set { m_ToExpression = value.IsNullOrWhiteSpace() ? null :  new Evaluator(value); }
       }
 
     /// <summary>
@@ -142,7 +142,7 @@ namespace NFX.IO.Net.Gate
       if (
            !Check_FromAddrs(traffic.FromAddress) ||
            !Check_ToAddrs(traffic.ToAddress)  ||
-           !Check_Methods(traffic.Method) || 
+           !Check_Methods(traffic.Method) ||
            !Check_Services(traffic.Service) ||
            !Check_URLFragments(traffic.RequestURL)
          ) return false;
@@ -165,17 +165,17 @@ namespace NFX.IO.Net.Gate
 
       if (m_FromExpression!=null)
       {
-        var netState = state.FindNetSiteStateForAddress(traffic.FromAddress, ref fromGroup); 
+        var netState = state.FindNetSiteStateForAddress(traffic.FromAddress, ref fromGroup);
         if (!invokeEvaluator(netState, m_FromExpression)) return false;
       }
 
       if (m_ToExpression!=null)
       {
-        var netState = state.FindNetSiteStateForAddress(traffic.ToAddress, ref toGroup); 
+        var netState = state.FindNetSiteStateForAddress(traffic.ToAddress, ref toGroup);
         if (!invokeEvaluator(netState, m_ToExpression)) return false;
       }
-                                                                             
-      
+
+
       return true;
     }
 

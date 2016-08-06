@@ -33,7 +33,7 @@ namespace NFX.DataAccess.Erlang
   [Serializable]
   public class ErlDataAccessException : DataAccessException
   {
-    
+
     public ErlDataAccessException() {}
 
     public ErlDataAccessException(string message) : base(message){}
@@ -57,7 +57,7 @@ namespace NFX.DataAccess.Erlang
   [Serializable]
   public class ErlServerSchemaChangedException : ErlDataAccessException
   {
-    
+
     public ErlServerSchemaChangedException() {}
 
     protected ErlServerSchemaChangedException(SerializationInfo info, StreamingContext context)

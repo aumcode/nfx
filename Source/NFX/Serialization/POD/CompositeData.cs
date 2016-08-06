@@ -40,7 +40,7 @@ namespace NFX.Serialization.POD
             {
                 if (data==null)
                  throw new InvalidOperationException("No need to allocate CompositeData from NULL data. Write null directly");//todo Refactor execption type,text etc...
-                
+
                 m_Document = document;
 
                 var tp = data.GetType();
@@ -82,7 +82,7 @@ namespace NFX.Serialization.POD
 
 
         #region Properties
-            /// <summary>                                                             
+            /// <summary>
             /// Returns document instance that contains this type
             /// </summary>
             public PortableObjectDocument Document { get { return m_Document;} }
@@ -107,7 +107,7 @@ namespace NFX.Serialization.POD
                 get
                 {
                   if (!ExistingReference) return null;
-                  
+
                   return m_Document.m_CompositeData[m_ExistingReferenceIndex.Value];
                 }
             }

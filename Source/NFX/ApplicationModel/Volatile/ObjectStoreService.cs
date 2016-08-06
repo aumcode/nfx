@@ -35,12 +35,12 @@ namespace NFX.ApplicationModel.Volatile
 {
 
   /// <summary>
-  /// Implements service that stores object in proccess's memory, asynchronously saving objects to external non-volatile storage 
+  /// Implements service that stores object in proccess's memory, asynchronously saving objects to external non-volatile storage
   /// upon change and synchronously saving objects upon service stop. This service is useful for scenarious like ASP.NET
   /// volatile domain that can be torn down at any time.
   /// Note for ASP.NET uses: the key difference of this approach from .NET session state management is the fact that this service never blocks
   ///  object CheckIn() operations as backing store is being updated asynchronously.
-  /// This class is thread-safe unless specified otherwise on a property/method level 
+  /// This class is thread-safe unless specified otherwise on a property/method level
   /// </summary>
   [ConfigMacroContext]
   public class ObjectStoreService : ServiceWithInstrumentationBase<object>, IObjectStoreImplementation
@@ -70,7 +70,7 @@ namespace NFX.ApplicationModel.Volatile
     #region .ctor
 
         /// <summary>
-        /// Creates instance of the store service 
+        /// Creates instance of the store service
         /// </summary>
         public ObjectStoreService() : this(new Guid())
         {
@@ -112,12 +112,12 @@ namespace NFX.ApplicationModel.Volatile
     #region Properties
 
         public override string ComponentCommonName { get { return "objstore"; }}
-        
-        
+
+
         /// <summary>
         /// Returns unique identifier that identifies this particular store.
         /// This ID is used to load store's state from external medium upon start-up.
-        /// One may think of this ID as of a "pointer/handle" that survives phisical object destroy/create cycle 
+        /// One may think of this ID as of a "pointer/handle" that survives phisical object destroy/create cycle
         /// </summary>
         public Guid StoreGUID
         {
@@ -134,7 +134,7 @@ namespace NFX.ApplicationModel.Volatile
         /// Implements IInstrumentable
         /// </summary>
         [Config(Default=false)]
-        [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_OBJSTORE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
+        [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_OBJSTORE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
         public override bool InstrumentationEnabled
         {
           get { return m_InstrumentationEnabled;}
@@ -160,7 +160,7 @@ namespace NFX.ApplicationModel.Volatile
         /// <summary>
         /// Specifies how long objects live without being touched before becoming evicted from the list
         /// </summary>
-        [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_OBJSTORE)] 
+        [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_OBJSTORE)]
         public int ObjectLifeSpanMS
         {
           get { return m_ObjectLifeSpanMS; }
@@ -263,7 +263,7 @@ namespace NFX.ApplicationModel.Volatile
       lock (entry)
       {
         if (entry.Status == ObjectStoreEntryStatus.Deleted) return false;
-        
+
         if (entry.CheckoutCount>0)
            entry.CheckoutCount--;
 
@@ -276,24 +276,24 @@ namespace NFX.ApplicationModel.Volatile
 
     /// <summary>
     /// Puts an object reference "value" into store identified by the "key".
-    /// The object is written in the provider when call count to this method equals to CheckOut() 
+    /// The object is written in the provider when call count to this method equals to CheckOut()
     /// </summary>
     public void CheckIn(Guid key, object value, int msTimeout = 0)
     {
       if (Status != ControlStatus.Active) return;
 
-      if (value==null) 
+      if (value==null)
       {
         Delete(key);
         return;
       }
-         
-      var bucket = getBucket(key);   
-          
+
+      var bucket = getBucket(key);
+
       ObjectStoreEntry entry = null;
       bool isnew = false;
 
-      lock (bucket)    
+      lock (bucket)
       {
         if (!bucket.TryGetValue(key, out entry))
         {
@@ -313,7 +313,7 @@ namespace NFX.ApplicationModel.Volatile
         lock (entry)
         {
           if (entry.Status == ObjectStoreEntryStatus.Deleted) return;
-          
+
           if (entry.CheckoutCount>0)
            entry.CheckoutCount--;
 
@@ -335,18 +335,18 @@ namespace NFX.ApplicationModel.Volatile
     {
       if (Status != ControlStatus.Active) return;
 
-      if (value==null) 
+      if (value==null)
       {
         Delete(oldKey);
         return;
       }
 
       var bucket = getBucket(oldKey);
-      
+
       ObjectStoreEntry entry = null;
 
       lock (bucket)
-        if (!bucket.TryGetValue(oldKey, out entry)) entry = null; 
+        if (!bucket.TryGetValue(oldKey, out entry)) entry = null;
 
       if (entry!=null)
         lock (entry)
@@ -369,8 +369,8 @@ namespace NFX.ApplicationModel.Volatile
     {
       if (Status != ControlStatus.Active) return false;
 
-      var bucket = getBucket(key);   
-          
+      var bucket = getBucket(key);
+
       ObjectStoreEntry entry = null;
 
       lock (bucket)
@@ -380,7 +380,7 @@ namespace NFX.ApplicationModel.Volatile
         lock (entry)
         {
           if (entry.Status == ObjectStoreEntryStatus.Deleted) return false;
-          
+
           if (entry.CheckoutCount>0)
           {
            entry.CheckoutCount--;
@@ -403,10 +403,10 @@ namespace NFX.ApplicationModel.Volatile
     {
       if (Status != ControlStatus.Active) return false;
 
-      
+
       var bucket = getBucket(key);
-    
-      
+
+
       ObjectStoreEntry entry = null;
 
       lock (bucket)
@@ -487,8 +487,8 @@ namespace NFX.ApplicationModel.Volatile
         foreach (var entry in all)
         {
           entry.Status = ObjectStoreEntryStatus.Normal;
-          entry.LastTime = now;   
-          
+          entry.LastTime = now;
+
           var bucket = getBucket(entry.Key);
           bucket.Add(entry.Key, entry);
 
@@ -633,7 +633,7 @@ namespace NFX.ApplicationModel.Volatile
                     write(bucket);
             else
                   if (Monitor.TryEnter(bucket))
-                  try 
+                  try
                   {
                     write(bucket);
                   }
@@ -648,7 +648,7 @@ namespace NFX.ApplicationModel.Volatile
         private void write(Bucket bucket)  //bucket is locked already
         {
           var now = App.LocalizedTime;
-          
+
           var removed = new Lazy<List<Guid>>(false);
 
           foreach (var pair in bucket)
@@ -663,7 +663,7 @@ namespace NFX.ApplicationModel.Volatile
                      (entry.Status == ObjectStoreEntryStatus.Normal  ||
                       entry.Status == ObjectStoreEntryStatus.ChekedIn     //checked-in but not written yet
                      )
-                      && 
+                      &&
                      entry.LastTime.AddMilliseconds( (entry.MsTimeout > 0) ? entry.MsTimeout : m_ObjectLifeSpanMS ) < now
                     ) ||
                     (entry.Status == ObjectStoreEntryStatus.Deleted)
@@ -714,16 +714,16 @@ namespace NFX.ApplicationModel.Volatile
 
                   entry.Status = ObjectStoreEntryStatus.Normal;
                 }
-             
+
             }//lock entry
-          }//for  
-          
-          
+          }//for
+
+
           if (removed.IsValueCreated)
           {
             foreach(var key in removed.Value)
-             bucket.Remove(key);  
-            log(MessageType.Info, string.Format("Removed {0} objects", removed.Value.Count), null);    
+             bucket.Remove(key);
+            log(MessageType.Info, string.Format("Removed {0} objects", removed.Value.Count), null);
           }
 
 

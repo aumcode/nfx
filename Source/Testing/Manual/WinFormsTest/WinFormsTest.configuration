@@ -206,6 +206,11 @@
                            default-connection-limit="64"
                            max-service-points="128"
                            use-nagle-algorithm="true" >
+      <policy>
+        <default-certificate-validation>
+        <case uri="https://api.mailgun.net/v3" trusted="true"></case>
+        </default-certificate-validation>
+      </policy>
     </service-point-manager>
   </web-settings>
 
@@ -260,5 +265,16 @@
         
     </bindings>
   </glue>
+
+  <messaging>
+    <mailer>
+      <sink type="NFX.Web.Messaging.MailgunMailerSink, NFX.Web"
+            authorization-key="key-d8745ba952f49f9973a47336cf54229e"
+            domain="sandboxc102342e2f7c4a65aeed218b96286043.mailgun.org"
+            default-from-address="service@ttt.com"
+            default-from-name="Service">
+      </sink>
+    </mailer>
+  </messaging>
 
 </nfx>

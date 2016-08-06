@@ -29,7 +29,7 @@ namespace NFX.Glue.Protocol
     [Serializable]
     public abstract class Header
     {
-      
+
     }
 
 
@@ -72,7 +72,7 @@ namespace NFX.Glue.Protocol
            if (chdr!=null) chdr.Configure(hnode);
 
            headers.Add(header);
-         } 
+         }
 
        }
 

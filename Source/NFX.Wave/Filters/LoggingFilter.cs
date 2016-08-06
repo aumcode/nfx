@@ -45,7 +45,7 @@ namespace NFX.Wave.Filters
     #endregion
 
     #region Protected
-     
+
       protected override void DoBeforeWork(WorkContext work, JSONDataMap matched)
       {
         work.Log(

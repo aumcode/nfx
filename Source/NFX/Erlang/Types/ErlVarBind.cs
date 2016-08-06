@@ -83,7 +83,7 @@ namespace NFX.Erlang
     }
 
     /// <summary>
-    /// Add a variable binding converting an object to variable by name 
+    /// Add a variable binding converting an object to variable by name
     /// </summary>
     /// <param name="var">Name of the variable</param>
     /// <param name="o">Value to associate with name</param>

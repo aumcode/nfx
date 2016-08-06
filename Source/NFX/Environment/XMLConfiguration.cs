@@ -63,7 +63,7 @@ namespace NFX.Environment
 
           return result;
         }
-    
+
 
     #endregion
 
@@ -96,21 +96,21 @@ namespace NFX.Environment
                 var doc = buildXmlDoc(xsl);
                 doc.Save(filename);
               }
-      
-      
+
+
               /// <summary>
               /// Saves XML configuration with optional link to XSL file, into string and returns it
               /// </summary>
               public string SaveToString(string xsl =null)
               {
-                var doc = buildXmlDoc(xsl);    
+                var doc = buildXmlDoc(xsl);
                 using(var writer = new StringWriter())
                 {
-                  doc.Save(writer);       
+                  doc.Save(writer);
                   return writer.ToString();
-                }  
+                }
               }
-      
+
 
             public override void Refresh()
             {
@@ -122,20 +122,20 @@ namespace NFX.Environment
             {
               SaveAs(m_FileName);
             }
-    
+
             public override string ToString()
             {
                 XmlDocument doc = new XmlDocument();
 
                 buildDocNode(doc, null, m_Root);
 
-                return doc.OuterXml;  
+                return doc.OuterXml;
             }
 
 
 
     #endregion
-    
+
     #region Protected
 
          //for XML we only allow printable chars and 0..9 and - or _ .
@@ -146,12 +146,12 @@ namespace NFX.Environment
               foreach(var c in name)
                if (char.IsLetterOrDigit(c) || c=='_' || c=='.')
                 result.Append(c);
-               else 
+               else
                 result.Append('-');
 
               return result.ToString();
           }
-    
+
     #endregion
 
     #region Private Utils
@@ -180,13 +180,13 @@ namespace NFX.Environment
           if (m_Root!=null)
             m_Root.ResetModified();
           else
-            m_Root = m_EmptySectionNode;  
+            m_Root = m_EmptySectionNode;
         }
 
 
         private ConfigSectionNode buildNode(XmlNode xnode, ConfigSectionNode parent)
         {
-          ConfigSectionNode result;     
+          ConfigSectionNode result;
 
           if (xnode.NodeType == XmlNodeType.Text && parent != null)
           {
@@ -202,8 +202,8 @@ namespace NFX.Environment
           if (xnode.Attributes != null)
             foreach (XmlAttribute xattr in xnode.Attributes)
               result.AddAttributeNode(xattr.Name, xattr.Value);
-                             
-                                  
+
+
           foreach (XmlNode xn in xnode)
            if (xn.NodeType != XmlNodeType.Comment)
              buildNode(xn, result);
@@ -212,7 +212,7 @@ namespace NFX.Environment
         }
 
 
-        
+
         private XmlDocument buildXmlDoc(string xsl)
         {
           var doc = new XmlDocument();
@@ -229,10 +229,10 @@ namespace NFX.Environment
           }
 
           buildDocNode(doc, null, m_Root);
-      
+
           return doc;
         }
-    
+
 
 
         private void buildDocNode(XmlDocument doc, XmlNode xnode, ConfigSectionNode node)

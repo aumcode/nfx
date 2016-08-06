@@ -56,7 +56,7 @@ namespace NFX.Web.Pay.Stripe
       private const string PRM_CARD_ADDRESS_ZIP = PRM_CARD + "[address_zip]";
       private const string PRM_CARD_ADDRESS_STATE = PRM_CARD + "[address_state]";
       private const string PRM_CARD_ADDRESS_COUNTRY = PRM_CARD + "[address_country]";
-      
+
       private const string PRM_CAPTURE = "capture";
 
       private const string PRM_REASON = "reason";
@@ -82,6 +82,8 @@ namespace NFX.Web.Pay.Stripe
     public override string ComponentCommonName { get { return "stripepay"; }}
 
     #region PaySystem implementation
+
+      public override IPayWebTerminal WebTerminal { get { throw new NotImplementedException(); } }
 
       protected override PaySession DoStartSession(PayConnectionParameters cParams = null)
       {
@@ -123,7 +125,7 @@ namespace NFX.Web.Pay.Stripe
 
         try
         {
-          var bodyPrms = new Dictionary<string, string>() { 
+          var bodyPrms = new Dictionary<string, string>() {
             {PRM_AMOUNT, ((int)((amount.Value * 100))).ToString()},
             {PRM_CURRENCY, amount.CurrencyISO.ToString().ToLower()},
             {PRM_DESCRIPTION, description},
@@ -146,7 +148,7 @@ namespace NFX.Web.Pay.Stripe
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
 
-          var ta = new Transaction(taId, TransactionType.Charge, this.Name, obj.id, from, to, amount, created, description);
+          var ta = Transaction.Charge(taId, this.Name, obj.AsGDID, from, to, amount, created, description);
 
           StatCharge(amount);
 
@@ -166,7 +168,7 @@ namespace NFX.Web.Pay.Stripe
               string errorMessage = this.GetType().Name +
                 ".Charge(money: {0}, card: {1}, amount: '{2}')".Args(amount.Value, fromActualData.AccountNumber, amount);
               var stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
-              throw stripeEx;  
+              throw stripeEx;
             }
           }
 
@@ -177,7 +179,7 @@ namespace NFX.Web.Pay.Stripe
 
       /// <summary>
       /// Captures the payment of this, uncaptured, charge.
-      /// This is the second half og the two-step payment flow, where first you created a charge 
+      /// This is the second half og the two-step payment flow, where first you created a charge
       /// with the capture option set to false.
       /// Uncaptured payment expires exactly seven days after it is created.
       /// If a payment is not captured by that pooint of time, it will be marked as refunded and will no longer be capturable.
@@ -188,7 +190,7 @@ namespace NFX.Web.Pay.Stripe
       {
         Capture((StripeSession)session, context, ref charge, amount, description, extraData);
       }
-      
+
       /// <summary>
       /// Overload of Capture method with Stripe-typed session parameter
       /// </summary>
@@ -258,7 +260,7 @@ namespace NFX.Web.Pay.Stripe
 
         try
         {
-          var bodyPrms = new Dictionary<string, string>() { 
+          var bodyPrms = new Dictionary<string, string>() {
             {PRM_AMOUNT, ((int)((refundAmount.Value * 100))).ToString()}
           };
 
@@ -282,8 +284,8 @@ namespace NFX.Web.Pay.Stripe
 
           var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Refund);
 
-          var refundTA = new Transaction(taId, TransactionType.Refund, this.Name,
-            lastRefund["id"], Account.EmptyInstance, charge.From, refundAmount, created, description, canRefund: false);
+          var refundTA = Transaction.Refund(taId, this.Name,
+            lastRefund["id"], Account.EmptyInstance, charge.From, refundAmount, created, description, relatedTransactionID: charge.ID);
 
           StatRefund(charge, amount);
 
@@ -344,7 +346,7 @@ namespace NFX.Web.Pay.Stripe
     #region Pvt. impl.
 
       /// <summary>
-      /// Transfers funds to customerAccount from current stripe account 
+      /// Transfers funds to customerAccount from current stripe account
       /// (which credentials is supplied in current session)
       /// </summary>
       private Transaction transfer(StripeSession stripeSession, ITransactionContext context, string recipientID, Account customerAccount, Amount amount, string description)
@@ -359,7 +361,7 @@ namespace NFX.Web.Pay.Stripe
             Caller = this,
             UName = stripeSession.SecretKey,
             Method = HTTPRequestMethod.POST,
-            BodyParameters = new Dictionary<string, string>() 
+            BodyParameters = new Dictionary<string, string>()
             {
               {PRM_RECIPIENT, recipientID},
               {PRM_AMOUNT, ((int)((amount.Value * 100))).ToString()},
@@ -374,7 +376,7 @@ namespace NFX.Web.Pay.Stripe
 
           var taId = PaySystemHost.GenerateTransactionID(stripeSession, context, TransactionType.Transfer);
 
-          var ta = new Transaction(taId, TransactionType.Transfer, this.Name, obj.id, Account.EmptyInstance, customerAccount, amount, created, description);
+          var ta = Transaction.Transfer(taId, this.Name, obj.id, Account.EmptyInstance, customerAccount, amount, created, description);
 
           StatTransfer(amount);
 
@@ -393,7 +395,7 @@ namespace NFX.Web.Pay.Stripe
               string errorMessage = this.GetType().Name +
                         ".transfer(recipientID='{0}', customerAccount='{1}', amount='{2}')".Args(recipientID, actualAccountData, amount);
               PaymentStripeException stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
-              if (stripeEx != null) throw stripeEx; 
+              if (stripeEx != null) throw stripeEx;
             }
           }
 
@@ -412,7 +414,7 @@ namespace NFX.Web.Pay.Stripe
 
         try
         {
-          var bodyPrms = new Dictionary<string, string>() 
+          var bodyPrms = new Dictionary<string, string>()
           {
             {PRM_NAME, recipientActualAccountData.AccountTitle},
             {PRM_TYPE, recipientActualAccountData.AccountType == AccountType.Corporation ? "corporation" : "individual"},
@@ -485,7 +487,7 @@ namespace NFX.Web.Pay.Stripe
               string errorMessage = this.GetType().Name +
                         ".deleteRecipient(recipientID: '{0}')".Args(recipientID);
               PaymentStripeException stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
-              if (stripeEx != null) throw stripeEx; 
+              if (stripeEx != null) throw stripeEx;
             }
           }
 

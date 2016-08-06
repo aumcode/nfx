@@ -24,11 +24,11 @@ using NFX.Environment;
 namespace NFX.RelationalModel.DataTypes
 {
     /// <summary>
-    /// Represents a domain - a named type 
+    /// Represents a domain - a named type
     /// </summary>
     public abstract class Domain : INamed, IConfigurable
     {
-        
+
         #region Properties
 
             /// <summary>

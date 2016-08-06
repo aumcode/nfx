@@ -25,15 +25,15 @@ using System.Runtime.Serialization;
 
 namespace NFX.ApplicationModel.Pile
 {
-      
-      
+
+
       /// <summary>
       /// Thrown by pile memory manager
       /// </summary>
       [Serializable]
       public class PileException : NFXException
       {
-            
+
 
             public PileException()
             {
@@ -61,7 +61,7 @@ namespace NFX.ApplicationModel.Pile
       [Serializable]
       public class PileAccessViolationException : PileException
       {
-            
+
 
             public PileAccessViolationException()
             {
@@ -88,7 +88,7 @@ namespace NFX.ApplicationModel.Pile
       [Serializable]
       public class PileOutOfSpaceException : PileException
       {
-            
+
 
             public PileOutOfSpaceException()
             {
@@ -116,7 +116,7 @@ namespace NFX.ApplicationModel.Pile
       [Serializable]
       public class PileCacheException : PileException
       {
-            
+
 
             public PileCacheException()
             {

@@ -35,7 +35,7 @@ namespace NFX.Web.Social
       //do not localize
 
       public const string LINKEDIN_PUB_SERVICE_URL = "https://www.linkedin.com";
-            
+
       private const string LOGIN_LINK_TEMPLATE = "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id={0}&scope=r_basicprofile+r_emailaddress+rw_nus&state={1}&redirect_uri={2}";
 
       private const string ACCESSTOKEN_BASEURL = "https://www.linkedin.com/uas/oauth2/accessToken";
@@ -71,17 +71,17 @@ namespace NFX.Web.Social
   <title>LinkedIn Developers Documentation On Using the Share API</title>
   <description>Leverage the Share API to maximize engagement on user-generated content on LinkedIn</description>
   <submitted-url>https://developer.linkedin.com/documents/share-api</submitted-url>
-  <submitted-image-url>http://m3.licdn.com/media/p/3/000/124/1a6/089a29a.png</submitted-image-url> 
+  <submitted-image-url>http://m3.licdn.com/media/p/3/000/124/1a6/089a29a.png</submitted-image-url>
 </content>
-<visibility> 
-  <code>anyone</code> 
+<visibility>
+  <code>anyone</code>
 </visibility>
 </share>";
 
     #endregion
-        
+
     #region Static
-            
+
       private static object s_Lock = new object();
       private static LinkedIn s_Instance;
 
@@ -116,7 +116,7 @@ namespace NFX.Web.Social
       {
         return LOGIN_LINK_TEMPLATE.Args(ApiKey, GenerateNonce(), PrepareReturnURLParameter(returnURL));
       }
-      
+
     #endregion
 
     #region Properties
@@ -191,8 +191,8 @@ namespace NFX.Web.Social
 
       private string getAccessToken(string code, string redirectURI)
       {
-        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
-          queryParameters: 
+        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
+          queryParameters:
           new Dictionary<string, string>() {
             {ACCESSTOKEN_GRANTTYPE_PARAMNAME, ACCESSTOKEN_GRANTTYPE_PARAMVALUE},
             {ACCESSTOKEN_CODE_PARAMNAME, code},
@@ -227,14 +227,14 @@ namespace NFX.Web.Social
       {
         string body = SHAREBODY_TEMPLATE.Args(text);
 
-        XDocument responseDoc = WebClient.GetXML(SHARE_BASEURL, this,  
+        XDocument responseDoc = WebClient.GetXML(SHARE_BASEURL, this,
           new Dictionary<string, string>() {{OAUTH2ACCESSTOKEN_PARAMNAME, accessToken}},
           body);
       }
 
     #endregion
   }
-    
+
   [Serializable]
   public class LinkedInSocialUserInfo: SocialUserInfo
   {
@@ -260,7 +260,7 @@ namespace NFX.Web.Social
     public override string LongTermProviderToken
     {
       get { return AccessToken; }
-      internal set 
+      internal set
       {
         AccessToken = value;
         base.LongTermProviderToken = value;

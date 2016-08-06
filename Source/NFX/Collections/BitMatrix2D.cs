@@ -91,7 +91,7 @@ namespace NFX.Collections
       public override bool Equals(object otherObj)
       {
         BitMatrix2D otherSquare = otherObj as BitMatrix2D;
-        if (otherSquare == null || otherSquare.Width != Width || otherSquare.Height != Height) 
+        if (otherSquare == null || otherSquare.Width != Width || otherSquare.Height != Height)
           return false;
 
         var ieThis = m_Bits.GetEnumerator();

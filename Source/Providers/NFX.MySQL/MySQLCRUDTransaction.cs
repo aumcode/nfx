@@ -56,7 +56,7 @@ namespace NFX.DataAccess.MySQL
 
         #endregion  
         
-        #region Peoperties
+        #region Properties
 
             internal MySQLDataStore Store
             {
@@ -95,6 +95,16 @@ namespace NFX.DataAccess.MySQL
         protected override Task<List<RowsetBase>> DoLoadAsync(bool oneRow, params Query[] queries)
         {
             return TaskUtils.AsCompletedTask( () => this.DoLoad(oneRow, queries) );
+        }
+
+        protected override Cursor DoOpenCursor(Query query)
+        {
+            return Store.DoOpenCursor(m_Connection, m_Transaction, query);
+        }
+
+        protected override Task<Cursor> DoOpenCursorAsync(Query query)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoOpenCursor(query) );
         }
 
         protected override int DoExecuteWithoutFetch(params Query[] queries)

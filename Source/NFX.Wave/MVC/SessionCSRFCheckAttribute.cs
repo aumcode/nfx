@@ -29,14 +29,14 @@ namespace NFX.Wave.MVC
     public SessionCSRFCheckAttribute(string tokenName, bool onlyExistingSession, int order) : base(order)
     {
       TokenName = tokenName;
-     
+
       if (TokenName.IsNullOrWhiteSpace())
         TokenName = DEFAULT_TOKEN_NAME;
 
       OnlyExistingSession = onlyExistingSession;
     }
 
-    
+
     public string TokenName{ get; private set; }
     public bool OnlyExistingSession{ get; private set; }
 
@@ -50,9 +50,12 @@ namespace NFX.Wave.MVC
       var session = work.Session;
       var supplied = work.WholeRequestAsJSONDataMap[TokenName].AsString();
 
-      if (session==null || 
-          !session.CSRFToken.EqualsOrdSenseCase(supplied))
-        throw new HTTPStatusException(NFX.Web.WebConsts.STATUS_400, NFX.Web.WebConsts.STATUS_400_DESCRIPTION, "CSRF failed");
+      var bad = session==null;
+
+      if (!bad && session.LastLoginType!=ApplicationModel.SessionLoginType.Robot)
+         bad = !session.CSRFToken.EqualsOrdSenseCase(supplied);
+
+      if (bad) throw new HTTPStatusException(NFX.Web.WebConsts.STATUS_400, NFX.Web.WebConsts.STATUS_400_DESCRIPTION, "CSRF failed");
 
       return false;
     }
@@ -60,6 +63,11 @@ namespace NFX.Wave.MVC
     protected internal override bool AfterActionInvocation(Controller controller, WorkContext work, string action, MethodInfo method, object[] args, ref object result)
     {
       return false;
+    }
+
+    protected internal override void ActionInvocationFinally(Controller controller, WorkContext work, string action, MethodInfo method, object[] args, ref object result)
+    {
+
     }
   }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Runtime.CompilerServices;
@@ -32,7 +34,7 @@ namespace NFX.DataAccess.Erlang
        m_ErlBox = store.MakeMailbox();
        m_Queue  = new ConcurrentQueue<IQueable>();
 
-       m_ErlBox.MailboxMessage += (_, msg) => 
+       m_ErlBox.MailboxMessage += (_, msg) =>
                                   {
                                     m_Queue.Enqueue(msg);
                                     asyncProcess();
@@ -118,7 +120,7 @@ namespace NFX.DataAccess.Erlang
     internal ErlMbox m_ErlBox;
     private ConcurrentQueue<IQueable> m_Queue;
 
-    private static readonly IErlObject SUBSCRIPTION_MSG_PATTERN = 
+    private static readonly IErlObject SUBSCRIPTION_MSG_PATTERN =
                    "{Schema::atom(), Timestamp::long(), Type, Rows::list()}".ToErlObject();
 
     private static readonly ErlAtom SCHEMA    = new ErlAtom("Schema");
@@ -184,7 +186,7 @@ namespace NFX.DataAccess.Erlang
             catch(Exception ie)
             {
               errors++;
-              log(MessageType.Error, "prcs().forea(rTpl)", ie.ToMessageWithType(), ie);
+              log(ie);
             }
           }
 
@@ -194,30 +196,39 @@ namespace NFX.DataAccess.Erlang
         {  //used to clear data, no rows are fetched
           var data = new CRUDSubscriptionEvent(etp, schema, null, m_LastTimeStamp);
           this.Mailbox.Deliver(this, data);
-        }  
+        }
       }
       catch(Exception err)
       {
-        log(MessageType.Error, "prcs().outcatch{}", err.ToMessageWithType(), err);
+        log(err);
       }
     }
-  
+
+    private void log(Exception err)
+    {
+      var trace = new StackTrace(err, true);
+      var frame = trace.GetFrame(0);
+      var file  = Path.GetFileName(frame.GetFileName());
+      var line  = frame.GetFileLineNumber();
+
+      log(MessageType.Error, null, err.Message, err, file, line);
+    }
+
     private void log(MessageType type, string from, string text, Exception error,
-                                            [CallerFilePath]  string file = null, 
-                                            [CallerLineNumber]int line = 0,
-                                            object pars = null)
+                     [CallerFilePath]  string file = null,
+                     [CallerLineNumber]int    line = 0,
+                     object pars = null)
     {
       App.Log.Write(
         new Message(pars, file, line)
         {
-          Type = type,
-          Topic = CoreConsts.ERLANG_TOPIC,
-          From = "{0}.{1}".Args(GetType().Name, from),
-          Text = text,
+          Type      = type,
+          Topic     = CoreConsts.ERLANG_TOPIC,
+          From      = error == null ? "{0}.{1}".Args(GetType().Name, from) : error.ToMessageWithType(),
+          Text      = text,
           Exception = error
         }
       );
     }
-
   }
 }

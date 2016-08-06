@@ -31,15 +31,15 @@ namespace NFX.Web
        public const string TEXT = "text/plain";
        public const string HTML = "text/html";
        public const string CSS = "text/css";
-       public const string JS = "application/x-javascript"; 
+       public const string JS = "application/x-javascript";
 
 
        public const string XML_TEXT = "text/xml";
        public const string XML_APP = "application/xml";
 
        public const string PDF = "application/pdf";
-       public const string BINARY = "application/octet-stream"; 
-       public const string EXE = BINARY; 
+       public const string BINARY = "application/octet-stream";
+       public const string EXE = BINARY;
 
        public const string GIF = "image/gif";
        public const string JPEG = "image/jpeg";
@@ -68,10 +68,10 @@ namespace NFX.Web
           if (ext==null) return dflt;
 
           ext = ext.ToLowerInvariant().Trim();
-          
+
           if (ext.StartsWith(".")) ext = ext.Remove(0,1);
-          
-              switch(ext)            
+
+              switch(ext)
               {
                 case "htm":
                 case "html": return ContentType.HTML;

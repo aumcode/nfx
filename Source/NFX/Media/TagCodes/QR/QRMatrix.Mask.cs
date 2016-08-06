@@ -37,7 +37,7 @@ namespace NFX.Media.TagCodes.QR
       private const int PW2 = 3;
       private const int PW3 = 40;
       private const int PW4 = 10;
-    
+
     #endregion
 
 	  #region Static

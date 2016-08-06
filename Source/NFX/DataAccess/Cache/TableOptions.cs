@@ -24,7 +24,7 @@ using NFX.Environment;
 
 namespace NFX.DataAccess.Cache
 {
-    
+
     /// <summary>
     /// Provides cache table capacity classifications
     /// </summary>
@@ -34,20 +34,20 @@ namespace NFX.DataAccess.Cache
         /// 25,111 * 7 = 175,777 items * 64(8/ptr + 40/cache rec + 12/obj over) = 11.25 Mb just for storing empty cache items
         /// </summary>
         Default = 0,
-        
+
         /// <summary>
         /// 753,001 * 7 = 5,271,007 items * 64(8/ptr + 40/cache rec + 12/obj over) = 337.3 Mb just for storing empty cache items
         /// </summary>
         Large,
-        
+
         /// <summary>
         /// 3,337,333 * 7 = 23,361,331 items * 64(8/ptr + 40/cache rec + 12/obj over) = 1.39 Gb just for storing empty cache items
         /// </summary>
         XLarge
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// Provides config options for cache tables
     /// </summary>
@@ -57,13 +57,13 @@ namespace NFX.DataAccess.Cache
         {
 
         }
-        
+
 
         public TableOptions(string name, TableCapacity capacity, int lockCount = 0, int maxAgeSec = 0, bool parallelSweep = false)
         {
             var bc = 0;
             var rp = 0;
-            
+
             switch(capacity)
             {
                 case TableCapacity.Large:   { bc =   753001; rp =  7;  break;}
@@ -83,7 +83,7 @@ namespace NFX.DataAccess.Cache
         {
             if (name.IsNullOrWhiteSpace())
                 throw new NFXException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor(name=null|Empty)");
-           
+
             m_Name = name;
             m_BucketCount = bucketCount;
             m_RecPerPage = recPerPage;

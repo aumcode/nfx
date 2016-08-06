@@ -38,27 +38,28 @@ namespace NFX.Serialization.Slim
     /// Such performance is achieved because of dynamic compilation of type-specific serialization/deserialization methods.
     /// This type is thread-safe for serializations/deserializations when TypeMode is set to "PerCall"
     /// </summary>
+    [SlimSerializationProhibited]
     public class SlimSerializer : ISlimSerializer
     {
         #region CONSTS
 
-           public const ushort HEADER = (ushort)0xCAFE; 
+           public const ushort HEADER = (ushort)0xCAFE;
 
         #endregion
 
         #region .ctor
-            
-            
+
+
             public SlimSerializer() : this(SlimFormat.Instance)
             {
-               
+
             }
 
             public SlimSerializer(params IEnumerable<Type>[] globalTypes) : this(SlimFormat.Instance, globalTypes)
             {
 
             }
-            
+
             public SlimSerializer(SlimFormat format)
             {
               if (format==null)
@@ -67,13 +68,13 @@ namespace NFX.Serialization.Slim
               m_Format = format;
               m_TypeMode = TypeRegistryMode.PerCall;
             }
-            
+
             public SlimSerializer(SlimFormat format, params IEnumerable<Type>[] globalTypes) : this(format)
             {
               m_GlobalTypes = globalTypes;
             }
 
-            
+
             internal SlimSerializer(TypeRegistry global, SlimFormat format) : this(format)
             {
               __globalTypeRegistry = global;
@@ -106,10 +107,10 @@ namespace NFX.Serialization.Slim
 
         #region Properties
 
-          
+
 
           public SlimFormat Format { get { return m_Format;} }
-          
+
           /// <summary>
           /// Gets/sets how serializer handles type information between calls to Serialize/Deserialize.
           /// Setting this to "Batch" makes this serializer instance not thread-safe for calling Serialize/Deserialize.
@@ -121,7 +122,7 @@ namespace NFX.Serialization.Slim
              set
              {
                if (m_TypeMode==value) return;
-               
+
                if (value == TypeRegistryMode.Batch)
                {
                   m_BatchTypeRegistry = new TypeRegistry(m_GlobalTypes);
@@ -132,7 +133,7 @@ namespace NFX.Serialization.Slim
 
                m_TypeMode = value;
              }
-          }  
+          }
 
           /// <summary>
           /// Returns true when TypeMode is "PerCall"
@@ -150,7 +151,7 @@ namespace NFX.Serialization.Slim
           }
 
           /// <summary>
-          /// ADVANCED FEATURE! Developers do not use. 
+          /// ADVANCED FEATURE! Developers do not use.
           /// Returns type registry used in batch.
           /// This call is only valid in TypeMode = "Batch" and is inherently not thread-safe.
           /// Be careful not to mutate the returned object
@@ -164,7 +165,7 @@ namespace NFX.Serialization.Slim
 
 
         #region Public
-          
+
             /// <summary>
             /// Resets type registry to initial state (which is based on global types) for TypeMode = "Batch",
             /// otherwise does nothing. This method is not thread-safe
@@ -184,21 +185,21 @@ namespace NFX.Serialization.Slim
                 try
                 {
                     var singleThreaded = m_TypeMode == TypeRegistryMode.Batch;
-                    
+
                     SlimWriter writer;
-                    
+
                     if (!singleThreaded || m_SerializeNestLevel >0)
                      writer = m_Format.MakeWritingStreamer();
                     else
                     {
                       writer = m_CachedWriter;
-                      if (writer==null) 
+                      if (writer==null)
                       {
                         writer = m_Format.MakeWritingStreamer();
                         m_CachedWriter = writer;
                       }
                     }
-                    
+
                     var pool = reservePool( SerializationOperation.Serializing );
                     try
                     {
@@ -228,15 +229,15 @@ namespace NFX.Serialization.Slim
                 try
                 {
                     var singleThreaded = m_TypeMode == TypeRegistryMode.Batch;
-                    
+
                     SlimReader reader;
-                    
+
                     if (!singleThreaded || m_DeserializeNestLevel>0)
                      reader = m_Format.MakeReadingStreamer();
                     else
                     {
                       reader = m_CachedReader;
-                      if (reader==null) 
+                      if (reader==null)
                       {
                         reader = m_Format.MakeReadingStreamer();
                         m_CachedReader = reader;
@@ -282,7 +283,7 @@ namespace NFX.Serialization.Slim
               {
                 ts_pools = new RefPool[8];
                 for(var i=0; i<ts_pools.Length; i++)
-                 ts_pools[i] = new RefPool(); 
+                 ts_pools[i] = new RefPool();
                 ts_poolFreeIdx = 0;
               }
 
@@ -308,40 +309,40 @@ namespace NFX.Serialization.Slim
 
 
             private void serialize(SlimWriter writer, object root, RefPool pool)
-            {                           
-               if (root is Type)        
+            {
+               if (root is Type)
                  root = new rootTypeBox{ TypeValue = (Type)root};
 
                var scontext = new StreamingContext();
                var registry = (m_TypeMode == TypeRegistryMode.PerCall) ? new TypeRegistry(m_GlobalTypes) : m_BatchTypeRegistry;
                var type = root!=null? root.GetType() : typeof(object);
                var isValType = type.IsValueType;
-                               
-               
+
+
                  writeHeader(writer);
                  var rcount = registry.Count;
                  m_BatchTypeRegistryPriorCount = rcount;
-                
+
                  if (!m_SkipTypeRegistryCrosschecks)
                  {
                     writer.Write( (uint)rcount );
                     writer.Write( registry.CSum );
-                 }      
-                                            
+                 }
+
 
                  //Write root in pool if it is reference type
                  if (!isValType && root!=null)
                    pool.Add(root);
-               
+
                  m_Format.TypeSchema.Serialize(writer, registry, pool, root, scontext);
 
-                 
+
                  if (root==null) return;
 
                  var i = 1;
 
                  if (!isValType) i++;
-                     
+
                  //Write all the rest of objects. The upper bound of this loop may increase as objects are written
                  //0 = NULL
                  //1 = root IF root is ref type
@@ -351,7 +352,7 @@ namespace NFX.Serialization.Slim
                     var instance = pool[i];
                     var tinst = instance.GetType();
                     if (!m_Format.IsRefTypeSupported(tinst))
-                      ts.Serialize(writer, registry, pool, instance, scontext); 
+                      ts.Serialize(writer, registry, pool, instance, scontext);
                  }
 
             }
@@ -362,11 +363,11 @@ namespace NFX.Serialization.Slim
 
                var scontext = new StreamingContext();
                var registry = (m_TypeMode == TypeRegistryMode.PerCall) ? new TypeRegistry(m_GlobalTypes) : m_BatchTypeRegistry;
-          
+
                {
                  var rcount = registry.Count;
                  m_BatchTypeRegistryPriorCount = rcount;
-                 
+
                  readHeader(reader);
                  if (!m_SkipTypeRegistryCrosschecks)
                  {
@@ -376,13 +377,13 @@ namespace NFX.Serialization.Slim
                         throw new SlimDeserializationException(StringConsts.SLIM_TREG_CSUM_ERROR);
                  }
 
-                 //Read root                  
+                 //Read root
                  //Deser will add root to pool[1] if its ref-typed
                  //------------------------------------------------
                  root = m_Format.TypeSchema.DeserializeRootOrInner(reader, registry, pool, scontext, root: true );
                  if (root==null) return null;
                  if (root is rootTypeBox) return ((rootTypeBox)root).TypeValue;
-                 
+
 
                  var type = root.GetType();
                  var isValType = type.IsValueType;
@@ -390,7 +391,7 @@ namespace NFX.Serialization.Slim
                  var i = 1;
 
                  if (!isValType) i++;
-                     
+
                  //Read all the rest of objects. The upper bound of this loop may increase as objects are read and their references added to pool
                  //0 = NULL
                  //1 = root IF root is ref type
@@ -401,7 +402,7 @@ namespace NFX.Serialization.Slim
                     var instance = pool[i];
                     var tinst = instance.GetType();
                     if (!m_Format.IsRefTypeSupported(tinst))
-                      ts.DeserializeRefTypeInstance(instance, reader, registry, pool, scontext); 
+                      ts.DeserializeRefTypeInstance(instance, reader, registry, pool, scontext);
                  }
 
                }
@@ -410,14 +411,14 @@ namespace NFX.Serialization.Slim
                //---------------------------------------------
                var fxps = pool.Fixups;
                for(var i=0; i<fxps.Count;i++)
-               {                            
-                 var fixup = fxps[i];  
+               {
+                 var fixup = fxps[i];
                  var t = fixup.Instance.GetType();
                  var ctor = SerializationUtils.GetISerializableCtorInfo(t);
                  if (ctor==null)
-                  throw new SlimDeserializationException(StringConsts.SLIM_ISERIALIZABLE_MISSING_CTOR_ERROR + t.FullName); 
+                  throw new SlimDeserializationException(StringConsts.SLIM_ISERIALIZABLE_MISSING_CTOR_ERROR + t.FullName);
                  ctor.Invoke(fixup.Instance, new object[]{ fixup.Info, scontext} );
-               }  
+               }
 
 
                //20150214 DD - fixing deserialization problem of Dictionary(InvariantStringComparer)
@@ -447,8 +448,8 @@ namespace NFX.Serialization.Slim
                     throw new SlimDeserializationException(StringConsts.SLIM_DESERIALIZE_CALLBACK_ERROR + error.ToMessageWithType(), error);
                  }
                }
-               
-               
+
+
 
                return root;
             }
@@ -479,7 +480,7 @@ namespace NFX.Serialization.Slim
                         }
 
         #endregion
-   
+
     }
 
 

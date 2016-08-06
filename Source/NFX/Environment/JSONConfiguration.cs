@@ -72,7 +72,7 @@ namespace NFX.Environment
 
         return result;
       }
-    
+
 
     #endregion
 
@@ -114,7 +114,7 @@ namespace NFX.Environment
         var data = ToConfigurationJSONDataMap();
         return JSONWriter.Write(data, options);
       }
-      
+
 
       public override void Refresh()
       {
@@ -126,14 +126,14 @@ namespace NFX.Environment
       {
         SaveAs(m_FileName);
       }
-    
+
       public override string ToString()
       {
         return SaveToString();
       }
 
     #endregion
-    
+
     #region Private Utils
 
         private void readFromFile()
@@ -152,7 +152,7 @@ namespace NFX.Environment
         {
           if (data==null || data.Count==0 || data.Count>1)
             throw new ConfigException(StringConsts.CONFIG_JSON_MAP_ERROR);
-          
+
           var root = data.First();
           var sect = root.Value as JSONDataMap;
           if (sect==null)
@@ -168,7 +168,7 @@ namespace NFX.Environment
           var value = sectData[SECTION_VALUE_ATTR].AsString();
           ConfigSectionNode result = parent==null ? new ConfigSectionNode(this, null, name, value)
                                                   : parent.AddChildNode(name, value);
-          
+
           foreach(var kvp in sectData)
           {
             if (kvp.Value is JSONDataMap)

@@ -27,7 +27,7 @@ using NFX.Environment;
 
 namespace NFX.CodeAnalysis.Laconfig
 {
-    
+
     /// <summary>
     /// Specifies how Laconic configuration should be written as text. Use LaconfigWritingOptions.Compact or LaconfigWritingOptions.PrettyPrint
     ///  static properties for typical options
@@ -64,21 +64,21 @@ namespace NFX.CodeAnalysis.Laconfig
         [Config]
         public bool DontWriteRootSectionDeclaration;
 
-        
+
         public void Configure(IConfigSectionNode node)
         {
             ConfigAttribute.Apply(this, node);
         }
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// Writes Laconic Configuration into a stream or string
     /// </summary>
     public static class LaconfigWriter
     {
-        
+
         /// <summary>
         /// Writes LaconicConfiguration data to the stream
         /// </summary>
@@ -96,7 +96,7 @@ namespace NFX.CodeAnalysis.Laconfig
                 writer.Write( Write(data, options) );
         }
 
-        
+
         /// <summary>
         /// Writes LaconicConfiguration data to the string
         /// </summary>
@@ -150,9 +150,9 @@ namespace NFX.CodeAnalysis.Laconfig
         }
 
 
-                    
+
                 #region .pvt .impl
-                    
+
                         private static void writeSection(StringBuilder sb, IConfigSectionNode section, int level, LaconfigWritingOptions opt)
                         {
                             var writeSectionDecl = section.Parent.Exists || !opt.DontWriteRootSectionDeclaration;
@@ -160,13 +160,13 @@ namespace NFX.CodeAnalysis.Laconfig
                             if (writeSectionDecl)
                             {
                               if (opt.SectionLineBreak && section.Parent.Exists)
-                              { 
+                              {
                                 sb.AppendLine();
                                 sb.Append(Indent(level, opt));
                               }
                            //   else sb.Append(' ');
-                           
-                              writeString(sb, section.Name);   
+
+                              writeString(sb, section.Name);
                               var value = section.VerbatimValue;
                               if (value.IsNotNullOrWhiteSpace())
                               {
@@ -175,7 +175,7 @@ namespace NFX.CodeAnalysis.Laconfig
                               }
 
                               if (opt.SectionLineBreak)
-                              { 
+                              {
                                 sb.AppendLine();
                                 sb.Append(Indent(level, opt));
                               }
@@ -186,18 +186,18 @@ namespace NFX.CodeAnalysis.Laconfig
                             foreach(var anode in section.Attributes)
                             {
                                 if (opt.AttributeLineBreak)
-                                { 
+                                {
                                   sb.AppendLine();
                                   sb.Append(Indent(level+1, opt));
                                 }
                                 else if (wasAttr) sb.Append(' ');
 
                                 wasAttr = true;
-                                writeString(sb, anode.Name);   
+                                writeString(sb, anode.Name);
                                 sb.Append("=");
                                 writeString(sb, anode.VerbatimValue);
                             }
-                            
+
                             bool wasChild = false;
                             foreach(var csect in section.Children)
                             {
@@ -210,7 +210,7 @@ namespace NFX.CodeAnalysis.Laconfig
                             if (writeSectionDecl)
                             {
                               if (opt.SectionLineBreak)
-                              { 
+                              {
                                 sb.AppendLine();
                                 sb.Append(Indent(level, opt));
                               }
@@ -252,19 +252,19 @@ namespace NFX.CodeAnalysis.Laconfig
                                     case (char)CharCodes.CR:        { buf.Append(@"\r"); quotes = true; break; }
                                     case (char)CharCodes.Tab:       { buf.Append(@"\t"); quotes = true; break; }
                                     case (char)CharCodes.VerticalQuote: { buf.Append(@"\v"); quotes = true; break; }
-                                    
+
                                     case '"':  { buf.Append(@"\"""); quotes = true; break; }
 
                                     case ' ':
                                     case '{':
                                     case '}':
                                     case '=': { buf.Append(c); quotes = true; break;}
-                                    
+
                                     default: { buf.Append(c); break;}
                                 }
 
                           }//for
-                          
+
                           if (quotes)
                           {
                                 sb.Append('"');
@@ -273,7 +273,7 @@ namespace NFX.CodeAnalysis.Laconfig
                           }
                           else
                                 sb.Append(buf);
-                          
+
                         }
 
 

@@ -45,7 +45,7 @@ namespace NFX.Web.Pay.Mock
 
       public const string CONFIG_ACCOUNT_NUMBER_ATTR = "account-number";
       public const string CONFIG_ROUTING_NUMBER_ATTR = "routing-number";
-      public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type"; 
+      public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type";
 
     #endregion
 

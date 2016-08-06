@@ -52,14 +52,14 @@ namespace NFX.Log.Destinations
             }
 
        #endregion
-        
+
        #region Pvt/Protected Fields
 
             private bool m_Colored;
             private string m_LogTimeFormat = DEF_LOG_TIME_FORMAT;
 
-       #endregion 
-        
+       #endregion
+
 
        #region Properties
 
@@ -85,7 +85,7 @@ namespace NFX.Log.Destinations
 
        #endregion
 
-      #region Protected /.pvt 
+      #region Protected /.pvt
 
             protected internal override void DoSend(Message msg)
             {
@@ -111,7 +111,7 @@ namespace NFX.Log.Destinations
                               msg.TimeStamp.ToString(m_LogTimeFormat),
                               msg.Type,
                               msg.Source,
-                              msg.From, 
+                              msg.From,
                               msg.Text);
             }
       #endregion

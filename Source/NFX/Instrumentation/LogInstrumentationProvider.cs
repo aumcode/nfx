@@ -35,12 +35,12 @@ namespace NFX.Instrumentation
 
         }
        #endregion
-      
-      
-        
+
+
+
         public override void Write(Datum aggregatedDatum)
         {
-           App.Log.Write( toMsg(aggregatedDatum) ); 
+           App.Log.Write( toMsg(aggregatedDatum) );
         }
 
 
@@ -49,11 +49,11 @@ namespace NFX.Instrumentation
           var msg = new Message
           {
             Type = MessageType.PerformanceInstrumentation,
-            Topic = CoreConsts.INSTRUMENTATIONSVC_TOPIC, 
+            Topic = CoreConsts.INSTRUMENTATIONSVC_TOPIC,
             From = datum.GetType().FullName,
-            Text = datum.ToString() 
+            Text = datum.ToString()
           };
-          
+
           return msg;
         }
 

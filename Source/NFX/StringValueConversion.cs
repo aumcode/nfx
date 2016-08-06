@@ -29,7 +29,7 @@ namespace NFX
     /// </summary>
     public static class StringValueConversion
     {
-        
+
          /// <summary>
          /// Used by env var macros evaluator do not remove
          /// </summary>
@@ -61,7 +61,7 @@ namespace NFX
                 var segs = val.Split(BYTE_ARRAY_SPLIT_CHARS, StringSplitOptions.RemoveEmptyEntries);
                 foreach(var seg in segs)
                  result.Add( byte.Parse(seg, NumberStyles.HexNumber));
-                
+
                 return result.ToArray();
               }
               catch
@@ -70,7 +70,7 @@ namespace NFX
               }
          }
 
-        
+
          public static GDID AsGDID(this string val, GDID? dflt = null)
          {
               if (dflt.HasValue)
@@ -82,6 +82,19 @@ namespace NFX
          public static GDID? AsNullableGDID(this string val, GDID? dflt = null)
          {
               return ObjectValueConversion.AsNullableGDID(val, dflt);
+         }
+
+         public static GDIDSymbol AsGDIDSymbol(this string val, GDIDSymbol? dflt = null)
+         {
+              if (dflt.HasValue)
+                return ObjectValueConversion.AsGDIDSymbol(val, dflt.Value);
+              else
+                return ObjectValueConversion.AsGDIDSymbol(val);
+         }
+
+         public static GDIDSymbol? AsNullableGDIDSymbol(this string val, GDIDSymbol? dflt = null)
+         {
+              return ObjectValueConversion.AsNullableGDIDSymbol(val, dflt);
          }
 
 
@@ -132,7 +145,7 @@ namespace NFX
          {
               return ObjectValueConversion.AsInt(val, dflt);
          }
-            
+
          public static int? AsNullableInt(this string val, int? dflt = 0)
          {
               return ObjectValueConversion.AsNullableInt(val, dflt);
@@ -142,7 +155,7 @@ namespace NFX
          {
               return ObjectValueConversion.AsUInt(val, dflt);
          }
-            
+
          public static uint? AsNullableUInt(this string val, uint? dflt = 0)
          {
               return ObjectValueConversion.AsNullableUInt(val, dflt);
@@ -153,7 +166,7 @@ namespace NFX
          {
               return ObjectValueConversion.AsLong(val, dflt);
          }
-            
+
          public static long? AsNullableLong(this string val, long? dflt = 0)
          {
              return ObjectValueConversion.AsNullableLong(val, dflt);
@@ -163,7 +176,7 @@ namespace NFX
          {
               return ObjectValueConversion.AsULong(val, dflt);
          }
-            
+
          public static ulong? AsNullableULong(this string val, ulong? dflt = 0)
          {
              return ObjectValueConversion.AsNullableULong(val, dflt);
@@ -174,18 +187,18 @@ namespace NFX
          {
              return ObjectValueConversion.AsDouble(val, dflt);
          }
-          
+
          public static double? AsNullableDouble(this string val, double? dflt = 0d)
          {
              return ObjectValueConversion.AsNullableDouble(val, dflt);
          }
 
-         
+
          public static float AsFloat(this string val, float dflt = 0f)
          {
              return ObjectValueConversion.AsFloat(val, dflt);
          }
-         
+
          public static float? AsNullableFloat(this string val, float? dflt = 0f)
          {
             return ObjectValueConversion.AsNullableFloat(val, dflt);
@@ -197,7 +210,7 @@ namespace NFX
             return ObjectValueConversion.AsDecimal(val, dflt);
          }
 
-            
+
          public static decimal? AsNullableDecimal(this string val, decimal? dflt = 0m)
          {
             return ObjectValueConversion.AsNullableDecimal(val, dflt);
@@ -208,7 +221,7 @@ namespace NFX
          {
             return ObjectValueConversion.AsBool(val, dflt);
          }
-            
+
          public static bool? AsNullableBool(this string val, bool? dflt = false)
          {
             return ObjectValueConversion.AsNullableBool(val, dflt);
@@ -219,7 +232,7 @@ namespace NFX
          {
             return ObjectValueConversion.AsGUID(val, dflt);
          }
-            
+
          public static Guid? AsNullableGUID(this string val, Guid? dflt = null)
          {
             return ObjectValueConversion.AsNullableGUID(val, dflt);
@@ -266,10 +279,15 @@ namespace NFX
          {
             return ObjectValueConversion.AsEnum<TEnum>(val, dflt);
          }
-         
+
          public static TEnum? AsNullableEnum<TEnum>(this string val, TEnum? dflt = null) where TEnum : struct
          {
             return ObjectValueConversion.AsNullableEnum<TEnum>(val, dflt);
+         }
+
+         public static Uri AsUri(this string val, Uri dflt = null)
+         {
+            return ObjectValueConversion.AsUri(val, dflt);
          }
 
 
@@ -292,6 +310,16 @@ namespace NFX
                    {typeof(TimeSpan) , (val, strict) => strict ? TimeSpan.Parse(val) : AsTimeSpanOrThrow(val) },
                    {typeof(DateTime) , (val, strict) => strict ? DateTime.Parse(val) : AsDateTimeOrThrow(val) },
                    {typeof(GDID)     , (val, strict) => strict ? GDID.Parse(val) : AsGDID(val) },
+                   {typeof(GDIDSymbol),
+                                         (val, strict) =>
+                                         {
+                                           if (strict)
+                                           {
+                                             var gdid = GDID.Parse(val);
+                                             return new GDIDSymbol(gdid, val);
+                                           }
+                                           return  AsGDIDSymbol(val);
+                                         }},
                    {typeof(Guid)     , (val, strict) => strict ? Guid.Parse(val) : AsGUID(val, Guid.Empty) },
                    {typeof(byte[])   , (val, strict) => AsByteArray(val)},
 
@@ -310,12 +338,24 @@ namespace NFX
                    {typeof(TimeSpan?), (val, strict) => string.IsNullOrWhiteSpace(val) ? (TimeSpan?)null : (strict ? TimeSpan.Parse(val) : AsNullableTimeSpan(val)) },
                    {typeof(DateTime?), (val, strict) => string.IsNullOrWhiteSpace(val) ? (DateTime?)null : (strict ? DateTime.Parse(val) : AsNullableDateTime(val)) },
                    {typeof(GDID?),     (val, strict) => string.IsNullOrWhiteSpace(val) ? (GDID?)null     : (strict ? GDID.Parse(val) : AsGDID(val)) },
-                   {typeof(Guid?),     (val, strict) => string.IsNullOrWhiteSpace(val) ? (Guid?)null     : (strict ? Guid.Parse(val) : AsGUID(val, Guid.Empty)) }
+                   {typeof(GDIDSymbol?),
+                                       (val, strict) =>
+                                       {
+                                         if (string.IsNullOrWhiteSpace(val)) return (GDIDSymbol?)null;
+                                         if (strict)
+                                         {
+                                           var gdid = GDID.Parse(val);
+                                           return new GDIDSymbol(gdid, val);
+                                         }
+                                         return AsGDIDSymbol(val);
+                                        }},
+                   {typeof(Guid?),     (val, strict) => string.IsNullOrWhiteSpace(val) ? (Guid?)null     : (strict ? Guid.Parse(val) : AsGUID(val, Guid.Empty)) },
+                   {typeof(Uri),       (val, strict) => string.IsNullOrWhiteSpace(val) ? (Uri)null       : (strict ? new Uri(val) : AsUri(val)) }
               };
-              
-              
-              
-              
+
+
+
+
               /// <summary>
               /// Tries to get a string value as specified type.
               /// When 'strict=false', tries to do some inference like return "true" for numbers that dont equal to zero etc.
@@ -327,7 +367,7 @@ namespace NFX
                 {
                     Func<string, bool, object> func = null;
                     if (s_CONV.TryGetValue(tp, out func)) return func(val, strict);
-                    
+
                     if (tp.IsEnum)
                     {
                       return Enum.Parse(tp, val, true);
@@ -337,8 +377,8 @@ namespace NFX
                     {
                           var v = val;
                           if (string.IsNullOrWhiteSpace(v)) return null;
-                      
-                      
+
+
                           var gargs = tp.GetGenericArguments();
                           if (gargs.Length==1)
                           {
@@ -358,7 +398,7 @@ namespace NFX
                 }
 
                 throw new NFXException(string.Format(StringConsts.STRING_VALUE_COULD_NOT_BE_GOTTEN_AS_TYPE_ERROR,
-                                                        val ?? StringConsts.NULL_STRING, tp.FullName)); 
+                                                        val ?? StringConsts.NULL_STRING, tp.FullName));
               }
 
 

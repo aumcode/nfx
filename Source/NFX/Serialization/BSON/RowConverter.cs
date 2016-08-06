@@ -54,20 +54,20 @@ namespace NFX.Serialization.BSON
           { typeof(bool),     (n, v) => n != null ? new BSONBooleanElement(n, (bool)v) : new BSONBooleanElement((bool)v) },
           { typeof(int),      (n, v) => n != null ? new BSONInt32Element(n, (int)v) : new BSONInt32Element((int)v) },
           { typeof(uint),     (n, v) => n != null ? new BSONInt64Element(n, (uint)v) : new BSONInt64Element((uint)v) },
-          { typeof(byte),     (n, v) => n != null ? new BSONInt32Element(n, (byte)v) : new BSONInt32Element((byte)v) }, 
-          { typeof(sbyte),    (n, v) => n != null ? new BSONInt32Element(n, (sbyte)v) : new BSONInt32Element((sbyte)v) }, 
-          { typeof(short),    (n, v) => n != null ? new BSONInt32Element(n, (short)v) : new BSONInt32Element((short)v) }, 
-          { typeof(ushort),   (n, v) => n != null ? new BSONInt32Element(n, (ushort)v) : new BSONInt32Element((ushort)v) }, 
-          { typeof(long),     (n, v) => n != null ? new BSONInt64Element(n, (long)v) : new BSONInt64Element((long)v) }, 
-          { typeof(ulong),    (n, v) => n != null ? new BSONInt64Element(n, (long)((ulong)v)) : new BSONInt64Element((long)((ulong)v)) }, 
-          { typeof(float),    (n, v) => n != null ? new BSONDoubleElement(n, (float)v) : new BSONDoubleElement((float)v) }, 
-          { typeof(double),   (n, v) => n != null ? new BSONDoubleElement(n, (double)v) : new BSONDoubleElement((double)v) }, 
+          { typeof(byte),     (n, v) => n != null ? new BSONInt32Element(n, (byte)v) : new BSONInt32Element((byte)v) },
+          { typeof(sbyte),    (n, v) => n != null ? new BSONInt32Element(n, (sbyte)v) : new BSONInt32Element((sbyte)v) },
+          { typeof(short),    (n, v) => n != null ? new BSONInt32Element(n, (short)v) : new BSONInt32Element((short)v) },
+          { typeof(ushort),   (n, v) => n != null ? new BSONInt32Element(n, (ushort)v) : new BSONInt32Element((ushort)v) },
+          { typeof(long),     (n, v) => n != null ? new BSONInt64Element(n, (long)v) : new BSONInt64Element((long)v) },
+          { typeof(ulong),    (n, v) => n != null ? new BSONInt64Element(n, (long)((ulong)v)) : new BSONInt64Element((long)((ulong)v)) },
+          { typeof(float),    (n, v) => n != null ? new BSONDoubleElement(n, (float)v) : new BSONDoubleElement((float)v) },
+          { typeof(double),   (n, v) => n != null ? new BSONDoubleElement(n, (double)v) : new BSONDoubleElement((double)v) },
           { typeof(decimal),  (n, v) => Decimal_CLRtoBSON(n, (decimal)v) },
           { typeof(Amount),   (n, v) => Amount_CLRtoBSON(n, (Amount)v) },
           { typeof(GDID),     (n, v) => GDID_CLRtoBSON(n, (GDID)v) },
-          { typeof(DateTime), (n, v) => n != null ? new BSONDateTimeElement(n, (DateTime)v) : new BSONDateTimeElement((DateTime)v) }, 
-          { typeof(TimeSpan), (n, v) => n != null ? new BSONInt64Element(n, ((TimeSpan)v).Ticks) : new BSONInt64Element(((TimeSpan)v).Ticks) }, 
-          { typeof(Guid),     (n, v) => n != null ? new BSONStringElement(n, ((Guid)v).ToString("N")) : new BSONStringElement(((Guid)v).ToString("N")) }, 
+          { typeof(DateTime), (n, v) => n != null ? new BSONDateTimeElement(n, (DateTime)v) : new BSONDateTimeElement((DateTime)v) },
+          { typeof(TimeSpan), (n, v) => n != null ? new BSONInt64Element(n, ((TimeSpan)v).Ticks) : new BSONInt64Element(((TimeSpan)v).Ticks) },
+          { typeof(Guid),     (n, v) => n != null ? new BSONStringElement(n, ((Guid)v).ToString("N")) : new BSONStringElement(((Guid)v).ToString("N")) },
           { typeof(byte[]),   (n, v) => ByteBuffer_CLRtoBSON(n, (byte[])v ) },
 
           //nullable not needed here since they are not boxed(only actual value is boxed if it is not null)
@@ -110,22 +110,22 @@ namespace NFX.Serialization.BSON
       #endregion
 
     #region Fields
-      
+
         protected Dictionary<Type, Func<string, object, BSONElement>> m_CLRtoBSON;
         protected Dictionary<Type, Func<BSONElement, object>> m_BSONtoCLR;
         private static Dictionary<Schema, Dictionary<string, Schema.FieldDef>> s_TypedRowSchemaCache = new Dictionary<Schema,Dictionary<string, Schema.FieldDef>>();
         [ThreadStatic] private static HashSet<object> ts_References;
-       
+
     #endregion
 
-    
+
 
 
     public virtual void Configure(IConfigSectionNode node) {}
 
 
     /// <summary>
-    /// Makes CRUD Schema out of BSON document. The types of all fields are object as documents do not have 
+    /// Makes CRUD Schema out of BSON document. The types of all fields are object as documents do not have
     ///  a predictable type of every field (they are dynamic and can change form doc to doc)
     /// </summary>
     public virtual Schema InferSchemaFromBSONDocument(BSONDocument doc, string schemaName = null)
@@ -143,29 +143,29 @@ namespace NFX.Serialization.BSON
       return  new Schema(schemaName.IsNotNullOrWhiteSpace() ? schemaName : Guid.NewGuid().ToString(),
                          true,
                          defs.ToArray());
-    } 
+    }
 
 
 
     #region BSONDocumentToRow
-    
+
     /// <summary>
     /// Converts BSON document into Row by filling the supplied row instance making necessary type transforms to
     ///  suit Row.Schema field definitions per target name. If the passed row supports IAmorphousData, then
-    /// the fields either not found in row, or the fields that could not be type-converted to CLR type will be 
+    /// the fields either not found in row, or the fields that could not be type-converted to CLR type will be
     /// stowed in amorphous data dictionary
     /// </summary>
     public virtual void BSONDocumentToRow(BSONDocument doc, Row row, string targetName, bool useAmorphousData = true, Func<BSONDocument, BSONElement, bool> filter = null)
-    {                
+    {
       if (doc==null || row==null) throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONDocumentToRow(doc|row=null)");
-         
+
       var amrow = row as IAmorphousData;
 
       foreach(var elm in doc)
       {
         if (filter!=null)
           if (!filter(doc, elm)) continue;
-           
+
         // 2015.03.01 Introduced caching
         var fld = MapBSONFieldNameToSchemaFieldDef(row.Schema, targetName, elm.Name);
 
@@ -173,7 +173,7 @@ namespace NFX.Serialization.BSON
         if (fld==null)
         {
             if (amrow!=null && useAmorphousData && amrow.AmorphousDataEnabled)
-              SetAmorphousFieldAsCLR(amrow, elm, targetName, filter); 
+              SetAmorphousFieldAsCLR(amrow, elm, targetName, filter);
             continue;
         }
 
@@ -218,7 +218,7 @@ namespace NFX.Serialization.BSON
             return mapBSONFieldNameToSchemaFieldDef(schema, targetName, bsonFieldName);
 
           if (targetName==null) targetName = FieldAttribute.ANY_TARGET;
-               
+
           Dictionary<string, Schema.FieldDef> byName;
           if (!s_TypedRowSchemaCache.TryGetValue(schema, out byName)) byName = null;//safeguard
 
@@ -238,7 +238,7 @@ namespace NFX.Serialization.BSON
 
                 private static Schema.FieldDef mapBSONFieldNameToSchemaFieldDef(Schema schema, string targetName, string bsonFieldName)
                 {
-                    return schema.FirstOrDefault( fd => 
+                    return schema.FirstOrDefault( fd =>
                                                  {
                                                    var match = fd.GetBackendNameForTarget(targetName).EqualsOrdIgnoreCase( bsonFieldName );
                                                    if (!match) return false;
@@ -252,7 +252,7 @@ namespace NFX.Serialization.BSON
                 {
                   object clrValue;
                   if (!TryConvertBSONtoCLR(typeof(object), bsonElement, targetName, out clrValue, filter)) return false;
-                  amorph.AmorphousData[bsonElement.Name] = clrValue;   
+                  amorph.AmorphousData[bsonElement.Name] = clrValue;
                   return true;
                 }
 
@@ -262,7 +262,7 @@ namespace NFX.Serialization.BSON
         /// </summary>
         protected virtual bool TryConvertBSONtoCLR(Type target, BSONElement element, string targetName, out object clrValue, Func<BSONDocument, BSONElement, bool> filter)
         {
-          if (element==null || element is BSONNullElement) 
+          if (element==null || element is BSONNullElement)
           {
             clrValue = null;
             return true;
@@ -285,12 +285,12 @@ namespace NFX.Serialization.BSON
             var tr = (TypedRow)Activator.CreateInstance(target);
             BSONDocumentToRow(doc, tr, targetName, filter: filter);
             clrValue = tr;
-            return true; 
+            return true;
           }
 
           //ARRAY
-          if (target.IsArray && 
-              target.GetArrayRank()==1 && 
+          if (target.IsArray &&
+              target.GetArrayRank()==1 &&
               target!=typeof(byte[]))//exclude byte[] as it is treated with m_BSONtoCLR
           {
             var bsonArrayElement = element as BSONArrayElement;
@@ -299,12 +299,12 @@ namespace NFX.Serialization.BSON
             var telm = target.GetElementType();
             var clrArray = Array.CreateInstance(telm, arr.Length);
             for(var i=0; i<arr.Length; i++)
-            { 
+            {
               object clrElement;
               if (!TryConvertBSONtoCLR(telm, arr[i], targetName, out clrElement, filter))
               {
                 return false;//could not convert some element of array
-              } 
+              }
               clrArray.SetValue(clrElement, i);
             }
 
@@ -327,13 +327,13 @@ namespace NFX.Serialization.BSON
               if (!TryConvertBSONtoCLR(telm, arr[i], targetName, out clrElement, filter))
               {
                 return false;//could not convert some element of array into element of List<t>
-              } 
+              }
               clrList.Add( clrElement );
             }
 
             clrValue = clrList;
             return true;
-          } 
+          }
 
           //JSONDataMap
           if (target==typeof(JSONDataMap))
@@ -359,7 +359,7 @@ namespace NFX.Serialization.BSON
 
           //Primitive type-targeted value
           Func<BSONElement, object> func;
-          if (m_BSONtoCLR.TryGetValue(target, out func)) 
+          if (m_BSONtoCLR.TryGetValue(target, out func))
           {
             try
             {
@@ -382,7 +382,7 @@ namespace NFX.Serialization.BSON
         protected virtual object DirectConvertBSONValue(BSONElement element, Func<BSONDocument, BSONElement, bool> filter = null)
         {
           if (element==null || element is BSONNullElement) return null;
-          
+
           if (element.ElementType == BSONElementType.Document) return BSONDocumentToJSONMap(((BSONDocumentElement)element).Value, filter);
 
           if (element.ElementType == BSONElementType.Array)
@@ -393,7 +393,7 @@ namespace NFX.Serialization.BSON
               lst.Add( DirectConvertBSONValue(elm, filter) );
             return lst.ToArray();
           }
-         
+
           switch (element.ElementType)
           {
             case BSONElementType.ObjectID: return ((BSONObjectIDElement)element).Value.AsGDID;
@@ -404,7 +404,7 @@ namespace NFX.Serialization.BSON
         }
 
         /// <summary>
-        /// Converts BSON document to JSON data map by directly mapping 
+        /// Converts BSON document to JSON data map by directly mapping
         ///  BSON types into corresponding CLR types. The sub-documents get mapped into JSONDataObjects,
         ///   and BSON arrays get mapped into CLR object[]
         /// </summary>
@@ -462,14 +462,14 @@ namespace NFX.Serialization.BSON
         {
             var attr = field[targetName];
             if (attr!=null && attr.StoreFlag!=StoreFlag.OnlyStore && attr.StoreFlag!=StoreFlag.LoadAndStore) continue;
-           
+
             if (filter!=null)//20160210 Dkh+SPol
             {
               if (!filter(row, null, field)) continue;
             }
 
             var el = GetFieldAsBSON(row, field, targetName);
-            result.Set( el ); 
+            result.Set( el );
         }
 
         if (amrow!=null && useAmorphousData && amrow.AmorphousDataEnabled)
@@ -479,7 +479,7 @@ namespace NFX.Serialization.BSON
           }
 
         return name != null ? new BSONDocumentElement(name, result) : new BSONDocumentElement(result);
-      } 
+      }
 
       /// <summary>
       /// Converts CLR value to BSON. The following values are supported:
@@ -494,12 +494,12 @@ namespace NFX.Serialization.BSON
         if (tp.IsValueType)
           return DoConvertCLRtoBSON(fieldName, data, tp, targetName);
 
-        if (ts_References==null) 
+        if (ts_References==null)
             ts_References = new HashSet<object>(NFX.ReferenceEqualityComparer<object>.Instance);
-          
+
         if (ts_References.Contains(data))
             throw new BSONException(StringConsts.CLR_BSON_CONVERSION_REFERENCE_CYCLE_ERROR.Args(tp.FullName));
-          
+
         ts_References.Add( data );
         try
         {
@@ -523,7 +523,7 @@ namespace NFX.Serialization.BSON
             var name = field.GetBackendNameForTarget(targetName);
             var fvalue = row.GetFieldValue(field);
             var el = ConvertCLRtoBSON(name, fvalue, targetName);
-            return el;  
+            return el;
           }
 
           /// <summary>
@@ -583,7 +583,7 @@ namespace NFX.Serialization.BSON
 
         public static BSONInt64Element Decimal_CLRtoBSON(string name, decimal v)
         {
-          if (v<MIN_DECIMAL || v>MAX_DECIMAL) 
+          if (v<MIN_DECIMAL || v>MAX_DECIMAL)
             throw new BSONException(StringConsts.DECIMAL_OUT_OF_RANGE_ERROR.Args(v, MIN_DECIMAL, MAX_DECIMAL));
 
           var lv = (long)decimal.Truncate(v * DECIMAL_LONG_MUL);
@@ -596,7 +596,7 @@ namespace NFX.Serialization.BSON
           var valEl = Decimal_CLRtoBSON("v", amount.Value);
           var doc = new BSONDocument();
           doc.Set(curEl).Set(valEl);
-         
+
           return name != null ? new BSONDocumentElement(name, doc) : new BSONDocumentElement(doc);
         }
 
@@ -615,7 +615,7 @@ namespace NFX.Serialization.BSON
         {
           if (buf.Length > MAX_BYTE_BUFFER_SIZE)
           throw new BSONException(StringConsts.BUFFER_LONGER_THAN_ALLOWED_ERROR.Args(buf.Length, MAX_BYTE_BUFFER_SIZE));
-           
+
           var bsonBin = new BSONBinary(BSONBinaryType.GenericBinary, buf);
           return name != null ? new BSONBinaryElement(name, bsonBin) : new BSONBinaryElement(bsonBin);
         }
@@ -627,7 +627,7 @@ namespace NFX.Serialization.BSON
         public static decimal Decimal_BSONtoCLR(BSONInt64Element el)
         {
           return el.Value / DECIMAL_LONG_MUL;
-        } 
+        }
 
         public static Amount Amount_BSONtoCLR(BSONDocumentElement el)
         {

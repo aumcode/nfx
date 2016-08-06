@@ -39,8 +39,8 @@ namespace NFX.WinForms
 
 
     public const string END_UPDATE_MISMATCH_ERROR =
-        "A call to EndUpdate() was mismatched";  
-        
+        "A call to EndUpdate() was mismatched";
+
     public const string ERROR_BALLOON_TEXT =
      "Error in field: \"{0}\" \n {1}";
 
@@ -68,10 +68,10 @@ namespace NFX.WinForms
 
 
     public const string COLUMN_ID_EXISTS_GRID_ERROR =
-          "Column already exists with ID: ";   
-          
+          "Column already exists with ID: ";
+
     public const string COLUMN_ARE_REPOSITIONING_GRID_ERROR =
-          "Column are repositioning and column list can not be changed now";                      
-        
+          "Column are repositioning and column list can not be changed now";
+
   }
 }

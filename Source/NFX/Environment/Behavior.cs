@@ -23,11 +23,11 @@ using System.Text;
 namespace NFX.Environment
 {
 
-#pragma warning disable 0649,0169  
-    
+#pragma warning disable 0649,0169
+
     /// <summary>
     /// Represents a piece of logic that can be applied to different entities declaratively as attribute or through configuration.
-    /// Behaviors are a form of inversion-of-control that allows to configure entities by code which itself can be injected by name from configuration. 
+    /// Behaviors are a form of inversion-of-control that allows to configure entities by code which itself can be injected by name from configuration.
     /// Behaviors are a form of aspect-oriented programming as they allow to proclaim certain "behavior" that knows how to implement itself on various
     ///  application components (i.e. some behavior may inject Glue message inspector or log destination).
     /// Behaviors can be used to enforce policies by performing pre-run checks  and throw exceptions if certain required providers are not injected/configured
@@ -50,14 +50,14 @@ namespace NFX.Environment
           {
               if (target==null) return;
               if (typeof(Behavior).IsAssignableFrom(target.GetType())) return;
-              
+
               string descr = string.Empty;
               try
               {
                   var firstLevel = true;
-             
+
                   while(node.Exists)
-                  {  
+                  {
                         var bnodes = node[CONFIG_BEHAVIORS_SECTION]
                                           .Children
                                           .Where(c=> c.IsSameName(CONFIG_BEHAVIOR_SECTION) && (firstLevel || c.AttrByName(CONFIG_CASCADE_ATTR).ValueAsBool(false)) )
@@ -67,16 +67,16 @@ namespace NFX.Environment
                             descr = " config path: '{0}', type: '{1}'".Args(bnode.RootPath, bnode.AttrByName(FactoryUtils.CONFIG_TYPE_ATTR).ValueAsString(StringConsts.NULL_STRING));
                             var behavior = FactoryUtils.MakeAndConfigure<Behavior>(bnode);
                             behavior.Apply(target);
-                        }      
-                    
-                        node = node.Parent; 
-                        firstLevel = false;  
+                        }
+
+                        node = node.Parent;
+                        firstLevel = false;
                  }
              }
              catch(Exception error)
              {
                 throw new BehaviorApplyException(StringConsts.CONFIG_BEHAVIOR_APPLY_ERROR.Args(descr, error.ToMessageWithType()), error);
-             }                
+             }
           }
 
           /// <summary>
@@ -98,7 +98,7 @@ namespace NFX.Environment
         #endregion
 
 
-        protected Behavior() 
+        protected Behavior()
         {
 
         }
@@ -131,7 +131,7 @@ namespace NFX.Environment
         /// </summary>
         public abstract void Apply(object target);
 
-      
+
         public virtual void Configure(IConfigSectionNode node)
         {
             ConfigAttribute.Apply(this, node);

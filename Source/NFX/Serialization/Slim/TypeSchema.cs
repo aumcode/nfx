@@ -29,23 +29,24 @@ using NFX.IO;
 
 namespace NFX.Serialization.Slim
 {
-    internal delegate void dyn_serialize(TypeSchema schema, SlimWriter writer, TypeRegistry tregistry, RefPool refs, object instance, StreamingContext context); 
-    internal delegate void dyn_deserialize(TypeSchema schema, SlimReader reader, TypeRegistry tregistry, RefPool refs, ref object instance, StreamingContext context); 
-    
-    
+    internal delegate void dyn_serialize(TypeSchema schema, SlimWriter writer, TypeRegistry tregistry, RefPool refs, object instance, StreamingContext context);
+    internal delegate void dyn_deserialize(TypeSchema schema, SlimReader reader, TypeRegistry tregistry, RefPool refs, ref object instance, StreamingContext context);
+
+
     /// <summary>
     /// Type descriptor dynamicaly compiles serialization/deserialization expressions for a particular type
     /// </summary>
     internal class TypeDescriptor
     {
-
-
       public TypeDescriptor(TypeSchema schema, Type type)
       {
+        if (Attribute.IsDefined(type, typeof(SlimSerializationProhibitedAttribute)))
+          throw new SlimSerializationProhibitedException(type);
+
         Schema = schema;
         Format = schema.Format;
         Type = type;
-       
+
         IsPrimitive = Format.IsTypeSupported(type);
         IsArray = type.IsArray;
         IsPrimitiveArray = IsArray && IsPrimitive;
@@ -60,9 +61,9 @@ namespace NFX.Serialization.Slim
           CustomIsSerializable = true;
         }
         else
-        { 
-           m_Serialize = makeSerialize(); 
-           m_Deserialize = makeDeserialize(); 
+        {
+           m_Serialize = makeSerialize();
+           m_Deserialize = makeDeserialize();
         }
 
         //Query for "On..." family of attributes
@@ -81,7 +82,7 @@ namespace NFX.Serialization.Slim
       public readonly bool IsPrimitive;
       public readonly bool IsArray;
       public readonly bool IsPrimitiveArray;
-      
+
       private dyn_serialize m_Serialize;
       private dyn_deserialize m_Deserialize;
 
@@ -95,7 +96,7 @@ namespace NFX.Serialization.Slim
       {
         if (m_MethodsOnSerializing!=null)
           invokeAttributedMethods(m_MethodsOnSerializing, instance, streamingContext);
-        
+
             if (m_Serialize!=null)
             {
                  m_Serialize(Schema, writer, registry, refs, instance, streamingContext);
@@ -117,7 +118,7 @@ namespace NFX.Serialization.Slim
       {
          if (m_MethodsOnDeserializing!=null)
           invokeAttributedMethods(m_MethodsOnDeserializing, instance, streamingContext);
-         
+
             if (m_Deserialize!=null)
             {
                  m_Deserialize(Schema, reader, registry, refs, ref instance, streamingContext);
@@ -133,7 +134,7 @@ namespace NFX.Serialization.Slim
            refs.AddOnDeserializedCallback(instance, this);
         }
       }
-      
+
 
       public void InvokeOnDeserializedCallbak(object instance, StreamingContext streamingContext )
       {
@@ -157,7 +158,7 @@ namespace NFX.Serialization.Slim
            private dyn_serialize makeSerialize()
            {
              var _walkArrayWrite = typeof(TypeDescriptor).GetMethod("walkArrayWrite", BindingFlags.NonPublic | BindingFlags.Static);
-            
+
               var pSchema   = Expression.Parameter(typeof(TypeSchema));
               var pWriter   = Expression.Parameter(typeof(SlimWriter));
               var pTReg     = Expression.Parameter(typeof(TypeRegistry));
@@ -168,7 +169,7 @@ namespace NFX.Serialization.Slim
               var expressions = new List<Expression>();
 
               var instance = Expression.Variable(Type, "instance");
-              
+
               expressions.Add( Expression.Assign(instance, Expression.Convert(pInstance, Type)));
 
 
@@ -184,13 +185,13 @@ namespace NFX.Serialization.Slim
 
                  if (Format.IsTypeSupported(elmType))//array element type
                  {  //spool whole array into writer using primitive types
-                    
+
                     var pElement = Expression.Parameter(typeof(object));
                     expressions.Add( Expression.Call(_walkArrayWrite,
-                                                     instance, 
+                                                     instance,
                                                      Expression.Lambda(Expression.Call(pWriter,
                                                                                       Format.GetWriteMethodForType(elmType),
-                                                                                      Expression.Convert(pElement, elmType)), pElement) 
+                                                                                      Expression.Convert(pElement, elmType)), pElement)
                                                     )
                      );
                  }
@@ -200,7 +201,7 @@ namespace NFX.Serialization.Slim
 
                     if (!elmType.IsValueType)//reference type
                      expressions.Add( Expression.Call(_walkArrayWrite,
-                                                     instance, 
+                                                     instance,
                                                      Expression.Lambda(Expression.Call(pSchema,
                                                                        typeof(TypeSchema).GetMethod("writeRefMetaHandle"),
                                                                         pWriter,
@@ -213,7 +214,7 @@ namespace NFX.Serialization.Slim
                                     );
                     else
                      expressions.Add( Expression.Call(_walkArrayWrite,
-                                                     instance, 
+                                                     instance,
                                                      Expression.Lambda(Expression.Call(pSchema,
                                                                        typeof(TypeSchema).GetMethod("Serialize"),
                                                                        pWriter,
@@ -221,8 +222,8 @@ namespace NFX.Serialization.Slim
                                                                        pRefs,
                                                                        pElement,
                                                                        pStreamingContext,
-                                                                       Expression.Constant(elmType)//valueType 
-                                                                       ), pElement) 
+                                                                       Expression.Constant(elmType)//valueType
+                                                                       ), pElement)
                                               )
                      );
                  }
@@ -232,7 +233,7 @@ namespace NFX.Serialization.Slim
                 foreach(var field in Fields)
                 {
                   Expression expr = null;
-                  Type t = field.FieldType;    
+                  Type t = field.FieldType;
 
                   if (Format.IsTypeSupported(t))
                   {
@@ -240,13 +241,13 @@ namespace NFX.Serialization.Slim
                                            Format.GetWriteMethodForType(t),
                                            Expression.Field(instance, field));
                   }
-/* 20150316 DKh, introduction of Metahandle.InlinedTypeValue                 
+/* 20150316 DKh, introduction of Metahandle.InlinedTypeValue
                   else
                   if (t == typeof(Type))
                   {
                     expr = Expression.IfThenElse(
                                   Expression.Equal(Expression.Field(instance, field), Expression.Constant(null, typeof(Type))),
-                                
+
                                 //then
                                   Expression.Call(pWriter,
                                            Format.GetWriteMethodForType(typeof(string)),
@@ -255,11 +256,11 @@ namespace NFX.Serialization.Slim
                                   Expression.Call(pWriter,
                                            typeof(SlimWriter).GetMethod("Write", new Type[] {typeof(string)}),
                                            Expression.Call(pTReg,
-                                                           typeof(TypeRegistry).GetMethod("GetTypeHandle"), 
-                                                           Expression.Field(instance, field))) 
+                                                           typeof(TypeRegistry).GetMethod("GetTypeHandle"),
+                                                           Expression.Field(instance, field)))
                     );//ifthenelse
                   }
- */ 
+ */
                   else
                   if (t.IsEnum)
                   {
@@ -278,7 +279,7 @@ namespace NFX.Serialization.Slim
                                                pTReg,
                                                pRefs,
                                                Expression.Convert( Expression.Field(instance, field), typeof(object) ),
-                                               pStreamingContext); 
+                                               pStreamingContext);
                     }
                     else
                     expr = Expression.Call(pSchema,
@@ -288,7 +289,7 @@ namespace NFX.Serialization.Slim
                                            pRefs,
                                            Expression.Convert( Expression.Field(instance, field), typeof(object) ),
                                            pStreamingContext,
-                                           Expression.Constant(field.FieldType));//valueType 
+                                           Expression.Constant(field.FieldType));//valueType
 
                   }
 
@@ -296,10 +297,10 @@ namespace NFX.Serialization.Slim
                 }//foreach
                }
 
-              var body = Expression.Block(new ParameterExpression[]{instance}, expressions); 
-                    
+              var body = Expression.Block(new ParameterExpression[]{instance}, expressions);
+
               return Expression.Lambda<dyn_serialize>(body, pSchema, pWriter, pTReg, pRefs, pInstance, pStreamingContext).Compile();
-           }  
+           }
 
              private void serializeInfo(SlimWriter writer, TypeRegistry registry, RefPool refs, SerializationInfo info, StreamingContext streamingContext)
              {
@@ -317,7 +318,7 @@ namespace NFX.Serialization.Slim
              private SerializationInfo deserializeInfo(SlimReader reader, TypeRegistry registry, RefPool refs, StreamingContext streamingContext)
              {
                  var info = new SerializationInfo(Type, new FormatterConverter());
-                 
+
                  var cnt = reader.ReadInt();
 
                  for(int i=0; i<cnt; i++)
@@ -335,17 +336,17 @@ namespace NFX.Serialization.Slim
              }
 
 
-            
 
 
-             private static void walkArrayWrite(Array arr, Action<object> each)  
+
+             private static void walkArrayWrite(Array arr, Action<object> each)
              {
                 //20130816 DKh refactored into SerializationUtils
                 SerializationUtils.WalkArrayWrite(arr, each);
              }
 
 
-             private static void walkArrayRead<T>(Array arr, Func<T> each)  
+             private static void walkArrayRead<T>(Array arr, Func<T> each)
              {
                  //20130816 DKh refactored into SerializationUtils
                  SerializationUtils.WalkArrayRead<T>(arr, each);
@@ -356,40 +357,40 @@ namespace NFX.Serialization.Slim
 
         private dyn_deserialize makeDeserialize()
         {
-          
-          
-          
+
+
+
               var pSchema   = Expression.Parameter(typeof(TypeSchema));
               var pReader   = Expression.Parameter(typeof(SlimReader));
               var pTReg     = Expression.Parameter(typeof(TypeRegistry));
               var pRefs     = Expression.Parameter(typeof(RefPool));
               var pInstance = Expression.Parameter(typeof(object).MakeByRefType());
               var pStreamingContext = Expression.Parameter(typeof(StreamingContext));
-             
+
               var expressions = new List<Expression>();
 
               var instance = Expression.Variable(Type, "instance");
 
               expressions.Add( Expression.Assign(instance, Expression.Convert(pInstance, Type)));
-                            
-              
+
+
               if (IsPrimitive)
-              {                   
+              {
                 expressions.Add( Expression.Assign
                                          (instance,  Expression.Call(pReader, Format.GetReadMethodForType(Type)) )
                                );
-                                                                               
-              } 
+
+              }
               else if (IsArray)
               {
                  var elmType = Type.GetElementType();
                  var _walkArrayRead = typeof(TypeDescriptor).GetMethod("walkArrayRead", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elmType);
 
                  if (Format.IsTypeSupported(elmType))//array element type
-                 { 
+                 {
                     //spool whole array from reader using primitive types
                     expressions.Add( Expression.Call(_walkArrayRead,
-                                                     instance, 
+                                                     instance,
                                                      Expression.Lambda(Expression.Call(pReader, Format.GetReadMethodForType(elmType)))
                                                     )
                      );
@@ -398,7 +399,7 @@ namespace NFX.Serialization.Slim
                  {  //spool whole array using TypeSchema because objects may change type
                     if (!elmType.IsValueType)//reference type
                      expressions.Add( Expression.Call(_walkArrayRead,
-                                                     instance, 
+                                                     instance,
                                                      Expression.Lambda(
                                                                      Expression.Convert(
                                                                                        Expression.Call(pSchema,
@@ -414,19 +415,19 @@ namespace NFX.Serialization.Slim
                                     );
                     else
                      expressions.Add( Expression.Call(_walkArrayRead,
-                                                     instance, 
+                                                     instance,
                                                      Expression.Lambda(
-                                                                     Expression.Convert(      
+                                                                     Expression.Convert(
                                                                                        Expression.Call(pSchema,
                                                                                                typeof(TypeSchema).GetMethod("Deserialize"),
                                                                                                pReader,
                                                                                                pTReg,
                                                                                                pRefs,
                                                                                                pStreamingContext,
-                                                                                               Expression.Constant(elmType)),//valueType 
+                                                                                               Expression.Constant(elmType)),//valueType
                                                                                       elmType
                                                                                       )
-                                                                       ) 
+                                                                       )
                                                     )
                                     );
                  }
@@ -436,8 +437,8 @@ namespace NFX.Serialization.Slim
                 foreach(var field in Fields)
                 {
                           Expression expr = null;
-                          Type t = field.FieldType;    
-                  
+                          Type t = field.FieldType;
+
                           Expression assignmentTargetExpression;
                           if (field.IsInitOnly)//readonly fields must be assigned using reflection
                           {
@@ -445,12 +446,12 @@ namespace NFX.Serialization.Slim
                           }
                           else
                             assignmentTargetExpression = Expression.Field(instance, field);
-                  
-                        
+
+
                           if (Format.IsTypeSupported(t))
                           {
-                            expr =  Expression.Assign( 
-                                                        assignmentTargetExpression, 
+                            expr =  Expression.Assign(
+                                                        assignmentTargetExpression,
                                                         Expression.Call(pReader, Format.GetReadMethodForType(t))
                                                       );
                           }
@@ -460,26 +461,26 @@ namespace NFX.Serialization.Slim
                           {
                             var strv = Expression.Variable(typeof(string));
                             var stra = Expression.Assign(strv, Expression.Call(pReader, Format.GetReadMethodForType(typeof(string))) );
-                   
-                   
+
+
                             var ifte = Expression.IfThenElse(
                                           Expression.Equal( strv, Expression.Constant(null, typeof(string))),
-                                
+
                                         //then
-                                          Expression.Assign( 
-                                                        assignmentTargetExpression, 
+                                          Expression.Assign(
+                                                        assignmentTargetExpression,
                                                         Expression.Constant( null, typeof(Type))
                                                       ),
                                         //else
-                                          Expression.Assign( 
-                                                        assignmentTargetExpression, 
+                                          Expression.Assign(
+                                                        assignmentTargetExpression,
                                                         Expression.Call(pTReg,
-                                                                   typeof(TypeRegistry).GetMethod("GetByHandle"), 
+                                                                   typeof(TypeRegistry).GetMethod("GetByHandle"),
                                                                    strv)
                                                       )
                                        );//if-then-else
-                                  
-                                
+
+
 
                             expr = Expression.Block(new ParameterExpression[]{strv}, stra, ifte);
                           }
@@ -487,9 +488,9 @@ namespace NFX.Serialization.Slim
                           else
                           if (t.IsEnum)
                           {
-                            expr =  Expression.Assign( 
-                                                        assignmentTargetExpression, 
-                                                        Expression.Convert( 
+                            expr =  Expression.Assign(
+                                                        assignmentTargetExpression,
+                                                        Expression.Convert(
                                                              Expression.Call(pReader, Format.GetReadMethodForType(typeof(int))),
                                                              field.FieldType
                                                              )
@@ -499,12 +500,12 @@ namespace NFX.Serialization.Slim
                           {
                             if (!t.IsValueType)//reference type -> read metahandle
                             {
-                              expr =  Expression.Assign( 
-                                                        assignmentTargetExpression, 
-                                                
+                              expr =  Expression.Assign(
+                                                        assignmentTargetExpression,
+
                                                         Expression.Convert(
                                                                 Expression.Call(pSchema,
-                                                                           typeof(TypeSchema).GetMethod("readRefMetaHandle"), 
+                                                                           typeof(TypeSchema).GetMethod("readRefMetaHandle"),
                                                                            pReader,
                                                                            pTReg,
                                                                            pRefs,
@@ -514,10 +515,10 @@ namespace NFX.Serialization.Slim
                             }
                             else
                             {
-                              expr =  Expression.Assign( 
+                              expr =  Expression.Assign(
                                                         assignmentTargetExpression,
-                                                        Expression.Convert(     
-                                                               Expression.Call(pSchema, 
+                                                        Expression.Convert(
+                                                               Expression.Call(pSchema,
                                                                                typeof(TypeSchema).GetMethod("Deserialize"),
                                                                                pReader,
                                                                                pTReg,
@@ -525,25 +526,25 @@ namespace NFX.Serialization.Slim
                                                                                pStreamingContext,
                                                                                Expression.Constant(field.FieldType)),//valueType
                                                                field.FieldType)
-                                                       ); 
+                                                       );
                            }
                           }
 
                           if (assignmentTargetExpression is ParameterExpression)//readonly fields
                           {
                             if (Type.IsValueType)//20150405DKh added
-                            {                                           
+                            {
                               var vBoxed = Expression.Variable(typeof(object), "vBoxed");
-                              var box = Expression.Assign(vBoxed, Expression.TypeAs( instance, typeof(object)));//box the value type 
+                              var box = Expression.Assign(vBoxed, Expression.TypeAs( instance, typeof(object)));//box the value type
                               var setField =  Expression.Call( Expression.Constant(field),
                                                                   typeof(FieldInfo).GetMethod("SetValue", new Type[]{typeof(object), typeof(object)}),
                                                                   vBoxed, //on boxed struct
                                                                   Expression.Convert( assignmentTargetExpression, typeof(object))
-                                                           );                           
+                                                           );
                               var swap = Expression.Assign( instance,  Expression.Unbox(vBoxed, Type));
-                              expressions.Add( 
+                              expressions.Add(
                                   Expression.Block
-                                  (new ParameterExpression[]{(ParameterExpression)assignmentTargetExpression, vBoxed}, 
+                                  (new ParameterExpression[]{(ParameterExpression)assignmentTargetExpression, vBoxed},
                                     box,
                                     expr,
                                     setField,
@@ -553,10 +554,10 @@ namespace NFX.Serialization.Slim
                             }
                             else
                             {
-                            
+
                               var setField =  Expression.Call( Expression.Constant(field),
                                                                   typeof(FieldInfo).GetMethod("SetValue", new Type[]{typeof(object), typeof(object)}),
-                                                                  instance, 
+                                                                  instance,
                                                                   Expression.Convert( assignmentTargetExpression, typeof(object))
                                                            );
                               expressions.Add( Expression.Block(new ParameterExpression[]{(ParameterExpression)assignmentTargetExpression}, expr, setField) );
@@ -569,8 +570,8 @@ namespace NFX.Serialization.Slim
 
 
            expressions.Add( Expression.Assign(pInstance, Expression.Convert(instance, typeof(object))));
- 
-           var body = Expression.Block(new ParameterExpression[]{instance}, expressions); 
+
+           var body = Expression.Block(new ParameterExpression[]{instance}, expressions);
 //////////Debug dump 20150405 Dkh
 ////////Console.WriteLine(Type.FullName);
 ////////Console.WriteLine("--------------------------");
@@ -579,26 +580,17 @@ namespace NFX.Serialization.Slim
         }
 
 
- 
- 
- 
- 
- 
+
+
+
+
+
     }
    //TypeDef-----------------------------------------------------------------------------------------------------------------------------------------
    //TypeDef-----------------------------------------------------------------------------------------------------------------------------------------
    //TypeDef-----------------------------------------------------------------------------------------------------------------------------------------
    //TypeDef-----------------------------------------------------------------------------------------------------------------------------------------
    //TypeDef-----------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-  
-                       
-
-
-
 
 
     internal class TypeSchema
@@ -609,7 +601,7 @@ namespace NFX.Serialization.Slim
        private object m_DictLock = new object();
        private Dictionary<Type, TypeDescriptor> m_Dict = new Dictionary<Type,TypeDescriptor>();
 
-                       
+
                        private TypeDescriptor getTypeDescriptorCachedOrMake(Type tp)
                        {
                          TypeDescriptor result;
@@ -645,8 +637,8 @@ namespace NFX.Serialization.Slim
 
 
        public void Serialize(SlimWriter writer, TypeRegistry registry, RefPool refs, object instance, StreamingContext streamingContext, Type valueType = null)
-       {  
-          
+       {
+
           Type type = valueType;
 
           VarIntStr typeHandle = new VarIntStr(0);
@@ -658,12 +650,12 @@ namespace NFX.Serialization.Slim
                 writer.Write(TypeRegistry.NULL_HANDLE);//object type null
                 return;
               }
-                    
+
               type = instance.GetType();
 
               //Write type name. Full or compressed. Full Type names are assembly-qualified strings, compressed are string in form of
               // $<name_table_index> i.e.  $1 <--- get string[1]
-              typeHandle = registry.GetTypeHandle(type); 
+              typeHandle = registry.GetTypeHandle(type);
               writer.Write( typeHandle );
           }
 
@@ -674,31 +666,31 @@ namespace NFX.Serialization.Slim
             wa(writer, instance);
             return;
           }
-          
+
           TypeDescriptor td = getTypeDescriptorCachedOrMake(type);
-          
-          if (td.IsArray) //need to write array dimensions 
+
+          if (td.IsArray) //need to write array dimensions
           {
             writer.Write( Arrays.ArrayToDescriptor((Array)instance, type, typeHandle) );
           }
-                           
+
           td.SerializeInstance(writer, registry, refs, instance, streamingContext);
        }
 
-                     
+
        public void writeRefMetaHandle(SlimWriter writer, TypeRegistry registry, RefPool refs, object instance, StreamingContext streamingContext)
-       { 
+       {
            Type tInstance;
-          
+
            var mh = refs.GetHandle(instance, registry, Format, out tInstance);
            writer.Write(mh);
-          
+
            if (mh.IsInlinedValueType)
            {
              var wa = Format.GetWriteActionForType(tInstance);
              if (wa!=null)
                wa(writer, instance);
-             else 
+             else
                this.Serialize(writer, registry, refs, instance, streamingContext);
            }
            else
@@ -709,11 +701,11 @@ namespace NFX.Serialization.Slim
               wa(writer, instance);
              else
               throw new SlimSerializationException("Internal error writeRefMetaHandle: no write action for ref type, but ref mhandle is inlined");
-           } 
+           }
        }
 
        public object readRefMetaHandle(SlimReader reader, TypeRegistry registry, RefPool refs, StreamingContext streamingContext)
-       { 
+       {
            var mh = reader.ReadMetaHandle();
 
            if (mh.IsInlinedValueType)
@@ -726,7 +718,7 @@ namespace NFX.Serialization.Slim
              else
               return this.Deserialize(reader, registry, refs, streamingContext);
            }
-           
+
            return refs.HandleToReference(mh, registry, Format, reader);
        }
 
@@ -736,7 +728,7 @@ namespace NFX.Serialization.Slim
        }
 
        public object DeserializeRootOrInner(SlimReader reader, TypeRegistry registry, RefPool refs, StreamingContext streamingContext, bool root, Type valueType = null)
-       { 
+       {
          Type type = valueType;
          if (type==null)
          {
@@ -753,7 +745,7 @@ namespace NFX.Serialization.Slim
                 else
                 {
                   if (TypeRegistry.IsNullHandle(thandle)) return null;
-                  type = registry[ thandle ]; 
+                  type = registry[ thandle ];
                 }
              }
              else
@@ -772,18 +764,18 @@ namespace NFX.Serialization.Slim
          TypeDescriptor td = getTypeDescriptorCachedOrMake(type);
 
          object instance = null;
-         
+
          if (td.IsArray)
            instance = Arrays.DescriptorToArray( reader.ReadString(), type);
          else
            instance = SerializationUtils.MakeNewObjectInstance(type);
-        
+
          if (root)
              if (!type.IsValueType )//if this is a reference type
-             {                                            
+             {
                refs.Add(instance);
              }
-         
+
          td.DeserializeInstance(reader, registry, refs, ref instance, streamingContext);
 
 
@@ -792,19 +784,19 @@ namespace NFX.Serialization.Slim
 
 
        public void DeserializeRefTypeInstance(object instance, SlimReader reader, TypeRegistry registry, RefPool refs, StreamingContext streamingContext)
-       { 
+       {
          if (instance==null) throw new SlimDeserializationException("DeserRefType(null)");
 
          var type = instance.GetType();
 
           reader.ReadVarIntStr();//skip type as we already know it from prior-allocated metahandle
 
-                 
+
          TypeDescriptor td = getTypeDescriptorCachedOrMake(type);
 
          if (type.IsArray)
            reader.ReadString();//skip array descriptor as we already know it from prior-allocated metahandle
-                 
+
          td.DeserializeInstance(reader, registry, refs, ref instance, streamingContext);
        }
 

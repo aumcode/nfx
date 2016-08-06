@@ -134,7 +134,29 @@ namespace NFX.Serialization.Slim
     {
 
     }
+  }
 
+  /// <summary>
+  /// Thrown when a type is decoreted with SlimSerializationProhibitedAttribute
+  /// </summary>
+  [Serializable]
+  public class SlimSerializationProhibitedException : SlimException
+  {
+    protected SlimSerializationProhibitedException()
+    {
+    }
+
+    public SlimSerializationProhibitedException(Type type)
+      : base(StringConsts.SLIM_SER_PROHIBIT_ERROR.Args( type!=null ? type.FullName : StringConsts.NULL_STRING,
+                                                        typeof(SlimSerializationProhibitedAttribute).Name ))
+    {
+    }
+
+    protected SlimSerializationProhibitedException(SerializationInfo info, StreamingContext context)
+      : base(info, context)
+    {
+
+    }
   }
 
 }

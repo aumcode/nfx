@@ -76,7 +76,7 @@ namespace NFX.Glue.Native
 
         #region Protected
 
-            
+
             protected override ClientTransport AcquireClientTransportForCall(ClientEndPoint client, Protocol.RequestMsg request)
             {
                 var tr = new InProcClientTransport(this, client.Node);
@@ -89,7 +89,7 @@ namespace NFX.Glue.Native
             {
              return null;
             }
-            
+
 
             protected internal override void ReleaseClientTransportAfterCall(ClientTransport transport)
             {

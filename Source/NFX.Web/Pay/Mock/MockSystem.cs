@@ -47,7 +47,7 @@ namespace NFX.Web.Pay.Mock
 
       //public const string CONFIG_ACCOUNT_NUMBER_ATTR = "account-number";
       //public const string CONFIG_ROUTING_NUMBER_ATTR = "routing-number";
-      //public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type"; 
+      //public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type";
 
     #endregion
 
@@ -76,11 +76,11 @@ namespace NFX.Web.Pay.Mock
           private List<AccountData> m_CreditCardDeclined;
           private List<AccountData> m_CreditCardLuhnError;
           private List<AccountData> m_CreditCardCvcError;
-          private List<AccountData> m_CreditCardCorrectWithAddr; 
+          private List<AccountData> m_CreditCardCorrectWithAddr;
 
-          private List<AccountData> m_DebitBankCorrect; 
-          private List<AccountData> m_DebitCardCorrect; 
-          private List<AccountData> m_DebitCardCorrectWithAddr; 
+          private List<AccountData> m_DebitBankCorrect;
+          private List<AccountData> m_DebitCardCorrect;
+          private List<AccountData> m_DebitCardCorrectWithAddr;
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace NFX.Web.Pay.Mock
           public List<AccountData> DebitBankCorrect { get { return m_DebitBankCorrect != null ? m_DebitBankCorrect : m_DebitBankCorrect = new List<AccountData>(); } }
           public List<AccountData> DebitCardCorrect { get { return m_DebitCardCorrect != null ? m_DebitCardCorrect : m_DebitCardCorrect = new List<AccountData>(); } }
           public List<AccountData> DebitCardCorrectWithAddr { get { return m_DebitCardCorrectWithAddr != null ? m_DebitCardCorrectWithAddr : m_DebitCardCorrectWithAddr = new List<AccountData>(); } }
-      
+
         #endregion
 
         #region Config
@@ -138,7 +138,7 @@ namespace NFX.Web.Pay.Mock
 
       public MockSystem(string name, IConfigSectionNode node) : base(name, node) { }
 
-      public MockSystem(string name, IConfigSectionNode node, object director) : base(name, node, director) { } 
+      public MockSystem(string name, IConfigSectionNode node, object director) : base(name, node, director) { }
 
     #endregion
 
@@ -146,7 +146,8 @@ namespace NFX.Web.Pay.Mock
 
       private IConfigSectionNode m_AccountsCfg;
       private Accounts m_Accounts;
-      
+      private MockWebTerminal m_WebTerminal;
+
     #endregion
 
 
@@ -158,12 +159,22 @@ namespace NFX.Web.Pay.Mock
       public IConfigSectionNode AccountsCfg
       {
         get { return m_AccountsCfg; }
-        set 
+        set
         {
           m_Accounts = FactoryUtils.MakeAndConfigure<Accounts>(value, typeof(Accounts));
           m_AccountsCfg = value;
         }
-      } 
+      }
+
+      public override IPayWebTerminal WebTerminal
+      {
+        get
+        {
+          if (m_WebTerminal == null)
+            m_WebTerminal = new MockWebTerminal(this);
+          return m_WebTerminal;
+        }
+      }
 
     #endregion
 
@@ -309,7 +320,7 @@ namespace NFX.Web.Pay.Mock
 
         var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Refund);
 
-        var refundTA = new Transaction(taId, TransactionType.Refund, this.Name, taId, Account.EmptyInstance, charge.From, refundAmount, created, description, relatedTransactionID: charge.ID, canRefund: false);
+        var refundTA = Transaction.Refund(taId, this.Name, taId, Account.EmptyInstance, charge.From, refundAmount, created, description, relatedTransactionID: charge.ID);
 
         StatRefund(charge, amount);
 
@@ -328,7 +339,7 @@ namespace NFX.Web.Pay.Mock
 
         AccountData accountData = null;
 
-        accountData = m_Accounts.DebitBankCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber 
+        accountData = m_Accounts.DebitBankCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber
                                                 && c.CardExpirationYear == actualAccountData.CardExpirationYear
                                                 && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
                                                 && c.CardVC == actualAccountData.CardVC);
@@ -346,7 +357,7 @@ namespace NFX.Web.Pay.Mock
           return ta;
         }
 
-        accountData = m_Accounts.DebitCardCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber 
+        accountData = m_Accounts.DebitCardCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber
                                                 && c.CardExpirationYear == actualAccountData.CardExpirationYear
                                                 && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
                                                 && c.CardVC == actualAccountData.CardVC);
@@ -364,7 +375,7 @@ namespace NFX.Web.Pay.Mock
           return ta;
         }
 
-        accountData = m_Accounts.DebitCardCorrectWithAddr.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber 
+        accountData = m_Accounts.DebitCardCorrectWithAddr.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber
                                                 && c.CardExpirationYear == actualAccountData.CardExpirationYear
                                                 && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
                                                 && c.CardVC == actualAccountData.CardVC
@@ -397,7 +408,7 @@ namespace NFX.Web.Pay.Mock
       protected override PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
       {
         return PayConnectionParameters.Make<MockConnectionParameters>(paramsSection);
-      } 
+      }
 
     #endregion
   }

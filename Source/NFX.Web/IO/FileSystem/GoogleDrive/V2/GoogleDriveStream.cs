@@ -23,12 +23,12 @@ using System;
 using System.IO;
 
 namespace NFX.IO.FileSystem.GoogleDrive.V2
-{ 
+{
   public class GoogleDriveStream : FileSystemStream
   {
     #region .ctor
 
-      public GoogleDriveStream(FileSystemFile file, Action<FileSystemStream> disposeAction) 
+      public GoogleDriveStream(FileSystemFile file, Action<FileSystemStream> disposeAction)
         : base(file, disposeAction)
       {
         m_Handle = (GoogleDriveHandle)file.Handle;

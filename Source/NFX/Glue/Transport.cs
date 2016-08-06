@@ -44,7 +44,7 @@ namespace NFX.Glue
     }
 
     /// <summary>
-    /// Transports are thread-safe and are intended for use by multiple threads from ClientCallReactor 
+    /// Transports are thread-safe and are intended for use by multiple threads from ClientCallReactor
     /// and ServerProcessor when bindings operate in OperationFlow.Asynchronous mode.
     /// Transports are acquired by the thread that creates them
     /// </summary>
@@ -63,7 +63,7 @@ namespace NFX.Glue
             {
                 m_TransportKind = kind;
                 m_Glue = binding.Glue;
-                binding._Register(this); 
+                binding._Register(this);
             }
 
             protected override void Destructor()
@@ -79,7 +79,7 @@ namespace NFX.Glue
 
             protected TransportKind m_TransportKind;
             private int m_Acquired = IS_ACQUIRED;
-            
+
             private DateTime? m_ExpirationStart;
             private IGlueImplementation m_Glue;
 
@@ -95,12 +95,12 @@ namespace NFX.Glue
 
 
             /// <summary>
-            /// Returns a binding that this transport operates under 
+            /// Returns a binding that this transport operates under
             /// </summary>
             public Binding Binding { get { return ComponentDirector as Binding; } }
 
             /// <summary>
-            /// Returns glue implementation that this transport is under 
+            /// Returns glue implementation that this transport is under
             /// </summary>
             public IGlueImplementation Glue { get { return m_Glue; } }
 
@@ -113,9 +113,9 @@ namespace NFX.Glue
             /// Returns timestamp when manager touched the instance for last time and no traffic went through it since
             /// </summary>
             public DateTime? ExpirationStart
-            { 
-               get{ return m_ExpirationStart; }  
-               internal set { m_ExpirationStart = value; } 
+            {
+               get{ return m_ExpirationStart; }
+               internal set { m_ExpirationStart = value; }
             }
 
             /// <summary>
@@ -128,7 +128,7 @@ namespace NFX.Glue
                 if (!m_ExpirationStart.HasValue) return 0;
                 return (int)(Glue.LocalizedTime - m_ExpirationStart.Value).TotalMilliseconds;
               }
-            } 
+            }
 
 
             /// <summary>
@@ -147,10 +147,10 @@ namespace NFX.Glue
             private long m_StatErrors;        protected internal void stat_Errors() { Interlocked.Increment(ref m_StatErrors); }
 
             private long m_Prev_StatBytesReceived;
-            private long m_Prev_StatBytesSent;    
-            private long m_Prev_StatMsgReceived;  
-            private long m_Prev_StatMsgSent;      
-            private long m_Prev_StatErrors;       
+            private long m_Prev_StatBytesSent;
+            private long m_Prev_StatMsgReceived;
+            private long m_Prev_StatMsgSent;
+            private long m_Prev_StatErrors;
 
 
             private ConcurrentDictionary<string, double> m_StatTimes = new ConcurrentDictionary<string, double>();
@@ -166,7 +166,7 @@ namespace NFX.Glue
                             var time = ticks / (double)Stopwatch.Frequency;
                             var F = Binding.StatTimesEMAFactor;
 
-                            var ema = m_StatTimes.AddOrUpdate(key, time,  (k, old) => ((F * time) + (( 1d - F) * old))  );  
+                            var ema = m_StatTimes.AddOrUpdate(key, time,  (k, old) => ((F * time) + (( 1d - F) * old))  );
                          }
 
 
@@ -213,10 +213,10 @@ namespace NFX.Glue
             {
               var delta_StatBytesReceived = m_StatBytesReceived - m_Prev_StatBytesReceived; m_Prev_StatBytesReceived = m_StatBytesReceived;
               var delta_StatBytesSent     = m_StatBytesSent     - m_Prev_StatBytesSent;     m_Prev_StatBytesSent     = m_StatBytesSent;
-              var delta_StatMsgReceived   = m_StatMsgReceived   - m_Prev_StatMsgReceived;   m_Prev_StatMsgReceived   = m_StatMsgReceived; 
+              var delta_StatMsgReceived   = m_StatMsgReceived   - m_Prev_StatMsgReceived;   m_Prev_StatMsgReceived   = m_StatMsgReceived;
               var delta_StatMsgSent       = m_StatMsgSent       - m_Prev_StatMsgSent;       m_Prev_StatMsgSent       = m_StatMsgSent;
               var delta_StatErrors        = m_StatErrors        - m_Prev_StatErrors;        m_Prev_StatErrors        = m_StatErrors;
-               
+
               var node = Node;
 
               //Introduce entropy into random generator
@@ -225,7 +225,7 @@ namespace NFX.Glue
                                   (delta_StatMsgReceived << 3) ^
                                   (delta_StatMsgSent << 5) ^
                                   (delta_StatErrors);
-              
+
               if (entropySample!=0)
                 NFX.ExternalRandomGenerator.Instance.FeedExternalEntropySample((int)entropySample);
 
@@ -260,7 +260,7 @@ namespace NFX.Glue
                  Instrumentation.ServerTotalMsgReceived  .Record(node, m_StatMsgReceived);
                  Instrumentation.ServerTotalMsgSent      .Record(node, m_StatMsgSent);
                  Instrumentation.ServerTotalErrors       .Record(node, m_StatErrors);
-              } 
+              }
             }
 
 
@@ -307,8 +307,8 @@ namespace NFX.Glue
 
 
             /// <summary>
-            /// Returns enumerable of named times measured in double second fractions. 
-            /// The returned times are EMA-filtered from supplied individual measurement samples 
+            /// Returns enumerable of named times measured in double second fractions.
+            /// The returned times are EMA-filtered from supplied individual measurement samples
             /// </summary>
             public IEnumerable<KeyValuePair<string, double>> StatTimes
             {
@@ -321,8 +321,8 @@ namespace NFX.Glue
         #region Public
 
             /// <summary>
-            /// A thread-safe operation that tries to acquire(reserve) this instance for exclusive use. 
-            /// Returns true if acqusition succeded, false is this instance is reserved by someone else 
+            /// A thread-safe operation that tries to acquire(reserve) this instance for exclusive use.
+            /// Returns true if acqusition succeded, false is this instance is reserved by someone else
             /// </summary>
             public bool TryAcquire()
             {
@@ -339,14 +339,14 @@ namespace NFX.Glue
 
 
             /// <summary>
-            /// Ensures that application and transport instance are running or throws otherwise 
+            /// Ensures that application and transport instance are running or throws otherwise
             /// </summary>
             public void CheckRunningState()
             {
                 if (!App.Active || !Running)
-                    throw m_TransportKind==TransportKind.Client ? 
+                    throw m_TransportKind==TransportKind.Client ?
                             (GlueException)new ClientCallException(CallStatus.DispatchError, StringConsts.GLUE_SYSTEM_NOT_RUNNING_ERROR) :
-                            (GlueException)new ServerNotRunningException(StringConsts.GLUE_SYSTEM_NOT_RUNNING_ERROR); 
+                            (GlueException)new ServerNotRunningException(StringConsts.GLUE_SYSTEM_NOT_RUNNING_ERROR);
             }
 
         #endregion

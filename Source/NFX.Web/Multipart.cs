@@ -34,22 +34,22 @@ namespace NFX.Web
       private static readonly char[] EQUALS_SPLIT = new char[] { '=' };
       private static readonly char[] KVP_TRIM = new char[] { ' ', '"' };
       private static readonly char[] COLON_SPLIT = new char[] { ':' };
-      
+
       private const string CONTENT_DISPOSITION = "Content-Disposition:";
       private const string CONTENT_TYPE = "Content-Type:";
       private const string PARAM_NAME = "name";
       private const string PARAM_CHARSET = "charset";
-      private const string PARAM_FILENAME = "filename";        
+      private const string PARAM_FILENAME = "filename";
       private const string PARAMS_NAME_PART = CONTENT_DISPOSITION + " form-data; " + PARAM_NAME + "=\"{0}\"";
       private const string PARAMS_FILENAME_PART = "; " + PARAM_FILENAME + "=\"{0}\"";
       private const string PARAMS_CONTENT_TYPE_PART = CONTENT_TYPE + " {0}";
-      private const string TEXT = "text"; 
-      private const string JSON = "json"; 
+      private const string TEXT = "text";
+      private const string JSON = "json";
 
       private const int BUF_SIZE = 4096;
       private static readonly byte[] EOF = new byte[] {HYPHEN, HYPHEN, CR, LF};
       public const int NOT_FOUND_POS = -1;
-    
+
     #endregion
 
     #region Nested
@@ -93,7 +93,7 @@ namespace NFX.Web
           Length = len;
           Encoding = enc;
         }
-        
+
         public readonly string Boundary;
         public readonly byte[] Buffer;
         public readonly long StartIdx;
@@ -113,11 +113,11 @@ namespace NFX.Web
         encoding = encoding ?? Encoding.UTF8;
 
         // find boundary
-        var boundaryBytes = boundary.IsNullOrWhiteSpace() ? 
+        var boundaryBytes = boundary.IsNullOrWhiteSpace() ?
                               findBoundary(stream, encoding, out boundary) :
                               locateBoundary(stream, encoding, boundary);
-        
-        var result = new Multipart();            
+
+        var result = new Multipart();
         // fill parts from stream
         foreach (var segment in streamSplitNew(stream, boundaryBytes))
         {
@@ -129,7 +129,7 @@ namespace NFX.Web
 
         return result;
       }
-    
+
       public static Multipart ReadFromBytes(byte[] buffer, ref string boundary, Encoding encoding = null)
       {
         var stream = new MemoryStream(buffer);
@@ -210,7 +210,7 @@ namespace NFX.Web
       {
         if (stream == null || !stream.CanWrite)
           throw new NFXException(StringConsts.MULTIPART_STREAM_NOT_NULL_MUST_SUPPORT_WRITE_ERROR);
-        
+
         encoding = encoding ?? Encoding.UTF8;
         long startIdx = stream.Position;
 
@@ -244,7 +244,7 @@ namespace NFX.Web
     #endregion
 
     #region .pvt
-      
+
       private static byte[] locateBoundary(Stream stream, Encoding encoding, string boundary)
       {
         var fullBoundary = DOUBLE_HYPHEN_STR + boundary;
@@ -308,7 +308,7 @@ namespace NFX.Web
           throw new NFXException(StringConsts.MULTIPART_BOUNDARY_IS_TOO_SHORT);
         if (fullBoundary[0] != HYPHEN || fullBoundary[1] != HYPHEN)
           throw new NFXException(StringConsts.MULTIPART_BOUNDARY_SHOULD_START_WITH_HYPHENS);
-        
+
         boundary = fullBoundary.Substring(2); // remove two leading hyphens
 
         return boundaryBytes;
@@ -321,7 +321,7 @@ namespace NFX.Web
           var boundary = BOUNDARY_PREFIX + Guid.NewGuid().ToString("N");
           var sequence = encoding.GetBytes(boundary);
 
-          if (!m_Parts.Any(p => 
+          if (!m_Parts.Any(p =>
                             {
                               var content = getPartByteContent(p, encoding);
                               return findIndex(content, 0, content.Length, sequence) != NOT_FOUND_POS;
@@ -329,7 +329,7 @@ namespace NFX.Web
              ) return boundary;
         }
       }
-      
+
       private void partEncode(Part part, Stream stream, Encoding encoding)
       {
         partWriteParameters(part, stream, encoding);
@@ -349,7 +349,7 @@ namespace NFX.Web
           var csEncoding = getEncodingFromCharset(part.ContentType) ?? encoding;
           content = csEncoding.GetBytes(part.Content.AsString());
         }
-        
+
         return content;
       }
 
@@ -357,7 +357,7 @@ namespace NFX.Web
       {
         if (buf == null || length == 0)
           throw new NFXException(StringConsts.MULTIPART_PART_COULDNT_BE_EMPTY_ERROR);
-        
+
         if (buf.Length < 2 || buf[length - 2] != CR || buf[length - 1] != LF)
             throw new NFXException(StringConsts.MULTIPART_PART_MUST_BE_ENDED_WITH_EOL_ERROR);
 
@@ -366,7 +366,7 @@ namespace NFX.Web
           throw new NFXException(StringConsts.MULTIPART_DOUBLE_EOL_ISNT_FOUND_AFTER_HEADER_ERROR);
 
         var result = new Part();
-        // The multipart delimiters and header fields are always 7-bit ASCII in any case, and data within the body parts can be encoded on a part-by-part basis, 
+        // The multipart delimiters and header fields are always 7-bit ASCII in any case, and data within the body parts can be encoded on a part-by-part basis,
         // with Content-Transfer-Encoding fields for each appropriate body part. (https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html)
         // todo: what to do with Content-Transfer-Encoding?
         var prmsStr = Encoding.ASCII.GetString(buf, 0, separatorPos);
@@ -399,7 +399,7 @@ namespace NFX.Web
         {
           if (s.StartsWith(CONTENT_DISPOSITION, StringComparison.InvariantCultureIgnoreCase))
             partParseContentDisposition(part, s);
-          else if (s.StartsWith(CONTENT_TYPE, StringComparison.InvariantCultureIgnoreCase)) 
+          else if (s.StartsWith(CONTENT_TYPE, StringComparison.InvariantCultureIgnoreCase))
             partParseContentType(part, s);
         }
 
@@ -458,7 +458,7 @@ namespace NFX.Web
       {
         int whatLength = what.Length;
         if (whatLength == 0) return NOT_FOUND_POS;
-    
+
         for (int i = whereStart; i <= whereLength - whatLength + whereStart; i++)
         {
           bool allMatch = true;
@@ -468,13 +468,13 @@ namespace NFX.Web
               allMatch = false;
               break;
             }
-    
+
           if (allMatch) return i;
         }
-    
+
         return NOT_FOUND_POS;
       }
-    
+
       private static IEnumerable<ArraySegment<byte>> streamSplitNew(Stream stream, byte[] delimeter, int bufSize = BUF_SIZE)
       {
         int delimeterLength = delimeter.Length;
@@ -482,7 +482,7 @@ namespace NFX.Web
         int seekBufCapacity = bufSize;
         int seekBufLength = 0;
         var delimeterNotFound = false;
-    
+
         int bytesRead;
         while (true)
         {
@@ -501,17 +501,17 @@ namespace NFX.Web
               throw new NFXException(StringConsts.MULTIPART_TERMINATOR_ISNT_FOUND_ERROR);
             break;
           }
-    
+
           seekBufLength += bytesRead;
-    
+
           while (true)
           {
             int delimeterPos = findIndex(seekBuf, 0, seekBufLength, delimeter);
-    
+
             if (delimeterPos != NOT_FOUND_POS)
             {
               yield return new ArraySegment<byte>(seekBuf, 0, delimeterPos);
-    
+
               int copyFrom = delimeterPos + delimeterLength;
               int copyLength = seekBufLength - copyFrom;
               Array.Copy(seekBuf, copyFrom, seekBuf, 0, copyLength);
@@ -525,7 +525,7 @@ namespace NFX.Web
             }
           }
         }
-    
+
         yield break;
       }
 
@@ -555,7 +555,7 @@ namespace NFX.Web
             break;
           }
         }
-        
+
         if (charset == null) return null;
         try
         {

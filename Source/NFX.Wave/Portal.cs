@@ -36,9 +36,9 @@ namespace NFX.Wave
     #endregion
 
     #region Inner Types
-      
+
       public enum MoneyFormat{WithCurrencySymbol, WithoutCurrencySymbol}
-      
+
       public enum DateTimeFormat{ShortDate, LongDate, ShortDateTime, LongDateTime}
 
     #endregion
@@ -89,15 +89,15 @@ namespace NFX.Wave
         {
           var theme = FactoryUtils.Make<Theme>(ntheme, args: new object[]{this, ntheme});
           if(!m_Themes.Register(theme))
-            throw new WaveException(StringConsts.CONFIG_PORTAL_DUPLICATE_THEME_NAME_ERROR.Args(theme.Name, m_Name)); 
+            throw new WaveException(StringConsts.CONFIG_PORTAL_DUPLICATE_THEME_NAME_ERROR.Args(theme.Name, m_Name));
         }
 
         if (m_Themes.Count==0)
-          throw new WaveException(StringConsts.CONFIG_PORTAL_NO_THEMES_ERROR.Args(m_Name)); 
+          throw new WaveException(StringConsts.CONFIG_PORTAL_NO_THEMES_ERROR.Args(m_Name));
 
         m_DefaultTheme = m_Themes.FirstOrDefault(t => t.Default);
         if (m_DefaultTheme==null)
-          throw new WaveException(StringConsts.CONFIG_PORTAL_NO_DEFAULT_THEME_ERROR.Args(m_Name)); 
+          throw new WaveException(StringConsts.CONFIG_PORTAL_NO_DEFAULT_THEME_ERROR.Args(m_Name));
 
         m_ParentName = conf.AttrByName(CONFIG_PARENT_NAME_ATTR).Value;
 
@@ -107,9 +107,9 @@ namespace NFX.Wave
         foreach(var atr in conf[CONFIG_LOCALIZATION_SECTION][CONFIG_CONTENT_SECTION].Attributes)
          m_LocalizableContent[atr.Name] = atr.Value;
 
-        var gen = conf[CONFIG_RECORD_MODEL_SECTION]; 
-        m_RecordModelGenerator = FactoryUtils.Make<Client.RecordModelGenerator>(gen, 
-                                                                                typeof(Client.RecordModelGenerator), 
+        var gen = conf[CONFIG_RECORD_MODEL_SECTION];
+        m_RecordModelGenerator = FactoryUtils.Make<Client.RecordModelGenerator>(gen,
+                                                                                typeof(Client.RecordModelGenerator),
                                                                                 new object[]{gen});
 
         m_RecordModelGenerator.ModelLocalization += recGeneratorLocalization;
@@ -137,7 +137,7 @@ namespace NFX.Wave
       }
 
     #endregion
-     
+
 
     #region Fields
       private string m_Name;
@@ -160,7 +160,7 @@ namespace NFX.Wave
 
       private IConfigSectionNode m_LocalizationData;
     #endregion
-   
+
 
     #region Properties
 
@@ -191,7 +191,7 @@ namespace NFX.Wave
       /// Implements IInstrumentable
       /// </summary>
       [Config(Default=false)]
-      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
       public bool InstrumentationEnabled
       {
         get { return m_InstrumentationEnabled;}
@@ -201,20 +201,20 @@ namespace NFX.Wave
       /// <summary>
       /// If true, does not get matched per request
       /// </summary>
-      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)] 
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
       public bool Offline
       {
-        get { return m_Offline;  } 
+        get { return m_Offline;  }
         set { m_Offline = value;}
       }
 
       /// <summary>
       /// If true, matches this portal when no other suites
       /// </summary>
-      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)] 
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
       public bool Default
       {
-        get { return m_Default;  } 
+        get { return m_Default;  }
         set { m_Default = value;}
       }
 
@@ -236,7 +236,7 @@ namespace NFX.Wave
       /// </summary>
       public string ParentName
       {
-        get { return m_ParentName;  } 
+        get { return m_ParentName;  }
       }
 
 
@@ -299,7 +299,7 @@ namespace NFX.Wave
 
     #region Public
 
-      
+
       /// <summary>
       /// Translates the named content into desired language trying to infer language from work context/locality/session.
       /// The search is first done in this portal then in inherited portals.
@@ -309,9 +309,9 @@ namespace NFX.Wave
       {
         if (isoLang.IsNullOrWhiteSpace())
           isoLang = GetLanguageISOCode(work);
-        
+
         string result;
-      
+
         var portal = this;
 
         while(portal!=null)
@@ -327,10 +327,10 @@ namespace NFX.Wave
 
           portal = portal.Parent;
         }
-        
+
         return string.Empty;
       }
-      
+
       /// <summary>
       /// Tries to determine session/work context lang and returns it or DefaultLanguageISOCode
       /// </summary>
@@ -338,10 +338,10 @@ namespace NFX.Wave
       {
         string lang = null;
 
-        if (work==null) 
+        if (work==null)
           work = ExecutionContext.Request as WorkContext;
-        
-        if (work==null) 
+
+        if (work==null)
         {
           var session = ExecutionContext.Session;
           if (session!=null)
@@ -350,12 +350,12 @@ namespace NFX.Wave
         else
         {
           var session = work.Session;
-          if (session!=null) 
+          if (session!=null)
             lang = session.LanguageISOCode;
-          
+
           if (lang.IsNullOrWhiteSpace() && work.GeoEntity!=null && work.GeoEntity.Location.HasValue)
           {
-            var country = work.GeoEntity.Location.Value.CountryISOName.Value;
+            var country = work.GeoEntity.CountryISOName;
             lang =  CountryISOCodeToLanguageISOCode(country);
           }
         }
@@ -368,12 +368,12 @@ namespace NFX.Wave
       /// Converts country code into language code per this portal
       /// </summary>
       public abstract string CountryISOCodeToLanguageISOCode(string countryISOCode);
-     
+
 
       /// <summary>
       /// Converts financial amount in portals.default currency to string per portal
       /// </summary>
-      public virtual string AmountToString(decimal amount, 
+      public virtual string AmountToString(decimal amount,
                                    MoneyFormat format = MoneyFormat.WithCurrencySymbol,
                                    ISession session = null)
       {
@@ -383,7 +383,7 @@ namespace NFX.Wave
       /// <summary>
       /// Converts financial amount to string per portal
       /// </summary>
-      public abstract string AmountToString(Financial.Amount amount, 
+      public abstract string AmountToString(Financial.Amount amount,
                                    MoneyFormat format = MoneyFormat.WithCurrencySymbol,
                                    ISession session = null);
 
@@ -404,8 +404,8 @@ namespace NFX.Wave
       /// Returns named parameters that can be used to control this component
       /// </summary>
       public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-      { 
-        return ExternalParameterAttribute.GetParameters(this, groups); 
+      {
+        return ExternalParameterAttribute.GetParameters(this, groups);
       }
 
       /// <summary>
@@ -415,7 +415,7 @@ namespace NFX.Wave
       {
           return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
       }
-          
+
       /// <summary>
       /// Sets external parameter value returning true if parameter was found and set
       /// </summary>
@@ -435,7 +435,7 @@ namespace NFX.Wave
 
       /// <summary>
       /// Override to add localizable system content blocks.
-      /// Each block has a key of the form:  'keyname_isoLang'. I.e. {"mnuStart_deu", "Anfangen"}... 
+      /// Each block has a key of the form:  'keyname_isoLang'. I.e. {"mnuStart_deu", "Anfangen"}...
       /// </summary>
       protected abstract Dictionary<string, string> GetLocalizableContent();
 
@@ -451,7 +451,7 @@ namespace NFX.Wave
       protected virtual string DoLocalizeRecordModel(string schema, string field, string value, string isoLang)
       {
         if (value.IsNullOrWhiteSpace()) return value;
-      
+
         if (!m_LocalizationData.Exists) return value;//nowhere to lookup
 
         if (isoLang.IsNullOrWhiteSpace())
@@ -464,14 +464,14 @@ namespace NFX.Wave
 
         if (isoLang.IsNullOrWhiteSpace())
          isoLang = DefaultLanguageISOCode;
-      
+
         if (isoLang.EqualsOrdIgnoreCase(CoreConsts.ISO_LANG_ENGLISH)) return value;
 
         if (schema.IsNullOrWhiteSpace()) schema = LOC_ANY_SCHEMA_KEY;
         if (field.IsNullOrWhiteSpace())  field = LOC_ANY_FIELD_KEY;
         bool exists;
         var lv = DoLookupLocalizationValue(isoLang, schema, field, value, out exists);
-     
+
         //Use this to find out what strings need translation
         if (DumpLocalizationErrors && !exists)
         {

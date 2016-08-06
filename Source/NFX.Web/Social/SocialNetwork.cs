@@ -31,7 +31,7 @@ namespace NFX.Web.Social
       public const string POSTFAILED_ERROR = "Social network post to failed";
       public const string INVALID_STATE_ERROR = "Expected state is '{0}' but current state is '{1}'. ";
     }
-    
+
     /// <summary>
     /// Defines an abstraction for social networks
     /// </summary>
@@ -178,7 +178,7 @@ namespace NFX.Web.Social
 
               public void ApplicationFinishAfterCleanup(IApplication application) { }
             }
-        
+
           #endregion
 
       #region ctor
@@ -186,7 +186,7 @@ namespace NFX.Web.Social
         protected SocialNetwork(string name = null, IConfigSectionNode cfg = null): base()
         {
           var networkName = name;
-          
+
           if (cfg != null)
           {
             Configure(cfg);
@@ -209,21 +209,21 @@ namespace NFX.Web.Social
           DisposableObject.DisposeAndNull(ref m_InstrumentationEvent);
           base.Destructor();
         }
-        
+
       #endregion
 
       #region fields
 
         private bool m_InstrumentationEnabled;
         private Time.Event m_InstrumentationEvent;
-        
+
         private int m_WebServiceCallTimeoutMs;
 
         private int m_stat_Login;
         private int m_stat_LoginErr;
         private int m_stat_RenewLongTermToken;
         private int m_stat_PostMessage;
-        
+
       #endregion
 
       #region Properties
@@ -239,7 +239,7 @@ namespace NFX.Web.Social
         {
           get { return m_InstrumentationEnabled;}
           set
-          { 
+          {
              m_InstrumentationEnabled = value;
              if (m_InstrumentationEvent==null)
              {
@@ -266,8 +266,8 @@ namespace NFX.Web.Social
         public virtual string Description
         {
           get { return Name + ": " + this.GetType().Name; }
-        } 
-        
+        }
+
 
         /// <summary>
         /// Returns the root public URL for the service
@@ -444,7 +444,7 @@ namespace NFX.Web.Social
           {
             DoPostMessage(text, userInfo);
             userInfo.LastError = null;
-            
+
             if (m_InstrumentationEnabled) Interlocked.Increment(ref m_stat_PostMessage);
           }
           catch (System.Net.WebException ex)
@@ -474,7 +474,7 @@ namespace NFX.Web.Social
         public override bool Equals(object obj)
         {
           var other = obj as SocialNetwork;
-          return other==null ? false : this.Name == other.Name; 
+          return other==null ? false : this.Name == other.Name;
         }
 
         public override int GetHashCode()
@@ -483,7 +483,7 @@ namespace NFX.Web.Social
         }
 #pragma warning disable 1570
         /// <summary>
-        /// Takes unescaped regular URL and transforms it in a single escaped parameter string suitable 
+        /// Takes unescaped regular URL and transforms it in a single escaped parameter string suitable
         /// for submission to social network.
         /// For example, incoming "https://aa.bb?nonce=FDAC25&target=123" -> "https%3a%2f%2faa.com%3fnonce%3dFDAC25%26target%3d123"
         /// </summary>

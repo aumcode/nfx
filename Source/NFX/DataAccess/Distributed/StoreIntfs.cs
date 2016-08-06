@@ -31,13 +31,13 @@ namespace NFX.DataAccess.Distributed
     ///  so the design is specific to this model that scales horizontally. There is no need to use this technology for medium and smaller data stores
     ///  as it imposes specific requirements on how application is written/interacts with the backend system. This technology is based on the idea
     ///  of Parcels - an atomic unit of data change. Parcels get replicated between hosts for failover and performance reasons.
-    /// Note: 
+    /// Note:
     ///  NFX library does not provide the implementation for this technology, only marker interfaces so developers can plan for distributed backends
     ///  in future
     /// </summary>
     /// <remarks>
     /// The structure of distributed data store:
-    /// 
+    ///
     ///  +------------------------------------------------------------------------------------------------------------+
     ///  |                                            Data Store                                                      |
     ///  |  +-------------------------------------------------------------------------+      +---------------------+  |
@@ -61,9 +61,9 @@ namespace NFX.DataAccess.Distributed
     /// Banks are logical isolation containers in large datasets. Store implementations may use it for physical isolation as well.
     /// Every bank implements a particular schema - a structure suitable for some business purpose.
     /// A store may support multiple schemas, but every particular database bank implements only one schema.
-    /// Named instances of database banks with the same schema may be used to house data for different clients or environments. 
+    /// Named instances of database banks with the same schema may be used to house data for different clients or environments.
     /// Bank name example: "PROD-Data", "DEV-Data", "EnterpriseA", "CustomerX" etc.
-    /// 
+    ///
     /// Every Bank is further broken down by Areas that can be accessed/addressed by their names.
     /// Areas contain shards that partition large volumes of data horizontally, they define how data is partitioned and where it is stored
     /// </remarks>
@@ -73,25 +73,25 @@ namespace NFX.DataAccess.Distributed
         /// Returns names of database bank schemas supported by the store.
         /// Every bank implements a particular schema
         /// </summary>
-        IEnumerable<string> SchemaNames { get; } 
+        IEnumerable<string> SchemaNames { get; }
 
         /// <summary>
         /// Returns names of database bank instances in the store that implement the specified schema
         /// </summary>
-        IEnumerable<string> BankNames(string schemaName); 
+        IEnumerable<string> BankNames(string schemaName);
 
         /// <summary>
         /// Returns Bank object by name within schema
         /// </summary>
         IBank GetBank(string schemaName, string name);
     }
-    
-    
+
+
     public interface IDistributedDataStoreImplementation : IDistributedDataStore, IDataStoreImplementation
     {
 
     }
-    
+
     /// <summary>
     /// Provides information about schema of data store banks. Schema defines areas of the bank, where every area
     ///  defines what parcel types can be stored. Each bank implements only one bank schema
@@ -122,7 +122,7 @@ namespace NFX.DataAccess.Distributed
     ///  as it is common for all banks that implement the same schema.
     /// Area provides configuration information for parcels that it can store.
     /// Every instance of this (interface-implementer) class has a corresponding IAreaInstance instance that stores information
-    ///  for every particular bank, i.e. what distribution policies are applied (such as sharding) to the parcels stored in this area 
+    ///  for every particular bank, i.e. what distribution policies are applied (such as sharding) to the parcels stored in this area
     /// </summary>
     public interface IArea : INamed
     {
@@ -132,7 +132,7 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         ISchema Schema { get;}
 
-              
+
         /// <summary>
         /// Returns area description
         /// </summary>
@@ -196,7 +196,7 @@ namespace NFX.DataAccess.Distributed
     /// <summary>
     /// Provides abstraction for Global Database Bank instance
     /// </summary>
-    public interface IBank : INamed 
+    public interface IBank : INamed
     {
         /// <summary>
         /// References data store that this data bank is a part of
@@ -213,7 +213,7 @@ namespace NFX.DataAccess.Distributed
         /// Returns registry of named bank schema area instances
         /// </summary>
         IRegistry<IAreaInstance>  Areas { get;}
-        
+
 
         /// <summary>
         /// Returns database description
@@ -226,7 +226,7 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         string GetDescription(string culture);
 
-        
+
 
         /// <summary>
         /// Returns sequence provider that generates unique identifiers in the store
@@ -244,7 +244,7 @@ namespace NFX.DataAccess.Distributed
 
         /// <summary>
         /// Returns ULONG for an object so any object (i.e. a string) may be used as a sharding key.
-        /// Suppose a string needs to be used for sharding, this method translates a string into a 64 bit hash expressed as ulong 
+        /// Suppose a string needs to be used for sharding, this method translates a string into a 64 bit hash expressed as ulong
         /// </summary>
         /// <param name="key">An object used for sharding ID translation</param>
         /// <returns>UInt64 that represents the sharding ID</returns>
@@ -257,7 +257,7 @@ namespace NFX.DataAccess.Distributed
         /// <param name="tParcel">Parcel type to load</param>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.GetParcelAttr(typeof(T)).ShardingParcel
         /// </param>
@@ -266,7 +266,7 @@ namespace NFX.DataAccess.Distributed
         /// <param name="cacheMaxAgeSec">The maximum acceptable age of cached instance, cached data will be re-queried from backend if it is older</param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
         Parcel Load(Type tParcel,
-                      GDID id, 
+                      GDID id,
                       object shardingID = null,
                       DataVeracity veracity = DataVeracity.Maximum,
                       DataCaching cacheOpt = DataCaching.LatestData,
@@ -280,7 +280,7 @@ namespace NFX.DataAccess.Distributed
         /// <param name="tParcel">Parcel type to load</param>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.GetParcelAttr(typeof(T)).ShardingParcel
         /// </param>
@@ -289,7 +289,7 @@ namespace NFX.DataAccess.Distributed
         /// <param name="cacheMaxAgeSec">The maximum acceptable age of cached instance, cached data will be re-queried from backend if it is older</param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
         Task<Parcel> LoadAsync(Type tParcel,
-                                 GDID id, 
+                                 GDID id,
                                  object shardingID = null,
                                  DataVeracity veracity = DataVeracity.Maximum,
                                  DataCaching cacheOpt = DataCaching.LatestData,
@@ -302,7 +302,7 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.GetParcelAttr(typeof(T)).ShardingParcel
         /// </param>
@@ -310,7 +310,7 @@ namespace NFX.DataAccess.Distributed
         /// <param name="cacheOpt">The cache control options</param>
         /// <param name="cacheMaxAgeSec">The maximum acceptable age of cached instance, cached data will be re-queried from backend if it is older</param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
-        T Load<T>(GDID id, 
+        T Load<T>(GDID id,
                       object shardingID = null,
                       DataVeracity veracity = DataVeracity.Maximum,
                       DataCaching cacheOpt = DataCaching.LatestData,
@@ -323,7 +323,7 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.GetParcelAttr(typeof(T)).ShardingParcel
         /// </param>
@@ -331,7 +331,7 @@ namespace NFX.DataAccess.Distributed
         /// <param name="cacheOpt">The cache control options</param>
         /// <param name="cacheMaxAgeSec">The maximum acceptable age of cached instance, cached data will be re-queried from backend if it is older</param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
-        Task<T> LoadAsync<T>(GDID id, 
+        Task<T> LoadAsync<T>(GDID id,
                                  object shardingID = null,
                                  DataVeracity veracity = DataVeracity.Maximum,
                                  DataCaching cacheOpt = DataCaching.LatestData,
@@ -367,7 +367,7 @@ namespace NFX.DataAccess.Distributed
                                       DataCaching cacheOpt = DataCaching.LatestData,
                                       int? cacheMaxAgeSec = null,
                                       ISession session = null);
-        
+
 
         /// <summary>
         /// Saves/sends the parcel into this bank
@@ -427,13 +427,13 @@ namespace NFX.DataAccess.Distributed
         /// <param name="tParcel">Type of parcel to remove</param>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.ShardingParcel
         /// </param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
         bool Remove(Type tParcel,
-                       GDID id, 
+                       GDID id,
                        object shardingID = null,
                        ISession session = null);
 
@@ -443,13 +443,13 @@ namespace NFX.DataAccess.Distributed
         /// <param name="tParcel">Type of parcel to remove</param>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.ShardingParcel
         /// </param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
         Task<bool> RemoveAsync(Type tParcel,
-                                  GDID id, 
+                                  GDID id,
                                   object shardingID = null,
                                   ISession session = null);
 
@@ -458,12 +458,12 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.ShardingParcel
         /// </param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
-        bool Remove<T>(GDID id, 
+        bool Remove<T>(GDID id,
                        object shardingID = null,
                        ISession session = null) where T : Parcel;
 
@@ -472,12 +472,12 @@ namespace NFX.DataAccess.Distributed
         /// </summary>
         /// <param name="id">The unique GDID of the parcel</param>
         /// <param name="shardingID">
-        /// The ID of the entity used for sharding, 
+        /// The ID of the entity used for sharding,
         /// i.e. a message may use ID of the item that the message relates to, so messages get sharded in the same location as their "parent" record.
         /// The parcel type T specifies the DataParcelAttirbute.ShardingParcel
         /// </param>
         /// <param name="session">User session, if null session will be taken from execution context. The session may be needed for policy filtering</param>
-        Task<bool> RemoveAsync<T>(GDID id, 
+        Task<bool> RemoveAsync<T>(GDID id,
                                   object shardingID = null,
                                   ISession session = null) where T : Parcel;
     }
@@ -498,7 +498,7 @@ namespace NFX.DataAccess.Distributed
         IBank Bank { get;}
     }
 
-   
+
 
 
 

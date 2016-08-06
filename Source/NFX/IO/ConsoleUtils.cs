@@ -70,7 +70,7 @@ namespace NFX.IO
 
 
     public static string WriteMarkupContentAsHTML(
-                                                string content, 
+                                                string content,
                                                 Encoding encoding = null,  // UTF8 if null
                                                 char open = '<', char close = '>',
                                                 string mkpPRE = "pre",
@@ -87,7 +87,7 @@ namespace NFX.IO
     }
 
     public static void WriteMarkupContentAsHTML(System.IO.Stream output,
-                                                string content, 
+                                                string content,
                                                 Encoding encoding = null,  // UTF8 if null
                                                 char open = '<', char close = '>',
                                                 string mkpPRE = "pre",
@@ -104,7 +104,7 @@ namespace NFX.IO
 
 
     public static void WriteMarkupContentAsHTML(System.IO.TextWriter output,
-                                                string content, 
+                                                string content,
                                                 Encoding encoding = null,  // UTF8 if null
                                                 char open = '<', char close = '>',
                                                 string mkpPRE = "pre",
@@ -443,8 +443,8 @@ namespace NFX.IO
     {
        var f = Console.ForegroundColor;
        var b = Console.BackgroundColor;
-       
-       
+
+
         Console.ForegroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.Red;
         if (ln==0)
@@ -458,15 +458,15 @@ namespace NFX.IO
       Console.ForegroundColor = f;
       Console.BackgroundColor = b;
     }
-    
+
     /// <summary>
     /// Shows message with colored warning header
     /// </summary>
     public static void Warning(string msg, int ln = 0)
     {
        var f = Console.ForegroundColor;
-       var b = Console.BackgroundColor; 
-       
+       var b = Console.BackgroundColor;
+
         Console.ForegroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.Yellow;
         if (ln==0)
@@ -488,7 +488,7 @@ namespace NFX.IO
     {
        var f = Console.ForegroundColor;
        var b = Console.BackgroundColor;
-        
+
         Console.ForegroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.Green;
         if (ln==0)

@@ -33,7 +33,7 @@ namespace NFX.Web.Social
       //do not localize
 
       public const string VK_PUB_SERVICE_URL = "https://www.vk.com";
-            
+
       private const string LOGIN_LINK_TEMPLATE = "https://oauth.vk.com/authorize?client_id={0}&redirect_uri={1}&response_type=code";
 
       private const string ACCESSTOKEN_BASEURL = "https://oauth.vk.com/access_token";
@@ -60,9 +60,9 @@ namespace NFX.Web.Social
       private const string MESSAGE_PARAMNAME = "message";
 
     #endregion
-        
+
     #region Static
-            
+
       private static object s_Lock = new object();
       private static VKontakte s_Instance;
 
@@ -128,7 +128,7 @@ namespace NFX.Web.Social
         return Uri.EscapeUriString(LOGIN_LINK_TEMPLATE.Args(ClientCode, PrepareReturnURLParameter(returnURL)));
         //return Uri.EscapeUriString( LOGIN_LINK_TEMPLATE.Args(ClientCode, "https://oauth.vk.com/blank.html"));
       }
-      
+
     #endregion
 
     #region Protected
@@ -172,7 +172,7 @@ namespace NFX.Web.Social
 
       private dynamic getAccessTokenObj(string code, string redirectURI)
       {
-        return WebClient.GetJsonAsDynamic( ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
+        return WebClient.GetJsonAsDynamic( ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
           new Dictionary<string, string>() {
             {ACCESSTOKEN_CLIENTID_PARAMNAME, ClientCode},
             {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
@@ -257,8 +257,8 @@ namespace NFX.Web.Social
     public override string LongTermProviderToken
     {
       get { return AccessToken; }
-      internal set 
-      { 
+      internal set
+      {
         AccessToken = value;
         base.LongTermProviderToken = value;
       }

@@ -38,7 +38,7 @@ namespace NFX.Environment
   public abstract class Configuration : ICloneable
   {
     #region CONSTS
-         
+
           public const  string  DEFAULT_CONFIG_INCLUDE_PRAGMA = "_include";
 
           public const  string  CONFIG_INCLUDE_PRAGMA_FS_SECTION = "fs";
@@ -75,7 +75,7 @@ namespace NFX.Environment
         }
 
         /// <summary>
-        /// Returns all configuration file formats (file extensions without '.') supported 
+        /// Returns all configuration file formats (file extensions without '.') supported
         /// by ProviderLoadFromFile/ProviderLoadFromAnySupportedFormatFile/ProviderLoadFromString
         /// </summary>
         public static IEnumerable<string> AllSupportedFormats
@@ -87,7 +87,7 @@ namespace NFX.Environment
                                             .Concat(NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions);
           }
         }
-        
+
         /// <summary>
         /// Loads the contents of the supplied file name in an appropriate configuration provider implementation for the supplied extension format
         /// </summary>
@@ -128,7 +128,7 @@ namespace NFX.Environment
             if (fileName.IsNotNullOrWhiteSpace())
             {
               if (fileName.EndsWith(".")) fileName=fileName.Remove(fileName.Length-1);
-             
+
               foreach(var fmt in AllSupportedFormats)
               {
                 var fn =  "{0}.{1}".Args(fileName, fmt);
@@ -137,7 +137,7 @@ namespace NFX.Environment
             }
 
             throw new ConfigException(StringConsts.CONFIG_NO_PROVIDER_LOAD_FILE_ERROR + fileName);
-        } 
+        }
 
 
         /// <summary>
@@ -187,9 +187,9 @@ namespace NFX.Environment
     #endregion
 
     #region Private/Protected Fields
-    
+
       private bool m_StrictNames = true;
-      
+
       protected ConfigSectionNode m_Root;
 
       //not static because nodes retain Configuration ownership, hence every config has its own set of sentinel nodes
@@ -228,8 +228,8 @@ namespace NFX.Environment
               return m_EmptySectionNode;
           }
         }
-    
-    
+
+
         /// <summary>
         /// Determines whether exception is thrown when configuration node name contains
         /// inappropriate chars for particular configuration type. For example,
@@ -242,7 +242,7 @@ namespace NFX.Environment
           get { return m_StrictNames;}
           set {m_StrictNames = value; }
         }
-    
+
 
         /// <summary>
         /// Indicates whether configuration is read-only
@@ -270,7 +270,7 @@ namespace NFX.Environment
 
 
         /// <summary>
-        /// Gets/sets an object passed by the framework into MacroRunner.Run() method. 
+        /// Gets/sets an object passed by the framework into MacroRunner.Run() method.
         /// This property is auto-set for classes decorated with [ConfigMacroContext] attribute
         /// </summary>
         public object MacroRunnerContext
@@ -309,7 +309,7 @@ namespace NFX.Environment
 
 
         /// <summary>
-        /// Variable start tag 
+        /// Variable start tag
         /// </summary>
         public string Variable_START
         {
@@ -318,7 +318,7 @@ namespace NFX.Environment
         }
 
         /// <summary>
-        /// Variable end tag 
+        /// Variable end tag
         /// </summary>
         public string Variable_END
         {
@@ -327,7 +327,7 @@ namespace NFX.Environment
         }
 
         /// <summary>
-        /// Variable path modifier 
+        /// Variable path modifier
         /// </summary>
         public string Variable_PATH_MOD
         {
@@ -336,7 +336,7 @@ namespace NFX.Environment
         }
 
         /// <summary>
-        /// Variable environment modifier 
+        /// Variable environment modifier
         /// </summary>
         public string Variable_ENV_MOD
         {
@@ -384,7 +384,7 @@ namespace NFX.Environment
         {
           m_Root = new ConfigSectionNode(this, null, name, null);
         }
-    
+
         /// <summary>
         /// Creates new configuration from ordered merge result of two other nodes - base and override which can be from different configurations
         /// </summary>
@@ -432,7 +432,7 @@ namespace NFX.Environment
           if (m_Root != null)
             m_Root.ResetModified();
         }
-    
+
         /// <summary>
         /// Checks node name for aptitude for particular configuration type.
         /// For example, XML configuration does not allow nodes with spaces or separator chars.
@@ -441,13 +441,13 @@ namespace NFX.Environment
         public string CheckAndAdjustNodeName(string name)
         {
           name = name ?? string.Empty;
-      
+
           var result = AdjustNodeName(name);
 
           if (m_StrictNames)
            if (!string.Equals(name, result, StringComparison.OrdinalIgnoreCase))
             throw new ConfigException(string.Format(StringConsts.CONFIGURATION_NODE_NAME_ERROR, name));
-      
+
           return result;
         }
 
@@ -465,7 +465,7 @@ namespace NFX.Environment
           var process = ProcesswideEnvironmentVarResolver;
           if (process != null)
             return process.ResolveEnvironmentVariable(name);
-             
+
           return WindowsEnvironmentVariableResolver.Instance.ResolveEnvironmentVariable(name);
         }
 
@@ -476,19 +476,19 @@ namespace NFX.Environment
         public string RunMacro(IConfigSectionNode node, string inputValue, string macroName, IConfigSectionNode macroParams, IMacroRunner runner = null, object context = null)
         {
           if (context==null) context = m_MacroRunnerContext;
-          
+
           if (runner!=null)
            return runner.Run(node, inputValue, macroName, macroParams, context);
 
           if (m_MacroRunner != null)
             return m_MacroRunner.Run(node, inputValue, macroName, macroParams, context);
 
-           
+
           return DefaultMacroRunner.Instance.Run(node, inputValue, macroName, macroParams, context);
         }
 
-       
-       
+
+
         /// <summary>
         /// Creates a deep copy of this configuration into new instance of T
         /// </summary>

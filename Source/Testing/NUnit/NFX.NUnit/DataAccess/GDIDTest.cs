@@ -293,9 +293,31 @@ namespace NFX.NUnit.DataAccess
         [Field(required: true)] public GDID GDID {get; set;}
       }
 
-       public class NullableGDIDRow: TypedRow
+      public class NullableGDIDRow: TypedRow
       {
         [Field(required: true)] public GDID? GDID {get; set;}
+      }
+
+
+      [TestCase()]
+      public void GDIDSymbol()
+      {
+        var link = new ELink(new GDID(1280, 2, 8902382));
+
+        var gs = link.AsGDIDSymbol();
+
+        Assert.AreEqual(link.GDID, gs.GDID);
+        Assert.AreEqual(link.Link, gs.Symbol);
+
+        var gs2 = new GDIDSymbol(gs.GDID, gs.Symbol);
+        Assert.AreEqual(gs, gs2);
+        Assert.IsTrue( gs.Equals(gs2));
+        Assert.IsFalse( gs.Equals(this));
+        Assert.IsFalse( gs.Equals(null));
+
+        Assert.AreEqual(gs.GetHashCode(), gs2.GetHashCode());
+
+        Console.WriteLine( gs.ToString());
       }
 
   }

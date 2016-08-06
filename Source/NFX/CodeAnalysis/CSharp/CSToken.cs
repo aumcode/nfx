@@ -51,7 +51,7 @@ namespace NFX.CodeAnalysis.CSharp
             public override TokenKind Kind
             {
                 get
-                { 
+                {
                     if (Type > CSTokenType.LITERALS_START && Type < CSTokenType.LITERALS_END)
                          return TokenKind.Literal;
 
@@ -66,7 +66,7 @@ namespace NFX.CodeAnalysis.CSharp
 
                     switch(Type)
                     {
-                                       
+
                         case CSTokenType.tBOF:          return TokenKind.BOF;
                         case CSTokenType.tEOF:          return TokenKind.EOF;
                         case CSTokenType.tDirective:    return TokenKind.Directive;

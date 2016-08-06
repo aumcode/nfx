@@ -51,10 +51,10 @@ namespace rsc
 
 
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           ConsoleUtils.WriteMarkupContent( typeof(Program).GetText("Welcome.txt") );
 
           if (config.Root["?", "h", "help"].Exists)
@@ -88,8 +88,8 @@ namespace rsc
 
           if (compiler==null) throw new Exception("Could not create compiler type");
 
-         
-          
+
+
           compiler.OutputPath = Path.GetDirectoryName(schemaFileName);
 
           var options = config.Root["o","opt","options"];
@@ -105,15 +105,15 @@ namespace rsc
           Console.WriteLine("   OutPath={0}".Args(compiler.OutputPath) );
           Console.WriteLine("   OutPrefix={0}".Args(compiler.OutputPrefix) );
           Console.WriteLine("   CaseSensitive={0}".Args(compiler.CaseSensitiveNames) );
-          
+
           compiler.Compile();
 
 
-          
+
           foreach(var error in compiler.CompileErrors)
             ConsoleUtils.Error(error.ToMessageWithType());
 
-          
+
           if (compiler.CompileException!=null)
           {
             ConsoleUtils.Warning("Compile exception thrown");

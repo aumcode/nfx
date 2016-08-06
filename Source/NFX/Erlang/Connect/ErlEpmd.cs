@@ -33,14 +33,14 @@ namespace NFX.Erlang
   /// this is done automatically by
   /// <see cref="ErlLocalNode.Connection(string, ErlAtom?)"/>
   /// when necessary.
-  /// 
+  ///
   /// The methods <see cref="PublishPort(ErlLocalNode)"/> and
   /// <see cref="UnPublishPort"/> will fail if an
   /// Epmd process is not running on the localhost. Additionally
   /// <see cref="LookupPort"/> will fail if there is no Epmd
   /// process running on the host where the specified node is running.
   /// See the Erlang documentation for information about starting Epmd.
-  /// 
+  ///
   /// This class contains only static methods, there are no
   /// constructors.
   /// </remarks>
@@ -143,10 +143,10 @@ namespace NFX.Erlang
           s = null;
         }
       }
-      catch (Exception)
+      catch (Exception e)
       {
-        home.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_INVALID_RESPONSE_ERROR);
-        throw new ErlException(StringConsts.ERL_EPMD_NOT_RESPONDING.Args(node.Host, node.AliveName));
+        home.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_INVALID_RESPONSE_ERROR.Args(node.Host, node.AliveName, e.ToString()));
+        throw new ErlException(StringConsts.ERL_EPMD_NOT_RESPONDING.Args(node.Host, node.AliveName, e.ToString()));
       }
       finally
       {
@@ -163,10 +163,10 @@ namespace NFX.Erlang
 
     /// <summary>
     /// Publish node's port at local EPMD, so that other nodes can connect to it.
-    /// 
+    ///
     /// On failure to connect to EPMD the function may throw if the value of
     /// ErlApp.IgnoreLocalEpmdConnectErrors variable is true.
-    /// 
+    ///
     /// On failed connection attempt the function calls
     /// node.OnEpmdFailedConnectAttempt delegate
     /// </summary>
@@ -175,7 +175,7 @@ namespace NFX.Erlang
     /// epmd, or if something else happens that it cannot forsee. In both
     /// cases we return an exception (and the caller should try again, using
     /// the r3 protocol).
-    /// 
+    ///
     /// If we manage to successfully communicate with an r4 epmd, we return
     /// either the socket, or null, depending on the result
     /// </remarks>
@@ -249,7 +249,7 @@ namespace NFX.Erlang
 
       node.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_NO_RESPONSE);
 
-      
+
       node.OnEpmdFailedConnectAttempt(node.NodeName, error.Message);
 
       node.OnTrace(ErlTraceLevel.Epmd, Direction.Inbound, StringConsts.ERL_EPMD_FAILED_TO_CONNECT_ERROR);

@@ -46,12 +46,12 @@ namespace NFX.WinForms.Elements
 
     #region Private Fields
       private List<RadioButtonElement> m_RadioList = new List<RadioButtonElement>();
-      private Dictionary<object, object> m_Items = new Dictionary<object, object>(); 
+      private Dictionary<object, object> m_Items = new Dictionary<object, object>();
       private int m_UpdateCount;
-      
+
       private int m_ButtonVSpacing = 8;
       private Padding m_Padding = new Padding(2,2,2,2);
-      
+
       private RadioButtonElement m_CheckedElement;
     #endregion
 
@@ -62,13 +62,13 @@ namespace NFX.WinForms.Elements
       /// </summary>
       public RadioButtonElement CheckedElement
       {
-        get 
+        get
          {
            return m_CheckedElement;
          }
       }
-      
-      
+
+
       /// <summary>
       /// Returns nesting depth of BeginUpdate() call
       /// </summary>
@@ -99,7 +99,7 @@ namespace NFX.WinForms.Elements
           EndUpdate();
         }
       }
-      
+
 
     #endregion
 
@@ -116,20 +116,20 @@ namespace NFX.WinForms.Elements
        {
          m_UpdateCount++;
        }
-       
-       
+
+
        public void EndUpdate()
        {
          if (m_UpdateCount==0)
            throw new WFormsException(StringConsts.END_UPDATE_MISMATCH_ERROR);
-         
+
           m_UpdateCount--;
-         
-         if (m_UpdateCount==0) 
+
+         if (m_UpdateCount==0)
             rebuild();
        }
-       
-       
+
+
        public void AddItem(object key, object value)
        {
          BeginUpdate();
@@ -150,33 +150,33 @@ namespace NFX.WinForms.Elements
           m_Items.Clear();
          EndUpdate();
        }
-       
-       
+
+
       /// <summary>
       /// Tries to find a button with specified key and checks it. Returns true if button could be found
       /// </summary>
        public bool CheckButtonWithKey(object key)
        {
          m_CheckedElement = null;
-       
+
          foreach (RadioButtonElement other in m_RadioList)
            other.Checked = false;
-       
+
          foreach (RadioButtonElement rbt in m_RadioList)
-           if (equal(rbt.Key, key)) 
+           if (equal(rbt.Key, key))
            {
              rbt.Checked = true;
              m_CheckedElement = rbt;
-             
+
              OnCheckedChanged(EventArgs.Empty);
-            
+
              return true;
            }
-           
-         OnCheckedChanged(EventArgs.Empty);  
+
+         OnCheckedChanged(EventArgs.Empty);
          return false;
        }
-       
+
 
     #endregion
 
@@ -186,10 +186,10 @@ namespace NFX.WinForms.Elements
        protected override void Destructor()
        {
          deleteAllButtons();
-         base.Destructor();  
+         base.Destructor();
        }
-      
-      
+
+
       protected internal override void Paint(Graphics gr)
       {
         //BaseApplication.Theme.PartRenderer.RadioGroup(gr, Region, MouseIsOver, FieldControlContext);
@@ -202,9 +202,9 @@ namespace NFX.WinForms.Elements
         {
          rbt.ZOrder = this.ZOrder + 1;
          foreach (Element elm in rbt.OwnedElements)
-          elm.ZOrder = this.ZOrder + 1; 
-        } 
-        base.ZOrderChanged(); 
+          elm.ZOrder = this.ZOrder + 1;
+        }
+        base.ZOrderChanged();
       }
 
       protected override void VisibleChanged()
@@ -214,8 +214,8 @@ namespace NFX.WinForms.Elements
           rbt.Visible = this.Visible;
           foreach (Element elm in rbt.OwnedElements)
             elm.Visible = this.Visible;
-        } 
-          
+        }
+
         base.VisibleChanged();
       }
 
@@ -242,14 +242,14 @@ namespace NFX.WinForms.Elements
 
         base.MouseTransparentChanged();
       }
-      
-      
+
+
 
       protected override void RegionChanged()
-      { 
+      {
         BeginUpdate();
         EndUpdate();
-        
+
         base.RegionChanged();
       }
 
@@ -261,13 +261,13 @@ namespace NFX.WinForms.Elements
       protected override void FieldControlContextChanged()
       {
         //base.FieldControlContextChanged();
-        
+
         foreach( RadioButtonElement rbt in m_RadioList)
         {
           rbt.FieldControlContext = FieldControlContext;
           foreach( Element elm in rbt.OwnedElements)
              elm.FieldControlContext = FieldControlContext;
-        }   
+        }
       }
 
 
@@ -277,75 +277,75 @@ namespace NFX.WinForms.Elements
     #region Private Utils
 
          private const string BUTTON_TAG = "Button";
-         
+
          private bool equal(object o1, object o2)
          {
            if ((o1==null)||(o2==null))
               return false;
-           
+
            if (o1.GetType() != o2.GetType())
               return false;
-           
+
            if (o1 is IComparable)
             return ((IComparable) o1).CompareTo(o2) == 0;
-            
-           return false; 
+
+           return false;
          }
-         
-         
+
+
          private void deleteAllButtons()
          {
            m_CheckedElement = null;
-           
+
            foreach (RadioButtonElement rbt in m_RadioList)
              rbt.Dispose();
-             
-           m_RadioList.Clear();  
+
+           m_RadioList.Clear();
          }
 
 
          private void rebuild()
          {
-           object wasCheckedKey = null; 
-          
+           object wasCheckedKey = null;
+
            if (m_CheckedElement!=null)
              wasCheckedKey = m_CheckedElement.Key;
-             
+
            m_CheckedElement = null;
-           
+
            deleteAllButtons();
-           
+
            if (m_Items.Count==0) return;
-           
+
            int fh = Host.CurrentFontHeight;
-           
+
            int clientHeight = Region.Height - Padding.Vertical;
            int rowHeight = fh + m_ButtonVSpacing;
            int rowCount = clientHeight / rowHeight;
-           
+
            //see if last row fits without trailing spacing
            if ((clientHeight-(rowCount*rowHeight))>=fh) rowCount++;
-           
-           if (rowCount<1) 
+
+           if (rowCount<1)
             rowCount =1;
 
            int colCount = (int)(m_Items.Count / rowCount) + (((m_Items.Count % rowCount)>0)? 1 : 0);
-           
+
            int colWidth = (int)((Region.Width- Padding.Horizontal) / colCount);
-           
+
            RadioButtonElement btn;
            TextLabelElement lbl;
-          
+
            int x = Region.Left+m_Padding.Left;
-           
-           
+
+
            IDictionaryEnumerator enm = m_Items.GetEnumerator();
-           
+
            try
            {
              for (int col = 1; col <= colCount; col++)
              {
-               
+
                int y = Region.Top + m_Padding.Top;
                for (int row = 1; row <= rowCount; row++)
                {
@@ -356,57 +356,57 @@ namespace NFX.WinForms.Elements
                   btn.MouseClick += buttonClick;
                   btn.Key = enm.Key;
                   btn.OwnedElements.Add(lbl = new TextLabelElement(Host));
-                  
+
                   if (wasCheckedKey!=null)
                      if (enm.Key==wasCheckedKey)
                      {
                        btn.Checked = true;
-                       m_CheckedElement = btn; 
+                       m_CheckedElement = btn;
                      }
-              
+
                   lbl.Region = new Rectangle(x + fh, y, colWidth - fh, fh);
                   lbl.ZOrder = btn.ZOrder;
                   lbl.Text = (enm.Value != null)? " "+enm.Value.ToString() : string.Empty;
                   lbl.MouseClick += buttonClick;
                   lbl.Tags[BUTTON_TAG] = btn;
-                  
+
                   y += fh + m_ButtonVSpacing;
                }
                x+= colWidth;
              }
            }
            finally
-           {  
+           {
               FieldControlContextChanged();
            }
          }
-         
+
          //assumption: sender is either radio button or label with named tag pointing to corresponding button
          private void buttonClick(object sender, EventArgs e)
          {
            if (sender==null) return; //safeguard
-           
+
            RadioButtonElement rbt = sender as RadioButtonElement;
-           
+
            if (rbt==null) //it is a text label, not button
            {
              rbt = (sender as TextLabelElement).Tags[BUTTON_TAG] as RadioButtonElement;
            }
-           
-           
+
+
            rbt.Checked = !rbt.Checked;
 
            if (rbt.Checked)
            {
              foreach (RadioButtonElement other in m_RadioList)
                 if (other!=rbt) other.Checked = false;
-                
-             m_CheckedElement = rbt;  
-           } 
+
+             m_CheckedElement = rbt;
+           }
            else
-             m_CheckedElement = null;  
-             
-           OnCheckedChanged(EventArgs.Empty);  
+             m_CheckedElement = null;
+
+           OnCheckedChanged(EventArgs.Empty);
          }
 
     #endregion

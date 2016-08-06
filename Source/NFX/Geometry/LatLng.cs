@@ -37,6 +37,10 @@ namespace NFX.Geometry
 
     public const double EARTH_RADIUS_KM = 6371d;
 
+    public const double EARTH_DIAMETER_KM = 2 * EARTH_RADIUS_KM;
+
+    public const double EARTH_CIRCUMFERENCE_KM = EARTH_DIAMETER_KM * Math.PI;
+
 
     private string m_Name;
     private double m_Lat;
@@ -85,7 +89,7 @@ namespace NFX.Geometry
     {
       get{ return m_Lat;}
       private set
-      { 
+      {
         if (value < MIN_LAT) value = MIN_LAT;
         else
         if (value > MAX_LAT) value = MAX_LAT;
@@ -98,7 +102,7 @@ namespace NFX.Geometry
     {
       get{ return m_Lng;}
       private set
-      { 
+      {
         if (value < MIN_LNG) value = MIN_LNG;
         else
         if (value > MAX_LNG) value = MAX_LNG;
@@ -122,11 +126,11 @@ namespace NFX.Geometry
     {
       var dLat = this.RadLat - other.RadLat;
       var dLng = this.RadLng - other.RadLng;
-	    
+
 		  var a  = Math.Pow(Math.Sin(dLat/2d), 2d) + Math.Cos(this.RadLat) * Math.Cos(other.RadLat) * Math.Pow(Math.Sin(dLng/2d), 2d);
 		  var c  = 2d * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1-a)); // great circle distance in radians
 
-      return  EARTH_RADIUS_KM * c; 
+      return  EARTH_RADIUS_KM * c;
     }
 
 
@@ -170,7 +174,7 @@ namespace NFX.Geometry
         if (imin>0)
         {
           min = val.Substring(0, imin);
-          val = val.Substring(imin+1); 
+          val = val.Substring(imin+1);
         }
         var isec = val.IndexOf("''");
         var sec = "";
@@ -182,12 +186,12 @@ namespace NFX.Geometry
         var dd = deg.AsDouble(handling: ConvertErrorHandling.Throw);
 
         return dd < 0 ?
-                 dd - 
-                 (min.AsDouble(handling: ConvertErrorHandling.Throw)/60d) - 
+                 dd -
+                 (min.AsDouble(handling: ConvertErrorHandling.Throw)/60d) -
                  (sec.AsDouble(handling: ConvertErrorHandling.Throw)/3600d)
                  :
-                 dd + 
-                 (min.AsDouble(handling: ConvertErrorHandling.Throw)/60d) + 
+                 dd +
+                 (min.AsDouble(handling: ConvertErrorHandling.Throw)/60d) +
                  (sec.AsDouble(handling: ConvertErrorHandling.Throw)/3600d);
       }
       return double.Parse(val, System.Globalization.NumberStyles.Number);

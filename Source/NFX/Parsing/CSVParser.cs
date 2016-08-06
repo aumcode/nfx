@@ -42,7 +42,7 @@ namespace NFX.Parsing
 
       public CharIteratorWithStats(ILookAheadEnumerator<char> enumerator, int count = -1)
       {
-        m_Enumerator = enumerator; 
+        m_Enumerator = enumerator;
         Line = 0;
         Column = 0;
         Count = 0;
@@ -52,11 +52,11 @@ namespace NFX.Parsing
       public bool HasNext { get { return m_Enumerator.HasNext; } }
       public char Next { get { return m_Enumerator.Next; } }
       public char Current { get { return m_Enumerator.Current; } }
-      public void Dispose() 
+      public void Dispose()
       {
         Line = 0;
         Column = 0;
-        m_Enumerator.Dispose(); 
+        m_Enumerator.Dispose();
       }
       object IEnumerator.Current { get { return Current; } }
       public bool MoveNext()
@@ -81,9 +81,9 @@ namespace NFX.Parsing
       }
     }
 
-    public static IEnumerable<IEnumerable<string>> ParseCSV(this IEnumerable<char> stream, 
-      bool trim = false, 
-      bool skipHeader = false, 
+    public static IEnumerable<IEnumerable<string>> ParseCSV(this IEnumerable<char> stream,
+      bool trim = false,
+      bool skipHeader = false,
       int columns = -1,
       bool skipIfMore = false,
       bool addIfLess = false)
@@ -103,7 +103,7 @@ namespace NFX.Parsing
       }
     }
 
-    public static IEnumerable<string> ParseCSVRow(this IEnumerable<char> row, 
+    public static IEnumerable<string> ParseCSVRow(this IEnumerable<char> row,
       bool trim = false,
       int columns = -1,
       bool skipIfMore = false,
@@ -133,7 +133,7 @@ namespace NFX.Parsing
         var c = enumerator.Current;
         if (('\n' == c || '\r' == c) && state != State.Quote)
         {
-          if ('\r' == c && enumerator.HasNext && '\n' == enumerator.Next) 
+          if ('\r' == c && enumerator.HasNext && '\n' == enumerator.Next)
             enumerator.MoveNext();
           break;
         }

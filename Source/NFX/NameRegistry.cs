@@ -22,12 +22,12 @@ using System.Text;
 
 namespace NFX
 {
-    
+
     /// <summary>
-    /// Denotes an entity that has a Name property. 
-    /// This interface is primarily used with Registry[INamed] class that allows for 
+    /// Denotes an entity that has a Name property.
+    /// This interface is primarily used with Registry[INamed] class that allows for
     ///  string-based addressing (getting instances by object instance name).
-    /// The names are ideal for many system functions, like naming components in configs and admin tools 
+    /// The names are ideal for many system functions, like naming components in configs and admin tools
     /// </summary>
     public interface INamed
     {
@@ -72,7 +72,7 @@ namespace NFX
         /// </summary>
         int Count{ get;}
     }
-    
+
     /// <summary>
     /// Provides read-only named ordered object lookup capabilities
     /// </summary>
@@ -94,9 +94,9 @@ namespace NFX
           /// </summary>
           T this[int index] { get;}
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// Internal dictionary of string-named objects
     /// </summary>
@@ -106,7 +106,7 @@ namespace NFX
        public RegistryDictionary(bool caseSensitive) : base(caseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase)
        {
        }
-       
+
        public RegistryDictionary(bool caseSensitive, IDictionary<string, T> other) : base(other, caseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase)
        {
        }
@@ -149,15 +149,15 @@ namespace NFX
           }
 
 
-          
+
           [NonSerialized]
           protected object m_Sync = new object();
 
           private bool m_CaseSensitive;
           private volatile RegistryDictionary<T> m_Data;
-         
-          
-          
+
+
+
           /// <summary>
           /// Returns true if the instance differentiates names by case
           /// </summary>
@@ -174,7 +174,7 @@ namespace NFX
              T result;
              if (data.TryGetValue(name, out result)) return result;
              return default(T);
-            } 
+            }
           }
 
 
@@ -188,7 +188,7 @@ namespace NFX
 
 
           /// <summary>
-          /// Registers item and returns true if it was registered, false if this named instance already existed in the list 
+          /// Registers item and returns true if it was registered, false if this named instance already existed in the list
           /// </summary>
           public bool Register(T item)
           {
@@ -198,7 +198,7 @@ namespace NFX
 
                 var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 data.Add(item.Name, item);
-                
+
                 JustRegistered(item);
 
                 m_Data = data;
@@ -208,7 +208,7 @@ namespace NFX
           }
 
           /// <summary>
-          /// Registers item and returns true if it was registered, false if this named instance already existed and was replaced 
+          /// Registers item and returns true if it was registered, false if this named instance already existed and was replaced
           /// </summary>
           public bool RegisterOrReplace(T item)
           {
@@ -217,14 +217,14 @@ namespace NFX
           }
 
           /// <summary>
-          /// Registers item and returns true if it was registered, false if this named instance already existed and was replaced 
+          /// Registers item and returns true if it was registered, false if this named instance already existed and was replaced
           /// </summary>
           public bool RegisterOrReplace(T item, out T existing)
           {
             lock(m_Sync)
             {
                 var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
-                
+
                 if (data.TryGetValue(item.Name, out existing))
                 {
                    data[item.Name] = item;
@@ -246,15 +246,15 @@ namespace NFX
           /// <summary>
           /// Unregisters item and returns true if it was unregistered, false if it did not exist
           /// </summary>
-          public bool Unregister(T item) 
-          {              
+          public bool Unregister(T item)
+          {
             lock(m_Sync)
             {
                 if (!m_Data.ContainsKey(item.Name)) return false;
 
                 var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 data.Remove(item.Name);
-                
+
                 JustUnregistered(item);
 
                 m_Data = data;
@@ -266,8 +266,8 @@ namespace NFX
           /// <summary>
           /// Unregisters item by name and returns true if it was unregistered, false if it did not exist
           /// </summary>
-          public bool Unregister(string name) 
-          {              
+          public bool Unregister(string name)
+          {
             lock(m_Sync)
             {
                 T item;
@@ -275,7 +275,7 @@ namespace NFX
 
                 var data = new RegistryDictionary<T>(m_CaseSensitive, m_Data);
                 data.Remove(name);
-                
+
                 JustUnregistered(item);
 
                 m_Data = data;
@@ -288,7 +288,7 @@ namespace NFX
           /// Deletes all items from registry
           /// </summary>
           public virtual void Clear()
-          {  
+          {
              m_Data = new RegistryDictionary<T>(m_CaseSensitive); //atomic
           }
 
@@ -355,10 +355,10 @@ namespace NFX
 
            public IEnumerable<string> Names
            {
-               get 
+               get
                {
                  var data = m_Data;
-                 return data.Keys; 
+                 return data.Keys;
                }
            }
 
@@ -368,7 +368,7 @@ namespace NFX
                get
                {
                  var data = m_Data;
-                 return data.Values; 
+                 return data.Values;
                }
            }
 
@@ -394,7 +394,7 @@ namespace NFX
 
            protected virtual void JustUnregistered(T item) {}
 
-    } 
+    }
 
 
     /// <summary>
@@ -439,12 +439,12 @@ namespace NFX
           /// </summary>
           public T this[int index]
           {
-            get 
+            get
             {
                 var lst = m_OrderedValues;//thread-safe copy
                 if (index>=0 && index<lst.Count)
                     return lst[index];
-                
+
                 return default(T);
             }
           }
@@ -453,7 +453,7 @@ namespace NFX
           /// Deletes all items from ordered registry
           /// </summary>
           public override void Clear()
-          {  
+          {
              lock(m_Sync)
              {
                base.Clear();

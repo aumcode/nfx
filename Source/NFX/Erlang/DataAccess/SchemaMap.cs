@@ -29,7 +29,7 @@ namespace NFX.DataAccess.Erlang
     public const string CONFIG_DEFAULT_ATTR        = "default";
     public const string CONFIG_LEN_ATTR            = "len";
     public const string CONFIG_VISIBLE_ATTR        = "visible";
-     
+
     public const string CONFIG_CASE_ATTR           = "case";
 
     public const string CONFIG_FORMAT_ATTR         = "format";
@@ -96,15 +96,15 @@ namespace NFX.DataAccess.Erlang
     /// "tca_jaba": has two field in PK
     /// [
     ///    {tca_jaba, {1234, tav}, "User is cool", true},
-    ///    {tca_jaba, {2344, zap}, "A bird wants to drink", false}, 
-    ///    {tca_jaba, {8944, tav}, "Have you seen this?", false} 
+    ///    {tca_jaba, {2344, zap}, "A bird wants to drink", false},
+    ///    {tca_jaba, {8944, tav}, "Have you seen this?", false}
     /// ]
-    /// 
+    ///
     /// "aaa": has one field in PK - notice no tuple in key
     /// [
     ///    {aaa, 1234, tav, "User is cool", true},
-    ///    {aaa, 2344, zap, "A bird wants to drink", false}, 
-    ///    {aaa, 8944, tav, "Have you seen this?", false} 
+    ///    {aaa, 2344, zap, "A bird wants to drink", false},
+    ///    {aaa, 8944, tav, "Have you seen this?", false}
     /// ]
     /// </remarks>
     public RowsetBase ErlCRUDResponseToRowset(string schemaName, ErlList erlData, Type tRow = null)
@@ -136,7 +136,7 @@ namespace NFX.DataAccess.Erlang
     }
 
     /// <summary>
-    /// Maps ErlRow to CLR row supplied by schema, either Dynamic or TypedRow 
+    /// Maps ErlRow to CLR row supplied by schema, either Dynamic or TypedRow
     /// </summary>
     public Row ErlTupleToRow(string schemaName, ErlTuple tuple, Schema schema)
     {
@@ -169,7 +169,7 @@ namespace NFX.DataAccess.Erlang
         var clrValue = ErlToClrValue(elm, schema, fdef, m_Store.TargetName, tuple);
         row.SetFieldValue(fdef, clrValue);
       }
-  
+
       return row;
     }
 
@@ -179,7 +179,7 @@ namespace NFX.DataAccess.Erlang
     public ErlTuple RowToErlTuple(Row row, bool keysOnly = false)
     {
       var result = new ErlTuple();
-      
+
       result.Add(new ErlAtom(row.Schema.Name));
 
       var keys = new List<IErlObject>();
@@ -195,7 +195,7 @@ namespace NFX.DataAccess.Erlang
           if (keys.Count>1)
             result.Add( new ErlTuple(keys, false) );
           else
-            foreach(var key in keys) result.Add( key ); 
+            foreach(var key in keys) result.Add( key );
           keys = null;
         }
 
@@ -205,7 +205,7 @@ namespace NFX.DataAccess.Erlang
         var clrValue = row.GetFieldValue(def);
         if (clrValue!=null)
           erlValue = ClrToErlValue(atr.BackendType, clrValue);
-        
+
         if (keys!=null)
           keys.Add( erlValue );
         else
@@ -217,7 +217,7 @@ namespace NFX.DataAccess.Erlang
         if (keys.Count>1)
          result.Add( new ErlTuple(keys, false) );
         else
-         foreach(var key in keys) result.Add( key ); 
+         foreach(var key in keys) result.Add( key );
       }
 
       return result;
@@ -243,7 +243,7 @@ namespace NFX.DataAccess.Erlang
 
       var dataType = atr.BackendType;
       if (dataType.IsNullOrWhiteSpace())
-        throw new ErlDataAccessException(StringConsts.ERL_DS_INTERNAL_MAPPING_ERROR + 
+        throw new ErlDataAccessException(StringConsts.ERL_DS_INTERNAL_MAPPING_ERROR +
                                          "fielddef '{0}.{1}' has no backend type".Args(schema.Name, fdef.Name));
 
       Tuple<Type, Func<IErlObject, object>> mapping;
@@ -284,7 +284,7 @@ namespace NFX.DataAccess.Erlang
 
         yield break;
       }
-         
+
       for(var i=0; i<tuple.Count; i++)
       {
         var elm = tuple[i];
@@ -357,18 +357,18 @@ namespace NFX.DataAccess.Erlang
 
         var strDfltValue = node.AttrByName(CONFIG_DEFAULT_ATTR).ValueAsString(string.Empty);
         object dfltValue = null;
-          
+
         if (clrType==typeof(string))
           dfltValue = strDfltValue;
         else if (strDfltValue.IsNotNullOrWhiteSpace())
-          dfltValue = clrType==typeof(DateTime?) 
-                    ? ((long)strDfltValue.AsType(typeof(long), false)).FromMicrosecondsSinceUnixEpochStart() 
+          dfltValue = clrType==typeof(DateTime?)
+                    ? ((long)strDfltValue.AsType(typeof(long), false)).FromMicrosecondsSinceUnixEpochStart()
                     : strDfltValue.AsType(clrType, false);
 
         if (isKey) keyCount++;
 
         List<string> vList = null;
-                   
+
         var values = node.Children.Where( c => c.IsSameName(CONFIG_VALUE_SECTION));
         foreach(var vnode in values)
         {
@@ -391,17 +391,17 @@ namespace NFX.DataAccess.Erlang
         if (ca.EqualsOrdIgnoreCase("lower")) caze = CharCase.Lower;
 
         var atr = new FieldAttribute(
-            targetName:    TargetedAttribute.ANY_TARGET, 
+            targetName:    TargetedAttribute.ANY_TARGET,
             backendName:   fname,
             backendType:   type,
             storeFlag:     StoreFlag.LoadAndStore,
             key:           isKey,
             required:      required,
             dflt:          dfltValue,
-                             
+
             min:           minV,
             max:           maxV,
-                             
+
             charCase:      caze,
 
             visible:       node.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(true),
@@ -416,14 +416,14 @@ namespace NFX.DataAccess.Erlang
 
         var def = new Schema.FieldDef(fname, clrType, new []{atr});
         defs.Add( def );
-      }//for fields 
+      }//for fields
 
       var result = new Schema(name, isReadonly, defs.ToArray());
 
       if (schDescr.IsNotNullOrWhiteSpace())
         result.ExtraData[CONFIG_DESCR_ATTR]               = schDescr;
 
-      result.ExtraData[SCHEMA_KEY_COUNT]                  = keyCount; 
+      result.ExtraData[SCHEMA_KEY_COUNT]                  = keyCount;
       result.ExtraData[Schema.EXTRA_SUPPORTS_INSERT_ATTR] = isInsert;
       result.ExtraData[Schema.EXTRA_SUPPORTS_UPDATE_ATTR] = isUpdate;
       result.ExtraData[Schema.EXTRA_SUPPORTS_DELETE_ATTR] = isDelete;
@@ -435,11 +435,11 @@ namespace NFX.DataAccess.Erlang
     {
       Tuple<Type, Func<IErlObject, object>> to;
       if (ERL_TO_CLR_TYPEMAP.TryGetValue(erlType, out to)) return to.Item1;
-        
+
 
       throw new ErlDataAccessException(StringConsts.ERL_DS_SCHEMA_MAP_ERL_TYPE_ERROR.Args(erlType));
     }
-    
+
     private static readonly    Dictionary<string,Tuple<Type,Func<IErlObject,object>>>
       ERL_TO_CLR_TYPEMAP = new Dictionary<string,Tuple<Type,Func<IErlObject,object>>>
     {
@@ -470,13 +470,13 @@ namespace NFX.DataAccess.Erlang
       {"int",      (clr) => new ErlLong(clr.AsLong(handling: ConvertErrorHandling.Throw))},
       {"long",     (clr) => new ErlLong(clr.AsLong(handling: ConvertErrorHandling.Throw))},
       {"double",   (clr) => new ErlDouble(clr.AsDouble(handling: ConvertErrorHandling.Throw))},
-      {"date",     (clr) => 
+      {"date",     (clr) =>
                     {
                       var dt =  clr.AsDateTime();
                       dt = adjustDateToUTC(dt);
                       return new ErlTuple( dt.Year, dt.Month, dt.Day );
                     }},
-      {"datetime", (clr) => 
+      {"datetime", (clr) =>
                     {
                       var dt =  clr.AsDateTime();
                       dt = adjustDateToUTC(dt);
@@ -508,7 +508,7 @@ namespace NFX.DataAccess.Erlang
         return string.Join(".", ((ErlTuple) erl).Value.Select(i => i.ValueAsInt.ToString()).Take(4));
       }
       catch (Exception e)
-      { 
+      {
         throw new ErlException(StringConsts.ERL_INVALID_VALUE_ERROR.Args(erl.ToString()), e);
       }
     }

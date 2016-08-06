@@ -42,7 +42,7 @@ namespace NFX.DataAccess.Distributed
                 /// Represents a distributed command parameter
                 /// </summary>
                 [Serializable]
-                public sealed class Param 
+                public sealed class Param
                 {
                     public Param(string name, object value = null)
                     {
@@ -60,41 +60,41 @@ namespace NFX.DataAccess.Distributed
                     }
                 }
 
-        
+
         #region .ctor
-            
+
             public Command(Guid? identity, string name, params Param[] pars )
             {
-                m_Identity = identity ?? Guid.NewGuid(); 
+                m_Identity = identity ?? Guid.NewGuid();
                 m_Name = name;
                 if (pars!=null) AddRange(pars);
             }
 
             public Command(Guid? identity, string name, Parcel shardingParcel, params Param[] pars ) : this(identity,
-                                                                                            name, 
-                                                                                            shardingParcel.NonNull(text: "Command.ctor(shardingParcel=null)").ShardingPointer, 
+                                                                                            name,
+                                                                                            shardingParcel.NonNull(text: "Command.ctor(shardingParcel=null)").ShardingPointer,
                                                                                             pars)
             {
-               
+
             }
 
             public Command(Guid? identity, string name, ShardingPointer shardingPtr, params Param[] pars )
             {
-                m_Identity = identity ?? Guid.NewGuid(); 
+                m_Identity = identity ?? Guid.NewGuid();
 
                 m_Name = name;
-                
+
                 if (!shardingPtr.IsAssigned)
                    throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+ GetType().FullName+".ctor(!shardingPtr.IsAssigned)");
-                
+
                 m_ShardingPointer = shardingPtr;
 
                 if (pars!=null) AddRange(pars);
             }
         #endregion
-        
+
         #region Fields
-            
+
             private Guid m_Identity;
             private string m_Name;
             private ShardingPointer m_ShardingPointer;
@@ -103,8 +103,8 @@ namespace NFX.DataAccess.Distributed
 
 
         #region Properties
-            
-            
+
+
             /// <summary>
             /// Returns the identity of this instance, that is - an ID that UNIQUELY identifies the instance of this command
             /// including all of the names, parameters, values. This is needed for Equality comparison and cache lookup.
@@ -114,8 +114,8 @@ namespace NFX.DataAccess.Distributed
             {
                get { return m_Identity;}
             }
-            
-            
+
+
             /// <summary>
             /// Returns Command name, providers use it to locate modules particular to backend implementation that they represent
             /// </summary>
@@ -146,7 +146,7 @@ namespace NFX.DataAccess.Distributed
             /// Implements IParcelCachePolicy contract.
             /// The default implementation returns null.
             /// Override to supply a value for maximum length of this isntance stay in cache
-            ///  that may depend on particular command state (i.e. param values) 
+            ///  that may depend on particular command state (i.e. param values)
             /// </summary>
             public virtual int? CacheWriteMaxAgeSec
             {
@@ -157,7 +157,7 @@ namespace NFX.DataAccess.Distributed
             /// Implements IParcelCachePolicy contract.
             /// The default implementation returns null.
             /// Override to supply a value for maximum validity span of cached command data
-            ///  that may depend on particular command state (i.e. param values). 
+            ///  that may depend on particular command state (i.e. param values).
             /// </summary>
             public virtual int? CacheReadMaxAgeSec
             {
@@ -168,7 +168,7 @@ namespace NFX.DataAccess.Distributed
             /// Implements IParcelCachePolicy contract.
             /// The default implementation returns null.
             /// Override to supply a relative cache priority of this command data
-            ///  that may depend on particular command state (i.e. param values). 
+            ///  that may depend on particular command state (i.e. param values).
             /// </summary>
             public virtual int? CachePriority
             {
@@ -188,17 +188,17 @@ namespace NFX.DataAccess.Distributed
             /// Implements IParcelCachePolicy contract.
             /// The default implementation returns null.
             /// Override to supply a different absolute cache expiration UTC timestamp for this command data
-            ///  that may depend on particular command state (i.e. field values). 
+            ///  that may depend on particular command state (i.e. field values).
             /// </summary>
             public DateTime? CacheAbsoluteExpirationUTC
             {
                 get { return null; }
             }
-            
+
        #endregion
 
        #region Public
-            
+
 
             public override string ToString()
             {
@@ -210,7 +210,7 @@ namespace NFX.DataAccess.Distributed
             {
               var other = obj as Command;
               if (other==null) return false;
-                           
+
               return this.m_Identity == other.Identity;
             }
 
@@ -220,7 +220,7 @@ namespace NFX.DataAccess.Distributed
             }
 
        #endregion
-            
+
     }
 
 

@@ -25,7 +25,7 @@ namespace NFX.Time
     /// Days of week bitmask enumeration
     /// </summary>
     [Flags]
-    public enum DaysOfWeek 
+    public enum DaysOfWeek
     {
        None = 0,
 
@@ -36,7 +36,7 @@ namespace NFX.Time
        Thu = 16,
        Fri = 32,
        Sat = 64,
-        
+
        Sunday = Sun,
        Monday = Mon,
        Tuesday = Tue,
@@ -44,7 +44,7 @@ namespace NFX.Time
        Thursday = Thu,
        Friday = Fri,
        Saturday = Sat,
-       
+
 
        All = Sun | Mon | Tue | Wed | Thu | Fri | Sat
     }
@@ -52,9 +52,9 @@ namespace NFX.Time
 
     public static class DaysOfWeekUtils
     {
-      
+
         public static bool Contains(this DaysOfWeek set, DayOfWeek day)
-        {      
+        {
           return 0<((int)set & (1 << (int)day));
         }
 

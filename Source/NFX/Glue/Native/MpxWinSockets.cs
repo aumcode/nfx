@@ -28,15 +28,15 @@ using NFX.Environment;
 
 namespace NFX.Glue.Native
 {
-    
+
     /// <summary>
     /// Factory that makes MpxWin sockets based on Windows-IO completion ports
     /// </summary>
     public sealed class MpxWinSocketFactory : MpxSocketFactory
     {
 
-      
-      public override MpxClientSocket MakeClientSocket(MpxClientTransport transport, 
+
+      public override MpxClientSocket MakeClientSocket(MpxClientTransport transport,
                                                        IPEndPoint remoteServer,
                                                        ClientSite clientSite,
                                                        MpxSocketReceiveAction<MpxClientTransport> receiveAction)
@@ -53,7 +53,7 @@ namespace NFX.Glue.Native
 
       public override void Configure(IConfigSectionNode node) { }
     }//factory
-    
+
 
 
 
@@ -93,23 +93,23 @@ namespace NFX.Glue.Native
         m_Client.LingerState.Enabled = true;
         m_Client.LingerState.LingerTime = m_Transport.Binding.SocketLingerSec;
 
-        
+
         m_Client.ReceiveBufferSize =  m_Transport.Binding.ClientReceiveBufferSize;
-        m_Client.SendBufferSize    =  m_Transport.Binding.ClientSendBufferSize; 
-            
+        m_Client.SendBufferSize    =  m_Transport.Binding.ClientSendBufferSize;
+
         m_Client.ReceiveTimeout    =  m_Transport.Binding.ClientReceiveTimeout;
         m_Client.SendTimeout       =  m_Transport.Binding.ClientSendTimeout;
 
-        
+
         //Send ClientSite right away
         m_SendChunk.Position = 0;
         var sz = m_ClientSite.Serialize( m_SendChunk );
         m_Client.GetStream().Write(m_SendChunk.GetBuffer(), 0, sz);
-        //------------------         
-        
-        
+        //------------------
+
+
         m_RArgs = new SocketState(m_Client.Client, m_ReceiveChunk.GetBuffer());
-        m_RArgs.Completed += socketCallback; 
+        m_RArgs.Completed += socketCallback;
 
         initiateReceive();
       }
@@ -117,8 +117,8 @@ namespace NFX.Glue.Native
       protected override void Destructor()
       {
         m_Disposing = true;
-        
-        //1 close socket before calling base 
+
+        //1 close socket before calling base
         if (m_Client!=null)
         {
           try
@@ -137,15 +137,15 @@ namespace NFX.Glue.Native
       }
 
 
-      private TcpClient m_Client; 
+      private TcpClient m_Client;
       private SocketState m_RArgs;
 
 
       protected override void DoSend(WireMsg data)
       {
-         if (!Active) 
+         if (!Active)
            throw new ProtocolException(StringConsts.GLUE_MPX_SOCKET_SEND_CLOSED_ERROR, closeChannel: true);
-        
+
          try
          {
             data.UpdateBufferStats();
@@ -185,7 +185,7 @@ namespace NFX.Glue.Native
 
       private void socketCallback(object sender, SocketAsyncEventArgs args)
       {
-        if (!Active) 
+        if (!Active)
         {
           ReleaseMemChunksAfterAsyncOperations();
           return;
@@ -209,8 +209,8 @@ namespace NFX.Glue.Native
         }
         catch(Exception error)
         {
-          Transport.Binding.WriteLog(LogSrc.Client, 
-                                   Log.MessageType.Error, 
+          Transport.Binding.WriteLog(LogSrc.Client,
+                                   Log.MessageType.Error,
                                    "processReceiveCore() leaked: " + error.ToMessageWithType(),
                                     "{0}.processRecive()".Args(GetType().Name), error);
           Dispose();//if process receive aborted then channel is irreperable
@@ -239,8 +239,8 @@ namespace NFX.Glue.Native
             if (state.WireMsgSize < 1 || state.WireMsgSize>Transport.Binding.MaxMsgSize)
             {
               Instrumentation.ClientGotOverMaxMsgSizeErrorEvent.Happened(Transport.Node);
-              Transport.Binding.WriteLog(LogSrc.Client, 
-                                          Log.MessageType.Error, 
+              Transport.Binding.WriteLog(LogSrc.Client,
+                                          Log.MessageType.Error,
                                           StringConsts.GLUE_MAX_MSG_SIZE_EXCEEDED_ERROR.Args(state.WireMsgSize, Transport.Binding.MaxMsgSize, "processReceive()"),
                                           "{0}.processRecive()".Args(GetType().Name));
               // This is unrecoverable error - close the channel!
@@ -252,9 +252,9 @@ namespace NFX.Glue.Native
             if (state.WireMsgSize>m_ReceiveChunk.Length)  //grow chunk if it is not large enough
                 m_ReceiveChunk.SetLength(state.WireMsgSize);
         }
-        
+
         var got = (int)m_ReceiveChunk.Position;
-        
+
         if (hasSize && got >= state.WireMsgSize) //got all
         {
           WireMsg msg = new WireMsg(m_ReceiveChunk);
@@ -263,8 +263,8 @@ namespace NFX.Glue.Native
           initiateReceive();
           return;
         }
-        
-        state.SetBuffer(m_ReceiveChunk.GetBuffer(), got, (hasSize ? state.WireMsgSize : sizeof(int)) - got); 
+
+        state.SetBuffer(m_ReceiveChunk.GetBuffer(), got, (hasSize ? state.WireMsgSize : sizeof(int)) - got);
         continueReceive();
       }
 
@@ -278,7 +278,7 @@ namespace NFX.Glue.Native
     /// </summary>
     public sealed class MpxWinServerSocket : MpxServerSocket
     {
-      internal MpxWinServerSocket(MpxListener listener, 
+      internal MpxWinServerSocket(MpxListener listener,
                                 TcpClient client,
                                 ClientSite clientSite,
                                 MpxSocketReceiveAction<MpxServerTransport> receiveAction
@@ -288,7 +288,7 @@ namespace NFX.Glue.Native
         m_Socket = m_Client.Client;
 
         m_RArgs = new SocketState(m_Client.Client, m_ReceiveChunk.GetBuffer());
-        m_RArgs.Completed += socketCallback; 
+        m_RArgs.Completed += socketCallback;
 
         initiateReceive();
       }
@@ -296,8 +296,8 @@ namespace NFX.Glue.Native
       protected override void Destructor()
       {
         m_Disposing = true;
-                                    
-        //1 close socket before calling base 
+
+        //1 close socket before calling base
         if (m_Client!=null)
         {
           try
@@ -321,9 +321,9 @@ namespace NFX.Glue.Native
 
       protected override void DoSend(WireMsg data)
       {
-        if (!Active) 
+        if (!Active)
            throw new ProtocolException(StringConsts.GLUE_MPX_SOCKET_SEND_CLOSED_ERROR, closeChannel: true);
-        
+
         try
         {
             data.UpdateBufferStats();
@@ -362,7 +362,7 @@ namespace NFX.Glue.Native
 
       private void socketCallback(object sender, SocketAsyncEventArgs args)
       {
-        if (!Active) 
+        if (!Active)
         {
           ReleaseMemChunksAfterAsyncOperations();
           return;
@@ -385,8 +385,8 @@ namespace NFX.Glue.Native
         }
         catch(Exception error)
         {
-          Transport.Binding.WriteLog(LogSrc.Server, 
-                                   Log.MessageType.Error, 
+          Transport.Binding.WriteLog(LogSrc.Server,
+                                   Log.MessageType.Error,
                                    "processReceiveCore() leaked: " + error.ToMessageWithType(),
                                     "{0}.processRecive()".Args(GetType().Name), error);
           Dispose();//if process receive aborted then channel is irreperable
@@ -415,8 +415,8 @@ namespace NFX.Glue.Native
           if (state.WireMsgSize < 1 || state.WireMsgSize>Transport.Binding.MaxMsgSize)
           {
             Instrumentation.ServerGotOverMaxMsgSizeErrorEvent.Happened(Transport.Node);
-            Transport.Binding.WriteLog(LogSrc.Server, 
-                                       Log.MessageType.Error, 
+            Transport.Binding.WriteLog(LogSrc.Server,
+                                       Log.MessageType.Error,
                                        StringConsts.GLUE_MAX_MSG_SIZE_EXCEEDED_ERROR.Args(state.WireMsgSize, Transport.Binding.MaxMsgSize, "processReceive()"),
                                        "{0}.processRecive()".Args(GetType().Name));
             // This is unrecoverable error - close the channel!
@@ -428,9 +428,9 @@ namespace NFX.Glue.Native
           if (state.WireMsgSize>m_ReceiveChunk.Length)  //grow chunk if it is not large enough
             m_ReceiveChunk.SetLength(state.WireMsgSize);
         }
-        
+
         var got = (int)m_ReceiveChunk.Position;
-        
+
         if (hasSize && got >= state.WireMsgSize) //got all
         {
           WireMsg msg = new WireMsg(m_ReceiveChunk);
@@ -448,7 +448,7 @@ namespace NFX.Glue.Native
 
 
 
-    
+
     /// <summary>
     /// Implements a MPX socket listener that accepts connections into MpxWinServerSocket
     /// </summary>
@@ -459,7 +459,7 @@ namespace NFX.Glue.Native
 
       internal MpxWinListener(MpxServerTransport transport,
                               IPEndPoint listenEndPoint,
-                              MpxSocketReceiveAction<MpxServerTransport> socketReceiveAction) : base(transport, listenEndPoint, socketReceiveAction) 
+                              MpxSocketReceiveAction<MpxServerTransport> socketReceiveAction) : base(transport, listenEndPoint, socketReceiveAction)
       {
           m_Active = true;
           m_TcpListener = new TcpListener(listenEndPoint);
@@ -498,7 +498,7 @@ namespace NFX.Glue.Native
                     while (m_Active)
                     {
                        var client = m_TcpListener.AcceptTcpClient();  //the blocking call is broken by close - as expected
-                       
+
                        //The task synchronously gets ClientSite and then keeps reading asynchronously via completion ports
                        Task.Factory.StartNew(clientThreadSpin, client);
                     }
@@ -512,9 +512,9 @@ namespace NFX.Glue.Native
                                       StringConsts.GLUE_LISTENER_EXCEPTION_ERROR + error.Message,
                                       from: "MpxWinSocket.listenerThreadSpin",
                                       exception: error);
-                     
+
                      Instrumentation.ServerListenerErrorEvent.Happened(Transport.Node);
-                   } 
+                   }
                }
            }
 
@@ -530,8 +530,8 @@ namespace NFX.Glue.Native
                 client.LingerState.LingerTime = Transport.Binding.SocketLingerSec;
 
                 client.ReceiveBufferSize =  Transport.Binding.ServerReceiveBufferSize;
-                client.SendBufferSize    =  Transport.Binding.ServerSendBufferSize; 
-            
+                client.SendBufferSize    =  Transport.Binding.ServerSendBufferSize;
+
                 client.ReceiveTimeout    =  Transport.Binding.ServerReceiveTimeout;
                 client.SendTimeout       =  Transport.Binding.ServerSendTimeout;
 
@@ -539,26 +539,26 @@ namespace NFX.Glue.Native
 
                 var nets = client.GetStream();
 
-                var ms = new MemoryStream();            
+                var ms = new MemoryStream();
                 ms.SetLength( ClientSite.MAX_STREAM_BYTE_LEN );
 
                 socketRead(nets, ms.GetBuffer(), 0, sizeof(short));
 
                 var fsz = ms.ReadBEShort();
-                if (fsz>ms.Length) throw new ProtocolException(StringConsts.GLUE_BAD_PROTOCOL_FRAME_ERROR + 
+                if (fsz>ms.Length) throw new ProtocolException(StringConsts.GLUE_BAD_PROTOCOL_FRAME_ERROR +
                                                                 "ClientSite sz={0} bytes over limit{1}".Args(fsz, ms.Length), closeChannel: true);
-                
+
                 socketRead(nets, ms.GetBuffer(), sizeof(short), fsz);
                 ms.Position = sizeof(short);
                 var cs = new ClientSite(ms);
-                                                      
+
                 //this will register the site with transport and start the async receive
                 var ss = new MpxWinServerSocket(this, client, cs, this.m_SocketReceiveAction);
 
               }
               catch(Exception error)
               {
-                if (client!=null) 
+                if (client!=null)
                  try{ client.Close(); } catch {}
 
                 Transport.Binding.WriteLog(
@@ -584,7 +584,7 @@ namespace NFX.Glue.Native
 
 
     }
-    
-    
-     
+
+
+
 }

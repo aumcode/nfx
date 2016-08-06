@@ -14,7 +14,7 @@ namespace NFX.Media.PDF.Styling
     private const float POINTS_IN_MILLIMETER = 72 / 25.4F;
     private const float POINTS_IN_CENTIMETER = 72 / 2.54F;
 
-    #endregion 
+    #endregion
 
     #region STATIC
 

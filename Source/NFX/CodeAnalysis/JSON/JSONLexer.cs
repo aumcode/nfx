@@ -27,14 +27,14 @@ namespace NFX.CodeAnalysis.JSON
     /// Performs lexical analysis on source supplied in JSON syntax.
     /// This class supports lazy analysis that happens gradually as result tokens are consumed through IEnumerable interface.
     /// NOTE: Although called JSON, this is really a JSON superset implementation that includes extra features:
-    ///  comments, directives, verbatim strings(start with $), ' or " string escapes, unquoted object key names 
+    ///  comments, directives, verbatim strings(start with $), ' or " string escapes, unquoted object key names
     /// </summary>
     public sealed class JSONLexer : Lexer<JSONToken>
     {
-        public JSONLexer(ISourceText source, MessageList messages = null, bool throwErrors = false) : 
+        public JSONLexer(ISourceText source, MessageList messages = null, bool throwErrors = false) :
             base( source, messages, throwErrors)
         {
-             m_FSM = new FSM(this); 
+             m_FSM = new FSM(this);
         }
 
         public JSONLexer(IAnalysisContext context, SourceCodeRef srcRef, ISourceText source, MessageList messages = null, bool throwErrors = false) :
@@ -42,7 +42,7 @@ namespace NFX.CodeAnalysis.JSON
         {
              m_FSM = new FSM(this);
         }
-       
+
         public override Language Language
         {
             get { return JSONLanguage.Instance;}
@@ -53,7 +53,7 @@ namespace NFX.CodeAnalysis.JSON
             return ((JSONMsgCode)code).ToString();
         }
 
-        
+
 
         private FSM m_FSM;
         private IEnumerator<bool> m_Work;
@@ -61,7 +61,7 @@ namespace NFX.CodeAnalysis.JSON
         protected override bool DoLexingChunk()
         {
             if (m_AllAnalyzed) return true;
-            
+
             if (m_Work==null)
             {
               m_Work = m_FSM.Run().GetEnumerator();
@@ -74,7 +74,7 @@ namespace NFX.CodeAnalysis.JSON
 
 
 
-        
+
     private class FSM
     {
       public FSM(JSONLexer lex)
@@ -84,7 +84,7 @@ namespace NFX.CodeAnalysis.JSON
         tokens = lexer.m_Tokens;
         srcRef = lexer.SourceCodeReference;
       }
-      
+
       private readonly JSONLexer lexer;
       private readonly ISourceText source;
       private readonly TokenList<JSONToken> tokens;
@@ -152,7 +152,7 @@ namespace NFX.CodeAnalysis.JSON
         var prevTokenCount = 0;
 
 
-        tokens.Add(new JSONToken(    
+        tokens.Add(new JSONToken(
                                 lexer,
                                 JSONTokenType.tBOF,
                                 srcPos(),
@@ -160,7 +160,7 @@ namespace NFX.CodeAnalysis.JSON
                                 String.Empty));
 
         #region Main walk
-        //=======================================================================================================================                
+        //=======================================================================================================================
         while (!source.EOF)
         {
           moveNext();
@@ -232,7 +232,7 @@ namespace NFX.CodeAnalysis.JSON
                   }
 
               }
-              else//take care of 'c:\\dir\\' 
+              else//take care of 'c:\\dir\\'
               {
                 bufferAdd(chr); //preserve  \
                 moveNext();
@@ -269,7 +269,7 @@ namespace NFX.CodeAnalysis.JSON
                   continue;
                 }
 
-                //turn on comment line mode for directive 
+                //turn on comment line mode for directive
                 //directives MUST be the first non-white char on the line
                 if (freshLine && chr == '#')
                 {
@@ -278,7 +278,7 @@ namespace NFX.CodeAnalysis.JSON
                   isDirective = true;
                   continue;
                 }
-                
+
 
                 #endregion
 
@@ -304,7 +304,7 @@ namespace NFX.CodeAnalysis.JSON
                 #endregion
 
                 #region Syntactic Separators - Space, colons and Symbols
-            
+
                 if ((chr == ' ') || (chr == '\t')) //space or TAB
                 {
                   flush();
@@ -344,9 +344,9 @@ namespace NFX.CodeAnalysis.JSON
                   bufferAdd(chr); // add digit after + or -
                   continue;
                 }
-                
-                
-                
+
+
+
                 //for operators like -- /= += etc...
                 if ( (buffer.Length > 0) && (isSymbol(chr) != isSymbol(buffer[0])) )
                 {
@@ -386,7 +386,7 @@ namespace NFX.CodeAnalysis.JSON
           }
 
         }//while
-        //=======================================================================================================================                                
+        //=======================================================================================================================
         #endregion
 
 
@@ -395,15 +395,15 @@ namespace NFX.CodeAnalysis.JSON
         #region Post-walk check
             if (tokens.Count < 2)
                lexer.EmitMessage(MessageType.Error, (int)JSONMsgCode.ePrematureEOF, srcPos());
-          
+
 
             if (isCommentBlock)
                lexer.EmitMessage(MessageType.Error, (int)JSONMsgCode.eUnterminatedComment, srcPos());
-         
+
 
             if (isString)
                lexer.EmitMessage(MessageType.Error, (int)JSONMsgCode.eUnterminatedString, srcPos());
-      
+
 
         #endregion
 
@@ -437,7 +437,7 @@ namespace NFX.CodeAnalysis.JSON
         if (isString)
         {
           type = JSONTokenType.tStringLiteral;
-          
+
 
           if (!isVerbatim)
           {
@@ -472,7 +472,7 @@ namespace NFX.CodeAnalysis.JSON
             return;
           }
 
-          if (value == null)  //not number          
+          if (value == null)  //not number
           {
 
             type = JSONKeywords.Resolve(text);
@@ -483,8 +483,8 @@ namespace NFX.CodeAnalysis.JSON
               {
                  text = text.Remove(0, 1); //take care of verbatim names like: $class, $method, $var etc..
                  tagStartPos = new SourcePosition(tagStartPos.LineNumber, tagStartPos.ColNumber+1, tagStartPos.CharNumber+1);
-              }   
-             
+              }
+
               if (!JSONIdentifiers.Validate(text))
               {
                 lexer.EmitMessage(MessageType.Error, (int)JSONMsgCode.eInvalidIdentifier, tagStartPos, null, text);
@@ -496,7 +496,7 @@ namespace NFX.CodeAnalysis.JSON
 
 
         if (type==JSONTokenType.tStringLiteral) value = text;
-        
+
         tokens.Add(new JSONToken(lexer, type, tagStartPos, tagEndPos, text, value));
       }
 

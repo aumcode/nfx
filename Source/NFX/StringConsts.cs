@@ -33,16 +33,16 @@ namespace NFX
   internal static class StringConsts
   {
     public const string SECURITY_NON_AUTHENTICATED = "<non-authenticated>";
-    
+
         public const string OBJECT_DISPOSED_ERROR =
             "Object was already disposed";
 
          public const string OPERATION_NOT_SUPPORTED_ERROR =
             "Operation not supported: ";
-            
+
         public const string LOGSVC_NODESTINATIONS_ERROR =
-            "No log destinations registered. Log service could not start"; 
-        
+            "No log destinations registered. Log service could not start";
+
         public const string SERVICE_INVALID_STATE =
             "Service is in inappropriate state for requested operation: ";
 
@@ -59,24 +59,24 @@ namespace NFX
         public const string FILE_NOT_FOUND_ERROR = "File not found: ";
 
         public const string LOGSVC_DESTINATION_OPEN_ERROR =
-            "Log service '{0}' could not open destination '{1}'. Destination.TestOnStart = {2}. Destination exception:\n   {3}"; 
-       
+            "Log service '{0}' could not open destination '{1}'. Destination.TestOnStart = {2}. Destination exception:\n   {3}";
+
         public const string LOGSVC_DESTINATION_EXCEEDS_MAX_PROCESSING_TIME_ERROR =
-            "Destination '{0}' exceeded allowed max processing time. Allowed {1} ms, took {2} ms"; 
+            "Destination '{0}' exceeded allowed max processing time. Allowed {1} ms, took {2} ms";
 
         public const string LOGSVC_DESTINATION_IS_OFFLINE_ERROR =
-            "Destination '{0}' is offline due to prior failure and RestartProcessingAfterMs timespan has not expired yet"; 
+            "Destination '{0}' is offline due to prior failure and RestartProcessingAfterMs timespan has not expired yet";
 
         public const string LOGSVC_FAILOVER_MSG_TEXT =
-            "Message {0} delivery failed over from destination '{1}' to '{2}'. Average processing latency of failed destination '{3}'"; 
-        
+            "Message {0} delivery failed over from destination '{1}' to '{2}'. Average processing latency of failed destination '{3}'";
+
 
         public const string CONFIGURATION_FILE_UNKNOWN_ERROR = "Configuration file is unknown/not set ";
 
         public const string CONFIGURATION_EMPTY_NODE_MODIFY_ERROR = "Empty configuration node may not be modified";
 
         public const string CONFIGURATION_READONLY_ERROR = "Readonly configuration can not be modified";
-        
+
         public const string CONFIGURATION_TYPE_CREATION_ERROR = "Type could not be created from node path '{0}'. Error: {1}";
 
         public const string CONFIGURATION_TYPE_ASSIGNABILITY_ERROR = "Instance of type '{0}' is not assignable to '{1}'";
@@ -90,7 +90,7 @@ namespace NFX
         public const string CONFIGURATION_CLONE_EMPTY_NODE_ERROR = "Empty sentinel nodes can not be cloned";
 
         public const string CONFIGURATION_ENTITY_NAME_ERROR = "The name is invalid for this configuration type. Name: ";
-        
+
         public const string CONFIGURATION_NODE_NAME_ERROR = "The supplied node name '{0}' is not supported by this configuration when StrictNames is set to true";
 
         public const string CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR = "Instance of '{0}' could not be configured using ConfigAttribute because its member '{1}' is readonly ";
@@ -108,13 +108,13 @@ namespace NFX
         public const string CONFIGURATION_PATH_VALUE_INDEXER_CAN_NOT_USE_WITH_ATTRS_ERROR = "Bad navigation: cannot use value indexer with attributes, path '{0}'";
 
         public const string CONFIGURATION_NODE_DOES_NOT_BELONG_TO_THIS_CONFIGURATION_ERROR = "Node '{0}' does not belong to configuration";
-        
+
         public const string CONFIGURATION_NODE_MUST_NOT_BELONG_TO_THIS_CONFIGURATION_ERROR = "Node '{0}' must not belong to configuration";
 
         public const string CONFIGURATION_CAN_NOT_INCLUDE_INSTEAD_OF_ROOT_ERROR = "Can not include '{0}' instead of this root node";
 
         public const string CONFIGURATION_NAVIGATION_SECTION_REQUIRED_ERROR = "Path '{0}' requires section node but did not land at an existing section";
-        
+
         public const string CONFIGURATION_NAVIGATION_BAD_PATH_ERROR = "Bad navigation path: ";
 
         public const string CONFIGURATION_SECTION_INDEXER_EMPTY_ERROR = "Section indexer is an empty array";
@@ -122,8 +122,8 @@ namespace NFX
         public const string CONFIGURATION_VALUE_COULD_NOT_BE_GOTTEN_AS_TYPE_ERROR = "Value from '{0}' could not be gotten as type '{1}' ";
 
         public const string CONFIGURATION_OVERRIDE_PROHOBITED_ERROR = "Section override failed because it is prohibited by base node: ";
-        
-        
+
+
         public const string CONFIGURATION_PATH_ICONFIGURABLE_SECTION_ERROR = "Instance of '{0}' could not be configured using ConfigAttribute because its memeber '{1}' is IConfigurable, however config path did not yield a IConfigSectionNode instance";
 
         public const string CONFIGURATION_PATH_ICONFIGSECTION_SECTION_ERROR = "Instance of '{0}' could not be configured using ConfigAttribute because its memeber '{1}' is IConfigSection, however config path did not yield a IConfigSectionNode instance";
@@ -139,7 +139,7 @@ namespace NFX
         public const string CONFIGURATION_SCRIPT_TARGET_CONFIGURATION_MUST_BE_EMPTY_ERROR = "Target configuration must be empty";
 
         public const string CONFIGURATION_SCRIPT_EXPRESSION_EVAL_ERROR = "Configuration script expression '{0}' evaluation at node '{1}'. Error: {2}";
-        
+
         public const string CONFIGURATION_SCRIPT_SYNTAX_ERROR = "Script sysntax error: ";
 
         public const string CONFIGURATION_SCRIPT_ELSE_NOT_AFTER_IF_ERROR = CONFIGURATION_SCRIPT_SYNTAX_ERROR + "ELSE clause '{0}' is not after IF clause";
@@ -165,30 +165,30 @@ namespace NFX
 
 
         public const string INVALID_TIMESPEC_ERROR =
-            "Invalid time specification";   
+            "Invalid time specification";
 
         public const string STRING_VALUE_COULD_NOT_BE_GOTTEN_AS_TYPE_ERROR = "String value '{0}' could not be gotten as type '{1}' ";
-            
-            
+
+
         public const string INVENTORIZATION_NEED_STRATEGY_ERROR =
-            "Inventorization requires at least one strategy to be added to Strategies collection of InventorizationManager class";  
-            
+            "Inventorization requires at least one strategy to be added to Strategies collection of InventorizationManager class";
+
         public const string INVENTORIZATION_ASSEMBLY_LOAD_ERROR =
-            "Inventorization assembly load failed: ";    
-    
-    
-    public const string SLIM_STREAM_CORRUPTED_ERROR = "Slim data stream is corrupted: ";  
-
-    public const string SECDB_STREAM_CORRUPTED_ERROR = "SecDB data stream is corrupted: ";  
+            "Inventorization assembly load failed: ";
 
 
-    public const string BINLOG_STREAM_NULL_ERROR = "BinLog stream is null: ";  
-    public const string BINLOG_STREAM_CANT_SEEK_WRITE_ERROR = "BinLog stream can not seek or can not write: ";  
-    public const string BINLOG_STREAM_CORRUPTED_ERROR = "BinLog data stream is corrupted: ";  
-    public const string BINLOG_READER_FACTORY_ERROR = "BinLog reader factory error: ";  
-    public const string BINLOG_READER_TYPE_MISMATCH_ERROR = "BinLog reader type mismatched. Class: '{0}' Stream: '{1}'";  
-    public const string BINLOG_BAD_READER_TYPE_ERROR = "BinLog header contains reader type which could not be loaded or is not a valid LogReader derivative: ";  
-             
+    public const string SLIM_STREAM_CORRUPTED_ERROR = "Slim data stream is corrupted: ";
+
+    public const string SECDB_STREAM_CORRUPTED_ERROR = "SecDB data stream is corrupted: ";
+
+
+    public const string BINLOG_STREAM_NULL_ERROR = "BinLog stream is null: ";
+    public const string BINLOG_STREAM_CANT_SEEK_WRITE_ERROR = "BinLog stream can not seek or can not write: ";
+    public const string BINLOG_STREAM_CORRUPTED_ERROR = "BinLog data stream is corrupted: ";
+    public const string BINLOG_READER_FACTORY_ERROR = "BinLog reader factory error: ";
+    public const string BINLOG_READER_TYPE_MISMATCH_ERROR = "BinLog reader type mismatched. Class: '{0}' Stream: '{1}'";
+    public const string BINLOG_BAD_READER_TYPE_ERROR = "BinLog header contains reader type which could not be loaded or is not a valid LogReader derivative: ";
+
 
     public const string SECURITY_AUTHROIZATION_ERROR =
         "Authorization to '{0}' failed from '{1}'";
@@ -208,36 +208,36 @@ namespace NFX
         "Lookup command error: ";
 
     public const string FORM_LOOKUP_COMMAND_ERROR =
-        "Form lookup command error: ";    
+        "Form lookup command error: ";
 
     public const string MODEL_OPERATION_NOT_ALLOWED_ERROR =
         "Operation not allowed in this state. Current state: \"{0}\", Operation: \"{1}\"";
 
     public const string FIELD_OPERATION_NOT_ALLOWED_ERROR =
         "Operation not allowed when field is hosted by a record.\nField: \"{0}\", Operation: \"{1}\"";
-        
+
     public const string ENABLE_BINDINGS_ERROR =
          "Call to EnableBindings() was mismatched for: \"{0}\"";
 
 
     public const string FIELD_LOOKUP_NOT_ALLOWED_ERROR =
         "Can not call Lookup() on a field when prior lookup call is pending. Field: ";
-    
-    
+
+
     public const string RECURSIVE_FORMULA_FIELD_ERROR =
         "Recursive formula field: ";
 
     public const string FORMULA_CALCULATED_ANOTHER_FIELD_ERROR =
         "Formula can not reference another calculated field: ";
-        
 
-    public const string FORM_CREATION_ERROR = 
+
+    public const string FORM_CREATION_ERROR =
         "Form could not be created: ";
 
     public const string FORM_FACTORY_NULL_ERROR =
-        "Form factory was not initialized";    
-        
-    
+        "Form factory was not initialized";
+
+
     public const string SURROGATE_LOAD_ERROR =
         "Surrogate record type load error";
 
@@ -257,7 +257,7 @@ namespace NFX
         "Can not apply record changes:";
 
     public const string METHOD_INVOCATION_CHANGE_ERROR =
-        "Method invocation change error:";        
+        "Method invocation change error:";
 
     public const string UNINITIALIZED_STATE_ERROR =
         "Model was not initialized and is in unknown state. No data manipulations possible";
@@ -272,36 +272,36 @@ namespace NFX
         "Can not modify field value while in saving operation. Field <{0}>";
 
     public const string DELETE_MODIFY_ERROR =
-        "Can not modify field value while in deleting operation. Field <{0}>";            
+        "Can not modify field value while in deleting operation. Field <{0}>";
 
     public const string CALC_FIELD_CHANGE_ERROR =
-        "Can not modify calculated field when AllowCalculationOverride is not true. Field: <{0}>";    
-         
-    
-    public const string REQUIRED_FIELD_ERROR = 
+        "Can not modify calculated field when AllowCalculationOverride is not true. Field: <{0}>";
+
+
+    public const string REQUIRED_FIELD_ERROR =
         "Field '{0}' value is required";
 
     public const string SIZE_FIELD_ERROR =
         "Field '{0}' size is exceeded {1} chars";
-        
+
     public const string REGEXP_FIELD_ERROR =
-        "Field '{0}' does not conform to set format: {1}";    
+        "Field '{0}' does not conform to set format: {1}";
 
     public const string MINMAX_FIELD_ERROR =
         "Field min/max check failed. Field: '{0}' value must be between {1} and {2}";
 
     public const string LOOKUP_DICTIONARY_FIELD_ERROR =
         "Field '{0}' value is not permitted by lookup dictionary";
-   
-    public const string OWNER_BINDING_ERROR = 
+
+    public const string OWNER_BINDING_ERROR =
         "ReleaseOwner() has to be called before re-binding with different owner object";
-        
-    public const string ITEM_ALREADY_EXISTS_ERROR =     
+
+    public const string ITEM_ALREADY_EXISTS_ERROR =
         "An item is already owned by this context";
-        
-    public const string VALUE_ASSIGNMENT_ERROR =    
+
+    public const string VALUE_ASSIGNMENT_ERROR =
         "Invalid value assignment for this field type";
-        
+
     public const string INVALID_ARGUMENT_ERROR =
         "Invalid argument supplied";
 
@@ -312,9 +312,9 @@ namespace NFX
         "Can not mutate read-only collection: ";
 
     public const string DUPLICATE_FIELD_NAME_ERROR =
-        "Field with such a name already exists in a containing record. Field name: <{0}>";    
-        
-    public const string FIELD_NAME_NOT_FOUND_ERROR = 
+        "Field with such a name already exists in a containing record. Field name: <{0}>";
+
+    public const string FIELD_NAME_NOT_FOUND_ERROR =
         "Field with such a name was not found. Field name: <{0}>";
 
     public const string FAILED_TO_CREATE_FILE_ERROR =
@@ -327,8 +327,8 @@ namespace NFX
         "Model is not in Editing state";
 
     public const string NOT_CREATE_EDIT_STATE_ERROR =
-        "Model is not in Creating or Editing state";  
-        
+        "Model is not in Creating or Editing state";
+
     public const string NOT_UNINIT_VIEW_STATE_ERROR =
         "Model is not in Uninitialized or View state";
 
@@ -337,7 +337,7 @@ namespace NFX
 
     public const string NOT_VALID_ON_LOAD_ERROR =
         "Model is not in valid state after it was loaded/initialized";
-    
+
     public const string NOT_VALID_ON_POST_ERROR =
         "Model is not in valid state and can not be posted";
 
@@ -348,14 +348,14 @@ namespace NFX
         "Model is not in appropriate state to be deleted";
 
     public const string STORAGE_OPERATION_IN_PROGRESS_ERROR =
-        "Model storage operation is already in progress"; 
+        "Model storage operation is already in progress";
 
-    
+
     public const string CHECK_LIST_ALREADY_RUN_ERROR =
         "Checklist has already been run";
 
     public const string OBJSTORESVC_PROVIDER_CONFIG_ERROR =
-            "ObjectStoreService could not configure provider: "; 
+            "ObjectStoreService could not configure provider: ";
 
     public const string INSTRUMENTATIONSVC_PROVIDER_CONFIG_ERROR =
             "InstrumentationService could not configure provider: ";
@@ -369,56 +369,56 @@ namespace NFX
     public const string EXPRESSION_SCOPE_COMPILE_ERROR =
         "Expression scope compilation error: ";
 
-    
-        
-    public const string MODEL_METHOD_NOT_FOUND_ERROR = 
+
+
+    public const string MODEL_METHOD_NOT_FOUND_ERROR =
      "Model could not find a public callable method to invoke. Method Name: '{0}'";
 
-    public const string MODEL_METHOD_ERROR = 
-     "Model callable method error: ";   
-     
-    public const string FIELD_COMPARISON_NOT_IMPLEMENTED_ERROR = 
-     "Comparison is not implemented at Field abstract level"; 
-      
+    public const string MODEL_METHOD_ERROR =
+     "Model callable method error: ";
 
-    
+    public const string FIELD_COMPARISON_NOT_IMPLEMENTED_ERROR =
+     "Comparison is not implemented at Field abstract level";
 
-   
+
+
+
+
 
     public const string FIELD_ATTRIBUTES_DEFS_ERROR =
-       "Error while applying field definitions BuildAndDefineFields('{0}'). Check attributes";    
+       "Error while applying field definitions BuildAndDefineFields('{0}'). Check attributes";
 
     public const string FIELD_TYPE_MAP_ERROR =
        "Error mapping type '{0}' to record model field. No mapping exists";
 
-        
+
     public const string APP_CONFIG_SETTING_NOT_FOUND_ERROR =
         "Application configuration setting \"{0}\" not found.";
 
     public const string CONFIG_RECURSIVE_VARS_ERROR =
-        "Configuration line contains recursive vars that can not be resolved: \"{0}\""; 
+        "Configuration line contains recursive vars that can not be resolved: \"{0}\"";
 
     public const string CONFIG_NO_PROVIDER_LOAD_FILE_ERROR =
-        "No configuration provider can open file name: "; 
+        "No configuration provider can open file name: ";
 
     public const string CONFIG_NO_PROVIDER_LOAD_FORMAT_ERROR =
-        "No configuration provider can open content supplied in this format: "; 
-        
+        "No configuration provider can open content supplied in this format: ";
+
     public const string CONFIG_VARS_EVAL_ERROR =
-        "Configuration variable '{0}' evaluation error: {1}";        
-    
-    
+        "Configuration variable '{0}' evaluation error: {1}";
+
+
     public const string CONFIG_BEHAVIOR_APPLY_ERROR =
         "Error while applying behavior to {0}. Error: {1}";
-        
+
     public const string CONFIG_JSON_MAP_ERROR =
         "JSONConfig must be represented by a valid JSON map(hash) with a single root key, not array or multikey map";
 
     public const string CONFIG_JSON_STRUCTURE_ERROR =
         "JSONConfig wa supplied content with invalid logical structure, all members of an array must be non-null maps that represent config sub-sections";
-    
+
     public const string WORK_ITEM_NOT_AGGREGATABLE_ERROR =
-        "Work item must implement IAggregatableWorkItem interface to be posted in this queue";    
+        "Work item must implement IAggregatableWorkItem interface to be posted in this queue";
 
 
 
@@ -470,8 +470,8 @@ namespace NFX
               "App forms factory initApplication error: ";
 
         public const string SVCAPPLICATION_TOPIC =
-              "SvcApp";            
-   
+              "SvcApp";
+
         public const string APP_FINISH_NOTIFIABLES_ERROR =
               "Application finish notifiables threw exceptions: ";
 
@@ -485,14 +485,14 @@ namespace NFX
 
         public const string APP_FINISH_NOTIFIABLE_BEFORE_ERROR =
               "Error calling notifiable.ApplicationFinishBeforeCleanup() '{0}'. Exception: {1}";
-        
+
         public const string APP_FINISH_NOTIFIABLE_AFTER_ERROR =
              "Error calling notifiable.ApplicationFinishAfterCleanup() '{0}'. Exception: {1}";
 
 
 
    public const string TEMPLATE_COMPILER_ALREADY_COMPILED_ERROR =
-        "Operation not applicable as target TemplateCompiler instance has already been compiled. Compiler class: ";  
+        "Operation not applicable as target TemplateCompiler instance has already been compiled. Compiler class: ";
 
 
     public const string TEMPLATE_CS_COMPILER_UNMATCHED_SPAN_ERROR =
@@ -568,7 +568,11 @@ namespace NFX
 
     public const string SLIM_ARRAYS_ARRAY_INSTANCE_ERROR =
         "DescriptorToArray(). Error instantiating array '";
-   
+
+    public const string SLIM_SER_PROHIBIT_ERROR =
+        "Slim can not process type '{0}' as it is marked with [{1}] attribute";
+
+
     public const string POD_ISERIALIZABLE_MISSING_CTOR_ERROR =
         "ISerializable object does not implement .ctor(SerializationInfo, StreamingContext): ";
 
@@ -633,7 +637,7 @@ namespace NFX
 
     public const string GLUE_SERVER_ENDPOINT_CONTRACT_SERVER_TYPE_ERROR =
         "Server endpoint contract server name could not be resolved to type: ";
-   
+
     public const string GLUE_TYPE_SPEC_ERROR =
         "The type specification could not be resolved to actual type. Make sure that contract assembly is present on both client and server: ";
 
@@ -689,10 +693,10 @@ namespace NFX
     public const string GLUE_SERVER_INSTANCE_ACTIVATION_ERROR =
         "Server instance activation error for: ";
 
-    public const string GLUE_STATEFUL_SERVER_INSTANCE_DOES_NOT_EXIST_ERROR = 
+    public const string GLUE_STATEFUL_SERVER_INSTANCE_DOES_NOT_EXIST_ERROR =
         "Stateful server instance does not exist/may have expired or object store is not configured: ";
 
-    public const string GLUE_STATEFUL_SERVER_INSTANCE_LOCK_TIMEOUT_ERROR = 
+    public const string GLUE_STATEFUL_SERVER_INSTANCE_LOCK_TIMEOUT_ERROR =
         "Stateful server instance is not marked as [ThreadSafe] and could not be locked before timeout has passed: ";
 
     public const string GLUE_CLIENT_INSPECTORS_THREW_ERROR =
@@ -760,9 +764,11 @@ namespace NFX
     public const string JSON_SERIALIZATION_MAX_NESTING_EXCEEDED_ERROR =
               "JSONWriter can not serialize object graph as it exceeds max nesting level of {0}. Graph may contain reference cycles";
 
-    
+
+    public const string CRUD_CURSOR_ALREADY_ENUMERATED_ERROR = "CRUD Cursor was already enumerated";
+
     public const string CRUD_FIELDDEF_ATTR_MISSING_ERROR = "CRUD FieldDef must be constructed using at least one [Field] attribute. Name: '{0}'";
-    
+
     public const string CRUD_FIELD_VALUE_REQUIRED_ERROR = "Field value is required";
 
     public const string CRUD_FIELD_VALUE_IS_NOT_IN_LIST_ERROR = "Field value is not in list of permitted values";
@@ -804,7 +810,7 @@ namespace NFX
     public const string CRUD_TYPED_ROW_CLONED_FIELD_NOTEXISTS_ERROR = "Typedrow '{0}' defines field clone via [Field(....)]]'{1}' but there is no field with such name in the cloned-from type";
 
     public const string CRUD_TYPE_IS_NOT_DERIVED_FROM_ROW_ERROR = "CRUD supplied type of '{0}' is not a Row-derivative";
-    
+
     public const string CRUD_TYPE_IS_NOT_DERIVED_FROM_TYPED_ROW_ERROR = "CRUD supplied type of '{0}' is not a TypedRow-derivative";
 
     public const string CRUD_FIND_BY_KEY_LENGTH_ERROR = "CRUD table FindByKey/KeyRowFromValues was supplied wrong number of key field values";
@@ -816,7 +822,7 @@ namespace NFX
     public const string CRUD_OPERATION_NOT_SUPPORTED_ERROR = "CRUD operation not supported: ";
 
     public const string CRUD_QUERY_SOURCE_PRAGMA_ERROR = "CRUD query source pragma error in line number {0}: '{1}'. Error: {2}";
-   
+
     public const string CRUD_QUERY_SOURCE_PRAGMA_LINE_ERROR = "PRAGMA line error Name: '{0}' Value: '{1}'";
 
     public const string CRUD_QUERY_RESOLUTION_ERROR = "CRUD query '{0}' could not be resolved: {1}";
@@ -848,7 +854,7 @@ namespace NFX
     public const string ELINK_SEGMENT_LENGTH_ERROR = "ELink '{0}' could not be read as it contains an invalid segment data length";
     public const string ELINK_CHAR_LENGTH_ERROR = "ELink '{0}' could not be read as it contains an invalid character data length";
     public const string ELINK_CSUM_MISMATCH_ERROR = "ELink '{0}' could not be read as its checksum does not match";
-    
+
 
     public const string ERL_DS_RPC_EXEC_ERROR                 = "ErlDataStore could not execute RPC call '{0}'. Error: {1}";
 
@@ -861,7 +867,7 @@ namespace NFX
     public const string ERL_DS_QUERY_SUBSCR_NOT_FOUND_ERROR   = "ErlDataStore subscription query must include Subscriber::pid() parameter";
     public const string ERL_DS_QUERY_TMSTAMP_NOT_FOUND_ERROR  = "ErlDataStore subscription query must include Timestamp::long() parameter";
     public const string ERL_DS_QUERY_TMSTAMP_CTX_ABSENT_ERROR = "ErlDataStore subscription Timestamp::long() is absent in context";
-    
+
     public const string ERL_DS_SCHEMA_NOT_KNOWN_ERROR         = "Schema '{0}' is not known in: {1}";
     public const string ERL_DS_SCHEMA_INVALID_VALUE_ERROR     = "Schema '{0}' has invalid value in term {1}";
     public const string ERL_DS_SCHEMA_MAP_NOT_KNOWN_ERROR     = "ErlSchema name '{0}' is not known in the map set";
@@ -869,7 +875,7 @@ namespace NFX
     public const string ERL_DS_INVALID_RESP_PROTOCOL_ERROR    = "ErlDataStore received an invalid protocol response: ";
     public const string ERL_DS_CRUD_WRITE_FAILED_ERROR        = "ErlDataStore CRUD write failed: ";
     public const string ERL_DS_CRUD_RESP_SCH_MISMATCH_ERROR   = "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied schema name '{1}'";
-    public const string ERL_DS_CRUD_RESP_SCH_FLD_COUNT_ERROR  = 
+    public const string ERL_DS_CRUD_RESP_SCH_FLD_COUNT_ERROR  =
            "ErlDataStore map can not convert to row erlang tuple named '{0}' per supplied CRUD schema name '{1}' as field count differ";
     public const string ERL_DS_INTERNAL_MAPPING_ERROR         = "ErlDataStore internal mapping error: ";
 
@@ -906,7 +912,7 @@ namespace NFX
     public const string ERL_CONN_UNKNOWN_REMOTE_NODE_ERROR    = "Unknown remote node type";
     public const string ERL_CONN_UNKNOWN_TAG_ERROR            = "Unknown tag {0}: {1}";
     public const string ERL_CONN_WRONG_STATUS_ERROR           = "Peer replied with status '{0}' instead of 'ok'";
-    public const string ERL_EPMD_INVALID_RESPONSE_ERROR       = "No valid EPMD response";
+    public const string ERL_EPMD_INVALID_RESPONSE_ERROR       = "No valid EPMD response from host {0} for node {1}: {2}";
     public const string ERL_EPMD_INVALID_PORT_ERROR           = "EPMD couldn't resolve port number for node '{0}'";
     public const string ERL_EPMD_FAILED_TO_CONNECT_ERROR      = "Failed to connect to EPMD server";
     public const string ERL_EPMD_LOOKUP_R4                    = "LOOKUP {0} (ver=r4)";
@@ -945,8 +951,8 @@ namespace NFX
 
     public const string CACHE_VALUE_FACTORY_ERROR = "Cache value factory func threw error from {0}. Exception: {1}";
     public const string CACHE_RECORD_ITEM_DISPOSE_ERROR = "Cache value threw error while trying to be disposed from {0}. Exception: {1}";
-    
-    public const string CACHE_TABLE_CTOR_SIZES_WARNING = 
+
+    public const string CACHE_TABLE_CTOR_SIZES_WARNING =
                       "Cache.Table.ctor(bucketCount==recPerPage), two parameters may not be equal because they will cause hash clustering. The 'recPerPage' has been increased by the system";
 
 
@@ -954,22 +960,22 @@ namespace NFX
 
     public const string LOCAL_INSTALL_NOT_STARTED_INSTALL_PACKAGE_ERROR = "Local installation not started but InstallPackage() was called";
 
-    public const string LOCAL_INSTALL_PACKAGES_MANIFEST_FILE_NAME_COLLISION_ERROR = 
+    public const string LOCAL_INSTALL_PACKAGES_MANIFEST_FILE_NAME_COLLISION_ERROR =
       "Packages manifest file '{0}' could not be saved locally as some packages contain files that collide with the name";
 
-    public const string LOCAL_INSTALL_LOCAL_MANIFEST_READ_ERROR = 
+    public const string LOCAL_INSTALL_LOCAL_MANIFEST_READ_ERROR =
       "Local installation can not open local manifest file '{0}'. Exception: {1}";
 
-    public const string LOCAL_INSTALL_INSTALL_SET_PACKAGE_MANIFEST_READ_ERROR = 
+    public const string LOCAL_INSTALL_INSTALL_SET_PACKAGE_MANIFEST_READ_ERROR =
       "Local installation can not install a package '{0}' from the install set. The package manifest could not be read with exception: {1}";
-    
-    public const string LOCAL_INSTALL_INSTALL_SET_PACKAGE_WITHOUT_MANIFEST_ERROR = 
+
+    public const string LOCAL_INSTALL_INSTALL_SET_PACKAGE_WITHOUT_MANIFEST_ERROR =
       "Local installation can not install a package '{0}' from the install set. The package does not contain a manifest file '{1}' in its root";
 
 
     public const string FS_DUPLICATE_NAME_ERROR = "Can not have file system instance of type '{0}' with the name '{1}' as this name is already registered. ";
 
-    public const string FS_SESSION_BAD_PARAMS_ERROR = 
+    public const string FS_SESSION_BAD_PARAMS_ERROR =
       "Can not create an instance of file system session '{0}'. Make sure that suitable derivative of FileSystemSessionConnectParams is passed for the particular file system";
 
     public const string NETGATE_CONFIG_DUPLICATE_ENTITY_ERROR =
@@ -989,24 +995,24 @@ namespace NFX
     public const string FINANCIAL_AMOUNT_PARSE_ERROR =
             "Could not parse amount '{0}'";
 
-    public const string PILE_AV_BAD_SEGMENT_ERROR =  "Pile access violation. Bad segment: ";        
+    public const string PILE_AV_BAD_SEGMENT_ERROR =  "Pile access violation. Bad segment: ";
 
-    public const string PILE_AV_BAD_ADDR_EOF_ERROR =  "Pile access violation. Bad address points beyond buf length: ";        
+    public const string PILE_AV_BAD_ADDR_EOF_ERROR =  "Pile access violation. Bad address points beyond buf length: ";
 
-    public const string PILE_AV_BAD_ADDR_CHUNK_FLAG_ERROR =  "Pile access violation. Does not point to a valid used object chunk: ";        
+    public const string PILE_AV_BAD_ADDR_CHUNK_FLAG_ERROR =  "Pile access violation. Does not point to a valid used object chunk: ";
 
-    public const string PILE_AV_BAD_ADDR_PAYLOAD_SIZE_ERROR =  "Pile access violation. Pointer '{0}' point to wrong chunk payload size '{1}";        
+    public const string PILE_AV_BAD_ADDR_PAYLOAD_SIZE_ERROR =  "Pile access violation. Pointer '{0}' point to wrong chunk payload size '{1}";
 
-    public const string PILE_CHUNK_SZ_ERROR =  "Pile free chunk sizes are not properly configured. Must be consequently increasing {0} sizes starting at {1} bytes at minimum";        
+    public const string PILE_CHUNK_SZ_ERROR =  "Pile free chunk sizes are not properly configured. Must be consequently increasing {0} sizes starting at {1} bytes at minimum";
 
-    public const string PILE_CONFIG_PROPERTY_ERROR =  "Pile configuration error in property '{0}'. Error: {1}";  
-    
-    public const string PILE_CRAWL_INTERNAL_SEGMENT_CORRUPTION_ERROR =  "Pile segment crawl internal error: chunk flag corrupted at address {0}";        
+    public const string PILE_CONFIG_PROPERTY_ERROR =  "Pile configuration error in property '{0}'. Error: {1}";
 
-    public const string PILE_OUT_OF_SPACE_ERROR =  "Pile is out of allowed space of {0:n} max bytes, {1} max segments @ {2:n} bytes/segment";        
+    public const string PILE_CRAWL_INTERNAL_SEGMENT_CORRUPTION_ERROR =  "Pile segment crawl internal error: chunk flag corrupted at address {0}";
 
-    public const string PILE_OBJECT_LARGER_SEGMENT_ERROR =  "Pile could not put object of {0} bytes as this size exceeds the size of a segment";        
-   
+    public const string PILE_OUT_OF_SPACE_ERROR =  "Pile is out of allowed space of {0:n} max bytes, {1} max segments @ {2:n} bytes/segment";
+
+    public const string PILE_OBJECT_LARGER_SEGMENT_ERROR =  "Pile could not put object of {0} bytes as this size exceeds the size of a segment";
+
 
     public const string IO_STREAM_POSITION_ERROR =  "Stream position of {0} is beyond the length of stream {1}";
 
@@ -1014,47 +1020,47 @@ namespace NFX
 
 
 
-    public const string PILE_CACHE_SCV_START_PILE_NULL_ERROR = 
-      "Pile cache service can not start because pile is null"; 
+    public const string PILE_CACHE_SCV_START_PILE_NULL_ERROR =
+      "Pile cache service can not start because pile is null";
 
 
-    public const string PILE_CACHE_SCV_START_PILE_NOT_STARTED_ERROR = 
-      "Pile cache service can not start as it is injected a pile instance which is not managed by cache but has not been started externally"; 
+    public const string PILE_CACHE_SCV_START_PILE_NOT_STARTED_ERROR =
+      "Pile cache service can not start as it is injected a pile instance which is not managed by cache but has not been started externally";
 
 
-    public const string PILE_CACHE_TBL_KEYTYPE_MISMATCH_ERROR = 
-      "Key type mismatch for pile cache table '{0}'. Existing: '{1}' Requested: '{2}'"; 
+    public const string PILE_CACHE_TBL_KEYTYPE_MISMATCH_ERROR =
+      "Key type mismatch for pile cache table '{0}'. Existing: '{1}' Requested: '{2}'";
 
-    public const string PILE_CACHE_TBL_DOES_NOT_EXIST_ERROR = 
-      "Pile cache table '{0}' does not exist in the cache"; 
-      
-    public const string PILE_CACHE_TBL_KEYCOMPARER_MISMATCH_ERROR = 
-      "Key comparer mismatch for pile cache table '{0}'. Existing: '{1}' Requested: '{2}'";          
-     
+    public const string PILE_CACHE_TBL_DOES_NOT_EXIST_ERROR =
+      "Pile cache table '{0}' does not exist in the cache";
+
+    public const string PILE_CACHE_TBL_KEYCOMPARER_MISMATCH_ERROR =
+      "Key comparer mismatch for pile cache table '{0}'. Existing: '{1}' Requested: '{2}'";
+
 
     public const string PDF_UNIT_INCONSISTENCY_ERROR =
         "PDF Unit '{0}' is inconsistently defined";
 
     public const string PDF_UNIT_DOESNOTEXIST_ERROR =
         "PDF Unit '{0}' does not exist";
-     
+
     public const string PDF_COLOR_DOESNOTEXIST_ERROR =
         "PDF Color '{0}' does not exist";
-             
+
     public const string PDF_COLOR_INCONSISTENCY_ERROR =
-        "PDF Color '{0}' is inconsistently defined"; 
-  
-  
-             
+        "PDF Color '{0}' is inconsistently defined";
+
+
+
     public const string BSON_DOCUMENT_SIZE_EXCEEDED_ERROR =
         "Size '{0}' exceeds BSON default document size {1}";
 
     public const string BSON_ELEMENT_OBJECT_VALUE_SET_ERROR =
         "Can not set the '{0}' value of BSON element '{1}'. Error: {2}";
-    
+
     public const string BSON_READ_PREMATURE_EOF_ERROR =
         "Premature EOF while doing '{0}' over BSON stream";
-                   
+
     public const string BSON_NAMED_ELEMENT_ADDED_ERROR =
         "The element with name '{0}' has already been added";
 
@@ -1069,24 +1075,24 @@ namespace NFX
 
     public const string BSON_TEMPLATE_COMPILE_ERROR =
         "BSONDocument template compilation error: {0}. Template source: ' {1} '";
-   
+
     public const string BSON_ARRAY_ELM_DOC_ERROR =
         "BSONElement '{0}' is an array element and can not be used in document directly";
-     
+
     public const string BSON_OBJECTID_LENGTH_ERROR =
         "Byte array length must be equal to 12";
 
     public const string BSON_THREE_BYTES_UINT_ERROR =
-        "The value of {0} should be less than 2^24 to be correctly encoded as 3-bytes";  
+        "The value of {0} should be less than 2^24 to be correctly encoded as 3-bytes";
 
     public const string BSON_UNEXPECTED_END_OF_STRING_ERROR =
-        "Unexpected end of string. Expected: 0x00"; 
+        "Unexpected end of string. Expected: 0x00";
 
     public const string BSON_INCORRECT_STRING_LENGTH_ERROR =
         "BSON source is corrupted. String length '{0}' should be positive integer";
 
     public const string BSON_READ_BOOLEAN_ERROR =
-        "BSON source is corrupted. Unexpected boolean value '{0}'"; 
+        "BSON source is corrupted. Unexpected boolean value '{0}'";
 
     public const string BSON_EOD_ERROR =
         "BSON source is corrupted. Incorrect end of document/array";
@@ -1107,13 +1113,13 @@ namespace NFX
         "Error converting GDID data buffer: {0}";
 
 
-    public const string SECDB_FILE_HEADER_ERROR = "Eror while parsing the SecDB file header: ";  
+    public const string SECDB_FILE_HEADER_ERROR = "Eror while parsing the SecDB file header: ";
 
-    public const string SECDB_FS_SEEK_STREAM_ERROR = 
-       "SecDB requires a file system that supports random file access with content stream seek. Passed '{0}' does not";  
-    
-    public const string SECDB_FILE_NOT_FOUND_ERROR = 
-       "SecDB file '{0}' could not be read as it was not found by the file system '{1}'"; 
+    public const string SECDB_FS_SEEK_STREAM_ERROR =
+       "SecDB requires a file system that supports random file access with content stream seek. Passed '{0}' does not";
+
+    public const string SECDB_FILE_NOT_FOUND_ERROR =
+       "SecDB file '{0}' could not be read as it was not found by the file system '{1}'";
 
     public const string SEALED_STRING_OUT_OF_SPACE_ERROR =  "SealedString has allocated a maximum of {0} segments";
     public const string SEALED_STRING_TOO_BIG_ERROR =  "SealedString value of {0} bytes is too big";

@@ -31,7 +31,7 @@ namespace NFX.CodeAnalysis
   {
     #region .ctor
       private Message(){}
-      
+
       public Message(SourceCodeRef srcRef, MessageType type, int code, ICodeProcessor from, SourcePosition position, Token token, string text, Exception exception)
       {
          SourceCodeReference = srcRef;
@@ -63,7 +63,7 @@ namespace NFX.CodeAnalysis
         this(srcRef, type, code, from, SourcePosition.UNASSIGNED, null, null, null)
       {
       }
-      
+
     #endregion
 
 
@@ -115,10 +115,10 @@ namespace NFX.CodeAnalysis
       public readonly Exception AssociatedException;
 
       public override string ToString()
-      {          
-        
-        
-        return 
+      {
+
+
+        return
             @"#{0}.{1} {2} {3} at ""{4}"" {5} {6} {7} {8}".Args(
              Code,
              From.MessageCodeToString(Code),
@@ -151,21 +151,21 @@ namespace NFX.CodeAnalysis
   /// </summary>
   public class MessageList : List<Message>
   {
-  
+
     public ILanguageProcessorNotifications NotificationsSink { get; set;}
-  
-  
+
+
     /// <summary>
     /// Emits new message
     /// </summary>
     public new void Add(Message message)
     {
-      base.Add(message); 
+      base.Add(message);
       if (NotificationsSink!=null) NotificationsSink.MessageAdded(message);
     }
-  
-  
-  
+
+
+
     /// <summary>
     /// Enumerates all internal messages
     /// </summary>
@@ -189,7 +189,7 @@ namespace NFX.CodeAnalysis
     {
       get { return this.Where(msg => msg.IsWarning); }
     }
-    
+
     /// <summary>
     /// Enumerates all error messages
     /// </summary>
@@ -197,20 +197,20 @@ namespace NFX.CodeAnalysis
     {
       get { return this.Where(msg => msg.IsError); }
     }
-    
-    
+
+
     public override string ToString()
     {
       StringBuilder sb = new StringBuilder();
 
       foreach (Message msg in this)
         sb.AppendLine(msg.ToString());
-                         
+
       return sb.ToString();
     }
   }
-  
-  
+
+
    /// <summary>
    /// Message type like: Info, Warning, Error
    /// </summary>
@@ -226,14 +226,14 @@ namespace NFX.CodeAnalysis
       Error = 1000000,
       InternalError = 10000000
    }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
 }

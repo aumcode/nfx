@@ -42,7 +42,7 @@ namespace NFX.Web
       /// </summary>
       public class OperationPolicy : IConfigurable
       {
-                            protected class _uri : INamed 
+                            protected class _uri : INamed
                             {
                               public string Name { get; internal set; }
                               public bool Trusted { get; internal set; }
@@ -67,7 +67,7 @@ namespace NFX.Web
 
           foreach (var un in cvn.Children.Where(c => c.IsSameName(CONFIG_CASE_SECTION)))
           {
-            m_DefaultCertValUris.Register(new _uri { Name = un.AttrByName(CONFIG_URI_ATTR).Value, 
+            m_DefaultCertValUris.Register(new _uri { Name = un.AttrByName(CONFIG_URI_ATTR).Value,
                                        Trusted = un.AttrByName(CONFIG_TRUSTED_ATTR).ValueAsBool()});
           }
         }
@@ -89,7 +89,7 @@ namespace NFX.Web
         }
       }
 
-      
+
 
       public sealed class ServicePointConfigurator
       {
@@ -111,43 +111,43 @@ namespace NFX.Web
         public readonly ServicePoint ServicePoint;
 
         [Config]
-        public int ConnectionLeaseTimeout 
-        { 
+        public int ConnectionLeaseTimeout
+        {
           get { return this.ServicePoint.ConnectionLeaseTimeout; }
           private set { this.ServicePoint.ConnectionLeaseTimeout = value; }
         }
 
         [Config]
-        public int ConnectionLimit 
-        { 
+        public int ConnectionLimit
+        {
           get { return this.ServicePoint.ConnectionLimit; }
           private set { this.ServicePoint.ConnectionLimit = value; }
         }
 
         [Config("$expect-100-continue")]
-        public bool Expect100Continue 
-        { 
+        public bool Expect100Continue
+        {
           get { return this.ServicePoint.Expect100Continue; }
           private set { this.ServicePoint.Expect100Continue = value; }
         }
 
         [Config]
-        public int MaxIdleTime 
-        { 
+        public int MaxIdleTime
+        {
           get { return this.ServicePoint.MaxIdleTime; }
           private set { this.ServicePoint.MaxIdleTime = value; }
         }
 
         [Config]
-        public int ReceiveBufferSize 
-        { 
+        public int ReceiveBufferSize
+        {
           get { return this.ServicePoint.ReceiveBufferSize; }
           private set { this.ServicePoint.ReceiveBufferSize = value; }
         }
 
         [Config]
-        public bool UseNagleAlgorithm 
-        { 
+        public bool UseNagleAlgorithm
+        {
           get { return this.ServicePoint.UseNagleAlgorithm; }
           private set { this.ServicePoint.UseNagleAlgorithm = value; }
         }
@@ -161,7 +161,7 @@ namespace NFX.Web
           return null;
         }
       }
-    
+
     #endregion
 
     #region CONSTS
@@ -181,7 +181,7 @@ namespace NFX.Web
 
       internal static ServicePointManagerConfigurator s_Instance = new ServicePointManagerConfigurator();
 
-      private ServicePointManagerConfigurator() { } 
+      private ServicePointManagerConfigurator() { }
 
     #endregion
 
@@ -196,10 +196,10 @@ namespace NFX.Web
     #region Properties
 
       [Config]
-      public bool CheckCertificateRevocationList 
+      public bool CheckCertificateRevocationList
       {
         get { return ServicePointManager.CheckCertificateRevocationList; }
-        private set { ServicePointManager.CheckCertificateRevocationList = value; } 
+        private set { ServicePointManager.CheckCertificateRevocationList = value; }
       }
 
       [Config]
@@ -286,7 +286,7 @@ namespace NFX.Web
           ServicePointManager.ServerCertificateValidationCallback += onServerCertificateValidationCallback;
         }
       }
-      
+
     #endregion
 
     #region .pvt
@@ -308,7 +308,7 @@ namespace NFX.Web
         var lst = new List<ServicePointConfigurator>();
         foreach (var nsp in node.Children.Where(c => c.IsSameName(CONFIG_SERVICE_POINT_SECTION)))
         {
-          
+
           var addr = nsp.AttrByName(CONFIG_URI_ATTR).Value;
           if (addr.IsNullOrWhiteSpace()) continue;
 

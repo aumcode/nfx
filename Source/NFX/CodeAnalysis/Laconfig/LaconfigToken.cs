@@ -50,7 +50,7 @@ namespace NFX.CodeAnalysis.Laconfig
         public override TokenKind Kind
         {
             get
-            { 
+            {
                 if (Type > LaconfigTokenType.LITERALS_START && Type < LaconfigTokenType.LITERALS_END)
                      return TokenKind.Literal;
 
@@ -59,14 +59,14 @@ namespace NFX.CodeAnalysis.Laconfig
 
                 switch(Type)
                 {
-                                       
+
                     case LaconfigTokenType.tBOF:          return TokenKind.BOF;
                     case LaconfigTokenType.tEOF:          return TokenKind.EOF;
                     case LaconfigTokenType.tDirective:    return TokenKind.Directive;
                     case LaconfigTokenType.tComment:      return TokenKind.Comment;
                     case LaconfigTokenType.tIdentifier:   return TokenKind.Identifier;
                     case LaconfigTokenType.tEQ:           return TokenKind.Operator;
-                   
+
                     default: return TokenKind.Other;
                 }
             }

@@ -55,7 +55,7 @@ namespace NFX.IO.FileSystem.GoogleDrive
       }
 
       var parentBuilder = new StringBuilder();
-            
+
       for (int i = 0; i < segments.Length - 1; i++)
       {
         if (i > 0)

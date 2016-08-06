@@ -27,10 +27,10 @@ namespace NFX.Glue.Protocol
     /// </summary>
     public static class HashUtils
     {
-      
+
         /// <summary>
         /// Converts string identifier into uint64 stable hash that does not depend on a platform.
-        /// This functions optimized for hashing identifiers/type names 
+        /// This functions optimized for hashing identifiers/type names
         /// </summary>
         public static ulong StringIDHash(string id)
         {
@@ -38,8 +38,8 @@ namespace NFX.Glue.Protocol
             var sl = id.Length;
             if (sl==0) return 0;
             ulong result = (ulong)(sl % 251) << 56;//64-8
-                                     
-            ulong hash2 = 0;         
+
+            ulong hash2 = 0;
             for(int i=id.Length-1, cnt=0; cnt<sizeof(ulong)-1 && i>=0; i--,cnt++)
             {
               if (cnt>0) hash2 <<= 8;
@@ -48,7 +48,7 @@ namespace NFX.Glue.Protocol
 
             result |= (ulong)hash2;
             return result;
-        } 
+        }
 
         /// <summary>
         /// Returns stable ulong hash for a type that does not depend on a platform
@@ -60,23 +60,23 @@ namespace NFX.Glue.Protocol
 
           var aqn = type.AssemblyQualifiedName;
           var crc32 = NFX.IO.ErrorHandling.CRC32.ForString(aqn);
-              
+
           var tp  = StringIDHash(type.FullName);
-          
+
           return tp ^ ( ((ulong)crc32) << 24);//64-8-32
           //[tp.len%251][crc1][crc2][crc3][crc4][char-3][char-2][char-1]
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
     /// <summary>
     /// Type specification for marshalling contract types between glued peers
     /// </summary>
@@ -100,7 +100,7 @@ namespace NFX.Glue.Protocol
                    private static Dictionary<string, Type> s_Types = new Dictionary<string,Type>(StringComparer.Ordinal);
 
         /// <summary>
-        /// Returns the type or throws if it can't be found 
+        /// Returns the type or throws if it can't be found
         /// </summary>
         /// <returns>The type or throws exception if actual type could not be gotten</returns>
         public Type GetSpecifiedType()
@@ -108,7 +108,7 @@ namespace NFX.Glue.Protocol
           Type result;
 
           if (m_Name==null) throw new ServerContractException(StringConsts.GLUE_TYPE_SPEC_ERROR + StringConsts.NULL_STRING);
-          
+
           if (s_Types.TryGetValue(m_Name, out result)) return result;
 
           result = Type.GetType(m_Name, false, false);
@@ -151,10 +151,10 @@ namespace NFX.Glue.Protocol
         public MethodSpec(MethodInfo mi)
         {
             m_MethodName = mi.Name;
-            
-            var rtp = mi.ReturnType;                               
+
+            var rtp = mi.ReturnType;
             m_ReturnType = HashUtils.TypeHash( rtp );
-                                                                                         
+
             var pars = mi.GetParameters();
             m_Signature = new byte[pars.Length*sizeof(ulong)];
             for(var i=0; i<pars.Length; i++)
@@ -172,13 +172,13 @@ namespace NFX.Glue.Protocol
 
         internal string m_MethodName;
         internal ulong  m_ReturnType;
-        internal byte[] m_Signature ; //this is byte[] vs ulong[] for serialization speed 
+        internal byte[] m_Signature ; //this is byte[] vs ulong[] for serialization speed
         internal ulong  m_Hash      ;
 
 
         public string MethodName{get{ return m_MethodName;}}
         public ulong  ReturnType{get{ return m_ReturnType;}}
-        public byte[] Signature {get{ return m_Signature;}} //this is byte[] vs ulong[] for serialization speed 
+        public byte[] Signature {get{ return m_Signature;}} //this is byte[] vs ulong[] for serialization speed
         public ulong  Hash      {get{ return m_Hash;}}
 
 
@@ -212,7 +212,7 @@ namespace NFX.Glue.Protocol
 
         public override string ToString()
         {
-            return string.Format("[{0}] {1}({2})", m_ReturnType, m_MethodName, m_Signature.Length / sizeof(ulong)); 
+            return string.Format("[{0}] {1}({2})", m_ReturnType, m_MethodName, m_Signature.Length / sizeof(ulong));
         }
     }
 }

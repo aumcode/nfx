@@ -81,7 +81,7 @@ namespace NFX.Web.GeoLookup
 
       private static void start()
       {
-        try 
+        try
         {
           s_Instance.Start();
         }
@@ -91,7 +91,7 @@ namespace NFX.Web.GeoLookup
 
           log(MessageType.CatastrophicError,
               "Instance.get(){svc.start()}",
-              error.ToMessageWithType(), error); 
+              error.ToMessageWithType(), error);
         }
       }
 
@@ -116,14 +116,14 @@ namespace NFX.Web.GeoLookup
     #endregion
 
     #region Properties
-     
+
 
       /// <summary>
       /// Returns true to indoicate that service has loaded and ready to serve data
       /// </summary>
       public bool Available { get{ return Status== ControlStatus.Active;} }
 
-      
+
       /// <summary>
       /// Specifies where the data is
       /// </summary>
@@ -137,7 +137,7 @@ namespace NFX.Web.GeoLookup
           m_DataPath = value;
         }
       }
-      
+
       /// <summary>
       /// Specifies what resolution service provides
       /// </summary>
@@ -159,7 +159,7 @@ namespace NFX.Web.GeoLookup
 
     #endregion
 
-    #region Public 
+    #region Public
 
       /// <summary>
       /// Tries to lookup the location by ip/dns name. Returns null if no match could be made
@@ -173,7 +173,7 @@ namespace NFX.Web.GeoLookup
         m_Locations.TryGetValue(block.LocationID, out location);
         return new GeoEntity(address, block, location);
       }
-  
+
       /// <summary>
       /// Cancels service start. This method may be needed when Start() blocks for a long time due to large volumes of data
       /// </summary>
@@ -181,7 +181,7 @@ namespace NFX.Web.GeoLookup
       {
         m_CancelStart = true;
       }
-   
+
     #endregion
 
     #region Protected
@@ -197,12 +197,12 @@ namespace NFX.Web.GeoLookup
         }
       }
 
-     
+
       protected override void DoStart()
       {
         if (m_Resolution!= LookupResolution.Country && m_Resolution!= LookupResolution.City)
           throw new GeoException(StringConsts.GEO_LOOKUP_SVC_RESOLUTION_ERROR.Args(m_Resolution));
-        
+
         if (!Directory.Exists(m_DataPath))
           throw new GeoException(StringConsts.GEO_LOOKUP_SVC_PATH_ERROR.Args(m_DataPath ?? StringConsts.UNKNOWN));
 
@@ -298,7 +298,7 @@ namespace NFX.Web.GeoLookup
               {
                 log(MessageType.Error, "DoStart('{0}')".Args(fnLocations), "{1}".Args(error.ToMessageWithType()), error);
               }
-            }  
+            }
         }
         catch
         {
@@ -330,7 +330,7 @@ namespace NFX.Web.GeoLookup
             Text = text,
             Exception = error
           };
-          App.Log.Write( msg ); 
+          App.Log.Write( msg );
       }
 
     #endregion

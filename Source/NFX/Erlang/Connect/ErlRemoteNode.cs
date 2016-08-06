@@ -91,9 +91,9 @@ namespace NFX.Erlang
 
     private void ctor(ErlLocalNode home)
     {
-      m_TcpKeepAlive = home.TcpKeepAlive;
-      m_TcpLinger = home.TcpLinger;
-      m_TcpNoDelay = home.TcpNoDelay;
+      m_TcpKeepAlive  = home.TcpKeepAlive;
+      m_TcpLinger     = home.TcpLinger;
+      m_TcpNoDelay    = home.TcpNoDelay;
       m_TcpRcvBufSize = home.TcpRcvBufSize;
       m_TcpSndBufSize = home.TcpSndBufSize;
     }

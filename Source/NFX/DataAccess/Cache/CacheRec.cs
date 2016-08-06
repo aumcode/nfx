@@ -65,41 +65,41 @@ namespace NFX.DataAccess.Cache
                    }
                    catch(Exception error)
                    {
-                        App.Log.Write(MessageType.Error, 
-                                      StringConsts.CACHE_RECORD_ITEM_DISPOSE_ERROR.Args(FROM, error.ToMessageWithType()), 
-                                      topic: CoreConsts.CACHE_TOPIC, 
+                        App.Log.Write(MessageType.Error,
+                                      StringConsts.CACHE_RECORD_ITEM_DISPOSE_ERROR.Args(FROM, error.ToMessageWithType()),
+                                      topic: CoreConsts.CACHE_TOPIC,
                                       from: FROM);
                    }
         }
 
         internal DateTime m_CreateDate;//set by sweep thread on first access
         internal volatile int m_AgeSec; //needed not to subtract dates on every Get() from cache
-    
-        internal DateTime? m_AbsoluteExpirationUTC; 
+
+        internal DateTime? m_AbsoluteExpirationUTC;
         internal volatile int m_HitCount;
 
-        internal volatile int m_MaxAgeSec;      
+        internal volatile int m_MaxAgeSec;
         internal volatile int m_Priority;
-                                       
+
         /// <summary>
         /// Key is immutable because CacheRec is returned by table.Get(key)
         /// </summary>
         public readonly ulong Key;
 
         internal volatile object m_Value;
-        
+
         /// <summary>
         /// Stores arbitrary information about this item
         /// </summary>
         public volatile object Metadata;
 
-              
-                 
+
+
                  private void _reset()
                  {
                     m_Value = null;
                     Metadata = null;
-                    
+
                     m_CreateDate = default(DateTime);
                     m_AgeSec = 0;
                     m_AbsoluteExpirationUTC = null;

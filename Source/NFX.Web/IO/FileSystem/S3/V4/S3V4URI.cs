@@ -50,7 +50,7 @@ namespace NFX.IO.FileSystem.S3.V4
         S3V4URI uri = new S3V4URI(path);
         return uri;
       }
-    
+
     #endregion
 
     #region .ctor
@@ -94,7 +94,7 @@ namespace NFX.IO.FileSystem.S3.V4
       public string LocalPath { get { return m_LocalPath; } }
 
       public string LocalName { get { return m_LocalName; } }
-      
+
       public IDictionary<string, string> QueryParams { get { return m_QueryParams; } }
 
       public string ParentPath { get { return m_ParentPath; } }

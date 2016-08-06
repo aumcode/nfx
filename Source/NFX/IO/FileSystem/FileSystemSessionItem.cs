@@ -30,9 +30,9 @@ namespace NFX.IO.FileSystem
     /// </summary>
     public abstract class FileSystemSessionItem : DisposableObject, INamed
     {
-      #region .ctor    
-        protected FileSystemSessionItem(FileSystemSession session, 
-                                        string parentPath, 
+      #region .ctor
+        protected FileSystemSessionItem(FileSystemSession session,
+                                        string parentPath,
                                         string name,
                                         IFileSystemHandle handle)
         {
@@ -41,7 +41,7 @@ namespace NFX.IO.FileSystem
             m_ParentPath = parentPath;
             m_Handle = handle;
             m_Name = name;
-           
+
             m_Session.m_Items.Add( this );
         }
 
@@ -64,27 +64,27 @@ namespace NFX.IO.FileSystem
             base.Destructor();
         }
       #endregion
-      
-      #region Fields  
+
+      #region Fields
         protected readonly FileSystem m_FileSystem;
         protected readonly FileSystemSession m_Session;
         private string m_ParentPath;
-        
+
         private FileSystemStream m_PermissionsStream;
         private FileSystemStream m_MetadataStream;
 
         protected readonly IFileSystemHandle m_Handle;
         private string m_Name;
         protected internal bool m_Modified;
-        
+
       #endregion
-        
+
       #region Properties
         /// <summary>
         /// Returns file system handle for this entity
         /// </summary>
         public IFileSystemHandle Handle { get{ return m_Handle;} }
-        
+
         public string Name
         {
           get { return m_Name;}
@@ -121,25 +121,25 @@ namespace NFX.IO.FileSystem
         /// </summary>
         public string ParentPath { get { return m_ParentPath.IsNullOrWhiteSpace() ? m_FileSystem.InstanceCapabilities.PathSeparatorCharacters[0].ToString() : m_ParentPath;} }
 
-        
+
 
         /// <summary>
         /// Returns filesystem - this is a shortcut to Session.FileSystem
         /// </summary>
         public FileSystem FileSystem { get { return m_FileSystem;} }
 
-        
+
         /// <summary>
         /// Returns session through which this object was obtained
         /// </summary>
         public FileSystemSession Session { get { return m_Session;} }
 
-       
+
 
         /// <summary>
         /// Returns item permissions stream
         /// </summary>
-        public FileSystemStream PermissionsStream 
+        public FileSystemStream PermissionsStream
         {
             get { return m_PermissionsStream ?? (m_PermissionsStream = FileSystem.DoGetPermissionsStream(this, (s) => m_PermissionsStream = null));}
         }
@@ -147,7 +147,7 @@ namespace NFX.IO.FileSystem
         /// <summary>
         /// Returns item metadata stream
         /// </summary>
-        public FileSystemStream MetadataStream 
+        public FileSystemStream MetadataStream
         {
             get { return m_MetadataStream ?? (m_MetadataStream = FileSystem.DoGetMetadataStream(this, (s) => m_MetadataStream = null));}
         }
@@ -168,7 +168,7 @@ namespace NFX.IO.FileSystem
                 public Task<ulong> GetSizeAsync()
                 {
                     return FileSystem.DoGetItemSizeAsync( this );
-                } 
+                }
 
 
         /// <summary>
@@ -192,8 +192,8 @@ namespace NFX.IO.FileSystem
                 public Task SetCreationTimestampAsync(DateTime timestamp)
                 {
                     return FileSystem.DoSetCreationTimestampAsync( this, timestamp );
-                } 
-        
+                }
+
         /// <summary>
         /// Gets/sets UTC modification timestamp
         /// </summary>
@@ -215,7 +215,7 @@ namespace NFX.IO.FileSystem
                 public Task SetModificationTimestampAsync(DateTime timestamp)
                 {
                     return FileSystem.DoSetModificationTimestampAsync( this, timestamp );
-                } 
+                }
 
         /// <summary>
         /// Gets/sets UTC last access timestamp
@@ -238,38 +238,38 @@ namespace NFX.IO.FileSystem
                 public Task SetLastAccessTimestampAsync(DateTime timestamp)
                 {
                     return FileSystem.DoSetLastAccessTimestampAsync( this, timestamp );
-                } 
+                }
 
 
         /// <summary>
         /// Gets the user who created this item
         /// </summary>
-        public User CreationUser     { get { return FileSystem.DoGetCreationUser(this); }} 
+        public User CreationUser     { get { return FileSystem.DoGetCreationUser(this); }}
 
                 /// <summary>
                 /// Async version of <see cref="P:CreationUser"/>
                 /// </summary>
-                public Task<User> GetCreationUserAsync()     { return FileSystem.DoGetCreationUserAsync(this); } 
-        
+                public Task<User> GetCreationUserAsync()     { return FileSystem.DoGetCreationUserAsync(this); }
+
         /// <summary>
         /// Gets the user who modified this item
         /// </summary>
-        public User ModificationUser { get { return FileSystem.DoGetModificationUser(this); }} 
+        public User ModificationUser { get { return FileSystem.DoGetModificationUser(this); }}
 
                 /// <summary>
                 /// Async version of <see cref="P:ModificationUser"/>
                 /// </summary>
-                public Task<User> GetModificationUserAsync()     { return FileSystem.DoGetModificationUserAsync(this); } 
-        
+                public Task<User> GetModificationUserAsync()     { return FileSystem.DoGetModificationUserAsync(this); }
+
         /// <summary>
         /// Gets the last user who accessed the item
         /// </summary>
-        public User LastAccessUser    { get { return FileSystem.DoGetLastAccessUser(this); }} 
+        public User LastAccessUser    { get { return FileSystem.DoGetLastAccessUser(this); }}
 
                 /// <summary>
                 /// Async version of <see cref="P:LastAccessUser"/>
                 /// </summary>
-                public Task<User> GetLastAccessUserAsync()     { return FileSystem.DoGetLastAccessUserAsync(this); } 
+                public Task<User> GetLastAccessUserAsync()     { return FileSystem.DoGetLastAccessUserAsync(this); }
 
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace NFX.IO.FileSystem
                 public Task SetReadOnlyAsync(bool readOnly)
                 {
                     return FileSystem.DoSetReadOnlyAsync( this, readOnly );
-                } 
+                }
 
         /// <summary>
         /// Indicates whether this item can change and file system supports modifications
@@ -306,7 +306,7 @@ namespace NFX.IO.FileSystem
 
 
       #region Public Sync Methods
-        
+
         /// <summary>
         /// Throws when item can not change
         /// </summary>
@@ -324,7 +324,7 @@ namespace NFX.IO.FileSystem
                 {
                   return FileSystem.DoCheckCanChangeAsync(this);
                 }
-        
+
         /// <summary>
         /// Renames an item. Check file system capabilities to see if renaming is supported
         /// </summary>

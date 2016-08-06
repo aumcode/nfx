@@ -147,6 +147,12 @@
     <Compile Include="LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MailForm.Designer.cs">
+      <DependentUpon>MailForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MenuForm.cs">
       <SubType>Form</SubType>
     </Compile>

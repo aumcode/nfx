@@ -81,7 +81,7 @@ namespace NFX.Web
           public IDictionary<string, string> BodyParameters;
           public string Body;
           public IDictionary<string, string> Headers;
-          public string ContentType = NFX.Web.ContentType.FORM_URL_ENCODED; 
+          public string ContentType = NFX.Web.ContentType.FORM_URL_ENCODED;
           public string AcceptType;
           public string UName, UPwd;
           public IWebClientCaller Caller;
@@ -100,12 +100,12 @@ namespace NFX.Web
 
         #endregion
       }
-      
+
     #endregion
 
     #region Public
 
-      public static string GetString(Uri uri, 
+      public static string GetString(Uri uri,
         IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
@@ -134,7 +134,7 @@ namespace NFX.Web
       {
         byte[] data = null;
         string localContentType = string.Empty;
-        GetDataObject((c) => { 
+        GetDataObject((c) => {
           data = c.DownloadData(uri);
           localContentType = c.ResponseHeaders[HttpResponseHeader.ContentType];
         }, uri, caller, queryParameters, headers);
@@ -228,9 +228,9 @@ namespace NFX.Web
           }
           else
           {
-            var body = request.Body ?? 
+            var body = request.Body ??
                        (request.BodyParameters != null ?
-                        string.Join("&", request.BodyParameters.Select(p => p.Key + "=" + p.Value)) : 
+                        string.Join("&", request.BodyParameters.Select(p => p.Key + "=" + p.Value)) :
                         string.Empty);
             responseStr = Uri.UnescapeDataString(client.UploadString(request.Uri, body));
           }
@@ -239,7 +239,7 @@ namespace NFX.Web
         return responseStr;
       }
 
-      public static string GetString(string uri, IWebClientCaller caller, 
+      public static string GetString(string uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -248,7 +248,7 @@ namespace NFX.Web
         return GetString(new Uri(uri), caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
       }
 
-      public static JSONDynamicObject GetJsonAsDynamic(Uri uri, IWebClientCaller caller, 
+      public static JSONDynamicObject GetJsonAsDynamic(Uri uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -259,7 +259,7 @@ namespace NFX.Web
         return string.IsNullOrWhiteSpace(responseStr) ? null : responseStr.JSONToDynamic();
       }
 
-      public static JSONDynamicObject GetJsonAsDynamic(string uri, IWebClientCaller caller, 
+      public static JSONDynamicObject GetJsonAsDynamic(string uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -286,7 +286,7 @@ namespace NFX.Web
         return responseStr.IsNotNullOrWhiteSpace() ? responseStr.JSONToDynamic() : null;
       }
 
-      public static JSONDataMap GetJson(Uri uri, IWebClientCaller caller, 
+      public static JSONDataMap GetJson(Uri uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -297,7 +297,7 @@ namespace NFX.Web
         return string.IsNullOrWhiteSpace(responseStr) ? null : responseStr.JSONToDataObject() as JSONDataMap;
       }
 
-      public static JSONDataMap GetJson(string uri, IWebClientCaller caller, 
+      public static JSONDataMap GetJson(string uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -324,7 +324,7 @@ namespace NFX.Web
         return responseStr.IsNullOrWhiteSpace() ? null : responseStr.JSONToDataObject() as JSONDataMap;
       }
 
-      public static JSONDataMap GetValueMap(Uri uri, IWebClientCaller caller, 
+      public static JSONDataMap GetValueMap(Uri uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -335,7 +335,7 @@ namespace NFX.Web
         return dict;
       }
 
-      public static JSONDataMap GetValueMap(string uri, IWebClientCaller caller, 
+      public static JSONDataMap GetValueMap(string uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -344,7 +344,7 @@ namespace NFX.Web
         return GetValueMap(new Uri(uri), caller, method, queryParameters, bodyParameters, headers);
       }
 
-      public static XDocument GetXML(Uri uri, IWebClientCaller caller, 
+      public static XDocument GetXML(Uri uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -355,7 +355,7 @@ namespace NFX.Web
         return string.IsNullOrWhiteSpace(responseStr) ? null : XDocument.Parse(responseStr);
       }
 
-      public static XDocument GetXML(string uri, IWebClientCaller caller, 
+      public static XDocument GetXML(string uri, IWebClientCaller caller,
         HTTPRequestMethod method = HTTPRequestMethod.GET,
         IDictionary<string, string> queryParameters = null,
         IDictionary<string, string> bodyParameters = null,
@@ -376,16 +376,22 @@ namespace NFX.Web
         return GetXML(new Uri(uri), caller, queryParameters, body);
       }
 
+      public static XDocument GetXML(RequestParams prms)
+      {
+        string response = GetString(prms);
+        return response.IsNotNullOrWhiteSpace() ? XDocument.Parse(response) : null;
+      }
+
       #endregion
 
       #region .pvt
-      
+
         private static WebHeaderCollection prepareRequestHeaders(RequestParams request)
         {
-          var result = new WebHeaderCollection();       
+          var result = new WebHeaderCollection();
           if (request.Headers != null)
             request.Headers.ForEach(kvp => result.Add(kvp.Key, kvp.Value));
-          
+
           if (request.ContentType.IsNotNullOrWhiteSpace())
               result.Add(HttpRequestHeader.ContentType, request.ContentType);
           if (request.AcceptType.IsNotNullOrWhiteSpace())
@@ -394,7 +400,7 @@ namespace NFX.Web
           return result;
         }
 
-      #endregion 
+      #endregion
 
     } //WebClient
 

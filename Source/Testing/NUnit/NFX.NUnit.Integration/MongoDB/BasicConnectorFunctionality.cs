@@ -68,7 +68,7 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
         db["t2"].Drop();
         db["t3"].Drop();
@@ -99,7 +99,7 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
@@ -114,23 +114,23 @@ namespace NFX.NUnit.Integration.MongoDB
 
         Assert.AreEqual(2, t1.Count());
         Assert.AreEqual( 1, t1.DeleteOne(Query.ID_EQ_Int32(1)).TotalDocumentsAffected );
-        
+
         Assert.AreEqual(1, t1.Count());
         Assert.AreEqual( 1, t1.DeleteOne(Query.ID_EQ_Int32(2)).TotalDocumentsAffected );
-        
+
         Assert.AreEqual(0, t1.Count());
       }
 
     }
 
-     [Test]
+    [Test]
     public void InsertWithoutID()
     {
 
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
@@ -155,7 +155,7 @@ namespace NFX.NUnit.Integration.MongoDB
         doc1.Set( new BSONStringElement("_id", "id1"))
             .Set( new BSONStringElement("val", "My value"))
             .Set( new BSONInt32Element("age", 125));
-                  
+
         var r = collection.Insert(doc1);
         Assert.AreEqual(1, r.TotalDocumentsAffected);
 
@@ -185,7 +185,7 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         var sw = Stopwatch.StartNew();
         Parallel.For(0, CNT, (i) => db.Ping());
         var e =sw.ElapsedMilliseconds;
@@ -206,33 +206,33 @@ namespace NFX.NUnit.Integration.MongoDB
         server.MaxConnections = maxConnections;
         var db = server["db1"];
         db["t1"].Drop();
-        var t1 = db["t1"];        
+        var t1 = db["t1"];
 
 
         var sw = Stopwatch.StartNew();
         Parallel.For(0, CNT, (i) =>
-        { 
+        {
           Assert.AreEqual(1, db["t1"].Insert( new BSONDocument().Set( new BSONInt32Element("_id", i))
                                                                 .Set( new BSONStringElement("val", "num-"+i.ToString()))
                            ).TotalDocumentsAffected);
         });
 
         var e1 =sw.ElapsedMilliseconds;
-        
+
         Assert.AreEqual(CNT, t1.Count());
-        
+
         Console.WriteLine("Insert Parallel: {0:n0} times in {1:n0} ms at {2:n0} ops/sec   MAX CONNECTIONS={3} ".Args(CNT, e1, CNT / (e1/1000d), maxConnections ));
 
         sw.Restart();
         Parallel.For(0, CNT, (i) =>
-        { 
+        {
           var got = db["t1"].FindOne(Query.ID_EQ_Int32(i));
           Assert.IsNotNull( got );
           Assert.AreEqual("num-"+i.ToString(), got["val"].AsString());
         });
 
         var e2 =sw.ElapsedMilliseconds;
-       
+
         Console.WriteLine("FindOne Parallel: {0:n0} times in {1:n0} ms at {2:n0} ops/sec   MAX CONNECTIONS={3} ".Args(CNT, e2, CNT / (e2/1000d), maxConnections ));
       }
     }
@@ -564,7 +564,7 @@ namespace NFX.NUnit.Integration.MongoDB
                                     .Set(new BSONInt32Element("age", age)))
                                        .TotalDocumentsAffected);
         }
-                            
+
         var result1 = collection.Update(new UpdateEntry(new Query("{ name: 'People1'}", false), new Query("{age: 100}", false), false, false));
         var update1 = collection.Find(new Query(@"{ age: 100}", false));
 
@@ -592,7 +592,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(((BSONInt32Element)update1.Current["age"]).Value,100);
         update1.MoveNext();
         Assert.AreEqual(true, update1.EOF);
-                
+
         Assert.AreEqual(result2.TotalDocumentsUpdatedAffected, 1);
         Assert.AreEqual(result2.TotalDocumentsAffected, 1);
         Assert.AreEqual(result2.Upserted, null);
@@ -602,7 +602,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(((BSONStringElement)update2.Current["name"]).Value, "update2");
         update2.MoveNext();
         Assert.AreEqual(true, update2.EOF);
-         
+
         Assert.AreEqual(result3.TotalDocumentsUpdatedAffected, 3);
         Assert.AreEqual(result3.TotalDocumentsAffected, 3);
         Assert.AreEqual(result3.Upserted, null);
@@ -616,14 +616,14 @@ namespace NFX.NUnit.Integration.MongoDB
         }
         update3.MoveNext();
         Assert.AreEqual(true, update3.EOF);
-          
+
         Assert.AreEqual(result4.TotalDocumentsUpdatedAffected, 0);
         Assert.AreEqual(result4.TotalDocumentsAffected, 0);
         Assert.AreEqual(result4.Upserted, null);
         Assert.AreEqual(result4.WriteErrors, null);
         update4.MoveNext();
         Assert.AreEqual(true, update4.EOF);
-           
+
         Assert.AreEqual(result5.TotalDocumentsUpdatedAffected, 0);
         Assert.AreEqual(result5.TotalDocumentsAffected, 1);
         Assert.AreEqual(result5.Upserted.Length, 1);
@@ -634,7 +634,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(((BSONInt32Element)update5.Current["age"]).Value, -1);
         update5.MoveNext();
         Assert.AreEqual(true, update5.EOF);
-                  
+
         Assert.AreEqual(result6.TotalDocumentsUpdatedAffected, 3);
         Assert.AreEqual(result6.TotalDocumentsAffected, 3);
         Assert.AreEqual(result6.Upserted, null);
@@ -642,7 +642,7 @@ namespace NFX.NUnit.Integration.MongoDB
         for (int i = 6; i <= 8; i++)
         {
           update6.MoveNext();
-          Assert.AreEqual(update6.Current.Count, 3);         
+          Assert.AreEqual(update6.Current.Count, 3);
           Assert.AreEqual(((BSONStringElement)update6.Current["name"]).Value, "update6");
           Assert.AreEqual(((BSONInt32Element)update6.Current["age"]).Value, i);
         }
@@ -650,7 +650,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(true, update6.EOF);
       }
     }
-    
+
     [Test]
     public void Update_Parallel_SimpleStringInt23Entries()
     {
@@ -670,10 +670,10 @@ namespace NFX.NUnit.Integration.MongoDB
                                     .Set(new BSONInt32Element("value", value)))
                                        .TotalDocumentsAffected);
         }
-        
+
         Parallel.For(0, CNT/CHUNK, i =>
         {
-          var result = collection.Update(new UpdateEntry(new Query("{ '$and': [ { value: {'$gte':"+i*CHUNK+"}}, { value: {'$lt':"+(i+1)*CHUNK+"}} ]}", false), 
+          var result = collection.Update(new UpdateEntry(new Query("{ '$and': [ { value: {'$gte':"+i*CHUNK+"}}, { value: {'$lt':"+(i+1)*CHUNK+"}} ]}", false),
                                                          new Query("{ '$set': {name: 'updated'}}", false), true, false));
           Assert.AreEqual(result.TotalDocumentsUpdatedAffected, CHUNK);
           Assert.AreEqual(result.TotalDocumentsAffected, CHUNK);
@@ -724,7 +724,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(true, all.EOF);
       }
     }
-    
+
     [Test]
     public void Save_AsInsertAndUpdate()
     {
@@ -776,7 +776,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(true, all.EOF);
       }
     }
-      
+
     [Test]
     public void Save_Parallel_AsInsertAndUpdate()
     {
@@ -813,7 +813,7 @@ namespace NFX.NUnit.Integration.MongoDB
               Assert.AreEqual(result.TotalDocumentsUpdatedAffected, 1);
             }
             else
-            {  
+            {
               Assert.AreEqual(result.Upserted.Length, 1);
               Assert.AreEqual(result.TotalDocumentsUpdatedAffected, 0);
             }
@@ -848,7 +848,7 @@ namespace NFX.NUnit.Integration.MongoDB
         }
 
         var result = collection.Delete(new DeleteEntry(
-                                         new Query("{ '$or': [{ name: 'People0' }, { '$and': [{ value: { '$gte': 1 }}, { value: { '$lt': 50 }}] }] }", false), 
+                                         new Query("{ '$or': [{ name: 'People0' }, { '$and': [{ value: { '$gte': 1 }}, { value: { '$lt': 50 }}] }] }", false),
                                          DeleteLimit.None));
         var all = collection.Find(new Query(@"{}", false));
 
@@ -867,7 +867,7 @@ namespace NFX.NUnit.Integration.MongoDB
         Assert.AreEqual(true, all.EOF);
       }
     }
-    
+
     [Test]
     public void Delete_OnlyFirstMatch()
     {
@@ -884,10 +884,10 @@ namespace NFX.NUnit.Integration.MongoDB
         }
 
         var result1 = collection.Delete(new DeleteEntry(
-                                         new Query("{ value: { '$gte': 0 }}", false), 
+                                         new Query("{ value: { '$gte': 0 }}", false),
                                          DeleteLimit.OnlyFirstMatch));
         var result2 = collection.Delete(new DeleteEntry(
-                                         new Query("{ value: { '$lt': 1000 }}", false), 
+                                         new Query("{ value: { '$lt': 1000 }}", false),
                                          DeleteLimit.OnlyFirstMatch));
         var all = collection.Find(new Query(@"{}", false));
 
@@ -930,7 +930,7 @@ namespace NFX.NUnit.Integration.MongoDB
                                     .Set(new BSONInt32Element("value", value)))
                                        .TotalDocumentsAffected);
         }
-        
+
         Parallel.For(0, CNT/CHUNK, i =>
         {
           var result = collection.Delete(new DeleteEntry(new Query("{ '$and': [ { value: {'$gte':"+i*CHUNK+"}}, { value: {'$lt':"+(i+1)*CHUNK+"}} ]}", false),

@@ -22,7 +22,7 @@ namespace NFX.IO
 {
 
   /// <summary>
-  /// Base exception thrown by the IO-related classes 
+  /// Base exception thrown by the IO-related classes
   /// </summary>
   [Serializable]
   public class NFXIOException : NFXException

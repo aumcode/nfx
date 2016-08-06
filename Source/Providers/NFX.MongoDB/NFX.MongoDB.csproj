@@ -69,6 +69,7 @@
     <Compile Include="MongoDBDataStoreBase.cs" />
     <Compile Include="MongoDBCRUDScriptQueryHandler.cs" />
     <Compile Include="MongoDBCRUDQueryExecutionContext.cs" />
+    <Compile Include="MongoDBCursor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringConsts.cs" />
   </ItemGroup>

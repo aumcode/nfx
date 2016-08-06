@@ -41,7 +41,7 @@ namespace NFX.Instrumentation.Analytics
         public Histogram(string title,
             Dimension<TData1> dimension1,
             Dimension<TData2> dimension2,
-            Dimension<TData3> dimension3) 
+            Dimension<TData3> dimension3)
             : base(title, 1, dimension1.PartitionCount +
                 dimension2.PartitionCount + dimension3.PartitionCount)
         {
@@ -115,7 +115,7 @@ namespace NFX.Instrumentation.Analytics
         #endregion
 
         #region Fields
-        
+
             protected Dimension<TData1> m_Dimension1;
             protected Dimension<TData2> m_Dimension2;
             protected Dimension<TData3> m_Dimension3;

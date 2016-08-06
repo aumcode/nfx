@@ -60,27 +60,27 @@ namespace NFX.Time
      /// </summary>
      [Config]
      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_TIME)]
-     public int ResolutionMs 
-     { 
+     public int ResolutionMs
+     {
        get { return m_ResolutionMs; }
        set { m_ResolutionMs = value < MIN_RESOLUTION_MS ? MIN_RESOLUTION_MS : value > MAX_RESOLUTION_MS ? MAX_RESOLUTION_MS : value;  }
      }
 
      [Config]
      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_TIME, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
-     public override bool InstrumentationEnabled 
+     public override bool InstrumentationEnabled
      {
        get { return m_InstrumentationEnabled;}
        set { m_InstrumentationEnabled = value;}
      }
-    
+
      /// <summary>
      /// Lists all events in the instance
      /// </summary>
      public IRegistry<Event> Events { get { return m_Events;}}
 
     #endregion
-    
+
     #region Protected
 
       void IEventTimerImplementation.__InternalRegisterEvent(Event evt)
@@ -109,7 +109,7 @@ namespace NFX.Time
         base.DoConfigure(node);
         foreach (var enode in node.Children.Where(n => n.IsSameName(Event.CONFIG_EVENT_SECTION)))
         {
-           FactoryUtils.Make<Event>(enode, typeof(Event), new object[]{this, null, null, null, enode });
+           FactoryUtils.Make<Event>(enode, typeof(Event), new object[]{this, enode});
         }
       }
 
@@ -119,7 +119,7 @@ namespace NFX.Time
         m_Thread = new Thread(threadSpin);
         m_Thread.Name = THREAD_NAME;
         m_Thread.IsBackground = true;
-        m_Thread.Start();   
+        m_Thread.Start();
       }
 
       protected override void DoWaitForCompleteStop()
@@ -172,7 +172,7 @@ namespace NFX.Time
         try
         {
            foreach(var evt in m_Events)
-           { 
+           {
              try
              {
                var fired = evt.VisitAndCheck(utcNow);
@@ -205,7 +205,7 @@ namespace NFX.Time
           Text = text,
           Exception = error
         });
-      } 
+      }
 
 
     #endregion

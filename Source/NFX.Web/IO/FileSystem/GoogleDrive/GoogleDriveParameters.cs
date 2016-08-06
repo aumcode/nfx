@@ -49,22 +49,22 @@ namespace NFX.IO.FileSystem.GoogleDrive
       [Config]
       public string CertPath { get; set; }
 
-      [Config] 
+      [Config]
       public int TimeoutMs { get; set; }
 
-      [Config] 
+      [Config]
       public int Attempts { get; set; }
-    
+
     #endregion
 
-    #region Public      
+    #region Public
 
       public override void Configure(IConfigSectionNode node)
       {
         base.Configure(node);
-        
+
         var email = node.AttrByName(CONFIG_EMAIL_ATTR).Value;
-        
+
         var credentials = new GoogleDriveCredentials(email);
 
         var authToken = new AuthenticationToken();

@@ -16,7 +16,10 @@ namespace NFX.NUnit.Integration.Web.Pay
         [Test]
         public void GetAuthTokenTest()
         {
+            var conf = LACONF.AsLaconicConfig();
             var paySystem = getPaySystem();
+
+            using (var app = new ServiceBaseApplication(null, conf))
             using (var session = paySystem.StartSession())
             {
                 Assert.IsNotNull(session);
@@ -64,7 +67,7 @@ namespace NFX.NUnit.Integration.Web.Pay
         [Test]
         [ExpectedException(typeof(PayPalPaymentException))]
         public void PayoutLimitExceedPayoutTest()
-        {  
+        {
             var conf = LACONF.AsLaconicConfig();
             var paySystem = getPaySystem();
 
@@ -74,15 +77,15 @@ namespace NFX.NUnit.Integration.Web.Pay
                 var to = new Account("user", 211, 3000001);
                 var amount = new Amount("USD", 100000.0m); // paypal payout limit is $10k
                 var transaction = session.Transfer(null, Account.EmptyInstance, to, amount);
-            } 
+            }
         }
 
         private PaySystem getPaySystem()
         {
             var paymentSection = LACONF.AsLaconicConfig()[WebSettings.CONFIG_WEBSETTINGS_SECTION][PaySystem.CONFIG_PAYMENT_PROCESSING_SECTION];
-            var stripeSection = paymentSection.Children.First(p => p.AttrByName("name").Value == "PayPal");
+            var ppSection = paymentSection.Children.First(p => p.AttrByName("name").Value == "PayPal");
 
-            var ps = PaySystem.Make<PayPalSystem>(null, stripeSection);
+            var ps = PaySystem.Make<PayPalSystem>(null, ppSection);
 
             return ps;
         }

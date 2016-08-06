@@ -1,7 +1,7 @@
 ﻿using NFX.Media.PDF.Text;
 
 namespace NFX.Media.PDF.Elements
-{  
+{
   /// <summary>
   /// PDF line primitive as a part of path
   /// </summary>
@@ -23,7 +23,7 @@ namespace NFX.Media.PDF.Elements
     /// Line's end X coordinate
     /// </summary>
     public float EndX { get; set; }
-                               
+
     /// <summary>
     /// Line's end Y coordinate
     /// </summary>

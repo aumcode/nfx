@@ -27,7 +27,7 @@ namespace NFX.Templatization
     public class StringRenderingTarget : IRenderingTarget
     {
         private StringBuilder m_Buffer = new StringBuilder();
-        
+
         public StringRenderingTarget()
         {
 
@@ -48,7 +48,7 @@ namespace NFX.Templatization
         {
           return Value;
         }
-       
+
         /// <summary>
         /// Returns what has been written
         /// </summary>
@@ -84,7 +84,7 @@ namespace NFX.Templatization
 
 
         public void Flush()
-        {     
+        {
         }
 
         public object Encode(object value)

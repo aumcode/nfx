@@ -32,9 +32,9 @@ namespace NFX.ApplicationModel
 
         private NOPSession()
         {
-          
+
         }
-      
+
         /// <summary>
         /// Returns a singlelton instance of the NOPSession
         /// </summary>
@@ -42,14 +42,14 @@ namespace NFX.ApplicationModel
         {
            get { return s_Instance; }
         }
-        
-        
+
+
         public Guid ID
         {
             get { return s_ID; }
         }
 
-        public Guid? OldID 
+        public Guid? OldID
         {
            get { return null;}
         }
@@ -87,7 +87,7 @@ namespace NFX.ApplicationModel
 
         public string LanguageISOCode
         {
-            get { return CoreConsts.ISO_LANG_ENGLISH;} 
+            get { return CoreConsts.ISO_LANG_ENGLISH;}
         }
 
 

@@ -35,7 +35,7 @@ namespace NFX.Security
   [Serializable]
   public class IDPasswordCredentials : Credentials, IStringRepresentableCredentials
   {
-     
+
      /// <summary>
      /// Creates IDPass credentials from base64 encoded auth header content as provided by RepresentAsString() method.
      /// Returns null if the content is unparsable
@@ -57,14 +57,14 @@ namespace NFX.Security
 
         return new IDPasswordCredentials(id, pwd);
      }
-     
-     
+
+
      public IDPasswordCredentials(string id, string pwd)
      {
-       m_ID = id; 
+       m_ID = id;
        m_Password = pwd;
      }
-     
+
      /// <summary>
      /// Warning: storing plain credentials in config file is not secure. Use this method for the most simplistic cases
      /// like unit testing
@@ -76,10 +76,10 @@ namespace NFX.Security
 
        ConfigAttribute.Apply(this, cfg);
      }
-     
+
      [Config] private string m_ID;
      [Config] private string m_Password;
-     
+
 
      public string ID
      {
@@ -90,15 +90,15 @@ namespace NFX.Security
      {
        get { return m_Password ?? string.Empty; }
      }
-     
-        
+
+
 
 
      /// <summary>
      /// Deletes sensitive password information.
      /// This method is mostly used on client (vs. server) to prevent process memory-inspection attack.
      /// Its is usually called right after Login() was called.
-     /// Implementers may consider forcing post-factum GC.Collect() on all generations to make sure that orphaned 
+     /// Implementers may consider forcing post-factum GC.Collect() on all generations to make sure that orphaned
      /// memory buff with sensitive information, that remains in RAM even after all references are killed, gets
      /// compacted. This class implementation DOES NOT call Gc.Collect();
      /// </summary>

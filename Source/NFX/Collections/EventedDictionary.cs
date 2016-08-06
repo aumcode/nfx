@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 
 namespace NFX.Collections
 {
-    
+
     /// <summary>
     /// Represents a dictionary that rises events
     /// </summary>
@@ -52,29 +52,29 @@ namespace NFX.Collections
                                              TValue value);
 
         #endregion
-        
-        
+
+
         #region .ctor
-        
+
         ///<summary>
         /// Initializes a new instance that is empty, has the default initial capacity, and uses the default
         /// equality comparer for the key type.
         /// </summary>
         public EventedDictionary() : base()
           { m_Dictionary = new Dictionary<TKey, TValue>(); }
-        
+
         ///<summary>
         /// Initializes a new instance that is empty, has the default initial capacity, and uses the default
         /// equality comparer for the key type.
         /// </summary>
-        public EventedDictionary(TContext context, bool contextReadOnly) : base(context, contextReadOnly) 
+        public EventedDictionary(TContext context, bool contextReadOnly) : base(context, contextReadOnly)
           { m_Dictionary = new Dictionary<TKey, TValue>(); }
 
         /// <summary>
         /// Initializes a new instance that contains elements copied from the specified IDictionary[TKey,TValue]
         ///  and uses the default equality comparer for the key type.
         /// </summary>
-        public EventedDictionary(TContext context, bool contextReadOnly, IDictionary<TKey, TValue> dictionary): base(context, contextReadOnly) 
+        public EventedDictionary(TContext context, bool contextReadOnly, IDictionary<TKey, TValue> dictionary): base(context, contextReadOnly)
           { m_Dictionary = new Dictionary<TKey, TValue>(dictionary); }
 
         /// <summary>
@@ -83,14 +83,14 @@ namespace NFX.Collections
         /// </summary>
         public EventedDictionary(TContext context, bool contextReadOnly, IEqualityComparer<TKey> comparer): base(context, contextReadOnly)
           { m_Dictionary = new Dictionary<TKey, TValue>(comparer); }
-        
+
         /// <summary>
         /// Initializes a new instance that is empty, has the specified initial capacity, and uses the default
         ///   equality comparer for the key type.
         /// </summary>
         public EventedDictionary(TContext context, bool contextReadOnly, int capacity): base(context, contextReadOnly)
           { m_Dictionary = new Dictionary<TKey, TValue>(capacity); }
-        
+
         /// <summary>
         ///  Initializes a new instance that contains elements copied from the specified IDictionary[TKey,TValue]
         ///     and uses the specified IEqualityComparer[T].
@@ -102,14 +102,14 @@ namespace NFX.Collections
         /// Initializes a new instance of the Dictionary[TKey,TValue]
         ///   class that is empty, has the specified initial capacity, and uses the specified IEqualityComparer[T]
         /// </summary>
-        public EventedDictionary(TContext context, bool contextReadOnly, int capacity, IEqualityComparer<TKey> comparer): base(context, contextReadOnly) 
+        public EventedDictionary(TContext context, bool contextReadOnly, int capacity, IEqualityComparer<TKey> comparer): base(context, contextReadOnly)
           { m_Dictionary = new Dictionary<TKey, TValue>(capacity, comparer); }
 
 
         #endregion
 
         #region Private Fields
-            
+
             private Dictionary<TKey, TValue> m_Dictionary;
 
         #endregion
@@ -119,9 +119,9 @@ namespace NFX.Collections
           [field:NonSerialized] public ChangeHandler ChangeEvent;
 
         #endregion
-       
+
         #region IDictionary members
-           
+
             public void Add(TKey key, TValue value)
             {
               CheckReadOnly();

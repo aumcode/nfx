@@ -31,12 +31,12 @@ namespace NFX.IO.FileSystem
     public sealed class FileSystemFile : FileSystemSessionItem
     {
       #region .ctor
-        
+
         /// <summary>
         /// Internal method that should not be called by developers
         /// </summary>
-        public FileSystemFile(FileSystemSession session, 
-                                        string parentPath, 
+        public FileSystemFile(FileSystemSession session,
+                                        string parentPath,
                                         string name,
                                         IFileSystemHandle handle) :
                               base(session, parentPath, name, handle)
@@ -53,7 +53,7 @@ namespace NFX.IO.FileSystem
           }
           base.Destructor();
         }
-        
+
       #endregion
 
       #region Fields
@@ -75,7 +75,7 @@ namespace NFX.IO.FileSystem
       #endregion
 
       #region Public Sync Methods
-        
+
         /// <summary>
         /// Reads all text from file using byte order mark detection with UTF8 encoding
         /// </summary>

@@ -34,7 +34,7 @@ namespace NFX.Throttling
     public abstract class Throttle : ApplicationComponent, IConfigurable, IThrottle
     {
         #region CONSTS
-        
+
             internal const string DEFAULT_UNITS = "times";
 
         #endregion
@@ -64,7 +64,7 @@ namespace NFX.Throttling
             }
 
         #endregion
-            
+
         #region Private
 
             private IThrottlingImplementation m_ThrottlingImpl; internal void __setThrottling(IThrottlingImplementation ti) { m_ThrottlingImpl = ti; }

@@ -57,12 +57,12 @@ namespace NFX.Glue.Instrumentation
     public class ServerDeserializationErrorEvent : ServerTransportErrorEvent
     {
         protected ServerDeserializationErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ServerDeserializationErrorEvent(node.ToString())); 
+           inst.Record(new ServerDeserializationErrorEvent(node.ToString()));
         }
 
         public override string Description { get{ return "Server-side errors while deserializing messages"; }}
@@ -70,7 +70,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerDeserializationErrorEvent(this.Source); 
+            return new ServerDeserializationErrorEvent(this.Source);
         }
     }
 
@@ -79,19 +79,19 @@ namespace NFX.Glue.Instrumentation
     public class ClientDeserializationErrorEvent : ClientTransportErrorEvent
     {
        protected ClientDeserializationErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ClientDeserializationErrorEvent(node.ToString())); 
+           inst.Record(new ClientDeserializationErrorEvent(node.ToString()));
         }
 
        public override string Description { get{ return "Client-side errors while deserializing messages"; }}
 
        protected override Datum MakeAggregateInstance()
        {
-            return new ClientDeserializationErrorEvent(this.Source); 
+            return new ClientDeserializationErrorEvent(this.Source);
        }
     }
 
@@ -100,19 +100,19 @@ namespace NFX.Glue.Instrumentation
     public class ServerGotOverMaxMsgSizeErrorEvent : ServerTransportErrorEvent
     {
         protected ServerGotOverMaxMsgSizeErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ServerGotOverMaxMsgSizeErrorEvent(node.ToString())); 
+           inst.Record(new ServerGotOverMaxMsgSizeErrorEvent(node.ToString()));
         }
-        
+
         public override string Description { get{ return "Server-side errors getting messages with sizes over limit"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerGotOverMaxMsgSizeErrorEvent(this.Source); 
+            return new ServerGotOverMaxMsgSizeErrorEvent(this.Source);
         }
     }
 
@@ -120,12 +120,12 @@ namespace NFX.Glue.Instrumentation
     public class ClientGotOverMaxMsgSizeErrorEvent : ClientTransportErrorEvent
     {
         protected ClientGotOverMaxMsgSizeErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ClientGotOverMaxMsgSizeErrorEvent(node.ToString())); 
+           inst.Record(new ClientGotOverMaxMsgSizeErrorEvent(node.ToString()));
         }
 
 
@@ -133,7 +133,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientGotOverMaxMsgSizeErrorEvent(this.Source); 
+            return new ClientGotOverMaxMsgSizeErrorEvent(this.Source);
         }
     }
 
@@ -142,12 +142,12 @@ namespace NFX.Glue.Instrumentation
     public class ServerSerializedOverMaxMsgSizeErrorEvent : ServerTransportErrorEvent
     {
         protected ServerSerializedOverMaxMsgSizeErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ServerSerializedOverMaxMsgSizeErrorEvent(node.ToString())); 
+           inst.Record(new ServerSerializedOverMaxMsgSizeErrorEvent(node.ToString()));
         }
 
 
@@ -155,7 +155,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerSerializedOverMaxMsgSizeErrorEvent(this.Source); 
+            return new ServerSerializedOverMaxMsgSizeErrorEvent(this.Source);
         }
     }
 
@@ -163,40 +163,40 @@ namespace NFX.Glue.Instrumentation
     public class ClientSerializedOverMaxMsgSizeErrorEvent : ClientTransportErrorEvent
     {
         protected ClientSerializedOverMaxMsgSizeErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ClientSerializedOverMaxMsgSizeErrorEvent(node.ToString())); 
+           inst.Record(new ClientSerializedOverMaxMsgSizeErrorEvent(node.ToString()));
         }
 
         public override string Description { get{ return "Client-side errors serializing messages with sizes over limit"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientSerializedOverMaxMsgSizeErrorEvent(this.Source); 
+            return new ClientSerializedOverMaxMsgSizeErrorEvent(this.Source);
         }
-    }   
+    }
 
 
     [Serializable]
     public class ServerListenerErrorEvent : ServerTransportErrorEvent
     {
         protected ServerListenerErrorEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ServerListenerErrorEvent(node.ToString())); 
+           inst.Record(new ServerListenerErrorEvent(node.ToString()));
         }
 
         public override string Description { get{ return "Server-side listener errors"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerListenerErrorEvent(this.Source); 
+            return new ServerListenerErrorEvent(this.Source);
         }
     }
 
@@ -205,19 +205,19 @@ namespace NFX.Glue.Instrumentation
     public class InactiveClientTransportClosedEvent : ClientEvent, INetInstrument
     {
         protected InactiveClientTransportClosedEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new InactiveClientTransportClosedEvent(node.ToString())); 
+           inst.Record(new InactiveClientTransportClosedEvent(node.ToString()));
         }
 
         public override string Description { get{ return "Client closed inactive transport"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new InactiveClientTransportClosedEvent(this.Source); 
+            return new InactiveClientTransportClosedEvent(this.Source);
         }
     }
 
@@ -225,19 +225,19 @@ namespace NFX.Glue.Instrumentation
     public class InactiveServerTransportClosedEvent : ServerEvent, INetInstrument
     {
         protected InactiveServerTransportClosedEvent(string src) : base(src) {}
-        
+
         public static void Happened(Node node)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new InactiveServerTransportClosedEvent(node.ToString())); 
+           inst.Record(new InactiveServerTransportClosedEvent(node.ToString()));
         }
 
         public override string Description { get{ return "Server closed inactive transport"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new InactiveServerTransportClosedEvent(this.Source); 
+            return new InactiveServerTransportClosedEvent(this.Source);
         }
     }
 
@@ -247,19 +247,19 @@ namespace NFX.Glue.Instrumentation
     public class CallSlotNotFoundErrorEvent : ClientEvent, IErrorInstrument, INetInstrument
     {
         protected CallSlotNotFoundErrorEvent() : base(Datum.UNSPECIFIED_SOURCE) {}
-        
+
         public static void Happened()
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new CallSlotNotFoundErrorEvent()); 
+           inst.Record(new CallSlotNotFoundErrorEvent());
         }
 
         public override string Description { get{ return "Client could not find call slot"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new CallSlotNotFoundErrorEvent(); 
+            return new CallSlotNotFoundErrorEvent();
         }
     }
 
@@ -269,19 +269,19 @@ namespace NFX.Glue.Instrumentation
     public class ClientConnectedEvent : ServerEvent, INetInstrument
     {
         protected ClientConnectedEvent(string from) : base(from ?? Datum.UNSPECIFIED_SOURCE) {}
-        
+
         public static void Happened(string from)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ClientConnectedEvent(from)); 
+           inst.Record(new ClientConnectedEvent(from));
         }
 
         public override string Description { get{ return "Client connected to server"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientConnectedEvent(this.Source); 
+            return new ClientConnectedEvent(this.Source);
         }
     }
 
@@ -289,19 +289,19 @@ namespace NFX.Glue.Instrumentation
     public class ClientDisconnectedEvent : ServerEvent, INetInstrument
     {
         protected ClientDisconnectedEvent(string from) : base(from ?? Datum.UNSPECIFIED_SOURCE) {}
-        
+
         public static void Happened(string from)
         {
           var inst = ExecutionContext.Application.Instrumentation;
           if (inst.Enabled)
-           inst.Record(new ClientDisconnectedEvent(from)); 
+           inst.Record(new ClientDisconnectedEvent(from));
         }
 
         public override string Description { get{ return "Client disconnected from server"; }}
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientDisconnectedEvent(this.Source); 
+            return new ClientDisconnectedEvent(this.Source);
         }
     }
 

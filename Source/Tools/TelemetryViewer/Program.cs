@@ -33,7 +33,7 @@ namespace TelemetryViewer
         static void Main(string[] args)
         {
             using(new ServiceBaseApplication(args, null))
-            { 
+            {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());

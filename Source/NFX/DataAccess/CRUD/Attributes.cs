@@ -49,7 +49,7 @@ namespace NFX.DataAccess.CRUD
         public string MetadataContent {get{ return m_MetadataContent;}}
 
         protected string m_MetadataContent;
-        
+
         [NonSerialized]
         private IConfigSectionNode m_Metadata;
 
@@ -58,7 +58,7 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         public IConfigSectionNode Metadata
         {
-          get 
+          get
           {
             if (MetadataContent.IsNullOrWhiteSpace()) return null;
             if (m_Metadata==null)//not thread safe but its ok, in the worst case 2nd copy will be made
@@ -89,13 +89,13 @@ namespace NFX.DataAccess.CRUD
           }
           catch(Exception error)
           {
-              throw new DataAccessException(StringConsts.CRUD_FIELD_ATTR_METADATA_PARSE_ERROR.Args(error.ToMessageWithType(), content), error); 
+              throw new DataAccessException(StringConsts.CRUD_FIELD_ATTR_METADATA_PARSE_ERROR.Args(error.ToMessageWithType(), content), error);
           }
         }
 
     }
-    
-    
+
+
     /// <summary>
     /// Provides information about table schema that this row is a part of
     /// </summary>
@@ -277,7 +277,7 @@ namespace NFX.DataAccess.CRUD
 
 
         public FieldAttribute(
-                        Type protoType, 
+                        Type protoType,
                         string protoFieldName, //Schema:Field
                         string targetName   = ANY_TARGET,
                         object storeFlag    = null,
@@ -319,7 +319,7 @@ namespace NFX.DataAccess.CRUD
               var protoFieldDef = schema[protoFieldName];
               if (protoFieldDef==null) throw new Exception("Prototype '{0}' field '{1}' not found".Args(protoType.FullName, protoFieldName));
               var protoAttr = protoFieldDef[protoTargetName];
-            
+
               try
               {
                 StoreFlag        = storeFlag    == null? protoAttr.StoreFlag   : (StoreFlag)storeFlag;
@@ -341,9 +341,9 @@ namespace NFX.DataAccess.CRUD
                 FormatRegExp     = formatRegExp == null? protoAttr.FormatRegExp: formatRegExp;
                 FormatDescription= formatDescr  == null? protoAttr.FormatDescription: formatDescr;
                 DisplayFormat    = displayFormat== null? protoAttr.DisplayFormat    : displayFormat;
-                
 
-                
+
+
                 if (metadata.IsNullOrWhiteSpace())
                  m_MetadataContent = protoAttr.m_MetadataContent;
                 else
@@ -352,7 +352,7 @@ namespace NFX.DataAccess.CRUD
                 {
                   var conf1 = ParseMetadataContent(protoAttr.m_MetadataContent);
                   var conf2 = ParseMetadataContent(metadata);
-                  
+
                   var merged = new LaconicConfiguration();
                   merged.CreateFromMerge(conf1, conf2);
                   m_MetadataContent = merged.SaveToString();
@@ -369,13 +369,13 @@ namespace NFX.DataAccess.CRUD
             }
 
         }
-           
-        
+
+
         /// <summary>
         /// When set, points to a Typed-Row derivative that is used as a full clone
         /// </summary>
         public readonly Type CloneFromRowType;
-        
+
         /// <summary>
         /// Determines whether field should be loaded/stored from/to storage
         /// </summary>
@@ -395,29 +395,29 @@ namespace NFX.DataAccess.CRUD
         /// <summary>
         /// Determines whether this field is a part of the primary key
         /// </summary>
-        public readonly bool Key; 
-        
+        public readonly bool Key;
+
         /// <summary>
         /// Provides hint/classification for textual field data
         /// </summary>
-        public readonly DataKind Kind;   
-           
-                                
+        public readonly DataKind Kind;
+
+
         /// <summary>
         /// Determines whether the field must have data
         /// </summary>
-        public readonly bool Required; 
+        public readonly bool Required;
 
 
         /// <summary>
         /// Determines whether the field is shown to user (i.e. as a grid column)
         /// </summary>
-        public readonly bool Visible; 
-        
+        public readonly bool Visible;
+
         /// <summary>
         /// Returns a ";/,/|"-delimited list of permitted field values - used for lookup validation
         /// </summary>
-        public readonly string ValueList;  
+        public readonly string ValueList;
 
         /// <summary>
         /// Returns true if the value list is set or internal JSONDataMap is set
@@ -435,14 +435,14 @@ namespace NFX.DataAccess.CRUD
         {
             if (caseSensitiveKeys)
             {
-              if (m_CacheValueList_Sensitive==null) 
-              m_CacheValueList_Sensitive = ParseValueListString(ValueList, true); 
+              if (m_CacheValueList_Sensitive==null)
+              m_CacheValueList_Sensitive = ParseValueListString(ValueList, true);
               return m_CacheValueList_Sensitive;
             }
             else
             {
-              if (m_CacheValueList_Insensitive==null) 
-              m_CacheValueList_Insensitive = ParseValueListString(ValueList, false); 
+              if (m_CacheValueList_Insensitive==null)
+              m_CacheValueList_Insensitive = ParseValueListString(ValueList, false);
               return m_CacheValueList_Insensitive;
             }
         }
@@ -539,7 +539,7 @@ namespace NFX.DataAccess.CRUD
         {
             var other = obj as FieldAttribute;
             if (other==null) return false;
-            var equ = 
+            var equ =
                 this.TargetName.EqualsOrdSenseCase(other.TargetName) &&
                 this.StoreFlag   == other.StoreFlag &&
                 this.BackendName.EqualsOrdSenseCase(other.BackendName) &&
@@ -548,7 +548,7 @@ namespace NFX.DataAccess.CRUD
                 this.Kind        == other.Kind &&
                 this.Required    == other.Required &&
                 this.Visible     == other.Visible &&
-                
+
                 (
                   (this.Min==null && other.Min==null) ||
                   (this.Min!=null && other.Min!=null && this.Min.Equals(other.Min))
@@ -558,7 +558,7 @@ namespace NFX.DataAccess.CRUD
                   (this.Max==null && other.Max==null) ||
                   (this.Max!=null && other.Max!=null && this.Max.Equals(other.Max))
                 ) &&
-                
+
                 (
                   (this.Default==null && other.Default==null) ||
                   (this.Default!=null && other.Default!=null && this.Default.Equals(other.Default))
@@ -571,7 +571,7 @@ namespace NFX.DataAccess.CRUD
                 this.Description.EqualsOrdSenseCase(other.Description) &&
                 this.MetadataContent.EqualsOrdSenseCase(other.MetadataContent) &&
                 this.NonUI == other.NonUI &&
-                this.FormatRegExp.EqualsOrdSenseCase(other.FormatRegExp) && 
+                this.FormatRegExp.EqualsOrdSenseCase(other.FormatRegExp) &&
                 this.FormatDescription.EqualsOrdSenseCase(other.FormatDescription)&&
                 this.DisplayFormat.EqualsOrdSenseCase(other.DisplayFormat) &&
                 (
@@ -580,7 +580,7 @@ namespace NFX.DataAccess.CRUD
                    (
                     this.m_CacheValueList_Sensitive!=null && other.m_CacheValueList_Sensitive!=null &&
                     object.ReferenceEquals(this.m_CacheValueList_Sensitive, other.m_CacheValueList_Sensitive)
-                   ) 
+                   )
                 );
 
             return equ;
@@ -595,29 +595,29 @@ namespace NFX.DataAccess.CRUD
     public class UniqueSequenceAttribute : Attribute
     {
       public UniqueSequenceAttribute(string scope)
-      { 
+      {
         Scope = scope;
       }
 
       public UniqueSequenceAttribute(string scope, string sequence)
-      { 
+      {
         Scope = scope;
         Sequence = sequence;
       }
 
       public UniqueSequenceAttribute(Type protoRow)
-      { 
+      {
         if (protoRow==null)
            throw new CRUDException(StringConsts.ARGUMENT_ERROR+"{0}.ctor(protoRow=null)".Args(GetType().Name));
-        
-        Prototype = GetForRowType(protoRow); 
+
+        Prototype = GetForRowType(protoRow);
 
         if (Prototype==null)
           throw new CRUDException(StringConsts.ARGUMENT_ERROR+"{0}.ctor(protoRow is not decorated by attr)".Args(GetType().Name));
-        
+
         if (Prototype.Prototype!=null)
            throw new CRUDException(StringConsts.ARGUMENT_ERROR+"{0}.ctor(protoType is pointing to another {0})".Args(GetType().Name));
-        
+
         Scope = Prototype.Scope;
         Sequence = Prototype.Sequence;
       }
@@ -625,7 +625,7 @@ namespace NFX.DataAccess.CRUD
       public readonly UniqueSequenceAttribute Prototype;
       public readonly string Scope;
       public readonly string Sequence;
-      
+
 
       private static volatile Dictionary<Type, UniqueSequenceAttribute> s_ScopeCache = new Dictionary<Type, UniqueSequenceAttribute>();
 
@@ -636,14 +636,14 @@ namespace NFX.DataAccess.CRUD
       {
         if (tRow == null || !typeof(Row).IsAssignableFrom(tRow))
           throw new CRUDException("UniqueSequenceAttribute.GetForRowType(tRow isnt TypedRow | null)");
-      
+
         UniqueSequenceAttribute result;
 
         if (s_ScopeCache.TryGetValue(tRow, out result)) return result;
 
         result = tRow.GetCustomAttributes(typeof(UniqueSequenceAttribute), false)
                      .FirstOrDefault() as UniqueSequenceAttribute;
-        
+
         var dict = new Dictionary<Type, UniqueSequenceAttribute>(s_ScopeCache);
         dict[tRow] = result;
         s_ScopeCache = dict; // atomic

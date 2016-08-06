@@ -3,7 +3,7 @@
 namespace NFX.Web.Pay.PayPal
 {
     /// <summary>
-    /// Represents basic PayPal credentials for registered application 
+    /// Represents basic PayPal credentials for registered application
     /// which include Business account email, client ID and client secret.
     /// </summary>
     public class PayPalCredentials : Credentials

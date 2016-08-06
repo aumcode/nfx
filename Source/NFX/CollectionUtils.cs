@@ -116,5 +116,79 @@ namespace NFX
     }
 
 
+    public static TResult FirstMin<TResult, TComparand>(this IEnumerable<TResult> source,
+                                                        Func<TResult, TComparand> selector) where TComparand: IComparable
+    {
+      TComparand dummy;
+      return source.FirstMin(selector, out dummy);
+    }
+
+
+    public static TResult FirstMin<TResult, TComparand>(this IEnumerable<TResult> source,
+                                                        Func<TResult, TComparand> selector,
+                                                        out TComparand minComparand) where TComparand: IComparable
+    {
+      return firstMinMax(true, source, selector, out minComparand);
+    }
+
+
+    public static TResult FirstMax<TResult, TComparand>(this IEnumerable<TResult> source,
+                                                        Func<TResult, TComparand> selector) where TComparand: IComparable
+    {
+      TComparand dummy;
+      return source.FirstMax(selector, out dummy);
+    }
+
+
+    public static TResult FirstMax<TResult, TComparand>(this IEnumerable<TResult> source,
+                                                        Func<TResult, TComparand> selector,
+                                                        out TComparand maxComparand) where TComparand: IComparable
+    {
+      return firstMinMax(false, source, selector, out maxComparand);
+    }
+
+    private static TResult firstMinMax<TResult, TComparand>(bool min,
+                                                        IEnumerable<TResult> source,
+                                                        Func<TResult, TComparand> selector,
+                                                        out TComparand latchedComparand) where TComparand: IComparable
+    {
+      var latchedResult = default(TResult);
+      latchedComparand = default(TComparand);
+
+      if (source==null || selector==null) return latchedResult;
+
+      latchedComparand = default(TComparand);
+      bool was = false;
+      foreach(var elm in source)
+      {
+        var c = selector(elm);
+        if (!was || (min ? c.CompareTo(latchedComparand)<0 : c.CompareTo(latchedComparand)>0))
+        {
+          latchedResult = elm;
+          latchedComparand = c;
+          was = true;
+        }
+      }
+
+      return latchedResult;
+    }
+
+
+    /// <summary>
+    /// Tries to find the first element that matches the predicate and returns it,
+    /// otherwise returns the first element found or default (i.e. null)
+    /// </summary>
+    public static TResult FirstOrAnyOrDefault<TResult>(this IEnumerable<TResult> source, Func<TResult, bool> predicate)
+    {
+      if (source==null) return default(TResult);
+
+      if (predicate!=null)
+        foreach(var elm in source) if (predicate(elm)) return elm;
+
+      return source.FirstOrDefault();
+    }
+
+
+
   }
 }

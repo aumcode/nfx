@@ -36,19 +36,19 @@ namespace NFX.Security
   {
      public GDIDCredentials(GDID gdid)
      {
-       m_GDID = gdid; 
+       m_GDID = gdid;
      }
-     
-     
+
+
      private GDID m_GDID;
-     
+
 
      public GDID GDID
      {
        get { return m_GDID; }
      }
 
-     public override void Forget() 
+     public override void Forget()
      {
      }
 
@@ -58,7 +58,7 @@ namespace NFX.Security
      {
        return "{0}({1})".Args(GetType().Name, GDID);
      }
-  
-  
+
+
   }
 }

@@ -350,7 +350,7 @@ namespace NFX.DataAccess.MySQL
         }
       }//foreach
 
-      if (cnames.Length > 0)
+      if (cnames.Length > 0 && upserts.Length > 0)
       {
         cnames.Remove(cnames.Length - 1, 1);// remove ","
         upserts.Remove(upserts.Length - 1, 1);// remove ","

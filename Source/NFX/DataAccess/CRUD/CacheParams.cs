@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NFX.DataAccess.CRUD
 {
   /// <summary>
-  /// Implements ICacheParams - supplied caching parameters  
+  /// Implements ICacheParams - supplied caching parameters
   /// </summary>
   public struct CacheParams : ICacheParams
   {
@@ -34,8 +34,16 @@ namespace NFX.DataAccess.CRUD
     {
       return new CacheParams{ ReadCacheMaxAgeSec = sec, WriteCacheMaxAgeSec = sec, WriteCachePriority = priority, CacheAbsentData = true};
     }
-    
-    
+
+    /// <summary>
+    /// Cache params with no read but write caching interval and priority
+    /// </summary>
+    public static CacheParams ReadFreshWriteSec(int sec, int priority = 0)
+    {
+      return new CacheParams{ ReadCacheMaxAgeSec = -1, WriteCacheMaxAgeSec = sec, WriteCachePriority = priority, CacheAbsentData = true};
+    }
+
+
     /// <summary>
     /// If greater than 0 then would allow reading a cached result for up-to the specified number of seconds.
     /// If =0 uses cache's default span.
@@ -67,7 +75,7 @@ namespace NFX.DataAccess.CRUD
     /// <summary>
     /// When true would cache the instance of AbsentData to signify the absence of data in the backend for key
     /// </summary>
-    public bool CacheAbsentData 
+    public bool CacheAbsentData
     {
       get; set;
     }

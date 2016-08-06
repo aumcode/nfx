@@ -29,10 +29,10 @@ namespace NFX.IO.FileSystem.Local
   /// <summary>
   /// Implements NFX.IO.FileSystem support around local machine file system. This is needed for
   ///  components that may need to work with various file systems i.e. Apache HDFS or Aum Cluster File System (ACFS).
-  /// This particular implementation uses traditional System.IO.* and does not support transactions, versioning, metadata and NFX security 
+  /// This particular implementation uses traditional System.IO.* and does not support transactions, versioning, metadata and NFX security
   /// </summary>
   public sealed class LocalFileSystem : FileSystem
-  {      
+  {
                 #region Inner classes
 
                       internal class FSH : IFileSystemHandle
@@ -50,9 +50,9 @@ namespace NFX.IO.FileSystem.Local
        public LocalFileSystem(string name, IConfigSectionNode node = null) : base(name, node)
        {
        }
-      
+
     #endregion
-    
+
     #region Properties
 
       public override IFileSystemCapabilities GeneralCapabilities { get { return LocalFileSystemCapabilities.Instance; }}
@@ -84,7 +84,7 @@ namespace NFX.IO.FileSystem.Local
         var fsi = fsh.m_Info;
         fsi.Refresh();
       }
-      
+
       protected internal override IEnumerable<string> DoGetSubDirectoryNames(FileSystemDirectory directory, bool recursive)
       {
         var di = new DirectoryInfo(directory.Path);
@@ -104,7 +104,7 @@ namespace NFX.IO.FileSystem.Local
 
       protected internal override FileSystemSessionItem DoNavigate(FileSystemSession session, string path)
       {
-        if (File.Exists(path)) 
+        if (File.Exists(path))
         {
           var fi = new FileInfo(path);
           return new FileSystemFile(session, fi.DirectoryName, fi.Name, new FSH{m_Info = fi});
@@ -150,12 +150,12 @@ namespace NFX.IO.FileSystem.Local
         using(var fs = new FileStream(fn, FileMode.Create, FileAccess.Write))
         {
           if (size>0)
-          { 
+          {
            fs.Seek(size-1, SeekOrigin.Begin);
            fs.WriteByte(0);
           }
         }
-        
+
         var fi = new FileInfo(fn);
         return new FileSystemFile(dir.Session, fi.DirectoryName, fi.Name, new FSH{m_Info = fi});
       }
@@ -164,7 +164,7 @@ namespace NFX.IO.FileSystem.Local
       {
         var fn = Path.Combine(dir.Path, name);
         File.Copy(localFile, fn, true);
-        
+
         var fi = new FileInfo(fn);
         fi.IsReadOnly = readOnly;
         return new FileSystemFile(dir.Session, fi.DirectoryName, fi.Name, new FSH{m_Info = fi});
@@ -174,7 +174,7 @@ namespace NFX.IO.FileSystem.Local
       {
         var dn = Path.Combine(dir.Path, name);
 
-        var di = new DirectoryInfo(dn);  
+        var di = new DirectoryInfo(dn);
         di.Create();
         di.Refresh();
         return new FileSystemDirectory(dir.Session, di.Parent.FullName, name, new FSH{m_Info = di});
@@ -187,9 +187,9 @@ namespace NFX.IO.FileSystem.Local
         {
           var result = 0ul;
           var di = fsi as DirectoryInfo;
-          
+
           var files = di.GetFiles("*.*", SearchOption.AllDirectories);
-	        
+
 	        foreach(var file in files)
             result += (ulong)file.Length;
 
@@ -214,7 +214,7 @@ namespace NFX.IO.FileSystem.Local
         return new LocalFileSystemStream(file, disposeAction);
       }
 
-      
+
       protected internal override DateTime? DoGetCreationTimestamp(FileSystemSessionItem item)
       {
         var fsi = ((FSH)item.Handle).m_Info;
@@ -252,16 +252,16 @@ namespace NFX.IO.FileSystem.Local
       }
 
       protected internal override bool DoGetReadOnly(FileSystemSessionItem item) //Windows does not support ReadOnly directories
-      {               
+      {
         var fi = ((FSH)item.Handle).m_Info as FileInfo;
-        return fi!=null ? fi.IsReadOnly : false; 
+        return fi!=null ? fi.IsReadOnly : false;
       }
 
       protected internal override void DoSetReadOnly(FileSystemSessionItem item, bool readOnly) //Windows does not support ReadOnly directories
-      {   
+      {
         var fi = ((FSH)item.Handle).m_Info as FileInfo;
         if (fi!=null)
-          fi.IsReadOnly = readOnly; 
+          fi.IsReadOnly = readOnly;
       }
 
 

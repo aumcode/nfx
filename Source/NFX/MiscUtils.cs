@@ -45,7 +45,7 @@ namespace NFX
     public static readonly DateTime UNIX_EPOCH_START_DATE = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     public static readonly string[] WIN_UNIX_LINE_BRAKES = new string[]{ "\r\n", "\n" };
 
-    
+
 
     public static bool IsTrue(this Nullable<bool> value, bool dflt = false)
     {
@@ -69,7 +69,7 @@ namespace NFX
          throw new NFXException(StringConsts.PARAMETER_MAY_NOT_BE_NULL_ERROR.Args(text ?? CoreConsts.UNKNOWN));
       }
       return obj;
-    } 
+    }
 
     /// <summary>
     /// Takes first X chars from a string. If string is null returns null. If string does not have enough
@@ -154,7 +154,7 @@ namespace NFX
     {
         return (long)((when.ToUniversalTime() - UNIX_EPOCH_START_DATE).Ticks / 10);
     }
-    
+
     /// <summary>
     /// Writes exception message with exception type
     /// </summary>
@@ -192,7 +192,7 @@ namespace NFX
 
     /// <summary>
     /// Returns the full name of the type optionally prefixed with verbatim id specifier '@'.
-    /// The generic arguments ar expanded into their full names i.e. 
+    /// The generic arguments ar expanded into their full names i.e.
     ///   List'1[System.Object]  ->  System.Collections.Generic.List&lt;System.Object&gt;
     /// </summary>
     public static string FullNameWithExpandedGenericArgs(this Type type, bool verbatimPrefix = true)
@@ -204,8 +204,8 @@ namespace NFX
             var nss = ns.Split('.');
             ns = string.Join(".@", nss);
         }
-        
-        
+
+
         var gargs = type.GetGenericArguments();
 
         if (gargs.Length==0)
@@ -223,7 +223,7 @@ namespace NFX
 
         var nm = type.Name;
         var idx = nm.IndexOf('`');
-        if(idx>=0) 
+        if(idx>=0)
             nm = nm.Substring(0, idx);
 
 
@@ -238,7 +238,7 @@ namespace NFX
     /// </summary>
     public static string DisplayNameWithExpandedGenericArgs(this Type type)
     {
-        
+
         var gargs = type.GetGenericArguments();
 
         if (gargs.Length==0)
@@ -256,7 +256,7 @@ namespace NFX
 
         var nm = type.Name;
         var idx = nm.IndexOf('`');
-        if(idx>=0) 
+        if(idx>=0)
             nm = nm.Substring(0, idx);
 
 
@@ -273,10 +273,10 @@ namespace NFX
     public static string CapitalizeFirstChar(this string str)
     {
 	    if (string.IsNullOrEmpty(str)) return string.Empty;
-	    
+
         char[] arr = str.ToCharArray();
 	    arr[0] = char.ToUpper(arr[0]);
-	    
+
         return new String(arr);
     }
 
@@ -296,8 +296,8 @@ namespace NFX
       var type = (mem is Type) ? ((Type)mem).FullName : (mem.DeclaringType != null ) ? mem.DeclaringType.FullName : CoreConsts.UNKNOWN;
       return string.Format("{0}{{{1} '{2}'}}", type, mem.MemberType, mem.Name );
     }
-   
-   
+
+
     /// <summary>
     /// Determines if component is being used within designer
     /// </summary>
@@ -321,7 +321,7 @@ namespace NFX
     public static string EntryExeName(bool withPath = true)
     {
       var file = Assembly.GetEntryAssembly().Location;
-      
+
       if (!withPath) file = Path.GetFileName(file);
 
       return file;
@@ -344,8 +344,8 @@ namespace NFX
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static string ArgsTpl(this string tpl, object args)
     {
-        bool matched; 
-        return tpl.ArgsTpl(args, out matched); 
+        bool matched;
+        return tpl.ArgsTpl(args, out matched);
     }
 
 
@@ -367,15 +367,15 @@ namespace NFX
           var val = pi.GetValue(args);
           if (val==null) val = string.Empty;
           lst.Add(val);
-       
+
           var replacedResult = result.Replace('@'+pi.Name+'@', (lst.Count-1).ToString());
 
           if (!string.Equals(result, replacedResult, StringComparison.Ordinal))
            matched = true;
 
           result = replacedResult;
-        } 
-        return result.Args(lst.ToArray()); 
+        }
+        return result.Args(lst.ToArray());
     }
 
 
@@ -411,7 +411,7 @@ namespace NFX
         if (string.IsNullOrWhiteSpace(epoint)) throw new NFXException(string.Format(StringConsts.INVALID_EPOINT_ERROR, StringConsts.NULL_STRING, "null arg"));
 
         try
-        { 
+        {
             string[] parts = epoint.Split(':');
             var port = parts.Length > 1 && !parts[1].IsNullOrEmpty() ? int.Parse(parts[1]) : dfltPort;
 
@@ -429,7 +429,7 @@ namespace NFX
             return new IPEndPoint(hostEntry.AddressList.First(a => a.AddressFamily==AddressFamily.InterNetwork), port);
         }
         catch(Exception error)
-        {  
+        {
             throw new NFXException(string.Format(StringConsts.INVALID_EPOINT_ERROR, epoint, error.ToMessageWithType()), error);
         }
     }
@@ -491,9 +491,9 @@ namespace NFX
     {
       using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
         return new Guid(md5.ComputeHash(Encoding.Default.GetBytes(input)));
-    }  
-    
-    
+    }
+
+
     /// <summary>
     /// Returns a MD5 hash of a UTF8 string represented as hex string
     /// </summary>
@@ -501,16 +501,16 @@ namespace NFX
     {
       if (string.IsNullOrEmpty(input))
        return "00000000000000000000000000000000";
-       
+
       using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
       {
          var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-         
+
          var result = new StringBuilder();
 
          for(var i=0;i<hash.Length;i++)
           result.Append(hash[i].ToString("x2"));
-      
+
          return result.ToString();
       }
     }
@@ -521,7 +521,7 @@ namespace NFX
     public static byte[] ToMD5(this string input)
     {
       if (string.IsNullOrEmpty(input)) return new byte[16];
-       
+
       using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
       {
          return md5.ComputeHash(Encoding.UTF8.GetBytes(input));
@@ -540,7 +540,7 @@ namespace NFX
          return md5.ComputeHash(input);
       }
     }
-      
+
 
 
 
@@ -556,7 +556,7 @@ namespace NFX
         if (c=='-' || c=='_') continue;
         if (!Char.IsLetterOrDigit(c) || (i==0 && !Char.IsLetter(c))) return false;
       }
-      
+
       return true;
     }
 
@@ -687,7 +687,7 @@ namespace NFX
     /// Defaults string if it is null or whitespace
     /// </summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static string Default(this string str, string val)
+    public static string Default(this string str, string val = "")
     {
        if (str.IsNullOrWhiteSpace()) return val;
        return str;
@@ -726,7 +726,7 @@ namespace NFX
         int m = maxLen > 0 ? Math.Max(2, maxLen) : Int16.MaxValue;
         bool shrink = maxLen > 0;
 
-        switch (fmt)       
+        switch (fmt)
         {
             case DumpFormat.Decimal:
                 m -= 2;
@@ -755,7 +755,7 @@ namespace NFX
                     byte c = buf[i];
                     if (c >= 32 && c < 127)
                         sb.Append((char)c);
-                    else 
+                    else
                         switch (c)
                         {
                             case 10: sb.Append("\n"); break;
@@ -806,13 +806,13 @@ namespace NFX
     public static string EvaluateVarsInXMLConfigScope(this string line, string xmlScope = null, IEnvironmentVariableResolver envResolver = null, IMacroRunner macroRunner = null)
     {
         Configuration config = null;
-        if (!string.IsNullOrWhiteSpace(xmlScope)) 
+        if (!string.IsNullOrWhiteSpace(xmlScope))
         {
           config =  XMLConfiguration.CreateFromXML(xmlScope);
           config.EnvironmentVarResolver = envResolver;
           config.MacroRunner = macroRunner;
         }
-        return line.EvaluateVarsInConfigScope( config ); 
+        return line.EvaluateVarsInConfigScope( config );
     }
 
     /// <summary>
@@ -828,7 +828,7 @@ namespace NFX
           config.EnvironmentVarResolver = envResolver;
           config.MacroRunner = macroRunner;
           return line.EvaluateVarsInConfigScope(config);
-        }  
+        }
     }
 
 
@@ -897,7 +897,7 @@ namespace NFX
         sb.Append(pad);  sb.AppendLine("//variables");
         foreach( var v in block.Variables)
         {
-           sb.Append(pad); 
+           sb.Append(pad);
            sb.AppendLine("var {0}  {1};" .Args(v.Type.FullName, v.Name));
         }
 
@@ -905,10 +905,10 @@ namespace NFX
         sb.Append(pad); sb.AppendLine("//sub expressions");
         foreach( var se in block.Expressions)
         {
-           sb.Append(pad); 
+           sb.Append(pad);
            sb.AppendLine( se.ToDebugView(indent+1) );
         }
-        
+
         sb.Append(pad); sb.AppendLine("}");
         return sb.ToString();
       }
@@ -916,7 +916,7 @@ namespace NFX
     }
 
     /// <summary>
-    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance.
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0)
@@ -924,9 +924,9 @@ namespace NFX
       builder.AppendFormat(str, arg0);
       return builder.AppendLine();
     }
-     
+
     /// <summary>
-    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance.
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1)
@@ -934,9 +934,9 @@ namespace NFX
       builder.AppendFormat(str, arg0, arg1);
       return builder.AppendLine();
     }
-    
+
     /// <summary>
-    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance.
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1, object arg2)
@@ -944,9 +944,9 @@ namespace NFX
       builder.AppendFormat(str, arg0, arg1, arg2);
       return builder.AppendLine();
     }
-     
+
     /// <summary>
-    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Appends the string followed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance.
     /// Each format item is replaced by the string representation of a single argument.
     /// </summary>
     public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, params object[] args)
@@ -998,7 +998,7 @@ namespace NFX
     {
       const string SQ = "%27";
       const string DQ = "%22";
-      
+
       if (uri.IsNullOrWhiteSpace()) return string.Empty;
 
       var ds = Uri.EscapeDataString(uri);
@@ -1007,7 +1007,7 @@ namespace NFX
       {
         var c = ds[i];
         if (c=='\'') result.Append(SQ);
-        else 
+        else
         if (c=='"') result.Append(DQ);
         else
          result.Append(c);
@@ -1026,15 +1026,44 @@ namespace NFX
       {
         if (kvp.Key.IsNullOrWhiteSpace()) continue;
 
-        builder.Append(Uri.EscapeDataString(kvp.Key));
+        builder.Append(EscapeAllDataStringChars(kvp.Key));
         if (kvp.Value != null)
-          builder.Append('=').Append(Uri.EscapeDataString(kvp.Value.AsString()));
+          builder.Append('=').Append(EscapeAllDataStringChars(kvp.Value.AsString()));
         builder.Append('&');
       }
 
       if (builder.Length > 0) builder.Length--;
 
       return builder.ToString();
+    }
+
+    /// <summary>
+    /// Escapes all chars except latin A..Z, 0..9, and . - _
+    /// This function is based on EscapeDataString but does not depend on .NET 4/4.5 differences encoding ! * ( ) and others...
+    /// </summary>
+    public static string EscapeAllDataStringChars(this string str)
+    {
+      if (str.IsNullOrWhiteSpace()) return string.Empty;
+
+      str = Uri.EscapeDataString(str);//.NET <4.5.2 does not encode ! * ( ) properly
+
+      var sb = new StringBuilder();
+      for(var i=0; i<str.Length; i++)
+      {
+        var ch = str[i];
+        if ((ch>='A' && ch<='Z') ||
+            (ch>='a' && ch<='z') ||
+            (ch>='0' && ch<='9') ||
+            (ch=='%' || ch=='-' || ch=='_' || ch=='.')
+           )
+        {
+          sb.Append(ch);
+          continue;
+        }
+        sb.Append(Uri.HexEscape(ch));
+      }
+
+      return sb.ToString();
     }
 
   }

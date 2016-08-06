@@ -34,9 +34,9 @@ namespace NFX.Log
 
     /// <summary>
     /// Based class for implementing test and non-test logging services.
-    /// Destinations may fail and the message will be failed-over into another destination in the same logger 
+    /// Destinations may fail and the message will be failed-over into another destination in the same logger
     ///  as specified by 'failover' attribute of destination. This attribute is also present on service level.
-    /// Cascading failover is not supported (failover of failovers). Another consideration is that messages 
+    /// Cascading failover is not supported (failover of failovers). Another consideration is that messages
     ///  get sent into destinations synchronously by internal thread so specifying too many destinations may
     ///  limit overall LogService throughput. In complex scenarios consider using LogServiceDestination instead.
     /// </summary>
@@ -107,12 +107,12 @@ namespace NFX.Log
         #region Properties
 
             public override string ComponentCommonName { get { return "log"; }}
-            
+
             /// <summary>
             /// Latches last problematic msg
             /// </summary>
             public Message LastWarning     { get {return m_LastWarning;}}
-            
+
             /// <summary>
             /// Latches last problematic msg
             /// </summary>
@@ -136,7 +136,7 @@ namespace NFX.Log
             /// Implements IInstrumentable
             /// </summary>
             [Config(Default=false)]
-            [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
+            [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
             public override bool InstrumentationEnabled
             {
               get { return m_InstrumentationEnabled;}
@@ -153,7 +153,7 @@ namespace NFX.Log
 
             /// <summary>
             /// Sets destination name used for failover on the service-level
-            /// if particular failing destination did not specify its specific failover 
+            /// if particular failing destination did not specify its specific failover
             /// </summary>
             [Config("$" + CONFIG_DEFAULT_FAILOVER_ATTR)]
             [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG)]
@@ -280,7 +280,7 @@ namespace NFX.Log
             }
 
             /// <summary>
-            /// Notifies log that time changed and log destinations should be notified. 
+            /// Notifies log that time changed and log destinations should be notified.
             /// Usually this causes log file close/open under different name
             /// </summary>
             public void TimeChanged()
@@ -330,7 +330,7 @@ namespace NFX.Log
                 base.DoStart();
 
                 lock (m_Destinations)
-                {    
+                {
                     if (!DestinationsAreOptional && m_Destinations.Count == 0)
                         throw new NFXException(StringConsts.LOGSVC_NODESTINATIONS_ERROR);
 
@@ -394,7 +394,7 @@ namespace NFX.Log
                       lock(m_Destinations)
                          failover = m_Destinations.FirstOrDefault(d => string.Equals(d.Name , failoverName, StringComparison.InvariantCultureIgnoreCase));
 
-      
+
                       if (failover==null) return;
 
                       if (failover==destination) return;//circular reference, cant fail into destination that failed
@@ -402,7 +402,7 @@ namespace NFX.Log
                       try
                       {
                         failover.SendRegularAndFailures(msg);
-                
+
                           if (destination.GenerateFailoverMessages || failover.GenerateFailoverMessages)
                           {
                             var emsg = new Message();
@@ -414,10 +414,10 @@ namespace NFX.Log
                                    msg.Guid,
                                    destination.Name,
                                    failover.Name,
-                                   destination.AverageProcessingTimeMs); 
+                                   destination.AverageProcessingTimeMs);
                             emsg.RelatedTo = msg.Guid;
                             emsg.Exception = error;
-                    
+
 
                             failover.SendRegularAndFailures(emsg);
                           }

@@ -23,7 +23,7 @@ using System.Threading;
 namespace NFX
 {
   /// <summary>
-  /// Represents a random generator which is based on System.Random() yet has an ability to feed external samples into it. 
+  /// Represents a random generator which is based on System.Random() yet has an ability to feed external samples into it.
   ///  Use ExtrenalRandomGenerator.Instance to use the default thread-safe instance.
   /// </summary>
   /// <remarks>
@@ -41,7 +41,7 @@ namespace NFX
   public sealed class ExternalRandomGenerator
   {
       private static readonly int BUFF_SIZE = 1024 + IntMath.Align8((int)DateTime.Now.Ticks & 0x0fff);
-      
+
       private static ExternalRandomGenerator s_Instance;
 
       /// <summary>
@@ -87,7 +87,7 @@ namespace NFX
       {
         get
         {
-          if (ts_Random==null) 
+          if (ts_Random==null)
            lock(s_GlobalRandom)
             ts_Random = new Random(s_GlobalRandom.Next());
 
@@ -146,7 +146,7 @@ namespace NFX
       public double NextRandomDouble
       {
         get { return ((uint)NextRandomInteger) / ((double)uint.MaxValue); }
-      } 
+      }
 
 
       /// <summary>
@@ -158,7 +158,7 @@ namespace NFX
         var max = bound1>bound2 ? bound1 : bound2;
 
         var val = NextRandomInteger;
-        
+
         var ratio = (UInt32)val / (double)UInt32.MaxValue;
 
         return min + ((max - min) * ratio);
@@ -193,7 +193,7 @@ namespace NFX
         var max = bound1>bound2 ? bound1 : bound2;
 
         var val = NextRandomInteger;
-        
+
         var ratio = (UInt32)val / (double)UInt32.MaxValue;
 
         return min + (int)((max - min) * ratio);
@@ -214,7 +214,7 @@ namespace NFX
 
 
       /// <summary>
-      /// Generates a random string of chars which are safe for the use on the web - 
+      /// Generates a random string of chars which are safe for the use on the web -
       ///  a string that only contains "a-z"/"A-Z" and "0-9" and "-"/"_" chars, i.e.: "bo7O0EFasZe-wEty9w0__JiOKk81".
       ///  The length of the string can not be less than 4 and more than 1024 chars
       /// </summary>
@@ -222,7 +222,7 @@ namespace NFX
       {
         const int MIN_LEN = 4;
         const int MAX_LEN = 1024;
-        
+
         if (minLength<MIN_LEN) minLength = MIN_LEN;
         if (maxLength>MAX_LEN) maxLength = MAX_LEN;
 
@@ -233,14 +233,14 @@ namespace NFX
 
         for(var i=0; i<count; i++)
           result.Append( CHAR_DICT[ (this.NextRandomInteger & CoreConsts.ABS_HASH_MASK) % CHAR_DICT_LEN ]);
-          
+
 
         return result.ToString();
       }
 
-      
 
-  
+
+
   }
 
 

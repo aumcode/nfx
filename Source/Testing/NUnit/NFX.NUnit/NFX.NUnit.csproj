@@ -92,6 +92,7 @@
     <Compile Include="CodeAnalysis\JSONLexer.cs" />
     <Compile Include="CodeAnalysis\JSONParser.cs" />
     <Compile Include="Collections\BitListTest.cs" />
+    <Compile Include="Collections\StringMapTests.cs" />
     <Compile Include="Collections\LookAheadEnumerableTest.cs" />
     <Compile Include="Collections\RegistryTests.cs" />
     <Compile Include="Collections\EventedDictionaryTests.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Parsing\NatTxtGen.cs" />
     <Compile Include="Security\PuzzleKeypadTests.cs" />
     <Compile Include="Serialization\BSON.cs" />
+    <Compile Include="Serialization\Slim3.cs" />
     <Compile Include="Serialization\JSONtoRow.cs" />
     <Compile Include="Serialization\RowConverterTest.cs" />
     <Compile Include="Serialization\SlimObjectGraph.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Serialization\JSONDynamism.cs" />
     <Compile Include="Serialization\Slim2.cs" />
     <Compile Include="Social\SocialSerialization.cs" />
+    <Compile Include="Standards\Countries_ISO3166_1.cs" />
     <Compile Include="StringValueConversionTests.cs" />
     <Compile Include="ObjectValueConversionTests.cs" />
     <Compile Include="DataAccess\QuerySourceParsing.cs" />

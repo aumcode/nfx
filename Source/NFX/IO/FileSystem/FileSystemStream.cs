@@ -48,14 +48,14 @@ namespace NFX.IO.FileSystem
 
         #region Fields
           private Action<FileSystemStream> m_DisposeAction;
-          
+
           /// <summary>
           /// Item that this stream is for
           /// </summary>
           public readonly FileSystemSessionItem Item;
 
         #endregion
-      
+
         #region Public
           public override bool CanRead
           {
@@ -71,7 +71,7 @@ namespace NFX.IO.FileSystem
           {
             get { return !Item.IsReadOnly; }
           }
-                  
+
 
           public sealed override void Flush()
           {

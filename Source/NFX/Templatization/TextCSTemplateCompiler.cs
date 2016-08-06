@@ -39,7 +39,7 @@ namespace NFX.Templatization
      ///    /&gt;
      /// #&lt;/conf&gt;
      /// #[class]
-     ///   
+     ///
      ///     public string Title { get {return "aaaaa"; } }
      ///
      ///
@@ -48,25 +48,25 @@ namespace NFX.Templatization
      ///     protected abstract void renderFooter();
      ///
      ///
-     /// #[render]   
+     /// #[render]
      /// &lt;html&gt;
-     ///  &lt;head&gt;   
+     ///  &lt;head&gt;
      ///    &lt;title&gt;?[Title]&lt;/title&gt;
      ///  &lt;/head&gt;
      ///  &lt;body&gt;
      ///
      ///   &lt;h1&gt;This is Header&lt;/h1&gt;
      ///    @[renderHeader();]
-     ///  
+     ///
      ///   &lt;h1&gt;This is Body&lt;/h1&gt;
      ///    @[renderBody(true);]
      ///   &lt;p&gt;This is in master page&lt;/p&gt;
      ///
      ///   &lt;h1&gt;This is Footer&lt;/h1&gt;
      ///    @[renderFooter();]
-     ///  
+     ///
      ///  &lt;/body&gt;
-     /// &lt;/html&gt; 
+     /// &lt;/html&gt;
      /// </code>
     /// </example>
     public class TextCSTemplateCompiler : TemplateCompiler
@@ -74,7 +74,7 @@ namespace NFX.Templatization
        #region CONSTS
 
          public const string DEFAULT_BASE_TEMPLATE_CLASS_NAME = "NFX.Templatization.Template<object, NFX.Templatization.IRenderingTarget, object>";
-         
+
          public const string CONFIG_START = "#<conf>";
          public const string CONFIG_END = "#</conf>";
 
@@ -92,13 +92,13 @@ namespace NFX.Templatization
          public const string CONFIG_BASE_CLASS_NAME_ATTR = "base-class-name";
          public const string CONFIG_REF_ASSEMBLY_SECTION = "ref-asm";
          public const string CONFIG_REF_ASSEMBLY_NAME_ATTR = "name";
-         public const string CONFIG_USING_SECTION = "using"; 
+         public const string CONFIG_USING_SECTION = "using";
          public const string CONFIG_USING_NS_ATTR = "ns";
 
-         public const string CONFIG_ATTRIBUTE_SECTION = "attribute"; 
+         public const string CONFIG_ATTRIBUTE_SECTION = "attribute";
          public const string CONFIG_ATTRIBUTE_DECL_ATTR = "decl";
 
-              
+
          public const string AREA = "#[";
          public const string CLASS_AREA = "class";
          public const string RENDER_AREA = "render";
@@ -107,7 +107,7 @@ namespace NFX.Templatization
          public const string EXPRESSION = "?[";
 
 
-         
+
          public const string AREA_ESCAPE = "##";
          public const string STATEMENT_ESCAPE = "@@";
          public const string EXPRESSION_ESCAPE = "??";
@@ -125,7 +125,7 @@ namespace NFX.Templatization
        #endregion
 
        #region .ctor
-           
+
            public TextCSTemplateCompiler() : base ()
            {
            }
@@ -165,8 +165,8 @@ namespace NFX.Templatization
            {
              var text = unit.TemplateSource.GetSourceContent().ToString().Trim();
              var icname = unit.TemplateSource.InferClassName();
-             
-            
+
+
              Configuration conf = new MemoryConfiguration();
 
              var confLineCount = 0;
@@ -175,7 +175,7 @@ namespace NFX.Templatization
                var i = text.IndexOf(CONFIG_END);
                if (i<CONFIG_START.Length) throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_CLOSE_TAG_ERROR);
 
-               var confText = text.Substring(CONFIG_START.Length, i - CONFIG_START.Length); 
+               var confText = text.Substring(CONFIG_START.Length, i - CONFIG_START.Length);
 
                confLineCount = confText.Count(c=>c=='\n');
 
@@ -188,7 +188,7 @@ namespace NFX.Templatization
                }
                catch(Exception error)
                {
-                 throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_ERROR + error.Message, error); 
+                 throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_ERROR + error.Message, error);
                }
              }else//20140103 DKh add Laconic support
              if (text.StartsWith(LACONFIG_START))
@@ -196,7 +196,7 @@ namespace NFX.Templatization
                var i = text.IndexOf(LACONFIG_END);
                if (i<LACONFIG_START.Length) throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_CLOSE_TAG_ERROR);
 
-               var confText = text.Substring(LACONFIG_START.Length, i - LACONFIG_START.Length); 
+               var confText = text.Substring(LACONFIG_START.Length, i - LACONFIG_START.Length);
 
                confLineCount = confText.Count(c=>c=='\n');
 
@@ -209,21 +209,21 @@ namespace NFX.Templatization
                }
                catch(Exception error)
                {
-                 throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_ERROR + error.Message, error); 
+                 throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_ERROR + error.Message, error);
                }
              }
 
 
 
              var compilerNode = conf.Root[CONFIG_COMPILER_SECTION];
-             
+
              //add referenced assemblies
              foreach(var anode in compilerNode.Children.Where(cn=> cn.IsSameName(CONFIG_REF_ASSEMBLY_SECTION)))
                this.ReferenceAssembly(anode.AttrByName(CONFIG_REF_ASSEMBLY_NAME_ATTR).Value);
 
              //add usings
              var usings = new HashSet<string>();
-             
+
              RegisterDefaultUsings(usings);
 
              foreach(var unode in compilerNode.Children.Where(cn=> cn.IsSameName(CONFIG_USING_SECTION)))
@@ -241,20 +241,20 @@ namespace NFX.Templatization
                                              Source = text,
                                              Usings = usings,
                                              Attributes = attributes,
-                                             LineNo = confLineCount+1}.Build().ToString();   
+                                             LineNo = confLineCount+1}.Build().ToString();
            }
 
            protected override void DoCompileCode()
            {
                CSharpCodeProvider comp = new CSharpCodeProvider();
-           
+
                CompilerParameters cp = new CompilerParameters();
                foreach(var ass in m_ReferencedAssemblies)
                  cp.ReferencedAssemblies.Add(ass);
 
                if (!string.IsNullOrWhiteSpace(m_ReferencedAssembliesSearchPath))
                  cp.CompilerOptions = "/lib:\"" + this.m_ReferencedAssembliesSearchPath+"\"";
- 
+
                cp.GenerateExecutable = false;
                cp.GenerateInMemory = !string.IsNullOrWhiteSpace(m_AssemblyFileName);
                cp.OutputAssembly = m_AssemblyFileName;
@@ -332,7 +332,7 @@ private class FSM
       bool Abstract;
       bool BaseRender;
       string Summary;
-      Dictionary<string, StringBuilder> Areas = new Dictionary<string,StringBuilder>(); 
+      Dictionary<string, StringBuilder> Areas = new Dictionary<string,StringBuilder>();
       Dictionary<string, string> LiteralBlocks = new Dictionary<string,string>();
       StringBuilder Code = new StringBuilder();
       StringBuilder Literal = new StringBuilder();
@@ -423,7 +423,7 @@ private class FSM
 
         if (s.Length<1) return;
 
-        
+
         if (Code == Areas[CLASS_AREA])
         {
           Code.Append(s);
@@ -447,14 +447,14 @@ private class FSM
 
       string getLiteralBlockName()
       {
-       
+
         return string.Format("_{0}_S_LITERAL_{1}", ClassID, LiteralBlocks.Count);
       }
 
 
 
               public override string ToString()
-              {                       
+              {
                 return Result.ToString();
               }
 
@@ -462,12 +462,12 @@ private class FSM
               {
                 if (Result!=null) return this;
                 Result = new StringBuilder();
-               
-                var cnode = ConfigNode[CONFIG_COMPILER_SECTION]; 
-                
+
+                var cnode = ConfigNode[CONFIG_COMPILER_SECTION];
+
                 ClassName = cnode.AttrByName(CONFIG_CLASS_NAME_ATTR).ValueAsString(InferredClassName);
                 if (string.IsNullOrWhiteSpace(ClassName)) ClassName = Compiler.BaseTypeName;
-                if (string.IsNullOrWhiteSpace(ClassName)) ClassName = Compiler.GenerateUniqueName(); 
+                if (string.IsNullOrWhiteSpace(ClassName)) ClassName = Compiler.GenerateUniqueName();
 
                 ClassDeclaration = cnode.AttrByName(CONFIG_CLASS_DECLARATION_ATTR).ValueAsString(ClassName);
                 if (string.IsNullOrWhiteSpace(ClassDeclaration)) ClassDeclaration = ClassName;
@@ -476,15 +476,15 @@ private class FSM
 
 
                 ClassID = Math.Abs(ClassName.GetHashCode() % 100);
-                
+
                 Namespace = cnode.AttrByName(CONFIG_NAMESPACE_ATTR).Value;
                 if (string.IsNullOrWhiteSpace(Namespace)) Namespace = Compiler.Namespace;
                 if (string.IsNullOrWhiteSpace(Namespace)) Namespace = Compiler.GenerateUniqueName();
-                
+
 
                 Unit.CompiledTemplateTypeName = "{0}.{1}".Args( Namespace, ClassName);
 
-                
+
                 BaseClassName = cnode.AttrByName(CONFIG_BASE_CLASS_NAME_ATTR).ValueAsString(Compiler.BaseTypeName);
                 if (string.IsNullOrWhiteSpace(BaseClassName)) BaseClassName = DEFAULT_BASE_TEMPLATE_CLASS_NAME;
 
@@ -497,12 +497,12 @@ private class FSM
                 Areas.Add(RENDER_AREA, Code);
                 Areas.Add(CLASS_AREA, new StringBuilder());
 
-                
+
                 Idx = 0;
                 while(Idx<Source.Length)
                 {
                     var s = this[Idx, 2];
-                    
+
                     if (s==AREA_ESCAPE || s==STATEMENT_ESCAPE || s==EXPRESSION_ESCAPE)
                     {
                      Idx++;
@@ -520,13 +520,13 @@ private class FSM
                       flushLiteral();
                       Idx+=EXPRESSION.Length;
                       var expression = readSpan();
-                      
+
                       if (expression.EndsWith(";"))
                        expression = expression.Remove(expression.Length-1);
 
                       if (expression.Length==0)
                        throw new TemplateParseException(string.Format(StringConsts.TEMPLATE_CS_COMPILER_EMPTY_EXPRESSION_ERROR, LineNo));
-                      
+
                       if (expression.StartsWith(VERBATIM))
                       {
                         expression = expression.Substring(1);
@@ -544,7 +544,7 @@ private class FSM
                       {
                         Code = new StringBuilder();
                         Areas.Add(area, Code);
-                      } 
+                      }
                        else
                       {
                         Code = Areas[area];
@@ -579,16 +579,16 @@ private class FSM
                 Result.AppendFormat(" public {0} class {1} : {2} {3}\n", Abstract ? "abstract":string.Empty, ClassDeclaration, BaseClassName, ClassConstraint);
                 Result.AppendLine  (" {");
                 Result.AppendLine(Areas[CLASS_AREA].ToString());
-              
+
                 Result.AppendLine("     protected override void DoRender()");
                 Result.AppendLine("     {");
-                
+
                 if (BaseRender)
                  Result.AppendLine("       base.DoRender();");
 
                 if (Areas.ContainsKey(RENDER_AREA))
                  Result.AppendLine(Areas[RENDER_AREA].ToString());
-                
+
                 Result.AppendLine("     }");
 
                 foreach(var ark in Areas.Keys.Where(k=> k!=CLASS_AREA && k!=RENDER_AREA))

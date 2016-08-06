@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 
 namespace NFX.Serialization.BSON
 {
-  
+
   /// <summary>
   /// Represents template argument
   /// </summary>
@@ -72,7 +72,7 @@ namespace NFX.Serialization.BSON
           throw new BSONException(StringConsts.BSON_EOD_ERROR);
       }
 
-             
+
       /// <summary>
       /// Creates an instance of the document from JSON template with parameters populated from args optionally caching the template internal
       /// representation. Do not cache templates that change often
@@ -104,7 +104,7 @@ namespace NFX.Serialization.BSON
         {
           if (name==null)
              throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONDocument[name: null]");
-        
+
           var idx = IndexOfName(name);
           return  idx >= 0 ? m_List[idx] : null;
         }
@@ -201,7 +201,7 @@ namespace NFX.Serialization.BSON
       /// </summary>
       public BSONDocument Set(BSONElement value, int atIndex = -1)
       {
-        bool added; 
+        bool added;
         this.Set(value, out added, atIndex);
         return this;
       }
@@ -213,7 +213,7 @@ namespace NFX.Serialization.BSON
       {
         if (value==null)
            throw new BSONException(StringConsts.ARGUMENT_ERROR+"Set(value==null)");
-        
+
         if (value.IsArrayElement)
          throw new BSONException(StringConsts.BSON_ARRAY_ELM_DOC_ERROR.Args(value));
 
@@ -232,7 +232,7 @@ namespace NFX.Serialization.BSON
         if (idx<0) return false;
 
         m_List.RemoveAt(idx);
-        if (m_Dict!=null) 
+        if (m_Dict!=null)
           m_Dict.Remove(name);
 
         return true;
@@ -259,14 +259,14 @@ namespace NFX.Serialization.BSON
 
       internal void WriteAsBSONCore(Stream stream)
       {
-        var docSize = this.GetByteSize(false);//gets cached value 
+        var docSize = this.GetByteSize(false);//gets cached value
         BinUtils.WriteInt32(stream, docSize);
         var cnt = m_List.Count;
         for(var i=0; i<cnt; i++)
         {
            var elm = m_List[i];
            elm.WriteToStream(stream);
-        } 
+        }
         BinUtils.WriteTerminator(stream); //x00
       }
 
@@ -315,7 +315,7 @@ namespace NFX.Serialization.BSON
           if (cnt>=IDX_THRESHOLD)
           {
              makeDict();//rebuild dict as indexes have shifted
-          } 
+          }
         }
         else
         {
@@ -324,11 +324,11 @@ namespace NFX.Serialization.BSON
           var idxNew = cnt-1;
           if (cnt>=IDX_THRESHOLD)
           {
-             if (m_Dict==null) 
+             if (m_Dict==null)
                makeDict();
              else
                m_Dict.Add(elm.Name, idxNew);
-          } 
+          }
         }
         return true;
       }
@@ -360,7 +360,7 @@ namespace NFX.Serialization.BSON
                   if (!s_TemplateCache.TryGetValue(template, out result))
                     lock(s_TemplateCacheLock)
                     {
-                      if (!s_TemplateCache.TryGetValue(template, out result)) 
+                      if (!s_TemplateCache.TryGetValue(template, out result))
                       {
                         result = compileTemplate(template);
                         var ncache = new Dictionary<string, JSONDataMap>(s_TemplateCache, StringComparer.Ordinal);
@@ -420,7 +420,7 @@ namespace NFX.Serialization.BSON
                       else
                        throw new BSONException("Template JSON parameter '{0}' not found in args".Args(sv));
                      }
-                     else 
+                     else
                       bType = BSONElementType.String;
                     }
                     else if (value is UInt64) bType = BSONElementType.Int64;
@@ -463,6 +463,6 @@ namespace NFX.Serialization.BSON
 
 
     #endregion
-   
+
   }
 }

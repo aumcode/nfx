@@ -32,7 +32,7 @@ namespace NFX.Log.Destinations
     {
 
         #region .ctor
-       
+
         /// <summary>
         /// Creates a new instance of destination that sends messages to .nix SYSLOG
         /// </summary>
@@ -40,7 +40,7 @@ namespace NFX.Log.Destinations
         {
           m_Client = new SyslogClient();
         }
-       
+
         /// <summary>
         /// Creates a new instance of destination that sends messages to .nix SYSLOG
         /// </summary>
@@ -55,12 +55,12 @@ namespace NFX.Log.Destinations
           base.Destructor();
         }
       #endregion
-        
+
 
       #region Private Fields
 
         private SyslogClient m_Client;
-      
+
       #endregion
 
 
@@ -86,9 +86,9 @@ namespace NFX.Log.Destinations
        }
 
       #endregion
-        
-       
-      #region Protected 
+
+
+      #region Protected
 
 
         protected override void DoConfigure(Environment.IConfigSectionNode node)

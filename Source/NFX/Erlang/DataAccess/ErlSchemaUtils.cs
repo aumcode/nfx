@@ -113,7 +113,7 @@ namespace NFX.Erlang.DataAccess
           // Add: {FieldName::atom(), []}
           newList.Add(new ErlTuple(new ErlAtom(fld.Name), new ErlList()));
         }
-      
+
       // If no new items were added to the list use current list:
       if (newList == null) newList = dataList;
 

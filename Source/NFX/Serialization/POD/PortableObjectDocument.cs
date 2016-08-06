@@ -31,7 +31,7 @@ namespace NFX.Serialization.POD
     ///  but need to be deserialized even if deserialization is partial / requires transform
     /// </summary>
     [Serializable]
-    public sealed class PortableObjectDocument 
+    public sealed class PortableObjectDocument
     {
         #region .ctor
 
@@ -42,8 +42,8 @@ namespace NFX.Serialization.POD
             ////////{
             ////////    MetaType.GetExistingOrNewMetaTypeIndex(this, typeof(object));
             ////////}
-            
-            
+
+
             /// <summary>
             /// Creates a new instance of object document from the graph of arbitrary CLR objects serializing them into well-known POD object types
             /// </summary>
@@ -57,21 +57,21 @@ namespace NFX.Serialization.POD
                     m_Types = new List<MetaType>();
                     m_CompositeData = new List<CompositeData>();
                     m_StreamingContext = new StreamingContext();
-                
+
                     MetaType.GetExistingOrNewMetaTypeIndex(this, typeof(object));
-                
+
                     if (graph!=null)
                         m_Root = nativeDataToPortableData( graph, out m_RootMetaTypeIndex );
                 }
                 finally
                 {
                     purgeCaches();//drop all temp objects
-                } 
+                }
             }
         #endregion
 
         #region Fields
-                    
+
             private BuildInformation m_BuildInfo;
             private DateTime m_CreationDate;
             private string m_Notes;
@@ -95,7 +95,7 @@ namespace NFX.Serialization.POD
         #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// Returns build information for framework that contains the PortableObjectDocuemnt type
             /// </summary>
@@ -142,7 +142,7 @@ namespace NFX.Serialization.POD
             public object ToOriginalObject(ReadingStrategy strategy = null)
             {
                 if (strategy==null) strategy = ReadingStrategy.Default;
-              
+
                 if (m_Root==null) return null;
 
                 m_StreamingContext = new StreamingContext();
@@ -150,15 +150,15 @@ namespace NFX.Serialization.POD
                 try
                 {
                     var result = PortableDataToNativeData(strategy, m_Root);
-                    
-                    
+
+
                     if (m_CompositeData!=null)
                     {
                         foreach(var cd in m_CompositeData)
                         {
                             var obj = cd.__CLRObject;
                             if (obj==null) continue;
-                            
+
                             //invoke all IDeserializationCallback-implementors
                             if (obj is IDeserializationCallback)
                                 ((IDeserializationCallback)obj).OnDeserialization(this);
@@ -176,7 +176,7 @@ namespace NFX.Serialization.POD
                 finally
                 {
                     purgeCaches();//drop all temp objects
-                }        
+                }
             }
 
             /// <summary>
@@ -216,11 +216,11 @@ namespace NFX.Serialization.POD
             public object NativeDataToPortableData(object data)
             {
                 int mtpi;
-                return nativeDataToPortableData(data, out mtpi); 
+                return nativeDataToPortableData(data, out mtpi);
             }
 
             /// <summary>
-            /// Transforms a portable data value, such as object, primitive, struct etc.. into a CLR 
+            /// Transforms a portable data value, such as object, primitive, struct etc.. into a CLR
             /// </summary>
             public object PortableDataToNativeData(ReadingStrategy strategy, object data)
             {
@@ -241,7 +241,7 @@ namespace NFX.Serialization.POD
                     foreach(var tp in m_Types)
                     {
                         tp.__CLRType = null;
-                        if (tp is MetaComplexType) 
+                        if (tp is MetaComplexType)
                             foreach(var f in ((MetaComplexType)tp).m_Fields)
                                 f.m_FieldInfo = null;
                     }
@@ -267,10 +267,10 @@ namespace NFX.Serialization.POD
                 else
                 {
                    var mct = (MetaComplexType)mtp;
-                   
+
                    if (mct.m_MethodsOnSerializing!=null)
                     SerializationUtils.InvokeSerializationAttributedMethods(mct.m_MethodsOnSerializing, data, m_StreamingContext);
-                   
+
                    try
                    {
                        if (data is ISerializable)
@@ -279,7 +279,7 @@ namespace NFX.Serialization.POD
                        }
                        else if (data is Array)
                        {
-                           return new CompositeArrayData(this, (Array)data, metaTypeIndex); 
+                           return new CompositeArrayData(this, (Array)data, metaTypeIndex);
                        }
                        else if (Attribute.IsDefined( t, typeof(PortableObjectDocumentSerializationTransform), false))
                        {
@@ -290,7 +290,7 @@ namespace NFX.Serialization.POD
                    finally
                    {
                        if (mct.m_MethodsOnSerialized!=null)
-                        SerializationUtils.InvokeSerializationAttributedMethods(mct.m_MethodsOnSerialized, data, m_StreamingContext); 
+                        SerializationUtils.InvokeSerializationAttributedMethods(mct.m_MethodsOnSerialized, data, m_StreamingContext);
                    }
                 }
             }
@@ -299,6 +299,6 @@ namespace NFX.Serialization.POD
         #endregion
 
 
-            
+
     }
 }

@@ -21,7 +21,7 @@ using System.Text;
 
 namespace NFX.Collections
 {
-    
+
 
     /// <summary>
     /// Specifies the phase of the event i.e. before/after
@@ -33,11 +33,11 @@ namespace NFX.Collections
     /// </summary>
     public delegate bool EventedCollectionGetReadOnlyHandler<TContext>(EventedCollectionBase<TContext> collection);
 
-    
+
     /// <summary>
     /// Provides base implementation for some evented collections
     /// </summary>
-    public abstract class EventedCollectionBase<TContext> 
+    public abstract class EventedCollectionBase<TContext>
     {
         protected EventedCollectionBase()
         {
@@ -70,7 +70,7 @@ namespace NFX.Collections
         public TContext Context
         {
             get { return m_Context; }
-            set 
+            set
             {
                 if (m_ContextReadOnly)
                  throw new NFXException(StringConsts.INVALID_OPERATION_ERROR + this.GetType().FullName+".Context.set()");
@@ -83,7 +83,7 @@ namespace NFX.Collections
         /// <summary>
         /// Indicates whether collection can be modified
         /// </summary>
-        public bool IsReadOnly 
+        public bool IsReadOnly
         {
             get { return GetReadOnlyEvent!=null ? GetReadOnlyEvent(this) : true; }
         }
@@ -94,6 +94,6 @@ namespace NFX.Collections
            if (IsReadOnly)
             throw new NFXException(StringConsts.READONLY_COLLECTION_MUTATION_ERROR + this.GetType().FullName+".CheckReadOnly()");
         }
-            
+
     }
 }

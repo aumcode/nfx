@@ -75,12 +75,12 @@ namespace NFX.Wave
       private Guid m_ID;
       private WaveServer m_Server;
       private bool m_WorkSemaphoreReleased;
-      
+
       private HttpListenerContext m_ListenerContext;
       private Response m_Response;
-            
+
       internal Filters.SessionFilter m_SessionFilter;
-      internal WaveSession m_Session;    
+      internal WaveSession m_Session;
 
       internal Filters.PortalFilter m_PortalFilter;
       internal Portal m_Portal;
@@ -91,7 +91,7 @@ namespace NFX.Wave
 
       private object m_ItemsLock = new object();
       private ConcurrentDictionary<object, object> m_Items;
-     
+
       internal WorkHandler m_Handler;
 
       private WorkMatch m_Match;
@@ -99,7 +99,7 @@ namespace NFX.Wave
                      /// <summary>
                      /// Internal method. Developers do not call
                      /// </summary>
-                     internal void ___SetWorkMatch(WorkMatch match, JSONDataMap vars){m_Match = match; m_MatchedVars = vars;} 
+                     internal void ___SetWorkMatch(WorkMatch match, JSONDataMap vars){m_Match = match; m_MatchedVars = vars;}
 
       private bool m_HasParsedRequestBody;
       private JSONDataMap m_RequestBodyAsJSONDataMap;
@@ -108,20 +108,20 @@ namespace NFX.Wave
       internal bool m_Handled;
       private bool m_Aborted;
 
-      private bool m_NoDefaultAutoClose; 
+      private bool m_NoDefaultAutoClose;
 
-      private GeoEntity m_GeoEntity; 
+      private GeoEntity m_GeoEntity;
 
     #endregion
 
     #region Properties
-      
-      
+
+
       /// <summary>
       /// Uniquely identifies the request
       /// </summary>
       public Guid ID{ get{ return m_ID;} }
-      
+
       /// <summary>
       /// Returns the server this context is under
       /// </summary>
@@ -177,8 +177,8 @@ namespace NFX.Wave
                                                    WorkMatch match = null,
                                                    JSONDataMap matchedVars = null)
                                                    {
-                                                     m_Portal = portal; 
-                                                     m_PortalTheme = theme; 
+                                                     m_Portal = portal;
+                                                     m_PortalTheme = theme;
                                                      m_PortalMatch = match;
                                                      m_PortalMatchedVars = matchedVars;
                                                    }
@@ -197,7 +197,7 @@ namespace NFX.Wave
       /// <summary>
       /// Gets/sets portal theme. This may be null as this is just a holder variable
       /// </summary>
-      public Theme PortalTheme 
+      public Theme PortalTheme
       {
         get{ return m_PortalTheme ?? (m_Portal!=null ? m_Portal.DefaultTheme :  null);}
         set{ m_PortalTheme = value;}
@@ -215,20 +215,20 @@ namespace NFX.Wave
       /// Returns the work match instances that was made for this requested work or null if nothing was matched yet
       /// </summary>
       public WorkMatch Match {get{ return m_Match;}}
-      
+
       /// <summary>
       /// Returns variables that have been extracted by WorkMatch when dispatcher assigned request to WorkHandler.
       /// If variables have not been assigned yet returns empty object
       /// </summary>
       public JSONDataMap MatchedVars
       {
-        get 
+        get
         {
           if (m_MatchedVars==null)
             m_MatchedVars = new JSONDataMap(false);
 
           return m_MatchedVars;
-        } 
+        }
       }
 
       /// <summary>
@@ -277,7 +277,7 @@ namespace NFX.Wave
       /// </summary>
       public ConcurrentDictionary<object, object> Items
       {
-          get 
+          get
           {
             if (m_Items==null)
                 lock(m_ItemsLock)
@@ -302,9 +302,9 @@ namespace NFX.Wave
 
       /// <summary>
       /// Indicates whether the work context is logically finished and its nested processing (i.e. through Filters/Handlers) should stop.
-      /// For example, when some filter detects a special condition (judging by the request) and generates the response 
+      /// For example, when some filter detects a special condition (judging by the request) and generates the response
       ///  and needs to abort the work request so it does no get filtered/processed anymore, it can set this property to true.
-      /// This mechanism performs much better than throwing exceptions  
+      /// This mechanism performs much better than throwing exceptions
       /// </summary>
       public bool Aborted
       {
@@ -316,9 +316,9 @@ namespace NFX.Wave
       /// <summary>
       /// Generates short context description
       /// </summary>
-      public string About 
+      public string About
       {
-        get 
+        get
         {
           return "Work('{0}'@'{1}' -> {2} '{3}')".Args(Request.UserAgent, Request.RemoteEndPoint, Request.HttpMethod, Request.Url);
         }
@@ -340,7 +340,7 @@ namespace NFX.Wave
           if ( value && (Response.Buffered==true || !Response.WasWrittenTo))
             throw new WaveException(StringConsts.WORK_NO_DEFAULT_AUTO_CLOSE_ERROR);
 
-          m_NoDefaultAutoClose = value; 
+          m_NoDefaultAutoClose = value;
         }
       }
 
@@ -359,29 +359,37 @@ namespace NFX.Wave
         set { if (m_Session==null)  m_GeoEntity = value; else  m_Session.GeoEntity = value;}
       }
 
+
+         private bool? m_RequestedJSON;
       /// <summary>
       /// Returns true if client indicated in response that "application/json" is accepted
       /// </summary>
       public bool RequestedJSON
       {
-        get { return Request.AcceptTypes.Any(at => ContentType.JSON.EqualsOrdIgnoreCase(at)); }
+        get
+        {
+          if (!m_RequestedJSON.HasValue)
+            m_RequestedJSON = Request.AcceptTypes.Any(at => ContentType.JSON.EqualsOrdIgnoreCase(at));
+
+          return m_RequestedJSON.Value;
+        }
       }
 
       /// <summary>
       /// Indicates that request method id POST
       /// </summary>
       public bool IsPOST { get{ return Request.HttpMethod.EqualsOrdIgnoreCase("POST");}}
-     
+
       /// <summary>
       /// Indicates that request method id GET
       /// </summary>
       public bool IsGET { get{ return Request.HttpMethod.EqualsOrdIgnoreCase("GET");}}
-     
+
       /// <summary>
       /// Indicates that request method id PUT
       /// </summary>
       public bool IsPUT { get{ return Request.HttpMethod.EqualsOrdIgnoreCase("PUT");}}
-      
+
       /// <summary>
       /// Indicates that request method id DELETE
       /// </summary>
@@ -430,7 +438,7 @@ namespace NFX.Wave
       public WaveSession NeedsSession(bool onlyExisting = false)
       {
         if (m_Session!=null) return m_Session;
-        
+
         Interlocked.Increment(ref m_Server.m_Stat_WorkContextNeedsSession);
 
         if (m_SessionFilter!=null)
@@ -456,7 +464,7 @@ namespace NFX.Wave
           Exception = error ?? LastError,
           Parameters = pars
         };
-      
+
         if (related.HasValue)
           msg.RelatedTo = related.Value;
         else
@@ -471,17 +479,17 @@ namespace NFX.Wave
       public bool HasAnyVarsMatchingFieldNames(Row row)
       {
         if (row==null) return false;
-        
+
         foreach(var fdef in row.Schema)
          if (WholeRequestAsJSONDataMap.ContainsKey(fdef.Name)) return true;
-        
+
         return false;
       }
 
       public override string ToString()
       {
         return About;
-      } 
+      }
     #endregion
 
 
@@ -493,7 +501,7 @@ namespace NFX.Wave
       protected virtual JSONDataMap GetWholeRequestAsJSONDataMap()
       {
         var body = this.RequestBodyAsJSONDataMap;
-        
+
         if (body==null) return MatchedVars;
 
         var result = new JSONDataMap(false);
@@ -508,28 +516,28 @@ namespace NFX.Wave
       protected virtual JSONDataMap ParseRequestBodyAsJSONDataMap()
       {
         if (!Request.HasEntityBody) return null;
-        
+
         JSONDataMap result = null;
 
         var ctp = Request.ContentType;
-        
+
         //Multipart
         if (ctp.IndexOf(ContentType.FORM_MULTIPART_ENCODED)>=0)
         {
           var boundary = Multipart.ParseContentType(ctp);
-          var mp = Multipart.ReadFromStream(Request.InputStream, ref boundary, Request.ContentEncoding); 
+          var mp = Multipart.ReadFromStream(Request.InputStream, ref boundary, Request.ContentEncoding);
           result =  mp.ToJSONDataMap();
           // Multipart.ToJSONDataMap(Request.InputStream, ctp,  Request.ContentEncoding);
         }
         else //Form URL encoded
         if (ctp.IndexOf(ContentType.FORM_URL_ENCODED)>=0)
           result = JSONDataMap.FromURLEncodedStream(new NFX.IO.NonClosingStreamWrap(Request.InputStream),
-                                                  Request.ContentEncoding); 
+                                                  Request.ContentEncoding);
         else//JSON
         if (ctp.IndexOf(ContentType.JSON)>=0)
           result = JSONReader.DeserializeDataObject(new NFX.IO.NonClosingStreamWrap(Request.InputStream),
                                                   Request.ContentEncoding) as JSONDataMap;
-        
+
         return result;
       }
 
@@ -537,7 +545,7 @@ namespace NFX.Wave
 
   }
 
-  
+
 
 
 

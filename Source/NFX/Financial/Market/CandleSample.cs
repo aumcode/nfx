@@ -169,7 +169,7 @@ namespace NFX.Financial.Market
         var pSample = i > 0 ? result[i - 1] : null;
 
         sample.OpenPrice  = pSample != null ? pSample.ClosePrice : price;
-        sample.ClosePrice = price 
+        sample.ClosePrice = price
                           + (float)ExternalRandomGenerator.Instance.NextScaledRandomDouble(-0.08f*currentMidPrice, +0.08f*currentMidPrice);
         sample.LowPrice   = Math.Min(sample.OpenPrice, sample.ClosePrice)
                           - (float)ExternalRandomGenerator.Instance.NextScaledRandomDouble(0, +0.05f*currentMidPrice);

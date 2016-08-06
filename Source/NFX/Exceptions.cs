@@ -74,8 +74,8 @@ namespace NFX
     {
       get { return m_From ?? string.Empty; }
     }
-    
-    
+
+
     public DebugAssertionException()
     {
     }
@@ -92,7 +92,7 @@ namespace NFX
 
   }
 
-  
+
 
 
 }

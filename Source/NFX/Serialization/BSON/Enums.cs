@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NFX.Serialization.BSON
 {
-  
+
   /// <summary>
   ///  BSON element types: http://bsonspec.org/spec.html
   /// </summary>
@@ -77,7 +77,7 @@ namespace NFX.Serialization.BSON
   /// </summary>
   public static class RegularExpressionExtensions
   {
-    private static readonly BSONRegularExpressionOptions[] _values = new[] 
+    private static readonly BSONRegularExpressionOptions[] _values = new[]
     {
       BSONRegularExpressionOptions.I,
       BSONRegularExpressionOptions.M,
@@ -88,7 +88,7 @@ namespace NFX.Serialization.BSON
     };
 
     /// <summary>
-    /// Returns BSON-formatted string for regeax options 
+    /// Returns BSON-formatted string for regeax options
     /// (The options are identified by lower-case characters, which must be stored in alphabetical order).
     /// </summary>
     public static string ToBSONString(this BSONRegularExpressionOptions options)

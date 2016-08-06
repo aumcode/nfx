@@ -46,7 +46,7 @@ namespace NFX.Wave.Filters
 
       public ErrorFilter(WorkDispatcher dispatcher, IConfigSectionNode confNode): base(dispatcher, confNode)
       {
-        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, GetType().FullName);  
+        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, GetType().FullName);
         ConfigAttribute.Apply(this, confNode);
       }
 
@@ -56,8 +56,8 @@ namespace NFX.Wave.Filters
 
       public ErrorFilter(WorkHandler handler, IConfigSectionNode confNode): base(handler, confNode)
       {
-        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, GetType().FullName); 
-        ConfigAttribute.Apply(this, confNode); 
+        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, GetType().FullName);
+        ConfigAttribute.Apply(this, confNode);
       }
 
     #endregion
@@ -83,7 +83,7 @@ namespace NFX.Wave.Filters
       /// Returns matches used by the filter to determine whether exception details should be logged
       /// </summary>
       public OrderedRegistry<WorkMatch> LogMatches { get{ return m_LogMatches;}}
-      
+
 
       /// <summary>
       /// When set redirects response to the specified URL if security exceptions are thrown
@@ -103,7 +103,7 @@ namespace NFX.Wave.Filters
       {
         get{return m_CustomErrorPageType!=null ? m_CustomErrorPageType.AssemblyQualifiedName : string.Empty ;}
         set
-        { 
+        {
           if (value.IsNullOrWhiteSpace())
           {
             m_CustomErrorPageType = null;
@@ -133,7 +133,7 @@ namespace NFX.Wave.Filters
       /// <summary>
       /// Handles the exception by responding appropriately with error page with conditional level of details and logging
       /// </summary>
-      public static void HandleException(WorkContext work, 
+      public static void HandleException(WorkContext work,
                                          Exception error,
                                          OrderedRegistry<WorkMatch> showDumpMatches,
                                          OrderedRegistry<WorkMatch> logMatches,
@@ -142,22 +142,22 @@ namespace NFX.Wave.Filters
                                          )
       {
           if (work==null || error==null) return;
-          
-          var showDump = showDumpMatches != null ? 
+
+          var showDump = showDumpMatches != null ?
                          showDumpMatches.OrderedValues.Any(m => m.Make(work)!=null) : false;
 
           if (work.Response.Buffered)
             work.Response.CancelBuffered();
 
           var json = false;
-          
+
           if (work.Request!=null && work.Request.AcceptTypes!=null)//if needed for some edge HttpListener cases when Request or Request.AcceptTypes are null
                json = work.Request.AcceptTypes.Any(at=>at.EqualsIgnoreCase(ContentType.JSON));
 
           var actual = error;
           if (actual is FilterPipelineException)
             actual = ((FilterPipelineException)actual).RootException;
-          
+
           if (actual is MVCActionException)
             actual = ((MVCActionException)actual).InnerException;
 
@@ -206,12 +206,12 @@ namespace NFX.Wave.Filters
                 }
                 catch(Exception actErr)
                 {
-                  work.Log(Log.MessageType.Error, 
+                  work.Log(Log.MessageType.Error,
                             StringConsts.ERROR_PAGE_TEMPLATE_TYPE_ERROR.Args(customPageType.FullName, actErr.ToMessageWithType()),
                             typeof(ErrorFilter).FullName+".ctor(customPageType)",
                             actErr);
                 }
-              
+
               if (errorPage==null)
               {
                 errorPage =  new ErrorPage(work, error, showDump);
@@ -232,7 +232,7 @@ namespace NFX.Wave.Filters
             }
             if (matched!=null)
               work.Log(Log.MessageType.Error, error.ToMessageWithType(), typeof(ErrorFilter).FullName, pars: matched.ToJSON(JSONWritingOptions.CompactASCII));
-          }  
+          }
 
       }
 
@@ -248,17 +248,17 @@ namespace NFX.Wave.Filters
       {
         foreach(var cn in confNode[CONFIG_SHOW_DUMP_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!showDumpMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.ShowDump".Args(from))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.ShowDump".Args(from)));
 
         foreach(var cn in confNode[CONFIG_LOG_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!logMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.Log".Args(from))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.Log".Args(from)));
       }
 
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         try
-        {   
+        {
           this.InvokeNextWorker(work, filters, thisFilterIndex);
         }
         catch(Exception error)
@@ -269,7 +269,7 @@ namespace NFX.Wave.Filters
         }
        }
 
-    #endregion   
+    #endregion
   }
 
 }

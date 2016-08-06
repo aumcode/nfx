@@ -9,7 +9,7 @@ namespace NFX.Financial.Market
 {
   public static class SamplingUtils
   {
-    
+
     /// <summary>
     /// Synthesizes a stream of candle samples from Quote and Trade samples coming from the market (i.e SecDB file)
     /// </summary>
@@ -18,7 +18,7 @@ namespace NFX.Financial.Market
     /// <param name="funcQuote">Aggregation func for Quote, if null default is used which aggregates best bid</param>
     /// <param name="funcTrade">Aggregation func for Quote, if null default is used which aggregates buy and sell volumes</param>
     /// <returns>Synthesized candle stream</returns>
-    public static IEnumerable<CandleSample> SynthesizeCandles(this IEnumerable<ITimeSeriesSample> source, 
+    public static IEnumerable<CandleSample> SynthesizeCandles(this IEnumerable<ITimeSeriesSample> source,
                                                               uint secSamplingPeriod,
                                                               Action<CandleSample, SecDBFileReader.QuoteSample, int> funcQuote = null,
                                                               Action<CandleSample, SecDBFileReader.TradeSample, int> funcTrade = null
@@ -33,9 +33,9 @@ namespace NFX.Financial.Market
            if (bestBid.Price!=0)
            {
              if (i==0) cs.OpenPrice = bestBid.Price;
-             
+
              cs.HighPrice = Math.Max(cs.HighPrice, bestBid.Price);
-             
+
              cs.LowPrice  = cs.LowPrice!=0f ? Math.Min( cs.LowPrice , bestBid.Price) : bestBid.Price;
 
              cs.ClosePrice = bestBid.Price;
@@ -45,7 +45,7 @@ namespace NFX.Financial.Market
       if (funcTrade==null)
         funcTrade = (cs, ts, i) =>
         {
-          if (ts.IsQty) 
+          if (ts.IsQty)
           {
             if (ts.Side==SecDBFileReader.TradeSample.SideType.Buy)
               cs.BuyVolume += ts.Qty;
@@ -88,14 +88,14 @@ namespace NFX.Financial.Market
         {
           funcTrade(emit, tds, aggregateCount);
         }
-        
+
         aggregateCount++;
       }
 
       if (emit!=null)
         yield return emit;
-    } 
-    
+    }
+
     /// <summary>
     /// Aggregates source stream of the normally equidistant samples of the same type by the specified factor
     /// </summary>

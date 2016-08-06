@@ -1,4 +1,4 @@
-/*<FILE_LICENSE>
+﻿/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
 * Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
 *
@@ -50,7 +50,7 @@ namespace NFX.NUnit.Integration.CRUD
       private MongoDBDataStore store;
 
       [SetUp] public void BeforeTest()
-      { 
+      {
          store = new MongoDBDataStore(CONNECT_STR, DB_NAME);
          store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
          store.QueryResolver.RegisterHandlerLocation("NFX.NUnit.Integration.CRUD.MongoSpecific, NFX.NUnit.Integration");
@@ -82,7 +82,7 @@ namespace NFX.NUnit.Integration.CRUD
              GDID = new GDID(1, 1, 100),
              Name = "Jeka Koshmar",
              Age = 89
-          }; 
+          };
 
           var affected = store.Insert(row);
           Assert.AreEqual(1, affected);
@@ -96,14 +96,14 @@ namespace NFX.NUnit.Integration.CRUD
              GDID = new GDID(1, 1, 100),
              Name = "Jeka Koshmar",
              Age = 89
-          }; 
+          };
 
           store.Insert(row);
 
           var row2 = store.LoadOneRow(new Query("CRUD.LoadPerzon", typeof(MyPerzon))
                            {
                              new Query.Param("id", row.GDID)
-                           }) as MyPerzon; 
+                           }) as MyPerzon;
           Assert.IsNotNull( row2 );
 
           Assert.AreEqual(row.GDID, row2.GDID);
@@ -119,14 +119,14 @@ namespace NFX.NUnit.Integration.CRUD
              GDID = new GDID(2, 2, 200),
              Name = "Zalup Marsoedov",
              Age = 89
-          }; 
+          };
 
           store.Insert(row);
-                                  
+
           var row2 = store.LoadRow(new Query<DynamicRow>("CRUD.LoadPerzon")
                            {
                              new Query.Param("id", row.GDID)
-                           }); 
+                           });
           Assert.IsNotNull( row2 );
 
           Assert.AreEqual(row.GDID, row2["_id"].AsGDID());
@@ -138,14 +138,14 @@ namespace NFX.NUnit.Integration.CRUD
       [Test]
       public void InsertManyAndLoadMany()
       {
-          for(var i=0; i<100; i++) 
+          for(var i=0; i<100; i++)
           {
             var row = new MyPerzon
             {
                GDID = new GDID(1, 1, (ulong)i),
                Name = "Jeka Koshmar",
                Age = i
-            }; 
+            };
 
             store.Insert(row);
           }
@@ -154,13 +154,90 @@ namespace NFX.NUnit.Integration.CRUD
                            {
                              new Query.Param("fromAge", 10),
                              new Query.Param("toAge", 15)
-                           }); 
+                           });
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(4, rs.Count);
 
           Assert.AreEqual(14, rs.First()["Age"]);
           Assert.AreEqual(11, rs.Last()["Age"]);
+      }
+
+
+      [Test]
+      public void InsertManyAndLoadCursor()
+      {
+          const int CNT = 1000;
+          for(var i=0; i<CNT; i++)
+          {
+            var row = new MyData
+            {
+               ID = i,
+               Data = "i is "+i.ToString()
+            };
+
+            store.Insert(row);
+          }
+
+          {
+            var cursor = store.OpenCursor(  new Query("CRUD.LoadAllMyData", typeof(MyData))  );
+            Assert.IsNotNull( cursor );
+            var lst = new List<Row>();
+            foreach(var row in cursor)
+             lst.Add(row);
+
+            Assert.AreEqual(CNT, lst.Count);
+            Assert.IsTrue( cursor.Disposed );
+
+            Console.WriteLine(lst[0].ToJSON());
+            Console.WriteLine("..............................");
+            Console.WriteLine(lst[lst.Count-1].ToJSON());
+
+            Assert.AreEqual(0, lst[0]["ID"]);
+            Assert.AreEqual(CNT-1, lst[lst.Count-1]["ID"]);
+          }
+ Console.WriteLine("A");
+          {
+            Cursor cursor;
+            var lst = new List<Row>();
+
+            using(cursor = store.OpenCursor(  new Query("CRUD.LoadAllMyData", typeof(MyData))  ))
+            {
+              Assert.IsNotNull( cursor );
+              foreach(var row in cursor)
+               lst.Add(row);
+
+              try
+              {
+                foreach(var row in cursor)
+                  lst.Add(row);
+                Assert.Fail("Can not iterate the second time");
+              }
+              catch(Exception error)
+              {
+                Console.WriteLine("Expected and got: "+error.ToMessageWithType());
+              }
+            }
+            Assert.AreEqual(CNT, lst.Count);
+            Assert.IsTrue( cursor.Disposed );
+          }
+Console.WriteLine("B");
+          {
+            Cursor cursor;
+
+            using(cursor = store.OpenCursor(  new Query("CRUD.LoadAllMyData", typeof(MyData))  ))
+            {
+              Assert.IsNotNull( cursor );
+              var en = cursor.GetEnumerator();
+              Assert.IsTrue(en.MoveNext());
+              Assert.IsTrue(en.MoveNext());
+              Assert.IsTrue(en.MoveNext());
+              //Notice, We DO NOT iterate to the very end
+              //... not till the end
+            }
+            Assert.IsTrue( cursor.Disposed );
+          }
+Console.WriteLine("C");
       }
 
 
@@ -172,7 +249,7 @@ namespace NFX.NUnit.Integration.CRUD
               GDID = new GDID(1, 1, 1),
               Name = "Eight Eightavich",
               Age = 8
-          }; 
+          };
 
           Assert.AreEqual(1, store.Insert(row) );
 
@@ -182,8 +259,8 @@ namespace NFX.NUnit.Integration.CRUD
                              new Query.Param("toAge", 15)
                            };
 
-          
-          var rs = store.LoadOneRowset(qryBetween1015); 
+
+          var rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(0, rs.Count);
@@ -193,7 +270,7 @@ namespace NFX.NUnit.Integration.CRUD
               GDID = new GDID(1, 1, 2),
               Name = "T Twelver",
               Age = 12
-          }; 
+          };
 
           Assert.AreEqual(0, store.Update(row) );//update did not find
 
@@ -202,7 +279,7 @@ namespace NFX.NUnit.Integration.CRUD
           row.Name="12-er-changed";
           Assert.AreEqual(1, store.Update(row) );//update DID find this time
 
-          rs = store.LoadOneRowset(qryBetween1015); 
+          rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(1, rs.Count);
@@ -220,7 +297,7 @@ namespace NFX.NUnit.Integration.CRUD
               GDID = new GDID(1, 1, 1),
               Name = "Eight Eightavich",
               Age = 8
-          }; 
+          };
 
           Assert.AreEqual(1, store.Insert(row) );
 
@@ -230,8 +307,8 @@ namespace NFX.NUnit.Integration.CRUD
                              new Query.Param("toAge", 15)
                            };
 
-          
-          var rs = store.LoadOneRowset(qryBetween1015); 
+
+          var rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(0, rs.Count);
@@ -241,11 +318,11 @@ namespace NFX.NUnit.Integration.CRUD
               GDID = new GDID(1, 1, 2),
               Name = "T Twelver",
               Age = 12
-          }; 
+          };
 
           Assert.AreEqual(1, store.Insert(row) );
 
-          rs = store.LoadOneRowset(qryBetween1015); 
+          rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(1, rs.Count);
@@ -255,7 +332,7 @@ namespace NFX.NUnit.Integration.CRUD
           cr["Name"] = "12-er";
           store.Upsert(cr);
 
-          rs = store.LoadOneRowset(qryBetween1015); 
+          rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(1, rs.Count);
@@ -267,14 +344,14 @@ namespace NFX.NUnit.Integration.CRUD
       [Test]
       public void InsertDelete()
       {
-          for(var i=0; i<100; i++) 
+          for(var i=0; i<100; i++)
           {
             var row = new MyPerzon
             {
                GDID = new GDID(1, 1, (ulong)i),
                Name = "Jeka Koshmar",
                Age = i
-            }; 
+            };
 
             store.Insert(row);
           }
@@ -285,7 +362,7 @@ namespace NFX.NUnit.Integration.CRUD
                              new Query.Param("toAge", 15)
                            };
 
-          var rs = store.LoadOneRowset(qryBetween1015); 
+          var rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(4, rs.Count);
@@ -293,10 +370,10 @@ namespace NFX.NUnit.Integration.CRUD
           Assert.AreEqual(14, rs.First()["Age"]);
           Assert.AreEqual(11, rs.Last()["Age"]);
 
-          
+
           Assert.AreEqual(1, store.Delete(rs.First()));//DELETE!!!!
 
-          rs = store.LoadOneRowset(qryBetween1015); 
+          rs = store.LoadOneRowset(qryBetween1015);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(3, rs.Count);
@@ -311,15 +388,15 @@ namespace NFX.NUnit.Integration.CRUD
       {
           var rowset = new Rowset(Schema.GetForTypedRow(typeof(MyPerzon)));
           rowset.LogChanges = true;
-          
-          for(var i=0; i<100; i++) 
+
+          for(var i=0; i<100; i++)
           {
             rowset.Insert( new MyPerzon
             {
                GDID = new GDID(1, 1, (ulong)i),
                Name = "Jeka Koshmar",
                Age = i
-            }); 
+            });
           }
 
           var qryBetween5060 = new Query("CRUD.LoadPerzonsInAgeSpan", typeof(MyPerzon))
@@ -328,7 +405,7 @@ namespace NFX.NUnit.Integration.CRUD
                              new Query.Param("toAge", 60)
                            };
 
-          var rs = store.LoadOneRowset(qryBetween5060); 
+          var rs = store.LoadOneRowset(qryBetween5060);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(0, rs.Count);
@@ -336,7 +413,7 @@ namespace NFX.NUnit.Integration.CRUD
           store.Save(rowset);
           rowset.PurgeChanges();
 
-          rs = store.LoadOneRowset(qryBetween5060); 
+          rs = store.LoadOneRowset(qryBetween5060);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(9, rs.Count);
@@ -346,7 +423,7 @@ namespace NFX.NUnit.Integration.CRUD
           rowset.Delete(rowset[59]); //physically deleted
           store.Save(rowset);
 
-          rs = store.LoadOneRowset(qryBetween5060); 
+          rs = store.LoadOneRowset(qryBetween5060);
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(7, rs.Count);
@@ -358,14 +435,14 @@ namespace NFX.NUnit.Integration.CRUD
       public void GetSchema_ROW_JSON_ROW()
       {
          var data = new byte[] { 0x00, 0x79, 0x14 };
-         var row = 
+         var row =
            new MyPerzon
             {
                GDID = new GDID(1, 1, 980),
                Name = "Lenin Grib",
                Age = 100,
                Data = data
-            }; 
+            };
 
          store.Insert(row);
 
@@ -373,17 +450,17 @@ namespace NFX.NUnit.Integration.CRUD
                            {
                              new Query.Param("id", new GDID(1,1,980))
                            };
-         
+
          var schema = store.GetSchema(qry);
-         
+
          Assert.IsNotNull(schema);
          Assert.AreEqual(4, schema.FieldCount);
-         
-         Assert.AreEqual(0, schema["_id"].Order); 
-         Assert.AreEqual(1, schema["Name"].Order); 
-         Assert.AreEqual(2, schema["Age"].Order); 
-         Assert.AreEqual(3, schema["Data"].Order); 
-         
+
+         Assert.AreEqual(0, schema["_id"].Order);
+         Assert.AreEqual(1, schema["Name"].Order);
+         Assert.AreEqual(2, schema["Age"].Order);
+         Assert.AreEqual(3, schema["Data"].Order);
+
          var row2 = new DynamicRow(schema);//Notice: We are creating dynamic row with schema taken from Mongo
 
          row2["_id"] = new GDID(10,10,10);
@@ -408,25 +485,25 @@ namespace NFX.NUnit.Integration.CRUD
       [Test]
       public void Count()
       {
-        for(var i=0; i<100; i++) 
+        for(var i=0; i<100; i++)
           {
             var row = new MyPerzon
             {
                GDID = new GDID(1, 1, (ulong)i),
                Name = "Jeka Koshmar",
                Age = i
-            }; 
+            };
 
             store.Insert(row);
           }
-          
+
           //Note!
           // this query is implemented in C# code
           var rs = store.LoadOneRowset(new Query("CountPerzons")
                            {
                              new Query.Param("fromAge", 10),
                              new Query.Param("toAge", 90)
-                           }); 
+                           });
           Assert.IsNotNull( rs );
 
           Assert.AreEqual(1, rs.Count);
@@ -447,7 +524,7 @@ namespace NFX.NUnit.Integration.CRUD
             var affected = store.Insert(person, (r, k, f) => f.Name != "Age");
             Assert.AreEqual(1, affected);
 
-            var query = new Query<MyPerzon>("CRUD.LoadPerzon") 
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon")
                            {
                              new Query.Param("id", person.GDID)
                            };
@@ -467,14 +544,14 @@ namespace NFX.NUnit.Integration.CRUD
             };
 
             store.Insert(person);
-            var query = new Query<MyPerzon>("CRUD.LoadPerzon") 
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon")
                            {
                              new Query.Param("id", person.GDID)
                            };
             var persisted = store.LoadRow(query);
             persisted.Name = "Ivan";
             persisted.Age = 56;
-            
+
             var affected = store.Update(persisted, null, (r, k, f) => f.Name != "Name");
             var updated = store.LoadRow(query);
 
@@ -494,14 +571,14 @@ namespace NFX.NUnit.Integration.CRUD
             };
 
             store.Insert(person);
-            var query = new Query<MyPerzon>("CRUD.LoadPerzon") 
+            var query = new Query<MyPerzon>("CRUD.LoadPerzon")
                            {
                              new Query.Param("id", person.GDID)
                            };
             var persisted = store.LoadRow(query);
             persisted.Name = "Ivan";
             persisted.Age = 56;
-            
+
             var affected = store.Upsert(persisted, (r, k, f) => f.Name != "Name");
             var upserted = store.LoadRow(query);
 
@@ -648,19 +725,291 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(23, person3.Age);
         }
 
+      [Test]
+      public void SubDocuments_InsertAndLoad()
+      {
+          var row = new MyInvoice
+          {
+             GDID = new GDID(1, 1, 100),
+             Name = "Dimon Khachaturyan",
+             Date = new DateTime(1990, 08, 15, 14, 0, 0, DateTimeKind.Utc),
+             Lines = new MyInvoiceLine[]
+             {
+              new MyInvoiceLine{ LineNo = 1, Description = "Sosiki", Amount = 12.67m },
+              new MyInvoiceLine{ LineNo = 2, Description = "Mylo", Amount = 8.50m },
+              new MyInvoiceLine{ LineNo = 3, Description = "Туалетная Бумага 'Зева'", Amount = 9.75m },
+              new MyInvoiceLine{ LineNo = 4, Description = "Трусы Мужские", Amount = 3.72m }
+             }
+          };
+
+          store.Insert(row);
+
+          var row2 = store.LoadRow(new Query<MyInvoice>("CRUD.LoadInvoice")
+                           {
+                             new Query.Param("id", row.GDID)
+                           });
+          Assert.IsNotNull( row2 );
+
+          Assert.AreEqual(row.GDID, row2.GDID);
+          Assert.AreEqual(row.Name, row2.Name);
+          Assert.AreEqual(row.Date, row2.Date);
+
+          Assert.IsNotNull( row2.Lines );
+          Assert.AreEqual(4, row2.Lines.Length );
+
+          Assert.AreEqual(1, row2.Lines[0].LineNo );
+          Assert.AreEqual("Sosiki", row2.Lines[0].Description );
+          Assert.AreEqual(12.67m, row2.Lines[0].Amount );
+
+          Assert.AreEqual(2, row2.Lines[1].LineNo );
+          Assert.AreEqual("Mylo", row2.Lines[1].Description );
+          Assert.AreEqual(8.50m, row2.Lines[1].Amount );
+
+          Assert.AreEqual(3, row2.Lines[2].LineNo );
+          Assert.AreEqual("Туалетная Бумага 'Зева'", row2.Lines[2].Description );
+          Assert.AreEqual(9.75m, row2.Lines[2].Amount );
+
+          Assert.AreEqual(4, row2.Lines[3].LineNo );
+          Assert.AreEqual("Трусы Мужские", row2.Lines[3].Description );
+          Assert.AreEqual(3.72m, row2.Lines[3].Amount );
+      }
+
+
+      [Test]
+      public void SubDocuments_MuchData()
+      {
+          const int CNT = 1000;
+
+          var row = new MuchData
+          {
+            Address1 = "1782 Zhabovaja Uliza # 2",
+            Address2 = "Kv. # 18",
+            AddressCity = "Odessa",
+            AddressState = "Zhopinsk",
+            AddressCountry = "Russia",
+
+            Mother = new MyPerzon{ Name = "Alla Pugacheva", Age = 56, GDID = new GDID(1,12,456), Data = new byte[]{1,7,6,2,4}  },
+            Father = new MyPerzon{ Name = "Tsoi Korolenko", Age = 52, GDID = new GDID(21,2,2456), Data = new byte[]{1,2,3,4,5} },
+
+            Decimals = new decimal[]{ 23m, 234m, 12m, 90m, 234m},
+            Double   = new double[] { 12.3d, 89.2d, 90d },
+            Ints     = new int[]    { 23, 892,33,423 },
+            Phone    = "22-3-22",
+
+            Invoices = new MyInvoice[]
+            {
+                new MyInvoice
+                {
+                    GDID = new GDID(1, 1, 100),
+                    Name = "Dimon Khachaturyan",
+                    Date = new DateTime(1990, 08, 15, 14, 0, 0, DateTimeKind.Utc),
+                    Lines = new MyInvoiceLine[]
+                    {
+                    new MyInvoiceLine{ LineNo = 1, Description = "Sosiki", Amount = 12.67m },
+                    new MyInvoiceLine{ LineNo = 2, Description = "Mylo", Amount = 8.50m },
+                    new MyInvoiceLine{ LineNo = 3, Description = "Туалетная Бумага 'Зева'", Amount = 9.75m },
+                    new MyInvoiceLine{ LineNo = 4, Description = "Трусы Мужские", Amount = 3.72m }
+                    }
+                },
+
+                new MyInvoice
+                {
+                    GDID = new GDID(1, 1, 200),
+                    Name = "Karen Matnazarov",
+                    Date = new DateTime(1990, 08, 15, 14, 0, 0, DateTimeKind.Utc),
+                    Lines = new MyInvoiceLine[]
+                    {
+                    new MyInvoiceLine{ LineNo = 1, Description = "Sol", Amount = 2.67m },
+                    new MyInvoiceLine{ LineNo = 2, Description = "Gazeta", Amount = 4.50m },
+                    }
+                }
+            }
+          };
+
+          var sw = System.Diagnostics.Stopwatch.StartNew();
+
+          row.GDID =  new GDID(10, 0);
+          store.Insert(row);
+
+          for(var i=1; i<CNT; i++)
+          {
+            row.GDID =  new GDID(10, (ulong)i);
+            store.Insert(row);
+          }
+
+          var elp = sw.ElapsedMilliseconds;
+
+          Console.WriteLine("Did {0} in {1} ms at {2} ops/sec".Args(CNT, elp, CNT / (elp / 1000d)));
+
+
+          var row2 = store.LoadRow(new Query<MuchData>("CRUD.LoadMuchData")
+                           {
+                             new Query.Param("id", row.GDID)
+                           });
+          Assert.IsNotNull( row2 );
+
+          Assert.AreEqual(row.Address1,    row2.Address1);
+          Assert.AreEqual(row.Address2,    row2.Address2);
+          Assert.AreEqual(row.AddressCity, row2.AddressCity);
+          Assert.AreEqual(row.AddressState, row2.AddressState);
+          Assert.AreEqual(row.AddressCountry, row2.AddressCountry);
+          Assert.AreEqual(row.Invoices.Length, row2.Invoices.Length);
+      }
+
+
+      [Test]
+      public void Key_Violation()
+      {
+        var data1 = new MyData{ ID = 1, Data = "My data string 1"};
+        var data2 = new MyData{ ID = 2, Data = "My data string 2"};
+        var data1again  = new MyData{ ID = 1, Data = "My data string 1 again"};
+
+        store.Insert(data1);
+        store.Insert(data2);
+
+        try
+        {
+          store.Insert(data1again);
+          Assert.Fail("No key violation");
+        }
+        catch(Exception error)
+        {
+          var dae = error as MongoDBDataAccessException;
+          Assert.IsNotNull( dae );
+          Assert.IsNotNull( dae.KeyViolation);
+          Assert.IsTrue( dae.KeyViolationKind == NFX.DataAccess.KeyViolationKind.Primary);
+          Console.WriteLine(error.ToMessageWithType());
+
+          Console.WriteLine("Key violation is: "+dae.KeyViolation);
+        }
+
+        var rowset = store.LoadOneRowset(  new Query("CRUD.LoadAllMyData", typeof(MyData))  );
+        Assert.IsNotNull( rowset );
+
+        Assert.AreEqual(2, rowset.Count);
+
+        Assert.AreEqual(1, rowset[0][0]);
+        Assert.AreEqual(2, rowset[1][0]);
+      }
+
+
         public class MyPerzon : TypedRow
         {
           [Field(backendName: "_id")]
-          public GDID GDID { get; set;} 
+          public GDID GDID { get; set;}
 
           [Field]
-          public string Name { get; set;} 
+          public string Name { get; set;}
 
           [Field]
-          public int Age { get; set;} 
+          public int Age { get; set;}
 
           [Field]
           public byte[] Data {get; set; }
         }
+
+        public class MyData : TypedRow
+        {
+          [Field(backendName: "_id")]
+          public long ID { get; set;}
+
+          [Field]
+          public string Data { get; set;}
+        }
+
+
+
+        public class MyInvoice : TypedRow
+        {
+          [Field(backendName: "_id")]
+          public GDID GDID { get; set;}
+
+          [Field(backendName: "name")]
+          public string Name { get; set;}
+
+          [Field(backendName: "dt")]
+          public DateTime Date { get; set;}
+
+          [Field(backendName: "lns")]
+          public MyInvoiceLine[] Lines {get; set; }
+        }
+
+        public class MyInvoiceLine : TypedRow
+        {
+          [Field(backendName: "ln")]
+          public int LineNo { get; set;}
+
+          [Field(backendName: "d")]
+          public string Description { get; set;}
+
+          [Field(backendName: "a")]
+          public decimal Amount { get; set;}
+        }
+
+
+
+        public class MuchData : TypedRow
+        {
+          [Field(backendName: "_id")]
+          public GDID GDID { get; set;}
+
+          [Field(backendName: "adr1")]
+          public string Address1{ get; set;}
+
+          [Field(backendName: "adr2")]
+          public string Address2{ get; set;}
+
+          [Field(backendName: "adrCity")]
+          public string AddressCity{ get; set;}
+
+          [Field(backendName: "adrState")]
+          public string AddressState{ get; set;}
+
+          [Field(backendName: "adrCountry")]
+          public string AddressCountry{ get; set;}
+
+          [Field(backendName: "phones")]
+          public string Phone{ get; set;}
+
+          [Field(backendName: "ints")]
+          public int[] Ints{ get; set;}
+
+          [Field(backendName: "doubles")]
+          public double[] Double{ get; set;}
+
+          [Field(backendName: "decimals")]
+          public decimal[] Decimals{ get; set;}
+
+          [Field(backendName: "m")]
+          public MyPerzon Mother{ get; set;}
+
+          [Field(backendName: "f")]
+          public MyPerzon Father{ get; set;}
+
+          [Field(backendName: "inv")]
+          public MyInvoice[] Invoices{ get; set;}
+
+          [Field(backendName: "i1")]
+          public int Int1{ get; set; }
+
+          [Field(backendName: "i2")]
+          public int Int2{ get; set; }
+
+          [Field(backendName: "i3")]
+          public int Int3{ get; set; }
+
+          [Field(backendName: "L1")]
+          public long Long1{ get; set; }
+
+          [Field(backendName: "L2")]
+          public long Long2{ get; set; }
+
+          [Field(backendName: "B1")]
+          public bool Bool1{ get; set; }
+
+          [Field(backendName: "B2")]
+          public bool Bool2{ get; set; }
+        }
+
   }
 }

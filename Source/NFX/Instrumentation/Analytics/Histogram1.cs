@@ -97,7 +97,7 @@ namespace NFX.Instrumentation.Analytics
         #endregion
 
         #region Fields
-        
+
             protected Dimension<TData1> m_Dimension1;
 
         #endregion

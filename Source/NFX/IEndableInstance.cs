@@ -22,7 +22,7 @@ using System.Text;
 namespace NFX
 {
   /// <summary>
-  /// Describes an entity that can request some hosting container to end its lifetime by calling End() method 
+  /// Describes an entity that can request some hosting container to end its lifetime by calling End() method
   /// </summary>
   public interface IEndableInstance
   {

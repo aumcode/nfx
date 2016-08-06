@@ -45,9 +45,9 @@ namespace NFX.RelationalModel
         RecordModel,
         ErlScript
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// Represents a compiler that can turn source schema into particular target script/schema, i.e. into database creation script for particular technology
     ///  (i.e. Oracle, MySQL, PostgreSQL, etc..) or some other code/script (i.e. RecordModel classes, JavaScript classes)
@@ -81,7 +81,7 @@ namespace NFX.RelationalModel
                                 /// </summary>
                                 public StringBuilder CurrentOrUnspecified { get{ return m_Current ?? this["Unspecified"];}}
 
-    
+
                                 public IEnumerator<KeyValuePair<string,StringBuilder>> GetEnumerator()
                                 {
  	                                return m_Dict.GetEnumerator();
@@ -93,16 +93,16 @@ namespace NFX.RelationalModel
                                 }
                             }
 
-                        #endregion        
-        
-        
+                        #endregion
+
+
         #region CONSTS
-            
+
             /// <summary>
             /// Specifies the name of the file to be included in the output verbatim, i.e.:  script-include="mytypes.txt"{}
             /// </summary>
             public const string SCRIPT_INCLUDE_SECTION = "script-include";
-            
+
             /// <summary>
             /// Specifies the comment that will be output for decorated entity in the script
             /// </summary>
@@ -119,8 +119,8 @@ namespace NFX.RelationalModel
             public const string SCRIPT_OUTPUT_NAME_ATTR = "output-name";
 
         #endregion
-        
-        
+
+
         #region .ctor
             protected Compiler(Schema schema)
             {
@@ -131,20 +131,20 @@ namespace NFX.RelationalModel
         #region Fields
             private Schema m_Schema;
             private bool m_HasCompiled;
-            private Exception m_CompileException; 
-            protected List<SchemaCompilationException> m_CompileErrors = new List<SchemaCompilationException>();   
-            
-            
+            private Exception m_CompileException;
+            protected List<SchemaCompilationException> m_CompileErrors = new List<SchemaCompilationException>();
+
+
             private bool m_CaseSensitiveNames;
             private string m_OutputPath;
 
             private string m_OutputPrefix;
-                
+
         #endregion
 
 
         #region Properties
-            
+
             /// <summary>
             /// Returns the name of the technology that this compiler targets. i.e. "ORACLE", "RecordModel"
             /// </summary>
@@ -155,8 +155,8 @@ namespace NFX.RelationalModel
             /// Returns type of target that this instance produces output for
             /// </summary>
             public abstract TargetType Target { get; }
-            
-            
+
+
             /// <summary>
             /// Returns source schema
             /// </summary>
@@ -193,7 +193,7 @@ namespace NFX.RelationalModel
             public virtual bool CaseSensitiveNames
             {
                 get{ return m_CaseSensitiveNames; }
-                set 
+                set
                 {
                     EnsureNotCompiled();
                     m_CaseSensitiveNames = value;
@@ -216,7 +216,7 @@ namespace NFX.RelationalModel
             public string OutputPath
             {
                 get{ return m_OutputPath ?? string.Empty; }
-                set 
+                set
                 {
                     EnsureNotCompiled();
                     m_OutputPath = value;
@@ -231,7 +231,7 @@ namespace NFX.RelationalModel
             public string OutputPrefix
             {
                 get{ return m_OutputPrefix ?? string.Empty; }
-                set 
+                set
                 {
                     EnsureNotCompiled();
                     m_OutputPrefix = value;
@@ -249,7 +249,7 @@ namespace NFX.RelationalModel
                 ConfigAttribute.Apply(this, node);
             }
 
-            
+
             public void Compile()
             {
                 if (m_HasCompiled) return;
@@ -275,7 +275,7 @@ namespace NFX.RelationalModel
                 if (m_HasCompiled)
                  throw new CompilerException(StringConsts.SCHEMA_HAS_ALREADY_COMPILED_OPTION_CHANGE_ERROR.Args(GetType().FullName));
             }
-            
+
 
             /// <summary>
             /// Override to provide meaningful extension for particular technology, i.e. SQL
@@ -285,7 +285,7 @@ namespace NFX.RelationalModel
                 return ".{0}.out".Args(Name);
             }
 
-            
+
             /// <summary>
             /// Performs a compilation - this is a root  override-able method where compilation starts
             /// </summary>
@@ -296,14 +296,14 @@ namespace NFX.RelationalModel
 
                 var outputs = new Outputs();
                 BuildOutputs(outputs);
-                
+
                 foreach(var pair in outputs)
                     File.WriteAllText( Path.Combine(OutputPath, OutputPrefix + EscapeFileName(pair.Key) + GetOutputFileSuffix(pair.Key)), pair.Value.ToString());
-            } 
+            }
 
 
             /// <summary>
-            /// Override to perform compilation into output, the base implementation loops over all nodes and interprets 
+            /// Override to perform compilation into output, the base implementation loops over all nodes and interprets
             ///  script includes
             /// </summary>
             protected virtual void BuildOutputs(Outputs outputs)
@@ -312,7 +312,7 @@ namespace NFX.RelationalModel
                 {
                     if      (node.IsSameName(SCRIPT_INCLUDE_SECTION)) IncludeScriptFile(node, outputs);
                     else if (node.IsSameName(SCRIPT_TEXT_SECTION)) IncludeScriptText(node, outputs);
-                    else 
+                    else
                          BuildNodeOutput(node, outputs);
                 }
             }
@@ -320,9 +320,9 @@ namespace NFX.RelationalModel
             /// <summary>
             /// Override to perform custom interpretation per particular compiler target
             /// </summary>
-            protected abstract void BuildNodeOutput(IConfigSectionNode node, Outputs outputs); 
+            protected abstract void BuildNodeOutput(IConfigSectionNode node, Outputs outputs);
 
-        
+
             /// <summary>
             /// Performs a script file include
             /// </summary>
@@ -338,8 +338,8 @@ namespace NFX.RelationalModel
                             if (File.Exists(fn)) break;
                         }
                 }
-                if (fn==null || !File.Exists(fn)) 
-                    throw new SchemaCompilationException(node.RootPath, 
+                if (fn==null || !File.Exists(fn))
+                    throw new SchemaCompilationException(node.RootPath,
                                                          StringConsts.RELATIONAL_COMPILER_INCLUDE_SCRIPT_NOT_FOUND_ERROR
                                                                      .Args(node.ValueAsString(StringConsts.NULL_STRING), node.RootPath));
 
@@ -348,13 +348,13 @@ namespace NFX.RelationalModel
                 var outputName = node.AttrByName(SCRIPT_OUTPUT_NAME_ATTR).Value;
 
                 var output = outputName.IsNullOrWhiteSpace() ? outputs.CurrentOrUnspecified : outputs[outputName];
-                
+
                 output.Append(content);
             }
 
             /// <summary>
             /// Performs a verbatim script text include
-            /// </summary>                                    
+            /// </summary>
             public virtual void IncludeScriptText(IConfigSectionNode node, Outputs outputs)
             {
                 var text = node.Value;
@@ -362,11 +362,11 @@ namespace NFX.RelationalModel
                 var outputName = node.AttrByName(SCRIPT_OUTPUT_NAME_ATTR).Value;
 
                 var output = outputName.IsNullOrWhiteSpace() ? outputs.CurrentOrUnspecified : outputs[outputName];
-                
+
                 output.Append(text);
             }
 
-            
+
 
             /// <summary>
             /// Replaces incompatible characters for file names with "_"
@@ -392,6 +392,6 @@ namespace NFX.RelationalModel
             }
 
         #endregion
-            
+
     }
 }

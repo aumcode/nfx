@@ -54,40 +54,40 @@ namespace NFX.Wave.Filters
       /// Returns matches used by the filter to determine whether redirect should be issued
       /// </summary>
       public OrderedRegistry<WorkMatch> RedirectMatches { get{ return m_RedirectMatches;}}
-      
+
     #endregion
 
     #region Protected
 
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         foreach(var match in m_RedirectMatches.OrderedValues)
         {
           var matched = match.Make(work);
           if (matched==null) continue;
-          
+
           var url = matched[VAR_REDIRECT_URL].AsString();
           if (url.IsNotNullOrWhiteSpace())
           {
              work.Response.RedirectAndAbort(url);
              return;
           }
-        } 
-          
+        }
+
         this.InvokeNextWorker(work, filters, thisFilterIndex);
       }
 
-    #endregion 
-    
+    #endregion
+
     #region .pvt
      private void configureMatches(IConfigSectionNode confNode)
       {
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_RedirectMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName)));
       }
-    
-    #endregion  
+
+    #endregion
   }
 
 }

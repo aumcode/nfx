@@ -34,16 +34,16 @@ namespace NFX.Security
   {
      public SocialNetTokenCredentials(string netName, string token, string userName = null)
      {
-       m_NetName = netName; 
+       m_NetName = netName;
        m_Token = token;
        m_UserName = userName;
      }
-     
-     
+
+
      private string m_NetName;
      private string m_Token;
      private string m_UserName;
-     
+
      /// <summary>
      /// Name of social network that returned the token
      /// </summary>
@@ -67,11 +67,11 @@ namespace NFX.Security
      {
        get { return m_UserName ?? string.Empty; }
      }
-     
-        
 
 
-     public override void Forget() 
+
+
+     public override void Forget()
      {
        m_Token = string.Empty;
        base.Forget();
@@ -83,7 +83,7 @@ namespace NFX.Security
      {
        return "{0}({1}:{2})".Args(GetType().Name, NetName, UserName);
      }
-  
-  
+
+
   }
 }

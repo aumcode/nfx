@@ -36,7 +36,7 @@ namespace NFX.Environment
   public static class FactoryUtils
   {
     #region CONSTS
-        
+
         public const string CONFIG_TYPE_ATTR = "type";
 
     #endregion
@@ -69,7 +69,7 @@ namespace NFX.Environment
             //---
 
             result.Configure(node);
-            
+
             Behavior.ApplyConfiguredBehaviors(result, node);
 
             return result;
@@ -83,22 +83,22 @@ namespace NFX.Environment
         {
             try
             {
-                if (node==null) throw new ArgumentException("node==null");
-                return make<T>(node, defaultType, args);
+                var tName = (node!=null && node.Exists) ? node.AttrByName(CONFIG_TYPE_ATTR).Value : null;
+                return make<T>(tName, defaultType, args);
             }
             catch(Exception error)
             {
-                throw new ConfigException(string.Format(StringConsts.CONFIGURATION_TYPE_CREATION_ERROR, 
-                                                         (node!=null) ? node.RootPath : StringConsts.NULL_STRING, 
+                throw new ConfigException(string.Format(StringConsts.CONFIGURATION_TYPE_CREATION_ERROR,
+                                                         (node!=null) ? node.RootPath : StringConsts.NULL_STRING,
                                                          error.ToMessageWithType()
                                                        ),
                                           error);
-            } 
+            }
         }
 
 
         /// <summary>
-        /// Invokes a constructor for type feeding it the specified args: 
+        /// Invokes a constructor for type feeding it the specified args:
         ///  node{type="NS.Type, Assembly" arg0=1 arg1=true....}
         /// If the typePattern is passed, then the '*' in pattern is replaced with 'type' attr content.
         /// This is needed for security, as this method allows to inject any type with any ctor params when typePattern is null
@@ -107,13 +107,13 @@ namespace NFX.Environment
         {
            string tpn = CoreConsts.UNKNOWN;
            try
-           {  
-              if (node==null || !node.Exists) 
-                throw new ConfigException(StringConsts.ARGUMENT_ERROR+"node==null|empty");
-              
+           {
+              if (node==null || !node.Exists)
+                throw new ConfigException(StringConsts.ARGUMENT_ERROR+"FactoryUtils.Make(node==null|empty)");
+
               tpn = node.AttrByName(CONFIG_TYPE_ATTR).Value;
-              
-              if (tpn.IsNullOrWhiteSpace()) 
+
+              if (tpn.IsNullOrWhiteSpace())
                 tpn = typeof(T).AssemblyQualifiedName;
               else
                 if (typePattern.IsNotNullOrWhiteSpace())
@@ -135,7 +135,7 @@ namespace NFX.Environment
               //dynamically re-cast argument types
               for(var i=0; i<args.Count; i++)
                 args[i] = args[i].ToString().AsType(cinfo.GetParameters()[i].ParameterType);
-            
+
               try
               {
                 return (T)Activator.CreateInstance(tp, args.ToArray());
@@ -157,11 +157,9 @@ namespace NFX.Environment
 
     #region .pvt
 
-        private static T make<T>(IConfigSectionNode node, Type defaultType, object[] args)
+        private static T make<T>(string tName, Type defaultType, object[] args)
         {
           T result;
-     
-          string tName = node.AttrByName(CONFIG_TYPE_ATTR).Value;
 
           Type t;
 

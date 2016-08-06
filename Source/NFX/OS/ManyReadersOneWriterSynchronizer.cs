@@ -23,11 +23,11 @@ namespace NFX.OS
   /// <summary>
   /// This struct is for ADVANCED SYSTEM use-cases. DEVELOPERS: do not use this in a business application code.
   /// Represents an efficient SpinWait/Yield-based lock that allows many readers to operate concurrently
-  ///  and only one single concurrent writer. This struct must be used ONLY with a very fast/tight operations that 
+  ///  and only one single concurrent writer. This struct must be used ONLY with a very fast/tight operations that
   ///  do not block on IO and other locks, and are expected to complete under a tenth fraction of a second.
   /// Warning: this lock CAN NOT be held for longer than 5 hrs by design. DO NOT use this lock with IO-dependent operations.
-  /// This is not really a limitation as this class is used to guard operations which are very fast (fractions of a second) and 
-  /// should fail faster otherwise. 
+  /// This is not really a limitation as this class is used to guard operations which are very fast (fractions of a second) and
+  /// should fail faster otherwise.
   /// This lock IS NOT REENTRANT!
   /// </summary>
   public struct ManyReadersOneWriterSynchronizer
@@ -42,12 +42,12 @@ namespace NFX.OS
       private long m_Readers;
       private int m_WaitingWriters;
 
-      
+
       /// <summary>
       /// Obtains a read lock returning true on success.
       /// Many threads may obtain a read lock at the same time, however a single write lock excludes any read locks,
       /// corollary any single read lock held excludes anyone obtaining a write lock.
-      /// False is returned if cancel func was supplied and returned true to cancel-out the waiting 
+      /// False is returned if cancel func was supplied and returned true to cancel-out the waiting
       /// </summary>
       public bool GetReadLock(Func<object, bool> cancel = null, object cancelContext = null)
       {
@@ -60,7 +60,7 @@ namespace NFX.OS
 
             if (current==0)
              throw new NFXException(StringConsts.INVALID_OPERATION_ERROR+GetType().FullName+".GetReadLock() overflow failure");
-            
+
 
             //Suppose there are 1000 real/physical threads all executing at the same time (which is not physically possible but is used as the worst case)
             //There are 200 5-ms intervals in a second (the worst case below MIN_SLEEP_MS=5), = 1000 threads * 200 intervals * 60 sec = 12,000,000 increments a minute
@@ -70,16 +70,16 @@ namespace NFX.OS
                 if (pauseCount<PAUSE_COUNT_PER_BATCH)
                 {
                      var tightWait = MULTI_CPU && Thread.VolatileRead(ref m_WaitingWriters) < CPU_COUNT;
-                
+
                      if (tightWait)
-                       tightOnePause(pauseCount); 
-                     else 
+                       tightOnePause(pauseCount);
+                     else
                        Thread.Sleep(1);
-                 
+
                      pauseCount++;
                      continue;
                 }
-              
+
                 pauseCount = 0;
             }
 
@@ -103,14 +103,14 @@ namespace NFX.OS
       /// <summary>
       /// Obtains a write lock returning true on success. Only one thread may hold a write lock at a time,
       /// and noone else can obtain a read lock until the write lock is released.
-      /// False is returned if cancel func was supplied and returned true to cancel-out the waiting 
+      /// False is returned if cancel func was supplied and returned true to cancel-out the waiting
       /// </summary>
       public bool GetWriteLock(Func<object, bool> cancel = null, object cancelContext = null)
       {
           int pauseCount = 0;
-          
+
           Interlocked.Increment(ref m_WaitingWriters);
-          
+
           while(true)
           {
             long current = Interlocked.CompareExchange(ref m_Readers, long.MinValue, 0);
@@ -124,18 +124,18 @@ namespace NFX.OS
             if (pauseCount<PAUSE_COUNT_PER_BATCH)
             {
                   var tightWait = MULTI_CPU && Thread.VolatileRead(ref m_WaitingWriters) < CPU_COUNT;
-                
+
                   if (tightWait)
-                    tightOnePause(pauseCount); 
-                  else 
+                    tightOnePause(pauseCount);
+                  else
                     Thread.Sleep(1);
-                 
+
                   pauseCount++;
                   continue;
             }
-              
+
             pauseCount = 0;
-          
+
             //severe contention
             if (cancel!=null)
             {
@@ -156,10 +156,10 @@ namespace NFX.OS
                   return false;//lock failed
                 }
             }
-            
+
 
             Thread.Sleep(MIN_SLEEP_MS + (Thread.CurrentThread.GetHashCode() & 0xf));
-            
+
           }
       }
 
@@ -185,7 +185,7 @@ namespace NFX.OS
              else
                if (pauseCount>(PAUSE_COUNT_PER_BATCH / 4)) { Thread.SpinWait(500); }
                else
-                 Thread.SpinWait(250); 
+                 Thread.SpinWait(250);
       }
 
   }

@@ -67,217 +67,6 @@ WAVE.GUI = (function(){
         TREE_SELECTION_MULTI: 2,
         // } Tree
 
-        // ImageBox {   
-        // classes               
-        CLS_IBOX_DIV_FRAME: "wvIBoxDivFrame",
-        CLS_IBOX_DIV_MAINIMAGE: "wvIBoxDivMainImage",
-        CLS_IBOX_IMG_MAINIMAGE: "wvIBoxImgMainImage",
-        CLS_IBOX_DIV_THUMBSCONTAINER: "wvIBoxDivThumbsContainer",
-        CLS_IBOX_DIV_THUMBSNAVIGATION: "wvIBoxDivThumbsNavigation",
-        CLS_IBOX_DIV_THUMBSIMAGESCONTAINER: "wvIBoxDivThumbsImagesContainer",
-        CLS_IBOX_DIV_THUMB: "wvIBoxDivThumb",
-        CLS_IBOX_DIV_THUMB_CROP: "wvIBoxDivThumbCrop",
-        CLS_IBOX_DIV_THUMB_IMAGE: "wvIBoxDivThumbImage",
-
-        // default styles
-        STL_DIV_FRAME: "",
-        STL_IMG_MAINIMAGE: "position: relative; display: block;",
-        STL_DIV_MAINIMAGE_V: "width: 82%;" +
-                             "height: 100%;" +
-                             "margin: 0 1%;" +
-                             "overflow: hidden;",
-        STL_DIV_MAINIMAGE_H: "width: 100%;" +
-                             "height: 82%;" +
-                             "margin: 1% 0;" +
-                             "overflow: hidden;",
-        STL_DIV_THUMBSCONTAINER_V: "width: 15%;" +
-                                   "height: 100%;",
-        STL_DIV_THUMBSCONTAINER_H: "width: 100%;" +
-                                   "height: 15%;",
-        STL_DIV_THUMBSNAV_V: "width: 100%;" +
-                             "height: 5%;" +
-                             "display: none;",
-        STL_DIV_THUMBSNAV_H: "width: 5%;" +
-                             "height: 100%;" +
-                             "display: none;",
-        STL_IMG_THUMBSNAV: "display: block;" +
-                           "position: relative;",
-        STL_DIV_THUMBSIMAGESCONTAINER_V: "width: 100%;" +
-                                         "height: 100%;" +
-                                         "overflow: hidden;",
-        STL_DIV_THUMBSIMAGESCONTAINER_H: "width: 100%;" +
-                                         "height: 100%;" +
-                                         "overflow: hidden;" +
-                                         "display: inline-block;" +
-                                         "white-space: nowrap; " +
-                                         "vertical-align: top;",
-        STL_DIV_THUMB_V: "width: 100%;" +
-                         "margin: 3px 0;",
-        STL_DIV_THUMB_H: "height: 100%;" +
-                         "margin: 0 3px;" +
-                         "display: inline-block;" +
-                         "vertical-align: top;",
-        STL_DIV_THUMB_CROP: "overflow: hidden;" +
-                            "position:relative;",
-        STL_DIV_THUMB_IMAGE: "position: relative;",
-        STL_DISABLE_MOBILE_HANDLING: "-webkit-touch-callout: none;" +
-                                     "-webkit-user-select: none;" +
-                                     "-khtml-user-select: none;" +
-                                     "-moz-user-select: none;" +
-                                     "-ms-user-select: none;" +
-                                     "user-select: none;", 
-
-        // events
-        EVT_IBOX_IMAGE_CHANGED: "ibox-image-changed",
-        EVT_IBOX_ERROR: "ibox-error",
-        
-        // constants
-        POS_LEFT:   "left",
-        POS_RIGHT:  "right",
-        POS_TOP:    "top",
-        POS_BOTTOM: "bottom",
-
-        // default values
-        DEFAULT_THUMBS_POSITION: "left",
-        DEFAULT_IMAGE_FADEIN_TIME: 500,
-        DEFAULT_IMAGE_FADEOUT_TIME: 0, 
-        DEFAULT_THUMBS_SCROLL_DELTA: 0.5,
-        DEFAULT_ARROWS_OPACITY: 0.3,
-        DEFAULT_IMAGE:
-          "data:image/png;base64," +
-          "iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAMAAADDpiTIAAAABGdBTUEAALGPC/xhBQAAAwBQTFRFAAAAPD" +
-          "w8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL+bwigAAAQB0Uk5T////////////////////////////////" +
-          "//////////////////////////////////////////////////////////////////////////////////" +
-          "//////////////////////////////////////////////////////////////////////////////////" +
-          "//////////////////////////////////////////////////////////////////////////////////" +
-          "//////////////////////////////////////////////////////////////AFP3ByUAAAAJcEhZcwAA" +
-          "FiQAABYkAZsVxhQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNvyMY98AABAiSURBVHhe7dfreu" +
-          "M6rkXR7vd/6NqOM1NlJ76QEgAyWGv86sgSUKLm6a/P//6YNAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4B" +
-          "iHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgD" +
-          "gHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhz" +
-          "AOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4By" +
-          "BOO4D/f+A/i5IO4Pr9xQtQDoDvr12AcAB8/Q9cUSQbAJ/+C1f1qAbAd/+H63JEA+Cr3+IXNZoB8M3v8ZsY" +
-          "yQD44t/xqxbFAPjeP/G7FMEA+NqPcIcSvQD41o9xjxC5APjSz3CXDrEA+MyvcKcKrQD4xq9xrwipAPjC73" +
-          "C3BqUA+L7vcb8EoQD4uiN4QoFOAHzbMTwjQCYAvuwonupPJQC+6ziea08kAL7qDJ7sTiMAvukcnm1OIgC+" +
-          "6Cye7k0hAL7nPJ5vTSAAvuYRTOisfwB8y2OY0ZgDeIkZjbUPgC95FFP66h4A3/E45rTVPAC+4hlM6qp3AH" +
-          "zDc5jVlAN4i1lNtQ6AL3gW03rqHADf7zzmteQABjCvpcYB8PUiMLGjvgHw7WIwsyEHMISZDbUNgC8Xhan9" +
-          "dA2A7xaHue04gEHMbadpAHy1SEzuxgGMYnI3DmAUk7txAKOY3E3PAPhmsZjdjAMYxuxmHMAwZjfTMgC+WD" +
-          "Sm9+IAxjG9Fwcwjum9dAyA7xWP+a04gAnMb8UBTGB+Kw5gAvNbaRgAXysDGzpxADPY0IkDmMGGThzADDZ0" +
-          "4gBmsKETBzCDDZ04gBls6KRfAHyrHOxoxAFMYUcjDmAKOxpxAFPY0YgDmMKORhzAFHY04gCmsKMRBzCFHY" +
-          "04gCnsaMQBTGFHIw5gCjsacQBT2NHIVgFwyjf4YQZP5mDHDJ68wQ972CQAjuYJbhrDMznYMYZnnuCm1dYH" +
-          "wHm8xe1vcXsOdrzF7W9x+0KLA+AcBvHQa9ybgx2vce8gHlplZQCcwBQefYU7M7DhFe6cwqNLLAuAdz+AAU" +
-          "9xWwY2PMVtBzCg3poAeOujmPIEN2VgwxPcdBRTii0IgPc9h1mPcEcGNjzCHecwq1J5ALzqaYx7gBsysOEB" +
-          "bjiNcXVqA+AtYzDzB37OwIYf+DkGM4sUBsD7BWLwN/yYgQ3f8GMgBleoCoA3i8b0e/wWj/n3+C0a09PVBM" +
-          "BLJWDBHX6Kx/w7/JSABclKAuCNcrDjBj/EY/4NfsjBjly/P4Cf58T1eMz/h+tJWJKrIgDeJw97/uJyNKb/" +
-          "xeU87EnVIoDvJ8XVaEz/wtVELErVI4BvR8XFaEwHFzOxKVWTAO7PimvRmP6Ja6lYlarB/wj8xKpPXIvF7E" +
-          "9cS8WqXG0CuDsuLsVi9hWXcrErV58Asj8Qk6+4lIxluRoFcHtgXInE5A9cyca2XJ0CuDkxLkRi8gUX0rEu" +
-          "V0kAHQpg7gUX0rEuWa8A/h0af8dh7op3SdUsgLTvxNQlr5KqWwB/j40/ozB1xZvkahtA7E5mOoCjeKcKbM" +
-          "wJgD8rsDFbvwAyPhYTl7xGMgcwgokO4DBeqgY745Yyb81bJCsKYMnZ8dd50fNGsDNd5wCiljLNAZzBaxWJ" +
-          "XRo7bRBL07UOIGYrsxzAKbxWFbZGrGXSqjfIVhXAov/74c8zmLToBdI1DSDuszFn1b8/XfcAzu5ligM4jR" +
-          "crw9qTi5mx8J+fzQG8xAwHEIA3K8PaU4uZ0Pj7KwRwfDPPX3ChDGsLKARwdDVPf+BKGdYWqAtgswL45QtX" +
-          "b/HLB66UYW0FjQDudnPpEe644tIVl8qwtoJIAF/L+euVR3dyrQxrK6gE8LGd//Teo4dLsbZCYQC/9xiZV4" +
-          "a1JRzAAOaVYW0JBzCAeWVYW8IBDGBeGdaWqAyg+iDZeh7zqrC1RucAok6SaWVYW8MBvMe0MqytURrAL/3v" +
-          "UqZVYWuRzgGw9DzmFWFpkdoAKo+SjTGYWYGNVdoGwMIoTC3AwirFAZQdJOviMDcd68o0DYBtkZicjW1lqg" +
-          "OoOUd2xWJ2LnbVaRkAq6IxPRWr6pQHUHCMLIrH/EQsKtQwAPZkYEMe9hSqDyD9FFmTgQ1pWFOpXwBsycGO" +
-          "LGyptCCA3FNkRxa25GBHqRUBZJ4iG/KwJwMbai0JIPEUWZCHPQlYUKxZAMzPxKZ4zC+2JoCsU2R6LnZFY3" +
-          "q1RQEknSLDc7ErGMPLrQog5RgZnY1toRhdb1kAGcfI5Gxsi8TkBdYFEH+OzM3HvjjMXWFhAOHnyNh87AvD" +
-          "2CVWBhB8kAytwMYgDF1jaQCxB8nMCmyMwcxF1gYQeZJMrMHOCExcZXEAgSfJwBrsDMDAZVYHEHeUzKvBzv" +
-          "OYt87yAKLOkmlV2HoW0xZaH0DQYTKrClvPYdZSOwQQcZpMqsPeM5i01hYBBBwnc+qw9zjmrLZJAKfPkzF1" +
-          "2HsYY5bbJYCzJ8qQOuw9iCEb2CeAU2fKhEpsPoIJW9gpgBNnyoBKbD6AAXvYKoDjp8rjldg8jcd3sVkAF5" +
-          "zTHJ6txOY5PLuR/QI4dLQ8WYnNM3hyKzsGcMGJDeOxSmwexmO72TSAC85tDM9UYvMYntnQvgFccHrvcX8t" +
-          "dr/H/XvaOoArTvEJblqHf8cT3LSx/QP4xIHe4Ic98G+6wQ/b+y0BWBIHIM4BiHMA4hyAOAcg7rcEwP9zdY" +
-          "Mf9sC/6QY/bG//ADjQJ7hpHf4dT3DTxrYOgFN8j/trsfs97t/TvgFwemN4phKbx/DMhjYNgHMbxmOV2DyM" +
-          "x3azYwCc2AyerMTmGTy5lf0C4LDm8GwlNs/h2Y1sFgDnNI3HK7F5Go/vYqsAOKIDGFCJzQcwYA87BcD5HM" +
-          "GESmw+gglb2CcADucghtRh70EM2cAuAXAwhzGmDnsPY8xymwTAqRzHnDrsPY45q20RAEdyBpPqsPcMJq21" +
-          "QwCcxznMqsLWc5i11PoAOIyzmFaFrWcxbaHlAXAS5zGvBjvPY946qwPgHAIwsAY7AzBwmcUBcAoRmFiDnR" +
-          "GYuMraADiDGMyswMYYzFxkaQCcQBCGVmBjEIausTIA3j8MY/OxLwxjl1gYAG8fh7n52BeHuSusC4B3j8Tk" +
-          "bGyLxOQFlgXAm4didDa2hWJ0vVUB8N7BGJ6LXcEYXm5RALx1NKbnYlc0pldbEwDvHI/5mdgUj/nFmgWQf4" +
-          "rsScCCYksC4I0zsCEPezKwodaKAHjfHOzIwpYc7Ci1IADeNgtbcrAjC1sq9Qsg8xTZkIY1leoD4F3zsCcD" +
-          "G/Kwp1DDAPJOkfmJWFSoPADeNBWrojE9FavqtAwg5xiZnYtddaoD4D2zsS0Sk7OxrUzTAOLPkbnpWFemOA" +
-          "DesgALozC1AAurtA0g9iCZWYGNVWoD4B2LsPQ85hVhaZHOAUQdJdOqsLVIaQC8YRnWnsW0Mqyt4QDeY1oZ" +
-          "1tboHABbz2NeFbbWqAyA9yvD2vOYV4a1JRzAAOaVYW0JBzCAeWVYW8IBDGBeGdaWKAyAtyvDWvy48MKjh0" +
-          "uxtoJKAI+uPfboTq6VYW0FkQC4dMWlR7jjiktXXCrD2goaAXDlFr984eotfvnAlTKsrVAXAO9WhrUfuDKL" +
-          "pz9wpQxrCygEwIV5PH/BhTKsLSAQAH8fwQQHEIA3K8Pak4uZ0bgAB/ASMxzAebxYFbae3suUdf/+bN0D4M" +
-          "/jmOMAzuLFirA0YiuTFr1AuqoAeK8qbP29AZQV0DMAlsZsZdaiV8jWOgD+Oit22iCWpmsZADuDA1jzDtk6" +
-          "B8Bf50XPG8HOdEUB8FY12BkeQMsCGgbAysidTFzyGskcwAgmOoDDeKkKbIxdycwV75GsJgDeqQIbkwLoV0" +
-          "DbAPgzClMdwDG8UgEWpgWw4lVSNQuAfQkbmbviXVL1CoB1F1yIw9wLLqRjXbKSAHijdKy74EIkJl9wIR3r" +
-          "cnUKgG0fuBKJyR+4ko1tuRoFwLIrLkVi8hWXkrEsV58A2HXFpVjMvuJSLnblahMAqz5xLRazP3EtFatyVQ" +
-          "TA+6Ri1SeuRWP6J66lYlWqJgGwCVyMxnRwMRObUvUIgEVfuBqN6V+4mohFqVoEwJ6/uByN6X9xOQ97UjX4" +
-          "H4Es+Yfr8Zj/D9eTsCTX7w+AHTf4IR7zb/BDDnbkKgkg8ZxYcIef4jH/Dj8lYEGymgDSzonp9/gtHvPv8V" +
-          "s0pqerCuCCNwvE4G/4MQMbvuHHQAyuUBjABe8Xg5k/8HMGNvzAzzGYWaQ2gAve8jTGPcANGdjwADecxrg6" +
-          "5QEEnRWzHuGODGx4hDvOYValBQFc8L5HMeUJbsrAhie46SimFFsTwAVvfQADnuK2DGx4itsOYEC9ZQFc8O" +
-          "5TePQV7szAhle4cwqPLrEygAtOYBAPvca9OdjxGvcO4qFVFgdwwTm8xe1vcXsOdrzF7W9x+0LrA7jiPJ7g" +
-          "pjE8k4MdY3jmCW5abZMAPnE0N/hhBk/mYMcMnrzBD3vYKoAQnHIOdjTiAKawoxEHMIUdjTiAKexoxAFMYU" +
-          "cjDmAKOxpxAFPY0YgDmMKORhzAFHY04gCmsKMRBzCFHY04gCnsaKRfAJkFsKETBzCDDZ04gBls6MQBzGBD" +
-          "Jw5gBhs6cQAz2NCJA5jBhk4aBpBXAPNbcQATmN+KA5jA/FYcwATmt9IxgKwCmN6LAxjH9F4cwDim99IygJ" +
-          "wCmN2MAxjG7GYcwDBmN9MzgIwCmNyNAxjF5G4cwCgmd+MARjG5m6YBxBfA3HYcwCDmttM1gOgCmNpP2wBi" +
-          "C2BmQw5gCDMb6htAZAFM7KhxAHEFMK8lBzCAeS11DiCqAKb11DqAmAKY1ZQDeItZTfUOIKIAJnXVPIDzBT" +
-          "Cnre4BnC2AKX21D+BcAcxozAG8xIzG+gdwpgAmdCYQwPECeL41hQCOFsDTvUkEcKwAnm1OI4AjBfBkdyIB" +
-          "zBfAc+2pBDBbAE/1JxPAXAE8I0AngJkCeEKBUADjBXC/BKUARgvgbg1SAYwVwL0itAIYKYA7VYgF8DYB7t" +
-          "IhF8DrArhHiF4ArwrgDiWCATwvgN+lKAbwrAB+1SIZwOMC+E2MZgCPCuAXNaIB/CyA63JUA/heAFf1yAZw" +
-          "lwBXFAkH8K8A/pakHMBXAfylSTqAzwL4z6K0AzAHoM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgD" +
-          "gHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhz" +
-          "AOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4By" +
-          "DOAYhzAOIcgDgHIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyAOAcg7c+f/wCx" +
-          "0c2+VmqfPgAAAABJRU5ErkJggg==",
-        DEFAULT_UP_NAVIGATION_IMAGE:
-          "data:image/png;base64," +
-          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJA" +
-          "AAFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIlJREFUSEu9zlsOgCAQ" +
-          "Q1EXxv63NQaTSYZ6QV7ycT6s0HKZ2bSUkmWaj8Cwh4+vPgLDLzru9FwPDFtoONLzXzCsoUGi91owJDTUov" +
-          "drMFQ00EN7CIYRFY/QPoWho8IZ2hthmFHRCu13GFLBDrqTvQK6uJPuFR904Q9x8/i4Kx5AB054HkA/zkl2" +
-          "A3fzm51wX0ZlAAAAAElFTkSuQmCC",
-        DEFAULT_DOWN_NAVIGATION_IMAGE:
-          "data:image/png;base64," +
-          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJA" +
-          "AAFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIxJREFUSEvFzkEOgCAM" +
-          "RFEOxv2vVVOTGhi/gIJh8RZMaKcp52w7JTPbdoR3nwfsOCJ6rwMcffxD2Vkd4GhgJe2rHoEGV9AedwsCLZ" +
-          "ih+wOGgRZ9oXtLGJZo4Ru6T2GoaPEI3UMwJFTQovNPMHxCRUTnWjBsocKS/u/BsIeKnf4bgeGIFeUOw1Gz" +
-          "5WaWDtsHm52ye7DmAAAAAElFTkSuQmCC",
-        DEFAULT_LEFT_NAVIGATION_IMAGE:
-          "data:image/png;base64," +
-          "iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJA" +
-          "AAFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAIZJREFUSEut0EEKxEAI" +
-          "RNE5mPe/lqEWgjE/kLZm8VbtL0h+mbkWEfzwheL1QMWrgR4fD8z4aIBiweOJwoJBR1GHUaFgwlDomFixWL" +
-          "FYsVixWLFYsfgD9if85Sc6I7eBzchj4HQEB4SOCcaFggnDjqIOo4nCggGhWPD4jT0g9oDYA2IPSETkBTnK" +
-          "m53Tz5HlAAAAAElFTkSuQmCC",
-        DEFAULT_RIGHT_NAVIGATION_IMAGE:
-         "data:image/png;base64," +
-         "iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAWJAA" +
-         "AFiQBmxXGFAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAJVJREFUSEvFz0sOgCAQBF" +
-         "EOxv2vpbYJBEo+w8xCk9ro9EtMOefreZK3F4ggFfAiHeBBPsApMgQUD2dNAcXjUUtAccC2gOKozQQoDktmQ" +
-         "HGsjgAVBlQYUGFAhQH1LxD6BY3dQBm7gHZ8DHCszACHJRPAUdsW4IAtAR6PmgI8nDUEeLTqA/BgVwfwo6UK" +
-         "8IO1F+BLe1e6AdOmm5054q0eAAAAAElFTkSuQmCC",
-        
-        // json data parameter names
-        PARAM_THUMBS_POSITION: "thumbsPosition",
-        PARAM_DEF_IMG_SRC: "defaultImageSrc",
-        PARAM_DEF_THUMB_SRC: "defaultThumbSrc",
-        PARAM_THUMBS: "thumbs",
-        PARAM_BIG_IMG_SRC: "bigSrc",
-        PARAM_THUMB_IMG_SRC: "thumbSrc",
-        PARAM_HEIGHT: "h",
-        PARAM_WIDTH: "w",
-        PARAM_LEFT: "l",
-        PARAM_TOP: "t",  
-        PARAM_THUMB_IMAGE_HEIGHT: "thumbImageHeight",
-        PARAM_THUMB_IMAGE_WIDTH: "thumbImageWidth",
-        PARAM_IMAGES_LIST: "images",
-        PARAM_THUMBS_SCROLL_DELTA: "thumbsScrollDelta",
-        //} ImageBox            
-
         //ObjectInspector {
         CLS_OBJECTINSPECTOR_EDITOR: 'wvObjectInspectorEditor',
         // { ObjectInspector
@@ -302,6 +91,8 @@ WAVE.GUI = (function(){
         CLS_TABS_ACTIVE_TAB: "wvTabsActive",
         CLS_TABS_UL: "wvTabsUl",
         CLS_TABS_CONTENT_DIV: "wvTabsContentDiv",
+        CLS_TABS_CONTENT_DIV_HIDDEN: "wvTabsContentDivHidden",
+        CLS_TABS_CONTENT_DIV_SHOWN: "wvTabsContentDivShown",
         CLS_TABS_CONTENT_CONTAINER: "wvTabsContentContainer",
         CLS_TABS_UL_CONTAINER: "wvTabsUlContainer",
         CLS_TABS_LI_DISABLED: "wvTabDisabled",
@@ -314,11 +105,55 @@ WAVE.GUI = (function(){
         EVT_MULTI_LINE_TEXT_UPDATED: "wv-multiline-updated",
 
         //ObjectEditor
+        CLS_OBJECT_EDITOR_NODE_CONTAIER: "wvObjEditNode",
+        CLS_OBJECT_EDITOR_ARRAY_ITEM: "wvObjEditItem",
+        CLS_OBJECT_EDITOR_ARRAY_ITEM_SEPARATOR: "wvObjEditItemSeparator",
+        CLS_OBJECT_EDITOR_ARRAY_CONTAIER: "wvObjEditArrDiv",
+        CLS_OBJECT_EDITOR_OBJECT_CONTAIER: "wvObjEditObjDiv",
+        CLS_OBJECT_EDITOR_INPUT_CONTAIER: "wvObjEditInputDiv",
+
         EVT_OBJECT_EDITOR_UPDATED: "wv-objectEditor-updated",
         EVT_OBJECT_EDITOR_VALIDATION_ERROR: "wv-objectEditor-validation-error",
         EVT_OBJECT_EDITOR_VALIDATION_SUCCESS: "wv-objectEditor-validation-success",
-        EVT_OBEJCT_EDITOR_ARRAY_ADD_ITEM: "wv-objEditor-array-add-item",
-        EVT_OBEJCT_EDITOR_ARRAY_REMOVE_ITEM: "wv-objEditor-array-remove-item",
+        //
+
+        //Gallery {
+        CLS_IMAGE_BOX_LOADING: "wvImageBox_loading",
+        CLS_IMAGE_BOX_ERROR:   "wvImageBox_error",
+        CLS_IMAGE_BOX_WIDER:   "wvImageBox_wider",
+        CLS_IMAGE_BOX_HIGHER:  "wvImageBox_higher",
+        CLS_IMAGE_VIEW:        "wvImageView",
+        CLS_IMAGE_VIEW_ZOOM:   "wvImageView_zoom",
+        CLS_IMAGE_VIEW_IMAGE:  "wvImageView_image",
+        CLS_GALLERY:           "wvGallery",
+        CLS_GALLERY_PREV:      "wvGallery_prev",
+        CLS_GALLERY_NEXT:      "wvGallery_next",
+        CLS_GALLERY_DISABLED:  "wvGallery_disabled",
+        CLS_GALLERY_LIST:      "wvGallery_list",
+        CLS_GALLERY_ITEM:      "wvGallery_item",
+        CLS_GALLERY_THUMBNAIL: "wvGallery_thumbnail",
+        CLS_GALLERY_CONTENT:   "wvGallery_content",
+        CLS_GALLERY_IMAGE:     "wvGallery_image",
+        CLS_GALLERY_SELECTED:  "wvGallery_selected",
+        CLS_GALLERY_SIMPLE_THUMBNAILS: "wvGallerySimple_thumbnails",
+        CLS_GALLERY_SIMPLE_PREVIEW:    "wvGallerySimple_preview",
+
+        EVT_GALLERY_ADD:       "wv-gallery-add",
+        EVT_GALLERY_REMOVE:    "wv-gallery-remove",
+        EVT_GALLERY_CHANGE:    "wv-gallery-change",
+        //} Gallery
+
+        //Details control
+        CLS_DETAILS: "wvDetails",
+        CLS_DETAILS_TITLE: "wvDetailsTitle",
+        CLS_DETAILS_TITLE_SHOWN: "wvDetailsTitleShown",
+        CLS_DETAILS_TITLE_HIDDEN: "wvDetailsTitleHidden",
+        CLS_DETAILS_CONTENT: "wvDetailsContent",
+        CLS_DETAILS_CONTENT_VISIBLE: "wvDetailsContentVisible",
+        CLS_DETAILS_CONTENT_HIDDEN: "wvDetailsContentHidden",
+
+        EVT_DETAILS_SHOW: "wv-details-show",
+        EVT_DETAILS_HIDE: "wv-details-hide"
     };
 
     var CURTAIN_ZORDER  = 500000;
@@ -365,8 +200,9 @@ WAVE.GUI = (function(){
 
     var fCurtains = [];
     var fCurtainDIV = null;
+    var fBodyOverflow = null;
 
-    document.addEventListener("focus", function(e){
+    function preventFocusLeak(e) {
       if (fCurtains.length > 0){
         var topCurtain = fCurtains[fCurtains.length -1];
         var t = e.target;
@@ -377,7 +213,7 @@ WAVE.GUI = (function(){
           }
         }
       }
-    }, true);
+    }
 
     published.curtainOn = function(){
         try{ document.activeElement.blur(); } catch(e){}
@@ -395,6 +231,13 @@ WAVE.GUI = (function(){
         fCurtainDIV = div;
 
         fCurtains.push(div);
+        //prevent scrolling and add focus handler
+        if (fCurtains.length === 1 && !WAVE.Platform.Mobile) {
+          window.addEventListener("focus", preventFocusLeak, true);
+
+          fBodyOverflow = document.body.style.overflow;
+          document.body.style.overflow = "hidden";
+        }
     };
 
     published.curtainOff = function(){
@@ -407,6 +250,11 @@ WAVE.GUI = (function(){
                 
         document.body.removeChild(div);
         WAVE.arrayDelete(fCurtains, div);
+        //return scrolling and remove focus handler
+        if (fCurtains.length === 0 && !WAVE.Platform.Mobile) {
+          window.removeEventListener("focus", preventFocusLeak, true);
+          document.body.style.overflow = fBodyOverflow;
+        }
     };
 
     published.isCurtain = function(){ return fCurtains.length>0;};
@@ -418,7 +266,7 @@ WAVE.GUI = (function(){
         return null;
     };
 
-    //Dialog window:   
+    //Dialog window:
     //   {title: 'Title', content: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
     published.Dialog = function(init)
     {
@@ -426,7 +274,7 @@ WAVE.GUI = (function(){
 
         var fOnShow = WAVE.isFunction(init.onShow) ? init.onShow : function(){};
         var fOnClose = WAVE.isFunction(init.onClose) ? init.onClose : function(){ return true;};
-        
+
         var dialog = this;
         WAVE.extend(dialog, WAVE.EventManager);
 
@@ -438,7 +286,6 @@ WAVE.GUI = (function(){
         fdivBase.style.position = "fixed";
         fdivBase.style.zIndex = CURTAIN_ZORDER + fCurtains.length;
 
-        
         var fWidthPct = WAVE.intValidPositive(init.widthpct) ? init.widthpct : 0;
         var fHeightPct = WAVE.intValidPositive(init.heightpct) ? init.heightpct : 0;
 
@@ -447,7 +294,7 @@ WAVE.GUI = (function(){
 
 
         document.body.appendChild(fdivBase);
-        
+
         fCurtains.push(fdivBase);
 
         var fdivTitle = document.createElement("div");
@@ -466,9 +313,9 @@ WAVE.GUI = (function(){
           var cx = sw / 2;
           var cy = sh / 2;
 
-          var w = fWidthPct===0 ? fdivBase.offsetWidth : Math.round( sw * (fWidthPct/100)); 
-          var h = fHeightPct===0 ? fdivBase.offsetHeight : Math.round( sh * (fHeightPct/100)); 
-          
+          var w = fWidthPct===0 ? fdivBase.offsetWidth : Math.round( sw * (fWidthPct/100));
+          var h = fHeightPct===0 ? fdivBase.offsetHeight : Math.round( sh * (fHeightPct/100));
+
           fdivBase.style.left = Math.round(cx - (w / 2)) + "px";
           fdivBase.style.top = Math.round(cy - (h / 2)) + "px";
           fdivBase.style.width  = fWidthPct===0  ? "auto" : w + "px";
@@ -478,7 +325,6 @@ WAVE.GUI = (function(){
           fdivContent.style.height  = fWidthPct===0  ? "auto" :
                                                       h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px";//todo This may need to be put as published.OFFSETY that depends on style
         }
-        
 
         var fResult = published.DLG_UNDEFINED;
 
@@ -493,7 +339,7 @@ WAVE.GUI = (function(){
             if (!fOnClose(this, result)) return published.DLG_UNDEFINED;//aka CloseQuery
 
             fResult = result;
-            
+
             document.body.removeChild(fdivBase);
             WAVE.arrayDelete(fCurtains, fdivBase);
             published.curtainOff();
@@ -503,7 +349,7 @@ WAVE.GUI = (function(){
 
         //closes dialog with OK result
         this.ok = function(){ this.close(published.DLG_OK); };
-        
+
         //closes dialog with CANCEL result
         this.cancel = function(){ this.close(published.DLG_CANCEL); };
 
@@ -521,6 +367,8 @@ WAVE.GUI = (function(){
           adjustBounds();
         };
 
+        this.contentDIV = function() { return fdivContent; };
+
         //gets/sets width in screen size pct 0..100, where 0 = auto
         this.widthpct = function(val){
           if (typeof(val)===tUNDEFINED || val===fWidthPct) return fWidthPct;
@@ -535,17 +383,17 @@ WAVE.GUI = (function(){
           adjustBounds();
         };
 
-        adjustBounds();
-        
         var tmr = null;
         $(window).resize(function(){
            if (tmr) clearTimeout(tmr);//prevent unnecessary adjustments when too many resizes happen
            tmr = setTimeout(function(){  adjustBounds(); tmr = null; }, 500);
         });
-        
+
         fOnShow(this);
+
+        adjustBounds();
     };//dialog
-    
+
     //Displays a simple confirmation propmt dialog
     published.showConfirmationDialog = function (title, content, buttons, callback, options) {
       if (!WAVE.isObject(options)) options = {};
@@ -558,9 +406,9 @@ WAVE.GUI = (function(){
       function createButtonHtml(lbl, rslt) {
           var btnTemplate = '<button class="@btnClass@" onclick="WAVE.GUI.currentDialog().close(\'@result@\');">@label@</button>';
           return WAVE.strHTMLTemplate(
-                                     btnTemplate, 
-                                     { 
-                                       btnClass: published.CLS_DIALOG_CONFIRM_BUTTON + ' ' + btnCls, 
+                                     btnTemplate,
+                                     {
+                                       btnClass: published.CLS_DIALOG_CONFIRM_BUTTON + ' ' + btnCls,
                                        result: rslt,
                                        label: lbl
                                      });
@@ -570,17 +418,17 @@ WAVE.GUI = (function(){
       var btnNo = '';
       var btnOk = '';
       var btnCancel = '';
-                       
-      if (WAVE.inArray(buttons, WAVE.GUI.DLG_YES))
-         btnYes = createButtonHtml('Yes', WAVE.GUI.DLG_YES);
-      if (WAVE.inArray(buttons, WAVE.GUI.DLG_NO))
-         btnNo = createButtonHtml('No', WAVE.GUI.DLG_NO);
-      if (WAVE.inArray(buttons, WAVE.GUI.DLG_OK))
-         btnOk = createButtonHtml('OK', WAVE.GUI.DLG_OK);
-      if (WAVE.inArray(buttons, WAVE.GUI.DLG_CANCEL))
-         btnCancel = createButtonHtml('Cancel', WAVE.GUI.DLG_CANCEL);   
-      
-      var fullContent = 
+
+      if (WAVE.inArray(buttons, published.DLG_YES))
+         btnYes = createButtonHtml('Yes', published.DLG_YES);
+      if (WAVE.inArray(buttons, published.DLG_NO))
+         btnNo = createButtonHtml('No', published.DLG_NO);
+      if (WAVE.inArray(buttons, published.DLG_OK))
+         btnOk = createButtonHtml('OK', published.DLG_OK);
+      if (WAVE.inArray(buttons, published.DLG_CANCEL))
+         btnCancel = createButtonHtml('Cancel', published.DLG_CANCEL);
+
+      var fullContent =
         '<div>'+
           content+
           '<div class="'+published.CLS_DIALOG_CONFIRM_FOOTER+' '+footerCls+'" style="text-align:center; padding: 5px 0 0 0">'+
@@ -588,16 +436,16 @@ WAVE.GUI = (function(){
           '</div>'+
         '<div>';
 
-      var dialog = new WAVE.GUI.Dialog(
+      var dialog = new published.Dialog(
         {
-          title: WAVE.strDefault(title, 'Confirmation'), 
+          title: WAVE.strDefault(title, 'Confirmation'),
           content: fullContent,
-          cls: WAVE.strDefault(options['cls']), 
-          onShow: function(dlg){}, 
+          cls: WAVE.strDefault(options['cls']),
+          onShow: function(dlg){},
           onClose: callback
         });
     };
-    
+
     var fDirty = false;
 
     //gets/sets dirty flag
@@ -688,6 +536,10 @@ WAVE.GUI = (function(){
             fimgKeys  = WAVE.id(args.iid);
         }
 
+        this.destroy = function() {
+          fDIV.innerHTML = "";
+        };
+
         //Returns value as an array of points where user clicked
         this.value = function(){ return fValue;};
 
@@ -706,6 +558,13 @@ WAVE.GUI = (function(){
            if (WAVE.strEmpty(val)) fQuestion = "";
            else fQuestion = val;
            fdivQuestion.innerHTML = fQuestion;
+        };
+
+        this.image = function(url) {
+           if (typeof(url)===tUNDEFINED) return fImage;
+           if (WAVE.strEmpty(url)) fImage = "";
+           else fImage = url;
+           fimgKeys.src = fImage + "&req="+WAVE.genRndKey();
         };
 
         rebuild();
@@ -1907,784 +1766,6 @@ WAVE.GUI = (function(){
       build(fTree.root(), obj, "");
     };//ObjectInspector
 
-
-    // ImageBox {
-    published.IBox = function (container, init) {
-    
-// ************************* Fields *************************
-    
-      if (WAVE.isStringType(typeof (container)))
-        container = WAVE.id(container);
-    
-      if (!WAVE.isObject(init))
-        init = {};
-    
-      var ibox = this;
-      WAVE.extend(ibox, WAVE.EventManager);
-    
-      var seed = "ibox_"+WAVE.genRndKey(4);
-      var ids = {
-        divFrameId: "divFrame_"+seed,
-        divThumbsContainerId: "divThumbsContainer_"+seed,
-        divNavBackId: "divNavBack_" + seed,
-        imgNavBackId: "imgNavBack_" + seed,
-        divThumbsImagesContainerId: "divThumbsImagesContainer_" + seed,
-        divNavForthId: "divNavForth_" + seed,
-        imgNavForthId: "imgNavForth_" + seed,
-        divMainImageId: "divMainImage_" + seed,
-        imgMainImageId: "imgMainImage_" + seed
-      };
-      var isMainImageMouseDown = false;
-      var isNavAnimationInProgress = false;
-      var navTouchStartPosition = null;
-      var thumbsOrientation;
-      var thumbsScrollDelta;
-      var thumbsData;
-      var imagesNaturalSizeCache = {};
-
-// ************************* Utilities *************************
-   
-      // Returns pointer's position
-      function getPos(e) {
-        return { 
-                 x: (isNaN(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX),
-                 y: (isNaN(e.pageY) ? e.originalEvent.touches[0].pageY : e.pageY)
-               };
-      }
-
-      // Cancels event bubbling and prevents default action
-      function cancelBubbleAndDefault(e) {
-        if (e.stopPropagation) e.stopPropagation();
-        if (e.cancelBubble) e.cancelBubble = true;
-        if (e.preventDefault) e.preventDefault();
-        e.returnValue = false;
-        return false;
-      }
-
-      // invokes ERROR event
-      function handle(src, message, rethrow) {
-        if (rethrow !== false) rethrow = true;
-        ibox.eventInvoke(published.EVT_IBOX_ERROR, { src: src, message: message });
-        if (rethrow) throw error;
-      }
-
-// ****************** Thumbs and Navigation ********************
-
-      // 'True' if IBox is vertically oriented (thumb container is located on the left or right), 'False' otherwise
-      function isVerticalOrientation() {
-        return thumbsOrientation === published.POS_LEFT  || 
-               thumbsOrientation === published.POS_RIGHT;
-      }
-
-      function areThumbsOverflowed() {
-        var thumbsImagesContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        return isVerticalOrientation() ?
-                  thumbsImagesContainer.scrollHeight > thumbsImagesContainer.clientHeight :
-                  thumbsImagesContainer.scrollWidth > thumbsImagesContainer.clientWidth;
-      } 
-
-      function alignThumbContainer() {
-        try {
-          if (thumbsData.length < 1)
-            return;
-
-          var first = WAVE.id(thumbsData[0].id);
-          var thumbsContainer = WAVE.id(ids.divThumbsImagesContainerId);
-          var parent = thumbsContainer.parentElement;
-          var thumbsFullWidth = 0;
-          var thumbsFullHeight = 0;
-          for (var i = 0; i < thumbsData.length; i++) {
-            var thumb = WAVE.id(thumbsData[i].id);
-            thumbsFullWidth += thumb.clientWidth;
-            thumbsFullHeight += thumb.clientHeight;
-          }
-
-          if (isVerticalOrientation())
-            first.style.marginTop = (parent.clientHeight - thumbsFullHeight)/2 + "px";
-          else
-            first.style.marginLeft = (parent.clientWidth - thumbsFullWidth)/2 + "px";
-        }
-        catch (error) {
-          handle("alignThumbContainer", error );
-        }
-      }
-    
-      function showNavigation() {
-        try {
-          if (thumbsData.length < 1)
-            return;
-        
-          var first = WAVE.id(thumbsData[0].id);
-          first.style.marginTop = "";
-          first.style.marginLeft = "";
-
-          var divThumbsImagesContainer = WAVE.id(ids.divThumbsImagesContainerId);
-          var divNavBack = WAVE.id(ids.divNavBackId);
-          var divNavForth = WAVE.id(ids.divNavForthId);
-
-          if (isVerticalOrientation()) {
-            divThumbsImagesContainer.style.height = "90%";
-            $(divNavBack).attr("style", published.STL_DIV_THUMBSNAV_V); // ios throws exception when setting style directly as .style=...
-            divNavBack.style.display = "";
-            $(divNavForth).attr("style", published.STL_DIV_THUMBSNAV_V); // ios throws exception when setting style directly as .style=...
-            divNavForth.style.display = "";
-          } else {
-            divThumbsImagesContainer.style.width = "90%";
-            $(divNavBack).attr("style", published.STL_DIV_THUMBSNAV_H); // ios throws exception when setting style directly as .style=...
-            divNavBack.style.display = "inline-block";
-            divNavForth.style.height = published.STL_DIV_THUMBSNAV_H;
-            divNavForth.style.display = "inline-block";
-          }
-        }
-        catch (error) {
-          handle("showNavigation", error);
-        }
-      }
-
-      function hideNavigation() {
-        WAVE.id(ids.divNavBackId).style.display = "none";
-        WAVE.id(ids.divNavForthId).style.display = "none";
-      }
-      
-      function refreshNavigation() {
-        try {
-          var needNavigation = areThumbsOverflowed();
-          if (needNavigation) {
-            showNavigation();
-            fitImageToContainer(ids.imgNavBackId);
-            fitImageToContainer(ids.imgNavForthId);
-          } else {
-            hideNavigation();
-            alignThumbContainer();
-          }
-        }
-        catch (error) {
-          handle("refreshNavigation", error);
-        }
-      }
-
-      function areAllThumbsLoaded() {
-        for (var i = 0; i < thumbsData.length; i++) {
-          if (!thumbsData[i].imageLoaded)
-            return false;
-        }
-        return true;
-      }
-
-// ******************* Navigation Scrolling ******************** 
-
-      function canScrollBack() {
-        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        return isVerticalOrientation() ?
-                  scrollContainer.scrollTop > 0 :
-                  scrollContainer.scrollLeft > 0;
-      }
-
-      function canScrollForth() {
-        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        return isVerticalOrientation() ?
-                  scrollContainer.scrollTop  + scrollContainer.clientHeight < scrollContainer.scrollHeight - 1 :
-                  scrollContainer.scrollLeft + scrollContainer.clientWidth  < scrollContainer.scrollWidth  - 1;
-      }
-
-      function scrollBack() {
-        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        return isVerticalOrientation() ?
-                  { scrollTop:  scrollContainer.scrollTop  - thumbsScrollDelta * scrollContainer.clientHeight } :
-                  { scrollLeft: scrollContainer.scrollLeft - thumbsScrollDelta * scrollContainer.clientWidth  };
-      }
-
-      function scrollForth() {
-        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        return isVerticalOrientation() ?
-                  { scrollTop:  scrollContainer.scrollTop  + thumbsScrollDelta * scrollContainer.clientHeight } :
-                  { scrollLeft: scrollContainer.scrollLeft + thumbsScrollDelta * scrollContainer.clientWidth  };
-      }
-
-      function refreshScrolling() {
-        try {
-          var divNavBack  = WAVE.id(ids.divNavBackId);
-          var divNavForth = WAVE.id(ids.divNavForthId);
-          var navBackOpacity  = canScrollBack()  ? 1 : published.DEFAULT_ARROWS_OPACITY;
-          var navForthOpacity = canScrollForth() ? 1 : published.DEFAULT_ARROWS_OPACITY;
-          divNavBack.style.opacity  = navBackOpacity;
-          divNavForth.style.opacity = navForthOpacity;
-        }
-        catch (error) {
-          handle("refreshScrolling", error);
-        }
-      }
-
-      function initializeScrolling() { 
-        var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-        var divNavBack = WAVE.id(ids.divNavBackId);
-        var divNavForth = WAVE.id(ids.divNavForthId);
-
-        $(divNavBack).bind("touchend click", function () {
-          if (isNavAnimationInProgress) return;
-          isNavAnimationInProgress = true;
-          $(scrollContainer).animate(scrollBack(), 
-                                     function() {
-                                       refreshScrolling();
-                                       isNavAnimationInProgress = false;
-                                     });
-          });
-
-        $(divNavForth).bind("touchend click", function () {
-          if (isNavAnimationInProgress) return;
-          isNavAnimationInProgress = true;
-          $(scrollContainer).animate(scrollForth(), 
-                                     function() {
-                                       refreshScrolling();
-                                       isNavAnimationInProgress = false;
-                                     });
-          });
-      }
-
-// ******************** Working with Images ********************
-
-      // Returns original ('natural') image size via temporary Image element (imageElement.natural* is not enough for Safari at startup). 
-      // Performs caching by image src.
-      function getNaturalImageSize(imageElement) {
-        try {
-          var size = imagesNaturalSizeCache[imageElement.src];
-          if (!size) {
-            var height = imageElement.naturalHeight;
-            var width = imageElement.naturalWidth;
-            if (height === 0 || width === 0) {
-              var tmp = new Image();
-              tmp.src = imageElement.src;
-              width = tmp.width;
-              height = tmp.height;
-            }
-
-            size = { width: width, height: height };
-            imagesNaturalSizeCache[imageElement.src] = size;
-          }
-
-          return size;
-        }
-        catch (error) {
-          handle("getNaturalImageSize", error);
-        }
-      }
-
-      function fitImageToContainer(imageElementId) {
-        try {
-          var imageElement = WAVE.id(imageElementId);
-          var size = getNaturalImageSize(imageElement);
-          var iw = size.width;
-          var ih = size.height;
-          var w = imageElement.parentElement.clientWidth;
-          var h = imageElement.parentElement.clientHeight;
-
-          if ((w * ih) / (iw * h) > 1) {
-            var width = h * iw / ih;
-            imageElement.style.width = width + "px";
-            imageElement.style.height = h + "px";
-            imageElement.style.left = (w - width) / 2 + "px";
-            imageElement.style.top = "0";
-          } else {
-            var height = w * ih / iw;
-            imageElement.style.width = w + "px";
-            imageElement.style.height = height + "px";
-            imageElement.style.left = "0";
-            imageElement.style.top = (h - height) / 2 + "px";
-          }
-        }
-        catch (error) {
-          handle("fitImageToContainer", error);
-        }
-      }
-
-      function fitThumbImageToContainer(thumb) {
-        try {
-          var divThumb = WAVE.id(thumb.id);
-          var divCrop = WAVE.id(thumb.cropId);
-          var imgImage = WAVE.id(thumb.imageId);
-        
-          if (isVerticalOrientation()) {
-            divThumb.style.height = divThumb.clientWidth + "px";
-          } else {
-            divThumb.style.width = divThumb.clientHeight + "px";
-          }
-
-          var size = getNaturalImageSize(imgImage);
-          var naturalWidth = size.width;
-          var naturalHeight = size.height;
-
-          var imageHeight = (typeof (thumb.imageHeight) === WAVE.UNDEFINED) || isNaN(thumb.imageHeight) ? naturalHeight : thumb.imageHeight;
-          var imageWidth = (typeof (thumb.imageWidth) === WAVE.UNDEFINED) || isNaN(thumb.imageWidth) ? naturalWidth : thumb.imageWidth;
-          var imageLeft = (typeof (thumb.imageLeft) === WAVE.UNDEFINED) || isNaN(thumb.imageLeft) ? 0 : thumb.imageLeft; 
-          var imageTop = (typeof (thumb.imageTop) === WAVE.UNDEFINED) || isNaN(thumb.imageTop) ? 0 : thumb.imageTop; 
-
-          var delta = Math.min(divThumb.clientHeight / imageHeight, divThumb.clientWidth / imageWidth);
-
-          divCrop.style.height  = (imageHeight * delta) + "px";
-          divCrop.style.width   = (imageWidth * delta) + "px";
-          divCrop.style.top     = (divThumb.clientHeight - imageHeight * delta)/2 + "px";
-          divCrop.style.left    = (divThumb.clientWidth - imageWidth * delta)/2 + "px";
-          imgImage.style.height = (imgImage.naturalHeight * delta) + "px";
-          imgImage.style.width  = (imgImage.naturalWidth * delta) + "px";
-          imgImage.style.left   = (imageLeft * delta) + "px";
-          imgImage.style.top    = (imageTop * delta) + "px";
-        }
-        catch (error) {
-          handle("fitThumbImageToContainer", error);
-        }
-      }
-      
-      function loadMainImage(imageSrc) {
-        var imageElement = WAVE.id(ids.imgMainImageId);
-        if (imageSrc === imageElement.src)
-          return;
-
-        var downloadingImage = new Image();
-        downloadingImage.onload = function () {
-          var src = this.src;
-          $(imageElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
-            imageElement.src = src;
-            fitImageToContainer(ids.imgMainImageId);
-          }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME, function () {
-            ibox.eventInvoke(published.EVT_IBOX_IMAGE_CHANGED, imageSrc);
-          });
-        };
-        downloadingImage.onerror = function () {
-          handle("loadMainImage", "failed to load main image, src=" + src, false);
-          imageElement.src = published.DEFAULT_IMAGE;
-          fitImageToContainer(ids.imgMainImageId);
-        };
-        downloadingImage.src = imageSrc;
-      } 
-
-      // Force recalculate and redraw IBox's UI
-      function doRefreshMarkup() {
-        try {
-          // refresh thumb images
-          for (var i = 0; i < thumbsData.length; i++) {
-            fitThumbImageToContainer(thumbsData[i]);
-          }
-
-          // refresh scrollers
-          refreshNavigation();
-
-          // refresh main image
-          fitImageToContainer(ids.imgMainImageId);
-        }
-        catch (error) {
-          handle("doRefreshMarkup", error);
-        }
-      }
-
-      function onThumbImageLoaded(thumb, thumbImageSrc) {
-        thumb.imageLoaded = true;
-        var thumbElement = WAVE.id(thumb.imageId);
-        thumbElement.src = thumbImageSrc;
-        fitThumbImageToContainer(thumb);
-        if (areAllThumbsLoaded()) {
-          doRefreshMarkup();
-        }
-        else {
-          refreshNavigation();
-        }
-      }
-       
-      function loadThumbImage(thumb) {                                                     
-        var thumbElement = WAVE.id(thumb.imageId);
-        if (thumb.thumbImageSrc === thumbElement.src)
-          return;
-
-        var downloadingImage = new Image();
-        downloadingImage.onload = function () {
-          var src = this.src;
-          $(thumbElement).fadeOut(published.DEFAULT_IMAGE_FADEOUT_TIME, function () {
-            onThumbImageLoaded(thumb, src);
-          }).fadeIn(published.DEFAULT_IMAGE_FADEIN_TIME);
-        };
-        downloadingImage.onerror = function () {
-          handle("loadThumbImage", "failed to load thumb image, src=" + src, false);
-          onThumbImageLoaded(thumb, published.DEFAULT_IMAGE);
-        };
-        downloadingImage.src = thumb.thumbImageSrc;
-      }
-
-      function calculateImageZoomOffsets(ih, iw, h, w, x, y) {
-        try {
-          var delta, X, Y;
-          var aspect = iw * h / (ih * w);
-          if (aspect > 1) {
-            delta = w * ih / iw;
-            y = Math.min(Math.max(y, (h - delta) / 2), (h + delta) / 2);
-            X = iw * x / w;
-            Y = (y - (h - delta) / 2) * iw / w;
-          } else {
-            delta = h * iw / ih;
-            x = Math.min(Math.max(x, (w - delta) / 2), (w + delta) / 2);
-            X = (x - (w - delta) / 2) * ih / h;
-            Y = ih * y / h;
-          }
-          var left = iw > w ? Math.min(Math.max(X - w / 2, 0), iw - w) : (iw - w) / 2;
-          var top = ih > h ? Math.min(Math.max(Y - h / 2, 0), ih - h) : (ih - h) / 2;
-
-          return { left: left, top: top };
-        }
-        catch (error) {
-          handle("calculateImageZoomOffsets", error);
-        }
-      }
-    
-      // Called when user clicks/taps on the main image area.
-      // It resets image's size to its original ('natural') value and shifts the image according to poiter position
-      function adjustMainImage(e) {
-        try {
-          var img = WAVE.id(ids.imgMainImageId);
-          var div = WAVE.id(ids.divMainImageId);
-          var size = getNaturalImageSize(img);
-          var iw = size.width;
-          var ih = size.height;
-          var w = div.clientWidth;
-          var h = div.clientHeight;
-    
-          if (iw <= w && ih <= h)
-            return false;
-
-          var pos = getPos(e);
-          var ex = pos.x - div.offsetLeft;
-          var ey = pos.y - div.offsetTop;
-          var offset = calculateImageZoomOffsets(ih, iw, h, w, ex, ey);
-          img.style.width = "";
-          img.style.height = "";
-          img.style.left = (-offset.left) + "px";
-          img.style.top = (-offset.top) + "px";
-
-          return true;
-        }
-        catch (error) {
-          handle("adjustMainImage", error);
-        }
-      }
-
-// ******************** Event Handlers ********************
-
-      function divMainImageMouseDown(e) {
-        try {
-          if (adjustMainImage(e)) isMainImageMouseDown = true;
-          return cancelBubbleAndDefault(e);
-        }
-        catch (error) {
-          handle("divMainImageMouseDown", error);
-        }
-      }
-    
-      function divMainImageMouseMove(e) {
-        try {
-          if (isMainImageMouseDown) adjustMainImage(e);
-          return cancelBubbleAndDefault(e);
-        }
-        catch (error) {
-          handle("divMainImageMouseMove", error);
-        }
-      }
-    
-      function onMouseUp(e) {
-        try {
-          // if thumb navigation in progress
-          if (navTouchStartPosition !== null) {
-            refreshNavigation();
-            navTouchStartPosition = null;
-          }
-
-          // if main image zooming finished 
-          if (isMainImageMouseDown) {
-            fitImageToContainer(ids.imgMainImageId);
-            isMainImageMouseDown = false;
-          } 
-
-          return cancelBubbleAndDefault(e);
-        }
-        catch (error) {
-          handle("onMouseUp", error);
-        }
-      }
-    
-      function divThumbsContainerMouseDown(e) {
-        try {
-          navTouchStartPosition = getPos(e);
-          return cancelBubbleAndDefault(e);
-        }
-        catch (error) {
-          handle("divThumbsContainerMouseDown", error);
-        }
-      }
-    
-      function divThumbsContainerMouseMove(e) {
-        try {
-          if (navTouchStartPosition !== null) {
-            var scrollContainer = WAVE.id(ids.divThumbsImagesContainerId);
-            var delta;
-            var pos = getPos(e);
-            if (isVerticalOrientation()) {
-              delta = pos.y - navTouchStartPosition.y;
-              scrollContainer.scrollTop += - delta;
-            } else {
-              delta = pos.x - navTouchStartPosition.x;
-              scrollContainer.scrollLeft += - delta;
-            }
-            navTouchStartPosition = pos;
-            refreshScrolling();
-          }
-          return cancelBubbleAndDefault(e);
-        }
-        catch (error) {
-          handle("divThumbsContainerMouseMove", error);
-        }
-      }
-
-      function thumbClickFactory(imageSrc) {
-        return function () { loadMainImage(imageSrc); };
-      }
-      
-// ********************** Public *************************
-
-      // Toggle IBox's visibility
-      this.visible = function (val) {
-        var vis = WAVE.id(ids.divFrameId).style.visibility;
-        if (vis === "") vis = "visible";
-        var isv = vis === "visible";
-
-        if (typeof (val) === WAVE.UNDEFINED || val === isv) return val;
-
-        WAVE.id(ids.divFrameId).style.visibility = val ? "visible" : "hidden";
-        ibox.eventInvoke(published.EVT_INTERACTION_CHANGE, "visible", val);
-        return val;
-      };
-
-      // Force recalculate and redraw IBox's UI
-      this.refreshMarkup = function () {
-        doRefreshMarkup();
-      };
-
-// ******** Initialization and UI Construction ***********
-
-      // parse init json
-      try {
-        var imagesList = init[published.PARAM_IMAGES_LIST];
-        var defaultImageSrcKey = init[published.PARAM_DEF_IMG_SRC];
-        var defaultImageSrc = (typeof (defaultImageSrcKey) === WAVE.UNDEFINED) ?
-                              published.DEFAULT_IMAGE :
-                              WAVE.strDefault(imagesList[defaultImageSrcKey], published.DEFAULT_IMAGE);
-        var defaultThumbSrcKey = init[published.PARAM_DEF_THUMB_SRC];
-        var defaultThumbSrc = (typeof (defaultThumbSrcKey) === WAVE.UNDEFINED) ?
-                              published.DEFAULT_IMAGE :
-                              WAVE.strDefault(imagesList[defaultThumbSrcKey], published.DEFAULT_IMAGE);
-        thumbsData = init[published.PARAM_THUMBS];
-        thumbsScrollDelta = WAVE.strDefault(init[published.PARAM_THUMBS_SCROLL_DELTA], published.DEFAULT_THUMBS_SCROLL_DELTA);
-        thumbsOrientation = WAVE.strDefault(init[published.PARAM_THUMBS_POSITION], published.DEFAULT_THUMBS_POSITION);
-      }
-      catch (error) {
-        handle(".ctor 'parse init json'", error);
-      }
-
-      // UI initialization
-      try {
-        var imgMainImage = document.createElement("img");
-        imgMainImage.id = ids.imgMainImageId;
-        imgMainImage.className = published.CLS_IBOX_IMG_MAINIMAGE;
-        imgMainImage.src = published.DEFAULT_IMAGE;
-        imgMainImage.style.cssText = published.STL_IMG_MAINIMAGE + published.STL_DISABLE_MOBILE_HANDLING;
-        imgMainImage.ondragstart = function() { return false; };
-        
-        var divThumbsImagesContainer = document.createElement("div");
-        divThumbsImagesContainer.id = ids.divThumbsImagesContainerId;
-        divThumbsImagesContainer.className = published.IBOX_DIV_THUMBSIMAGESCONTAINER;
-        
-        if (typeof (thumbsData) !== WAVE.UNDEFINED) {
-          for (var i = 0; i < thumbsData.length; ++i) {
-            var thumb = thumbsData[i];
-        
-            var id      = "divThumbId_ibox_" + i + "_" + WAVE.genRndKey(4);
-            var cropId  = "divThumbCropId_ibox_" + i + "_" + WAVE.genRndKey(4);
-            var imageId = "imgThumbImageId_ibox_" + i + "_" + WAVE.genRndKey(4);
-            var bigImageSrcKey = thumb[published.PARAM_BIG_IMG_SRC];
-            var bigImageSrc = (typeof (bigImageSrcKey) === WAVE.UNDEFINED) ? 
-                              published.DEFAULT_IMAGE :
-                              WAVE.strDefault(imagesList[bigImageSrcKey], defaultImageSrc);
-            var thumbImageSrcKey = thumb[published.PARAM_THUMB_IMG_SRC];
-            var thumbImageSrc = (typeof (thumbImageSrcKey) === WAVE.UNDEFINED) ? 
-                                published.DEFAULT_IMAGE :
-                                WAVE.strDefault(imagesList[thumbImageSrcKey], defaultThumbSrc);
-            
-            if (thumbImageSrc !== published.DEFAULT_IMAGE && thumbImageSrc !== defaultThumbSrc) {
-              thumb.imageHeight = parseFloat(thumb[published.PARAM_HEIGHT]);
-              thumb.imageWidth  = parseFloat(thumb[published.PARAM_WIDTH]);
-              thumb.imageLeft   = parseFloat(thumb[published.PARAM_LEFT]);
-              thumb.imageTop    = parseFloat(thumb[published.PARAM_TOP]);
-            }
-        
-            thumb.imageLoaded = false;
-            thumb.bigImageSrc = bigImageSrc;
-            thumb.thumbImageSrc = thumbImageSrc;
-            thumb.id = id;
-            thumb.cropId = cropId;
-            thumb.imageId = imageId;
-        
-            // thumbnails UI templatization
-        
-            var divThumbStyle = isVerticalOrientation() ? published.STL_DIV_THUMB_V : published.STL_DIV_THUMB_H;
-        
-            var divThumbTemplate = 
-                  "<div id='@divThumbId@' class='@divThumbClass@' style='@divThumbStyle@'>" +
-                    "<div id='@divThumbCropId@' class='@divThumbCropClass@' style='@divThumbCropStyle@'>" +
-                      "<img id='@divThumbImageId@' " +
-                           "class='@divThumbImageClass@' " +
-                           "style='@divThumbImageStyle@' " +
-                           "src='@initialSrc@' " +
-                           "ondragstart='return false;'>" +
-                    "</div>" +
-                  "</div>";
-            divThumbsImagesContainer.innerHTML += WAVE.strHTMLTemplate(divThumbTemplate,
-                  {           
-                    divThumbId: id,
-                    divThumbClass: published.CLS_IBOX_DIV_THUMB,
-                    divThumbStyle: divThumbStyle,  
-                    divThumbCropId: cropId,
-                    divThumbCropClass: published.CLS_IBOX_DIV_THUMB_CROP,
-                    divThumbCropStyle: published.STL_DIV_THUMB_CROP,
-                    divThumbImageId: imageId,
-                    initialSrc: published.DEFAULT_IMAGE,
-                    divThumbImageClass: published.CLS_IBOX_DIV_THUMB_IMAGE,
-                    divThumbImageStyle: published.STL_DIV_THUMB_IMAGE + published.STL_DISABLE_MOBILE_HANDLING
-                  });
-          }
-        }
-      }
-      catch (error) {
-        handle(".ctor 'UI initialization'", error);
-      }
-
-      // UI templatization 
-      try {
-        var imageFloat;
-        var divThumbsContainerStyle;
-        var divNavStyle;
-        var divMainImageStyle;
-        var imgNavBackSrc;
-        var imgNavForthSrc;
-        
-        if (isVerticalOrientation()) {
-          divThumbsImagesContainer.style.cssText = published.STL_DIV_THUMBSIMAGESCONTAINER_V;
-          divThumbsContainerStyle = published.STL_DIV_THUMBSCONTAINER_V;
-          divNavStyle = published.STL_DIV_THUMBSNAV_V;
-          divMainImageStyle = published.STL_DIV_MAINIMAGE_V;
-          imgNavBackSrc = published.DEFAULT_UP_NAVIGATION_IMAGE;
-          imgNavForthSrc = published.DEFAULT_DOWN_NAVIGATION_IMAGE; 
-          imageFloat = thumbsOrientation === published.POS_LEFT ? "right" : "left";
-        } else {
-          divThumbsImagesContainer.style.cssText = published.STL_DIV_THUMBSIMAGESCONTAINER_H;
-          divThumbsContainerStyle = published.STL_DIV_THUMBSCONTAINER_H;
-          divNavStyle = published.STL_DIV_THUMBSNAV_H;
-          divMainImageStyle = published.STL_DIV_MAINIMAGE_H;
-          imgNavBackSrc = published.DEFAULT_LEFT_NAVIGATION_IMAGE;
-          imgNavForthSrc = published.DEFAULT_RIGHT_NAVIGATION_IMAGE;
-          imageFloat = "";
-        }
-        
-        var imageBlockTemplate = 
-          "<div id='@divMainImageId@' class='@divMainImageClass@' style='@divMainImageStyle@ float: @imageFloat@'>" +
-              imgMainImage.outerHTML +
-          "</div>";
-        var thumbsContainerBlockTemplate =
-          "<div id='@divThumbsContainerId@' class='@divThumbsContainerClass@' style='@divThumbsContainerStyle@'>" +
-            "<div id='@divNavBackId@' class='@divNavBackClass@' style='@divNavStyle@ opacity: @defaultOpacity@'>" +
-              "<img id='@imgNavBackId@' style='@imgNavBackStyle@' src='@imgNavBackSrc@'>" +
-            "</div>" +
-            divThumbsImagesContainer.outerHTML +
-            "<div id='@divNavForthId@' class='@divNavForthClass@' style='@divNavStyle@'>" +
-              "<img id='@imgNavForthId@' style='@imgNavForthStyle@' src='@imgNavForthSrc@'>" +
-            "</div>" +
-          "</div>";
-        
-        var divFrameTemplate;
-        if (isVerticalOrientation() || thumbsOrientation === published.POS_BOTTOM) {
-          divFrameTemplate =
-            "<div id='@divFrameId@' class='@divFrameClass@' style='@divFrameStyle@'>" +
-              imageBlockTemplate +
-              thumbsContainerBlockTemplate +
-            "</div>";
-        } else {
-          divFrameTemplate =
-            "<div id='@divFrameId@' class='@divFrameClass@' style='@divFrameStyle@'>" +
-              thumbsContainerBlockTemplate +
-              imageBlockTemplate +
-            "</div>";
-        }
-        
-        container.innerHTML = WAVE.strHTMLTemplate(divFrameTemplate,
-              {
-                divFrameId: ids.divFrameId,
-                divFrameClass: published.CLS_IBOX_DIV_FRAME,
-                divFrameStyle: published.STL_DIV_FRAME,
-                          
-                divMainImageId: ids.divMainImageId,
-                divMainImageClass: published.CLS_IBOX_DIV_MAINIMAGE,
-                divMainImageStyle: divMainImageStyle,
-                imageFloat: imageFloat,
-        
-                divThumbsContainerId: ids.divThumbsContainerId,
-                divThumbsContainerClass: published.CLS_IBOX_DIV_THUMBSCONTAINER,
-                divThumbsContainerStyle: divThumbsContainerStyle,
-                
-                divNavBackId: ids.divNavBackId,
-                defaultOpacity: published.DEFAULT_ARROWS_OPACITY,
-                divNavBackClass: published.CLS_IBOX_DIV_THUMBSNAVIGATION,
-                imgNavBackId: ids.imgNavBackId,
-                imgNavBackStyle: published.STL_IMG_THUMBSNAV,
-                imgNavBackSrc: imgNavBackSrc,
-                divNavStyle: divNavStyle,
-                
-                divNavForthId: ids.divNavForthId,
-                divNavForthClass: published.CLS_IBOX_DIV_THUMBSNAVIGATION,
-                imgNavForthId: ids.imgNavForthId,
-                imgNavForthStyle: published.STL_IMG_THUMBSNAV,
-                imgNavForthSrc: imgNavForthSrc
-              });
-      }
-      catch (error) {
-        handle(".ctor 'UI templatization'", error);
-      }
-
-      // apply handlers
-      var divMainImage = WAVE.id(ids.divMainImageId);
-      var divThumbsContainer = WAVE.id(ids.divThumbsContainerId);
-      $(divMainImage).bind("touchstart mousedown", divMainImageMouseDown);
-      $(divMainImage).bind("touchmove mousemove", divMainImageMouseMove);
-      $(divThumbsContainer).bind("touchstart mousedown", divThumbsContainerMouseDown);
-      $(divThumbsContainer).bind("touchmove mousemove", divThumbsContainerMouseMove);
-
-      initializeScrolling();
-      
-      // load the 1st image
-      fitImageToContainer(ids.imgMainImageId);
-      if (thumbsData.length > 0) {
-        thumbClickFactory(thumbsData[0].bigImageSrc)();
-      }
-      
-      // load thumb images
-      for (var j = 0; j < thumbsData.length; j++) {
-        var tmb = thumbsData[j];
-        fitThumbImageToContainer(tmb);
-        var thumbImage = WAVE.id(tmb.imageId);
-        $(thumbImage).bind("touchend click", thumbClickFactory(tmb.bigImageSrc));
-        loadThumbImage(tmb);
-      }
-
-      // global events
-      
-      $(window).resize(function() { doRefreshMarkup(); });
-      
-      $(document).bind("touchend mouseup", onMouseUp);
-    };
-
   // {
   //   "DIV": html container,
   //   "id" : "uniqueId",
@@ -2692,6 +1773,7 @@ WAVE.GUI = (function(){
   //   "disabled" : false,
   //   "readonly" : false,
   //   "placeholder" : "some text",
+  //   "addLabel" : true | false,
   //   "attrs" : {attr : value}
   // }
     published.MultiLineTextBox = function (init) {
@@ -2815,7 +1897,7 @@ WAVE.GUI = (function(){
 
       fPSEditorIDSeed++;
       var fDIV = init.DIV;
-      var fContent = WAVE.cloneEnsure(WAVE.tryParseJSON(init.content).obj);
+      var fContent = WAVE.memberClone(WAVE.tryParseJSON(init.content).obj);
       var fOutputFormFieldName = WAVE.strDefault(init.outputFormFieldName, null);
       var fReadOnly = WAVE.strAsBool(init.readonly, false);
       var fDisable = WAVE.strAsBool(init.disabled, false);
@@ -2827,7 +1909,7 @@ WAVE.GUI = (function(){
       var fLocalizerSchema = "PSEditor";
       var fLocalizerField = "ps";
       var fTitle = WAVE.strDefault(init.title);
-      var fSchema = WAVE.get(init, "schema", {n: {plh: "Name"}, d: {type : "textarea", plh: "Description"}});
+      var fSchema = WAVE.get(init, "schema", {n: {type: "text",plh: "Name"}, d: {type : "textarea", plh: "Description"}});
 
       var fClasses = WAVE.get(init, "btnClasses", {});
         fClasses.addBtnCls = WAVE.strDefault(fClasses.addBtnCls, published.CLS_PS_BTN_ADD);
@@ -3042,7 +2124,7 @@ WAVE.GUI = (function(){
           readonly : fReadOnly
         });
 
-        ed.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_UPDATED, function (e, d) {
+        ed.eventBind(published.EVT_OBJECT_EDITOR_UPDATED, function (e, d) {
           fContent[iso] = d;
           editor.content(JSON.stringify(fContent), false);
         });
@@ -3101,7 +2183,7 @@ WAVE.GUI = (function(){
             } 
           }
 
-          fContent = WAVE.cloneEnsure(parsed.obj);
+          fContent = WAVE.memberClone(parsed.obj);
           
           if(rebuild) buildEditors();
 
@@ -3223,7 +2305,7 @@ WAVE.GUI = (function(){
       var fPlh = WAVE.strDefault(fMeta.plh);
       var fSets = WAVE.mergeArrays([], fMeta.sets, function(a, b) { return a.toLowerCase() === b.toLowerCase(); }, function(a) { return a.toLowerCase(); });
       var fDflt = fMeta.dflt;
-      var fContent = WAVE.get(init, "content", typeof(fDflt) !== tUNDEFINED ? WAVE.clone(fDflt) : {});
+      var fContent = WAVE.get(init, "content", typeof(fDflt) !== tUNDEFINED ? fDflt : {});
 
       var fReadOnly = WAVE.strAsBool(init.readonly, false);
       var fDisabled = WAVE.strAsBool(init.disabled, false);
@@ -3237,12 +2319,13 @@ WAVE.GUI = (function(){
       var fLocalizerSchema = "ObjectEditor";
       var fLocalizerField = "objEd";
       var fValidators = [];
+      var fEditors = [];
 
       var fControlsIds = {
         editorContainerId : "edit_cont_" + fSeed,
+        buttonsContainerId : "edit_buttons_" + fSeed,
         inputId : "edit_input_" + fSeed,
         outputHiddenId: "edit_conf_out_" + fSeed,
-
         btnRawId: "edit_raw_" + fSeed,
         btnDelId: "edit_del_" + fSeed
       }; 
@@ -3263,6 +2346,248 @@ WAVE.GUI = (function(){
         fTexts.btnRaw = getText("btn-raw", "Edit Raw");
         fTexts.btnClear = getText("btn-clear", "Clear");
         fTexts.btnReset = getText("btn-reset", "Reset");
+        fTexts.required = getText("err-meg", "Required");
+
+      var Control = function(name, nodeDIV) {
+        var meta = fSchema[name];
+        var DIV = WAVE.get(meta , "DIV", nodeDIV);
+        var dflt = meta.dflt;
+        var content = WAVE.get(fContent, name, dflt);
+        var type = WAVE.strDefault(meta.type, "text");
+        var schema = WAVE.get(meta, "schema", {});
+        var plh = WAVE.strDefault(meta.plh, "");
+        var fIdx = WAVE.intValidPositiveOrZero(meta.index) ? meta.index : -1;
+        var sets = WAVE.mergeArrays([], meta.sets, function(a, b) { return a.toLowerCase() === b.toLowerCase(); }, function(a) { return a.toLowerCase(); });
+        var items = WAVE.isObject(meta.items) ? meta.items : {};
+        var disabled = WAVE.strAsBool(meta.disabled, fDisabled);
+        var readonly = WAVE.strAsBool(meta.readonly, fReadOnly); 
+        var canRaw = WAVE.strAsBool(meta.canRaw, false);
+        var canDel = WAVE.strAsBool(meta.canDel, true);
+        var canAdd = WAVE.strAsBool(meta.canAdd, true);
+        var required = WAVE.strAsBool(meta.required, false);
+        var nodeClass = WAVE.strDefault(meta.cls);
+        var errMsg = WAVE.strDefault(meta.errMsg, required ? fTexts.required : "");
+        var showError = WAVE.isFunction(meta.showError) ? meta.showError : function() { WAVE.id(errorDivId).innerText = errMsg; };
+        var hideError = WAVE.isFunction(meta.hideError) ? meta.hideError : function() { WAVE.id(errorDivId).innerText = ""; };
+        var validFunction = WAVE.isFunction(meta.validate) ? 
+          meta.validate : 
+          function(sender, v, inIndex) {
+          var res = true;
+          if (required) {
+            if (type === "text" || type === "textarea" || type === "radio" || type === "combo") res = !WAVE.strEmpty(v);
+            if (type === "array" || type === "multiple") res = WAVE.isArray(v) && v.length > 0;
+            if (type === "object" || type === "ps") res = WAVE.isObject(v) && !WAVE.empty(v);
+          }
+          return {ok: res, value: v, index: inIndex}; 
+        };
+
+        var divId = uName(name, fControlsIds.editorContainerId);
+        var inputId = uName(name, fControlsIds.inputId);
+        var errorDivId = divId + "_err";
+        var ed = null;
+        var i, l, nId, radios, key, html, vFunc, arr; 
+
+        if (type === "text" || type === "textarea" || type === "combo" || type === "check") {
+          vFunc = function() {
+            var ctrl = WAVE.id(inputId);
+            var vl = type === "check" ? ctrl.checked : ctrl.value;
+            return validateField(validFunction, ctrl, vl, fIdx, errorDivId, errMsg, showError, hideError);
+          };
+        }
+        if (type === "array" || type === "object" || type === "ps") {
+          vFunc = function() {
+            return validateField(validFunction, ed, ed.jsonContent(), fIdx, errorDivId, errMsg, showError, hideError);
+          };
+        }
+        if (type === "radio" || type === "multiple") {
+          vFunc = function() {
+            radios = document.getElementsByName(inputId);
+            l = radios.length;
+            arr = [];
+            for (i = 0; i < l; i++) {
+              if (radios[i].checked) {
+                arr.push(radios[i].value);
+              }
+            } 
+            return validateField(validFunction, radios, type === "multiple" ? arr : (arr.length > 0 ? arr[0] : null), fIdx, errorDivId, errMsg, showError, hideError);
+          };
+        }
+        fValidators.push(vFunc);
+
+        var strHtml = 
+          "<div class='@nodeCont@'>" +
+            (WAVE.strEmpty(plh) ? "" : "<label class='@lblCls@' for='@labelFor@'>@plh@</label>") +
+            "<div class='@errorDivCls@' id='@errorDivId@'></div>" +
+            "<div id='@divId@' class='@ccCls@'></div>" +
+          "</div>";
+        var strDisabled = disabled ? "disabled" : "";
+        var strReadonly = readonly ? "readonly" : "";
+
+        DIV.insertAdjacentHTML("beforeend", WAVE.strHTMLTemplate(strHtml, {
+          nodeCont: published.CLS_OBJECT_EDITOR_NODE_CONTAIER + " " + nodeClass,
+          labelFor: inputId,
+          lblCls: required ? "wvRequired" : "",
+          plh: plh,
+          errorDivCls: "wvError",
+          errorDivId: errorDivId,
+          divId: divId,
+          ccCls: type === "array" ? 
+            published.CLS_OBJECT_EDITOR_ARRAY_CONTAIER : 
+            ((type === "object" || type === "ps") ? 
+              published.CLS_OBJECT_EDITOR_OBJECT_CONTAIER : 
+              published.CLS_OBJECT_EDITOR_INPUT_CONTAIER)
+        }));
+
+        var gDiv = WAVE.id(divId);
+        var erDiv = WAVE.id(errorDivId);
+        var cinit = {
+          DIV : gDiv,
+          id : inputId,
+          value : WAVE.strDefault(content),
+          meta: meta,
+          content: content,
+          disabled : disabled,
+          readonly : readonly,
+          addLabel : false,
+          placeholder : plh,
+          sets: sets,
+          canRaw : canRaw,
+          canAdd : canAdd,
+          canDel : canDel
+        };
+
+        function checkAndSave() {
+          var res = vFunc();
+          if (!res.ok) return;
+
+          fContent = WAVE.isObject(fContent) ? fContent : {};
+          var value = res.value;
+          fContent[name] = value;
+          editor.content(fContent);
+        }
+
+        if(type === "textarea"){
+          ed = new published.MultiLineTextBox(cinit);
+          ed.eventBind(published.EVT_MULTI_LINE_TEXT_UPDATED, function (e, args) {
+            checkAndSave();
+          });
+        } else if(type === "object" || type === "array") {
+          ed = new published.ObjectEditor(cinit);
+          ed.eventBind(published.EVT_OBJECT_EDITOR_UPDATED, function (e, d) {
+            checkAndSave();
+          });
+        } else if (type === "ps") {
+          ed = new published.PropSetEditor(cinit);
+          ed.eventBind(published.EVT_PS_EDITOR_UPDATED, function (e, d) {
+            checkAndSave();
+          });
+        }else if(type === "check") {
+          gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='checkbox' placeholder='@plh@' title='@plh@' />", 
+          {
+            id: inputId,
+            disabled: strDisabled,
+            readonly: strReadonly,
+            plh: plh,
+            value: WAVE.strDefault(content)
+          });
+          nId = WAVE.id(inputId);
+          nId.checked = WAVE.strAsBool(content, false);
+          nId.onclick = function change(e) {
+            checkAndSave();
+          };
+        } else if(type === "multiple") {
+          html = "";
+          for(key in items) {
+            nId = inputId + "_+ " + key;
+            html += WAVE.strHTMLTemplate("<label for='@id@'>@name@</label>", 
+            {
+              id: nId,
+              name: WAVE.strDefault(items[key], key)
+            });
+            html += WAVE.strHTMLTemplate("<input type='checkbox' @checked@ name='@name@' value='@value@' id='@id@' @disabled@ @readonly@/>",
+            {
+              checked: ((WAVE.isArray(content) && WAVE.inArray(content, key)) ? "checked='checked'" : ""),
+              name: inputId,
+              value: key,
+              id: nId,
+              disabled: strDisabled,
+              readonly: strReadonly
+            });
+          }
+          gDiv.innerHTML = html;
+          radios = document.getElementsByName(inputId);
+          l = radios.length;
+          for(i = 0; i < l; i++) {
+            radios[i].onclick = checkAndSave;
+          }
+        } else if (type === "radio") {
+          html = "";
+          for(key in items){
+            nId = inputId + "_+ " + key;
+            html += WAVE.strHTMLTemplate("<label for='@id@'>@name@</label>", 
+            {
+              id: nId,
+              name: WAVE.strDefault(items[key], key)
+            });
+            html += WAVE.strHTMLTemplate("<input type='radio' @checked@ name='@name@' value='@value@' id='@id@' @disabled@ @readonly@/>",
+            {
+              checked: content === key ? "checked='checked'" : "",
+              name: inputId,
+              value: key,
+              id: nId,
+              disabled: strDisabled,
+              readonly: strReadonly
+            });
+          }
+          gDiv.innerHTML = html;
+          radios = document.getElementsByName(inputId);
+          l = radios.length;
+          for(i = 0; i < l; i++) {
+            radios[i].onclick = checkAndSave;
+          }
+        }
+        else if(type === "combo") {
+          html = "<select id='@id@' @disabled@ @readonly@>";
+          if(WAVE.strEmpty(dflt)) {
+            html += "<option value=''></option>";
+          }
+          for(key in items) {
+            html += WAVE.strHTMLTemplate("<option @selected@ value='@value@'>@text@</option>", 
+            {
+              selected: content === key ? "selected" : "",
+              value: key,
+              text: WAVE.strDefault(items[key], key)
+            });
+          }
+          html += "</select>";
+          gDiv.innerHTML = WAVE.strHTMLTemplate(html,
+          {
+            id: inputId,
+            name: WAVE.strDefault(plh, key),
+            disabled: strDisabled,
+            readonly: readonly ? "disabled" : ""
+          });
+          if (!WAVE.strEmpty(dflt) && WAVE.strEmpty(fContent[name])) {
+            fContent[name] = dflt;
+          }
+          WAVE.id(inputId).onchange = function change(e) {
+            checkAndSave();
+          };
+        } else if(type === "text") {
+          gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='text' placeholder='@plh@' title='@plh@' value='@value@'/>", 
+          {
+            id: inputId,
+            disabled: strDisabled,
+            readonly: strReadonly,
+            plh: plh,
+            value: WAVE.strDefault(content)
+          });
+          WAVE.id(inputId).onchange = function change(e) {
+            checkAndSave();
+          };
+        }
+        vFunc();
+      };
 
       function getText(n, dflt){
         return localize(fTexts[n], dflt);
@@ -3289,11 +2614,11 @@ WAVE.GUI = (function(){
                   
         var parsed = WAVE.tryParseJSON(value);
         if (parsed.ok) { 
-          fContent = WAVE.cloneEnsure(parsed.obj);
+          fContent = parsed.obj;
 
           setHiddenValue();
           editor.eventInvoke(published.EVT_OBJECT_EDITOR_UPDATED, fContent);
-          if(WAVE.strAsBool(rebuild, false)) {
+          if(rebuild === true) {
             build();
           }
         }
@@ -3314,368 +2639,69 @@ WAVE.GUI = (function(){
 
       this.validate = function() {
         var vals = [];
+        var ok = true;
         for(var f in fValidators) {
-          vals.push(fValidators[f]());
+          var r = fValidators[f]();
+          ok = ok && r.ok;
+          vals.push(r);
         }
-        return vals;
+        return {ok: ok, result: vals};
       };
 
       this.validators = function() {
         return fValidators;
       };
 
-      function validateField(func, control ,value, idx) {
-        var res = func(value, idx);
+      function validateField(func, control ,value, idx, errorDivId, errMsg, showError, hideError) {
+        var res = func(editor, value, idx);
         if (res.ok) { 
-          if (WAVE.isFunction(res.hideError)) {
-            res.hideError(control);
-          }
+          hideError();
           editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS, { phase: published.EVT_PHASE_AFTER, target: control });
         } else {
-          if (WAVE.isFunction(res.showError)) {
-            res.showError(control);
-          } else {
-            published.toast(WAVE.strDefault(res.msg, "Error"), "error");
-          }
+          showError();
           editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_ERROR, { phase: published.EVT_PHASE_AFTER, target: control });
         }
         return res;
       }
 
+      function uName(filedName, id){
+        return filedName + id;
+      }
+
       function build() {
         fValidators = [];
-        fDIV.innerText = "";
-        function uName(filedName, id){
-          return filedName + id;
-        }
-
+        fDIV.innerHTML = WAVE.strHTMLTemplate("<div id='@contId@'></div><div id='@buttonsId@'></div>", 
+          {
+            contId: fControlsIds.editorContainerId, 
+            buttonsId: fControlsIds.buttonsContainerId
+          });
+        var nodeDIV = WAVE.id(fControlsIds.editorContainerId);
+        var buttonsDIV = WAVE.id(fControlsIds.buttonsContainerId);
         if (fType === "array") {
-          fDIV.insertAdjacentHTML("beforeend", "<div id='" + fControlsIds.editorContainerId + "'></div>");
           if(WAVE.isArray(fContent)){
             for(var i = 0; i < fContent.length; i++){
-              (function(idx){
-                var m = {};
-                for(var mn in fMeta) {
-                  m[mn] = fMeta[mn];
-                }
-                m.type= "object";
-                for(var nm in m.schema){
-                  m.schema[nm].index = idx;
-                }
-                var id = fControlsIds.editorContainerId + "_" + idx;
-                var delButtonId = "del" + id;
-                fDIV.insertAdjacentHTML("beforeend", "<div id='" + id + "'></div><input type='button' id=" + delButtonId + " class='" + fClasses.delBtnCls + "' value='" + fTexts.btnDel +"'/>");
-                var ed = new published.ObjectEditor({
-                  DIV: WAVE.id(id),
-                  content: fContent[idx],  
-                  meta: m,
-                  disabled : fDisabled,
-                  readonly : fReadOnly, 
-                });
-                ed.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_UPDATED, function (e, data) {
-                  fContent[idx] = data;
-                  editor.content(fContent);
-                });
-                ed.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_VALIDATION_ERROR,function(e, args) {
-                  editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_ERROR, { phase: published.EVT_PHASE_AFTER, target: args.target });
-                });  
-                ed.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS,function(e, args) {
-                  editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS, { phase: published.EVT_PHASE_AFTER, target: args.target });
-                });
-                var vls = ed.validators();
-                for(var vl in vls) {
-                  fValidators.push(vls[vl]);
-                }
-                if (fCanDel && !fReadOnly && !fDisabled) {
-                  WAVE.id(delButtonId).onclick = function () {
-                    published.showConfirmationDialog(
-                      fTexts.delConfirmTitle,
-                      "<div>"+fTexts.delConfirmBody+"</div>",
-                      [published.DLG_OK, published.DLG_CANCEL],
-                      function (sender, result) {
-                        if (result === published.DLG_OK) { 
-                          var args = { phase: published.EVT_PHASE_BEFORE, editor: editor, index: idx, abort: false };
-                          editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_REMOVE_ITEM, args);
-                          if (args.abort === true) return;
-
-                          fContent.splice(idx, 1);
-                          editor.content(fContent, true);
-                          editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_REMOVE_ITEM, { phase: published.EVT_PHASE_AFTER, editor: editor, index: idx });
-                        }
-                        return true;
-                      },
-                      { btnCls: fClasses.modalBtnCls });
-                  };
-                }
-              })(i);
+              createArrItem(i, nodeDIV);
             }
           } 
-          if(fCanAdd && !fReadOnly && !fDisabled && (!WAVE.isArray(fContent) || fContent.length < fMaxLength)){
-            var buttonAddId = "add_" + fControlsIds.editorContainerId;
-            fDIV.insertAdjacentHTML("beforeend", "<input type='button' value='" + fTexts.btnAdd + "' id='" + buttonAddId + "' class='" + fClasses.addBtnCls + "'/>");
-            WAVE.id(buttonAddId).onclick = function () {
-              if(!WAVE.isArray(fContent)) fContent = [];
-              var args = { phase: published.EVT_PHASE_BEFORE, editor: editor, abort: false };
-              editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_ADD_ITEM, args);
-              if (args.abort === true) return;
-
-              fContent.push({}); 
-              editor.content(fContent, true);
-              editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_ADD_ITEM, { phase: published.EVT_PHASE_AFTER, editor: editor });
-              editor.validate();
-            };
-          }
         } else {
           for(var o in fSchema){
-            (function(name){
-              var meta = fSchema[name];
-              var DIV = WAVE.get(meta , "DIV", fDIV);
-              var dflt = meta.dflt;
-              var content = WAVE.get(fContent, name, dflt);
-              var type = WAVE.strDefault(meta.type, "text");
-              var schema = WAVE.get(meta, "schema", {});
-              var plh = WAVE.strDefault(meta.plh, "");
-              var fIdx = WAVE.intValidPositiveOrZero(meta.index) ? meta.index : -1;
-              var sets = WAVE.mergeArrays([], meta.sets, function(a, b) { return a.toLowerCase() === b.toLowerCase(); }, function(a) { return a.toLowerCase(); });
-              var items = WAVE.isObject(meta.items) ? meta.items : {};
-              var valid = WAVE.isFunction(meta.validate) ? meta.validate : function(v, inIndex) { return {ok: true, value: v, index: inIndex} };
-
-              var disabled = WAVE.strAsBool(meta.disabled, fDisabled);
-              var readonly = WAVE.strAsBool(meta.readonly, fReadOnly);
-
-              var canRaw = WAVE.strAsBool(meta.canRaw, false);
-              var canDel = WAVE.strAsBool(meta.canDel, true);
-              var canAdd = WAVE.strAsBool(meta.canAdd, true);
-
-              var divId = uName(name, fControlsIds.editorContainerId);
-              var inputId = uName(name, fControlsIds.inputId);
-              if(type === "textarea" || type === "object" || type === "ps" || type === "array"){
-                DIV.insertAdjacentHTML("beforeend", "<div id='" + divId + "'></div>");
-              } else if (type === "text") {
-                DIV.insertAdjacentHTML(
-                  "beforeend", 
-                  "<div>" + 
-                    "<label for=" + inputId + ">" + WAVE.strDefault(plh, key) + "</label>" +
-                    "<input id='"+ inputId +"' " + (disabled ? "disabled" : "") + " " + (readonly ? "readonly" : "") + 
-                    " type='text' placeholder='" + plh + "' title='" + plh + "' value='" + WAVE.strDefault(content) + "'/></div>"
-                );
-              } else if (type === "check") {
-                DIV.insertAdjacentHTML(
-                  "beforeend", 
-                  "<div><label for='" + inputId + "'>" + plh + "</label><input id='"+ inputId +"' " + (disabled ? "disabled" : "") + " " + (readonly ? "disabled" : "") + " type='checkbox'/></div>"
-                );
-              } else if (type === "multiple") {
-                var html = "<div>";
-                for(var key in items){
-                  html += "<label for=" + inputId + key + ">" + WAVE.strDefault(items[key], key) + "</label>";
-                  html += "<input type='checkbox' " + ((WAVE.isArray(content) && WAVE.inArray(content, key)) ? "checked='checked'" : "") + 
-                    " name='" + inputId + "' value='" + key + "' id='" + inputId + key + "' " + (disabled ? "disabled" : "") + " " + (readonly ? "disabled" : "") + "/>";
-                }
-                html+= "</div>";
-                DIV.insertAdjacentHTML("beforeend", html);
-              } else if (type === "radio") {
-                var html = "<div>";
-                for(var key in items){
-                  html += "<label for=" + inputId + key + ">" + WAVE.strDefault(items[key], key) + "</label>";
-                  html += "<input type='radio' " + (content === key ? "checked='checked'" : "") + 
-                    " name='" + inputId + "' value='" + key + "' id='" + inputId + key + "' " + (disabled ? "disabled" : "") + " " + (readonly ? "disabled" : "") + "/>";
-                }
-                html+= "</div>";
-                DIV.insertAdjacentHTML("beforeend", html);
-              } else if (type === "combo") {
-                var html = "<div><select id='" + inputId + "' " + (disabled ? "disabled" : "") + " " + (readonly ? "disabled" : "") + ">";
-                for(var key in items){
-                  html += "<option " + (content === key ? "selected" : "") + " value='" + key + "'>" + WAVE.strDefault(items[key], key) + "</option>";
-                }
-                html += "</select></div>";
-                DIV.insertAdjacentHTML("beforeend", html);
-              }
-
-              if(type === "textarea"){
-                  var ed = new published.MultiLineTextBox({
-                    DIV : WAVE.id(divId),
-                    id : inputId,
-                    value : WAVE.strDefault(content),
-                    disabled : disabled,
-                    readonly : readonly,
-                    placeholder : plh
-                  });
-
-                  var vFunc = function() {
-                    var ctrl = WAVE.id(inputId);
-                    var vl = ctrl.value;
-                    return validateField(valid, ctrl, vl, fIdx);
-                  };
-                  fValidators.push(vFunc);
-
-                  ed.eventBind(WAVE.GUI.EVT_MULTI_LINE_TEXT_UPDATED, function (e, args) {
-                    fContent = WAVE.isObject(fContent) ? fContent : {};
-
-                    var res = vFunc();
-                    if (res.ok) { 
-                      fContent[name] = String(res.value).replace(/'/g, '&apos;');
-                      editor.content(fContent);
-                    }
-                  });
-              } else if(type === "object") {
-                  var ed = new published.ObjectEditor({
-                    DIV: WAVE.id(divId),
-                    meta: meta,
-                    disabled : disabled,
-                    readonly : readonly, 
-                    content: content
-                  });
-
-                  ed.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_UPDATED, function (e, d) {
-                    fContent = WAVE.isObject(fContent) ? fContent : {};
-                    fContent[name] = d;
-                    editor.content(fContent);
-                  });
-              } else if(type === "ps") {
-                var ed = new published.PropSetEditor({
-                  DIV: WAVE.id(divId),
-                  sets: sets,
-                  shema: schema,
-                  content: content,
-                  disabled : disabled,
-                  readonly : readonly,
-                  canRaw : canRaw,
-                  canAdd : canAdd,
-                  canDel : canDel
-                });
-
-                ed.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED, function (e, d) {
-                  fContent = WAVE.isObject(fContent) ? fContent : {};
-                  fContent[name] = d;
-                  editor.content(fContent);
-                });
-              } else if(type === "check") {
-                var nI = WAVE.id(inputId);
-                nI.checked = WAVE.strAsBool(content, false);
-                nI.onclick = function change(e) {
-                  fContent = WAVE.isObject(fContent) ? fContent : {};
-                  fContent[name] = e.target.checked;
-                  editor.content(fContent);
-                };
-              } else if(type === "multiple") {
-                var radios = document.getElementsByName(inputId);
-                for(var r = 0; r < radios.length; r++) {
-                  radios[r].onclick = function() {
-                    fContent = WAVE.isObject(fContent) ? fContent : {};
-                    fContent[name] = [];
-                    for (var i = 0, length = radios.length; i < length; i++) {
-                      if (radios[i].checked) {
-                        fContent[name].push(radios[i].value);
-                      }
-                    }
-                    editor.content(fContent);
-                  };
-                }
-              } else if (type === "radio") {
-                var radios = document.getElementsByName(inputId);
-                for(var r = 0; r < radios.length; r++) {
-                  radios[r].onclick = function() {
-                    fContent = WAVE.isObject(fContent) ? fContent : {};
-                    fContent[name] = [];
-                    for (var i = 0, length = radios.length; i < length; i++) {
-                      if (radios[i].checked) {
-                        fContent[name] = radios[i].value;
-                        break;
-                      }
-                    }
-                    editor.content(fContent);
-                  };
-                }
-              }
-              else if(type === "combo") {
-                WAVE.id(inputId).onchange = function change(e) {
-                  fContent = WAVE.isObject(fContent) ? fContent : {};
-                  fContent[name] = e.target.value;
-                  editor.content(fContent);
-                };
-              } else if(type === "text") {
-                var vFunc = function() {
-                  var ctrl = WAVE.id(inputId);
-                  var vl = ctrl.value;
-                  return validateField(valid, ctrl, vl, fIdx);
-                };
-                fValidators.push(vFunc);
-
-                WAVE.id(inputId).onchange = function change(e) {
-                  fContent = WAVE.isObject(fContent) ? fContent : {};
-                  var res = vFunc();
-                  if (res.ok) { 
-                    fContent[name] = String(res.value).replace(/'/g, '&apos;');
-                    editor.content(fContent);
-                  }
-                };
-              } else if (type === "array") {
-                DIV.insertAdjacentHTML("beforeend", "<div id='" + divId + "'></div>");
-                if(WAVE.isArray(content)){
-                  for(var i = 0; i < content.length; i++){
-                    (function(idx){
-                      var m = WAVE.clone(meta);
-                      m.type= "object";
-                      var id = divId + "_" + idx;
-                      var delButtonId = "del" + id;
-                      DIV.insertAdjacentHTML("beforeend", "<div id='" + id + "'></div><input type='button' id=" + delButtonId + " value='" + fTexts.btnDel +"' class='" + fClasses.delBtnCls + "'/>");
-                      var ed = new published.ObjectEditor({
-                        DIV: WAVE.id(id),
-                        content: content[idx],  
-                        meta: m,
-                        disabled : disabled,
-                        readonly : readonly, 
-                      });
-
-                      ed.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_UPDATED, function (e, data) {
-                        fContent[name][idx] = data;
-                        editor.content(fContent);
-                      });
-                      if (canDel && !readonly && !disabled) {
-                        WAVE.id(delButtonId).onclick = function () {
-                          published.showConfirmationDialog(
-                            fTexts.delConfirmTitle,
-                            "<div>"+fTexts.delConfirmBody+"</div>",
-                            [published.DLG_OK, published.DLG_CANCEL],
-                            function (sender, result) {
-                              if (result === published.DLG_OK) {
-                                var args = { phase: published.EVT_PHASE_BEFORE, editor: editor, index: idx, abort: false };
-                                editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_REMOVE_ITEM, args);
-                                if (args.abort === true) return;
-
-                                fContent[name].splice(idx, 1);
-                                editor.content(fContent, true);
-                                editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_REMOVE_ITEM, { phase: published.EVT_PHASE_AFTER, editor: editor, index: idx });
-                              }
-                              return true;
-                            },
-                            { btnCls: fClasses.modalBtnCls });
-                        };
-                      }
-                    })(i);
-                  }
-                } 
-                if(fCanAdd && !fReadOnly && !fDisabled && (!WAVE.isArray(fContent[name]) || fContent[name].length < fMaxLength)){
-                  var buttonAddId = "add_" + fControlsIds.editorContainerId;
-                  fDIV.insertAdjacentHTML("beforeend", "<input type='button' value='" + fTexts.btnAdd + "' id='" + buttonAddId + "'/>");
-                  WAVE.id(buttonAddId).onclick = function () {
-                    fContent = WAVE.isObject(fContent) ? fContent : {};
-                    if(!WAVE.isArray(fContent[name])) fContent[name] = [];
-                    var args = { phase: published.EVT_PHASE_BEFORE, editor: editor, abort: false };
-                    editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_ADD_ITEM, args);
-                    if (args.abort === true) return;
-
-                    fContent[name].push({}); 
-                    editor.content(fContent, true);
-                    editor.eventInvoke(published.EVT_OBEJCT_EDITOR_ARRAY_ADD_ITEM, { phase: published.EVT_PHASE_AFTER, editor: editor });
-                  };
-                }
-              }
-            })(o);
+            var ed = new Control(o, nodeDIV);
           }
         }
+
+        if(fType === "array" && fCanAdd && !fReadOnly && !fDisabled && (!WAVE.isArray(fContent) || fContent.length < fMaxLength)){
+          var buttonAddId = "add_" + fSeed;
+          buttonsDIV.insertAdjacentHTML("beforeend", "<input type='button' value='" + fTexts.btnAdd + "' id='" + buttonAddId + "' class='" + fClasses.addBtnCls + "'/>");
+          WAVE.id(buttonAddId).onclick = function () {
+            if(!WAVE.isArray(fContent)) fContent = [];
+            fContent.push({}); 
+            editor.content(fContent, true);
+            editor.validate();
+          };
+        }
+
         if (fCanRaw) {
-          fDIV.insertAdjacentHTML("beforeend", "<input type='button' value='" + fTexts.btnRaw + "' id='" + fControlsIds.btnRawId + "'/>");
+          buttonsDIV.insertAdjacentHTML("beforeend", "<input type='button' value='" + fTexts.btnRaw + "' id='" + fControlsIds.btnRawId + "' class='" + fClasses.addBtnCls + "'/>");
           WAVE.id(fControlsIds.btnRawId).onclick = function () {
             var inputId = "raw" + fSeed;
             published.showConfirmationDialog(
@@ -3688,7 +2714,7 @@ WAVE.GUI = (function(){
                   var val = WAVE.id(inputId).value;
                   var res = WAVE.tryParseJSON(val);
                   if (res.ok){
-                      if (fType != 'array' && WAVE.checkKeysUnique(res.obj)){
+                      if (fType !== 'array' && WAVE.checkKeysUnique(res.obj)){
                         published.toast(WAVE.strLocalize(fCurrentLocal, fLocalizerSchema, fLocalizerField, "JSON is valid, but some keys are duplicated"), "error");
                         return false;
                       }
@@ -3707,6 +2733,66 @@ WAVE.GUI = (function(){
           };
         }
       }
+
+      var arrItemTemplate = "<div class='@divCLS@' id='@divId@'></div>" +
+        (fCanDel && !fReadOnly && !fDisabled ? "<input type='button' id='@BtnId@' class='@BtnCls@' value='@delText@'/>" : "") +
+        "<div class='@arrSep@'></div>";
+      function createArrItem(idx, nodeDIV){
+        var m = WAVE.memberClone(fMeta);
+        m.type = "object";
+        for(var nm in m.schema){
+          m.schema[nm].index = idx;
+        }
+        var id = fControlsIds.editorContainerId + "_" + idx;
+        var delButtonId = "del" + id;
+        nodeDIV.insertAdjacentHTML("beforeend",WAVE.strHTMLTemplate(arrItemTemplate,
+        {
+          divCLS: published.CLS_OBJECT_EDITOR_ARRAY_ITEM,
+          divId: id,
+          BtnId: delButtonId,
+          BtnCls: fClasses.delBtnCls,
+          delText: fTexts.btnDel,
+          arrSep: published.CLS_OBJECT_EDITOR_ARRAY_ITEM_SEPARATOR
+        }));
+        var ed = new published.ObjectEditor({
+          DIV: WAVE.id(id),
+          content: fContent[idx],  
+          meta: m,
+          disabled : fDisabled,
+          readonly : fReadOnly 
+        });
+        ed.eventBind(published.EVT_OBJECT_EDITOR_UPDATED, function (e, data) {
+          fContent[idx] = data;
+          editor.content(fContent);
+        });
+        ed.eventBind(published.EVT_OBJECT_EDITOR_VALIDATION_ERROR,function(e, args) {
+          editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_ERROR, { phase: published.EVT_PHASE_AFTER, target: args.target });
+        });  
+        ed.eventBind(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS,function(e, args) {
+          editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS, { phase: published.EVT_PHASE_AFTER, target: args.target });
+        });
+        var vls = ed.validators();
+        for(var vl in vls) {
+          fValidators.push(vls[vl]);
+        }
+        if (fCanDel && !fReadOnly && !fDisabled) {
+          WAVE.id(delButtonId).onclick = function () {
+            published.showConfirmationDialog(
+              fTexts.delConfirmTitle,
+              "<div>"+fTexts.delConfirmBody+"</div>",
+              [published.DLG_OK, published.DLG_CANCEL],
+              function (sender, result) {
+                if (result === published.DLG_OK) {
+                  fContent.splice(idx, 1);
+                  editor.content(fContent, true);
+                }
+                return true;
+              },
+              { btnCls: fClasses.modalBtnCls });
+          };
+        }
+      }
+
       build();
     };//ObjectEditor
 
@@ -3715,12 +2801,17 @@ WAVE.GUI = (function(){
     //{
     //  "DIV" : DIV,
     //  "unswitchable" : false,
+    //  "parse": true|false
     //  "tabs" : [ 
     //    {
     //      "title" : "text",
+    //      "name" : "name of tab",
     //      "content" : "text or hml",
     //      "isHtml" : "true",
-    //      "isActive" : "false"
+    //      "isActive" : "false",
+    //      "visible" : true,
+    //      "cls" : class name,
+    //      "contId" : "id of content"
     //    }
     //  ]
     //}
@@ -3731,13 +2822,132 @@ WAVE.GUI = (function(){
       WAVE.extend(tabs, WAVE.EventManager);
       fTabsIdSeed++;
       var fSeed = "wvTabs_" + fTabsIdSeed;
+      var fAttributePrefix = "data-tabs-";
 
       var fDIV = init.DIV;
+      var fDIVDisplay = WAVE.styleOf(fDIV, "display");
       var fUnswitchable = WAVE.strAsBool(init.unswitchable, false);
+      var fParse = WAVE.strAsBool(init.parse, false);
       var fTabs = WAVE.isArray(init.tabs) ? init.tabs : [];
       var fTSeed = 0;
+
+      var Tab = function(tabInit) {
+        fTSeed++;
+        tabInit = !WAVE.isObject(tabInit) ? {} : tabInit;
+
+        var tab = this;
+        var fTitle = WAVE.strDefault(tabInit.title, fTSeed.toString());
+        var fContent = WAVE.strDefault(tabInit.content);
+        var fIsHtml = WAVE.strAsBool(tabInit.isHtml, true);
+        var fIsActive = WAVE.strAsBool(tabInit.isActive, false);
+        var fId = WAVE.strDefault(tabInit.id, fSeed + "_" + fTSeed);
+        var fName = WAVE.strDefault(tabInit.name, fTSeed.toString());
+        var fVisible = WAVE.strAsBool(tabInit.visible, true);
+        var fClass = WAVE.strDefault(tabInit.cls);
+        var fCont = WAVE.get(tabInit, "cont", null);
+        var fLi = WAVE.get(tabInit, "li", null);
+        var baseDisplay;
+
+        function renderContent() {
+          if(fIsHtml) 
+            fCont.innerHTML = fContent;
+          else
+            fCont.innerText = fContent;
+        }
+
+        this.build = function(firstTime, visibilityChanged) {
+          if (firstTime) {
+            if (fLi === null) {
+              var ulTabs = WAVE.id(fControlsIds.ulTabsId);
+              ulTabs.insertAdjacentHTML("beforeend", "<li id='" + fId + "'></li>");
+              fLi = WAVE.id(fId);
+            }
+            fLi.innerText = fTitle;
+            fLi.onclick = function(){
+              tabs.tabActive(fName);
+            };
+            if (visibilityChanged) baseDisplay = WAVE.styleOf(fLi, "display");
+          }
+          if (fCont === null) {
+            var divId = "content_" + fId;
+            var divTabs = WAVE.id(fControlsIds.divContentContId);
+            divTabs.insertAdjacentHTML("beforeend", "<div id='" + divId + "' class='" + published.CLS_TABS_CONTENT_DIV + " " + fClass + "'></div>");
+            fCont = WAVE.id(divId);
+            renderContent();
+          }
+          fLi.style.display = fVisible ? baseDisplay : "none";
+          WAVE.addClass(fCont, (fVisible && fIsActive) ? published.CLS_TABS_CONTENT_DIV_SHOWN : published.CLS_TABS_CONTENT_DIV_HIDDEN);
+          WAVE.removeClass(fCont, (fVisible && fIsActive) ? published.CLS_TABS_CONTENT_DIV_HIDDEN : published.CLS_TABS_CONTENT_DIV_SHOWN);
+        };
+
+        this.activate = function() {
+          fIsActive = true;
+          WAVE.addClass(fCont, published.CLS_TABS_CONTENT_DIV_SHOWN);
+          WAVE.removeClass(fCont, published.CLS_TABS_CONTENT_DIV_HIDDEN);
+          WAVE.addClass(fLi, published.CLS_TABS_ACTIVE_TAB);
+        };
+
+        this.deactivate = function() {
+          fIsActive = false;
+          WAVE.addClass(fCont, published.CLS_TABS_CONTENT_DIV_HIDDEN);
+          WAVE.removeClass(fCont, published.CLS_TABS_CONTENT_DIV_SHOWN);
+          WAVE.removeClass(fLi, published.CLS_TABS_ACTIVE_TAB);
+        };
+
+        this.destroy = function() {
+          return WAVE.removeElem(fCont.id) && WAVE.removeElem(fLi.id);
+        };
+
+        this.name = function() { return fName; };
+        this.tab = function() { return fLi; };
+        this.cont = function() { return fCont; };
+        this.isActive = function(val) {
+          if (typeof (val) === tUNDEFINED || val === null) return fIsActive; 
+
+          fIsActive = val;
+        };
+        this.content = function(val) {
+           if (typeof (val) === tUNDEFINED || val === null) return fContent;
+
+          fContent = val;
+          renderContent();
+        };
+        this.title = function(val) {
+           if (typeof (val) === tUNDEFINED || val === null) return fTitle;
+
+          fTitle = val;
+          fLi.innerText = fTitle;
+        };
+        this.visible = function(val) {
+          if (typeof (val) === tUNDEFINED || val === null) return fVisible;
+
+          fVisible = val === true;
+          tab.build(false, true);
+          var allInvisible = true;
+          for(var i = 0, l = fTabs.length; i < l; i++) {
+            var t = fTabs[i];
+            if (t.visible() && fTabs[0].name() !== fName) {
+              if (fIsActive && !fVisible) 
+                tabs.tabActive(t.name());
+              allInvisible = false;
+            }
+          }
+          if (allInvisible) {
+            fDIVDisplay = WAVE.styleOf(fDIV, "display");
+            fDIV.style.display = "none";
+          } else {
+            fDIV.style.display = fDIVDisplay;
+          }
+        };
+
+        this.titleCtrl = function() { return fLi; };
+        this.contentCtrl = function() { return fCont; };
+
+        return tab;
+      };
+
       for(var i = 0; i < fTabs.length; i++){
-         fTabs[i] = ensureTab(fTabs[i]);
+         fTabs[i] = new Tab(fTabs[i]);
       }
 
       var fControlsIds = {
@@ -3745,184 +2955,1041 @@ WAVE.GUI = (function(){
         divContentContId : "content_cont_" + fSeed,
         ulTabsId : "ul_tabs_ " + fSeed
       };
-      var fTexts = {};
-      var fClasses = {};
-
-      function ensureTab(obj){
-        if (!WAVE.isObject(obj)) obj = {};
-
-        fTSeed++;
-        obj.title = WAVE.strDefault(obj.title, fTSeed.toString());
-        obj.content = WAVE.strDefault(obj.content);
-        obj.isHtml = WAVE.strAsBool(obj.isHtml, true);
-        obj.isActive = WAVE.strAsBool(obj.isActive, false);
-        obj.id = fSeed + "_" + fTSeed;
-        obj.name = WAVE.strDefault(obj.Name, fTSeed);
-        return obj;
-      }
-
-      function buildTab(tab){
-        var ulTabs = WAVE.id(fControlsIds.ulTabsId);
-        var divTabs = WAVE.id(fControlsIds.divContentContId);
-
-        var divId = getTabContentId(tab.id);
-        ulTabs.insertAdjacentHTML("beforeend", "<li id='" + tab.id + "'></li>");
-        divTabs.insertAdjacentHTML("beforeend", "<div id='" + divId + "' class='" + published.CLS_TABS_CONTENT_DIV + "'></div>");
-
-        var t = WAVE.id(tab.id);
-        var div = WAVE.id(divId);
-        t.innerText = tab.title;
-        t.onclick = function(){
-          tabs.activeTab(tab.name);
-        };
-
-        if(tab.isHtml) 
-          div.innerHTML = tab.content;
-        else
-          div.innerText = tab.content;
-      }
-
-      function getTabContentId(tabId){
-        return "content_" + tabId;
-      }
 
       function activate(name){
         var result = null;
         for(var i = 0; i < fTabs.length; i++){
           var tab = fTabs[i];
-          var hTab = WAVE.id(tab.id);
-          var div = WAVE.id(getTabContentId(tab.id));
-          if(tab.name === name){
-              tab.isActive = true;
-              result = tab.name;
-              div.style.display = "block";
-              hTab.className += " " + published.CLS_TABS_ACTIVE_TAB;
+          if(tab.name() === name){
+            result = name;
+            tab.activate();
           } else {
-            tab.isActive = false;
-            div.style.display = "none";
-            WAVE.removeClass(hTab, published.CLS_TABS_ACTIVE_TAB);
+            tab.deactivate();
           }
         }
         return result;
       }
 
+      function getTabByName(name) {
+        for(var i = 0; i < fTabs.length; i++) {
+          if (fTabs[i].name() === name) return fTabs[i];
+        }
+        return null;
+      }
+
       this.DIV = function() { return fDIV; };
+
+      this.tabs = function() { return fTabs; };
 
       this.unswitchable = function(value) {
         if (typeof(value) === tUNDEFINED) return fUnswitchable;
         
         fUnswitchable = value === true;
         for(var i = 0; i < fTabs.length; i++){
-          var tab = WAVE.id(fTabs[i].id);
+          var tab = fTabs[i];
           if(fUnswitchable){
-            if(!fTabs[i].isActive)
-              tab.className += " " + published.CLS_TABS_LI_DISABLED;
+            if(!fTabs[i].isActive())
+              tab.tab().className += " " + published.CLS_TABS_LI_DISABLED;
           }
           else 
-            WAVE.removeClass(tab, published.CLS_TABS_LI_DISABLED);
+            WAVE.removeClass(tab.tab(), published.CLS_TABS_LI_DISABLED);
         }
         return value;
       };
 
-      this.addTab = function(tab){
-        var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, tabControl: tabs, tab: tab, abort: false };
+      this.tabByName = function(name) {
+        if(typeof(name) === tUNDEFINED || name === null) return null;
+
+        return getTabByName(name);
+      };
+
+      this.tabAdd = function(tabInit){
+        var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, tabControl: tabs, tabInit: tabInit, abort: false };
         tabs.eventInvoke(published.EVT_TABS_TAB_ADD, evtArgsBefore);
         if (evtArgsBefore.abort === true) return;
 
-        tab = ensureTab(tab);
+        var tab = new Tab(tabInit);
+        var ft = getTabByName(tab.name());
+        if (ft !== null) {
+          ft.destroy();
+          fTabs.splice(fTabs.indexOf(ft), 1);
+        }
         fTabs.push(tab);
-        buildTab(tab, true);
-        activate(tab.name);
-        tabs.eventInvoke(published.EVT_TABS_TAB_CHANGED, tabs.activeTab());
+        tab.build(true, false);
+        if (tab.isActive())
+          activate(tab.name());
 
         tabs.eventInvoke(published.EVT_TABS_TAB_ADD, { phase: published.EVT_PHASE_AFTER, tabControl: tabs, tab: tab });
 
-        return tab.name;
+        return tab;
       };
 
-      this.deleteTab = function(name){
-        if(WAVE.strEmpty(name)) return false;
+      this.tabDelete = function(name){
+        if(typeof(name) === tUNDEFINED || name === null) return false;
 
         var res = false;
         for(var i = 0; i < fTabs.length; i++){
-          if(fTabs[i].name === name){
-            var t = fTabs[i];
+          if(fTabs[i].name() === name){
+            var tab = fTabs[i];
 
-            var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, tabControl: tabs, tab: t, abort: false };
+            var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, tabControl: tabs, tab: tab, abort: false };
             tabs.eventInvoke(published.EVT_TABS_TAB_REMOVE, evtArgsBefore);
             if (evtArgsBefore.abort === true) return res;
 
+            res = tab.destroy();
             fTabs.splice(i, 1);
-            if(fTabs.length > 0){
-              tabs.activeTab(fTabs[0].name);
+            if(tab.isActive() && fTabs.length > 0){
+              activate(fTabs[0].name());
             }
-            res = (WAVE.removeElem(t.id) && WAVE.removeElem(getTabContentId(t.id)));
+            break;
           }
         }
 
-        tabs.eventInvoke(published.EVT_TABS_TAB_REMOVE, { phase: published.EVT_PHASE_AFTER, tabControl: tabs, name: name, result: res });
+        tabs.eventInvoke(published.EVT_TABS_TAB_REMOVE, { phase: published.EVT_PHASE_AFTER, tabControl: tabs, name: name, ok: res });
         return res;
       };
 
-      this.activeTab = function(name){
+      this.tabActive = function(name){
         var result = null;
-        if(WAVE.strEmpty(name)) {
+        if(typeof(name) === tUNDEFINED || name === null) {
           for(var i = 0; i < fTabs.length; i++) {
-            if(fTabs[i].isActive)
-              result = fTabs[i].name;
+            if(fTabs[i].isActive()) {
+              result = fTabs[i].name();
+              break;
+            }
           }
         } else {
           if(!fUnswitchable)
-            if(tabs.activeTab() !== name) {
+            if(tabs.tabActive() !== name) {
               result = activate(name);
-              tabs.eventInvoke(published.EVT_TABS_TAB_CHANGED, tabs.activeTab());
+              tabs.eventInvoke(published.EVT_TABS_TAB_CHANGED, name);
             }
         }
         return result;
       };
 
-      (function build() {
-        var html = 
-          "<div id='@divTabsId@' class='@ulContainer@'>" +
-            "<ul id='@ulId@' class='@ulClass@'></ul>" +
-          "</div>" +
-          "<div id='@divContId@' class='@divClass@'></div>";
+      this.tabContent = function(name, value) {
+        if (typeof(name) === tUNDEFINED || name === null || WAVE.strEmpty(name)) return null;
+        var tab = getTabByName(name);
+        if (tab === null) return null;
 
-        fDIV.innerHTML = WAVE.strHTMLTemplate(html, 
-        {
-          divTabsId : fControlsIds.divTabsContId,
-          divContId : fControlsIds.divContentContId,
-          ulId : fControlsIds.ulTabsId,
-          ulClass : published.CLS_TABS_UL,
-          divClass : published.CLS_TABS_CONTENT_CONTAINER,
-          ulContainer : published.CLS_TABS_UL_CONTAINER
-        });
+        if (typeof(value) === tUNDEFINED) {
+          return tab.content();
+        }
+        tab.content(value);
+        return value;
+      };  
+
+      this.tabTitle = function(name, value) {
+        if (typeof(name) === tUNDEFINED || name === null || WAVE.strEmpty(name)) return null;
+        var tab = getTabByName(name);
+        if (tab === null) return null;
+
+        if (typeof(value) === tUNDEFINED) {
+          return tab.title();
+        }
+        tab.title(value);
+        return value;
+      };
+
+      this.tabVisible = function(name, val) {
+        if (typeof(name) === tUNDEFINED || name === null || WAVE.strEmpty(name)) return null;
+        var tab = getTabByName(name);
+
+        if (tab === null) return null;
+        if (typeof(val) === tUNDEFINED) {
+          return tab.visible();
+        }
+
+        val = val === true; 
+        tab.visible(val);
+        return val;
+      };
+
+      function build() {
+        var i, l, tab;
+
+        if (fParse) {
+          fTabs = [];
+            var tabs = fDIV.getElementsByTagName("li");
+            for(i = 0, l = tabs.length; i<l; i++) {
+              var t = tabs[i];
+              tab = {};
+              tab.title = t.innerText;
+              tab.name = WAVE.strDefault(t.getAttribute(fAttributePrefix + "name"));
+              if (WAVE.strEmpty(tab.name)) tab.name = null;
+              tab.isHtml = WAVE.strAsBool(t.getAttribute(fAttributePrefix + "isHtml"), true);
+              tab.isActive = WAVE.strAsBool(t.getAttribute(fAttributePrefix + "isActive"), false);
+              tab.visible = WAVE.strAsBool(t.getAttribute(fAttributePrefix + "visible"), true);
+              tab.cont = WAVE.id(WAVE.strDefault(t.getAttribute(fAttributePrefix + "contId")));
+              tab.li = t;
+              fTabs.push(new Tab(tab));
+            }
+        } else {
+          var html = 
+            "<div id='@divTabsId@' class='@ulContainer@'>" +
+              "<ul id='@ulId@' class='@ulClass@'></ul>" +
+            "</div>" +
+            "<div id='@divContId@' class='@divClass@'></div>";
+
+          fDIV.innerHTML = WAVE.strHTMLTemplate(html, 
+          {
+            divTabsId : fControlsIds.divTabsContId,
+            divContId : fControlsIds.divContentContId,
+            ulId : fControlsIds.ulTabsId,
+            ulClass : published.CLS_TABS_UL,
+            divClass : published.CLS_TABS_CONTENT_CONTAINER,
+            ulContainer : published.CLS_TABS_UL_CONTAINER
+          });
+        }
 
         if(fTabs.length === 0) return;
 
         var activeTab = null;
         var hit = false;
-        for(var i = 0; i < fTabs.length; i++) {
-          var tab = fTabs[i];
-          if(tab.isActive){
+        for(i = 0; i < fTabs.length; i++) {
+          tab = fTabs[i];
+          if(tab.isActive() && tab.visible()){
             if(!hit){
-              activeTab = tab.name;
+              activeTab = tab.name();
               hit = true;
             } else {
-              tab.isActive = false;
+              tab.isActive (false);
             }
           }
-          buildTab(tab);
+          tab.build(true, false);
         }
         if(!hit){
-          activeTab = fTabs[0].name;
-          fTabs[0].isActive = true;
+          i = 0;
+          while(i < fTabs.length){
+            if (fTabs[i].visible()) {
+              activeTab = fTabs[i].name();
+              fTabs[i].isActive(true);
+              break;
+            }
+            i++;
+          }
         }
-        activate(activeTab);
-      })();
+        if (activeTab !== null)
+          activate(activeTab);
+      }
+      build();
 
       return tabs;
     };//Tabs
+
+  /*
+    init : {
+      DIV: control|Id
+      title: text|html
+      altTitle: text|html
+      titleCtrl: control|id
+      content: text|html
+      contentCtrl: control|id
+      isTitleHtml: bool
+      isContentHtml: bool
+      mode: swap|modal
+      showOnClick: bool
+      showOnFocus: bool
+      hideOnClick: bool
+      hideOnFocus: bool
+      hideOnTimer: bool
+      timeout: int
+    }
+  */
+    var fDetailsIdSeed = 0;
+    published.Details = function (init) {
+      if (typeof(init) === tUNDEFINED || init === null) throw "Details.ctor(init)";
+
+      var details = this;
+      WAVE.extend(details, WAVE.EventManager);
+
+      var fId = "wvDetails_" + fDetailsIdSeed++;
+      var fDiv;
+      var fTitleControl;
+      var fContentControl;
+      var fTitle = WAVE.strDefault(init.title);
+      var fAltTitle = WAVE.strDefault(init.altTitle, fTitle);
+      var fContent = WAVE.strDefault(init.content);
+      var fIsTitleHtml = WAVE.strAsBool(init.isTitleHtml, true);
+      var fIsContentHtml = WAVE.strAsBool(init.isContentHtml, true);
+
+      var fShowOnClick = WAVE.strAsBool(init.showOnClick, true);
+      var fShowOnFocus = WAVE.strAsBool(init.showOnFocus, false);
+      var fHideOnTitle = WAVE.strAsBool(init.hideOnTitle, true);
+      var fHideOnClick = WAVE.strAsBool(init.hideOnClick, true);
+      var fHideOnFocus = WAVE.strAsBool(init.hideOnFocus, false);
+      var fHideOnTimer = WAVE.strAsBool(init.hideOnTimer, false);
+
+      var fMode = WAVE.strDefault(init.mode, "swap");
+      var r = WAVE.tryParseInt(init.timeout);
+      var fTimeout = r.ok ? r.value : 0;
+      var titleId = fId + "_title";
+      var contId = fId + "_content";
+      var fDialog = null;
+      var fHiddenState = false;
+
+      if (WAVE.has(init, 'DIV'))
+        fDiv = WAVE.isString(init.DIV) ? WAVE.id(init.DIV) : init.DIV;
+      if (WAVE.has(init, 'titleCtrl'))
+        fTitleControl = WAVE.isString(init.titleCtrl) ? WAVE.id(init.titleCtrl) : init.titleCtrl;
+      if (WAVE.has(init, 'contentCtrl'))
+        fContentControl = WAVE.isString(init.contentCtrl) ? WAVE.id(init.contentCtrl) : init.contentCtrl;
+
+      function hideContent() {
+        if (fHideOnTimer) {
+          setTimeout(function() {
+            __hide();
+          }, fTimeout);
+        }
+        if (fHideOnFocus) {
+          window.addEventListener("focus", hideEventHandler, true);
+          setTimeout(function(){ window.addEventListener("mousemove", moveEventHandler, false); } , 1);
+        } 
+        if (fHideOnClick)
+          setTimeout(function(){ window.addEventListener("click", hideEventHandler, false); }, 1);
+      }
+
+      function hideEventHandler(e) {
+        var target = e.target;
+        if (!WAVE.isParentOf(fContentControl, target)) __hide();
+      }
+
+      function moveEventHandler(e) {
+        var target = e.target;
+        if (!WAVE.isParentOf(fContentControl, target) && !WAVE.isParentOf(fTitleControl, target)) __hide();
+      }
+
+      function build()
+      {
+        if(typeof(fDiv) !== tUNDEFINED && fDiv !== null) {
+          WAVE.addClass(fDiv, published.CLS_DETAILS);
+          var html;
+
+          if (fMode === "modal") {
+            html = "<span id='@titleId@' class='@titleClass@' tabindex='0'></span>";
+            fDiv.innerHTML = WAVE.strHTMLTemplate(html, {
+              titleId: titleId,
+              titleClass: published.CLS_DETAILS_TITLE
+            });
+            fTitleControl = WAVE.id(titleId);
+
+            if (fIsTitleHtml) 
+              fTitleControl.innerHTML = fTitle;
+            else
+              fTitleControl.innerText = fTitle;
+
+          } else {
+
+            html = "<span id='@titleId@' class='@titleClass@' tabindex='0'></span><div id='@contId@' class='@contClass@'></div>";
+            fDiv.innerHTML = WAVE.strHTMLTemplate(html, {
+              titleId: titleId,
+              titleClass: published.CLS_DETAILS_TITLE,
+              contId: contId,
+              contClass: published.CLS_DETAILS_CONTENT
+            });
+            fTitleControl = WAVE.id(titleId);
+            fContentControl = WAVE.id(contId);
+
+
+            if (fIsContentHtml)
+              fContentControl.innerHTML = fContent;
+            else
+              fContentControl.innerText = fContent;
+
+          }
+        } else if (fTitleControl !== null && fContentControl !== null) {
+          WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE);
+          WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT);
+        } else 
+          throw "Details.build(unacceptable init)";
+
+        setTitle(fTitle);
+
+        if (fShowOnClick) 
+          fTitleControl.addEventListener("click", __show, false);
+        if (fShowOnFocus)
+          fTitleControl.onmouseover = fTitleControl.onfocus = __show;
+
+        __hide();
+      }
+
+      function setTitle(cont) {
+        if(WAVE.strEmpty(fTitle)) return;
+
+        if (fIsTitleHtml) 
+          fTitleControl.innerHTML = cont;
+        else
+          fTitleControl.innerText = cont;
+      }
+
+      function __hide() {
+        if(fHiddenState) return;
+
+        var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, abort: false };
+        details.eventInvoke(published.EVT_DETAILS_HIDE, evtArgsBefore);
+        if (evtArgsBefore.abort === true) return;
+
+        setTitle(fTitle);
+        if (fShowOnClick)
+          fTitleControl.addEventListener("click", __show, false);
+        if (fHideOnTitle)
+          fTitleControl.removeEventListener("click", __hide, false);
+
+        if (fMode === "modal" && fDialog !== null) fDialog.close();
+        else {
+          WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT_HIDDEN);
+          WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
+        }
+        fHiddenState = true;
+        window.removeEventListener("focus", hideEventHandler, false);
+        window.removeEventListener("click", hideEventHandler, false);
+        window.removeEventListener("mousemove", moveEventHandler, false);
+
+        WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE_HIDDEN);
+        WAVE.removeClass(fTitleControl, published.CLS_DETAILS_TITLE_SHOWN);
+
+        details.eventInvoke(published.EVT_DETAILS_HIDE, { phase: published.EVT_PHASE_AFTE });
+      }
+
+      function __show() {
+        if (!fHiddenState) return;
+
+        var evtArgsBefore = { phase: published.EVT_PHASE_BEFORE, abort: false };
+        details.eventInvoke(published.EVT_DETAILS_SHOW, evtArgsBefore);
+        if (evtArgsBefore.abort === true) return;
+
+        setTitle(fAltTitle);
+        if (fShowOnClick)
+          fTitleControl.removeEventListener("click", __show, false);
+        if (fHideOnTitle)
+          fTitleControl.addEventListener("click", __hide, false);
+
+        if (fMode === "modal") {
+          fDialog = new published.Dialog({
+            cls: published.CLS_DETAILS_CONTENT + " " + contId,
+            content: fContent, 
+            onShow: hideContent
+          });
+          fContentControl = document.getElementsByClassName(contId)[0];
+        } else {//"swap" - default
+          WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_HIDDEN);
+          WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
+          hideContent();
+        }
+        fHiddenState = false;
+        WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE_SHOWN);
+        WAVE.removeClass(fTitleControl, published.CLS_DETAILS_TITLE_HIDDEN);
+
+        details.eventInvoke(published.EVT_DETAILS_SHOW, { phase: published.EVT_PHASE_AFTER });
+      }
+
+      this.hide = function() {
+        __hide();
+      };
+
+      this.show = function() {
+        __show();
+      };
+
+      this.toggle = function() {
+        if(fHiddenState) __show();
+        else __hide();
+      };
+
+      build();
+
+      return details;
+    };//Details
+
+    function equalsImage(left, right) {
+      if (left === right) return true;
+      if (typeof(left) === tUNDEFINED || typeof(right) === tUNDEFINED) return false;
+      if (!WAVE.isObject(left)) left = { url: left };
+      if (!WAVE.isObject(right)) right = { url: right };
+      if (left.url === right.url) {
+        if (WAVE.has(left, 'clip')) {
+          if (WAVE.has(right, 'clip')) {
+            return left.left|0 === right.left|0
+              && left.right|0  === right.right|0
+              && left.bottom|0 === right.bottom|0
+              && left.top|0    === right.top|0;
+          }
+        } else {
+          if (!WAVE.has(right, 'clip')) return true;
+        }
+      }
+      return false;
+    }
+
+    function loadImage(image, onload, onerror, urlMap) {
+      if (!WAVE.isObject(image)) image = { url: image };
+      image.url = WAVE.strDefault(ensureUrl(WAVE.strDefault(image.url)));
+      var img = new Image();
+      img.onerror = function () {
+        image.error = true;
+        if (typeof(onerror) !== tUNDEFINED)
+          onerror.apply(img, arguments);          
+      };
+      if (WAVE.has(image, 'clip')) {
+        var clip = image.clip;
+        var left =   clip.left|0;
+        var right  = clip.right|0;
+        var bottom = clip.bottom|0;
+        var top    = clip.top|0;
+        var 
+          clipWidth = right - left,
+          clipHeight = bottom - top;
+        var canvas = document.createElement('canvas');
+        canvas.width = clipWidth;
+        canvas.height = clipHeight;
+        img.onload = function () {
+          image.load = true;
+          image.width = clipWidth;
+          image.height = clipHeight;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(this, left, top, clipWidth, clipHeight, 0, 0, clipWidth, clipHeight);
+          if (typeof(onload) !== tUNDEFINED)
+            onload.apply(canvas, arguments);
+          delete image.img;
+        };
+        image.element = canvas;
+      } else {
+        img.onload = function () {
+          image.load = true;
+          image.width = this.width;
+          image.height = this.height;
+          var that = this;
+          if (typeof(onload) !== tUNDEFINED)
+            onload.apply(img, arguments);
+        };
+        image.element = img;
+      }
+      img.src = image.url;
+      image.free = free;
+      
+      return image;
+
+      function free() {
+        if (image.element.parentNode)
+          image.element.parentNode.removeChild(image.element);
+        delete image.element;
+        delete image.error;
+        delete image.load;
+        delete image.img;
+        delete image.width;
+        delete image.height;
+        delete image.free;
+      }
+      function ensureUrl(url) { return url.indexOf('$') === 0 && WAVE.isObject(urlMap) ? urlMap[url.substr(1)] : url; }
+    }
+
+    function makeDraggable(element, ondrag, onmove, ondrop, preventDefault) {
+      element.addEventListener('mousedown', mousedown, false);
+      element.addEventListener('touchstart', touchstart, false);
+
+      function mousedown(event) {
+        if (event.button === 0) {
+          if (preventDefault) event.preventDefault();
+          dragstart(event.pageX, event.pageY);
+        }
+      }
+      function touchstart(event) {
+        var touches = event.touches;
+        if (touches.length === 1) {
+          if (preventDefault) event.preventDefault();
+          dragstart(touches[0].pageX, touches[0].pageY);
+        }
+      }
+      function dragstart(x, y) {
+        if (typeof(ondrag) !== tUNDEFINED)
+          ondrag.call(element, x, y);
+        document.addEventListener('mousemove', mousemove, false);
+        document.addEventListener('touchmove', touchmove, false);
+        document.addEventListener('mouseup', mouseup, false);
+        document.addEventListener('touchend', touchend, false);
+        function mousemove(event) {
+          event.preventDefault();
+          var 
+            pageX = event.pageX,
+            pageY = event.pageY;
+          dragmove(x, y, x - pageX, y - pageY);
+          x = pageX; y = pageY;
+        }
+        function touchmove(event) {
+          event.preventDefault();
+          var touches = event.touches;
+          var 
+            pageX = touches[0].pageX,
+            pageY = touches[0].pageY;
+          dragmove(x, y, x - pageX, y - pageY);
+          x = pageX; y = pageY;
+        }
+        function mouseup(event) {
+          dragend(event.pageX, event.pageY);
+          cleanup();
+        }
+        function touchend(event) {
+          dragend(x, y);
+          cleanup();
+        }
+        function cleanup() {
+          document.removeEventListener('mousemove', mousemove, false);
+          document.removeEventListener('touchmove', touchmove, false);
+          document.removeEventListener('mouseup',   mouseup,   false);
+          document.removeEventListener('touchend',  touchend,  false);            
+        }
+      }
+      function dragmove(x, y, offsetX, offsetY) {
+        if (typeof(onmove) !== tUNDEFINED)
+          onmove.call(element, x, y);
+        element.scrollLeft += offsetX;
+        element.scrollTop += offsetY;
+      }
+      function dragend(x, y) {
+        if (typeof(ondrop) !== tUNDEFINED)
+          ondrop.call(element, x, y);
+      }
+    }
+
+    var fImageViewIdSeed = 0;
+    published.ImageView = function (init, urlMap) {
+      if (typeof(init) === tUNDEFINED || init === null) init = {};
+      if (WAVE.isString(init)) init = { DIV: init };
+      if (!WAVE.has(init, 'DIV')) throw "ImageView.ctor(init.thumbnails)";
+
+      var fId = published.CLS_IMAGE_VIEW + fImageViewIdSeed++;
+
+      var imageView = this;
+      WAVE.extend(imageView, WAVE.EventManager);
+
+      var fViewbox = build(WAVE.isString(init.DIV) ? WAVE.id(init.DIV) : init.DIV);
+
+      var fImage;
+      imageView.image = function (image) { 
+        if (typeof(image) !== tUNDEFINED)  {
+          fImage = updateImage(image);
+        }
+        return fImage;
+      };
+      imageView.clear = function (flag) {
+        if (flag)
+          fViewbox.innerHTML = '';
+        return fViewbox.innerHTML === '';
+      };
+
+      imageView.image(init.image);
+      
+      window.addEventListener('resize', function() { update(imageView.image() || {}); }, false);
+
+      return imageView;
+      
+      function build(parent) {
+        var viewbox = document.createElement('div');
+        viewbox.className = published.CLS_IMAGE_VIEW;
+        parent.appendChild(viewbox);
+        makeDraggable(viewbox, function (x, y) {
+          var 
+            image = imageView.image(),
+            offset = position(viewbox),
+            box = size(viewbox),
+            client = { x: x - offset.x - box.x / 2, y: y - offset.y - box.y / 2 },
+            sz = size(fImage.element), 
+            newClient = { 
+              x: client.x * fImage.width / sz.x, 
+              y: client.y * fImage.height / sz.y 
+            };
+          if (fImage.width > sz.x || fImage.height > sz.y) {
+            viewbox.className += ' ' + published.CLS_IMAGE_VIEW_ZOOM;          
+            var scr = scroll(viewbox);
+            viewbox.scrollLeft = newClient.x + scr.x / 2 - (x - offset.x);
+            viewbox.scrollTop = newClient.y + scr.y / 2 - (y - offset.y);
+          }
+        }, undefined, update, true);
+        return viewbox;
+      }
+
+      function updateImage(image) {
+        if (typeof(image) === tUNDEFINED) return;
+        imageView.clear(true);
+        if (image === null) return;
+
+        if (WAVE.isObject(image) && WAVE.has(image, 'element')) {
+          if (!image.error) fViewbox.appendChild(image.element);
+          update(image);
+        } else {
+          image = loadImage(image, function () {
+            this.className = published.CLS_IMAGE_VIEW_IMAGE;
+            if (imageView.clear())
+              fViewbox.appendChild(this);
+            update(image);
+          }, function () {
+            update(image);
+          }, urlMap);
+        }
+        return image;
+      }
+
+      function update(image) {
+        if (typeof(fViewbox) === tUNDEFINED) return;
+        fViewbox.className = published.CLS_IMAGE_VIEW;
+        if (image.error) fViewbox.className += ' ' + published.CLS_IMAGE_BOX_ERROR;
+        else if (!image.load) fViewbox.className += ' ' + published.CLS_IMAGE_BOX_LOADING; 
+        else {
+          var 
+            sz = size(fViewbox), aspect = sz.x / sz.y,
+            imageAspect = (image.width|0) / (image.height|0);
+          if (!isNaN(imageAspect))
+            fViewbox.className += ' ' + ((imageAspect >= aspect) ? published.CLS_IMAGE_BOX_WIDER : published.CLS_IMAGE_BOX_HIGHER);          
+        }
+      }
+
+      function position(elm) {
+        var ox=0, oy=0;
+        while (elm !== null)
+          ox += elm.offsetLeft, oy += elm.offsetTop, elm = elm.offsetParent;
+        return { x: ox, y: oy };
+      }
+      function size(elm) { return { x: elm.offsetWidth, y: elm.offsetHeight }; }
+      function scroll(elm) { return { x: elm.scrollWidth, y: elm.scrollHeight }; }
+    };//ImageView
+
+    /*
+    Image = {
+      url: $URL_NAME | URL,
+      clip: { top: NUMBER, bottom: NUMBER, left: NUMBER, right: NUMBER }
+    };
+    Galery = {
+      thumbnails: DIV,
+      preview: DIV,
+      urls: {
+        name: URL
+      },
+      images: [
+        {
+          id: TEXT,
+          image: Image | $URL_NAME | URL,
+          thumb: Image | URL,
+          title: TEXT,
+          content: TEXT | HTML,
+          isText: BOOL
+        } | Image | URL
+      ]
+    } | DIV_ID;
+    */
+    var fGalleryIdSeed = 0;
+    published.Gallery = function (init) {
+      if (typeof(init) === tUNDEFINED || init === null) init = {};
+      if (WAVE.isString(init)) init = { thumbnails: init };
+      if (!WAVE.has(init, 'thumbnails')) throw "Gallery.ctor(init.thumbnails)";
+      var hasUrls = WAVE.has(init, 'urls');
+      if (hasUrls && !WAVE.isObject(init.urls)) throw "Gallery.ctor(init.urls)";
+
+      var fId = fGalleryIdSeed++;
+
+      var gallery = this;
+      WAVE.extend(gallery, WAVE.EventManager);
+
+      gallery.urls = (hasUrls ? init.urls : {});
+
+      var fUpdate;
+      var fThumbnails = build(WAVE.isString(init.thumbnails) ? WAVE.id(init.thumbnails) : init.thumbnails);
+      var fPreview = WAVE.isString(init.preview) ? new published.ImageView(init.preview, gallery.urls) : init.preview;
+      
+      var fCurrent;
+      var fItems = [];
+      var fItemsLookup = {};
+
+      var fItemIdSeed = 0;
+      gallery.Item = function (init, gallery, view) {
+        var seqId = fItemIdSeed++;
+
+        var fId = WAVE.isObject(init) && WAVE.has(init, 'id') ? init.id : seqId;
+        init.id = fId;
+        var fInit = {};
+        
+        var item = this;
+        WAVE.extend(item, WAVE.EventManager);
+
+        var fGallery = gallery, fView = view;
+        var fImage, fThumbImage;
+
+        var
+          fElem = document.createElement('li'),
+          fThumb = document.createElement('div'),
+          fContent = document.createElement('div');
+        fElem.className = published.CLS_GALLERY_ITEM;
+        fContent.className = published.CLS_GALLERY_CONTENT;
+        fThumb.className = published.CLS_GALLERY_THUMBNAIL;
+        fElem.appendChild(fThumb);
+        fElem.appendChild(fContent);
+        fElem.onclick = function() { 
+          gallery.current(fId);
+        };
+
+        item.id        = function () { return fId; };
+        item.title     = function (title) { 
+          if (typeof(title) !== tUNDEFINED 
+            && fInit.title !== title) 
+            updateTitle(fInit.title = title);
+          return WAVE.strDefault(fInit.title, fId); 
+        };
+        item.content   = function (content, isText) { 
+          if (typeof(content) !== tUNDEFINED 
+            && (fInit.content !== content
+              || !!fInit.isText !== !!isText)) 
+            updateContent(fInit.content = content, fInit.isText = !!isText);
+          return WAVE.strDefault(fInit.content); 
+        };
+        item.isText    = function () { return !!fInit.isText; };
+        item.image     = function (image) { 
+          if (typeof(image) !== tUNDEFINED 
+            && !equalsImage(fInit.image, image)) 
+            updateImage(fInit.image = image);
+          return fImage; 
+        };
+        item.thumb     = function (image) { 
+          if (typeof(image) !== tUNDEFINED
+            && !equalsImage(fInit.thumb, image)) 
+            updateThumbnail(fInit.thumb = image);
+          return fThumbImage; 
+        };
+        item.data      = function (data) {
+          if (typeof(data) !== tUNDEFINED) {
+            fInit.data = data;
+          }
+          return fInit.data;
+        };
+        item.show      = function () { fImage = fView.image(fImage); };
+        item.update    = update;
+        item.free      = function () {
+          if (fElem.parentNode)
+            fElem.parentNode.removeChild(fElem);
+          if (fView.image() === fImage && fImage.element.parentNode)
+            fImage.element.parentNode.removeChild(fImage.element);
+        };
+        item.element   = function () { return fElem; };
+
+        item.update(init);
+
+        return item;
+
+        function update(init) {
+          if (!WAVE.isObject(init) || WAVE.has(init, "url"))  init = { image: init };
+          if (!WAVE.has(init, 'image')) throw "Gallery.Item.update(init.image)";
+          if (init.id !== fId) throw "Gallery.Item.update(init.id)";
+          item.image(init.image);
+          item.thumb(init.thumb || init.image);
+          item.title(init.title);
+          item.content(init.content, init.isText);
+          item.data(init.data);
+        }
+
+        function updateImage(image) {
+          var selected = false;
+          if (typeof(fImage) !== tUNDEFINED) {
+            selected = fImage === view.image();
+            if (WAVE.has(fImage, 'free')) fImage.free();
+          }
+          fImage = image;
+          if (selected) item.show();
+        }
+
+        function updateThumbnail(image) {
+          fThumb.innerHTML = '';          
+          fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' ' + published.CLS_IMAGE_BOX_LOADING;
+          fThumbImage = loadImage(image, function() {
+            this.className = published.CLS_GALLERY_IMAGE;
+            this.id = published.CLS_GALLERY_IMAGE + item.id();
+            fThumb.appendChild(this);
+            fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' ' 
+              + ((this.width >= this.height) ? published.CLS_IMAGE_BOX_WIDER : published.CLS_IMAGE_BOX_HIGHER);
+          }, function () {
+            fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' ' + published.CLS_IMAGE_BOX_ERROR;
+          }, gallery.urls);
+          fUpdate();
+        }
+
+        function updateContent(content, isText) {
+          if (isText) fContent.innerText = content;
+          else fContent.innerHTML = content;
+        }
+
+        function updateTitle(title) { fThumb.title = title; }
+      };
+
+      var fUpdateCurrentWithEvent = withEvent(gallery, published.EVT_GALLERY_CHANGE, updateCurrent);
+
+      gallery.current = function (id) {
+        if (typeof(id) !== tUNDEFINED) {
+          var current = fUpdateCurrentWithEvent(id);
+          if (typeof(current) !== tUNDEFINED) fCurrent = current;
+        }
+        if (typeof(fCurrent) !== tUNDEFINED) return fCurrent.id();
+      };
+      gallery.has = has;
+      gallery.get = get;
+      var fRemoveWithEvent = withEvent(gallery, published.EVT_GALLERY_REMOVE, remove);
+      gallery.remove = function (id) {
+        if (!has(id)) return true;
+        return !!fRemoveWithEvent(id);
+      };
+      gallery.images = function () { return fItems; };
+      gallery.update = withEvent(gallery, published.EVT_GALLERY_ADD, updateItem);
+
+      WAVE.each(init.images, updateItem);
+
+      fUpdate();
+
+      return gallery;
+
+      function build(parent) {
+        var 
+          thumbnails = document.createElement('ul'),
+          prev = document.createElement('div'),
+          next = document.createElement('div');
+        thumbnails.className = published.CLS_GALLERY_LIST;
+        prev.className = published.CLS_GALLERY_PREV;
+        next.className = published.CLS_GALLERY_NEXT;
+        prev.onclick = function (e) {
+          e.preventDefault();
+          var sz = size(thumbnails.firstChild);
+          scroll(thumbnails, { x: -sz.x, y: -sz.y}, 400, undefined, update);
+        };
+        next.onclick = function (e) {
+          e.preventDefault();
+          var sz = size(thumbnails.firstChild);
+          scroll(thumbnails, sz, 400, undefined, update);
+        };
+        makeDraggable(thumbnails, undefined, update, update);      
+        parent.appendChild(prev);
+        parent.appendChild(thumbnails);
+        parent.appendChild(next);
+        window.addEventListener('resize', update, false);
+        fUpdate = update;
+        return thumbnails;
+        function update() {
+          prev.className = published.CLS_GALLERY_PREV 
+            + ((fThumbnails.scrollLeft === 0 && fThumbnails.scrollTop === 0) ? ' ' + published.CLS_GALLERY_DISABLED : '');
+          next.className = published.CLS_GALLERY_NEXT 
+            + ((fThumbnails.scrollLeft + fThumbnails.offsetWidth === fThumbnails.scrollWidth 
+              && fThumbnails.scrollTop + fThumbnails.offsetHeight === fThumbnails.scrollHeight) ? ' ' + published.CLS_GALLERY_DISABLED : '');
+        }
+      }
+
+      function updateItem(item) {
+        var it;
+        if (has(item.id)) {
+          it = get(item.id);
+          it.update(item);
+        } else {
+          it = new gallery.Item(item, gallery, fPreview);
+          it.order = item.order|0;
+          var idx = insertAt(fItems, it, orderComp);
+          fThumbnails.insertBefore(it.element(), WAVE.has(fItems, idx) ? fItems[idx].element() : null);
+          fItems.splice(idx, 0, it);
+          fItemsLookup[it.id()] = it;
+        }
+        return it;
+      }
+
+      function has(id) { 
+        if (typeof(id) === tUNDEFINED) return false;
+        return WAVE.has(fItemsLookup, id); 
+      }
+
+      function get(id) { return fItemsLookup[id]; }
+
+      function updateCurrent(id) {
+        if (!has(id)) return; 
+        var item = get(id);
+
+        if (typeof(fCurrent) !== tUNDEFINED)
+          fCurrent.element().className = published.CLS_GALLERY_ITEM;
+        item.element().className = published.CLS_GALLERY_ITEM + ' ' + published.CLS_GALLERY_SELECTED;
+        item.show();
+        return item;
+      }
+
+      function remove(id) {
+        if (!has(id)) return true;  
+        get(id).free();
+        fItems = fItems.filter(function (it) { return it.id() !== id; });
+        delete fItemsLookup[id];
+        return true;
+      }
+
+      function insertAt(sorted, val, comp) {
+        var low = 0, hig = sorted.length;
+        var mid = -1, c = 0;
+        while(low < hig) {
+          mid = ((low + hig)/2) | 0;
+          c = comp(sorted[mid], val);
+          if (c < 0) low = mid + 1;
+          else if ( c > 0) hig = mid;
+          else  {
+            while (mid < hig && comp(sorted[mid], val) === 0) mid++;
+            return mid;
+          }
+        }
+        return low;
+      }
+
+      function orderComp(a, b) { return a.order - b.order; }
+
+      function size(elm) { return { x: elm.offsetWidth, y: elm.offsetHeight }; }
+      function animate(opts) {
+        var start = Date.now();
+        var id = setInterval(function () {
+          var progress = (Date.now() - start) / (+opts.duration || 1000);
+          if (progress > 1) progress = 1;
+          var cont = opts.step((opts.delta || def)(progress)) || true;
+          if (progress === 1 || !cont) clearInterval(id);
+        }, +opts.delay || 10);
+        function def(progress) { return progress; }
+      }
+      function scroll(elm, to, duration, delta, onstep) {
+        var scr = { x: elm.scrollLeft, y: elm.scrollTop };
+        animate({ 
+          duration: duration,
+          delta: delta,
+          step: function (delta) {
+            elm.scrollLeft = scr.x + to.x * delta;
+            elm.scrollTop = scr.y + to.y * delta;
+            if (onstep)
+              onstep.call(elm, delta);
+        } });
+      }
+
+      function withEvent(that, evt, func) {
+        return function () {
+          var evtArgs = { evt: evt, phase: published.EVT_PHASE_BEFORE, args: arguments, abort: false };
+          that.eventInvoke(evt, evtArgs);
+          if (evtArgs.abort === true) return;
+
+          var result = func.apply(that, arguments);
+
+          evtArgs.result = result;
+          evtArgs.phase = published.EVT_PHASE_AFTER;
+          delete evtArgs.abort;
+          that.eventInvoke(evt, evtArgs);
+          return result;          
+        };
+      }
+    };//Gallery
+
+    published.GallerySimple = function (init) {
+      if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "GallerySimple.ctor(init.DIV)";      
+      var fDIV = WAVE.isString(init.DIV) ? WAVE.id(init.DIV) : init.DIV;
+      var preview = document.createElement('div');
+      preview.className = published.CLS_GALLERY_SIMPLE_PREVIEW;
+      init.preview = new published.ImageView({ DIV: preview }, init.urls);
+      init.thumbnails = document.createElement('div');
+      init.thumbnails.className = published.CLS_GALLERY_SIMPLE_THUMBNAILS;
+      fDIV.appendChild(init.thumbnails);
+      fDIV.appendChild(preview);
+      return published.Gallery.call(this, init);
+    };//GallerySimple
 
     return published;
 }());//WAVE.GUI
@@ -3937,7 +4004,9 @@ WAVE.RecordModel.GUI = (function(){
         CLS_ERROR: 'wvError',
         CLS_REQ: 'wvRequired',
         CLS_MOD: 'wvModified',
-        CLS_PUZZLE: 'wvPuzzle'
+        CLS_PUZZLE: 'wvPuzzle',
+        CLS_COMBO_ARROW: 'wvComboArrow',
+        CLS_COMBO_WRAP: 'wvComboWrap'
     };
 
         var AIKEY = "__wv.rm.gui";
@@ -4249,6 +4318,7 @@ WAVE.RecordModel.GUI = (function(){
 
           var ids = genIDSeed(fldView);
           var idInput = "cbo"+ids;
+          var arrowId = "lbl"+idInput;
 
           var html = WAVE.strHTMLTemplate("<label for='@cbid@' class='@cls@'>@about@</label>",
                                       {
@@ -4260,7 +4330,7 @@ WAVE.RecordModel.GUI = (function(){
           var ve = field.validationError();
           if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
 
-          html+= WAVE.strHTMLTemplate("<select id='@id@' name='@name@' @disabled@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
+          html+= WAVE.strHTMLTemplate("<div class='@comboWrapCls@'><select id='@id@' name='@name@' @disabled@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
                                       {
                                         id: idInput,
                                         name: field.name(),
@@ -4268,14 +4338,15 @@ WAVE.RecordModel.GUI = (function(){
                                         readonly: field.readonly() ? "readonly" : "",
                                         value: field.value(),
                                         placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : ""
+                                        required: field.required() ? "required" : "",
+                                        comboWrapCls: published.CLS_COMBO_WRAP
                                       });
           
           var dict = field.lookupDict();
           var keys = Object.keys(dict);
           html += "<option value=''></option>";//add Blank
           for(var i in Object.keys(dict)){
-              html+= WAVE.strHTMLTemplate("<option value='@value@' @selected@>@descr@</option>",
+              html += WAVE.strHTMLTemplate("<option value='@value@' @selected@>@descr@</option>",
                                           {
                                             value: keys[i],
                                             selected: WAVE.strSame(keys[i], field.value()) ? "selected" : "",
@@ -4283,13 +4354,34 @@ WAVE.RecordModel.GUI = (function(){
                                           });
           }//for options
 
-          html+="</select>";
+          html+=WAVE.strHTMLTemplate("</select><div id='@id@' class='@comboArrowCls@'></div></div>", 
+                                          {
+                                            id: arrowId,
+                                            comboArrowCls: published.CLS_COMBO_ARROW
+                                          });
           divRoot.innerHTML = html;
           WAVE.id(idInput).__fieldView = fldView;
           $("#"+idInput).change(function(){
+
+            var fv = field.value();
+            if (field.readonly())
+            {
+              if (this.value !== fv) this.value = fv;
+              return;
+            }
+
             var val = this.value;
-           this.__fieldView.field().value(val, true);//from GUI
+            this.__fieldView.field().value(val, true);//from GUI
           });
+
+          WAVE.id(arrowId).onclick = function() {
+            var element = WAVE.id(idInput);
+            try {
+              var event = new MouseEvent('mousedown');
+              element.dispatchEvent(event);
+            } catch(e) { }
+            return false;
+          };
         }
 
         function buildPuzzle(fldView){
@@ -4324,7 +4416,7 @@ WAVE.RecordModel.GUI = (function(){
                      DIV: WAVE.id(idInput),
                      Image: WAVE.strDefault(fv.Image, ""),
                      Help:  WAVE.strDefault(fv.Help, ""),
-                     Question: WAVE.strDefault(fv.Question, ""),
+                     Question: WAVE.strDefault(fv.Question, "")
                    });
 
           var hidden = WAVE.id(idHiddenInput);
@@ -4383,7 +4475,10 @@ WAVE.RecordModel.GUI = (function(){
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_PUZZLE))   { ensureField(fldView, ct); buildPuzzle(fldView);}
           else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_TEXTAREA)) { ensureField(fldView, ct); buildTextArea(fldView);}
+          if (
+               WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_TEXTAREA) ||
+               WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_SCRIPT)
+             )                                                    { ensureField(fldView, ct); buildTextArea(fldView);}
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_HIDDEN))   { ensureField(fldView, ct); buildHidden(fldView);}
           else

@@ -25,7 +25,7 @@ namespace NFX.IO.Net.Gate
 {
   public class Group : INamed, IOrdered
   {
-        
+
             /// <summary>
             /// Represents the address node of the group
             /// </summary>
@@ -50,10 +50,10 @@ namespace NFX.IO.Net.Gate
               [Config]private int    m_Order;
               private string[] m_Patterns;
 
-              
+
               public string Name { get{return m_Name;}}
               public int    Order  {get{return m_Order;}}
-             
+
               [Config]
               public string Patterns
               {
@@ -67,8 +67,8 @@ namespace NFX.IO.Net.Gate
                 return m_Patterns.Any(pat => NFX.Parsing.Utils.MatchPattern(address, pat));
               }
             }
-    
-    
+
+
     public Group(string name, int order)
     {
       m_Name = name.IsNullOrWhiteSpace() ? Guid.NewGuid().ToString() : name;
@@ -89,9 +89,9 @@ namespace NFX.IO.Net.Gate
 
 
     [Config]private string m_Name;
-    [Config]private int m_Order;   
-    
-    private OrderedRegistry<Address> m_Addresses = new OrderedRegistry<Address>();     
+    [Config]private int m_Order;
+
+    private OrderedRegistry<Address> m_Addresses = new OrderedRegistry<Address>();
 
 
     public string Name { get{ return m_Name;}}

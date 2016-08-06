@@ -24,10 +24,10 @@ using NFX.CodeAnalysis.Source;
 
 namespace NFX.CodeAnalysis
 {
-    
+
     /// <summary>
     /// Performs lexical analysis of the source code in particular language
-    /// Allows to enumerate over source as typed Token stream - depending on implementation enumeration may do 
+    /// Allows to enumerate over source as typed Token stream - depending on implementation enumeration may do
     /// lexical analysis token-by-token or in chunks with every enumerator advance
     /// </summary>
     public abstract class Lexer<TToken> : SourceRefCommonCodeProcessor, ILexer, IEnumerable<TToken>  where TToken : Token
@@ -40,11 +40,11 @@ namespace NFX.CodeAnalysis
 
         protected Lexer(IAnalysisContext context, SourceCodeRef srcRef, ISourceText source, MessageList messages = null, bool throwErrors = false) :
           base(context, srcRef, messages, throwErrors)
-          
+
         {
               m_Source = source;
         }
-       
+
         private ISourceText   m_Source;
 
 
@@ -62,10 +62,10 @@ namespace NFX.CodeAnalysis
         /// Returns true when the whole input source has been analyzed. This property is always true for lexers that do not support lazy analysis
         /// </summary>
         public bool AllAnalyzed { get { return m_AllAnalyzed; } }
-        
-        
+
+
         /// <summary>
-        /// Returns tokenized source as indexable list. 
+        /// Returns tokenized source as indexable list.
         /// Accessing this property causes lexical analysis to complete on the whole source if it has not been completed yet
         /// </summary>
         public Tokenized<TToken> Tokens
@@ -73,29 +73,29 @@ namespace NFX.CodeAnalysis
              get
              {
                 analyzeAll();
-                return new Tokenized<TToken>(m_Tokens); 
-             } 
+                return new Tokenized<TToken>(m_Tokens);
+             }
         }
 
 
         /// <summary>
-        /// Enumerates Token stream - depending on implementation enumeration may do 
+        /// Enumerates Token stream - depending on implementation enumeration may do
         /// lexical analysis token-by-token or in chunks with every enumerator advance
         /// </summary>
         public IEnumerable<Token> TokenStream
         {
             get
-            { 
-               return this; 
+            {
+               return this;
             }
         }
-        
+
 
         public IEnumerator<TToken> GetEnumerator()
         {
             return new tokenEnumerator(this);
         }
-        
+
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
@@ -152,14 +152,14 @@ namespace NFX.CodeAnalysis
 
                         private class tokenEnumerator : IEnumerator<TToken>
                         {
-                            
+
                             private int m_Index = -1;
-                            
+
                             public tokenEnumerator(Lexer<TToken> lexer)
                             {
                               m_Lexer = lexer;
                             }
-                            
+
                             private Lexer<TToken> m_Lexer;
 
 

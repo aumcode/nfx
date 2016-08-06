@@ -25,19 +25,19 @@ using NFX.IO.Net.Gate;
 
 namespace NFX.Wave
 {
-  
+
   /// <summary>
   /// Represents a base for all work handlers. Handlers are final work execution destination
   /// </summary>
   public abstract class WorkHandler : ApplicationComponent, INamed, IOrdered
   {
       public const string CONFIG_HANDLER_SECTION = "handler";
-      
+
       protected WorkHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match) : base(dispatcher)
       {
         if (dispatcher==null)
          throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(dispatcher==null|empty)");
-        
+
         if (name.IsNullOrWhiteSpace())
           name = "{0}({1})".Args(GetType().FullName, Guid.NewGuid());
 
@@ -65,11 +65,11 @@ namespace NFX.Wave
 
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkFilter.CONFIG_FILTER_SECTION)))
           if(!m_Filters.Register( FactoryUtils.Make<WorkFilter>(cn, typeof(WorkFilter), args: new object[]{ this, cn })) )
-            throw new WaveException(StringConsts.CONFIG_HANDLER_DUPLICATE_FILTER_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value)); 
+            throw new WaveException(StringConsts.CONFIG_HANDLER_DUPLICATE_FILTER_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value));
 
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_Matches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_HANDLER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value)); 
+            throw new WaveException(StringConsts.CONFIG_HANDLER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value));
       }
 
       protected override void Destructor()
@@ -106,7 +106,7 @@ namespace NFX.Wave
       /// Returns ordered registry of filters
       /// </summary>
       public IRegistry<WorkFilter> Filters { get { return m_Filters;}}
-      
+
       /// <summary>
       /// Returns the server that this handler works under
       /// </summary>
@@ -115,7 +115,7 @@ namespace NFX.Wave
       /// <summary>
       /// Returns the dispatcher that this handler works under
       /// </summary>
-      public WorkDispatcher Dispatcher { get{ return m_Dispatcher;}} 
+      public WorkDispatcher Dispatcher { get{ return m_Dispatcher;}}
 
       /// <summary>
       /// Returns parent handler that this handler is under or null
@@ -137,7 +137,7 @@ namespace NFX.Wave
         if (filter==null) return false;
         if (filter.Dispatcher!=this.Dispatcher)
           throw new WaveException(StringConsts.WRONG_DISPATCHER_FILTER_REGISTRATION_ERROR.Args(filter));
-       
+
         return m_Filters.Register(filter);
       }
 

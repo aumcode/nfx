@@ -37,7 +37,7 @@ namespace NFX.Wave.Client
     public Record(string init) : base()
     {
       if (init.IsNullOrWhiteSpace()) throw new WaveException(StringConsts.ARGUMENT_ERROR+"Record.ctor(init==null|empty)");
-      
+
       JSONDataMap initMap = null;
       try
       {
@@ -68,7 +68,7 @@ namespace NFX.Wave.Client
       LoadData();
     }
 
-    protected List<ServerError> m_Errors = new List<ServerError>(); 
+    protected List<ServerError> m_Errors = new List<ServerError>();
     protected JSONDataMap m_Init;
 
 
@@ -81,7 +81,10 @@ namespace NFX.Wave.Client
     public string CSRFToken { get; private set; }
     public JSONDataMap Roundtrip { get; private set; }
 
-    public JSONDataMap Data
+    /// <summary>
+    /// Returns JSON representation of the Record including MODE, CSRF token and Roundtrip metafields
+    /// </summary>
+    public JSONDataMap JSONData
     {
       get
       {
@@ -97,6 +100,11 @@ namespace NFX.Wave.Client
 
         return result;
       }
+    }
+
+    public virtual void ClearErrors()
+    {
+      m_Errors.Clear();
     }
 
     protected virtual Schema MapInitToSchema()
@@ -127,7 +135,7 @@ namespace NFX.Wave.Client
       CSRFToken = m_Init[FormModel.JSON_CSRF_PROPERTY].AsString();
       var roundtrip = m_Init[FormModel.JSON_ROUNDTRIP_PROPERTY].AsString();
       Roundtrip = roundtrip != null ? JSONReader.DeserializeDataObject(roundtrip) as JSONDataMap : null;
-      
+
       var error = m_Init["error"].AsString();
       var errorText = m_Init["errorText"].AsString();
       if (error.IsNotNullOrWhiteSpace() || errorText.IsNotNullOrWhiteSpace())
@@ -171,11 +179,11 @@ namespace NFX.Wave.Client
       var maxLength = def["Size"].AsInt(0);
       var defaultValue = def["DefaultValue"];
       var kind = MapJSToCLRKind(def["Kind"].AsString());
-      var charCase = MapJSToCLRCharCase(def["Case"].AsString());  
+      var charCase = MapJSToCLRCharCase(def["Case"].AsString());
 
       var stored = def["Stored"].AsNullableBool();
       var storeFlag = (stored == false) ? StoreFlag.OnlyLoad : StoreFlag.LoadAndStore;
-     
+
       var lookupValues = def["LookupDict"] as JSONDataMap;
 
       var metadata = Configuration.NewEmptyRoot();
@@ -229,8 +237,8 @@ namespace NFX.Wave.Client
                    // displayFormat = null
                    );
 
-      var fdef = new Schema.FieldDef(name, type, attr); 
-    
+      var fdef = new Schema.FieldDef(name, type, attr);
+
       return fdef;
     }
 

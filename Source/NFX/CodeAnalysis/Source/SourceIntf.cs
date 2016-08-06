@@ -29,8 +29,8 @@ namespace NFX.CodeAnalysis.Source
             /// Resets source to beginning
             /// </summary>
             void Reset();
-            
-            
+
+
             /// <summary>
             /// Indicates whether last character has been read
             /// </summary>
@@ -46,21 +46,21 @@ namespace NFX.CodeAnalysis.Source
             /// Returns next char without advancing position
             /// </summary>
             char PeekChar();
-    
-    
+
+
             /// <summary>
             /// Indicates what language this source is supplied in
             /// </summary>
             Language Language { get; }
-    
+
             /// <summary>
-            /// Provides a meaningfull name to a source code 
+            /// Provides a meaningfull name to a source code
             /// </summary>
             string Name { get; }
       }
 
       /// <summary>
-      /// Represents a list of strings used as source text 
+      /// Represents a list of strings used as source text
       /// </summary>
       public class ListOfISourceText : List<ISourceText>
       {

@@ -39,17 +39,17 @@ namespace NFX.DataAccess.Cache
             public const int BUCKET_COUNT_DEFAULT = 25111; //must be prime
             public const int REC_PER_PAGE_DEFAULT = 7;   //must be prime
         #endregion
-        
-        
+
+
         #region .ctor
-            
+
 
             internal Table(CacheStore store, string name, TableOptions opt)
             {
                 var bucketCount = opt!=null ? opt.BucketCount : 0;
                 var recPerPage  = opt!=null ? opt.RecPerPage  : 0;
                 var lockCount   = opt!=null ? opt.LockCount   : 0;
-                
+
                 if (opt!=null)
                 {
                   MaxAgeSec = opt.MaxAgeSec;
@@ -59,7 +59,7 @@ namespace NFX.DataAccess.Cache
 
                 Debug.Assert(store!=null);
                 Debug.Assert(name!=null);
-                
+
                 if (bucketCount<=0) bucketCount = BUCKET_COUNT_DEFAULT;
                 if (recPerPage<=0) recPerPage = REC_PER_PAGE_DEFAULT;
 
@@ -67,10 +67,10 @@ namespace NFX.DataAccess.Cache
                 {
                     recPerPage += 7;//prime
                     store.log(Log.MessageType.Warning,
-                               StringConsts.CACHE_TABLE_CTOR_SIZES_WARNING, 
+                               StringConsts.CACHE_TABLE_CTOR_SIZES_WARNING,
                                parameters: "Table: {0} BucketCount: {1} RecPerPage: {2}".Args(name, bucketCount, recPerPage) );
                 }
-                                      
+
                 m_Store = store;
                 m_Name = name;
                 m_BucketCount = bucketCount;
@@ -115,7 +115,7 @@ namespace NFX.DataAccess.Cache
             /// how many complex key hits - get was called
             /// </summary>
             internal int stat_ComplexHitCount;
-            
+
             /// <summary>
             /// how many misses - get was called
             /// </summary>
@@ -134,7 +134,7 @@ namespace NFX.DataAccess.Cache
             /// <summary>
             /// how many times swept
             /// </summary>
-            internal int stat_SweepTableCount; 
+            internal int stat_SweepTableCount;
 
             /// <summary>
             /// how many pages swept
@@ -248,7 +248,7 @@ namespace NFX.DataAccess.Cache
 
 
             /// <summary>
-            /// Returns the maximum number of items that this table can hold at any given time given that 
+            /// Returns the maximum number of items that this table can hold at any given time given that
             ///  no items will have any key hash collisions
             /// </summary>
             public int Capacity { get{ return m_BucketCount * m_RecPerPage;}}
@@ -282,12 +282,12 @@ namespace NFX.DataAccess.Cache
             {
                 get { return m_MaxAgeSec; }
                 set
-                { 
-                    if (value==0) 
+                {
+                    if (value==0)
                       value = MAX_AGE_SEC_DEFAULT;
                     else
                       if (value<MAX_AGE_SEC_MINIMUM) value = MAX_AGE_SEC_MINIMUM;
-                    
+
                     m_MaxAgeSec = value;
                 }
             }
@@ -305,7 +305,7 @@ namespace NFX.DataAccess.Cache
 
         #region Public
 
-            
+
             /// <summary>
             /// Puts a key-identified item into this table.
             /// If item with such key is already in this table then replaces it and returns false, returns true otherwise
@@ -320,7 +320,7 @@ namespace NFX.DataAccess.Cache
                 CacheRec rec;
                 return Put(key, value, out rec, maxAgeSec, priority, absoluteExpirationUTC);
             }
-            
+
             /// <summary>
             /// Puts a key-identified item into this table.
             /// If item with such key is already in this table then replaces it and returns false, returns true otherwise
@@ -338,7 +338,7 @@ namespace NFX.DataAccess.Cache
             }
 
             private bool _Put(ulong key, object value, out CacheRec rec, int maxAgeSec, int priority, DateTime? absoluteExpirationUTC)
-            {  
+            {
                 if (value==null)
                     throw new NFXException(StringConsts.ARGUMENT_ERROR + "Cache.TablePut(item=null)");
 
@@ -351,28 +351,28 @@ namespace NFX.DataAccess.Cache
 
                     if (bucketed==null)
                     {
-                        rec = new CacheRec(key, value, maxAgeSec, priority, absoluteExpirationUTC); 
-                        m_Buckets[idx] = rec; 
+                        rec = new CacheRec(key, value, maxAgeSec, priority, absoluteExpirationUTC);
+                        m_Buckets[idx] = rec;
                         Interlocked.Increment(ref m_Count);
                         Interlocked.Increment(ref stat_PutInsertCount);
                         return true;
-                    }    
+                    }
                     else
                     {
                         if (bucketed is Page)
                         {
                              var page = (Page)bucketed;
-                             
+
                              lock(page)
                              {
                                  var pidx = getPageIndex( key );
-                         
+
                                  var existing = page.m_Records[pidx];
                                  if (existing!=null)
                                  {
                                     if (existing.Key==key) //reuse the CacheRec instance
                                     {
-                                        existing.ReuseCTOR(value, maxAgeSec, priority, absoluteExpirationUTC); 
+                                        existing.ReuseCTOR(value, maxAgeSec, priority, absoluteExpirationUTC);
                                         Interlocked.Increment(ref stat_PutReplaceCount);
                                         rec = existing;
                                         return false;
@@ -410,7 +410,7 @@ namespace NFX.DataAccess.Cache
                             {//1st collision
                                 var pidx = getPageIndex( existing.Key );
                                 var npidx = getPageIndex( key );
-                                
+
                                 if (npidx==pidx)//collision
                                 {
                                     if (existing.m_Priority<=priority)
@@ -420,12 +420,12 @@ namespace NFX.DataAccess.Cache
                                         Interlocked.Increment(ref stat_PutCollisionCount);
                                         return false;
                                     }
-                                    
+
                                     rec = existing;
                                     Interlocked.Increment(ref stat_PutPriorityPreventedCollisionCount);
-                                    return false;   
+                                    return false;
                                 }
-                                
+
                                 // turn CacheRec into a Page
                                 var page = new Page(m_RecPerPage);
                                 Interlocked.Increment(ref stat_PutPageCreateCount);
@@ -457,7 +457,7 @@ namespace NFX.DataAccess.Cache
                     Interlocked.Increment(ref stat_RemoveHitCount);
                 else
                     Interlocked.Increment(ref stat_RemoveMissCount);
-                
+
                 return result;
             }
 
@@ -503,13 +503,13 @@ namespace NFX.DataAccess.Cache
                        bucketed.Dispose();
                        m_Buckets[idx] = null;
                        Interlocked.Decrement(ref m_Count);
-                       return true; 
+                       return true;
                     }
                 }//lock
             }
 
             /// <summary>
-            /// Retrieves an item from this table by key where item age is less or equal to requested, or 
+            /// Retrieves an item from this table by key where item age is less or equal to requested, or
             ///  calls the itemFactory function and inserts the value in the store
             /// </summary>
             /// <param name="key">Item key</param>
@@ -529,8 +529,8 @@ namespace NFX.DataAccess.Cache
                                                DateTime? putAbsoluteExpirationUTC = null)
             {
                 var result = Get(key, ageSec);//1st check is lock-free
-                if (result != null) return result;                
-                
+                if (result != null) return result;
+
                 var idx = getBucketIndex( key );
 
                 var lck = m_Locks[ getLockIndex(idx) ];
@@ -586,7 +586,7 @@ namespace NFX.DataAccess.Cache
 
                 var idx = getBucketIndex( key );
                 var bucketed = m_Buckets[idx]; //atomic
-                
+
                 if (bucketed==null) return null;
                 if (bucketed is CacheRec)
                 {
@@ -595,7 +595,7 @@ namespace NFX.DataAccess.Cache
                     if (result.Key!=key) return null;//keys dont match
 
                     if (ageSec>0 && result.m_AgeSec > ageSec) return null;//expired
-                    
+
                     return result;
                 }
                 else
@@ -613,7 +613,7 @@ namespace NFX.DataAccess.Cache
                 }
             }
 
-            
+
 
 
         #endregion
@@ -644,14 +644,14 @@ namespace NFX.DataAccess.Cache
 
             //called from another thread
             internal void Sweep()
-            {                                  
+            {
                 var now = App.TimeSource.UTCNow;
-                
+
                 if (m_ParallelSweep)
-                    Parallel.For(0, m_BucketCount, (bidx, loop) => 
+                    Parallel.For(0, m_BucketCount, (bidx, loop) =>
                                                    {
                                                      sweepBucket(now, m_Buckets[bidx]);
-                                                     if (!m_Store.isRunning) loop.Stop(); 
+                                                     if (!m_Store.isRunning) loop.Stop();
                                                    });
                 else
                     for(var i=0; m_Store.isRunning && i< m_BucketCount; i++)
@@ -664,23 +664,23 @@ namespace NFX.DataAccess.Cache
 
             private void sweepBucket(DateTime now,  Bucketed bucketed)
             {
-                if (bucketed==null) return;   
+                if (bucketed==null) return;
                 if (bucketed is CacheRec)
                 {
                    sweepCacheRec(now, (CacheRec)bucketed);
                    return;
                 }
-                
+
                 var page = (Page)bucketed;
                 for(int i=0; i<m_RecPerPage; i++)
                 {
                     var rec = page.m_Records[i];
                     if (rec!=null)
                         sweepCacheRec(now, rec);
-                } 
-                Interlocked.Increment(ref stat_SweepPageCount);   
+                }
+                Interlocked.Increment(ref stat_SweepPageCount);
             }
-           
+
             private void sweepCacheRec(DateTime now,  CacheRec rec)
             {
                 var age = 0;

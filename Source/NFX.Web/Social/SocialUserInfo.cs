@@ -31,12 +31,12 @@ namespace NFX.Web.Social
   /// <summary>
   /// Represents user (as represented by SocialUserInfo object) login states
   /// </summary>
-  public enum SocialLoginState 
+  public enum SocialLoginState
   {
     /// <summary>
     /// User not connected/logged-in
     /// </summary>
-    NotLoggedIn = 0, 
+    NotLoggedIn = 0,
 
     /// <summary>
     /// Social network provider returned access token
@@ -47,7 +47,7 @@ namespace NFX.Web.Social
     /// Social network provider returned long term access token
     /// </summary>
     LongTermTokenObtained = 2,
-   
+
     /// <summary>
     /// User connected/init with login token and logged-in
     /// </summary>
@@ -56,7 +56,7 @@ namespace NFX.Web.Social
 
 
   /// <summary>
-  /// Represents a vector of Network-provided params that can be used to reconstruct SocialUserInfo object 
+  /// Represents a vector of Network-provided params that can be used to reconstruct SocialUserInfo object
   /// </summary>
   public struct SocialUserInfoToken
   {
@@ -92,21 +92,21 @@ namespace NFX.Web.Social
         issuer.RetrieveUserInfo(this);
       }
     }
-    
+
     private string m_IssuerNetworkName;//not a readonly field because of possible serialization issues
-    
+
     /// <summary>
     /// Returns the name of the network that issued this info, i.e "FacebookOld".
     /// DO NOT confuse it with network ID. One can obtain netID by getting IssuerSocialNetworkID
     /// </summary>
     public string IssuerNetworkName { get { return m_IssuerNetworkName;} }
-    
+
     /// <summary>
     /// Returns the SocialNetID for the social network instance that issued this user info object
     /// </summary>
     public SocialNetID IssuerNetworkID
     {
-      get 
+      get
       {
          var net = WebSettings.SocialNetworks[m_IssuerNetworkName];
          if (net==null) return SocialNetID.UNS;
@@ -120,7 +120,7 @@ namespace NFX.Web.Social
     /// </summary>
     public string IssuerNetworkDescription
     {
-      get 
+      get
       {
          var net = WebSettings.SocialNetworks[m_IssuerNetworkName];
          if (net==null) return string.Empty;
@@ -130,7 +130,7 @@ namespace NFX.Web.Social
     }
 
 
-    
+
     /// <summary>
     /// UserID in appropriate social Network
     /// Sample ID's are:
@@ -199,14 +199,14 @@ namespace NFX.Web.Social
     /// Information used to perform social network operations like message post.
     /// Can be ordinal string (e.g. Facebook) or pair of strings (e.g. Twitter)
     /// </summary>
-    public virtual string LongTermProviderToken 
-    { 
-      get { return string.Empty; } 
-      internal set { LoginState = SocialLoginState.LongTermTokenObtained; } 
+    public virtual string LongTermProviderToken
+    {
+      get { return string.Empty; }
+      internal set { LoginState = SocialLoginState.LongTermTokenObtained; }
     }
 
     /// <summary>
-    /// Returns a vector of Network-provided params that can be used to reconstruct SocialUserInfo object 
+    /// Returns a vector of Network-provided params that can be used to reconstruct SocialUserInfo object
     /// </summary>
     public SocialUserInfoToken Token { get { return new SocialUserInfoToken(this.ID, this.LongTermProviderToken);} }
 
@@ -309,7 +309,7 @@ namespace NFX.Web.Social
           var ser = makeStringIntermediateSerializer();
           ser.Serialize(ms, this);
           return Convert.ToBase64String(ms.GetBuffer(), 0, (int)ms.Position);
-        } 
+        }
       }
 
       /// <summary>

@@ -50,14 +50,14 @@ namespace NFX.Web
     {
       if (value==null) return null;
       if (value.Length==0) return string.Empty;
-       
+
       var sb = new StringBuilder();
       for(var i=0; i<value.Length; i++)
       {
         var c = value[i];
         if (c < 0x20 || //space
             c=='\'' || c=='"' ||
-            c=='/' || c=='\\' || 
+            c=='/' || c=='\\' ||
             c=='&' || c=='<'  || c=='>')
         {
           sb.Append(@"\x");
@@ -67,7 +67,7 @@ namespace NFX.Web
           sb.Append((char)(nibble<=9 ? '0'+nibble : 'A'+(nibble-10)));
           continue;
         }
-        
+
         sb.Append(c);
       }
       return sb.ToString();

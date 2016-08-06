@@ -56,9 +56,9 @@ namespace NFX.DataAccess.CRUD
             public Table(Rowset other, Func<Row, bool> filter = null) : base(other.Schema)
             {
               m_List =  new List<Row>();
-              
+
               var src = filter==null ? other : other.Where(filter);
-              
+
               foreach(var row in src)
                  Insert(row);
             }
@@ -74,16 +74,16 @@ namespace NFX.DataAccess.CRUD
             {
                 int top = 0;
                 int bottom = m_List.Count - 1;
-          
+
                 index = 0;
-          
+
                 while (top <= bottom)
                 {
-             
+
                     index = top + ((bottom - top) / 2);
-             
+
                     int cmpResult  = Compare(row, m_List[index]);
-             
+
                     if (cmpResult == 0)
                     {
                       return index;
@@ -98,10 +98,10 @@ namespace NFX.DataAccess.CRUD
                       bottom = index - 1;
                     }
                 }
-         
-                return -1;    
+
+                return -1;
             }
-            
+
 
         #endregion
 
@@ -114,36 +114,36 @@ namespace NFX.DataAccess.CRUD
           {
               return CompareRows(m_Schema, rowA, rowB);
           }
-      
+
           /// <summary>
           /// Compares two rows based on their key fields. Always compares in ascending direction
           /// </summary>
           public static int CompareRows(Schema schema, Row rowA, Row rowB)
           {
               if (rowA==null && rowB!=null) return -1;
-              
+
               if (rowA!=null && rowB==null) return 1;
-              
+
               if (rowA==null && rowB==null) return 0;
-              
+
               if (object.ReferenceEquals(rowA, rowB)) return 0;
-              
+
               if (rowA.Schema!=rowB.Schema) return 1;
-                 
-              
+
+
               foreach(var fld in schema.AnyTargetKeyFieldDefs)
               {
                 var obj1 = rowA[fld.Order] as IComparable;
                 var obj2 = rowB[fld.Order] as IComparable;
-              
+
                 if (obj1==null && obj2==null) continue;
                 if (obj1==null) return -1;
                 if (obj2==null) return +1;
-              
+
                 var result = obj1.CompareTo(obj2);
                 if (result!=0) return result;
               }
-              
+
               return 0;
           }
 
@@ -151,7 +151,7 @@ namespace NFX.DataAccess.CRUD
 
 
          #region IList
-    
+
 
            /// <summary>
            /// This is IList member implementation, index is ignored

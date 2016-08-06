@@ -9,45 +9,45 @@ namespace NFX
 {
   /* Timestamp: 24 bits
    * ------------------
-   * 
+   *
    *   100 msec interval = 10/sec
    *   10 * 60/sec * 60/min * 24/hr = 864,000 intervals/day
    *   2 ^ 24 = 16,777,216 combinations / 864,000 per day = 19.41 days ~> 2 weeks (almost 3, but we need 2 + reserved margin)
-   * 
+   *
    * ThreadSeed: 24 bits
    * -------------------
-   * 
+   *
    *   2^24 = 16,777,216 combinations
-   *   
+   *
    *   To create a duplicate ID within the same 100msec interval one would need to:
    *    a. allocate over 2^24 threads (this is not technically possible)
    *     or
    *    b. generate more than 2^24 * 2^16 IDs (1,099,511,627,776) from one thread (this is not technically possible)
    *     or
    *    c. allocate many threads and generate many IDs, thus wrapping around 2^24 in number of threads/blocks (this is not likely at all on any hardware)
-   *    
+   *
    *   If a process generates 1,000,000,000 IDs/sec (one billion IDs a second), then it generates 100,000,000 IDs/100 msec interval
    *     100,000,000 / 2^16 = 1,525 blocks (out of 2^24). Let's assume that there are 256 threads involved:
    *     100,000,000 / 256 threads = 390,625 IDs/thread  / 2^16 = 5.96 = 6 slots/thread * 256 threads = 1,536 blocks (out of 2^24)
-   *   
+   *
    * Counter: 16 bits
    * -----------------
-   * 
+   *
    *  2^16 = 65,536 combinations
-   *  
+   *
    *   When these are exhausted, a new thread seed block is generated and counter reset to 0
-   *                             
+   *
    */
-  
-  
+
+
   /// <summary>
   /// Represents an ultra-efficient 64 bit in-process-wide unique identifier "Fast Id".
   /// The ID is going to wrap-around after at least 2 weeks (19 days).
   /// The ID consists of 3 segments: [timestamp: 24bit][threadseed: 24bit][counter: 16 bit].
-  /// This is needed because: 
-  ///  a). FID stays unique after process restarts  
+  /// This is needed because:
+  ///  a). FID stays unique after process restarts
   ///  b). This design does not use interlock on global seed, but uses thread-static vars which is 10-20 times faster
-  ///  
+  ///
   /// The timestamp is the number of 100ms intervals elapsed since Jan 1 2015 expressed as a 24 bit unsigned int, which gives 2^24 = 16,777,216 combinations
   /// which covers 19 days (around 2 weeks) at 100 msec resolution, consequently the ID will generate duplicates after this period.
   /// This struct is useful for creating unique IDs for protocol/traffic messages that live for a limited time (no more than 2 weeks).
@@ -64,7 +64,7 @@ namespace NFX
 
     private static int s_Seed;
 
-    [ThreadStatic] private static ulong ts_Prefix;// timestamp + threadseed 
+    [ThreadStatic] private static ulong ts_Prefix;// timestamp + threadseed
     [ThreadStatic] private static int   ts_Counter;
 
 
@@ -73,8 +73,8 @@ namespace NFX
       var seed = (ulong)(Interlocked.Increment(ref s_Seed) & MASK_24_BIT) << 16;
 
       var ts = ((ulong)((DateTime.UtcNow - START).TotalMilliseconds / 100d) & 0x0000000000fffffful) << 40;//64-24
-      
-      ts_Prefix = ts | seed;//prefix is:  24 bit timestamp + 24 bit thread seed 
+
+      ts_Prefix = ts | seed;//prefix is:  24 bit timestamp + 24 bit thread seed
 
       ts_Counter = 0;
     }
@@ -95,7 +95,7 @@ namespace NFX
     public static FID Generate()
     {
       if (ts_Prefix == 0 || ts_Counter == MASK_16_BIT) genSeed();
-                
+
       ts_Counter++;
 
       var id = ts_Prefix | (ulong)(uint)ts_Counter;

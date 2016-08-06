@@ -32,7 +32,7 @@ namespace NFX
        public static IApplication Instance
        {
           get { return ExecutionContext.Application; }
-       } 
+       }
 
 
      /// <summary>
@@ -52,7 +52,7 @@ namespace NFX
      }
 
      /// <summary>
-     /// Returns timestamp when application started as localized app time 
+     /// Returns timestamp when application started as localized app time
      /// </summary>
      public static DateTime StartTime
      {
@@ -65,7 +65,7 @@ namespace NFX
      /// </summary>
      public static bool Available
      {
-        get 
+        get
         {
              var inst = Instance;
              return inst!=null &&
@@ -74,14 +74,14 @@ namespace NFX
         }
      }
 
-     
+
      /// <summary>
      /// Returns true when application instance is active and working. This property returns false as soon as application finalization starts on shutdown
      /// Use to exit long-running loops and such
      /// </summary>
      public static bool Active { get { return Instance.Active; } }
-     
-     
+
+
      /// <summary>
      /// References app log
      /// </summary>
@@ -90,28 +90,28 @@ namespace NFX
      /// <summary>
      /// References instrumentation for this application instance
      /// </summary>
-     public static Instrumentation.IInstrumentation Instrumentation { get { return Instance.Instrumentation; } } 
+     public static Instrumentation.IInstrumentation Instrumentation { get { return Instance.Instrumentation; } }
 
      /// <summary>
      /// References throttling for this application instance
      /// </summary>
-     public static Throttling.IThrottling Throttling { get { return Instance.Throttling; } } 
-     
+     public static Throttling.IThrottling Throttling { get { return Instance.Throttling; } }
+
      /// <summary>
      /// References application configuration root
      /// </summary>
      public static Environment.ConfigSectionNode  ConfigRoot { get { return Instance.ConfigRoot; } }
-     
+
      /// <summary>
      /// References application data store
      /// </summary>
      public static DataAccess.IDataStore DataStore { get { return Instance.DataStore; } }
 
      /// <summary>
-     /// References object store that may be used to persist object graphs between volatile application shutdown cycles  
+     /// References object store that may be used to persist object graphs between volatile application shutdown cycles
      /// </summary>
      public static NFX.ApplicationModel.Volatile.IObjectStore ObjectStore { get { return Instance.ObjectStore; } }
-     
+
      /// <summary>
      /// References glue implementation that may be used to "glue" remote instances/processes/contracts together
      /// </summary>
@@ -121,7 +121,7 @@ namespace NFX
      /// References security manager that performs user authentication based on passed credentials and other security-related global tasks
      /// </summary>
      public static Security.ISecurityManager SecurityManager { get { return Instance.SecurityManager; } }
-     
+
      /// <summary>
      /// References time source - an entity that supplies local and UTC times. The concrete implementation
      ///  may elect to get accurate times from the network or other external precision time sources (i.e. NASA atomic clock)

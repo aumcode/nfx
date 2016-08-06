@@ -38,7 +38,7 @@ namespace NFX.Media.TagCodes.QR
 
       public const string DEFAULT_ENCODING = "ISO-8859-1";
 
-      private static readonly int[] ALPHANUMERIC_TABLE = 
+      private static readonly int[] ALPHANUMERIC_TABLE =
       {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  // 0x00-0x0f
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  // 0x10-0x1f
@@ -97,7 +97,7 @@ namespace NFX.Media.TagCodes.QR
 
         int dimension = version.Dimension;
         QREncoderMatrix matrix = new QREncoderMatrix( dimension, content, correctionLevel, mode, version);
-        
+
         int maskPattern = chooseMaskPattern(finalBits, correctionLevel, version, matrix);
 
         matrix.MaskPattern = maskPattern;
@@ -157,7 +157,7 @@ namespace NFX.Media.TagCodes.QR
       }
 
       /// <summary>
-      /// According to JISX0510:2004 (p.30) tbl 12 in 8.5.1 
+      /// According to JISX0510:2004 (p.30) tbl 12 in 8.5.1
       /// Calculate data and correction bytes for block
       /// </summary>
       /// <param name="numTotalBytes">Total bytes count</param>
@@ -182,11 +182,11 @@ namespace NFX.Media.TagCodes.QR
         int numEcBytesInGroup2 = numTotalBytesInGroup2 - numDataBytesInGroup2;
 
         if (numEcBytesInGroup1 != numEcBytesInGroup2)
-          throw new NFXException(StringConsts.CODE_LOGIC_ERROR + typeof(QREncoderMatrix).Name + 
+          throw new NFXException(StringConsts.CODE_LOGIC_ERROR + typeof(QREncoderMatrix).Name +
             ".getNumDataBytesAndNumECBytesForBlockID: numEcBytesInGroup1!=numEcBytesInGroup2");
 
         if (numRSBlocks != numRsBlocksInGroup1 + numRsBlocksInGroup2)
-          throw new NFXException(StringConsts.CODE_LOGIC_ERROR + typeof(QREncoderMatrix).Name + 
+          throw new NFXException(StringConsts.CODE_LOGIC_ERROR + typeof(QREncoderMatrix).Name +
             ".getNumDataBytesAndNumECBytesForBlockID: numRSBlocks != numRsBlocksInGroup1 + numRsBlocksInGroup2");
 
         if (numTotalBytes !=
@@ -194,7 +194,7 @@ namespace NFX.Media.TagCodes.QR
                 numRsBlocksInGroup1) +
                 ((numDataBytesInGroup2 + numEcBytesInGroup2) *
                     numRsBlocksInGroup2))
-          throw new NFXException(StringConsts.CODE_LOGIC_ERROR + typeof(QREncoderMatrix).Name + 
+          throw new NFXException(StringConsts.CODE_LOGIC_ERROR + typeof(QREncoderMatrix).Name +
             ".getNumDataBytesAndNumECBytesForBlockID: numTotalBytes!=((numDataBytesInGroup1+numEcBytesInGroup1)*numRsBlocksInGroup1)+((numDataBytesInGroup2+numEcBytesInGroup2)*numRsBlocksInGroup2)");
 
         if (blockID < numRsBlocksInGroup1)
@@ -375,8 +375,8 @@ namespace NFX.Media.TagCodes.QR
     #region .ctor
 
       private QREncoderMatrix(int dimension, string content, QRCorrectionLevel correctionLevel, QRMode mode, QRVersion version)
-        : base(dimension, dimension) 
-      { 
+        : base(dimension, dimension)
+      {
         Content = content;
         CorrectionLevel = correctionLevel;
         Mode = mode;
@@ -413,7 +413,7 @@ namespace NFX.Media.TagCodes.QR
 
         return b.ToString();
       }
-		 
+
 	  #endregion
 
     #region .pvt. impl.

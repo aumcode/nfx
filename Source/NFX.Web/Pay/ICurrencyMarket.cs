@@ -16,6 +16,6 @@ namespace NFX.Web.Pay
      /// Returns conversion rate for source->target conversion.
      /// rateTable is the name of the rates set, if omitted or not found then default conv rates will be used
      /// </summary>
-     Amount ConvertCurrency(string rateTable, Amount from, string targetCurrencyISO); 
+     Amount ConvertCurrency(string rateTable, Amount from, string targetCurrencyISO);
   }
 }

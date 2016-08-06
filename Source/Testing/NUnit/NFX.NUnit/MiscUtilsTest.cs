@@ -29,6 +29,102 @@ namespace NFX.NUnit
     [TestFixture]
     public class MiscUtilsTest
     {
+         private class Tezt
+         {
+            public int A;
+            public string B;
+            public double C;
+         }
+
+        [TestCase]
+        public void FirstMin()
+        {
+          var data = new []{ new Tezt{A=0, B="Car", C=12.1d},
+                             new Tezt{A=2, B="Tzar", C=-21.7d},
+                             new Tezt{A=-3, B="Zuma", C=10000d},
+                           };
+
+          var min = data.FirstMin(d => d.A);
+          Assert.AreEqual(-3, min.A);
+          Assert.AreEqual("Zuma", min.B);
+          Assert.AreEqual(10000d, min.C);
+
+          min = data.FirstMin(d => d.B);
+          Assert.AreEqual(0, min.A);
+          Assert.AreEqual("Car", min.B);
+          Assert.AreEqual(12.1d, min.C);
+
+          min = data.FirstMin(d => d.C);
+          Assert.AreEqual(2, min.A);
+          Assert.AreEqual("Tzar", min.B);
+          Assert.AreEqual(-21.7d, min.C);
+
+          double c;
+          min = data.FirstMin(d => d.C, out c);
+          Assert.AreEqual(2, min.A);
+          Assert.AreEqual("Tzar", min.B);
+          Assert.AreEqual(-21.7d, min.C);
+          Assert.AreEqual(-21.7d, c);
+
+        }
+
+        [TestCase]
+        public void FirstMax()
+        {
+          var data = new []{ new Tezt{A=0, B="Car", C=12.1d},
+                             new Tezt{A=2, B="Tzar", C=-21.7d},
+                             new Tezt{A=-3, B="Zuma", C=10000d},
+                           };
+
+          var max = data.FirstMax(d => d.A);
+          Assert.AreEqual(2, max.A);
+          Assert.AreEqual("Tzar", max.B);
+          Assert.AreEqual(-21.7d, max.C);
+
+          max = data.FirstMax(d => d.B);
+          Assert.AreEqual(-3, max.A);
+          Assert.AreEqual("Zuma", max.B);
+          Assert.AreEqual(10000d, max.C);
+
+          max = data.FirstMax(d => d.C);
+          Assert.AreEqual(-3, max.A);
+          Assert.AreEqual("Zuma", max.B);
+          Assert.AreEqual(10000d, max.C);
+
+          double c;
+          max = data.FirstMax(d => d.C, out c);
+          Assert.AreEqual(-3, max.A);
+          Assert.AreEqual("Zuma", max.B);
+          Assert.AreEqual(10000d, max.C);
+          Assert.AreEqual(10000d, c);
+        }
+
+        [TestCase]
+        public void FirstOrAnyOrDefault()
+        {
+          var data = new []{ new Tezt{A=0, B="Car", C=12.1d},
+                             new Tezt{A=2, B="Tzar", C=-21.7d},
+                             new Tezt{A=-3, B="Zuma", C=10000d},
+                           };
+
+          var m = data.FirstOrAnyOrDefault(elm => elm.B=="Tzar");
+          Assert.AreEqual(2, m.A);
+
+          m = data.FirstOrAnyOrDefault(elm => elm.B=="Sidor");
+          Assert.AreEqual(0, m.A);
+
+          data = null;
+          m = data.FirstOrAnyOrDefault(elm => elm.B=="Sidor");
+          Assert.IsNull(m);
+
+          data = new Tezt[0];
+          m = data.FirstOrAnyOrDefault(elm => elm.B=="Sidor");
+          Assert.IsNull(m);
+        }
+
+
+
+
         [TestCase]
         public void SkipLastTest()
         {
@@ -475,7 +571,7 @@ f
           var pars = new Dictionary<string, object> { { "name", "Petrov" }, { "age", 19 }, { "spec", @" -y~!@#$%^&*()_?><|';:\/=+" } };
         
           var result = URIUtils.ComposeURLQueryString(pars);
-          Assert.AreEqual("name=Petrov&age=19&spec=%20-y~%21%40%23%24%25%5E%26%2A%28%29_%3F%3E%3C%7C%27%3B%3A%5C%2F%3D%2B", result);
+          Assert.AreEqual("name=Petrov&age=19&spec=%20-y%7E%21%40%23%24%25%5E%26%2A%28%29_%3F%3E%3C%7C%27%3B%3A%5C%2F%3D%2B", result);
         }
         
         [Test]

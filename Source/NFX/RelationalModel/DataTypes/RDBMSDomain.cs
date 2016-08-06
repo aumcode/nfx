@@ -26,12 +26,12 @@ namespace NFX.RelationalModel.DataTypes
     /// </summary>
     public abstract class RDBMSDomain : Domain
     {
-        
+
         #region Properties
 
 
         #endregion
-        
+
         #region Public
 
             /// <summary>
@@ -91,6 +91,6 @@ namespace NFX.RelationalModel.DataTypes
 
         #endregion
 
-            
+
     }
 }

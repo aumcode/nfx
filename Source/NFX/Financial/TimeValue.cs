@@ -42,10 +42,10 @@ namespace NFX.Financial
         /// <param name="intRate">Interest rate per period</param>
         /// <param name="periods">Period length</param>
         /// <returns>Present Value</returns>
-        /// <example> 
+        /// <example>
         /// Assume that A gives $100 cash to B. B returns the same amount to A in 1 year.
-        /// Banks give 5% annual rate, therefore present value of this $100 dollar 
-        /// returned is going to be $95.24 - A lost $4.76, because B did not pay any interest and 
+        /// Banks give 5% annual rate, therefore present value of this $100 dollar
+        /// returned is going to be $95.24 - A lost $4.76, because B did not pay any interest and
         ///  A could have deposited $100 in regular bank instead of giving it to B.
         /// Had A charged B 5% interest rate , A would have made money.
         /// </example>
@@ -56,7 +56,7 @@ namespace NFX.Financial
 
         /// <summary>
         /// Returns future value of presently-valued amount in X number of periods
-        /// at a certain interest rate 
+        /// at a certain interest rate
         /// </summary>
         /// <param name="pv">Present value</param>
         /// <param name="intRate">Interest rate</param>
@@ -95,7 +95,7 @@ namespace NFX.Financial
         }
 
         /// <summary>
-        /// Calculates the internal rate of return over series of cash flows 
+        /// Calculates the internal rate of return over series of cash flows
         /// </summary>
         public static double IRR(IEnumerable<Double> cashFlows, Double estimatedResult)
         {
@@ -115,7 +115,7 @@ namespace NFX.Financial
 
 
         /// <summary>
-        /// Calculates the internal rate of return over series of cash flows 
+        /// Calculates the internal rate of return over series of cash flows
         /// </summary>
         private static Double IRR(Double[] cashFlows, Double estimatedResult)
         {
@@ -181,7 +181,7 @@ namespace NFX.Financial
                               cashValue += cashFlows[j] / Math.Pow(1.0 + irr, j + 1);
                           }
 
-                          
+
                           if (Math.Abs(cashValue) < accuracy)
                           {
                               result = irr;
@@ -218,7 +218,7 @@ namespace NFX.Financial
 
             return result;
         }
- 
+
 
 
 

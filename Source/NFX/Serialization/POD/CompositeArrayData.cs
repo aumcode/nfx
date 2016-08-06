@@ -28,11 +28,11 @@ namespace NFX.Serialization.POD
     public sealed class CompositeArrayData : CompositeData
     {
         #region .ctor
-           
+
             internal CompositeArrayData(PortableObjectDocument document, Array data, int metaTypeIndex = -1)
                       : base(document, data, metaTypeIndex)
             {
-                if (!ExistingReference)    
+                if (!ExistingReference)
                     serializeArray(data);
             }
 
@@ -45,12 +45,12 @@ namespace NFX.Serialization.POD
 
 
         #region Properties
-            /// <summary>                                                             
+            /// <summary>
             /// Returns field data that this instance contains, or null if this instance is a reference to another object
             /// </summary>
             public object[] ArrayData { get { return m_ArrayData;} }
 
-            /// <summary>                                                             
+            /// <summary>
             /// Returns array dimensions
             /// </summary>
             public int[] ArrayDims { get { return m_ArrayDims;} }
@@ -60,7 +60,7 @@ namespace NFX.Serialization.POD
 
         #region Public
 
-            
+
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace NFX.Serialization.POD
                 SerializationUtils.WalkArrayWrite(array, elm => m_ArrayData[idx++] =  elm );
              }
 
-             
+
 
         #endregion
     }

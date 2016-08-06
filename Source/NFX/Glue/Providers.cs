@@ -41,7 +41,7 @@ namespace NFX.Glue
             : this((IGlueImplementation)ExecutionContext.Application.Glue, name)
         {
         }
-       
+
         protected Provider(IGlueImplementation glue, string name = null) : base(glue, name)
         {
             __ctor();
@@ -62,7 +62,7 @@ namespace NFX.Glue
           public Providers()
           {
 
-          } 
+          }
 
 
     }

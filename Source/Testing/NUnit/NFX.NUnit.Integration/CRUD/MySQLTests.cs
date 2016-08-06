@@ -344,6 +344,31 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
 
+        [Test]
+        public void ManualDS_Populate_OpenCursor()
+        {
+            using (var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.Populate_OpenCursor(store);
+                clearAllTables();
+            }
+        }
+
+        [Test]
+        public void ManualDS_ASYNC_Populate_OpenCursor()
+        {
+            using (var store = new MySQLDataStore(getConnectString()))
+            {
+                store.QueryResolver.ScriptAssembly = SCRIPT_ASM;
+                clearAllTables();
+                TestLogic.Populate_ASYNC_OpenCursor(store);
+                clearAllTables();
+            }
+        }
+
+
         //===============================================================================================================================
                        
         private const string CONNECT_STRING = "Server=localhost;Database=NFXTest;Uid=root;Pwd=thejake;";
@@ -363,7 +388,7 @@ namespace NFX.NUnit.Integration.CRUD
                                                         cnn.Open();
                                                         using(var cmd = cnn.CreateCommand())
                                                         {  
-                                                          cmd.CommandText = "TRUNCATE TBL_PATIENT; TRUNCATE TBL_DOCTOR; TRUNCATE TBL_TYPES; TRUNCATE TBL_FULLGDID;";
+                                                          cmd.CommandText = "TRUNCATE TBL_TUPLE; TRUNCATE TBL_PATIENT; TRUNCATE TBL_DOCTOR; TRUNCATE TBL_TYPES; TRUNCATE TBL_FULLGDID;";
                                                           cmd.ExecuteNonQuery();
                                                         }
                                                     }

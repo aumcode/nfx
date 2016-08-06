@@ -125,7 +125,7 @@ namespace NFX.IO.FileSystem.S3.V4
 
     #region .ctor
 
-      public S3V4FileSystem(string name, IConfigSectionNode node = null) : base(name, node) 
+      public S3V4FileSystem(string name, IConfigSectionNode node = null) : base(name, node)
       {
         NFX.Web.WebSettings.RequireInitializedSettings();
       }
@@ -236,7 +236,7 @@ namespace NFX.IO.FileSystem.S3.V4
         MemoryStream contentStream = new MemoryStream(bytes);
 
         S3V4.PutFile(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, contentStream, s3session.TimeoutMs);
-        
+
         return new FileSystemFile(s3session, handle.Parent, handle.Name, handle);
       }
 
@@ -260,7 +260,7 @@ namespace NFX.IO.FileSystem.S3.V4
         var handle = new S3V4FSH(dirPath);
 
         S3V4.PutFolder(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, s3session.TimeoutMs);
-        
+
         return new FileSystemDirectory(s3session, handle.Parent, handle.Name, handle);
       }
 
@@ -272,7 +272,7 @@ namespace NFX.IO.FileSystem.S3.V4
         FileSystemFile file = item as FileSystemFile;
         if (file != null)
         {
-          IDictionary<string, string> metaHeaders = S3V4.GetItemMetadata(handle.Path, 
+          IDictionary<string, string> metaHeaders = S3V4.GetItemMetadata(handle.Path,
             s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, s3session.TimeoutMs);
           return (ulong)metaHeaders["Content-Length"].AsLong();
         }
@@ -316,7 +316,7 @@ namespace NFX.IO.FileSystem.S3.V4
         var s3session = (S3V4FileSystemSession)item.Session;
         var handle = item.Handle as S3V4FSH;
 
-        var metaHeaders = S3V4.GetItemMetadata(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, 
+        var metaHeaders = S3V4.GetItemMetadata(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region,
           s3session.TimeoutMs);
         return metaHeaders["Last-Modified"].AsDateTime();
       }
@@ -366,13 +366,13 @@ namespace NFX.IO.FileSystem.S3.V4
         var handle = directory.Handle as S3V4FSH;
         string prefix = handle.Path.ToDirectoryPath().TrimStart(PATH_SEPARATOR);
 
-        string xml = S3V4.ListBucket(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, s3session.TimeoutMs, 
+        string xml = S3V4.ListBucket(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, s3session.TimeoutMs,
           prefix, maxKeys: maxKeys);
         S3V4ListBucketResult list = S3V4ListBucketResult.FromXML(xml);
 
         while (list.IsTruncated)
         {
-          xml = S3V4.ListBucket(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, s3session.TimeoutMs, 
+          xml = S3V4.ListBucket(handle.Path, s3session.AccessKey, s3session.SecretKey, s3session.Bucket, s3session.Region, s3session.TimeoutMs,
             prefix, marker: list.Items.Last().Key, maxKeys: maxKeys);
           list.AddXML(xml);
         }

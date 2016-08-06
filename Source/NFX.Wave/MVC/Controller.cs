@@ -23,12 +23,12 @@ using System.Reflection;
 namespace NFX.Wave.MVC
 {
   /// <summary>
-  /// Represents controller that all MVC controllers must inherit from 
+  /// Represents controller that all MVC controllers must inherit from
   /// </summary>
   public abstract class Controller : DisposableObject
   {
       #region CONSTS
-      
+
          public const string DEFAULT_VAR_MVC_ACTION = "mvc-action";
          public const string DEFAULT_MVC_ACTION = "index";
 
@@ -84,7 +84,7 @@ namespace NFX.Wave.MVC
 
 
          /// <summary>
-         /// Returns cached (for performance)ordered array of ActionFilterAttributes for action method 
+         /// Returns cached (for performance)ordered array of ActionFilterAttributes for action method
          /// </summary>
          protected static ActionFilterAttribute[] GetActionFilters(MethodInfo mi)
          {
@@ -112,7 +112,7 @@ namespace NFX.Wave.MVC
       /// Override to add logic/filtering right before the invocation of action method.
       /// Return TRUE to indicate that request has already been handled and no need to call method body and AfterActionInvocation in which case
       ///  return result via 'out result' paremeter.
-      ///  The default implementation calls ActionFilters 
+      ///  The default implementation calls ActionFilters
       /// </summary>
       protected internal virtual bool BeforeActionInvocation(WorkContext work, string action, MethodInfo method, object[] args, ref object result)
       {
@@ -127,11 +127,11 @@ namespace NFX.Wave.MVC
           if (filters!=null)
            for(var i=0; i<filters.Length; i++)
             if (filters[i].BeforeActionInvocation(this, work, action, method, args, ref result)) return true;
-          
+
           result = null;
           return false;
       }
-      
+
       /// <summary>
       /// Override to add logic/filtering right after the invocation of action method. Must return the result (which can be altered/filtered).
       /// The default implementation calls ActionFilters
@@ -151,6 +151,25 @@ namespace NFX.Wave.MVC
             if (filters[i].AfterActionInvocation(this, work, action, method, args, ref result)) return result;
 
          return result;
+      }
+
+
+      /// <summary>
+      /// Override to add logic/filtering finally after the invocation of action method
+      /// </summary>
+      protected internal virtual void ActionInvocationFinally(WorkContext work, string action, MethodInfo method, object[] args, object result)
+      {
+         //1 Method Level
+         var filters = GetActionFilters(method);
+         if (filters!=null)
+           for(var i=filters.Length-1; i>=0; i--)
+             filters[i].ActionInvocationFinally(this, work, action, method, args, ref result);
+
+         //2 Class Level
+         filters = GetActionFilters(GetType());
+         if (filters!=null)
+           for(var i=filters.Length-1; i>=0; i--)
+             filters[i].ActionInvocationFinally(this, work, action, method, args, ref result);
       }
 
   }

@@ -142,4 +142,17 @@ namespace NFX.NUnit.Integration.CRUD
     }
 
 
+    [Serializable]
+    [Table(name: "tbl_tuple")]
+    public class TupleData : TypedRow
+    {
+        public TupleData() {}
+
+        [Field(required: true, key: true)]
+        public long COUNTER {get; set;}
+
+        [Field(required: true)]
+        public string DATA {get; set;}
+    }
+
 }

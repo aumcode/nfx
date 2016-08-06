@@ -35,8 +35,8 @@ namespace NFX.Wave
   {
       public const string CONFIG_MATCH_SECTION = "match";
       public const string CONFIG_VAR_SECTION = "var";
-      public const string CONFIG_PATH_ATTR = "path"; 
-      public const string CONFIG_NOT_PATH_ATTR = "not-path"; 
+      public const string CONFIG_PATH_ATTR = "path";
+      public const string CONFIG_NOT_PATH_ATTR = "not-path";
 
       public static readonly char[] LIST_DELIMITERS = new char[]{',',';','|'};
 
@@ -69,13 +69,13 @@ namespace NFX.Wave
                   foreach(var seg in segs)
                   {
                     var ieq = seg.IndexOf('=');
-                    if (ieq>=1 && ieq<seg.Length-1) 
-                     result.Add(new NameValuePair(Uri.UnescapeDataString(seg.Substring(0, ieq)), Uri.UnescapeDataString(seg.Substring(ieq+1)))); 
+                    if (ieq>=1 && ieq<seg.Length-1)
+                     result.Add(new NameValuePair(Uri.UnescapeDataString(seg.Substring(0, ieq)), Uri.UnescapeDataString(seg.Substring(ieq+1))));
                     else
                      result.Add(new NameValuePair(seg, null));
                   }
                   return result;
-                } 
+                }
 
                 /// <summary>
                 /// Joins NameValuePair sequence into a string list i.e. "a=1;b=2"
@@ -86,7 +86,7 @@ namespace NFX.Wave
                   var first = true;
                   foreach(var pair in list)
                   {
-                    result.Append("{0}={1}".Args(Uri.EscapeDataString(pair.Name), Uri.EscapeDataString(pair.Value))); 
+                    result.Append("{0}={1}".Args(Uri.EscapeDataString(pair.Name), Uri.EscapeDataString(pair.Value)));
                     if (!first) result.Append(";");
                     first = false;
                   }
@@ -95,7 +95,7 @@ namespace NFX.Wave
               }
 
 
-         
+
               /// <summary>
               /// Represents capture variable
               /// </summary>
@@ -108,14 +108,14 @@ namespace NFX.Wave
                   m_Name = name;
                   if (m_Name.IsNullOrWhiteSpace()) m_Name = Guid.NewGuid().ToString();
                 }
-               
+
                 public Variable(IConfigSectionNode confNode)
                 {
                   ConfigAttribute.Apply(this, confNode);
                   if (m_Name.IsNullOrWhiteSpace()) m_Name = Guid.NewGuid().ToString();
                 }
-                
-                
+
+
                 [Config]private string m_Name;
                 [Config]private string m_QueryName;
                 [Config]private string m_Default;
@@ -127,16 +127,16 @@ namespace NFX.Wave
 
                 /// <summary>Name of variable</summary>
                 public string Name { get {return m_Name;} }
-                
+
                 /// <summary>Name of URI query variable to fetch into this variable</summary>
                 public string QueryName { get {return m_QueryName;} set{m_QueryName = value;}}
-               
+
                 /// <summary>Default value if no URI match could be made</summary>
                 public string Default { get {return m_Default;} set{m_Default = value;}}
 
                 /// <summary>Optional value that must exactly equal the captured value for the whole match to succeed</summary>
                 public string MatchEquals { get {return m_MatchEquals;} set{m_MatchEquals = value;}}
-                
+
                 /// <summary>Optional value that must be contained in the captured value for the whole match to succeed</summary>
                 public string MatchContains { get {return m_MatchContains;} set{m_MatchContains = value;}}
 
@@ -160,13 +160,13 @@ namespace NFX.Wave
       {
         if (confNode==null)
           throw new WaveException(StringConsts.ARGUMENT_ERROR + GetType().FullName+".ctor(node==null)");
-       
+
         m_Name = confNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
         m_Order = confNode.AttrByName(Configuration.CONFIG_ORDER_ATTR).ValueAsInt(0);
-        
+
         if (m_Name.IsNullOrWhiteSpace())
           m_Name = "{0}({1})".Args(GetType().FullName, Guid.NewGuid());
-        
+
         var ppattern = confNode.AttrByName(CONFIG_PATH_ATTR).Value;
         if (ppattern.IsNotNullOrWhiteSpace())
           m_PathPattern = new URIPattern( ppattern );
@@ -180,7 +180,7 @@ namespace NFX.Wave
           m_Variables.Register(new Variable(vnode) );
 
         ConfigAttribute.Apply(this, confNode);
-        
+
         var permsNode = confNode[Permission.CONFIG_PERMISSIONS_SECTION];
         if (permsNode.Exists)
           m_Permissions = Permission.MultipleFromConf(permsNode);
@@ -206,12 +206,13 @@ namespace NFX.Wave
       private NameValuePair[] m_AbsentCookies;
       private NameValuePair[] m_Headers;
       private bool? m_IsLocal;
+      private bool? m_IsSocialNetBot;
       private int?  m_ApiMinVer;
       private int?  m_ApiMaxVer;
       private IEnumerable<Permission> m_Permissions;
 
       private Registry<Variable> m_Variables = new Registry<Variable>();
-      
+
 
       /// <summary>
       /// Returns the match instance name
@@ -220,11 +221,11 @@ namespace NFX.Wave
 
       /// <summary>
       /// Returns the match order in handler registry. Order is used for URI pattern matching.
-      /// Although Order property can change the match needs to be Unregistered/Registered again with the handler 
+      /// Although Order property can change the match needs to be Unregistered/Registered again with the handler
       /// to change pattern matching order
       /// </summary>
-      public int Order 
-      { 
+      public int Order
+      {
         get{ return m_Order;}
         set {m_Order = value;}
       }
@@ -260,14 +261,14 @@ namespace NFX.Wave
       [Config]
       public string Schemes
       {
-        get { return m_Schemes==null ? null : string.Join(",", m_Schemes); } 
+        get { return m_Schemes==null ? null : string.Join(",", m_Schemes); }
         set { m_Schemes = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string AcceptTypes
       {
-        get { return m_AcceptTypes==null ? null : string.Join(",", m_AcceptTypes); } 
+        get { return m_AcceptTypes==null ? null : string.Join(",", m_AcceptTypes); }
         set { m_AcceptTypes = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
@@ -284,84 +285,91 @@ namespace NFX.Wave
       [Config]
       public string ContentTypes
       {
-        get { return m_ContentTypes==null ? null : string.Join(",", m_ContentTypes); } 
+        get { return m_ContentTypes==null ? null : string.Join(",", m_ContentTypes); }
         set { m_ContentTypes = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string Hosts
       {
-        get { return m_Hosts==null ? null : string.Join(",", m_Hosts); } 
+        get { return m_Hosts==null ? null : string.Join(",", m_Hosts); }
         set { m_Hosts = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string Ports
       {
-        get { return m_Ports==null ? null : string.Join(",", m_Ports); } 
+        get { return m_Ports==null ? null : string.Join(",", m_Ports); }
         set { m_Ports = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string UserAgents
       {
-        get { return m_UserAgents==null ? null : string.Join(",", m_UserAgents); } 
+        get { return m_UserAgents==null ? null : string.Join(",", m_UserAgents); }
         set { m_UserAgents = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string UserHosts
       {
-        get { return m_UserHosts==null ? null : string.Join(",", m_UserHosts); } 
+        get { return m_UserHosts==null ? null : string.Join(",", m_UserHosts); }
         set { m_UserHosts = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
-       
+
       [Config]
       public string Methods
       {
-        get { return m_Methods==null ? null : string.Join(",", m_Methods); } 
+        get { return m_Methods==null ? null : string.Join(",", m_Methods); }
         set { m_Methods = value.IsNullOrWhiteSpace() ? null : value.Split(LIST_DELIMITERS, StringSplitOptions.RemoveEmptyEntries); }
       }
 
       [Config]
       public string Cookies
       {
-        get { return m_Cookies==null ? null : NameValuePair.ToStringList(m_Cookies); } 
+        get { return m_Cookies==null ? null : NameValuePair.ToStringList(m_Cookies); }
         set { m_Cookies = value.IsNullOrWhiteSpace() ? null : NameValuePair.ParseList(value).ToArray(); }
       }
 
       [Config]
       public string AbsentCookies
       {
-        get { return m_AbsentCookies==null ? null : NameValuePair.ToStringList(m_AbsentCookies); } 
+        get { return m_AbsentCookies==null ? null : NameValuePair.ToStringList(m_AbsentCookies); }
         set { m_AbsentCookies = value.IsNullOrWhiteSpace() ? null : NameValuePair.ParseList(value).ToArray(); }
       }
 
       [Config]
       public string Headers
       {
-        get { return m_Headers==null ? null : NameValuePair.ToStringList(m_Headers); } 
+        get { return m_Headers==null ? null : NameValuePair.ToStringList(m_Headers); }
         set { m_Headers = value.IsNullOrWhiteSpace() ? null : NameValuePair.ParseList(value).ToArray(); }
       }
 
       [Config]
       public bool? IsLocal
       {
-        get { return m_IsLocal; } 
+        get { return m_IsLocal; }
         set { m_IsLocal = value; }
+      }
+
+      [Config]
+      public bool? IsSocialNetBot
+      {
+        get { return m_IsSocialNetBot; }
+        set { m_IsSocialNetBot = value;}
       }
 
       [Config]
       public int? ApiMinVer
       {
-        get { return m_ApiMinVer; } 
+        get { return m_ApiMinVer; }
         set { m_ApiMinVer = value; }
       }
 
       [Config]
       public int? ApiMaxVer
       {
-        get { return m_ApiMaxVer; } 
+        get { return m_ApiMaxVer; }
         set { m_ApiMaxVer = value; }
       }
 
@@ -394,8 +402,9 @@ namespace NFX.Wave
             !Check_UserAgents(work)||
             !Check_UserHosts(work) ||
             !Check_Permissions(work) ||
-            !Check_Cookies(work) || 
-            !Check_AbsentCookies(work) || 
+            !Check_Cookies(work) ||
+            !Check_AbsentCookies(work) ||
+            !Check_IsSocialNetBot(work) ||
             !Check_Headers(work) ||
             !Check_ApiVersions(work)
            ) return null;
@@ -436,7 +445,7 @@ namespace NFX.Wave
         if (atps==null || atps.Length==0) return false;
 
         var found = false;
-        
+
         foreach(var at in m_AcceptTypes)
             if (atps.Any(t=>at.Equals(t, StringComparison.OrdinalIgnoreCase)))
             {
@@ -452,7 +461,7 @@ namespace NFX.Wave
         var ct = work.Request.ContentType;
         if (ct.IsNullOrWhiteSpace()) return false;
 
-        return m_ContentTypes.Any(t=>ct.Equals(t, StringComparison.OrdinalIgnoreCase)); 
+        return m_ContentTypes.Any(t=>ct.Equals(t, StringComparison.OrdinalIgnoreCase));
       }
 
 
@@ -492,6 +501,13 @@ namespace NFX.Wave
         return work.Request.IsLocal == m_IsLocal;
       }
 
+      protected virtual bool Check_IsSocialNetBot(WorkContext work)
+      {
+        if (!m_IsSocialNetBot.HasValue) return true;
+        var isBot = Web.Social.SocialNetwork.IsAnySocialNetBotUserAgent(work.Request.UserAgent);
+        return m_IsSocialNetBot == isBot;
+      }
+
       protected virtual bool Check_VariablesAndGetValues(WorkContext work, ref JSONDataMap result)
       {
         if (m_Variables.Count==0) return true;
@@ -506,15 +522,15 @@ namespace NFX.Wave
                result[qk] = work.Request.QueryString[qk];
             continue;
           }
-          
-          
+
+
           var qv = cvar.QueryName.IsNotNullOrWhiteSpace() ? work.Request.QueryString[cvar.QueryName] : string.Empty;
           if (qv.IsNullOrWhiteSpace()) qv = cvar.Default ?? string.Empty;
           result[cvar.Name] = qv;
 
           if (cvar.MatchEquals.IsNotNullOrWhiteSpace())
             if (!cvar.MatchEquals.Equals(qv, cvar.MatchCaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase)) return false;
-            
+
           if (cvar.MatchContains.IsNotNullOrWhiteSpace())
             if (qv.IndexOf(cvar.MatchContains, cvar.MatchCaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase)<0) return false;
         }
@@ -537,7 +553,7 @@ namespace NFX.Wave
         {
           var cookie = work.Request.Cookies[pair.Name];
           if (cookie==null) continue;
-          if (string.Equals( cookie.Value, 
+          if (string.Equals( cookie.Value,
                              pair.Value,
                              StringComparison.InvariantCultureIgnoreCase)) return true;
         }
@@ -551,7 +567,7 @@ namespace NFX.Wave
         {
           var cookie = work.Request.Cookies[pair.Name];
           if (cookie==null) return true;
-          if (!string.Equals( cookie.Value, 
+          if (!string.Equals( cookie.Value,
                               pair.Value,
                               StringComparison.InvariantCultureIgnoreCase)) return true;
         }
@@ -562,7 +578,7 @@ namespace NFX.Wave
       {
         if (m_Headers==null) return true;
         foreach(var pair in m_Headers)
-          if (string.Equals( work.Request.Headers[pair.Name], 
+          if (string.Equals( work.Request.Headers[pair.Name],
                              pair.Value,
                              StringComparison.InvariantCultureIgnoreCase)) return true;
         return false;

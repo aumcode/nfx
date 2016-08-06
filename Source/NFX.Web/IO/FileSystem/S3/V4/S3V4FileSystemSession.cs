@@ -86,7 +86,7 @@ namespace NFX.IO.FileSystem.S3.V4
 	    {
         var cred = new S3Credentials(accessKey, secretKey);
         var at = new AuthenticationToken(Bucket, accessKey);
-        User = new User(cred, at, UserStatus.User, accessKey, accessKey, Rights.None); 
+        User = new User(cred, at, UserStatus.User, accessKey, accessKey, Rights.None);
 	    }
     }
   }
@@ -96,7 +96,7 @@ namespace NFX.IO.FileSystem.S3.V4
   /// </summary>
   public class S3V4FileSystemSession : FileSystemSession
   {
-    protected internal S3V4FileSystemSession(S3V4FileSystem fs, IFileSystemHandle handle, S3V4FileSystemSessionConnectParams cParams) 
+    protected internal S3V4FileSystemSession(S3V4FileSystem fs, IFileSystemHandle handle, S3V4FileSystemSessionConnectParams cParams)
                       : base(fs, handle, cParams)
     {
       m_Bucket = cParams.Bucket;

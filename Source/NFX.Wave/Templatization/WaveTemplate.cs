@@ -39,7 +39,7 @@ namespace NFX.Wave.Templatization
          {
            return value.EscapeJSLiteral();
          }
-       
+
          /// <summary>
          /// Converts string to HTML-encoded string
          /// </summary>
@@ -54,7 +54,7 @@ namespace NFX.Wave.Templatization
          {
 
          }
-         
+
          public WaveTemplate(WorkContext context) : base (context)
          {
 
@@ -71,7 +71,7 @@ namespace NFX.Wave.Templatization
          /// Returns CSRF token for session if it is available or null
          /// </summary>
          public string CSRFToken
-         { 
+         {
            get
            {
              var session = this.Session;
@@ -139,31 +139,16 @@ namespace NFX.Wave.Templatization
         }
 
 
-         protected override void DoContextBinding()
-         {
-             base.DoContextBinding();
-         }
-
-
-         protected override void DoPreRender()
-         {
-
-         }
-
-         protected override void DoRender()
-         {
-
-         }
-
-         protected override void DoPostRender(Exception error)
-         {
-
-         }
+        protected override bool DoPostRender(Exception error)
+        {
+          if (error==null) return false;
+          throw new WaveTemplateRenderingException("{0}.DoPostRender: {1}".Args(GetType().FullName, error.ToMessageWithType()), error);
+        }
 
     }
 
     /// <summary>
-    /// Wave template that is scoped to a TModel type for Model (Rendering Context) 
+    /// Wave template that is scoped to a TModel type for Model (Rendering Context)
     /// </summary>
     public class WaveTemplate<TModel> : WaveTemplate
     {
@@ -171,7 +156,7 @@ namespace NFX.Wave.Templatization
         {
 
         }
-         
+
         public WaveTemplate(WorkContext context) : base (context)
         {
 

@@ -11,7 +11,7 @@ using NFX.WinForms.Elements;
 
 namespace NFX.WinForms.Controls.ChartKit.Temporal
 {
-  
+
   /// <summary>
   /// View of candles buy/sell bars line
   /// </summary>
@@ -33,7 +33,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                 m_Sample = sample;
                 m_ScaleMin = minScale;
                 m_ScaleMax = maxScale;
-               
+
                 computeCoords();
                 var h = Math.Max(m_Lay_BuyHeight, m_Lay_SellHeight);
                 this.Region = new Rectangle(x, (int)(host.Height / host.Zoom) - h, CandleView.BAR_WIDTH, h);
@@ -52,7 +52,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                  {
                    var pxTotalHeight = (int)(m_Host.Height / m_Host.Zoom);
                    var pxPrice = (float)pxTotalHeight / (m_ScaleMax - m_ScaleMin);
-         
+
                    if (m_View.Kind== ViewKind.Centered)
                    {
                      m_Lay_BuyHeight = (int)( m_Sample.BuyVolume * pxPrice );
@@ -66,7 +66,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                  }
 
                  protected internal override void Paint(Graphics gr)
-                 {           
+                 {
                    var hf = CandleView.BAR_WIDTH / 2;
 
                    if (m_View.Kind== ViewKind.SideBySide)
@@ -103,11 +103,11 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         #endregion
 
 
-    
+
       public CandleBuySellView(string name, int order, string paneName = null) : base(name, order, paneName)
       {
       }
-      
+
 
       public ViewKind Kind{ get; set;}
 
@@ -119,7 +119,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           return "Volume";
         }
       }
-      
+
 
       protected override VScaleZoomAlign VScaleZoomAlignment
       {
@@ -148,7 +148,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           maxScale = 0;
           foreach(var sample in data)
           {
-            
+
             if (sample.BuyVolume > maxScale) maxScale = sample.BuyVolume;
             if (sample.SellVolume > maxScale) maxScale = sample.SellVolume;
           }
@@ -164,7 +164,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
             if (sum > maxScale) maxScale = sum;
           }
         }
-        else 
+        else
         {
           minScale = 0;
           maxScale = 0;

@@ -14,13 +14,13 @@ namespace NFX.Wave
   /// </summary>
   public abstract class Theme : INamed
   {
-    
+
     protected Theme(Portal portal, IConfigSectionNode conf)
     {
       m_Portal = portal;
       m_Name = conf.AttrByName(Configuration.CONFIG_NAME_ATTR).Value;
       if (m_Name.IsNullOrWhiteSpace())
-       throw new WaveException(StringConsts.CONFIG_PORTAL_THEME_NO_NAME_ERROR.Args(portal.Name)); 
+       throw new WaveException(StringConsts.CONFIG_PORTAL_THEME_NO_NAME_ERROR.Args(portal.Name));
 
 
       m_Description = conf.AttrByName(Portal.CONFIG_DESCR_ATTR).ValueAsString(m_Name);
@@ -34,7 +34,7 @@ namespace NFX.Wave
     private string m_Name;
     private string m_Description;
     private bool m_Default;
-    
+
     /// <summary>
     /// Parent portal that this theme is under
     /// </summary>
@@ -69,7 +69,7 @@ namespace NFX.Wave
   public abstract class Theme<TPortal> : Theme where TPortal : Portal
   {
     protected Theme(TPortal portal, IConfigSectionNode conf) : base(portal, conf){ }
-    
+
     /// <summary>
     /// Parent portal that this theme is under
     /// </summary>

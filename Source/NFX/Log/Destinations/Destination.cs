@@ -40,14 +40,14 @@ namespace NFX.Log.Destinations
   /// <summary>
   /// Represents logging message destination - an abstract entity that messages are written to by LogService.
   /// Destinations must be efficient as they block logger thread. They provide failover mechanism when
-  ///  processing can not be completed. Once failed, the processing can try to be resumed after configurable interval. 
+  ///  processing can not be completed. Once failed, the processing can try to be resumed after configurable interval.
   /// Destinations also provide optional SLA on the time it takes to perform actual message write - once exceeded destination is considered to have failed.
   /// Basic efficient filtering is provided for times, dates and levels. Complex C# expression-based filtering is also supported
   /// </summary>
   public abstract class Destination : ApplicationComponent, IConfigurable, IExternallyParameterized
   {
     #region Local Classes
-        
+
         public class LevelsList : List<Tuple<MessageType,MessageType>> {}
 
     #endregion
@@ -68,7 +68,7 @@ namespace NFX.Log.Destinations
         public const string CONFIG_FILTER_ATTR = "filter";
         public const string CONFIG_TEST_ON_START_ATTR = "test-on-start";
         public const string CONFIG_NAME_DEFAULT = "Un-named log destination";
-        
+
         public const string CONFIG_MAX_PROCESSING_TIME_MS_ATTR = "max-processing-time-ms";
         public const int CONFIG_MAX_PROCESSING_TIME_MS_MIN_VALUE = 25;
 
@@ -83,7 +83,7 @@ namespace NFX.Log.Destinations
         public const float PROCESSING_TIME_EMA_FILTER = 0.0007f;
 
     #endregion
-   
+
     #region .ctor
 
         public Destination() : this(null) {}
@@ -104,9 +104,9 @@ namespace NFX.Log.Destinations
     #region Pvt/Protected Fields
 
         protected internal CompositeDestination m_Owner;
-        
-        
-       
+
+
+
         private Exception m_LastError;
         protected string m_Name;
 
@@ -174,8 +174,8 @@ namespace NFX.Log.Destinations
 
 
         /// <summary>
-        /// Gets/sets filter expression for this destination. 
-        /// Filter expressions get dynamically compiled into filter assembly, 
+        /// Gets/sets filter expression for this destination.
+        /// Filter expressions get dynamically compiled into filter assembly,
         /// consequently it is not a good practice to create too many different filters.
         /// Filters are heavyweight, and it is advisable to use them ONLY WHEN regular destination filtering (using Min/Max levels, dates and times) can not be used
         ///  to achieve the desired result
@@ -327,7 +327,7 @@ namespace NFX.Log.Destinations
 
 
         /// <summary>
-        /// Sets destination name used for failover of this one 
+        /// Sets destination name used for failover of this one
         /// </summary>
         [Config("$" + CONFIG_FAILOVER_ATTR)]
         [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG)]
@@ -347,24 +347,24 @@ namespace NFX.Log.Destinations
         {
           get { return m_TestOnStart; }
           set { m_TestOnStart = value;}
-        } 
+        }
 
 
         /// <summary>
         /// Imposes a time limit on internal message processing (writing into actual sink) by this destination.
         /// If this limit is exceeded, this destination fails and processing is re-tried to be resumed after RestartProcessingAfterMs interval.
-        /// The minimum value for this property is 25 ms as lower values compromise timer accuracy 
+        /// The minimum value for this property is 25 ms as lower values compromise timer accuracy
         /// </summary>
         [Config("$" + CONFIG_MAX_PROCESSING_TIME_MS_ATTR)]
         [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG)]
         public int? MaxProcessingTimeMs
         {
           get { return m_MaxProcessingTimeMs; }
-          set 
+          set
           {
            if (value.HasValue)
            {
-            m_MaxProcessingTimeMs = value > CONFIG_MAX_PROCESSING_TIME_MS_MIN_VALUE ? value : CONFIG_MAX_PROCESSING_TIME_MS_MIN_VALUE; 
+            m_MaxProcessingTimeMs = value > CONFIG_MAX_PROCESSING_TIME_MS_MIN_VALUE ? value : CONFIG_MAX_PROCESSING_TIME_MS_MIN_VALUE;
             m_AverageProcessingTimeMs = 0f;
            }
            else
@@ -404,8 +404,8 @@ namespace NFX.Log.Destinations
             /// Returns named parameters that can be used to control this component
             /// </summary>
             public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            { 
-              return ExternalParameterAttribute.GetParameters(this, groups); 
+            {
+              return ExternalParameterAttribute.GetParameters(this, groups);
             }
 
 
@@ -465,7 +465,7 @@ namespace NFX.Log.Destinations
         {
           //When there was failure and it was not long enough
           if (m_LastErrorTimestamp.HasValue)
-           if ((DirectorLog.Now - m_LastErrorTimestamp.Value).TotalMilliseconds < m_RestartProcessingAfterMs) 
+           if ((DirectorLog.Now - m_LastErrorTimestamp.Value).TotalMilliseconds < m_RestartProcessingAfterMs)
            {
              //this is afster than throwing exception
              var error = new NFXException(string.Format(StringConsts.LOGSVC_DESTINATION_IS_OFFLINE_ERROR, Name));
@@ -504,7 +504,7 @@ namespace NFX.Log.Destinations
                 (!m_StartTime.HasValue  || msg.TimeStamp.TimeOfDay >= m_StartTime.Value) &&
                 (!m_EndTime.HasValue    || msg.TimeStamp.TimeOfDay <= m_EndTime.Value)
                )
-            {   
+            {
                 if (before != null) before.Send(msg);
 
                 if (!m_MaxProcessingTimeMs.HasValue)
@@ -514,11 +514,11 @@ namespace NFX.Log.Destinations
                    m_StopWatch.Restart();
                     DoSend(msg);
                    m_StopWatch.Stop();
-               
-                   if (m_LastError != null) m_AverageProcessingTimeMs = 0f;//reset average time to 0 after 1st successfull execution after prior failure 
+
+                   if (m_LastError != null) m_AverageProcessingTimeMs = 0f;//reset average time to 0 after 1st successfull execution after prior failure
 
                    //EMA filter
-                   m_AverageProcessingTimeMs = ( PROCESSING_TIME_EMA_FILTER * m_StopWatch.ElapsedMilliseconds) + 
+                   m_AverageProcessingTimeMs = ( PROCESSING_TIME_EMA_FILTER * m_StopWatch.ElapsedMilliseconds) +
                                                ( (1.0f - PROCESSING_TIME_EMA_FILTER) * m_AverageProcessingTimeMs );
 
                    if (m_AverageProcessingTimeMs > m_MaxProcessingTimeMs.Value)
@@ -535,7 +535,7 @@ namespace NFX.Log.Destinations
 
           }
           catch (Exception error)
-          { 
+          {
             //WARNING!!!
             //under no condition MAY any exception escape from here
             SetError(error, msg);
@@ -553,7 +553,7 @@ namespace NFX.Log.Destinations
               DoPulse();
            }
            catch (Exception error)
-           { 
+           {
             //WARNING!!!
             //under no condition MAY any exception escape from here
             SetError(error, null);
@@ -629,7 +629,7 @@ namespace NFX.Log.Destinations
             {
                 return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
             }
-          
+
             /// <summary>
             /// Sets external parameter value returning true if parameter was found and set
             /// </summary>
@@ -652,7 +652,7 @@ namespace NFX.Log.Destinations
           if (!string.IsNullOrWhiteSpace(expr))
            m_Filter = new MessageFilterExpression(expr);
 
-          m_Levels = ParseLevels(node.AttrByName(CONFIG_LEVELS_ATTR).Value);  
+          m_Levels = ParseLevels(node.AttrByName(CONFIG_LEVELS_ATTR).Value);
         }
 
         /// <summary>
@@ -698,7 +698,7 @@ namespace NFX.Log.Destinations
           //to avoid possible thread collisions
           var mf = FilterMethod;
           var fe = m_Filter;
-          
+
           if (mf != null)
              if (!mf(this, msg)) return false;
 

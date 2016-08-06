@@ -181,7 +181,7 @@ namespace NFX.Wave.Instrumentation
         protected override Datum MakeAggregateInstance() { return new WorkContextBufferedResponse(this.Source, 0); }
     }
 
-    
+
     /// <summary>
     /// How many response bytes were buffered
     /// </summary>
@@ -269,7 +269,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many work contexts got handled";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_WORK_CONTEXT; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new WorkContextHandled(this.Source, 0); }
     }
 
@@ -284,7 +284,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many work contexts requested not to be closed at the end of the initial request processing cycle";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_WORK_CONTEXT; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new WorkContextNoDefaultClose(this.Source, 0); }
     }
 
@@ -300,7 +300,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many work contexts requested session state";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_WORK_CONTEXT; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new WorkContextNeedsSession(this.Source, 0); }
     }
 
@@ -315,7 +315,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many new sessions created";} }
 
         public override string ValueUnitName  { get { return NFX.CoreConsts.UNIT_NAME_SESSION; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new SessionNew(this.Source, 0); }
     }
 
@@ -330,7 +330,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many existing sessions found";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_SESSION; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new SessionExisting(this.Source, 0); }
     }
 
@@ -345,7 +345,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many sessions ended by request";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_SESSION; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new SessionEnd(this.Source, 0); }
     }
 
@@ -361,7 +361,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many sessions supplied invalid identifier (by client)";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_SESSION; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new SessionInvalidID(this.Source, 0); }
     }
 
@@ -377,7 +377,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many geo lookups have been requested";} }
 
         public override string ValueUnitName  { get { return NFX.CoreConsts.UNIT_NAME_GEO_LOOKUP; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new GeoLookup(this.Source, 0); }
     }
 
@@ -393,7 +393,7 @@ namespace NFX.Wave.Instrumentation
         public override string Description { get{ return "How many geo lookups have resulted in finding the geo location";} }
 
         public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_GEO_LOOKUP_HIT; } }
-    
+
         protected override Datum MakeAggregateInstance() { return new GeoLookupHit(this.Source, 0); }
     }
 

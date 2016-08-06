@@ -9,9 +9,9 @@ using NFX.Financial.Market;
 
 namespace NFX.WinForms.Controls.ChartKit.Temporal
 {
-  
-  
-  
+
+
+
   public delegate void ChartPaneMouseEventHandler(object sender, ChartPaneMouseEventArgs args);
 
   public class ChartPaneMouseEventArgs : EventArgs
@@ -21,20 +21,20 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         /// <summary>
         /// Mouse moved
         /// </summary>
-        Move, 
-     
+        Move,
+
         /// <summary>
         /// Mouse was clicked
         /// </summary>
-        Click,  
+        Click,
 
         /// <summary>
         /// Mouse did not change but chart content changed under the mouse as-if mouse moved
         /// </summary>
-        ChartUpdate 
+        ChartUpdate
     }
-  
-  
+
+
     internal ChartPaneMouseEventArgs( MouseEventType type,
                                       TimeSeriesChart chart,
                                       PlotPane pane,
@@ -49,7 +49,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       this.SampleAtX = sample;
       this.ValueAtY = value;
     }
-    
+
     public readonly MouseEventType EventType;
     public readonly TimeSeriesChart Chart;
     public readonly PlotPane Pane;

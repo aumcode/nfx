@@ -56,13 +56,13 @@ namespace NFX.Security
     {
       get { return m_Forgotten; }
     }
-  
-  
+
+
      /// <summary>
      /// Deletes sensitive information (such as password).
      /// This method is mostly used on client (vs. server) to prevent process memory-inspection attack.
      /// Its is usually called right after Login() was called.
-     /// Implementers may consider forcing post-factum GC.Collect() on all generations to make sure that orphaned 
+     /// Implementers may consider forcing post-factum GC.Collect() on all generations to make sure that orphaned
      /// memory buff with sensitive information, that remains in RAM even after all references are killed, gets
      /// compacted; consequently, this method may take considerable time to execute.
      /// </summary>
@@ -70,11 +70,11 @@ namespace NFX.Security
      {
        m_Forgotten = true;
      }
-  
-     
+
+
 
   }
-  
-  
-  
+
+
+
 }

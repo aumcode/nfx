@@ -25,14 +25,14 @@ using NFX.IO.Net.Gate;
 
 namespace NFX.Wave
 {
-  
+
   /// <summary>
   /// Represents a base for all work filters. Unlike handlers, filters do not necessarily handle work rather augment the work context
   /// </summary>
   public abstract class WorkFilter : ApplicationComponent, INamed, IOrdered
   {
       public const string CONFIG_FILTER_SECTION = "filter";
-      
+
       protected WorkFilter(WorkDispatcher dispatcher, string name, int order) : base(dispatcher)
       {
         if (name.IsNullOrWhiteSpace()||dispatcher==null)
@@ -67,7 +67,7 @@ namespace NFX.Wave
 
       protected WorkFilter(WorkHandler handler, IConfigSectionNode confNode) : this(handler.NonNull(text: ".ctor(handler==null)").Dispatcher, confNode)
       {
-        m_Handler = handler; 
+        m_Handler = handler;
         this.__setComponentDirector(handler);
       }
 
@@ -97,11 +97,11 @@ namespace NFX.Wave
       /// Returns the dispatcher that this filter works under
       /// </summary>
       public WorkDispatcher Dispatcher { get{ return m_Dispatcher;}}
-      
+
       /// <summary>
       /// Returns the handler that this filter works under. May be null if the filter works under dispatcher
       /// </summary>
-      public WorkHandler Handler { get{ return m_Handler;}} 
+      public WorkHandler Handler { get{ return m_Handler;}}
 
 
       /// <summary>
@@ -180,7 +180,7 @@ namespace NFX.Wave
       /// </param>
       /// <param name="thisFilterIndex">
       /// The index of THIS filter in filters
-      /// </param> 
+      /// </param>
       protected abstract void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex);
 
 

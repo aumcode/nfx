@@ -24,19 +24,19 @@ using NFX.Environment;
 
 namespace NFX.IO.FileSystem
 {
-    
+
     /// <summary>
     /// Represents a directory item in a file system. This class is NOT thread-safe
     /// </summary>
     public sealed class FileSystemDirectory : FileSystemSessionItem
     {
       #region .ctor
-        
+
         /// <summary>
         /// Internal method that should not be called by developers
         /// </summary>
-        public FileSystemDirectory(FileSystemSession session, 
-                                        string parentPath, 
+        public FileSystemDirectory(FileSystemSession session,
+                                        string parentPath,
                                         string name,
                                         IFileSystemHandle handle) :
                                    base(session, parentPath, name, handle)
@@ -45,9 +45,9 @@ namespace NFX.IO.FileSystem
         }
 
       #endregion
-      
-      #region Properties  
-        
+
+      #region Properties
+
         /// <summary>
         /// Returns directory names contained in this directory
         /// </summary>
@@ -67,7 +67,7 @@ namespace NFX.IO.FileSystem
         /// <summary>
         /// Returns file names contained in this directory
         /// </summary>
-        public IEnumerable<string> FileNames 
+        public IEnumerable<string> FileNames
         {
           get { return m_FileSystem.DoGetFileNames(this, false); }
         }
@@ -99,7 +99,7 @@ namespace NFX.IO.FileSystem
         /// <summary>
         /// Returns file names contained in this directory and all subdirectories
         /// </summary>
-        public IEnumerable<string> RecursiveFileNames 
+        public IEnumerable<string> RecursiveFileNames
         {
           get { return m_FileSystem.DoGetFileNames(this, true); }
         }
@@ -139,7 +139,7 @@ namespace NFX.IO.FileSystem
         /// </summary>
         public FileSystemFile GetFile(string name)
         {
-          return this[name] as FileSystemFile; 
+          return this[name] as FileSystemFile;
         }
 
                 /// <summary>
@@ -157,7 +157,7 @@ namespace NFX.IO.FileSystem
         /// </summary>
         public FileSystemDirectory GetSubDirectory(string name)
         {
-          return this[name] as FileSystemDirectory; 
+          return this[name] as FileSystemDirectory;
         }
 
                 /// <summary>
@@ -259,8 +259,8 @@ namespace NFX.IO.FileSystem
           Readonly = 32,
           FilesAndDirsOnly = Directories | Files,
           All = int.MaxValue
-        } 
-        
+        }
+
         /// <summary>
         /// Performs a deep copy of this directory into another directory that may belong to a different file system.
         /// This method allows to copy directory trees between different file systems i.e. from SVN into AmazonS3 or local file system etc.
@@ -270,18 +270,18 @@ namespace NFX.IO.FileSystem
         /// <param name="bufferSize">Copy buffer size</param>
         /// <param name="filter">Optional filter function</param>
         /// <param name="cancel">Optional cancellation function. Return true to abort copying</param>
-        public void DeepCopyTo(FileSystemDirectory target, 
-                                DirCopyFlags flags = DirCopyFlags.All, 
-                                int bufferSize = 64 * 1024, 
-                                Func<FileSystemSessionItem, bool> filter = null, 
+        public void DeepCopyTo(FileSystemDirectory target,
+                                DirCopyFlags flags = DirCopyFlags.All,
+                                int bufferSize = 64 * 1024,
+                                Func<FileSystemSessionItem, bool> filter = null,
                                 Func<FileSystemSessionItem, bool> cancel = null)
-        {  
+        {
             const int MAX_BUFFER = 64 * 1024 * 1024;
 
             if (bufferSize<=0) bufferSize = 4 * 1024;
             if (bufferSize>MAX_BUFFER) bufferSize = MAX_BUFFER;
 
-            
+
             var buffer = new byte[bufferSize];
 
             deepCopyTo(target, flags, buffer, filter, cancel);
@@ -290,13 +290,13 @@ namespace NFX.IO.FileSystem
                 /// <summary>
                 /// Async version of DeepCopyTo(...)
                 /// </summary>
-                public Task DeepCopyToAsync(FileSystemDirectory target, 
-                                              DirCopyFlags flags = DirCopyFlags.All, 
-                                              int bufferSize = 64 * 1024, 
+                public Task DeepCopyToAsync(FileSystemDirectory target,
+                                              DirCopyFlags flags = DirCopyFlags.All,
+                                              int bufferSize = 64 * 1024,
                                               Func<FileSystemSessionItem, bool> filter = null,
                                               Func<FileSystemSessionItem, bool> cancel = null)
-                { 
-                  return m_FileSystem.DoDirectoryDeepCopyAsync(this, target, flags, bufferSize, filter, cancel); 
+                {
+                  return m_FileSystem.DoDirectoryDeepCopyAsync(this, target, flags, bufferSize, filter, cancel);
                 }
 
       #endregion
@@ -320,7 +320,7 @@ namespace NFX.IO.FileSystem
                     {
                       copyCommonAttributes(sdir, newSDir, buffer, flags);
 
-                    
+
                       if (flags.HasFlag(DirCopyFlags.Readonly) &&
                           this.FileSystem.InstanceCapabilities.SupportsReadonlyDirectories &&
                           target.FileSystem.InstanceCapabilities.SupportsReadonlyDirectories) newSDir.ReadOnly = sdir.ReadOnly;
@@ -363,9 +363,9 @@ namespace NFX.IO.FileSystem
           if (flags.HasFlag(DirCopyFlags.Metadata) &&
               this.FileSystem.InstanceCapabilities.SupportsCustomMetadata &&
               target.FileSystem.InstanceCapabilities.SupportsCustomMetadata) copyStream(source.MetadataStream, target.MetadataStream, buffer);
-          
+
           if (flags.HasFlag(DirCopyFlags.Timestamps))
-          {         
+          {
             if (this.FileSystem.InstanceCapabilities.SupportsCreationTimestamps &&
                 target.FileSystem.InstanceCapabilities.SupportsCreationTimestamps) target.CreationTimestamp = source.CreationTimestamp;
 
@@ -376,16 +376,16 @@ namespace NFX.IO.FileSystem
                 target.FileSystem.InstanceCapabilities.SupportsLastAccessTimestamps) target.LastAccessTimestamp = source.LastAccessTimestamp;
           }
         }
-        
+
         private void copyStream(FileSystemStream from, FileSystemStream to, byte[] buffer)
         {
            while(true)
            {
              var read = from.Read(buffer, 0, buffer.Length);
              if (read<=0) break;
-             to.Write(buffer, 0, read); 
+             to.Write(buffer, 0, read);
            }
-        } 
+        }
 
       #endregion
 

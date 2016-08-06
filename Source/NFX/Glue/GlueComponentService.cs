@@ -28,7 +28,7 @@ using NFX.Log;
 namespace NFX.Glue
 {
     /// <summary>
-    /// Provides base functionality for internal glue component implementations 
+    /// Provides base functionality for internal glue component implementations
     /// </summary>
     public abstract class GlueComponentService : ServiceWithInstrumentationBase<IGlueImplementation>
     {
@@ -51,7 +51,7 @@ namespace NFX.Glue
 
         #region Properties
 
-            
+
 
             public IGlueImplementation Glue { get { return ComponentDirector; } }
 
@@ -59,7 +59,7 @@ namespace NFX.Glue
             /// Implements IInstrumentable
             /// </summary>
             [Config(Default=false)]
-            [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)] 
+            [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_GLUE, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
             public override bool InstrumentationEnabled
             {
               get { return m_InstrumentationEnabled;}
@@ -76,7 +76,7 @@ namespace NFX.Glue
               Exception exception = null, string pars = null, Guid? relatedTo = null)
           {
             var pass = false;
-            
+
             if (source== LogSrc.Server) pass= type >= Glue.ServerLogLevel;
             else
             if (source== LogSrc.Client) pass= type >= Glue.ClientLogLevel;

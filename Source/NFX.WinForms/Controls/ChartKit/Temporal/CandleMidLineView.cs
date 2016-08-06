@@ -12,8 +12,8 @@ using NFX.WinForms.Elements;
 namespace NFX.WinForms.Controls.ChartKit.Temporal
 {
   public enum MidLineType { HighLow = 0, OpenClose }
-  
-  
+
+
   /// <summary>
   /// View of candles middle line
   /// </summary>
@@ -30,7 +30,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
               {
                 m_View = view;
                 m_Points = points;
-         
+
                 this.Region = new Rectangle(points[0].X, 0, points[points.Length-1].X, host.Height);
               }
 
@@ -39,7 +39,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
 
                  protected internal override void Paint(Graphics gr)
-                 {           
+                 {
                    //for now, no styles
                      gr.SmoothingMode = SmoothingMode.AntiAlias;
                      using(var pen = getContourPen(m_View.LineStyle))
@@ -59,29 +59,29 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         #endregion
 
 
-    
+
       public CandleMidLineView(string name, int order, string paneName = null) : base(name, order, paneName)
       {
       }
 
 
-      
-      private static readonly LineStyle s_DefaultLineStyle = new LineStyle{ Color = Color.FromArgb(200, 50, 150, 255), 
-                                                                  Width = 2, 
-                                                                  DashStyle = System.Drawing.Drawing2D.DashStyle.Solid}; 
+
+      private static readonly LineStyle s_DefaultLineStyle = new LineStyle{ Color = Color.FromArgb(200, 50, 150, 255),
+                                                                  Width = 2,
+                                                                  DashStyle = System.Drawing.Drawing2D.DashStyle.Solid};
 
       private LineStyle m_LineStyle = s_DefaultLineStyle;
 
       public MidLineType MidLineType
       {
         get; set;
-      } 
+      }
 
       public LineStyle LineStyle
       {
         get { return m_LineStyle;}
         set { m_LineStyle = value;}
-      } 
+      }
 
 
 
@@ -91,16 +91,16 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       }
 
       protected override Element MakeSeriesElement(TimeSeriesChart chart,
-                                                   PlotPane pane, 
+                                                   PlotPane pane,
                                                    IEnumerable<CandleSample> data,
-                                                   int xStart, 
+                                                   int xStart,
                                                    float minScale,
                                                    float maxScale,
                                                    int maxSampleWidth,
                                                    out int fitSamplesCount)
       {
         var points = new List<Point>();
-       
+
 
         var pxTotalHeight = (int)(pane.Height / pane.Zoom);
         var pxPrice = (float)pxTotalHeight / (maxScale - minScale);
@@ -110,15 +110,15 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
         var xcutof = chart.VRulerPosition == VRulerPosition.Right ? pane.Width - 1 - chart.VRulerWidth : pane.Width;
         foreach(var candle in data)
         {
-          var midPrice =  MidLineType==Temporal.MidLineType.HighLow ? 
+          var midPrice =  MidLineType==Temporal.MidLineType.HighLow ?
                        (candle.LowPrice + ((candle.HighPrice - candle.LowPrice) / 2f)) :
                        (Math.Min(candle.OpenPrice, candle.ClosePrice) + (Math.Abs(candle.OpenPrice - candle.ClosePrice) / 2f));
-          
-          
+
+
           var y = pxTotalHeight - (int)((midPrice-minScale) * pxPrice);
           points.Add( new Point(x, y));
 
-          
+
           x += maxSampleWidth;
           x++;
           if ((x*pane.Zoom)>=xcutof) break;
@@ -133,5 +133,5 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
   }
 
-  
+
 }

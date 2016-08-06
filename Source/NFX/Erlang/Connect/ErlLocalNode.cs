@@ -77,6 +77,7 @@ namespace NFX.Erlang
       : base(node, cookie, shortName)
     {
       m_AcceptConnections = acceptConns;
+      TraceLevel          = ErlApp.DefaultTraceLevel;
     }
 
     internal ErlLocalNode(string node, IConfigSectionNode config)
@@ -156,7 +157,7 @@ namespace NFX.Erlang
 
     /// <summary>
     /// Configuration Address and Port information for the listener in
-    /// the "address:port" format 
+    /// the "address:port" format
     /// </summary>
     [Config("$address")]
     internal string AcceptAddressPort
@@ -194,7 +195,25 @@ namespace NFX.Erlang
     /// <summary>
     /// Configs for remote nodes
     /// </summary>
-    public IConfigSectionNode[] RemoteNodeConfigs { get; set; }
+    public ConfigSectionNode AllNodeConfigs { get; internal set; }
+
+    public IEnumerable<ConfigSectionNode> RemoteNodeConfigs
+    {
+      get
+      {
+        return AllNodeConfigs.Children
+                             .Where(n =>  n.Name.EqualsSenseCase("node")
+                                      && !n.AttrByName(ErlConsts.CONFIG_IS_LOCAL_ATTR).ValueAsBool());
+      }
+    }
+
+    /// <summary>
+    /// Get configuration settings for a given remote node
+    /// </summary>
+    public ConfigSectionNode RemoteNodeConfig(string remoteNodeName)
+    {
+      return AllNodeConfigs.NavigateSection("/node[{0}]".Args(remoteNodeName));
+    }
 
     /// <summary>
     /// Trace callback executed if connection tracing is enabled
@@ -286,7 +305,7 @@ namespace NFX.Erlang
         {
           c.Dispose();
           return true;
-        } 
+        }
         return false;
     }
 
@@ -318,7 +337,7 @@ namespace NFX.Erlang
     public ErlMbox CreateMbox(string name = null)
     {
       CheckServiceActiveOrStarting();
-      return name.IsNullOrWhiteSpace() ? m_Mailboxes.Create() 
+      return name.IsNullOrWhiteSpace() ? m_Mailboxes.Create()
                                        : CreateMbox(new ErlAtom(name));
     }
 
@@ -750,15 +769,12 @@ namespace NFX.Erlang
 
     private void TryAppendConfigToRemoteNode(ErlRemoteNode peer)
     {
-      if (RemoteNodeConfigs == null)
-        return;
+      if (AllNodeConfigs == null) return;
 
-      var conf =
-        RemoteNodeConfigs.FirstOrDefault(
-          c => c.Value.IsNotNullOrEmpty() && c.Value.EqualsSenseCase(peer.NodeName));
+      var cfg = RemoteNodeConfig(peer.NodeName);
 
-      if (conf != null)
-        peer.Configure(conf);
+      if (cfg.Exists)
+        peer.Configure(cfg);
     }
 
     #endregion

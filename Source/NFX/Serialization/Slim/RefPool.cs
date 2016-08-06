@@ -26,26 +26,26 @@ using NFX.IO;
 
 namespace NFX.Serialization.Slim
 {
-  
+
     internal class _ISerializableFixup
     {
        public object Instance;
        public SerializationInfo Info;
-    } 
+    }
 
     internal class _OnDeserializedCallback
     {
        public object Instance;
        public TypeDescriptor Descriptor;
-    } 
+    }
 
 
-    
 
 
-    internal class RefPool 
+
+    internal class RefPool
     {
-       
+
        public void Acquire(SerializationOperation mode)
        {
           m_Mode = mode;
@@ -66,21 +66,21 @@ namespace NFX.Serialization.Slim
           }
        }
 
-       
+
        private SerializationOperation m_Mode;
        private QuickRefList m_List = new QuickRefList(1024);
        private Dictionary<object, int> m_Dict = new Dictionary<object,int>(1024, ReferenceEqualityComparer<object>.Instance);
        private List<_ISerializableFixup> m_Fixups = new List<_ISerializableFixup>();
-       private List<_OnDeserializedCallback> m_OnDeserializedCallbacks = new List<_OnDeserializedCallback>(); 
-        
+       private List<_OnDeserializedCallback> m_OnDeserializedCallbacks = new List<_OnDeserializedCallback>();
+
        public int Count { get { return m_List.Count;} }
 
        public List<_ISerializableFixup> Fixups { get { return m_Fixups; }}
 
        public List<_OnDeserializedCallback> OnDeserializedCallbacks { get { return m_OnDeserializedCallbacks; }}
-       
+
        public object this[int i] {  get { return m_List[i];  } }
-       
+
        public bool Add(object reference)
        {
          if (m_Mode==SerializationOperation.Serializing)
@@ -94,7 +94,7 @@ namespace NFX.Serialization.Slim
            if (reference==null) return false;
            m_List.Add(reference);
            return true;
-         } 
+         }
        }
 
        public void AddISerializableFixup(object instance, SerializationInfo info)
@@ -119,33 +119,33 @@ namespace NFX.Serialization.Slim
        public MetaHandle GetHandle(object reference, TypeRegistry treg, SlimFormat format, out Type type)
        {
          Debug.Assert(m_Mode == SerializationOperation.Serializing, "GetHandle() called while deserializing", DebugAction.Throw);
-         
+
          if (reference==null)
          {
            type = null;
            return new MetaHandle(0);
          }
-         
+
          type = reference.GetType();
 
          if (type == typeof(string))
          {
            return MetaHandle.InlineString(reference as string);
          }
-              
+
          if (reference is Type)
          {
-           var thandle = treg.GetTypeHandle(reference as Type); 
+           var thandle = treg.GetTypeHandle(reference as Type);
            return MetaHandle.InlineTypeValue(thandle);
          }
-     
-         
+
+
          if (type.IsValueType)
          {
            var vth = treg.GetTypeHandle(type);
            return MetaHandle.InlineValueType(vth);
          }
-         
+
          bool added;
 
          uint handle = (uint)getIndex(reference, out added);
@@ -167,7 +167,7 @@ namespace NFX.Serialization.Slim
               return new MetaHandle(handle, th);
          }
          return new MetaHandle(handle);
-       } 
+       }
 
 
        /// <summary>
@@ -176,9 +176,9 @@ namespace NFX.Serialization.Slim
        public object HandleToReference(MetaHandle handle, TypeRegistry treg, SlimFormat format, SlimReader reader)
        {
          Debug.Assert(m_Mode == SerializationOperation.Deserializing, "HandleToReference() called while serializing", DebugAction.Throw);
-         
+
          if (handle.IsInlinedString) return handle.Metadata.Value.StringValue;
-         if (handle.IsInlinedTypeValue) 
+         if (handle.IsInlinedTypeValue)
          {
            var tref = treg[ handle.Metadata.Value ];//adding this type to registry if it is not there yet
            return tref;
@@ -198,10 +198,10 @@ namespace NFX.Serialization.Slim
               throw new SlimDeserializationException("Internal error HandleToReference: no read action for ref type, but ref mhandle is inlined");
          }
 
-         
+
          int idx = (int)handle.Handle;
          if (idx<m_List.Count) return m_List[idx];
-         
+
          if (!handle.Metadata.HasValue)
           throw new SlimDeserializationException(StringConsts.SLIM_HNDLTOREF_MISSING_TYPE_NAME_ERROR + handle.ToString());
 
@@ -220,7 +220,7 @@ namespace NFX.Serialization.Slim
             else
             {
               if (TypeRegistry.IsNullHandle(metadata)) return null;
-              type = treg[ metadata ]; 
+              type = treg[ metadata ];
             }
          }
          else
@@ -228,12 +228,12 @@ namespace NFX.Serialization.Slim
             if (TypeRegistry.IsNullHandle(metadata)) return null;
             type = treg[ metadata ];
          }
-         
+
          object instance = null;
-         
+
          if (type.IsArray)
               //DKh 20130712 Removed repetitive code that was refactored into Arrays class
-              instance = Arrays.DescriptorToArray(metadata.StringValue, type); 
+              instance = Arrays.DescriptorToArray(metadata.StringValue, type);
          else
               //20130715 DKh
               instance = SerializationUtils.MakeNewObjectInstance(type);
@@ -250,7 +250,7 @@ namespace NFX.Serialization.Slim
            if (reference==null) return 0;
 
            int idx = -1;
-          
+
            var cnt = m_List.Count;
            if (cnt<MAX_LINEAR_SEARCH)
            {
@@ -259,7 +259,7 @@ namespace NFX.Serialization.Slim
            }
            else
             if (m_Dict.TryGetValue(reference, out idx)) return idx;
-                      
+
 
            added = true;
            m_List.Add(reference);
@@ -269,7 +269,7 @@ namespace NFX.Serialization.Slim
            if (cnt==MAX_LINEAR_SEARCH)
            {//upgread LIST->DICT
             for(var i=1; i<cnt; i++)//start form 1, skip NULL[0]
-              m_Dict.Add( m_List[i], i); 
+              m_Dict.Add( m_List[i], i);
            }
            else
             m_Dict.Add(reference, idx);
@@ -290,11 +290,11 @@ namespace NFX.Serialization.Slim
         m_Data = new object[ capacity ];
         m_Count = 1;//the "zeros" element is always NULL
       }
-      
+
       private int m_InitialCapacity;
       private object[] m_Data;
       private int m_Count;
-            
+
 
       public int Count{ get{ return m_Count;}}
 
@@ -302,7 +302,7 @@ namespace NFX.Serialization.Slim
 
       public void Clear()
       {
-        const int TRIM_THRESHOLD = 250000;//* 2(array growth factor) = 500,000 references * 54 bits =  4,000,000 bytes 
+        const int TRIM_THRESHOLD = 250000;//* 2(array growth factor) = 500,000 references * 54 bits =  4,000,000 bytes
 
         if (m_Count>TRIM_THRESHOLD) //We want to get rid of excess data when too much
         {                           //otherwise the array will get stuck in pool cache for a long time
@@ -322,11 +322,11 @@ namespace NFX.Serialization.Slim
           Array.Copy(m_Data, 0, newData, 0, len);
           m_Data = newData;
         }
-        
+
         m_Data[m_Count] = reference;
         m_Count++;
       }
-            
+
     }
 
 

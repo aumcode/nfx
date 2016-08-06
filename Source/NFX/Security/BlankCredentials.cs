@@ -35,9 +35,9 @@ namespace NFX.Security
      private BlankCredentials()
      {
      }
-     
+
      private static BlankCredentials m_Instance;
-     
+
      /// <summary>
      /// Singleton instance of blank credentials
      /// </summary>

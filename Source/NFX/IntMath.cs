@@ -23,9 +23,9 @@ using System.Text;
 namespace NFX
 {
     public static class IntMath
-    {              
+    {
         public static int Log(long n, int logBase = 2)
-        {          
+        {
             if (n == 0) throw new NFXException(StringConsts.ARGUMENT_ERROR + "n == 0");
             if (n == 1) return 0;
             int result = 0;
@@ -69,7 +69,7 @@ namespace NFX
         public static int Align8(int i)
         {
           var r = i & 7; // 00000111
-          return r==0 ? i : i + (8 - r); 
+          return r==0 ? i : i + (8 - r);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace NFX
         public static int Align16(int i)
         {
           var r = i & 15;// 00001111
-          return r==0 ? i : i + (16 - r); 
+          return r==0 ? i : i + (16 - r);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NFX
         public static long Align8(long i)
         {
           var r = i & 7; // 00000111
-          return r==0 ? i : i + (8 - r); 
+          return r==0 ? i : i + (8 - r);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace NFX
         public static long Align16(long i)
         {
           var r = i & 15;// 00001111
-          return r==0 ? i : i + (16 - r); 
+          return r==0 ? i : i + (16 - r);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NFX
             for(var j=3; (j*j) <= i; j+=2)//check odd numbers starting from 3 (+2 to check only odd numbers, as even are already covered)
              if ((i % j) == 0)
              {
-              iprime=false; 
+              iprime=false;
               break;
              }
 
@@ -163,7 +163,7 @@ namespace NFX
             2411033, 2893249, 3471899,
             4166287, 4999559, 5999471,
             7199369, 8900029, 10700023,
-            13100023, 16300007 
+            13100023, 16300007
         };
 
         /// <summary>
@@ -196,12 +196,12 @@ namespace NFX
             throw new NFXException(StringConsts.ARGUMENT_ERROR+"GetCapacityFactoredToPrime(capacity|factor<0|1.0d)");
 
           var newCapacity = capacity * factor;
-          if (newCapacity>int.MaxValue) 
+          if (newCapacity>int.MaxValue)
            capacity = 2146435069;
           else
            capacity = (int)newCapacity;
-          
-          return GetPrimeCapacityOfAtLeast(capacity);   
+
+          return GetPrimeCapacityOfAtLeast(capacity);
         }
 
 

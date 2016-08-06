@@ -49,14 +49,14 @@ namespace NFX.Wave
 
 
       #region Fields
-      
+
         private OrderedRegistry<WorkFilter> m_Filters = new OrderedRegistry<WorkFilter>();
         private OrderedRegistry<WorkHandler> m_Handlers = new OrderedRegistry<WorkHandler>();
-      
+
       #endregion
 
       #region Properties
-        
+
         /// <summary>
         /// Returns ordered registry of filters
         /// </summary>
@@ -70,8 +70,8 @@ namespace NFX.Wave
 
       #endregion
 
-      #region Public       
-       
+      #region Public
+
         /// <summary>
         /// Registers filter and returns true if the named instance has not been registered yet
         /// Note: it is possible to call this method on active server that is - inject filters while serving requests
@@ -81,7 +81,7 @@ namespace NFX.Wave
           if (filter==null) return false;
           if (filter.Dispatcher!=this)
             throw new WaveException(StringConsts.WRONG_DISPATCHER_FILTER_REGISTRATION_ERROR.Args(filter));
-         
+
           return m_Filters.Register(filter);
         }
 
@@ -97,7 +97,7 @@ namespace NFX.Wave
 
           return m_Filters.Unregister(filter);
         }
-        
+
         /// <summary>
         /// Registers handler and returns true if the named instance has not been registered yet
         /// Note: it is possible to call this method on active server that is - inject handlers while serving requests
@@ -107,7 +107,7 @@ namespace NFX.Wave
           if (handler==null) return false;
           if (handler.Dispatcher!=this)
             throw new WaveException(StringConsts.WRONG_DISPATCHER_HANDLER_REGISTRATION_ERROR.Args(handler));
-         
+
           return m_Handlers.Register(handler);
         }
 
@@ -125,7 +125,7 @@ namespace NFX.Wave
         }
 
 
-    
+
 
 
         /// <summary>
@@ -153,9 +153,9 @@ namespace NFX.Wave
           finally
           {
             try
-            {                    
+            {
                if (!work.NoDefaultAutoClose)
-                  work.Dispose(); 
+                  work.Dispose();
             }
             catch(Exception error)
             {
@@ -184,11 +184,11 @@ namespace NFX.Wave
         }
 
         /// <summary>
-        /// Finds the most appropriate work handler to do the work. 
+        /// Finds the most appropriate work handler to do the work.
         /// The default implementation finds first handler with matching URI pattern or null
         /// </summary>
         public virtual WorkHandler GetWorkHandler(WorkContext work)
-        { 
+        {
           return m_Handlers.OrderedValues.FirstOrDefault(handler => handler.MakeMatch(work));
         }
 
@@ -208,17 +208,17 @@ namespace NFX.Wave
         protected override void DoConfigure(IConfigSectionNode node)
         {
           base.DoConfigure(node);
-          
+
           m_Filters = new OrderedRegistry<WorkFilter>();//clear existing
           foreach(var fNode in node.Children.Where(cn=>cn.IsSameName(WorkFilter.CONFIG_FILTER_SECTION)))
             if(!m_Filters.Register( FactoryUtils.Make<WorkFilter>(fNode, args: new object[] {this, fNode})))
-             throw new WaveException(StringConsts.CONFIG_DUPLICATE_FILTER_NAME_ERROR.Args(fNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value)); 
+             throw new WaveException(StringConsts.CONFIG_DUPLICATE_FILTER_NAME_ERROR.Args(fNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value));
 
           m_Handlers = new OrderedRegistry<WorkHandler>();//clear existing
           foreach(var hNode in node.Children.Where(cn=>cn.IsSameName(WorkHandler.CONFIG_HANDLER_SECTION)))
             if(!m_Handlers.Register( FactoryUtils.Make<WorkHandler>(hNode, args: new object[] {this, hNode})))
-             throw new WaveException(StringConsts.CONFIG_DUPLICATE_HANDLER_NAME_ERROR.Args(hNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value)); 
-          
+             throw new WaveException(StringConsts.CONFIG_DUPLICATE_HANDLER_NAME_ERROR.Args(hNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value));
+
         }
 
       #endregion

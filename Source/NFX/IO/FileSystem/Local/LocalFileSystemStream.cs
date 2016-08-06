@@ -24,18 +24,18 @@ namespace NFX.IO.FileSystem.Local
 {
   internal class LocalFileSystemStream : FileSystemStream
   {
-    
+
     public LocalFileSystemStream(FileSystemFile file, Action<FileSystemStream> disposeAction) : base(file, disposeAction)
     {
       var fa = FileAccess.ReadWrite;
-      
+
       var hndl = file.Handle as LocalFileSystem.FSH;
       if (hndl!=null)
       {
         if (((FileInfo)hndl.m_Info).IsReadOnly)
           fa = FileAccess.Read;
       }
-      m_FS = new FileStream(file.Path, FileMode.OpenOrCreate, fa, FileShare.ReadWrite); 
+      m_FS = new FileStream(file.Path, FileMode.OpenOrCreate, fa, FileShare.ReadWrite);
     }
 
     protected override void Dispose(bool disposing)
@@ -44,9 +44,9 @@ namespace NFX.IO.FileSystem.Local
       base.Dispose(disposing);
     }
 
-    private FileStream m_FS; 
+    private FileStream m_FS;
 
-    
+
     protected override void DoFlush()
     {
       m_FS.Flush();

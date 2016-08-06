@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 namespace NFX.ServiceModel
 {
 
@@ -29,5 +29,5 @@ namespace NFX.ServiceModel
     /// </summary>
     public enum ControlStatus { Inactive = 0, Starting, AbortingStart, Active, Stopping }
 
-    
+
 }

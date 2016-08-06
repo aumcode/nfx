@@ -45,31 +45,31 @@ namespace NFX.DataAccess.MongoDB
   {
     #region CONST
 
-      
+
 
     #endregion
 
     #region .ctor/.dctor
-     
+
       protected MongoDBDataStoreBase():base()
-      {      
+      {
       }
 
       protected MongoDBDataStoreBase(string connectString, string dbName):base()
-      {  
-        ConnectString = connectString;    
+      {
+        ConnectString = connectString;
         DatabaseName = dbName;
       }
-      
+
     #endregion
 
 
     #region Private Fields
-      
+
       private string m_ConnectString;
-      private string m_DatabaseName;    
-      
-      private string m_TargetName; 
+      private string m_DatabaseName;
+
+      private string m_TargetName;
       private bool m_InstrumentationEnabled;
     #endregion
 
@@ -91,8 +91,8 @@ namespace NFX.DataAccess.MongoDB
       /// Returns named parameters that can be used to control this component
       /// </summary>
       public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-      { 
-        return ExternalParameterAttribute.GetParameters(this, groups); 
+      {
+        return ExternalParameterAttribute.GetParameters(this, groups);
       }
 
       /// <summary>
@@ -102,7 +102,7 @@ namespace NFX.DataAccess.MongoDB
       {
           return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
       }
-          
+
       /// <summary>
       /// Sets external parameter value returning true if parameter was found and set
       /// </summary>
@@ -114,7 +114,7 @@ namespace NFX.DataAccess.MongoDB
     #endregion
 
     #region Properties
-    
+
       /// <summary>
       /// Get/Sets MongoDB database connection string
       /// </summary>
@@ -123,7 +123,7 @@ namespace NFX.DataAccess.MongoDB
       {
         get
         {
-           return m_ConnectString ?? string.Empty;  
+           return m_ConnectString ?? string.Empty;
         }
         set
         {
@@ -142,7 +142,7 @@ namespace NFX.DataAccess.MongoDB
       {
         get
         {
-           return m_DatabaseName ?? string.Empty;  
+           return m_DatabaseName ?? string.Empty;
         }
         set
         {
@@ -155,14 +155,14 @@ namespace NFX.DataAccess.MongoDB
 
       [Config]
       public StoreLogLevel LogLevel { get; set;}
-      
+
       [Config]
       public string TargetName
       {
          get{ return m_TargetName.IsNullOrWhiteSpace() ? "MongoDB" : m_TargetName;}
          set{ m_TargetName = value;}
       }
-    
+
     #endregion
 
     #region Public
@@ -191,7 +191,7 @@ namespace NFX.DataAccess.MongoDB
       }
 
     #endregion
-    
+
     #region Protected
 
       /// <summary>
@@ -202,7 +202,7 @@ namespace NFX.DataAccess.MongoDB
         //cstring may either have server cs, or contain laconic config  mongo{server='' database=''}
         var cstring = m_ConnectString;
         var dbn = m_DatabaseName;
-        
+
         //Try to override from the context
         var ctx = CRUDOperationCallContext.Current;
         if (ctx!=null)
@@ -214,7 +214,7 @@ namespace NFX.DataAccess.MongoDB
         //2. try to parse as laconic
         var lactxt = cstring;
         if (lactxt!=null)
-        { 
+        {
           lactxt = lactxt.Trim();
           if (lactxt.StartsWith("mongo{"))//quick reject filter
           {
@@ -227,7 +227,7 @@ namespace NFX.DataAccess.MongoDB
             }
           }
         }
-        
+
         var server = MongoClient.Instance[ new NFX.Glue.Node(cstring)];
         var database = server[dbn];
         return database;

@@ -30,8 +30,8 @@ namespace NFX.CodeAnalysis.JSON
 
         WARNING = 100,
 
-        
-        ERRORS = 1000, 
+
+        ERRORS = 1000,
             eUnterminatedString,
             ePrematureEOF,
             eUnterminatedComment,

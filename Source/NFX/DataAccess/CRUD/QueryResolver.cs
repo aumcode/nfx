@@ -27,7 +27,7 @@ namespace NFX.DataAccess.CRUD
     /// <summary>
     /// Infrastructure class - not for app developers.
     /// Resolves Query objects into query handlers. Query names are case-insensitive.
-    /// This class is thread-safe 
+    /// This class is thread-safe
     /// </summary>
     public sealed class QueryResolver : ICRUDQueryResolver, IConfigurable
     {
@@ -42,17 +42,17 @@ namespace NFX.DataAccess.CRUD
             public QueryResolver(ICRUDDataStoreImplementation dataStore)
             {
                 m_DataStore = dataStore;
-            } 
+            }
         #endregion
 
         #region Fields
             private volatile bool m_Started;
-          
+
             private string m_ScriptAssembly;
             private ICRUDDataStoreImplementation m_DataStore;
             private List<string> m_Locations = new List<string>();
             private Registry<ICRUDQueryHandler> m_Handlers = new Registry<ICRUDQueryHandler>();
-            
+
         #endregion
 
 
@@ -64,7 +64,7 @@ namespace NFX.DataAccess.CRUD
             public string ScriptAssembly
             {
                 get { return m_ScriptAssembly;}
-                set 
+                set
                 {
                   checkNotStarted();
                   m_ScriptAssembly = value;
@@ -90,32 +90,32 @@ namespace NFX.DataAccess.CRUD
             /// Registers handler location. The Resolver must be not started yet. This method is NOT thread safe
             /// </summary>
             public void RegisterHandlerLocation(string location)
-            { 
+            {
               checkNotStarted();
               if (location.IsNullOrWhiteSpace() || m_Locations.Contains(location, StringComparer.InvariantCultureIgnoreCase )) return;
-              m_Locations.Add(location);              
+              m_Locations.Add(location);
             }
 
             /// <summary>
             /// Unregisters handler location returning true if it was found and removed. The Resolve must be not started yet. This method is NOT thread safe
             /// </summary>
             public bool UnregisterHandlerLocation(string location)
-            { 
+            {
               checkNotStarted();
               if (location.IsNullOrWhiteSpace()) return false;
-              return m_Locations.RemoveAll((s) => s.EqualsIgnoreCase(location)) > 0;              
+              return m_Locations.RemoveAll((s) => s.EqualsIgnoreCase(location)) > 0;
             }
 
-           
+
             public ICRUDQueryHandler Resolve(Query query)
             {
                 m_Started = true;
                 var name = query.Name;
                 try
                 {
-                    var result = m_Handlers[name]; 
+                    var result = m_Handlers[name];
                     if (result!=null) return result;
-                
+
                     result = searchForType(name);
 
                     if (result==null)//did not find handler yet
@@ -137,7 +137,7 @@ namespace NFX.DataAccess.CRUD
             {
                 checkNotStarted();
 
-                m_ScriptAssembly = node.AttrByName(CONFIG_SCRIPT_ASM_ATTR).ValueAsString( Assembly.GetCallingAssembly().FullName ); 
+                m_ScriptAssembly = node.AttrByName(CONFIG_SCRIPT_ASM_ATTR).ValueAsString( Assembly.GetCallingAssembly().FullName );
                 foreach(var lnode in node.Children.Where(cn => cn.IsSameName(CONFIG_HANDLER_LOCATION_SECTION)))
                 {
                   var loc = lnode.AttrByName(CONFIG_NS_ATTR).Value;
@@ -146,7 +146,7 @@ namespace NFX.DataAccess.CRUD
                   else
                     App.Log.Write(Log.MessageType.Warning, StringConsts.CRUD_CONFIG_EMPTY_LOCATIONS_WARNING, "CRUD", "QueryResolver.Configure()");
                 }
-                  
+
             }
 
         #endregion
@@ -158,8 +158,8 @@ namespace NFX.DataAccess.CRUD
                 if (m_Started)
                  throw new CRUDException(StringConsts.CRUD_QUERY_RESOLVER_ALREADY_STARTED_ERROR);
             }
-            
-            
+
+
             private ICRUDQueryHandler searchForType(string name)
             {
                 foreach(var loc in m_Locations)
@@ -172,7 +172,7 @@ namespace NFX.DataAccess.CRUD
                         ns = loc.Substring(0, ic);
                         asm = loc.Substring(ic+1);
                     }
-                                       
+
                     var tname = asm.IsNullOrWhiteSpace() ? "{0}.{1}".Args(ns, name) : "{0}.{1}, {2}".Args(ns, name, asm);
                     var t = Type.GetType(tname, false, true);
                     if (t!=null)
@@ -194,9 +194,9 @@ namespace NFX.DataAccess.CRUD
                 if (ic>0)
                  asmname = asmname.Substring(0, ic);
                 var resources = asm.GetManifestResourceNames();
-                  
-                name = name + m_DataStore.ScriptFileSuffix; 
-                    
+
+                name = name + m_DataStore.ScriptFileSuffix;
+
                 var res = resources.FirstOrDefault(r => r.EqualsIgnoreCase(name) || r.EqualsIgnoreCase(asmname+"."+name));
 
                 if (res!=null)
@@ -215,5 +215,5 @@ namespace NFX.DataAccess.CRUD
         #endregion
     }
 
-    
+
 }

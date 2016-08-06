@@ -117,15 +117,15 @@ namespace NFX.DataAccess.Distributed
             public static ParcelSealValidationException ForErrors(string parcelName, IEnumerable<Exception> errors)
             {
                 var sb = new StringBuilder();
-                
+
                 sb.AppendLine( StringConsts.DISTRIBUTED_DATA_PARCEL_SEAL_VALIDATION_ERROR.Args(parcelName) );
                 foreach(var error in errors)
                  sb.AppendLine( " * " + error.ToMessageWithType() );
-                
+
                 return new ParcelSealValidationException( sb.ToString() );
             }
 
-          
+
 
             protected ParcelSealValidationException(SerializationInfo info, StreamingContext context)
               : base(info, context)

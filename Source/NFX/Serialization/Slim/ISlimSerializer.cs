@@ -30,7 +30,7 @@ namespace NFX.Serialization.Slim
       /// Type registry object is created for every Serialize/Deserialize call only
       /// cloning global types. This is the default mode which is thread-safe(many threads can call Serialize/Deserialize at the same time)
       /// </summary>
-      PerCall=0, 
+      PerCall=0,
 
       /// <summary>
       /// Type registry object is cloned from global types only once and it is retained after making calls.

@@ -38,10 +38,10 @@ namespace NFX.ApplicationModel.Volatile
   /// </summary>
   public sealed class NOPObjectStore : ApplicationComponent, IObjectStore
   {
-    
+
     public NOPObjectStore(): base(){}
-    
-    
+
+
     /// <summary>
     /// Retrieves an object reference from the store identified by the "key" or returns null if such object does not exist.
     /// Object is not going to be persisted until it is checked back in the store.
@@ -67,7 +67,7 @@ namespace NFX.ApplicationModel.Volatile
     /// </summary>
     public void CheckIn(Guid key, object value, int msTimeout = 0)
     {
-    
+
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace NFX.ApplicationModel.Volatile
     /// </summary>
     public void CheckInUnderNewKey(Guid oldKey, Guid newKey, object value, int msTimeout = 0)
     {
-    
+
     }
 
     /// <summary>
@@ -97,9 +97,9 @@ namespace NFX.ApplicationModel.Volatile
     {
       return false;
     }
-    
+
     private static NOPObjectStore s_Instance = new NOPObjectStore();
-  
+
     /// <summary>
     /// Returns a singlelton instance of the objectstore that does not do anything
     /// </summary>
@@ -140,5 +140,5 @@ namespace NFX.ApplicationModel.Volatile
             return App.LocalizedTimeToUniversalTime(local);
         }
   }
-  
-}  
+
+}

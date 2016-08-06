@@ -41,7 +41,7 @@ namespace NFX.Time
 
         private DefaultTimeSource() : base()
         {
-        } 
+        }
 
 
         public TimeLocation TimeLocation
@@ -49,7 +49,7 @@ namespace NFX.Time
           get { return new TimeLocation(TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now), "Local Computer", true); }
         }
 
-        
+
         public DateTime Now { get { return DateTime.Now; } }
 
         /// <summary>

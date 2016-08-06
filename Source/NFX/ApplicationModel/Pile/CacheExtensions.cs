@@ -35,17 +35,17 @@ namespace NFX.ApplicationModel.Pile
     /// <summary>
     /// Fetches an item through cache
     /// </summary>
-    public static TResult FetchThrough<TKey, TResult>(this ICache cache, TKey key, string tblCache, ICacheParams caching, Func<TKey, TResult> fFetch) where TResult : class
+    public static TResult FetchThrough<TKey, TResult>(this ICache cache, TKey key, string tblCache, ICacheParams caching, Func<TKey, TResult> fFetch, Func<TKey, TResult, TResult> fFilter = null) where TResult : class
     {
       ICacheTable<TKey> tbl = null;
-        
+
       if (caching==null) caching = CacheParams.DefaultCache;
 
       if (caching.ReadCacheMaxAgeSec>=0)
         tbl = cache.GetOrCreateTable<TKey>(tblCache);
 
       TResult result = null;
-        
+
       if (tbl!=null)
       {
         var cached = tbl.Get(key, caching.ReadCacheMaxAgeSec);
@@ -53,6 +53,9 @@ namespace NFX.ApplicationModel.Pile
           return null;
         else
           result = cached as TResult;
+
+        if (fFilter != null)
+          result = fFilter(key, result);
       }
 
       if (result!=null) return result;

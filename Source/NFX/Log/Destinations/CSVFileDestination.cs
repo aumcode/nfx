@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +44,7 @@ namespace NFX.Log.Destinations
           public const string CONFIG_NAMETIMEFORMAT_ATTR    = "name-time-format";
           public const string CONFIG_FILEEXTENSION_ATTR     = "file-extension";
       #endregion
-    
+
       #region .ctor
 
           /// <summary>
@@ -142,8 +142,8 @@ namespace NFX.Log.Destinations
           }
 
       #endregion
-      
-      
+
+
       #region Private
 
           private static string escape(string str)
@@ -158,6 +158,6 @@ namespace NFX.Log.Destinations
           }
 
       #endregion
-  
+
   }
 }

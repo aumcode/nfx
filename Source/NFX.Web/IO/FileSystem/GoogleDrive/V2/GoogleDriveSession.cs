@@ -33,7 +33,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
         public GoogleDriveClient Client { get; private set; }
 
       #endregion
-                
+
       #region .ctor
 
         protected internal GoogleDriveSession(GoogleDriveFileSystem fs, IFileSystemHandle handle, GoogleDriveParameters cParams)

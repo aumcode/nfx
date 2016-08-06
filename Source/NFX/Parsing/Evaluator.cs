@@ -33,7 +33,7 @@ namespace NFX.Parsing
   /// </summary>
   public delegate string IdentifierLookup(string ident);
 
-  public sealed class Evaluator 
+  public sealed class Evaluator
   {
     #region Evaluator Constants
                 //String
@@ -72,7 +72,7 @@ namespace NFX.Parsing
                 //warning! list order is important, Ternary operator SHOULD not be included here
                 private static string[] OPERATORS = {tkAND, tkOR, tkXOR, tkNOT,
 	                                                    tkEQ, tkLE, tkGE, tkL, tkG, tkNE,
-	                                                    tkPLUS, tkMINUS, 
+	                                                    tkPLUS, tkMINUS,
 	                                                    tkMUL, tkDIV, tkMOD };
     #endregion
 
@@ -85,11 +85,11 @@ namespace NFX.Parsing
         }//Evaluator .ctor
 
     #endregion
-   
-   
+
+
     #region Evaluator Private members
         private string m_Expression;
-        
+
         [NonSerialized]
         private string m_NoStringsExpression;
 
@@ -140,7 +140,7 @@ namespace NFX.Parsing
     public event IdentifierLookup OnIdentifierLookup;
     #endregion
 
-   
+
 
 
 
@@ -290,7 +290,7 @@ namespace NFX.Parsing
               {
                 icl = i;
                 break;
-              }//if 
+              }//if
             }//for
 
             if (icl == -1)
@@ -334,7 +334,7 @@ namespace NFX.Parsing
                   m_Right = new Node(((string)ifst[2]).Trim(), m_Level + 1);
                   return;
                 }//if found
-            }//outer ()  
+            }//outer ()
             else
               break;
 
@@ -415,7 +415,7 @@ namespace NFX.Parsing
           {//leaf node
             m_Operator = expr;
             return;
-          }//if  
+          }//if
 
           string lstr = expr.Substring(0, opi).Trim();
           string rstr = expr.Substring(opi + m_Operator.Length).Trim();
@@ -565,11 +565,11 @@ namespace NFX.Parsing
         string rslt = node.Operator;
 
         if (lookup!=null) rslt = lookup(rslt);
-        else      
+        else
          if (OnIdentifierLookup != null) rslt = OnIdentifierLookup(rslt);
 
         return rslt;
-      }//if 
+      }//if
 
 
       double left;
@@ -673,14 +673,14 @@ namespace NFX.Parsing
             /* call delegate here*/
             break;
           }//default
-      }//switch 
+      }//switch
 
       return null;
-    }//Evaluator doEvaluate	
-    //===========================================================================================		
+    }//Evaluator doEvaluate
+    //===========================================================================================
 
 
 
-   
+
   }//class Evaluator
 }

@@ -28,10 +28,10 @@ namespace NFX.Log
     /// Defines an expression used for log message filtering.
     /// Important: it is not a good practice to create many different scopes as it leads to creation of many assemblies dynamically
     /// </summary>
-    public class MessageFilterExpression : CompilingExpressionEvaluator<Destination, bool, Message> 
+    public class MessageFilterExpression : CompilingExpressionEvaluator<Destination, bool, Message>
     {
        public const string SCOPE = "_NFX._Log._Filtering";
-       
+
        /// <summary>
        /// Creates a new expression in a default logging filter scope.
        /// This .ctor will fail if at least one expression from this scope has already been compiled
@@ -46,7 +46,7 @@ namespace NFX.Log
        /// consequently it is not a good practice to create many different scopes.
        /// This .ctor will fail if at least one expression from this scope has already been compiled
        /// </summary>
-       public MessageFilterExpression(string scope, 
+       public MessageFilterExpression(string scope,
                                       string expr,
                                       IEnumerable<string> referencedAssemblies = null,
                                       IEnumerable<string> usings = null) : base(scope, expr, referencedAssemblies, usings)

@@ -43,12 +43,12 @@ namespace NFX.Wave.Handlers
              sub.___setParentHandler( this );
              sub.__setComponentDirector( this );
              if(!m_Handlers.Register(sub))
-              throw new WaveException(StringConsts.CONFIG_DUPLICATE_HANDLER_NAME_ERROR.Args(hNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value)); 
+              throw new WaveException(StringConsts.CONFIG_DUPLICATE_HANDLER_NAME_ERROR.Args(hNode.AttrByName(Configuration.CONFIG_NAME_ATTR).Value));
             }
-          
+
          }
     #endregion
-    
+
 
     #region Fields
 
@@ -57,7 +57,7 @@ namespace NFX.Wave.Handlers
     #endregion
 
     #region Properties
-        
+
         /// <summary>
         /// Returns ordered registry of handlers
         /// </summary>
@@ -75,7 +75,7 @@ namespace NFX.Wave.Handlers
           if (handler==null) return false;
           if (handler.Dispatcher!=this.Dispatcher)
             throw new WaveException(StringConsts.WRONG_DISPATCHER_HANDLER_REGISTRATION_ERROR.Args(handler));
-         
+
           return m_Handlers.Register(handler);
         }
 
@@ -93,19 +93,19 @@ namespace NFX.Wave.Handlers
         }
 
     #endregion
-    
+
     #region Protected
-   
+
       protected override void DoHandleWork(WorkContext work)
       {
         var subHandler = m_Handlers.OrderedValues.FirstOrDefault(handler => handler.MakeMatch(work));
-        
+
         if (subHandler==null)
               throw new WaveException(StringConsts.NO_HANDLER_FOR_WORK_ERROR.Args(work.About));
-        
+
         subHandler.FilterAndHandleWork(work);
       }
-   
+
     #endregion
 
   }

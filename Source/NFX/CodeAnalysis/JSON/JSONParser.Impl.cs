@@ -38,7 +38,7 @@ namespace NFX.CodeAnalysis.JSON
             private void errorAndAbort(JSONMsgCode code)
             {
                EmitMessage(MessageType.Error, (int)code, Lexer.SourceCodeReference,token: token);
-               throw new abortException(); 
+               throw new abortException();
             }
 
             private void fetch()
@@ -58,7 +58,7 @@ namespace NFX.CodeAnalysis.JSON
             private object doAny()
             {
                 if (token.Type==JSONTokenType.tBraceOpen) return doObject();
-                else    
+                else
                 if (token.Type==JSONTokenType.tSqBracketOpen) return doArray();
                 else
                 if (token.Type==JSONTokenType.tNull) return null;
@@ -85,7 +85,7 @@ namespace NFX.CodeAnalysis.JSON
 
                   if (token.Value is ulong)
                          return -(long)(ulong)token.Value;
-                 
+
                   var v = (Int32)token.Value;
                   return -v;
                 }
@@ -100,9 +100,9 @@ namespace NFX.CodeAnalysis.JSON
                 fetchPrimary(); // skip [
 
                 var arr = new JSONDataArray();
-                
+
                 if (token.Type!=JSONTokenType.tSqBracketClose)//empty array  []
-                {   
+                {
                     while(true)
                     {
                        arr.Add( doAny() );  // [any, any, any]
@@ -110,11 +110,11 @@ namespace NFX.CodeAnalysis.JSON
                        if (token.Type!=JSONTokenType.tComma) break;
                        fetchPrimary();
                     }
-                
+
                     if (token.Type!=JSONTokenType.tSqBracketClose)
                        errorAndAbort(JSONMsgCode.eUnterminatedArray);
                 }
-                return arr;  
+                return arr;
             }
 
             private JSONDataMap doObject()
@@ -124,12 +124,12 @@ namespace NFX.CodeAnalysis.JSON
                var obj = new JSONDataMap(this.m_CaseSensitiveMaps);
 
                if (token.Type!=JSONTokenType.tBraceClose)//empty object  {}
-                {   
+                {
                     while(true)
                     {
                        if (token.Type!=JSONTokenType.tIdentifier && token.Type!=JSONTokenType.tStringLiteral)
                              errorAndAbort(JSONMsgCode.eObjectKeyExpected);
-                       
+
                        var key = token.Text;
 
                        if (obj.ContainsKey(key)) errorAndAbort(JSONMsgCode.eDuplicateObjectKey);
@@ -148,7 +148,7 @@ namespace NFX.CodeAnalysis.JSON
                        if (token.Type!=JSONTokenType.tComma) break;
                        fetchPrimary();
                     }
-                
+
                     if (token.Type!=JSONTokenType.tBraceClose)
                          errorAndAbort(JSONMsgCode.eUnterminatedObject);
                 }

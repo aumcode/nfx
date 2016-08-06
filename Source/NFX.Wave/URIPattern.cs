@@ -30,7 +30,7 @@ namespace NFX.Wave
   /// Represents a URI pattern that can get matched against URI requests.
   /// The pattern is formed using regular URL grammar and captures segments denoted by "{}".
   /// Example: '/profiles/{controller}/{action="dflt value"}/{*params}'
-  /// The class uses CSharp lexer, so it allows to use string escapes and unicode chars like CSharp 
+  /// The class uses CSharp lexer, so it allows to use string escapes and unicode chars like CSharp
   /// </summary>
   public sealed class URIPattern
   {
@@ -41,16 +41,16 @@ namespace NFX.Wave
             public bool IsPathDiv;
             public bool IsVar;
             public bool IsWildcard;
-            public string Name;            
-            public string DefaultValue; //i.e. city/{state='OH'} OH is default value for state variable  
+            public string Name;
+            public string DefaultValue; //i.e. city/{state='OH'} OH is default value for state variable
 
             public override string ToString()
             {
               return "Name:{0,-20} Dflt:{1,-15} Var:{2,-5} Wild:{3,-5} Path:{4,-10} Por:{5}".Args(Name, DefaultValue, IsVar, IsWildcard, IsPathDiv, Portion);
-            }         
+            }
           }
-    
-    
+
+
     public URIPattern(string pattern)
     {
       if (pattern==null)
@@ -59,7 +59,7 @@ namespace NFX.Wave
       m_Pattern = pattern;
       try
       {
-        parse(); 
+        parse();
         m_MatchChunks = m_Chunks.Where(c=>!c.IsPathDiv).ToList();
       }
       catch(Exception error)
@@ -82,12 +82,12 @@ namespace NFX.Wave
     /// JSONDataMap may be easily converted to dynamic by calling new JSONDynamicObject(map)
     /// </summary>
     public JSONDataMap MatchURIPath(Uri uri, bool senseCase = false)
-    {           
+    {
       JSONDataMap result = null;
       if (m_MatchChunks.Count==0) return new JSONDataMap(false);
 
       var segs = uri.LocalPath.Split('/');
-      
+
       var ichunk = -1;
       chunk chunk = null;
       var wildCard = false;
@@ -101,7 +101,7 @@ namespace NFX.Wave
             if (ichunk>=m_MatchChunks.Count) return null;
             chunk = m_MatchChunks[ichunk];
            }
-                      
+
            if (chunk.Portion!=chunkPortion.Path) return null;
 
            if (chunk.IsWildcard)
@@ -118,31 +118,31 @@ namespace NFX.Wave
            {
               if (result==null) result = new JSONDataMap(false);
               result[chunk.Name] = seg;
-           } 
+           }
            else
            if (!chunk.Name.Equals(seg, senseCase ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase)) return null;
       }//foreach
-      
+
       ichunk++;
       while(ichunk<m_MatchChunks.Count)
       {
         chunk=m_MatchChunks[ichunk];
         if (!chunk.IsVar) return null;//some trailing elements that are not vars and  do not match
-        if (result==null) 
+        if (result==null)
           result = new JSONDataMap(false);
-        if (!result.ContainsKey(chunk.Name)) 
+        if (!result.ContainsKey(chunk.Name))
           result[chunk.Name] = chunk.DefaultValue;
         ichunk++;
       }
-              
+
       return result ?? new JSONDataMap(false);
     }
-    
+
     /// <summary>
     /// Creates URI from the supplied values for this pattern
     /// </summary>
     public Uri MakeURI(IDictionary<string, object> values, Uri prefix = null)
-    { 
+    {
       var result = new StringBuilder();
       var portion = chunkPortion.Path;
       foreach(var chunk in m_Chunks)
@@ -152,13 +152,13 @@ namespace NFX.Wave
           result.Append("/");
           continue;
         }
-        
+
         if (portion!=chunk.Portion)
         {
           portion = chunk.Portion;
           result.Append('?');
         }
-        
+
         if (chunk.IsVar)
         {
           object value;
@@ -170,13 +170,13 @@ namespace NFX.Wave
           result.Append(value.ToString());
           continue;
         }
-        
+
         result.Append( chunk.Portion==chunkPortion.Query ? Uri.EscapeDataString(chunk.Name) : chunk.Name);
-      }  
-              
-      return prefix!=null ? new Uri(prefix, result.ToString()) : 
+      }
+
+      return prefix!=null ? new Uri(prefix, result.ToString()) :
                             new Uri(result.ToString(), UriKind.RelativeOrAbsolute);
-    } 
+    }
 
  internal string _____Chunks
  {
@@ -196,7 +196,7 @@ namespace NFX.Wave
       var source = new StringSource(m_Pattern);
       var lexer = new CSLexer(source, throwErrors: true);
       var tokens = lexer.ToList();
-      
+
       m_Chunks = new List<chunk>();
 
       var wasWildcard = false;
@@ -231,7 +231,7 @@ namespace NFX.Wave
 
           if (wildcard)
            wasWildcard = true;
-         } 
+         }
          else
           m_Chunks.Add( new chunk{ Name = Uri.UnescapeDataString(buf), Portion = portion});
 
@@ -267,7 +267,7 @@ namespace NFX.Wave
             {
               flushBuf();
               m_Chunks.Add( new chunk{ IsPathDiv=true, Name = "/", Portion = portion});
-              continue; 
+              continue;
             }
 
             if (token.Type==CSTokenType.tTernaryIf)

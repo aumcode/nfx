@@ -51,7 +51,7 @@ namespace NFX.CodeAnalysis.JSON
         public override TokenKind Kind
         {
             get
-            { 
+            {
                 if (Type > JSONTokenType.LITERALS_START && Type < JSONTokenType.LITERALS_END)
                      return TokenKind.Literal;
 
@@ -60,7 +60,7 @@ namespace NFX.CodeAnalysis.JSON
 
                 switch(Type)
                 {
-                                       
+
                     case JSONTokenType.tBOF:          return TokenKind.BOF;
                     case JSONTokenType.tEOF:          return TokenKind.EOF;
                     case JSONTokenType.tDirective:    return TokenKind.Directive;

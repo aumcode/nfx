@@ -26,7 +26,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     Subscription Subscribe(string name, Query query, Mailbox recipient, object correlate = null);
 
     /// <summary>
-    /// Returns existing mailbox by name (case-insensitive) or creates a new named mailbox 
+    /// Returns existing mailbox by name (case-insensitive) or creates a new named mailbox
     /// </summary>
     Mailbox OpenMailbox(string name);
 

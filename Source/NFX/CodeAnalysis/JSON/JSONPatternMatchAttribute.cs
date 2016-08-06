@@ -23,12 +23,12 @@ using System.Text;
 namespace NFX.CodeAnalysis.JSON
 {
     /// <summary>
-    /// Base class for JSON pattern matching 
+    /// Base class for JSON pattern matching
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited=true)]
     public abstract class JSONPatternMatchAttribute : Attribute
     {
-        
+
         /// <summary>
         /// Checks all pattern match attributes against specified member info until first match found
         /// </summary>
@@ -40,8 +40,8 @@ namespace NFX.CodeAnalysis.JSON
 
             return false;
         }
-        
-        
+
+
         /// <summary>
         /// Override to perform actual pattern matching, i.e. the one that uses FSM
         /// </summary>

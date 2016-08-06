@@ -47,7 +47,7 @@ namespace NFX.Financial.Market
     {
       m_TimeStamp = timeStamp;
     }
-    
+
     private DateTime m_TimeStamp;
 
     public DateTime TimeStamp{ get{ return m_TimeStamp;} }
@@ -62,7 +62,7 @@ namespace NFX.Financial.Market
     {
       throw new NotImplementedException(GetType().FullName+".MakeAggregateInstance()");
     }
-    
+
     public virtual void AggregateSample(ITimeSeriesSample sample)
     {
       throw new NotImplementedException(GetType().FullName+".AggregateSample(sample)");

@@ -47,8 +47,8 @@ namespace NFX.Inventorization
 
 
 
-      
-      #region .ctor 
+
+      #region .ctor
        public InventorizationManager(IEnumerable<Assembly> assemblies)
        {
          m_Assemblies.AddRange(assemblies);
@@ -56,7 +56,7 @@ namespace NFX.Inventorization
 
        public InventorizationManager(IEnumerable<string> assemblies)
        {
-         loadAssemblies(assemblies); 
+         loadAssemblies(assemblies);
        }
 
        /// <summary>
@@ -73,7 +73,7 @@ namespace NFX.Inventorization
              try
              {
                     var n = name;
-                    if (!string.IsNullOrWhiteSpace(path)) 
+                    if (!string.IsNullOrWhiteSpace(path))
                      n = System.IO.Path.Combine(path, name);
                     var asm = Assembly.LoadFrom(n);
                     m_Assemblies.Add(asm);
@@ -102,7 +102,7 @@ namespace NFX.Inventorization
 
         private DateTime? m_StartDate;
         private DateTime? m_EndDate;
-        
+
 
         private Strategies m_Startegies = new Strategies();
       #endregion
@@ -110,16 +110,16 @@ namespace NFX.Inventorization
 
       #region Properties
 
-        
+
         /// <summary>
         /// References inventorization strategies
         /// </summary>
         public Strategies Strategies
         {
           get { return m_Startegies;}
-        } 
-        
-        
+        }
+
+
         /// <summary>
         /// Options for inventorization strategies
         /// </summary>
@@ -129,7 +129,7 @@ namespace NFX.Inventorization
           set { m_Options = value; }
         }
 
-        
+
         /// <summary>
         /// When true, inventorizes ONLY items that have have Inventory attribute applied.
         /// Even if this property is false but some other inventory filter specified, then an item must be Inventory-tagged to be included
@@ -140,8 +140,8 @@ namespace NFX.Inventorization
           get { return m_OnlyAttributed;}
           set { m_OnlyAttributed = value;}
         }
-        
-        
+
+
         /// <summary>
         /// Imposes a filter on system tiers parameter of Inventory attribute
         /// </summary>
@@ -212,7 +212,7 @@ namespace NFX.Inventorization
         {
           get { return m_EndDate; }
           set { m_EndDate = value; }
-        } 
+        }
 
 
 
@@ -265,10 +265,10 @@ namespace NFX.Inventorization
            node.AddAttributeNode("schema", attr.Schema);
            node.AddAttributeNode("tech", attr.Technology);
            node.AddAttributeNode("tool", attr.Tool);
-           
+
            if (attr.StartDate.HasValue)
              node.AddAttributeNode("sdate", attr.StartDate.Value);
-           
+
            if (attr.EndDate.HasValue)
              node.AddAttributeNode("edate", attr.EndDate.Value);
 
@@ -322,14 +322,14 @@ namespace NFX.Inventorization
            if (type.IsGenericType)
            {
              result = result.Remove(result.LastIndexOf('`'));
-             
+
              var gal = string.Empty;
              foreach(var at in type.GetGenericArguments())
              {
-               gal += tname(at) + ","; 
+               gal += tname(at) + ",";
              }
              gal = gal.Remove(gal.Length-1);
-             result = result + "<"+gal+">"; 
+             result = result + "<"+gal+">";
            }
            return result;
          }
@@ -339,7 +339,7 @@ namespace NFX.Inventorization
        private bool filter(Assembly asm)
        {
           var atrs = asm.GetCustomAttributes(typeof(InventoryAttribute), false).Cast<InventoryAttribute>();
-          
+
           return (!m_OnlyAttributed  || atrs.Count()>0);
        }
 
@@ -361,7 +361,7 @@ namespace NFX.Inventorization
            (!m_StartDate.HasValue || atrs.Any(a=>a.StartDate.HasValue && a.StartDate.Value >= m_StartDate.Value)) &&
            (!m_EndDate.HasValue   || atrs.Any(a=>a.EndDate.HasValue && a.EndDate.Value <= m_EndDate.Value));
        }
-       
+
     }
 
 

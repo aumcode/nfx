@@ -27,10 +27,10 @@ namespace NFX.IO
     /// Represents a base for stream readers and writers.
     /// Streamer object instances ARE NOT THREAD-safe
     /// </summary>
-    public abstract class Streamer 
+    public abstract class Streamer
     {
             public static readonly UTF8Encoding UTF8Encoding = new UTF8Encoding(false, false);
-        
+
             protected Streamer(Encoding encoding = null)
             {
               m_Encoding = encoding ?? UTF8Encoding;
@@ -52,7 +52,7 @@ namespace NFX.IO
 
             protected Stream m_Stream;
             protected Encoding m_Encoding;
-            
+
 
 
             /// <summary>
@@ -80,8 +80,8 @@ namespace NFX.IO
               get { return m_Encoding; }
             }
 
-            
-               
+
+
             /// <summary>
             /// Sets the stream as the target for output/input.
             /// This call must be coupled with UnbindStream()
@@ -103,7 +103,7 @@ namespace NFX.IO
             public void UndindStream()
             {
               if (m_Stream==null) return;
-              
+
               if (this is WritingStreamer) m_Stream.Flush();
               m_Stream = null;
             }

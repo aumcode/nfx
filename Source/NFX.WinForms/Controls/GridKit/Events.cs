@@ -37,13 +37,13 @@ namespace NFX.WinForms.Controls.GridKit
   }
 
   public delegate void NotifyDataSourceChangedEventHandler(Grid sender, NotifyDataSourceChangedEventArgs args);
-  
+
   public delegate void ColumnAttributesChangedEventHandler(Column sender);
-  
-  
+
+
   /// <summary>
   /// Event handler that gets called after usee select a cell
   /// </summary>
   public delegate void CellSelectionEventHandler(CellElement oldCell, CellElement newCell);
-  
+
 }

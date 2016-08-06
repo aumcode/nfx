@@ -46,14 +46,14 @@ namespace NFX.Wave.Filters
 
       private void ctor(IConfigSectionNode confNode)
       {
-        
+
         m_UseThemeCookie = confNode.AttrByName(CONF_USE_THEME_COOKIE_ATTR).ValueAsBool(true);
         m_ThemeCookieName = confNode.AttrByName(CONF_THEME_COOKIE_NAME_ATTR).ValueAsString(DEFAULT_THEME_COOKIE_NAME);
 
         //read matches
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_PortalMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName)));
       }
 
     #endregion
@@ -61,7 +61,7 @@ namespace NFX.Wave.Filters
     #region Fields
 
      private OrderedRegistry<WorkMatch> m_PortalMatches = new OrderedRegistry<WorkMatch>();
-     
+
      private bool m_UseThemeCookie;
      private string m_ThemeCookieName = DEFAULT_THEME_COOKIE_NAME;
 
@@ -73,7 +73,7 @@ namespace NFX.Wave.Filters
       /// OrderedRegistry of matches used by the filter to determine whether work should match a portal
       /// </summary>
       public OrderedRegistry<WorkMatch> PortalMatches { get{ return m_PortalMatches;}}
-    
+
 
       /// <summary>
       /// Specifies true to interpret ThemeCookieName
@@ -97,13 +97,13 @@ namespace NFX.Wave.Filters
     #region Protected
 
       protected sealed override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         if (work.m_PortalFilter==null)
         {
           try
           {
             work.m_PortalFilter = this;
-            
+
             foreach(var match in m_PortalMatches.OrderedValues)
             {
               var matched = match.Make(work);
@@ -130,7 +130,7 @@ namespace NFX.Wave.Filters
               if (defaultPortal!=null)
               {
                  work.m_Portal = defaultPortal;
-              } 
+              }
             }
 
             if (m_UseThemeCookie && work.m_Portal!=null)
@@ -146,7 +146,7 @@ namespace NFX.Wave.Filters
             }
 
             if (Server.m_InstrumentationEnabled &&
-                work.m_Portal!=null && 
+                work.m_Portal!=null &&
                 work.m_Portal.InstrumentationEnabled)
             {
               Server.m_Stat_PortalRequest.IncrementLong(work.m_Portal.Name);
@@ -166,9 +166,9 @@ namespace NFX.Wave.Filters
         else this.InvokeNextWorker(work, filters, thisFilterIndex);
       }
 
-    #endregion 
-    
-    
+    #endregion
+
+
   }
 
 }

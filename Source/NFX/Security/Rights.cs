@@ -50,14 +50,14 @@ namespace NFX.Security
             return m_NoneInstance;
           }
         }
-    
+
         public Rights(Configuration data)
         {
           m_Data = data;
         }
-    
+
         private Configuration m_Data;
-    
+
         public IConfigSectionNode Root
         {
           get { return m_Data.Root; }

@@ -33,7 +33,7 @@ namespace NFX.CodeAnalysis.JSON
     public static string UnescapeString(string str)
     {
       if (str.IndexOf('\\')==-1) return str;//20131215 DKh 6.3% speed improvement in Integration test
-      
+
       StringBuilder sb = new StringBuilder();
 
       for (int i = 0; i < str.Length; i++)

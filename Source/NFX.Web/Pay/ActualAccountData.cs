@@ -31,7 +31,7 @@ namespace NFX.Web.Pay
 
   /// <summary>
   /// Represents actual data for supplied account object.
-  /// Data represented by this interface is ALWAYS TRANSITIVE in memory as 
+  /// Data represented by this interface is ALWAYS TRANSITIVE in memory as
   /// some fields are either never stored permanently (i.e. CVC) or ciphered in the store (account number)
   /// </summary>
   public interface IActualAccountData
@@ -78,6 +78,8 @@ namespace NFX.Web.Pay
     string PostalCode { get; }
     string Country { get; }
 
+    string Company { get; }
+
     string Phone { get; }
     string EMail { get; }
   }
@@ -99,6 +101,8 @@ namespace NFX.Web.Pay
 
     public string Country { get; set; }
 
+    public string Company { get; set; }
+
     public string Phone { get; set; }
 
     public string EMail { get; set; }
@@ -107,11 +111,16 @@ namespace NFX.Web.Pay
     {
       var other = obj as IAddress;
       if (other == null) return false;
-      
+
       return PostalCode.EqualsIgnoreCase(other.PostalCode)
-        && Phone.EqualsIgnoreCase(other.Phone) && EMail.EqualsIgnoreCase(other.EMail) 
-        && Country.EqualsIgnoreCase(other.Country) && City.EqualsIgnoreCase(other.City) && Region.EqualsIgnoreCase(other.Region) 
-        && Address1.EqualsIgnoreCase(other.Address1) && Address2.EqualsIgnoreCase(other.Address2);
+        && Phone.EqualsIgnoreCase(other.Phone)
+        && EMail.EqualsIgnoreCase(other.EMail)
+        && Company.EqualsIgnoreCase(other.Company)
+        && Country.EqualsIgnoreCase(other.Country)
+        && City.EqualsIgnoreCase(other.City)
+        && Region.EqualsIgnoreCase(other.Region)
+        && Address1.EqualsIgnoreCase(other.Address1)
+        && Address2.EqualsIgnoreCase(other.Address2);
     }
 
     public override int GetHashCode()
@@ -137,16 +146,16 @@ namespace NFX.Web.Pay
     public string MiddleName { get; set; }
     public string LastName { get; set; }
 
-    public string AccountTitle 
-    { 
-      get 
+    public string AccountTitle
+    {
+      get
       {
         return string.Join(" ", new string[] { FirstName, MiddleName, LastName }.Where(s => s.IsNotNullOrWhiteSpace()));
       }
     }
 
     public AccountType AccountType { get; set; }
-    
+
     public bool HadSuccessfullTransactions { get; set; }
     public string IssuerID { get; set; }
     public string IssuerName { get; set; }
@@ -159,16 +168,16 @@ namespace NFX.Web.Pay
     public string CardVC { get; set; }
 
     public bool IsCard { get { return RoutingNumber.IsNullOrWhiteSpace(); } }
-    
+
     public string PrimaryEMail { get; set; }
 
-    public IAddress BillingAddress 
-    { 
+    public IAddress BillingAddress
+    {
       get { return m_BillingAddress.Value; }
     }
 
     public IAddress ShippingAddress
-    { 
+    {
       get { return m_ShippingAddress.Value; }
     }
   }

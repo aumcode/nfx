@@ -25,31 +25,31 @@ using NFX.ApplicationModel;
 
 namespace NFX.Security
 {
-    
+
     /// <summary>
     /// Invoked by permission checker to get session
     /// </summary>
     public delegate ISession GetSessionFunc();
-    
-    
+
+
     /// <summary>
     /// Represents a general permission abstraction - where permission type represents the path/name of the permission
     ///  in User's rights and .ctor takes specific parameters to check while authorizing user.
     ///  Permission-derived class represents a certain permission type, whereas its instance is a check for particular desired level.
     ///  To authorize certain actions, one creates an instance of Permission-derived class passing in its .ctor required
-    ///   access levels, then calls a Check() method that returns true if action is authorized. 
-    ///   
+    ///   access levels, then calls a Check() method that returns true if action is authorized.
+    ///
     /// This scheme provides a great deal of flexibility, i.e. for very complex security cases developers may inherit leaf-level permissions from intermediate ones
-    ///   that have logic tied to session-level variables, this way user's access may vary by permission/session state, i.e. a user may have 
+    ///   that have logic tied to session-level variables, this way user's access may vary by permission/session state, i.e. a user may have
     ///    "Patient.Master" level 4 access in database "A", while having acess denied to the same named permission in database "B".
-    /// User's database, or system instance is a flag in user-session context   
+    /// User's database, or system instance is a flag in user-session context
     /// </summary>
     [AttributeUsage(AttributeTargets.Class |
                     AttributeTargets.Interface |
-                    AttributeTargets.Constructor | 
+                    AttributeTargets.Constructor |
                     AttributeTargets.Method |
                     AttributeTargets.Field |
-                    AttributeTargets.Property, Inherited = true, AllowMultiple=true)] 
+                    AttributeTargets.Property, Inherited = true, AllowMultiple=true)]
     public abstract class Permission : Attribute
     {
         #region CONSTS
@@ -58,11 +58,11 @@ namespace NFX.Security
           public const string CONFIG_PERMISSION_SECTION = "permission";
 
         #endregion
-        
+
         #region Static
 
            /// <summary>
-           /// Checks the action represented by MemberInfo by checking the permission-derived attributes and returns false if 
+           /// Checks the action represented by MemberInfo by checking the permission-derived attributes and returns false if
            /// any of authorization attributes do not pass
            /// </summary>
            public static bool AuthorizeAction(MemberInfo actionInfo, ISession session = null, GetSessionFunc getSessionFunc = null)
@@ -75,7 +75,7 @@ namespace NFX.Security
 
 
            /// <summary>
-           /// Checks the action represented by MemberInfo by checking the permission-derived attributes and returns false if 
+           /// Checks the action represented by MemberInfo by checking the permission-derived attributes and returns false if
            /// any of authorization attributes do not pass
            /// </summary>
            public static Permission FindAuthorizationFailingPermission(MemberInfo actionInfo, ISession session = null, GetSessionFunc getSessionFunc = null)
@@ -100,13 +100,13 @@ namespace NFX.Security
 
            ////20140124 DKh - added caching instead of reflection. Glue inproc binding speed improved 20%
            ///// <summary>
-           ///// Checks the action represented by MemberInfo by checking the permission-derived attributes and returns false if 
+           ///// Checks the action represented by MemberInfo by checking the permission-derived attributes and returns false if
            ///// any of authorization attributes do not pass
            ///// </summary>
            //public static Permission FindAuthorizationFailingPermission(MemberInfo actionInfo, ISession session = null, GetSessionFunc getSessionFunc = null)
            //{
            //  var attrs = actionInfo.GetCustomAttributes(typeof(Permission), true).Cast<Permission>();
-            
+
            //  var first = true;
            //  foreach(var attr in attrs)
            //  {
@@ -118,7 +118,7 @@ namespace NFX.Security
            //}
 
            /// <summary>
-           /// Guards the action represented by MemberInfo by checking the permission-derived attributes and throwing exception if 
+           /// Guards the action represented by MemberInfo by checking the permission-derived attributes and throwing exception if
            /// any of authorization attributes do not pass
            /// </summary>
            public static void AuthorizeAndGuardAction(MemberInfo actionInfo, ISession session = null, GetSessionFunc getSessionFunc = null)
@@ -130,7 +130,7 @@ namespace NFX.Security
            }
 
            /// <summary>
-           /// Guards the action represented by enumerable of permissions by checking all permissions and throwing exception if 
+           /// Guards the action represented by enumerable of permissions by checking all permissions and throwing exception if
            /// any of authorization attributes do not pass
            /// </summary>
            public static void AuthorizeAndGuardAction(IEnumerable<Permission> permissions, string actionName, ISession session = null, GetSessionFunc getSessionFunc = null)
@@ -150,7 +150,7 @@ namespace NFX.Security
            /// Makes multiple permissions from conf node
            /// </summary>
            public static IEnumerable<Permission> MultipleFromConf(IConfigSectionNode node,
-                                                                  string shortNodeName = null, 
+                                                                  string shortNodeName = null,
                                                                   string typePattern = null
                                                                   )
            {
@@ -159,15 +159,15 @@ namespace NFX.Security
               foreach(var pnode in node.Children
                                        .Where(cn => cn.IsSameName(CONFIG_PERMISSION_SECTION) ||
                                                                   (shortNodeName.IsNotNullOrWhiteSpace() && cn.IsSameName(shortNodeName) )
-                                             )) 
+                                             ))
                  result.Add( FactoryUtils.MakeUsingCtor<Permission>(pnode, typePattern) );
               return result;
            }
 
 
         #endregion
-        
-        
+
+
         #region .ctor
 
            /// <summary>
@@ -186,8 +186,8 @@ namespace NFX.Security
         #endregion
 
         #region Properties
-            
-            
+
+
             /// <summary>
             /// Returns the permission name - the last segment of the path
             /// </summary>
@@ -221,7 +221,7 @@ namespace NFX.Security
                {
                  var path = Path;
                  if (path.EndsWith("/"))
-                   return path + Name; 
+                   return path + Name;
                  else
                    return path + "/" + Name;
                }
@@ -234,7 +234,7 @@ namespace NFX.Security
             {
                get { return m_Level; }
             }
-             
+
         #endregion
 
         #region Public
@@ -249,10 +249,10 @@ namespace NFX.Security
               session.User = user;
               return this.Check(session);
             }
-            
+
             /// <summary>
             /// Checks the permission for requested action as specified in particular permission .ctor.
-            /// The check is performed in the scope of supplied session, or if no session was supplied then 
+            /// The check is performed in the scope of supplied session, or if no session was supplied then
             ///  current execution context session is assumed
             /// </summary>
             /// <returns>True when action is authorized, false otherwise</returns>
@@ -265,23 +265,23 @@ namespace NFX.Security
               if (user.Status==UserStatus.System) return true;
 
               var manager = App.SecurityManager;
-              
+
               var access = manager.Authorize(user, this);
-              
+
               if (access==null) return false;
 
-              return DoCheckAccessLevel(session, access); 
+              return DoCheckAccessLevel(session, access);
             }
 
             public override string ToString()
             {
                 return FullPath;
             }
-            
+
         #endregion
 
         #region Protected
-            
+
             /// <summary>
             /// Override to perform access level checks per user's AccessLevel instance.
             /// True if  accessLevel satisfies permission requirements.
@@ -315,14 +315,14 @@ namespace NFX.Security
 
 
         #endregion
-        
-        
+
+
         #region Properties
             public override string Name
             {
-                get 
+                get
                 {
-                    var name = GetType().Name;  
+                    var name = GetType().Name;
                     if (name.EndsWith(PERMISSION_SUFFIX) && name.Length > PERMISSION_SUFFIX.Length)//do not localize
                       name = name.Remove(name.Length - PERMISSION_SUFFIX.Length);
 
@@ -364,8 +364,8 @@ namespace NFX.Security
         #endregion
 
         #region Properties
-            
-            
+
+
             /// <summary>
             /// Returns the permission name - the last segment of the path
             /// </summary>

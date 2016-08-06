@@ -46,30 +46,30 @@ namespace NFX.Media.TagCodes.QR
 
     #region Public
 
-      public static void ToBMP(this QRMatrix matrix, System.IO.Stream stream, 
+      public static void ToBMP(this QRMatrix matrix, System.IO.Stream stream,
         Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
       {
         matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Bmp, trueColor, falseColor, scale);
       }
 
-      public static void ToPNG(this QRMatrix matrix, System.IO.Stream stream, 
+      public static void ToPNG(this QRMatrix matrix, System.IO.Stream stream,
         Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
       {
         matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Png, trueColor, falseColor, scale);
       }
 
-      public static void ToJPG(this QRMatrix matrix, System.IO.Stream stream, 
+      public static void ToJPG(this QRMatrix matrix, System.IO.Stream stream,
         Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
       {
         matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Jpeg, trueColor, falseColor, scale);
       }
 
-      public static void ToGIF(this QRMatrix matrix, System.IO.Stream stream, 
+      public static void ToGIF(this QRMatrix matrix, System.IO.Stream stream,
         Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
       {
         matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Gif, trueColor, falseColor, scale);
       }
-      
+
     #endregion
 
     #region .pvt. impl.
@@ -94,17 +94,17 @@ namespace NFX.Media.TagCodes.QR
 
         DrawingOutput drawingOutput = new DrawingOutput(canvasWidth, canvasHeight, blackBrush);
 
-        for (int yMatrix = 0, yCanvasStart = 0, yCanvasStop = scaleFactor; 
-          yMatrix < matrix.Height; 
+        for (int yMatrix = 0, yCanvasStart = 0, yCanvasStop = scaleFactor;
+          yMatrix < matrix.Height;
           yMatrix++, yCanvasStart+=scaleFactor, yCanvasStop+=scaleFactor)
         {
-          for (int xMatrix = 0, xCanvasStart = 0, xCanvasStop = scaleFactor; 
-            xMatrix < matrix.Width; 
+          for (int xMatrix = 0, xCanvasStart = 0, xCanvasStop = scaleFactor;
+            xMatrix < matrix.Width;
             xMatrix++, xCanvasStart+=scaleFactor, xCanvasStop+=scaleFactor)
           {
             if (matrix[xMatrix, yMatrix] == 0)
               drawingOutput.SetPixelScaled(xMatrix, yMatrix, whiteBrush, scaleFactor);
-          } 
+          }
         }
 
         drawingOutput.ToImage(stream, format);

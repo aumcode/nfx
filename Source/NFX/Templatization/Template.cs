@@ -24,8 +24,8 @@ using NFX.ApplicationModel;
 namespace NFX.Templatization
 {
     /// <summary>
-    /// A general template interface. 
-    /// A template is a class that gets instantiated at some point to Render() its content into IRenderingTarget instance. 
+    /// A general template interface.
+    /// A template is a class that gets instantiated at some point to Render() its content into IRenderingTarget instance.
     /// Templates are not necessarily text-based, i.e. they can be image-based or based on various kinds of binary files
     /// </summary>
     public interface ITemplate
@@ -40,7 +40,7 @@ namespace NFX.Templatization
 
 
        /// <summary>
-       /// Indicates whether an instance of template class may be reused for invocation of Render() more than once (possibly with different rendering target and/or rendering context)  
+       /// Indicates whether an instance of template class may be reused for invocation of Render() more than once (possibly with different rendering target and/or rendering context)
        /// </summary>
        bool CanReuseInstance
        {
@@ -60,19 +60,19 @@ namespace NFX.Templatization
 
     /// <summary>
     /// A general ancestor for any template. All templates derive from this class directly or indirectly.
-    /// A template is a class that gets instantiated at some point to Render() its content into IRenderingTarget instance. 
+    /// A template is a class that gets instantiated at some point to Render() its content into IRenderingTarget instance.
     /// Templates are not necessarily text-based, i.e. they can be image-based or based on various kinds of binary files
     /// </summary>
     public abstract class Template<TContext, TTarget, TRenderingContext> : ITemplate
                              where TContext : class
-                             where TTarget : class,IRenderingTarget 
+                             where TTarget : class,IRenderingTarget
     {
-       
+
        protected Template()
        {
 
        }
-              
+
        protected Template(TContext context)
        {
            BindGlobalContexts(context);
@@ -115,7 +115,7 @@ namespace NFX.Templatization
        }
 
        /// <summary>
-       /// Indicates whether an instance of template class may be reused for invocation of Render() more than once (possibly with different rendering target and/or rendering context)  
+       /// Indicates whether an instance of template class may be reused for invocation of Render() more than once (possibly with different rendering target and/or rendering context)
        /// </summary>
        public abstract bool CanReuseInstance
        {
@@ -132,24 +132,24 @@ namespace NFX.Templatization
        {
          if (target==null)
           throw new TemplatizationException(StringConsts.ARGUMENT_ERROR + "Render(target=null)");
-         
+
          try
          {
-           ts_Target = target; 
+           ts_Target = target;
            ts_RenderingContext = renderingContext;
-           
+
            DoPreRender();
            DoRender();
            DoPostRender(null);
          }
          catch(Exception error)
          {
-            DoPostRender(error);
-            throw error;
+            var rethrow = DoPostRender(error);
+            if (rethrow) throw;
          }
          finally
          {
-            ts_Target = null; 
+            ts_Target = null;
             ts_RenderingContext = default(TRenderingContext);
          }
        }
@@ -172,7 +172,7 @@ namespace NFX.Templatization
 
 
        /// <summary>
-       /// Infrastructure. Override to perform extra steps after Context property gets set. 
+       /// Infrastructure. Override to perform extra steps after Context property gets set.
        /// Normally this method should never be called by developers
        /// </summary>
        protected virtual void DoContextBinding()
@@ -180,7 +180,7 @@ namespace NFX.Templatization
 
        }
 
-       
+
        /// <summary>
        /// Performs pre-rendering actions
        /// </summary>
@@ -194,9 +194,9 @@ namespace NFX.Templatization
 
 
        /// <summary>
-       /// Performs post-rendering actions
+       /// Performs post-rendering actions. Return true to rethrow error
        /// </summary>
-       protected virtual void DoPostRender(Exception error) {}
+       protected virtual bool DoPostRender(Exception error) { return true;}
 
 
     }

@@ -45,8 +45,8 @@ namespace NFX.Instrumentation
        {
          m_Value = value;
        }
-        
-        
+
+
        private long m_Value;
 
 
@@ -73,7 +73,7 @@ namespace NFX.Instrumentation
         {
             var dg = dat as LongGauge;
             if (dg==null) return;
-             
+
             m_Sum += dg.Value;
         }
 
@@ -102,8 +102,8 @@ namespace NFX.Instrumentation
        {
          m_Value = value;
        }
-        
-        
+
+
        private double m_Value;
 
 
@@ -132,7 +132,7 @@ namespace NFX.Instrumentation
         {
             var dg = dat as DoubleGauge;
             if (dg==null) return;
-             
+
             m_Sum += dg.Value;
         }
 
@@ -163,8 +163,8 @@ namespace NFX.Instrumentation
        {
          m_Value = value;
        }
-        
-        
+
+
        private decimal m_Value;
 
 
@@ -189,12 +189,12 @@ namespace NFX.Instrumentation
           [NonSerialized]
           private decimal m_Sum;
 
-       
+
         protected override void AggregateEvent(Datum dat)
         {
             var dg = dat as DecimalGauge;
             if (dg==null) return;
-             
+
             m_Sum += dg.Value;
         }
 
@@ -206,9 +206,9 @@ namespace NFX.Instrumentation
 
 
     }
-  
 
-  
+
+
     /// <summary>
     /// Represents a general-purpose financial Amount measurement datum
     /// </summary>
@@ -219,8 +219,8 @@ namespace NFX.Instrumentation
 
        private static string makeSource(string source, Amount value)
        {
-         var prefix = value.CurrencyISO + CURRENCY_DELIM; 
-         if (source == null || !source.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) 
+         var prefix = value.CurrencyISO + CURRENCY_DELIM;
+         if (source == null || !source.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
            return prefix + source;
          else
            return source;
@@ -237,8 +237,8 @@ namespace NFX.Instrumentation
          m_Value = value;
          m_Sum = new Amount(value.CurrencyISO, 0M);
        }
-        
-        
+
+
        private Amount m_Value;
 
 
@@ -268,12 +268,12 @@ namespace NFX.Instrumentation
           [NonSerialized]
           private Amount m_Sum;
 
-       
+
         protected override void AggregateEvent(Datum dat)
         {
             var dg = dat as AmountGauge;
             if (dg==null) return;
-             
+
             m_Sum = m_Sum + dg.Value;
         }
 
@@ -285,5 +285,5 @@ namespace NFX.Instrumentation
 
 
     }
-  
+
 }

@@ -175,20 +175,71 @@
        });
 
 
-       run("Objects", "cloneEnsure", function(){
-         assertTrue(4 === WAVE.cloneEnsure({a: 4}).a);
-         assertTrue(4 === WAVE.cloneEnsure({A: 4}).a);
+       run("Objects", "memberClone_object", function(){
+         assertTrue(4 === WAVE.memberClone({a: 4}).a );
+         assertTrue(4 === WAVE.memberClone({A: 4}).A );
+         assertTrue(4 === WAVE.memberClone({A: 4}, true).a );
 
          var obj = {B:{A:54}};
-         var res = WAVE.cloneEnsure(obj);
-         assertTrue(54 === res.b.a); 
+         var res = WAVE.memberClone(obj);
+         assertTrue(54 === res.B.A);
+         obj = {B:{A:54}};
+         res = WAVE.memberClone(obj, true);
+         assertTrue(54 === res.b.a);
 
          obj = {A:{B:{c:21,E:100}, D:"pol"},f:true};
-         res = WAVE.cloneEnsure(obj);
+         res = WAVE.memberClone(obj);
+         assertTrue(res.A.B.c === 21);
+         assertTrue(res.A.B.E === 100);
+         assertTrue(res.A.D === "pol");
+         assertTrue(res.f);
+         
+         obj = {A:{B:{c:21,E:100}, D:"pol"},f:true};
+         res = WAVE.memberClone(obj, true);
          assertTrue(res.a.b.c === 21);
          assertTrue(res.a.b.e === 100);
          assertTrue(res.a.d === "pol");
          assertTrue(res.f);
+       });
+
+       run("Objects", "memberClone_array", function(){
+         assertTrue(2 === WAVE.memberClone([1,8]).length );
+         assertTrue(3 === WAVE.memberClone([1,2,5]).length );
+         assertTrue(5 === WAVE.memberClone([1,2,{a:7}, 8,9]).length );
+
+         var obj = [1,2,{A: 77, b: -3}, true];
+         var res = WAVE.memberClone(obj);
+         assertTrue( 4 === res.length );
+         assertTrue( WAVE.isArray(res) );
+         assertTrue( WAVE.isObject(res[2]) );
+         assertTrue( 2 === res[1] );
+         assertTrue( -3 === res[2].b );
+         assertTrue( res[3] );
+         assertTrue( 77 === res[2].A );
+
+         res = WAVE.memberClone(obj, true);
+         assertTrue( 4 === res.length );
+         assertTrue( WAVE.isArray(res) );
+         assertTrue( WAVE.isObject(res[2]) );
+         assertTrue( 2 === res[1] );
+         assertTrue( -3 === res[2].b );
+         assertTrue( res[3] );
+         assertTrue( 77 === res[2].a );
+       });
+
+       run("Objects", "memberClone_mixed", function(){
+         var obj = [1, {A : [{a:30}, false], "av": 3 }, "arr"];
+         var res = WAVE.memberClone(obj);
+         assertTrue( 30 === res[1].A[0].a );
+         assertFalse( 30 === res[1].A[1] );
+         assertTrue( 3 === res[1].av );
+         assertTrue( "arr" === res[2] );
+
+         res = WAVE.memberClone(obj, true);
+         assertTrue( 30 === res[1].a[0].a );
+         assertFalse( 30 === res[1].a[1] );
+         assertTrue( 3 === res[1].av );
+         assertTrue( "arr" === res[2] )
        });
 
 
@@ -290,6 +341,23 @@
          assertTrue ( WAVE.isFunction(o3) );
        });
 
+       run("Objects", "each-iteration-object", function() {
+         var obj = { a: 1, b: true, c: 20.17, d: 'lenin'};
+         var sum = '';
+         WAVE.each(obj, function (v, k) {
+           sum += (v + "[" + k + "], ");
+         });
+         assertTrue( sum === "1[a], true[b], 20.17[c], lenin[d], " );
+       });
+
+       run("Objects", "each-iteration-array", function() {
+         var obj = [ 1, true, 20.17, 'lenin'];
+         var sum = '';
+         WAVE.each(obj, function (v, k) {
+           sum += (v + "[" + k + "], ");
+         });
+         assertTrue( sum === "1[0], true[1], 20.17[2], lenin[3], " );
+       });
 
        run("Objects", "extend-merge", function(){
          var o1 = {a: 1, b: 2};
@@ -630,14 +698,80 @@
 
 
 
+       run("Integers", "tryParseInt", function(){
+         var r = WAVE.tryParseInt();      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt(null);      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt({1:1});
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt("");
+         assertTrue( r.ok === false && isNaN(r.value) );
+
+         r = WAVE.tryParseInt(1);
+         assertTrue( r.ok === true && r.value === 1 );
+         r = WAVE.tryParseInt("1");      
+         assertTrue( r.ok === true && r.value === 1 ); 
+         r = WAVE.tryParseInt("1   3");      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt("1.2");      
+         assertTrue( r.ok === false && r.value === 1.2 );
+         r = WAVE.tryParseInt("1,2");      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt("eee34");      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt("34eee");      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt("some text");      
+         assertTrue( r.ok === false && isNaN(r.value) );
+         r = WAVE.tryParseInt(-1);
+         assertTrue( r.ok === true && r.value === -1 );
+         r = WAVE.tryParseInt("-1");
+         assertTrue( r.ok === true && r.value === -1 );
+         r = WAVE.tryParseInt(-999933321);
+         assertTrue( r.ok === true && r.value === -999933321 );
+         r = WAVE.tryParseInt("999933321");
+         assertTrue( r.ok === true && r.value === 999933321 );
+       });
+
+       run("Integers","tryParseInt_allowReal",function() {
+         var r = WAVE.tryParseInt("9.89", true);
+         assertTrue( r.ok && r.value === 9);
+
+         r = WAVE.tryParseInt("-9.89", true);
+         assertTrue( r.ok && r.value === -9);
+         
+         var r = WAVE.tryParseInt("9.89");
+         assertFalse( r.ok );
+
+         r = WAVE.tryParseInt("-9.89");
+         assertFalse( r.ok ); 
+
+         var r = WAVE.tryParseInt("9.001", true);
+         assertTrue( r.ok && r.value === 9);
+
+         r = WAVE.tryParseInt("-9.001", true);
+         assertTrue( r.ok && r.value === -9);
+       });
 
        run("Integers", "intValid", function(){
+         assertTrue( WAVE.intValid(" 1 "));
          assertTrue( WAVE.intValid(1));
          assertTrue( WAVE.intValid("1"));
          assertTrue( WAVE.intValid("100000"));
          assertTrue( WAVE.intValid("-123"));
+         assertTrue( WAVE.intValid(0000));
+         assertTrue( WAVE.intValid("0000"));
          assertFalse( WAVE.intValid(null));
          assertFalse( WAVE.intValid(""));
+         assertFalse( WAVE.intValid("1   3"));
+         assertFalse( WAVE.intValid("aaa100"));
+         assertFalse( WAVE.intValid("001aaa"));
+         assertFalse( WAVE.intValid("123kaka"));
+         assertFalse( WAVE.intValid("1.2"));
+         assertFalse( WAVE.intValid("0,2"));
+         assertFalse( WAVE.intValid("0.2"));
+         assertFalse( WAVE.intValid(".2"));
          assertFalse( WAVE.intValid("some text"));
        });
 
@@ -665,6 +799,31 @@
          assertFalse( WAVE.intValidPositiveOrZero("some text"));
        });
       
+
+       run("Formatting", "formatMoneyBasic", function(){
+           assertTrue( "125.08" === WAVE.formatMoney(125.0890));
+           assertTrue( "1,256.08" === WAVE.formatMoney(1256.0890));
+       });
+        
+       run("Formatting", "formatMoneyDiffSeparators", function(){
+           assertTrue( "1.256,08" === WAVE.formatMoney(1256.0890, ',', '.'));
+           assertTrue( "1,256:::08" === WAVE.formatMoney(1256.0890, ':::'));
+       });
+        
+       run("Formatting", "formatMoneyNegative", function(){
+           assertTrue( "-1,256.08" === WAVE.formatMoney(-1256.0890));
+           assertTrue( "-1,256.09" === WAVE.formatMoney(-1256.0999));
+           assertTrue( "1,256.09" === WAVE.formatMoney(1256.0999));
+
+           assertTrue( "16,345,256.41" === WAVE.formatMoney(16345256.41945));
+           assertTrue( "-16,345,256.41" === WAVE.formatMoney(-16345256.41945));
+       });
+        
+       run("Formatting", "formatMoneyNegativeDiffSeparators", function(){
+           assertTrue( "16.345.256`41" === WAVE.formatMoney(16345256.41945, '`', '.'));
+           assertTrue( "-16.345.256`41" === WAVE.formatMoney(-16345256.41945, '`', '.'));
+       });
+
 
 
        run("Strings", "strEmpty", function(){
@@ -722,6 +881,18 @@
            assertTrue( 'bb'===WAVE.strDefault(obj.b, 'abc')  );
            assertTrue( 'abc'===WAVE.strDefault(obj['c'], 'abc')  );
            assertTrue( 'def'===WAVE.strDefault(obj.d, 'def')  );
+       });
+
+       run("Strings", "strDefault With Empty", function(){
+           assertTrue("     " === WAVE.strDefault("     ", "zina"));
+       });
+
+       run("Strings", "strEmptyDefault", function(){
+           assertTrue("zina" === WAVE.strEmptyDefault("     ", "zina"), 1);
+           assertTrue("zina" === WAVE.strEmptyDefault(undefined, "zina"), 2);
+           assertTrue("zina" === WAVE.strEmptyDefault(null, "zina"), 3);
+           assertTrue("zina" === WAVE.strEmptyDefault("", "zina"), 4);
+           assertTrue("kukushka" === WAVE.strEmptyDefault("kukushka", "zina"), 5);
        });
 
        run("Strings", "nlsNameDefault", function(){
@@ -1187,8 +1358,8 @@
        });
 
        run("Conversion", "real->int", function(){
-          assertTrue( 1 === WAVE.convertScalarType(false, 1.1, "int") );
-          assertTrue( -19 === WAVE.convertScalarType(false, -19.2, "int") );
+          assertTrue( 1 === WAVE.convertScalarType(false, 1.1, "int"), "case 1" );
+          assertTrue( -19 === WAVE.convertScalarType(false, -19.2, "int"), "case 2" );
        });
 
        run("Conversion", "date->int", function(){
@@ -3294,5 +3465,184 @@
           assertTrue(10 === w.wAt(10).s && 500 === w.wAt(10).a);
      });
 
-
-    
+(function ($W) {
+  run("Markup", "markup", function () {
+    checkMarkup('<',      '<p>&lt;</p>');
+    checkMarkup('>',      '<p>&gt;</p>');
+    checkMarkup('&copy;', '<p>&copy;</p>');
+    checkMarkup('& ;',    '<p>&nbsp;</p>');
+    checkMarkup('&!;',    '<p>&#33;</p>');
+    checkMarkup('&#;',    '<p>&#35;</p>');
+    checkMarkup('&$;',    '<p>&#36;</p>');
+    checkMarkup('&*;',    '<p>&#42;</p>');
+    checkMarkup('&<;',    '<p>&lt;</p>');
+    checkMarkup('&=;',    '<p>&#61;</p>');
+    checkMarkup('&>;',    '<p>&gt;</p>');
+    checkMarkup('&{;',    '<p>&#123;</p>');
+    checkMarkup('&};',    '<p>&#125;</p>');
+    checkMarkup('<script></script>', '<p>&lt;script&gt;&lt;/script&gt;</p>');
+  });
+  run("Markup", "markup-p", function () {
+    checkMarkup('',         '');
+    checkMarkup('a',        '<p>a</p>');
+    checkMarkup('\na',      '<p>a</p>');
+    checkMarkup('\n\na',    '<p>a</p>');
+    checkMarkup('\n\n\na',  '<p>a</p>');
+    checkMarkup('a\n',      '<p>a</p>');
+    checkMarkup('a\n\n',    '<p>a</p>');
+    checkMarkup('a\n\n\n',  '<p>a</p>');
+    checkMarkup('a\nb',     '<p>a b</p>');
+    checkMarkup('a\n\nb',   '<p>a</p><p>b</p>');
+    checkMarkup('a\n\n\nb', '<p>a</p><p>b</p>');
+  });
+  run("Markup", "markup-span", function () {
+    checkMarkup('{}',       '<p></p>');
+    checkMarkup('{}\n',     '<p></p>');
+    checkMarkup('{}\na',    '<p> a</p>');
+    checkMarkup('{}.',      '<p>.</p>');
+    checkMarkup('{}.\n',    '<p>.</p>');
+    checkMarkup('{}.\na',   '<p>. a</p>');
+    checkMarkup('{}..',     '<p>..</p>');
+    checkMarkup('{}..a..',  '<p>..a..</p>');
+    checkMarkup('..{}..',   '<p>....</p>');
+    checkMarkup('{a}',      '<p>a</p>');
+    checkMarkup('{{}',      '<p>{</p>');
+    checkMarkup('{}.a',     '<p><span class="wv-markup-a"></span></p>');
+    checkMarkup('{{}.a}.b', '<p><span class="wv-markup-b"><span class="wv-markup-a"></span></span></p>');
+    checkMarkup('{\n}.a',   '<p><span class="wv-markup-a"> </span></p>');
+    checkMarkup('{\n\n}.a', '<p><span class="wv-markup-a">  </span></p>');
+    checkMarkup('{}.a.',    '<p><span class="wv-markup-a"></span>.</p>');
+    checkMarkup('{}.a..',   '<p><span class="wv-markup-a"></span>..</p>');
+    checkMarkup('{}.a.a',   '<p><span class="wv-markup-a"></span></p>');
+    checkMarkup('{}.a.b',   '<p><span class="wv-markup-a wv-markup-b"></span></p>');
+    checkMarkup('{}.ab',    '<p><span class="wv-markup-ab"></span></p>');
+    checkMarkup('{}.ab.ac', '<p><span class="wv-markup-ab wv-markup-ac"></span></p>');
+    checkMarkup('{}.a..b',  '<p><span class="wv-markup-a"></span>..b</p>');
+    checkMarkup('{{{}.a',   '<p>{{<span class="wv-markup-a"></span></p>');
+  });
+  run("Markup", "markup-heading", function () {
+    checkMarkup('!',           '<p>!</p>');
+    checkMarkup('!\n',         '<p>!</p>');
+    checkMarkup('!\na',        '<p>! a</p>');
+    checkMarkup(' !',          '<p> !</p>');
+    checkMarkup('! ',          '<h1> </h1>');
+    checkMarkup('!a',          '<h1>a</h1>');
+    checkMarkup('!!a',         '<h2>a</h2>');
+    checkMarkup('!!!a',        '<h3>a</h3>');
+    checkMarkup('!!!!a',       '<h4>a</h4>');
+    checkMarkup('!!!!!a',      '<h5>a</h5>');
+    checkMarkup('!!!!!!a',     '<h6>a</h6>');
+    checkMarkup('!!!!!!!a',    '<h6>!a</h6>');
+    checkMarkup('a\n!b',       '<p>a !b</p>');
+    checkMarkup('a\n\n!b',     '<p>a</p><h1>b</h1>');
+    checkMarkup('!a\n!b',      '<h1>a</h1><h1>b</h1>');
+    checkMarkup('!a\n!!b',     '<h1>a</h1><h2>b</h2>');
+    checkMarkup('!a\n\n!b',    '<h1>a</h1><h1>b</h1>');
+    checkMarkup('!a\nb\n!c',   '<h1>a</h1><p>b !c</p>');
+    checkMarkup('!a\nb\n\n!c', '<h1>a</h1><p>b</p><h1>c</h1>');
+    checkMarkup('!{}',         '<h1></h1>');
+    checkMarkup('!{}.a',       '<h1><span class="wv-markup-a"></span></h1>');
+    checkMarkup('!a{}.b',      '<h1>a<span class="wv-markup-b"></span></h1>');
+    checkMarkup('!a{b}.c',     '<h1>a<span class="wv-markup-c">b</span></h1>');
+    checkMarkup('!a{b}.c ',    '<h1>a<span class="wv-markup-c">b</span> </h1>');
+  });
+  run("Markup", "markup-list", function () {
+    checkMarkup('*',           '<p>*</p>');
+    checkMarkup('*\n',         '<p>*</p>');
+    checkMarkup('**\n',        '<p>**</p>');
+    checkMarkup('*\na',        '<p>* a</p>');
+    checkMarkup('#',           '<p>#</p>');
+    checkMarkup('#\n',         '<p>#</p>');
+    checkMarkup('##\n',        '<p>##</p>');
+    checkMarkup('#\na',        '<p># a</p>');
+    checkMarkup(' *',          '<p> *</p>');
+    checkMarkup(' #',          '<p> #</p>');
+    checkMarkup('* ',          '<ul><li> </li></ul>');
+    checkMarkup('# ',          '<ol><li> </li></ol>');
+    checkMarkup('*a',          '<ul><li>a</li></ul>');
+    checkMarkup('**a',         '<ul><li><ul><li>a</li></ul></li></ul>');
+    checkMarkup('#a',          '<ol><li>a</li></ol>');
+    checkMarkup('##a',         '<ol><li><ol><li>a</li></ol></li></ol>');
+    checkMarkup('*#a',         '<ul><li>#a</li></ul>');
+    checkMarkup('#*a',         '<ol><li>*a</li></ol>');
+    checkMarkup('a\n*b',       '<p>a *b</p>');
+    checkMarkup('a\n\n*b',     '<p>a</p><ul><li>b</li></ul>');
+    checkMarkup('*a\nb',       '<ul><li>a</li></ul><p>b</p>');
+    checkMarkup('*a\n*b',      '<ul><li>a</li><li>b</li></ul>');
+    checkMarkup('*a\n\n*b',    '<ul><li>a</li></ul><ul><li>b</li></ul>');
+    checkMarkup('*a\n**b',     '<ul><li>a<ul><li>b</li></ul></li></ul>');
+    checkMarkup('**a\n**b',    '<ul><li><ul><li>a</li><li>b</li></ul></li></ul>');
+    checkMarkup('*a\n#b',      '<ul><li>a</li></ul><ol><li>b</li></ol>');
+    checkMarkup('*a\n##b',     '<ul><li>a<ol><li>b</li></ol></li></ul>');
+    checkMarkup('**a\n*b',     '<ul><li><ul><li>a</li></ul></li><li>b</li></ul>');
+    checkMarkup('*a\n**b\n*c', '<ul><li>a<ul><li>b</li></ul></li><li>c</li></ul>');
+    checkMarkup('*a\n##b\n*c', '<ul><li>a<ol><li>b</li></ol></li><li>c</li></ul>');
+    checkMarkup('*{}',         '<ul><li></li></ul>');
+    checkMarkup('#{}.a',       '<ol><li><span class="wv-markup-a"></span></li></ol>');
+    checkMarkup('#a{}.b',      '<ol><li>a<span class="wv-markup-b"></span></li></ol>');
+    checkMarkup('#a{b}.c',     '<ol><li>a<span class="wv-markup-c">b</span></li></ol>');
+    checkMarkup('#a{b}.c ',    '<ol><li>a<span class="wv-markup-c">b</span> </li></ol>');
+    checkMarkup('*a\n{}.b',    '<ul><li>a</li></ul><p><span class="wv-markup-b"></span></p>');
+    checkMarkup('{}.a\n*b',    '<p><span class="wv-markup-a"></span> *b</p>');
+    checkMarkup('{}.a\n\n*b',  '<p><span class="wv-markup-a"></span></p><ul><li>b</li></ul>');
+    //checkMarkup('##a\n*b',     '<ul><li><ol><li>a</li></ol></li><li>b</li></ul>'); WRONG
+    checkMarkup('!a\n*b',      '<h1>a</h1><ul><li>b</li></ul>');
+    checkMarkup('!\n\n*',      '<p>!</p><p>*</p>');
+    checkMarkup('!a\n!\n',     '<h1>a</h1><p>!</p>');
+  });
+  run("Markup", "markup-key-value", function () {
+    checkMarkup('$',            '<p>$</p>');
+    checkMarkup('$\n',          '<p>$</p>');
+    checkMarkup('$\na',         '<p>$ a</p>');
+    checkMarkup('$=',           '<p>$=</p>');
+    checkMarkup('$=a',          '<p>$=a</p>');
+    checkMarkup('$a',           '<p>$a</p>');
+    checkMarkup('$a\n',         '<p>$a</p>');
+    checkMarkup('$a\nb',        '<p>$a b</p>');
+    checkMarkup('$a=',          '<p>$a=</p>');
+    checkMarkup('$a=\n',        '<p>$a=</p>');
+    checkMarkup('$a=\nb',       '<p>$a= b</p>');
+    checkMarkup('${}={}',       '<dl><dt></dt><dd></dd></dl>');
+    checkMarkup('$a=b',         '<dl><dt>a</dt><dd>b</dd></dl>');
+    checkMarkup('$a=b\n',       '<dl><dt>a</dt><dd>b</dd></dl>');
+    checkMarkup('$a=b\n$c=d',   '<dl><dt>a</dt><dd>b</dd><dt>c</dt><dd>d</dd></dl>');
+    checkMarkup('$a=b\nc',      '<dl><dt>a</dt><dd>b</dd></dl><p>c</p>');
+    checkMarkup('a\n$b=c',      '<p>a $b=c</p>');
+    checkMarkup('a\n\n$b=c',    '<p>a</p><dl><dt>b</dt><dd>c</dd></dl>');
+    checkMarkup('$a=b\n\n$c=d', '<dl><dt>a</dt><dd>b</dd></dl><dl><dt>c</dt><dd>d</dd></dl>');
+    checkMarkup('$a=b\n*\n',    '<dl><dt>a</dt><dd>b</dd></dl><p>*</p>');
+    checkMarkup('$a=b\n$',      '<dl><dt>a</dt><dd>b</dd></dl><p>$</p>');
+    checkMarkup('$a=b\n$=',     '<dl><dt>a</dt><dd>b</dd></dl><p>$=</p>');
+    checkMarkup('$a=b\n$c',     '<dl><dt>a</dt><dd>b</dd></dl><p>$c</p>');
+    checkMarkup('$a=b\n$c=',    '<dl><dt>a</dt><dd>b</dd></dl><p>$c=</p>');
+    checkMarkup('$a=b\n$\n',    '<dl><dt>a</dt><dd>b</dd></dl><p>$</p>');
+    checkMarkup('$a=b\n$=\n',   '<dl><dt>a</dt><dd>b</dd></dl><p>$=</p>');
+    checkMarkup('$a=b\n$c\n',   '<dl><dt>a</dt><dd>b</dd></dl><p>$c</p>');
+    checkMarkup('$a=b\n$c=\n',  '<dl><dt>a</dt><dd>b</dd></dl><p>$c=</p>');
+  });
+  function checkMarkup(input, expected) {
+    var actual = $W.markup(input);
+    var check = actual === expected;
+    if (!check) {
+      log(escape(input));
+      log('actual:' + escape(actual));
+      log('expect:' + escape(expected));
+    }
+    assertTrue(check);
+  }
+  function escape(str) {
+    var out = '';
+    for(var i = 0, length = str.length; i < length; i++) {
+      var c = str.charAt(i);
+      switch(c) {
+        case '&': out += '&amp;'; break;
+        case '<': out += '&lt;'; break;
+        case '>': out += '&gt;'; break;
+        case '\n': out += '\\n'; break;
+        case '\r': out += '\\r'; break;
+        default: out += c;
+      };
+    }
+    return out;
+  }
+})(WAVE);

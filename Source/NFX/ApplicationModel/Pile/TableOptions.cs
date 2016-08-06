@@ -36,10 +36,10 @@ namespace NFX.ApplicationModel.Pile
 
         public const int DEFAULT_MAX_AGE_SEC_DEFAULT = 15 * 60;
 
-        
+
         public TableOptions(IConfigSectionNode node, bool nameRequired = true)
         {
-            if (nameRequired) 
+            if (nameRequired)
             if (node==null || node.AttrByName(Configuration.CONFIG_NAME_ATTR).Value.IsNullOrWhiteSpace())
                 throw new PileException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor($name=null|Empty)");
 
@@ -53,7 +53,7 @@ namespace NFX.ApplicationModel.Pile
         {
             if (name.IsNullOrWhiteSpace())
                 throw new PileException(StringConsts.ARGUMENT_ERROR + "TableOptions.ctor(name=null|Empty)");
-           
+
             m_Name = name;
         }
 
@@ -79,7 +79,7 @@ namespace NFX.ApplicationModel.Pile
         /// The value is dependent on bucket count, so the actual table capacity is bucket-dependent
         /// </summary>
         [Config]
-        public long MinimumCapacity 
+        public long MinimumCapacity
         {
           get{ return m_MinimumCapacity;}
           set { m_MinimumCapacity = value < 0 ? 0 : value;}
@@ -90,18 +90,18 @@ namespace NFX.ApplicationModel.Pile
         /// Zero = no limit
         /// </summary>
         [Config]
-        public long MaximumCapacity 
+        public long MaximumCapacity
         {
           get{ return m_MaximumCapacity;}
           set { m_MaximumCapacity = value < 0 ? 0 : value;}
         }
-            
-        
+
+
         /// <summary>
         /// How many elements an empty table should contain. The value is dependent on bucket count, so the actual table capacity is bucket-dependent
         /// </summary>
         [Config]
-        public long InitialCapacity 
+        public long InitialCapacity
         {
           get{ return m_InitialCapacity;}
           set { m_InitialCapacity = value < INITIAL_CAPACITY_MIN ? INITIAL_CAPACITY_MIN : value;}
@@ -112,7 +112,7 @@ namespace NFX.ApplicationModel.Pile
         /// Defines the factor of growth - how much does a table grow when HWM is reached. The number has to be at least 1.2d
         /// </summary>
         [Config]
-        public double GrowthFactor 
+        public double GrowthFactor
         {
           get{ return m_GrowthFactor;}
           set { m_GrowthFactor = value < GROWTH_FACTOR_MIN ? GROWTH_FACTOR_MIN : value > GROWTH_FACTOR_MAX ? GROWTH_FACTOR_MAX : value;}
@@ -122,7 +122,7 @@ namespace NFX.ApplicationModel.Pile
         /// Defines the factor of shrinking - how much does a table shrink when LWM is reached. The number has to be at most 0.7d
         /// </summary>
         [Config]
-        public double ShrinkFactor 
+        public double ShrinkFactor
         {
           get{ return m_ShrinkFactor;}
           set { m_ShrinkFactor = value < SHRINK_FACTOR_MIN ? SHRINK_FACTOR_MIN : value > SHRINK_FACTOR_MAX ? SHRINK_FACTOR_MAX : value;}
@@ -132,7 +132,7 @@ namespace NFX.ApplicationModel.Pile
         /// Defines the load factor below which the shrinking is triggered
         /// </summary>
         [Config]
-        public double LoadFactorLWM 
+        public double LoadFactorLWM
         {
           get{ return m_LoadFactorLWM;}
           set { m_LoadFactorLWM = value < LOAD_FACTOR_LWM_MIN ? LOAD_FACTOR_LWM_MIN : value > LOAD_FACTOR_LWM_MAX ? LOAD_FACTOR_LWM_MAX : value;}
@@ -142,7 +142,7 @@ namespace NFX.ApplicationModel.Pile
         /// Defines the load factor above which the growth is triggered
         /// </summary>
         [Config]
-        public double LoadFactorHWM 
+        public double LoadFactorHWM
         {
           get{ return m_LoadFactorHWM;}
           set { m_LoadFactorHWM = value < LOAD_FACTOR_HWM_MIN ? LOAD_FACTOR_HWM_MIN : value > LOAD_FACTOR_HWM_MAX ? LOAD_FACTOR_HWM_MAX : value;}
@@ -176,8 +176,8 @@ namespace NFX.ApplicationModel.Pile
         /// </summary>
         public object AsExternalParameter
         {
-          get 
-          { 
+          get
+          {
             var mc = new MemoryConfiguration();
             mc.Create("opt");
 
@@ -187,19 +187,19 @@ namespace NFX.ApplicationModel.Pile
             }
             return CoreConsts.EXT_PARAM_CONTENT_LACONIC + mc.ToLaconicString(CodeAnalysis.Laconfig.LaconfigWritingOptions.Compact);
           }
-          set 
+          set
           {
             try
             {
                   if (value==null) return;
 
-                  if (value is IConfigSectionNode) 
+                  if (value is IConfigSectionNode)
                   {
                     var name = m_Name;
                     ConfigAttribute.Apply(this, value as IConfigSectionNode);
                     m_Name = name;
                   }
-            
+
                   ConfigSectionNode node = null;
 
                   if (value is JSONDataMap)
@@ -240,7 +240,7 @@ namespace NFX.ApplicationModel.Pile
             }
           }
 
-           
+
         }
 
 
@@ -255,9 +255,9 @@ namespace NFX.ApplicationModel.Pile
              ser.Serialize(ms, this);
              ms.Position = 0;
              return ser.Deserialize(ms) as TableOptions;
-          } 
+          }
         }
 
-        
+
     }
 }

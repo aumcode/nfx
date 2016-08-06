@@ -44,7 +44,7 @@ namespace NFX.Wave.Filters
     #endregion
 
     #region Protected
-     
+
       protected override void DoBeforeWork(WorkContext work, JSONDataMap matched)
       {
         var txt = matched[VAR_ERROR].AsString();
@@ -64,7 +64,7 @@ namespace NFX.Wave.Filters
       }
 
     #endregion
-          
+
   }
 
 }

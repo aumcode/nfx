@@ -23,7 +23,7 @@ using System.Text;
 
 namespace NFX.WinForms.Controls.GridKit
 {
-  
+
   /// <summary>
   /// Holds mappings of rows to grid vertical plane
   /// </summary>
@@ -34,8 +34,8 @@ namespace NFX.WinForms.Controls.GridKit
        return this.FirstOrDefault( entry => entry.Row == row) != null;
      }
   }
-  
-  
+
+
   /// <summary>
   /// Contains mapping information of rows to vertical grid plane
   /// </summary>
@@ -45,6 +45,6 @@ namespace NFX.WinForms.Controls.GridKit
     public int Top;
     public int Height;
   }
-  
-  
+
+
 }

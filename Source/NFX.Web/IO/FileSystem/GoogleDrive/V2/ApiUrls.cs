@@ -64,7 +64,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
       {
         return "upload/drive/v2/files/{0}".FormatUri(id);
       }
-    
+
       public static Uri Files(string parentId)
       {
         return "/drive/v2/files?q=trashed = false and '{0}' in parents and mimeType != 'application/vnd.google-apps.folder'".FormatUri(parentId);

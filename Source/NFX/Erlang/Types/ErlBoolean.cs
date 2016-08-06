@@ -25,7 +25,7 @@ namespace NFX.Erlang
   /// <summary>
   /// Provides a C# representation of Erlang floats and doubles. Erlang
   /// defines only one floating point numeric type
-  /// </summary>	
+  /// </summary>
   public struct ErlBoolean : IErlObject<bool>
   {
   #region .ctor

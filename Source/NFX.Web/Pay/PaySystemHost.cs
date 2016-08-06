@@ -21,15 +21,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NFX.Environment;
-using NFX.Web.Pay.Tax;
+using NFX.ServiceModel;
 
 namespace NFX.Web.Pay
 {
   /// <summary>
   /// Represents a process-global entity that resolves account handle into actual account data
   /// and fetches existing transactions.
-  /// This design provides an indirection level between pay systems (like Stripe, PayPal, Bank etc.) and 
-  /// particular application data store implementation as it decouples system-internal formats of transaction and 
+  /// This design provides an indirection level between pay systems (like Stripe, PayPal, Bank etc.) and
+  /// particular application data store implementation as it decouples system-internal formats of transaction and
   /// account storage from provider-internal data (i.e. PayPal payment token string).
   /// The instance of implementor is a singleton accessible via PaySystem.PaySystemHost
   /// </summary>
@@ -55,11 +55,6 @@ namespace NFX.Web.Pay
     /// Currency market
     /// </summary>
     ICurrencyMarket CurrencyMarket { get; }
-
-    /// <summary>
-    /// Returns tax calculation logic
-    /// </summary>
-    ITaxCalculator TaxCalc { get; }
   }
 
   /// <summary>
@@ -69,8 +64,49 @@ namespace NFX.Web.Pay
 
   /// <summary>
   /// Denotes a context of transaction execution.
-  /// Can be used to provide additional information 
+  /// Can be used to provide additional information
   /// </summary>
   public interface ITransactionContext { }
 
+  public interface IOrderTransactionContext : ITransactionContext
+  {
+    object CustomerId { get; }
+    object OrderId { get; }
+    object VendorId { get; }
+    bool IsNewCustomer { get; }
+  }
+
+  public abstract class PaySystemHost : ServiceWithInstrumentationBase<object>, IPaySystemHostImplementation
+  {
+
+
+    #region .ctor
+    protected PaySystemHost(string name, IConfigSectionNode node): this(name, node, null) { }
+
+    protected PaySystemHost(string name, IConfigSectionNode node, object director): base(director)
+    {
+      if (node != null) Configure(node);
+      if (name.IsNotNullOrWhiteSpace()) this.Name = name;
+    }
+    #endregion
+
+    #region Properties
+    /// <summary>
+    /// Implements IInstrumentable
+    /// </summary>
+    public override bool InstrumentationEnabled
+    {
+      get { return false; }
+      set { }
+    }
+    #endregion
+
+    public abstract ICurrencyMarket CurrencyMarket { get; }
+
+    public abstract IActualAccountData AccountToActualData(ITransactionContext context, Account account);
+
+    public abstract Transaction FetchTransaction(ITransactionContext context, object id);
+
+    public abstract object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type);
+  }
 }

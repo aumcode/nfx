@@ -24,7 +24,7 @@ using NFX.CodeAnalysis.Source;
 
 namespace NFX.CodeAnalysis
 {
-    
+
     /// <summary>
     /// Provides base implementation for common code processors
     /// </summary>
@@ -37,7 +37,7 @@ namespace NFX.CodeAnalysis
               m_Messages = messages ?? (context!=null? context.Messages : null);
               m_ThrowErrors = throwErrors;
         }
-       
+
         private IAnalysisContext m_Context;
         private MessageList   m_Messages;
         private bool          m_ThrowErrors;
@@ -49,27 +49,27 @@ namespace NFX.CodeAnalysis
         /// This entity may also contain compiler/parser/lexer options etc.
         /// </summary>
         public IAnalysisContext Context { get {return m_Context;} }
-                                                
+
 
 
         /// <summary>
         /// References message list that lexer emitts messages into. May be null
         /// </summary>
-        public MessageList Messages{ get { return m_Messages; } } 
+        public MessageList Messages{ get { return m_Messages; } }
 
         /// <summary>
         /// When true, throws an exception on the first error even when MessageList is set.
         /// When MessageList is not set any lexing error is always thrown regardless of this parameter
         /// </summary>
-        public bool ThrowErrors{ get { return m_ThrowErrors; } } 
+        public bool ThrowErrors{ get { return m_ThrowErrors; } }
 
 
         /// <summary>
         /// Returns language that this processor is capable of processing
         /// </summary>
         public abstract Language Language { get; }
-        
-        
+
+
 
         /// <summary>
         /// Returns string representation of message code which is output by this processor
@@ -82,7 +82,7 @@ namespace NFX.CodeAnalysis
             if (Messages==null && type!=MessageType.Error && type!=MessageType.InternalError) return;
 
             var msg = new Message(srcRef, type, code, this, position ?? SourcePosition.UNASSIGNED, token, text, exception);
-            
+
             if (type==MessageType.Error || type==MessageType.InternalError)
              if (ThrowErrors || Messages==null)
              {
@@ -90,7 +90,7 @@ namespace NFX.CodeAnalysis
              }
 
 
-            Messages.Add( msg );   
+            Messages.Add( msg );
         }
 
     }
@@ -107,7 +107,7 @@ namespace NFX.CodeAnalysis
         {
             m_SourceCodeReference = srcRef;
         }
-       
+
         private SourceCodeRef m_SourceCodeReference;
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace NFX.CodeAnalysis
             if (Messages==null && type!=MessageType.Error && type!=MessageType.InternalError) return;
 
             var msg = new Message(m_SourceCodeReference, type, code, this, position, token, text, exception);
-            
+
             if (type==MessageType.Error || type==MessageType.InternalError)
              if (ThrowErrors || Messages==null)
              {
@@ -129,7 +129,7 @@ namespace NFX.CodeAnalysis
              }
 
 
-            Messages.Add( msg );   
+            Messages.Add( msg );
         }
 
     }

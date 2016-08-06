@@ -28,7 +28,7 @@ using System.Linq;
 
 namespace NFX.Media.TagCodes.QR
 {
-  public class QRCorrectionLevel 
+  public class QRCorrectionLevel
   {
     #region Static
 

@@ -37,7 +37,7 @@ namespace NFX.Serialization
         /// </summary>
         public static ConstructorInfo GetISerializableCtorInfo(Type type)
         {
-           return type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, 
+           return type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance,
                                              null,
                                              new Type[] { typeof(SerializationInfo), typeof(StreamingContext)},
                                              null);
@@ -58,7 +58,7 @@ namespace NFX.Serialization
            if (!s_CreateFuncCache.TryGetValue(type, out f))
            {
              var ctorEmpty = type.GetConstructor(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance,
-                                             null, 
+                                             null,
                                              Type.EmptyTypes,
                                              null);
 
@@ -73,9 +73,9 @@ namespace NFX.Serialization
 
              //20150715 DKh, the empty .ctor SHOULD NOT be called for types that have SERIALIZABLE .ctor which is called later(after object init)
              if (ctorEmpty!=null && skipAttr==null && ctorSer==null)
-               f = Expression.Lambda<Func<object>>(Expression.New(type)).Compile(); 
+               f = Expression.Lambda<Func<object>>(Expression.New(type)).Compile();
              else
-               f = () => FormatterServices.GetUninitializedObject(type);  
+               f = () => FormatterServices.GetUninitializedObject(type);
 
              var cache = new Dictionary<Type, Func<object>>(s_CreateFuncCache);
              cache[type] = f;
@@ -91,7 +91,7 @@ namespace NFX.Serialization
                 private static FieldInfo[] getGetSerializableFields(Type type)
                 {
                     //20140926 DKh +DeclaredOnly
-                    var local = type.GetFields(BindingFlags.DeclaredOnly | 
+                    var local = type.GetFields(BindingFlags.DeclaredOnly |
                                                 BindingFlags.Instance  |
                                                 BindingFlags.NonPublic |
                                                 BindingFlags.Public)
@@ -123,8 +123,8 @@ namespace NFX.Serialization
           return result;
         }
 
-        
-      
+
+
         /// <summary>
         /// Finds methods decorated by [On(De)Seriali(zing/zed)]
         /// </summary>
@@ -158,7 +158,7 @@ namespace NFX.Serialization
         }
 
         /// <summary>
-        /// Calls method in the list that was returned by a call to FindSerializationAttributedMethods 
+        /// Calls method in the list that was returned by a call to FindSerializationAttributedMethods
         /// </summary>
         /// <param name="methods">list that was returned by a call to FindSerializationAttributedMethods</param>
         /// <param name="instance">Instance to invoke mathods on</param>
@@ -186,7 +186,7 @@ namespace NFX.Serialization
         public static void WalkArrayWrite(Array arr, Action<object> each)
         {
             var rank = arr.Rank;
-            
+
             if (rank==1)
             {
                 var i = arr.GetLowerBound(0);
@@ -204,10 +204,10 @@ namespace NFX.Serialization
          /// <summary>
         /// Performs an action on each element of a possibly mutidimensional array
         /// </summary>
-        public static void WalkArrayRead<T>(Array arr, Func<T> each)  
+        public static void WalkArrayRead<T>(Array arr, Func<T> each)
         {
             var rank = arr.Rank;
-            
+
             if (rank==1)
             {
                 var i = arr.GetLowerBound(0);
@@ -226,8 +226,8 @@ namespace NFX.Serialization
         /// Navigates through JSON datamap by subsequent node names.
         /// </summary>
         /// <returns>
-        /// null if navigation path is not exists. 
-        /// JSONDataMap if navigation ends up with non-leaf node. 
+        /// null if navigation path is not exists.
+        /// JSONDataMap if navigation ends up with non-leaf node.
         /// object if navigation ends up with leaf node.</returns>
         public static object GetNodeByPath(this JSONDataMap json, params string[] nodeNames)
         {
@@ -253,7 +253,7 @@ namespace NFX.Serialization
             var top =  arr.GetUpperBound(di);
             for(idxs[di] = bot; idxs[di] <= top; idxs[di]++)
             {
-                if (di<idxs.Length-1) 
+                if (di<idxs.Length-1)
                     doDimensionGetValue(arr, idxs, di + 1, each);
                 else
                     each( arr.GetValue(idxs) );
@@ -267,7 +267,7 @@ namespace NFX.Serialization
             var top =  arr.GetUpperBound(di);
             for(idxs[di] = bot; idxs[di] <= top; idxs[di]++)
             {
-                if (di<idxs.Length-1) 
+                if (di<idxs.Length-1)
                     doDimensionSetValue(arr, idxs, di + 1, each);
                 else
                     arr.SetValue( each(), idxs );
@@ -278,10 +278,10 @@ namespace NFX.Serialization
 
 
 
-        
 
 
-        
+
+
 
     }
 }

@@ -34,7 +34,7 @@ namespace NFX.CodeAnalysis.CSharp
     {
       return (c >= '0' && c <= '9');
     }
-    
+
     /// <summary>
     /// Checks whether supplied char is suitable for a part of C# id
     /// </summary>

@@ -42,27 +42,27 @@ namespace NFX.IO.Net.Gate
       public const string CONFIG_VARDEF_SECTION   = "var-def";
 
       public const string CONFIG_ADDRESS_SECTION   = "address";
-      
+
       public const string CONFIG_DEFAULT_ACTION_ATTR = "default-action";
 
       public const string PATTERN_CAPTURE_WC = "*";
-      
+
       private const int THREAD_GRANULARITY_MS = 1000;
     #endregion
 
           #region inner class
-              
+
               public class State
               {
-                internal State(NetGate gate) 
+                internal State(NetGate gate)
                 {
-                  Gate = gate; 
+                  Gate = gate;
                   Rules     = new OrderedRegistry<Rule>();
                   Groups    = new OrderedRegistry<Group>();
                   VarDefs   = new Registry<VarDef>();
                   NetState  = new ConcurrentDictionary<string,NetSiteState>(System.Environment.ProcessorCount * 8, 1024);
                 }
-                
+
                 [Config] public GateAction DefaultAction;
                 public readonly NetGate                   Gate;
                 public readonly OrderedRegistry<Rule>     Rules;
@@ -106,11 +106,11 @@ namespace NFX.IO.Net.Gate
                   foreach(var cn in node.Children.Where(cn=>cn.IsSameName(CONFIG_RULE_SECTION)))
                     if(!Rules.Register( FactoryUtils.Make<Rule>(cn, typeof(Rule), args: new object[]{ cn })) )
                        throw new NetGateException(StringConsts.NETGATE_CONFIG_DUPLICATE_ENTITY_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, CONFIG_RULE_SECTION));
-                  
+
                   foreach(var cn in node.Children.Where(cn=>cn.IsSameName(CONFIG_GROUP_SECTION)))
                     if(!Groups.Register( FactoryUtils.Make<Group>(cn, typeof(Group), args: new object[]{ cn })) )
                        throw new NetGateException(StringConsts.NETGATE_CONFIG_DUPLICATE_ENTITY_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, CONFIG_GROUP_SECTION));
-                  
+
                   foreach(var cn in node.Children.Where(cn=>cn.IsSameName(CONFIG_VARDEF_SECTION)))
                     if(!VarDefs.Register( FactoryUtils.Make<VarDef>(cn, typeof(VarDef), args: new object[]{ cn })) )
                        throw new NetGateException(StringConsts.NETGATE_CONFIG_DUPLICATE_ENTITY_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, CONFIG_VARDEF_SECTION));
@@ -134,7 +134,7 @@ namespace NFX.IO.Net.Gate
     #endregion
 
     #region Fields
-      
+
       private bool m_Enabled = true;
 
       private State m_IncomingState;
@@ -146,11 +146,11 @@ namespace NFX.IO.Net.Gate
 
     #region Properties
 
-      
+
       public override string ComponentCommonName { get { return "gate"; }}
-      
+
       /// <summary>
-      /// Returns gate state 
+      /// Returns gate state
       /// </summary>
       public State this[TrafficDirection direction] { get{ return direction==TrafficDirection.Incoming ? m_IncomingState : m_OutgoingState; } }
 
@@ -180,7 +180,7 @@ namespace NFX.IO.Net.Gate
         return this.CheckTraffic(traffic, out rule);
       }
 
-      
+
       /// <summary>
       /// Checks whether the specified traffic is allowed or denied.
       /// Returns the rule that determined the allow/deny outcome or null when no rule matched
@@ -267,11 +267,11 @@ namespace NFX.IO.Net.Gate
           Exception = error,
           Parameters = pars
         };
-      
+
         if (related.HasValue)
           msg.RelatedTo = related.Value;
 
-        App.Log.Write(msg);     
+        App.Log.Write(msg);
       }
 
     #endregion
@@ -290,7 +290,7 @@ namespace NFX.IO.Net.Gate
           }
           catch(Exception error)
           {
-            Log(MessageType.CatastrophicError, error.ToMessageWithType(), "threadSpin()", error); 
+            Log(MessageType.CatastrophicError, error.ToMessageWithType(), "threadSpin()", error);
           }
           Thread.Sleep(THREAD_GRANULARITY_MS);
         }
@@ -299,7 +299,7 @@ namespace NFX.IO.Net.Gate
       private void process(State state)
       {
           var now = DateTime.UtcNow;
-        
+
           List<NetSiteState> empty = new List<NetSiteState>();//this will collect NetSiteState instances without any vars left - need to be deleted
           foreach(var netState in state.NetState.Select(kvp=>kvp.Value))
           {
@@ -312,23 +312,23 @@ namespace NFX.IO.Net.Gate
               {
                 var varDef = state.VarDefs[kvp.Key];
                 if (varDef==null) continue;//variable not found in definition. Keep as-is
-                
+
                 double reduction = (double)varDef.DecayBy * (elapsedSec / (double)varDef.IntervalSec);//Interval is never less than 1 sec
                 int intReduction = (int)reduction;
 
                 if (intReduction<1) continue;
-              
+
                 netState.m_LastTouch = now;
-                
+
                 var _v = kvp.Value;
                 var vval = _v.Value;
-                
+
                 if(vval<0)
                 {
                   vval+=intReduction;
                   if (vval>0) vval = 0;
                 }
-                else 
+                else
                 {
                   vval-=intReduction;
                   if (vval<0) vval = 0;
@@ -370,20 +370,20 @@ namespace NFX.IO.Net.Gate
       private void setVariable(bool inc, TrafficDirection direction, string address, string varName, int value)
       {
         if (!Running || address.IsNullOrWhiteSpace() || varName.IsNullOrWhiteSpace() || value==0) return;
-        
+
         var state = this[direction];
         var grp = state.FindGroupForAddress(address);
-        
+
         var key = grp==null ? address : grp.Key;
 
         var nstate = state.NetState.GetOrAdd(key, (k) => grp==null ? new NetSiteState(address) : new NetSiteState(grp));
-        
+
         lock(nstate)
-        {            
+        {
           if (inc)
           {
            NetSiteState._value vval;
-           if (!nstate.m_Variables.TryGetValue(varName, out vval)) 
+           if (!nstate.m_Variables.TryGetValue(varName, out vval))
            {
              nstate.m_Variables[varName] = vval = new NetSiteState._value();
            }

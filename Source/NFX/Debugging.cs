@@ -224,7 +224,7 @@ namespace NFX
     public static class Debugging
     {
         #region CONSTS
-            
+
             public const string CONFIG_DEFAULT_DEBUG_ACTION_ATTR = "debug-default-action";
             public const string CONFIG_DEBUG_CONF_REFRESH_ATTR   = "debug-conf-refresh";
             public const string CONFIG_TRACE_DISABLE_ATTR        = "trace-disable";
@@ -250,7 +250,7 @@ namespace NFX
                     s_ConfRefresh = App.ConfigRoot.AttrByName(CONFIG_DEBUG_CONF_REFRESH_ATTR).ValueAsBool(false);
 
                 DebugAction action = (s_ConfRefresh.Value) ? ReadDefaultDebugActionFromConfig() : s_DefaultDebugAction;
-    
+
                 return (action == DebugAction.Default) ? DebugAction.ThrowAndLog : action;
             }
             set

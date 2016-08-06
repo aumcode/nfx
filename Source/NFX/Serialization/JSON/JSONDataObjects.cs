@@ -31,7 +31,7 @@ namespace NFX.Serialization.JSON
     {
     }
 
-    
+
     /// <summary>
     /// Represents a data transfer object (DTO) JSON map, that associates keys with values
     /// </summary>
@@ -60,18 +60,18 @@ namespace NFX.Serialization.JSON
 
           int queryLen = content.Length;
           int idx = 0;
-          
+
           while (idx < queryLen)
           {
             int ampIdx = content.IndexOf('&', idx);
             int kvLen = (ampIdx != -1) ? ampIdx - idx : queryLen - idx;
-          
+
             if (kvLen < 1)
             {
               idx = ampIdx + 1;
               continue;
             }
-          
+
             int eqIdx = content.IndexOf('=', idx, kvLen);
             if (eqIdx == -1)
             {
@@ -85,17 +85,17 @@ namespace NFX.Serialization.JSON
               {
                 var key = Uri.UnescapeDataString(content.Substring(idx, keyLen).Replace('+',' '));
                 var val = Uri.UnescapeDataString(content.Substring(eqIdx + 1, kvLen - keyLen - 1).Replace('+',' '));
-          
+
                 result.Add(key, val);
               }
             }
-          
+
             idx += kvLen + 1;
           }
-          
+
           return result;
         }
-        
+
 
         public JSONDataMap(): base(StringComparer.InvariantCulture)
         {
@@ -112,12 +112,12 @@ namespace NFX.Serialization.JSON
 
         }
 
-        
+
         public readonly bool CaseSensitive;
 
         public new object this[string key]
         {
-          get 
+          get
           {
             object result;
             if (base.TryGetValue(key, out result)) return result;
@@ -137,7 +137,7 @@ namespace NFX.Serialization.JSON
         public JSONDataMap Append(JSONDataMap other, bool deep = false)
         {
           if (other==null) return this;
-        
+
           foreach(var kvp in other)
           {
             var here = this[kvp.Key];
@@ -176,12 +176,12 @@ namespace NFX.Serialization.JSON
            if (cmap!=null)
             buildNode( node.AddChildNode(kvp.Key), cmap);
            else
-            node.AddAttributeNode(kvp.Key, kvp.Value);   
+            node.AddAttributeNode(kvp.Key, kvp.Value);
           }
         }
 
     }
-    
+
     /// <summary>
     /// Represents a data transfer object (DTO) JSON array, that holds a list of values
     /// </summary>

@@ -51,10 +51,10 @@ namespace gluec
 
 
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           ConsoleUtils.WriteMarkupContent( typeof(Program).GetText("Welcome.txt") );
 
           if (config.Root["?", "h", "help"].Exists)
@@ -91,7 +91,7 @@ namespace gluec
           compiler.OutPath = Path.GetDirectoryName(afn);
           compiler.FilePerContract = true;
           compiler.NamespaceFilter = config.Root["f", "flt", "filter"].AttrByIndex(0).Value;
-          
+
           ConfigAttribute.Apply(compiler, config.Root["o", "opt", "options"]);
 
           ConsoleUtils.Info("Namespace filter: " + compiler.NamespaceFilter);

@@ -28,7 +28,7 @@ namespace NFX.IO.Net.Gate
   /// Allow/Deny
   /// </summary>
   public enum GateAction {Deny=0, Allow}
-   
+
   /// <summary>
   /// Stipulates general contract for nrtwork gates - entities similar to firewall.
   /// Network gates allow/deny in/out traffic based on a set of rules

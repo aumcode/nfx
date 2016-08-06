@@ -37,7 +37,7 @@ namespace NFX.Throttling
             private NOPThrottle() {}
 
         #endregion
-            
+
         #region Private
 
             private static NOPThrottle s_Instance = new NOPThrottle();

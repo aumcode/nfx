@@ -38,7 +38,7 @@ namespace buildinfo
         var day = data.Day;
         if (day>9) wri.Write(day);
         else { wri.Write('0'); wri.Write(day); }
-            
+
         wri.Write('T');
 
         var hour = data.Hour;
@@ -67,7 +67,7 @@ namespace buildinfo
             else { wri.Write("00"); wri.Write(ms); }
         }
 
-            
+
         wri.Write('Z');//UTC
 
         wri.Flush();

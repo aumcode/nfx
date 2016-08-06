@@ -29,7 +29,7 @@ namespace NFX.Glue.Native
     internal class Consts
     {
         public const string SLIM_FORMAT = "slim";
-        
+
         /// <summary>
         /// Size of the packet delimiting field
         /// </summary>
@@ -39,7 +39,7 @@ namespace NFX.Glue.Native
         public const int DEFAULT_RCV_BUFFER_SIZE    = 16 * 1024;
         public const int DEFAULT_SND_BUFFER_SIZE    = 16 * 1024;
 
-        
+
         public const int MAX_MSG_SIZE_LOW_BOUND     = 0xff;
 
         public const int DEFAULT_SERIALIZER_STREAM_CAPACITY = 32 * 1024;

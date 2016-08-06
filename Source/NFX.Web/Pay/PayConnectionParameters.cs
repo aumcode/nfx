@@ -66,7 +66,7 @@ namespace NFX.Web.Pay
       public PayConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
       {
         var conf = Configuration.ProviderLoadFromString(connStr, format).Root;
-      } 
+      }
 
 	  #endregion
 
@@ -74,7 +74,7 @@ namespace NFX.Web.Pay
 
 		  [Config] public string Name { get; set; }
 
-      public User User {get; set;} 
+      public User User {get; set;}
 
 	  #endregion
 

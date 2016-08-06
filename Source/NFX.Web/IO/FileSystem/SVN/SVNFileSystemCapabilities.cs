@@ -109,7 +109,7 @@ namespace NFX.IO.FileSystem.SVN
       public bool SupportsAsyncronousAPI { get { return false; } }
 
     #endregion
-    
+
   } //SVNFileSystemCapabilities
 
 }

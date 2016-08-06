@@ -53,11 +53,11 @@ namespace NFX.Templatization
       /// </summary>
       new T GetSourceContent();
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     /// <summary>
     /// Represents a string template source that comes from a file
     /// </summary>

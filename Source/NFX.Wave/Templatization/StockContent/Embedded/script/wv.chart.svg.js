@@ -90,31 +90,31 @@ WAVE.Chart.SVG = (function () {
 
     var fd0 = _d0;
     this.d0 = function (val) {
-      if (typeof (val) != tUNDEFINED) fd0 = val;
+      if (typeof (val) !== tUNDEFINED) fd0 = val;
       return fd0;
     };
 
     var fd1 = _d1;
     this.d1 = function (val) {
-      if (typeof (val) != tUNDEFINED) fd1 = val;
+      if (typeof (val) !== tUNDEFINED) fd1 = val;
       return fd1;
     };
 
     var fv0 = _v0;
     this.v0 = function (val) {
-      if (typeof (val) != tUNDEFINED) fv0 = val;
+      if (typeof (val) !== tUNDEFINED) fv0 = val;
       return fv0;
     };
 
     var fv1 = _v1;
     this.v1 = function (val) {
-      if (typeof (val) != tUNDEFINED) fv1 = val;
+      if (typeof (val) !== tUNDEFINED) fv1 = val;
       return fv1;
     };
 
     var fIsLinear = _isLinear;
     this.isLinear = function (val) {
-      if (typeof (val) != tUNDEFINED) fIsLinear = val;
+      if (typeof (val) !== tUNDEFINED) fIsLinear = val;
       return fIsLinear;
     };
 
@@ -180,7 +180,7 @@ WAVE.Chart.SVG = (function () {
 
     var fDataType = cfg.dataType || published.DataType.NUMBER;
     this.dataType = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fDataType) {
+      if (typeof (val) !== tUNDEFINED && val !== fDataType) {
         fDataType = val;
         self.fireChanged();
       }
@@ -225,7 +225,7 @@ WAVE.Chart.SVG = (function () {
 
     var fIsLinear = cfg.isLinear !== false;
     this.isLinear = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fIsLinear) {
+      if (typeof (val) !== tUNDEFINED && val !== fIsLinear) {
         fIsLinear = val;
         self.fireChanged();
       }
@@ -243,7 +243,7 @@ WAVE.Chart.SVG = (function () {
 
     var fTickLength = 5;
     this.tickLength = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fTickLength) {
+      if (typeof (val) !== tUNDEFINED && val !== fTickLength) {
         fTickLength = val;
         self.fireChanged();
       }
@@ -261,7 +261,7 @@ WAVE.Chart.SVG = (function () {
 
     var fDVInfo;
     this.dvInfo = function (val) {
-      if (typeof (val) != tUNDEFINED) fDVInfo = val;
+      if (typeof (val) !== tUNDEFINED) fDVInfo = val;
       return fDVInfo;
     };
 
@@ -366,7 +366,7 @@ WAVE.Chart.SVG = (function () {
 
   published.Axis.prototype.labelValToStr = function (val) {
     var res;
-    if (this.dataType() == published.DataType.NUMBER) {
+    if (this.dataType() === published.DataType.NUMBER) {
       res = WAVE.siNum(val, 2);
     } else {
       res = WAVE.toUSDateTimeString(val);
@@ -377,7 +377,7 @@ WAVE.Chart.SVG = (function () {
   published.Axis.prototype.calcLabelRc = function (svgEl, min, max) {
     var str;
 
-    if (this.dataType() == published.DataType.NUMBER) {
+    if (this.dataType() === published.DataType.NUMBER) {
       var strMin = this.labelValToStr(min);
       var strMax = this.labelValToStr(max);
       str = strMax.length >= strMin.length ? strMax : strMin;
@@ -401,7 +401,7 @@ WAVE.Chart.SVG = (function () {
 
     var fEnabled = true;
     this.enabled = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fEnabled) { 
+      if (typeof (val) !== tUNDEFINED && val !== fEnabled) { 
         fEnabled = val;
         fireChanged();
       }
@@ -527,7 +527,7 @@ WAVE.Chart.SVG = (function () {
       min -= this.minMargin();
 
     var max = this.max() || dataSets.wSelect(function (ds) { return ds.getMaxX(); }).wMax();
-    if (max === null) max = (this.dataType() == published.DataType.DATE) ? new Date() : 0;
+    if (max === null) max = (this.dataType() === published.DataType.DATE) ? new Date() : 0;
     if (this.dataType() === published.DataType.DATE)
       max = new Date(max.getTime() + this.maxMargin() * 1000);
     else 
@@ -548,12 +548,12 @@ WAVE.Chart.SVG = (function () {
     var labelHeight = lblRc.height;
     var labelMargin = 5;
 
-    if (this.markType() == published.AxisMarkType.AUTO) {
-      if (this.dataType() == published.DataType.DATE)
+    if (this.markType() === published.AxisMarkType.AUTO) {
+      if (this.dataType() === published.DataType.DATE)
         _ticks = this.getVTimeTicks(area.left(), area.right(), minMaxs.min, minMaxs.max, labelLength, labelMargin);
       else
         _ticks = this.getVTicks(area.left(), area.right(), minMaxs.min, minMaxs.max, labelLength, labelMargin);
-    } else if (this.markType() == published.AxisMarkType.EXACT_BY_POINTS) {
+    } else if (this.markType() === published.AxisMarkType.EXACT_BY_POINTS) {
       var primaryDs = dataSets[0];
       _ticks = [];
       for (var i in primaryDs) {
@@ -595,7 +595,7 @@ WAVE.Chart.SVG = (function () {
 
     var fEnabled = true;
     this.enabled = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fEnabled) { 
+      if (typeof (val) !== tUNDEFINED && val !== fEnabled) { 
         fEnabled = val;
         fireChanged();
       }
@@ -664,7 +664,7 @@ WAVE.Chart.SVG = (function () {
 
     var fHorizontalMargin = cfg.horizontalMargin || 3;
     this.horizontalMargin = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fHorizontalMargin) {
+      if (typeof (val) !== tUNDEFINED && val !== fHorizontalMargin) {
         fHorizontalMargin = val;
         self.fireChanged();
       }
@@ -673,7 +673,7 @@ WAVE.Chart.SVG = (function () {
 
     var fMinWidth = cfg.minWidth || 0;
     this.minWidth = function(val) {
-      if (typeof (val) != tUNDEFINED && val !== fMinWidth) {
+      if (typeof (val) !== tUNDEFINED && val !== fMinWidth) {
         fMinWidth = val;
         self.fireChanged();
       }
@@ -682,7 +682,7 @@ WAVE.Chart.SVG = (function () {
 
     var fIsLeft = cfg.isLeft !== false;
     this.isLeft = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fIsLeft) {
+      if (typeof (val) !== tUNDEFINED && val !== fIsLeft) {
         fIsLeft = val;
         self.fireChanged();
       }
@@ -703,7 +703,7 @@ WAVE.Chart.SVG = (function () {
   published.YAxis.prototype.markAxis = function (svgEl, area, dataSets) {
     var _ticks;
 
-    if (this.markType() == published.AxisMarkType.AUTO) 
+    if (this.markType() === published.AxisMarkType.AUTO) 
     {
       var minMax = this.getMinMax(dataSets);
 
@@ -713,7 +713,7 @@ WAVE.Chart.SVG = (function () {
       var labelWidth = lblRc.width;
       //console.log(lblRc, minMax.min, minMax.max);
 
-      if (this.dataType() == published.DataType.DATE) {
+      if (this.dataType() === published.DataType.DATE) {
         _ticks = this.getVTimeTicks(area.top(), area.bottom(), minMax.min, minMax.max, labelLength, labelMargin);
       } else {
         if (this.isLinear())
@@ -721,7 +721,7 @@ WAVE.Chart.SVG = (function () {
         else
           _ticks = this.getVLog10Ticks(area.top(), area.bottom(), minMax.min, minMax.max, labelLength, labelMargin);
       }
-    } else if (this.markType() == published.AxisMarkType.EXACT_BY_POINTS) {
+    } else if (this.markType() === published.AxisMarkType.EXACT_BY_POINTS) {
       var primaryDs = dataSets[0];
       for (var i in primaryDs) {
         var p = primaryDs[i];
@@ -821,7 +821,7 @@ WAVE.Chart.SVG = (function () {
 
     var fEnabled = cfg.enabled !== false;
     this.enabled = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fEnabled) { 
+      if (typeof (val) !== tUNDEFINED && val !== fEnabled) { 
         fEnabled = val;
         fireChanged();
       }
@@ -830,7 +830,7 @@ WAVE.Chart.SVG = (function () {
 
     var fLegendMargin = cfg.legendMargin || 10;
     this.legendMargin = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fLegendMargin) { 
+      if (typeof (val) !== tUNDEFINED && val !== fLegendMargin) { 
         fLegendMargin = val;
         fireChanged();
       }
@@ -839,7 +839,7 @@ WAVE.Chart.SVG = (function () {
 
     var fSeriesMargin = cfg.seriesMargin || 3;
     this.seriesMargin = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fSeriesMargin) {
+      if (typeof (val) !== tUNDEFINED && val !== fSeriesMargin) {
         fSeriesMargin = val;
         fireChanged();
       }
@@ -848,7 +848,7 @@ WAVE.Chart.SVG = (function () {
 
     var fPrefixLength = cfg.prefixLength || 10;
     this.prefixLength = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fPrefixLength) {
+      if (typeof (val) !== tUNDEFINED && val !== fPrefixLength) {
         fPrefixLength = val;
         fireChanged();
       }
@@ -857,7 +857,7 @@ WAVE.Chart.SVG = (function () {
 
     var fRowSpace = cfg.rowSpace || 3;
     this.rowSpace = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fRowSpace) {
+      if (typeof (val) !== tUNDEFINED && val !== fRowSpace) {
         fRowSpace = val;
         fireChanged();
       }
@@ -866,7 +866,7 @@ WAVE.Chart.SVG = (function () {
 
     var fCorner = cfg.corner || published.RectCorner.RIGHTTOP;
     this.corner = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fCorner) {
+      if (typeof (val) !== tUNDEFINED && val !== fCorner) {
         fCorner = val;
         fireChanged();
       }
@@ -1441,7 +1441,7 @@ WAVE.Chart.SVG = (function () {
 
     var fXAxis = cfg.xAxis;
     this.xAxis = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fXAxis) {
+      if (typeof (val) !== tUNDEFINED && val !== fXAxis) {
         if (fXAxis) fXAxis.eventUnbind(EVT_CHANGED, fireChanged);
         fXAxis = val;
         fXAxis.eventBind(EVT_CHANGED, fireChanged);
@@ -1599,7 +1599,7 @@ WAVE.Chart.SVG = (function () {
       });
 
       if (path !== "" && (this.chartType() & published.ChartType.LINE_SQUARE)) {
-        if(this.squareFillType() == published.SquareFillType.BOTTOM)
+        if(this.squareFillType() === published.SquareFillType.BOTTOM)
           path += "V" + area.bottom() + " H" + firstX + " Z";
         else 
           path += "V" + area.top() + " H" + firstX + " Z";
@@ -1622,14 +1622,14 @@ WAVE.Chart.SVG = (function () {
 
          var p1, p2, pTo;
 
-        if (expectedPoint == "M") {
+        if (expectedPoint === "M") {
           path = "M" + vx + ',' + vy + ' ';
           expectedPoint = "C";
-        } else if (expectedPoint == "C") {
+        } else if (expectedPoint === "C") {
 
           buf.unshift({x: vx, y: vy});
           expectedQty++;
-          if (expectedQty == 3) {
+          if (expectedQty === 3) {
             p1 = buf.pop();
             p2 = buf.pop();
             pTo = buf.pop();
@@ -1637,10 +1637,10 @@ WAVE.Chart.SVG = (function () {
             expectedQty = 0;
             expectedPoint = "S";
           }
-        } else if (expectedPoint == "S") {
+        } else if (expectedPoint === "S") {
           buf.unshift({x: vx, y: vy});
           expectedQty++;
-          if (expectedQty == 2) {
+          if (expectedQty === 2) {
             p2 = buf.pop();
             pTo = buf.pop();
             path += 'S' + p2.x + ',' + p2.y + ' ' + pTo.x + ',' + pTo.y + ' ';
@@ -1650,16 +1650,16 @@ WAVE.Chart.SVG = (function () {
       });
 
       var p;
-      if (expectedPoint == "C") {
-        if (expectedQty == 1) {
+      if (expectedPoint === "C") {
+        if (expectedQty === 1) {
           p = buf.pop();
           path += 'L' + p.x + ',' + p.y;
-        } else if (expectedQty == 2) {
+        } else if (expectedQty === 2) {
           var p1 = buf.pop(), pTo = buf.pop();
           path += 'Q' + p1.x + ',' + p1.y + ' ' + pTo.x + ',' + pTo.y;
         } 
-      } else if (expectedPoint == "S") {
-        if (expectedQty == 1) {
+      } else if (expectedPoint === "S") {
+        if (expectedQty === 1) {
           p = buf.pop();
           path += "T" + p.x + ',' + p.y;
         }
@@ -1800,16 +1800,16 @@ WAVE.Chart.SVG = (function () {
 
     x = vx + pointMargin; y = vy - pointMargin - txtBox.height;
     var overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
-    if (overlapS != txtBoxS) {
+    if (overlapS !== txtBoxS) {
       x = vx - pointMargin - txtBox.width; y = vy - pointMargin - txtBox.height;
       overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
-      if (overlapS != txtBoxS) {
+      if (overlapS !== txtBoxS) {
         x = vx + pointMargin; y = vy + pointMargin;
         overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
-        if (overlapS != txtBoxS) {
+        if (overlapS !== txtBoxS) {
           x = vx - pointMargin - txtBox.width; y = vy + pointMargin;
           overlapS = WAVE.Geometry.overlapAreaWH(area.left(), area.top(), area.width(), area.height(), x, y, txtBox.width, txtBox.height);
-          if (overlapS == txtBoxS) {
+          if (overlapS === txtBoxS) {
             left = x; top = y;
           }
         } else {
@@ -1912,7 +1912,7 @@ WAVE.Chart.SVG = (function () {
     this.removePointByX = function (x) {
       for (var i = 0; i < fPoints.length; i++) {
         var p = fPoints[i];
-        if (p.x == x) {
+        if (p.x === x) {
           fPoints.splice(i, 1);
           break;
         }
@@ -1930,7 +1930,7 @@ WAVE.Chart.SVG = (function () {
     this.getPointByX = function (x) {
       for (var i = 0; i < fPoints.length; i++) {
         var p = fPoints[i];
-        if (p.x == x)
+        if (p.x === x)
           return p;
       }
     };
@@ -1986,7 +1986,7 @@ WAVE.Chart.SVG = (function () {
     });
 
     this.svgEl = function(val) {
-      if (typeof(val) != tUNDEFINED && val !== fSvgEl) { 
+      if (typeof(val) !== tUNDEFINED && val !== fSvgEl) { 
         fSvgEl = val;
         
         self.draw();
@@ -2013,7 +2013,7 @@ WAVE.Chart.SVG = (function () {
     var fXAxis = new published.XAxis(self);
     fXAxis.eventBind(EVT_CHANGED, onChanged);
     this.xAxis = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fXAxis) {
+      if (typeof (val) !== tUNDEFINED && val !== fXAxis) {
         fXAxis = val;
         self.draw();
       }
@@ -2023,7 +2023,7 @@ WAVE.Chart.SVG = (function () {
     var fYAxis = new published.YAxis(self);
     fYAxis.eventBind(EVT_CHANGED, onChanged);
     this.yAxis = function (val) {
-      if (typeof (val) != tUNDEFINED && val !== fYAxis) {
+      if (typeof (val) !== tUNDEFINED && val !== fYAxis) {
         fYAxis = val;
         self.draw();
       }
@@ -2048,7 +2048,7 @@ WAVE.Chart.SVG = (function () {
     this.seriesListWalkable = function() { return fSeriesListWalkable; };
 
     this.getSeries = function(id) {
-      return fSeriesListWalkable.wFirst(function(s) { return s.id() == id; });
+      return fSeriesListWalkable.wFirst(function(s) { return s.id() === id; });
     };
 
     this.addSeries = function(seriesCfg) {
@@ -2060,8 +2060,8 @@ WAVE.Chart.SVG = (function () {
     };
 
     this.removeSeries = function(s) {
-      var sIdx = fSeriesListWalkable.wFirstIdx(function(e) { return e == s; });
-      if (sIdx != -1) {
+      var sIdx = fSeriesListWalkable.wFirstIdx(function(e) { return e === s; });
+      if (sIdx !== -1) {
         fSeriesList.splice(sIdx, 1);
         s.eventUnbind(EVT_CHANGED, onChanged);
         onChanged();
@@ -2187,7 +2187,7 @@ WAVE.Chart.SVG = (function () {
     function removeChildNodes(el) {
       for(var i=0; i<el.childNodes.length;) {
        var child = el.childNodes[i];
-        if (child.nodeName != "defs")
+        if (child.nodeName !== "defs")
           el.removeChild(child);
         else
           i++;

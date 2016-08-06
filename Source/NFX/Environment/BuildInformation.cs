@@ -51,11 +51,11 @@ namespace NFX.Environment
         /// </summary>
         private BuildInformation() : this(null) { }
 
-        
+
         /// <summary>
         /// Creates and instance of BuildInformation class from the specified resource path in particular assembly.
         /// If assembly is null then BuildInformation for the whole framework is returned.
-        /// If Path is null then the first found BUILD info resource is used form the specified assembly
+        /// If Path is null then the first found BUILD info resource is used from the specified assembly
         /// </summary>
         public BuildInformation(Assembly assembly, string path = null, bool throwError = true)
         {
@@ -64,7 +64,7 @@ namespace NFX.Environment
           {
             assembly = Assembly.GetExecutingAssembly();
             path = FRAMEWORK_BUILD_INFO_PATH;
-          }                                  
+          }
 
           if (path.IsNullOrWhiteSpace())
           {
@@ -84,7 +84,7 @@ namespace NFX.Environment
           }
         }
 
-        
+
     #endregion
 
     #region Fields
@@ -177,7 +177,7 @@ namespace NFX.Environment
                   lines.Add(reader.ReadLine());
 
 
-         
+
            m_BuildSeed = int.Parse(val(lines[0]));
            m_Computer = val(lines[1]).Trim();
            m_User = val(lines[2]).Trim();

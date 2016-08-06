@@ -9,13 +9,13 @@ using NFX.Instrumentation;
 
 namespace NFX.ApplicationModel.Pile
 {
-  
+
   /// <summary>
   /// Provides information about the pile - number of objects, allocated bytes, etc.
   /// </summary>
   public interface IPileStatus
   {
-    
+
     /// <summary>
     /// Returns whether pile is local or distributed
     /// </summary>
@@ -30,7 +30,7 @@ namespace NFX.ApplicationModel.Pile
     /// Returns whether this instance supports object expiration
     /// </summary>
     bool SupportsObjectExpiration{ get;}
-    
+
     /// <summary>
     /// Returns the number of allocated objects in this pile
     /// </summary>
@@ -67,8 +67,8 @@ namespace NFX.ApplicationModel.Pile
     /// </summary>
     int NodeCount { get;}
   }
-  
-  
+
+
   /// <summary>
   /// Represents a pile of objects - a custom memory heap that can store native CLR objects in a tightly-serialized form.
   /// Piles can be either local (allocate local RAM on the server), or distributed (allocate RAM on many servers).
@@ -85,19 +85,19 @@ namespace NFX.ApplicationModel.Pile
     /// <summary>
     /// Puts a CLR object into the pile and returns a newly-allocated pointer.
     /// Throws out-of-space if there is not enough space in the pile and limits are set.
-    /// Optional lifeSpanSec will auto-delete object after the interval elapses if 
+    /// Optional lifeSpanSec will auto-delete object after the interval elapses if
     ///  the pile SupportsObjectExpiration and SweepExpireObjects is set to true
     /// </summary>
     PilePointer Put(object obj, uint lifeSpanSec = 0);
 
     /// <summary>
-    /// Returns a CLR object by its pointer or throws access violation if pointer is invalid 
+    /// Returns a CLR object by its pointer or throws access violation if pointer is invalid
     /// </summary>
     object Get(PilePointer ptr);
 
     /// <summary>
     /// Returns a raw byte[] occupied by the object payload, only payload is returned along with serializer flag
-    /// which tells what kind of serializer was used. 
+    /// which tells what kind of serializer was used.
     /// This method is rarely used, it is needed for debugging and special-case "direct" memory access on read
     /// to bypass the de-serialization process altogether
     /// </summary>
@@ -143,7 +143,7 @@ namespace NFX.ApplicationModel.Pile
     /// Defines modes of allocation: space/time tradeoff
     /// </summary>
     AllocationMode AllocMode{ get; set;}
-    
+
 
     /// <summary>
     /// Control whether the instance respects object life spans
@@ -176,7 +176,7 @@ namespace NFX.ApplicationModel.Pile
 
 
 
-  
+
 
 
 }

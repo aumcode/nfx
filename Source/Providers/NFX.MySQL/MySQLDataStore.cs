@@ -168,6 +168,29 @@ namespace NFX.DataAccess.MySQL
                         });
         }
 
+        public Cursor OpenCursor(Query query)
+        {
+          Cursor result = null;
+          var cnn = GetConnection();
+          try
+          {
+            result = DoOpenCursor(cnn, null, query);
+          }
+          catch
+          {
+             DisposableObject.DisposeAndNull(ref cnn);
+             throw;
+          }
+
+          return result;
+        }
+        
+        public Task<Cursor> OpenCursorAsync(Query query)
+        {
+           return TaskUtils.AsCompletedTask( () => this.OpenCursor(query) );
+        }
+
+
         public int Save(params RowsetBase[] rowsets)
         {
            using (var cnn = GetConnection()) 
@@ -287,6 +310,17 @@ namespace NFX.DataAccess.MySQL
 
             return result;
             
+        }
+
+
+        /// <summary>
+        ///  Performs CRUD load. Override to do custom Query interpretation
+        /// </summary>
+        protected internal virtual Cursor DoOpenCursor(MySqlConnection cnn, MySqlTransaction transaction, Query query)
+        {
+            var context = new MySQLCRUDQueryExecutionContext(this, cnn, transaction);
+            var handler = QueryResolver.Resolve(query);
+            return handler.OpenCursor( context, query);
         }
 
         /// <summary>

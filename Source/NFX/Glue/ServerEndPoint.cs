@@ -59,7 +59,7 @@ namespace NFX.Glue
 
         private void ctor(string name, IEnumerable<Type> contractServers)
         {
-            if (string.IsNullOrWhiteSpace(name)) 
+            if (string.IsNullOrWhiteSpace(name))
                name = Guid.NewGuid().ToString();
 
             m_Name = name;
@@ -87,7 +87,7 @@ namespace NFX.Glue
 
 
         /// <summary>
-        /// INTERNAL! Maps ContractType -> ServerImplementing class. This is a cache used not to recompute everything on every call 
+        /// INTERNAL! Maps ContractType -> ServerImplementing class. This is a cache used not to recompute everything on every call
         /// </summary>
         internal ConcurrentDictionary<Type, Implementation.ServerHandler.serverImplementer> m_ContractImplementers = new ConcurrentDictionary<Type, Implementation.ServerHandler.serverImplementer>();
 
@@ -114,7 +114,7 @@ namespace NFX.Glue
         /// </summary>
         public Type[] ContractServers
         {
-          get { return m_ContractServers; } 
+          get { return m_ContractServers; }
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace NFX.Glue
 
 
             var tNames = node.AttrByName(CONFIG_CONTRACT_SERVERS_ATTR).ValueAsString(CoreConsts.UNKNOWN).Split(';');
-            
+
             var servers = new List<Type>();
             foreach(var t in tNames)
             {

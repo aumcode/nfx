@@ -38,7 +38,7 @@ namespace NFX.Glue
 
             m_Glue = (IGlueImplementation)glue;
         }
-        
+
         protected EndPoint(IGlue glue, Node node, Binding binding)
         {
             if (glue == null)
@@ -52,7 +52,7 @@ namespace NFX.Glue
 
         protected IGlueImplementation m_Glue;
 
-       
+
 
         protected Node m_Node;    //[A]ddress
         protected Binding m_Binding; //[B]inding
@@ -76,7 +76,7 @@ namespace NFX.Glue
         /// </summary>
         public Binding Binding { get { return m_Binding; } }
 
-        
+
     }
 
 

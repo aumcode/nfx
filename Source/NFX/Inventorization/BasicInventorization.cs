@@ -24,7 +24,7 @@ using NFX.Environment;
 
 namespace NFX.Inventorization
 {
-   
+
     /// <summary>
     /// Performs basic inventorization of Inventory-marked types and their members
     /// </summary>
@@ -34,11 +34,11 @@ namespace NFX.Inventorization
         {
            InventorizationManager.WriteInventoryAttributes(
                  t.GetCustomAttributes(typeof(InventoryAttribute), false).Cast<InventoryAttribute>(),
-                 root.AddChildNode(InventorizationManager.ATTRIBUTES_NODE)); 
+                 root.AddChildNode(InventorizationManager.ATTRIBUTES_NODE));
 
            if (t.BaseType!=null)
             root.AddAttributeNode("base", t.BaseType.FullName);
-           
+
            root.AddAttributeNode("abstract",  t.IsAbstract);
            root.AddAttributeNode("class",  t.IsClass);
            root.AddAttributeNode("enum",  t.IsEnum);
@@ -49,21 +49,21 @@ namespace NFX.Inventorization
            root.AddAttributeNode("serializable",  t.IsSerializable);
            root.AddAttributeNode("valuetype",  t.IsValueType);
            root.AddAttributeNode("visible",  t.IsVisible);
-           
+
            var members = t.GetMembers().Where(m=>m.GetCustomAttributes(typeof(InventoryAttribute), false).Count()>0);
            foreach(var mem in members)
            {
              var mnode = root.AddChildNode("member");
              mnode.AddAttributeNode("name", mem.Name);
              mnode.AddAttributeNode("kind", mem.MemberType.ToString());
-             
+
              InventorizationManager.WriteInventoryAttributes(
                  mem.GetCustomAttributes(typeof(InventoryAttribute), false).Cast<InventoryAttribute>(),
-                 mnode.AddChildNode(InventorizationManager.ATTRIBUTES_NODE)); 
+                 mnode.AddChildNode(InventorizationManager.ATTRIBUTES_NODE));
 
              if (mem is PropertyInfo)
              {
-               var pinf = (PropertyInfo)mem; 
+               var pinf = (PropertyInfo)mem;
                mnode.AddAttributeNode("can-get", pinf.CanRead);
                mnode.AddAttributeNode("can-set", pinf.CanWrite);
                mnode.AddAttributeNode("type", pinf.PropertyType.FullName);
@@ -90,7 +90,7 @@ namespace NFX.Inventorization
                 mnode.AddAttributeNode("return-type", minf.ReturnType.FullName);
              }
            }
-                                      
+
         }
     }
 }

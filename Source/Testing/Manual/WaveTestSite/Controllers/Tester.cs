@@ -40,6 +40,13 @@ namespace WaveTestSite.Controllers
   public class Tester : Controller
   {
       [Action]
+      public object AboutUs()
+      {
+        return new Pages.AboutUs();
+      }
+      
+      
+      [Action]
       public void SlowImage(string url, int dbDelayMs = 100, int netDelayMs = 0)
       {
         WorkContext.Response.ContentType = NFX.Web.ContentType.JPEG;

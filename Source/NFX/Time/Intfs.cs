@@ -24,12 +24,12 @@ using NFX.ApplicationModel;
 
 namespace NFX.Time
 {
-    
+
     /// <summary>
     /// Describes an entity that provides the localized time
     /// </summary>
     public interface ILocalizedTimeProvider
-    {              
+    {
         /// <summary>
         /// Returns the location
         /// </summary>
@@ -62,7 +62,7 @@ namespace NFX.Time
         /// Returns local time stamp, Alias to this.LocalizedTime
         /// </summary>
         DateTime Now { get; }
-        
+
         /// <summary>
         /// Returns current UTC time stamp
         /// </summary>

@@ -58,8 +58,8 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
       /// <summary>
       /// Returns string representing S3V4 call in canonized form
       /// </summary>
-      public static string GetCanonicalRequest(string method, Uri uri, 
-        IDictionary<string, string> headers, IDictionary<string, string> queryParameters = null, 
+      public static string GetCanonicalRequest(string method, Uri uri,
+        IDictionary<string, string> headers, IDictionary<string, string> queryParameters = null,
         string hashedPayload = EMPTY_BODY_SHA256)
       {
         var sortedLoweredHeaders = (headers ?? new Dictionary<string, string>()).OrderBy(kvp => kvp.Key);
@@ -154,7 +154,7 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
 
     #region ctor
 
-      public S3V4Signer() {} 
+      public S3V4Signer() {}
 
     #endregion
 
@@ -163,9 +163,9 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
       /// <summary>
       /// Call access key
       /// </summary>
-      public string AccessKey 
+      public string AccessKey
       {
-        set 
+        set
         {
           m_Calculated = false;
           m_AccessKey = value;
@@ -279,7 +279,7 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
           return m_Uri;
         }
       }
-      
+
       /// <summary>
       /// Call http headers (readonly)
       /// </summary>
@@ -291,7 +291,7 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
           return m_Headers;
         }
       }
-      
+
     #endregion
 
     #region Public

@@ -28,7 +28,7 @@ namespace NFX
   /// <summary>
   /// Denotes an entity that has external parameters that can be get/set
   /// </summary>
-  public interface IExternallyParameterized 
+  public interface IExternallyParameterized
   {
 
     /// <summary>
@@ -41,8 +41,8 @@ namespace NFX
     /// Gets names of supported external parameters or null if parameters are not supported in principle
     /// </summary>
     IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups);
-      
-      
+
+
     /// <summary>
     /// Gets external parameter value returning true if parameter was found
     /// </summary>
@@ -62,10 +62,10 @@ namespace NFX
   /// </summary>
   [Flags]
   public enum ExternalParameterSecurityCheck{None = 0, OnGet = 1, OnSet = 2, OnGetSet = OnGet | OnSet }
-  
+
   /// <summary>
   /// Decorates properties that may be used as bindable external parameters.
-  /// Provides methods for extraction of parameter names, values and binding of external object values into 
+  /// Provides methods for extraction of parameter names, values and binding of external object values into
   ///  public read/write properties decorated by this attribute
   /// </summary>
   [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
@@ -73,11 +73,11 @@ namespace NFX
   {
 
      public ExternalParameterAttribute(){}
-     
+
      /// <summary>
      /// Provides a list of group names where this parameter applies
      /// </summary>
-     public ExternalParameterAttribute(params string[] groups) 
+     public ExternalParameterAttribute(params string[] groups)
      {
         Groups = groups;
      }
@@ -109,7 +109,7 @@ namespace NFX
      /// for example, some parameters may be only set for isntrumentation, not for glue etc.
      /// </summary>
      public readonly IEnumerable<string> Groups;
-     
+
      /// <summary>
      /// Returns external parameter names and type - names for read/write public properties decorated with this attribute.
      /// If groups is null then all parameters returned, else parameters must intersect in their group sets with the
@@ -121,7 +121,7 @@ namespace NFX
         var tp = target.GetType();
         return GetParameters( tp, groups );
      }
-     
+
      /// <summary>
      /// Returns external parameter names and type - names for read/write public properties decorated with this attribute.
      /// If groups is null then all parameters returned, else parameters must intersect in their group sets with the
@@ -152,9 +152,9 @@ namespace NFX
           {
             if (atr.Groups==null) continue;
             if (!atr.Groups.Intersect(groups, StringComparer.InvariantCultureIgnoreCase).Any()) continue;
-          } 
+          }
 
-          if (atr.Name.IsNullOrWhiteSpace()) 
+          if (atr.Name.IsNullOrWhiteSpace())
             yield return Tuple.Create(prop.Name, prop.PropertyType, atr);
           else
             yield return Tuple.Create(atr.Name, prop.PropertyType, atr);
@@ -181,7 +181,7 @@ namespace NFX
         value = pi.GetValue(target);
         return true;
      }
-      
+
       /// <summary>
       /// Sets instrumentation parameter value, true if parameter name was found and set succeeded.
       /// The property is tried to be set directly to the supplied value first, then, in case of assignment error,
@@ -226,7 +226,7 @@ namespace NFX
             var tp = target.GetType();
 
             var props = suitableProperties(tp);
-       
+
             foreach(var prop in props)
             {
               var atr = prop.GetCustomAttributes(typeof(ExternalParameterAttribute), false).FirstOrDefault() as ExternalParameterAttribute;
@@ -236,10 +236,10 @@ namespace NFX
               {
                 if (atr.Groups==null) continue;
                 if (!atr.Groups.Intersect(groups).Any()) continue;
-              } 
+              }
 
               string pname;
-              if (atr.Name.IsNullOrWhiteSpace()) 
+              if (atr.Name.IsNullOrWhiteSpace())
                 pname = prop.Name;
               else
                 pname = atr.Name;

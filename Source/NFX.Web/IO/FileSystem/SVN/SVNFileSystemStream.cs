@@ -115,7 +115,7 @@ namespace NFX.IO.FileSystem.SVN
       }
 
     #endregion
-      
+
   } //SVNFileSystemStream
 
 }

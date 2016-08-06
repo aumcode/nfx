@@ -14,7 +14,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
   /// </summary>
   public abstract class SeriesView : INamed, IOrdered
   {
-    
+
      #region Levels
         /// <summary>
         /// Represents an element for a single candle
@@ -24,7 +24,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           protected internal YLevelElement(PlotPane host, TimeSeries.YLevel level, float minScale, float maxScale) : base(host)
           {
             m_Level = level;
-         
+
           //   m_Style = new Style(null, getBaseStyle());
             m_ScaleMin = minScale;
             m_ScaleMax = maxScale;
@@ -46,23 +46,23 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
           {
             var pxTotalHeight = (int)(m_Host.Height / m_Host.Zoom);
             var pxValue = (float)pxTotalHeight / (m_ScaleMax - m_ScaleMin);
-         
+
             m_Y = pxTotalHeight - (int)( ((m_Level.Value - m_ScaleMin) * pxValue ));
-                
+
           }
 
           protected internal override void Paint(Graphics gr)
-          {           
+          {
             //for now, no styles
 
             using(var pen = getContourPen(m_Level.HLineStyle))
             {
               gr.DrawLine(pen, 0, m_Y, Host.Width / Host.Zoom, m_Y); //horizontal line
-                    
+
               if (Host.Zoom==1.0f)
               {
                 var   chart = ((PlotPane)Host).Chart;
-                Color cbg   = m_Level.Style == null ? Color.Black : m_Level.Style.BGColor; 
+                Color cbg   = m_Level.Style == null ? Color.Black : m_Level.Style.BGColor;
                 Color ctxt  = m_Level.Style == null ? Color.White : m_Level.Style.ForeColor;
 
                 var rw = chart.VRulerWidth;
@@ -71,7 +71,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
                 var th = Pane.Chart.RulerStyle.Font.Height; // Host.CurrentFontHeight;
                 var txtRect = new RectangleF(x, m_Y-(th/2)-1, rw, th+2);
-                   
+
                 //var txtRect1 = new RectangleF(x, m_Y-(th/2)-1, rw, (th/2)+1);
                 //var txtRect2 = new RectangleF(x, m_Y, rw, (th/2)+1);
 
@@ -93,16 +93,16 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                     gr.DrawLine(ap, x-ARROW_SZ, m_Y, x, m_Y);
                   }
                   else
-                  { 
+                  {
                     ap.EndCap = LineCap.ArrowAnchor;
                     gr.DrawLine(ap, x+rw, m_Y, x+rw+ARROW_SZ, m_Y);
                   }
 
                   gr.FillRectangle(gb, txtRect);
                   //gr.FillRectangle(gb2, txtRect2);
-                      
+
                   gr.DrawString(m_Level.DisplayValue, Pane.Chart.RulerStyle.Font, tbr,
-                    txtRect.X + (TimeSeriesChart.VRULLER_HPADDING/2), txtRect.Y+1); 
+                    txtRect.X + (TimeSeriesChart.VRULLER_HPADDING/2), txtRect.Y+1);
                 }
               }
             }
@@ -128,14 +128,14 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       m_Order = order;
       m_PaneName = paneName;
     }
-    
+
     private string m_Name;
     private int m_Order;
     private string m_PaneName;
     private bool m_Visible = true;
-    
+
     private bool m_ShowYLevels;
-    
+
     protected float m_MinScale;
     protected float m_MaxScale;
 
@@ -160,14 +160,14 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     public float MinScale{ get{ return m_MinScale;}}
     public float MaxScale{ get{ return m_MaxScale;}}
 
-    
+
     /// <summary>
     /// Shows/hides all views
     /// </summary>
     public bool Visible
     {
       get{ return m_Visible;}
-      set{ m_Visible = value;} 
+      set{ m_Visible = value;}
     }
 
     /// <summary>
@@ -176,17 +176,17 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     public bool ShowYLevels
     {
       get{ return m_ShowYLevels;}
-      set{ m_ShowYLevels = value;} 
+      set{ m_ShowYLevels = value;}
     }
 
-    
+
     /// <summary>
     /// Returns the scale/pane name which is either assigned in .ctor or taken from DefaultPaneName. Series redering is directed in the named panes
     /// Every pane has its own Y scale
     /// </summary>
     public string PaneName
     {
-      get 
+      get
       {
         return m_PaneName.IsNotNullOrWhiteSpace() ? m_PaneName : DefaultPaneName;
       }
@@ -198,7 +198,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
     /// Every pane has its own Y scale
     /// </summary>
     public abstract string DefaultPaneName { get;}
-    
+
 
     /// <summary>
     /// Override to build elements that render the data by adding drawable elements to the chart.
@@ -213,7 +213,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
   /// <summary>
   /// Denotes a view that visualizes series data in a chart
   /// </summary>
-  public abstract class SeriesView<TSeries, TSample> : SeriesView where TSeries : TimeSeries 
+  public abstract class SeriesView<TSeries, TSample> : SeriesView where TSeries : TimeSeries
                                                                   where TSample : class
   {
     protected SeriesView(string name, int order, string paneName = null) : base(name, order, paneName)
@@ -243,7 +243,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
         var xcutof = chart.VRulerPosition == VRulerPosition.Right ? pane.Width - 1 - chart.VRulerWidth : pane.Width;
         var fitSamples = 0;
-        
+
         var canFitSamples = (int)(pane.Width / ((maxSampleWidth+1) * pane.Zoom)) + 2;//safe margin
 
         float minScale;
@@ -273,7 +273,7 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
                 var originalMid = minScale + (range  / 2f);
 
                 range = range / pane.Zoom;
-         
+
                 minScale = originalMid - (range / 2f);
                 maxScale = originalMid + (range / 2f);
                 break;
@@ -328,16 +328,16 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       }
 
       protected abstract Elements.Element MakeSampleElement(TimeSeriesChart chart,
-                                                            PlotPane pane, 
+                                                            PlotPane pane,
                                                             TSample sample,
-                                                            int x, 
+                                                            int x,
                                                             float minScale,
                                                             float maxScale);
 
       protected virtual Elements.Element MakeSeriesElement( TimeSeriesChart chart,
-                                                            PlotPane pane, 
+                                                            PlotPane pane,
                                                             IEnumerable<TSample> data,
-                                                            int xStart, 
+                                                            int xStart,
                                                             float minScale,
                                                             float maxScale,
                                                             int maxSampleWidth,
@@ -349,15 +349,15 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
 
 
       protected virtual Elements.Element MakeYLevelElement( TimeSeriesChart chart,
-                                                            PlotPane pane, 
+                                                            PlotPane pane,
                                                             TimeSeries.YLevel level,
                                                             float minScale,
                                                             float maxScale)
       {
-         return new YLevelElement(pane, level, minScale, maxScale); 
+         return new YLevelElement(pane, level, minScale, maxScale);
       }
 
-    
+
       protected IEnumerable<TSample> GetDataPerScroll(TimeSeriesChart chart, TSeries cdata)
       {
         return cdata.Data.Cast<TSample>().Skip(chart.HScrollPosition);
@@ -366,13 +366,13 @@ namespace NFX.WinForms.Controls.ChartKit.Temporal
       protected void CalcMinMaxScale(TimeSeries series, IEnumerable<TSample> data, out float minScale, out float maxScale)
       {
         DoCalcMinMaxScale(data, out minScale, out maxScale);
-        
+
         if (series.YLevels.Count>0)
         {
           var minlvl = minScale;
           var maxlvl = maxScale;
 
-          var any = false; 
+          var any = false;
           series.YLevels.Where( lvl => lvl.Visible && lvl.AffectsScale ).ForEach( lvl =>
           {
              var v = lvl.Value;

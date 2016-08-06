@@ -69,7 +69,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
 
         public GoogleDriveClient(string email, string certPath, int timeout, int attempts)
           : this(email, certPath)
-        {          
+        {
           m_Timeout = timeout;
 
           if (attempts > 0)
@@ -115,7 +115,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
           {
             yield return new GoogleDriveHandle(item);
           }
-                        
+
           if (!recursive)
           {
             yield break;
@@ -127,7 +127,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
           foreach (var subfolder in subfolders)
           {
             var subfolderId = (string)subfolder[Metadata.ID];
-                
+
             var files = GetFiles(subfolderId, recursive:false);
 
             foreach (var file in files)
@@ -182,7 +182,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
           Ensure.NotNull(parentId, "parentId");
           Ensure.NotNull(name, "name");
 
-          // 1. Start a resumable session. 
+          // 1. Start a resumable session.
           var body = new GoogleDriveRequestBody();
           body.SetTitle(name);
           body.SetParent(parentId);
@@ -194,7 +194,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
           // 2. Save the resumable session URI.
           var location = res.Headers[HEADER_LOCATION].FormatUri();
 
-          // 3. Upload the file. 
+          // 3. Upload the file.
           var info = Post(location, stream);
 
           return new GoogleDriveHandle(info.Data);
@@ -398,7 +398,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
         {
           var stream = body.ToJSON().ToStream();
           return Send(HTTPRequestMethod.PATCH, ContentType.JSON, uri, stream);
-        }         
+        }
 
         private void Delete(Uri uri)
         {
@@ -413,7 +413,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
           req.Method = method.ToString();
 
           if (m_Timeout > 0)
-          { 
+          {
             req.Timeout = m_Timeout;
           }
 
@@ -490,7 +490,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
           {
             return false;
           }
-            
+
           RefreshAccessToken();
 
           return true;

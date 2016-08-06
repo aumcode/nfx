@@ -48,10 +48,10 @@ namespace NFX.ApplicationModel
   {
     #region CONSTS
       public const string CONFIG_SWITCH = "config";
-      
+
       public const string CONFIG_APP_NAME_ATTR = "application-name";
       public const string CONFIG_UNIT_TEST_ATTR = "unit-test";
-    
+
       public const string CONFIG_MEMORY_MANAGEMENT_SECTION = "memory-management";
 
       public const string CONFIG_STARTERS_SECTION = "starters";
@@ -71,7 +71,7 @@ namespace NFX.ApplicationModel
       public const string CONFIG_ASSEMBLY_SECTION = "assembly";
       public const string CONFIG_PATH_ATTR = "path";
       public const string CONFIG_ENABLED_ATTR = "enabled";
-    
+
     #endregion
 
     #region .ctor/.dctor
@@ -91,8 +91,8 @@ namespace NFX.ApplicationModel
 
       private DateTime m_StartTime;
 
-      private string m_Name; 
-      
+      private string m_Name;
+
       private bool m_ShutdownStarted;
       private bool m_Stopping;
 
@@ -101,8 +101,8 @@ namespace NFX.ApplicationModel
 
       [Config(TimeLocation.CONFIG_TIMELOCATION_SECTION)]
       private TimeLocation m_TimeLocation = new TimeLocation();
-      
-      
+
+
       protected ConfigSectionNode m_ConfigRoot;
 
       protected ILogImplementation m_Log;
@@ -122,24 +122,24 @@ namespace NFX.ApplicationModel
       protected ITimeSourceImplementation m_TimeSource;
 
       protected IEventTimerImplementation m_EventTimer;
-  
+
     #endregion
-    
-  
+
+
     #region Properties
 
 
       #region IApplication Members
 
-        
+
         public bool IsUnitTest
         {
           get{ return m_ConfigRoot.AttrByName(CONFIG_UNIT_TEST_ATTR).ValueAsBool(); }
         }
-        
-        
+
+
         /// <summary>
-        /// Returns unique identifier of this running instance 
+        /// Returns unique identifier of this running instance
         /// </summary>
         public Guid InstanceID
         {
@@ -148,15 +148,15 @@ namespace NFX.ApplicationModel
 
 
         /// <summary>
-        /// Returns timestamp when application started as localized app time 
+        /// Returns timestamp when application started as localized app time
         /// </summary>
         public DateTime StartTime
         {
             get { return m_StartTime; }
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// Returns the name of this application
         /// </summary>
@@ -164,15 +164,15 @@ namespace NFX.ApplicationModel
         {
           get { return m_Name ?? GetType().FullName; }
         }
-        
-        
+
+
         /// <summary>
         /// Returns true when application instance is active and working. This property returns false as soon as application finalization starts on shutdown
         /// Use to exit long-running loops and such
         /// </summary>
         public bool Active
-        { 
-          get { return !m_ShutdownStarted && !m_Stopping; } 
+        {
+          get { return !m_ShutdownStarted && !m_Stopping; }
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace NFX.ApplicationModel
         }
 
         /// <summary>
-        /// Initiates the stop of the application by setting its Stopping to true and Active to false so dependent services may start to terminate 
+        /// Initiates the stop of the application by setting its Stopping to true and Active to false so dependent services may start to terminate
         /// </summary>
         public void Stop()
         {
@@ -206,8 +206,8 @@ namespace NFX.ApplicationModel
         {
           get { return (ILog)m_Log ?? NOPLog.Instance; }
         }
-        
-        
+
+
         /// <summary>
         /// References application instrumentation
         /// </summary>
@@ -223,7 +223,7 @@ namespace NFX.ApplicationModel
         {
             get { return m_Throttling ?? NOPThrottling.Instance; }
         }
-        
+
         /// <summary>
         /// Provides access to configuration root for the whole application
         /// </summary>
@@ -243,7 +243,7 @@ namespace NFX.ApplicationModel
 
 
         /// <summary>
-        /// References application object store. Objects will survive application termination 
+        /// References application object store. Objects will survive application termination
         /// </summary>
         public IObjectStore ObjectStore
         {
@@ -305,14 +305,14 @@ namespace NFX.ApplicationModel
 
 
     #endregion
-                              
-      
+
+
     #endregion
-    
-    
+
+
     #region Public
 
-           
+
 
             /// <summary>
             /// Converts universal time to local time as of TimeLocation property
@@ -445,7 +445,7 @@ namespace NFX.ApplicationModel
 
                string apath = CoreConsts.UNKNOWN;
                try
-               { 
+               {
                 foreach(var anode in nPreload.Children.Where(c=>c.IsSameName(CONFIG_ASSEMBLY_SECTION)))
                 {
                   apath = anode.AttrByName(CONFIG_PATH_ATTR).Value;
@@ -467,23 +467,23 @@ namespace NFX.ApplicationModel
 
 
     #region Protected
-    
+
 
       protected void WriteLog(MessageType type,
-                            string from, 
-                            string msgText, 
-                            Exception error = null, 
+                            string from,
+                            string msgText,
+                            Exception error = null,
                             [CallerFilePath]string file = "",
-                            [CallerLineNumber]int line = 0, 
+                            [CallerLineNumber]int line = 0,
                             object pars = null)
       {
           if (m_Log==null) return;
-        
+
           m_Log.Write(new NFX.Log.Message()
                       {
                         Topic = CoreConsts.APPLICATION_TOPIC,
                         Type = type,
-                        From = from, 
+                        From = from,
                         Text = msgText,
                         Exception = error,
                       }.SetParamsAsObject(NFX.Log.Message.FormatCallerParams(pars, file, line)));
@@ -492,7 +492,7 @@ namespace NFX.ApplicationModel
 
       protected IEnumerable<IApplicationStarter> GetStarters()
       {
-        var snodes = m_ConfigRoot[CONFIG_STARTERS_SECTION].Children.Where(n=>n.IsSameName(CONFIG_STARTER_SECTION)); 
+        var snodes = m_ConfigRoot[CONFIG_STARTERS_SECTION].Children.Where(n=>n.IsSameName(CONFIG_STARTER_SECTION));
         foreach(var snode in snodes)
         {
             var starter = FactoryUtils.MakeAndConfigure<IApplicationStarter>(snode);
@@ -506,8 +506,8 @@ namespace NFX.ApplicationModel
 
         var exceptions = new List<Exception>();
 
-        var starters = GetStarters().ToList();     
-        
+        var starters = GetStarters().ToList();
+
             string name = CoreConsts.UNKNOWN;
             bool breakOnError = true;
             foreach (var starter in starters)
@@ -524,7 +524,7 @@ namespace NFX.ApplicationModel
                     exceptions.Add(error);
                     //log not available at this point
                 }
-      
+
 
         ExecutionContext.__SetApplicationLevelContext(this, null, null, NOPSession.Instance);
         DoInitApplication(); //<----------------------------------------------
@@ -556,7 +556,7 @@ namespace NFX.ApplicationModel
       protected virtual void CleanupApplication()
       {
             var exceptions = new List<Exception>();
-        
+
             lock(m_FinishNotifiables)
             {
                 string name = CoreConsts.UNKNOWN;
@@ -569,8 +569,8 @@ namespace NFX.ApplicationModel
                 catch(Exception error)
                 {
                    error = new NFXException(StringConsts.APP_FINISH_NOTIFIABLE_BEFORE_ERROR.Args(name, error.ToMessageWithType()), error);
-                   exceptions.Add(error); 
-                   WriteLog(MessageType.Error, "CleanupApplication()", error.Message); 
+                   exceptions.Add(error);
+                   WriteLog(MessageType.Error, "CleanupApplication()", error.Message);
                 }
             }
 
@@ -608,14 +608,14 @@ namespace NFX.ApplicationModel
 
             foreach(var exception in exceptions)
                 text.AppendLine( exception.ToMessageWithType());
-            
+
             throw new NFXException(text.ToString());
         }
 
       }
 
 
-          
+
 
       /// <summary>
       /// Tries to find a configuration file name looping through various supported estensions
@@ -627,7 +627,7 @@ namespace NFX.ApplicationModel
           var exeNameWoExt = Path.Combine(Path.GetDirectoryName(exeName), Path.GetFileNameWithoutExtension(exeName));
 //Console.WriteLine("EXENAME:" +exeName);
 //Console.WriteLine("EXENAME wo extension:" +exeNameWoExt);
-          var extensions = Configuration.AllSupportedFormats.Select(fmt => '.'+fmt); 
+          var extensions = Configuration.AllSupportedFormats.Select(fmt => '.'+fmt);
           foreach(var ext in extensions)
           {
              var configFile = exeName + ext;
@@ -636,7 +636,7 @@ namespace NFX.ApplicationModel
              configFile = exeNameWoExt + ext;
 //Console.WriteLine("Probing:" +configFile);
              if (File.Exists(configFile)) return configFile;
-             
+
           }
           return string.Empty;
       }
@@ -652,25 +652,25 @@ namespace NFX.ApplicationModel
           lock(m_ConfigSettings)
            foreach(var s in m_ConfigSettings) s.ConfigChanged(node);
       }
-      
+
       /// <summary>
-      /// Override to prep log implementation i.e. inject log destinations programmaticaly 
+      /// Override to prep log implementation i.e. inject log destinations programmaticaly
       /// </summary>
       protected virtual void BeforeLogStart(ILogImplementation logImplementation)
       {
-      
+
       }
 
       /// <summary>
-      /// Override to prep instr implementation i.e. inject something programmaticaly 
+      /// Override to prep instr implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeInstrumentationStart(IInstrumentationImplementation instrumentationImplementation)
       {
-      
+
       }
 
       /// <summary>
-      /// Override to prep throttling implementation i.e. inject something programmaticaly 
+      /// Override to prep throttling implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeThrottlingStart(IThrottlingImplementation throttlingImplementation)
       {
@@ -678,62 +678,62 @@ namespace NFX.ApplicationModel
       }
 
       /// <summary>
-      /// Override to prep data store implementation i.e. inject something programmaticaly 
+      /// Override to prep data store implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeDataStoreStart(IDataStoreImplementation datastoreImplementation)
       {
-      
+
       }
 
       /// <summary>
-      /// Override to prep object store implementation i.e. inject something programmaticaly 
+      /// Override to prep object store implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeObjectStoreStart(IObjectStoreImplementation objectstoreImplementation)
       {
-      
+
       }
 
 
       /// <summary>
-      /// Override to prep glue implementation i.e. inject something programmaticaly 
+      /// Override to prep glue implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeGlueStart(IGlueImplementation glueImplementation)
       {
-      
+
       }
 
 
       /// <summary>
-      /// Override to prep security manager implementation i.e. inject something programmaticaly 
+      /// Override to prep security manager implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeSecurityManagerStart(ISecurityManagerImplementation securitymanagerImplementation)
       {
-      
+
       }
 
 
       /// <summary>
-      /// Override to prep time source implementation i.e. inject something programmaticaly 
+      /// Override to prep time source implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeTimeSourceStart(ITimeSourceImplementation timesourceImplementation)
       {
-      
+
       }
 
       /// <summary>
-      /// Override to prep event timer implementation i.e. inject something programmaticaly 
+      /// Override to prep event timer implementation i.e. inject something programmaticaly
       /// </summary>
       protected virtual void BeforeEventTimerStart(IEventTimerImplementation eventTimerImplementation)
       {
-      
+
       }
-    
-    
-   
+
+
+
       protected virtual void DoInitApplication()
       {
         const string FROM = "app.init";
-        
+
         ConfigAttribute.Apply(this, m_ConfigRoot);
 
         m_Name = m_ConfigRoot.AttrByName(CONFIG_APP_NAME_ATTR).ValueAsString(GetType().FullName);
@@ -746,16 +746,16 @@ namespace NFX.ApplicationModel
           try
           {
             m_Log = FactoryUtils.MakeAndConfigure(node, typeof(LogService)) as ILogImplementation;
-            
+
             if (m_Log==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                     node
                                                    .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                    .ValueAsString(CoreConsts.UNKNOWN));
-            
+
             WriteLog(MessageType.Info, FROM, "Log made");
 
             BeforeLogStart(m_Log);
-            
+
             if (m_Log is Service)
             {
               if (((Service)m_Log).StartByApplication())
@@ -774,16 +774,16 @@ namespace NFX.ApplicationModel
           try
           {
             m_TimeSource = FactoryUtils.MakeAndConfigure(node, null) as ITimeSourceImplementation;
-            
+
             if (m_TimeSource==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                     node
                                                    .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                    .ValueAsString(CoreConsts.UNKNOWN));
-            
+
             WriteLog(MessageType.Info, FROM, "TimeSource made");
 
             BeforeTimeSourceStart(m_TimeSource);
-            
+
             if (m_TimeSource is Service)
             {
               if (((Service)m_TimeSource).StartByApplication())
@@ -818,16 +818,16 @@ namespace NFX.ApplicationModel
           try
           {
             m_EventTimer = FactoryUtils.MakeAndConfigure(node, typeof(EventTimer)) as IEventTimerImplementation;
-            
+
             if (m_EventTimer==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                     node
                                                    .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                    .ValueAsString(CoreConsts.UNKNOWN));
-            
+
             WriteLog(MessageType.Info, FROM, "EventTimer made");
 
             BeforeEventTimerStart(m_EventTimer);
-            
+
             if (m_EventTimer is Service)
             {
               if (((Service)m_EventTimer).StartByApplication())
@@ -850,16 +850,16 @@ namespace NFX.ApplicationModel
           try
           {
             m_SecurityManager = FactoryUtils.MakeAndConfigure(node, typeof(ConfigSecurityManager)) as ISecurityManagerImplementation;
-            
+
             if (m_SecurityManager==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                             node
                                                            .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                            .ValueAsString(CoreConsts.UNKNOWN));
 
             WriteLog(MessageType.Info, FROM, "Security Manager made");
-           
+
             BeforeSecurityManagerStart(m_SecurityManager);
-           
+
             if (m_SecurityManager is Service)
             {
               if (((Service)m_SecurityManager).StartByApplication())
@@ -890,12 +890,12 @@ namespace NFX.ApplicationModel
           try
           {
             m_Instrumentation = FactoryUtils.MakeAndConfigure(node, typeof(InstrumentationService)) as IInstrumentationImplementation;
-            
+
             if (m_Instrumentation==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                     node
                                                    .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                    .ValueAsString(CoreConsts.UNKNOWN));
-            
+
             WriteLog(MessageType.Info, FROM, "Instrumentation made");
 
             BeforeInstrumentationStart(m_Instrumentation);
@@ -951,7 +951,7 @@ namespace NFX.ApplicationModel
           try
           {
             m_DataStore = FactoryUtils.MakeAndConfigure(node) as IDataStoreImplementation;
-            
+
             if (m_DataStore==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                     node
                                                    .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
@@ -959,7 +959,7 @@ namespace NFX.ApplicationModel
 
             WriteLog(MessageType.Info, FROM, "DataStore made");
 
-            
+
             BeforeDataStoreStart(m_DataStore);
 
             if (m_DataStore is Service)
@@ -980,16 +980,16 @@ namespace NFX.ApplicationModel
           try
           {
             m_ObjectStore = FactoryUtils.MakeAndConfigure(node, typeof(ObjectStoreService)) as IObjectStoreImplementation;
-            
+
             if (m_ObjectStore==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                             node
                                                            .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                            .ValueAsString(CoreConsts.UNKNOWN));
 
             WriteLog(MessageType.Info, FROM, "ObjectStore made");
-           
+
             BeforeObjectStoreStart(m_ObjectStore);
-           
+
             if (m_ObjectStore is Service)
             {
               if (((Service)m_ObjectStore).StartByApplication())
@@ -1008,16 +1008,16 @@ namespace NFX.ApplicationModel
           try
           {
             m_Glue = FactoryUtils.MakeAndConfigure(node, typeof(NFX.Glue.Implementation.GlueService)) as IGlueImplementation;
-            
+
             if (m_Glue==null) throw new NFXException(StringConsts.APP_INJECTION_TYPE_MISMATCH_ERROR  +
                                                             node
                                                            .AttrByName(FactoryUtils.CONFIG_TYPE_ATTR)
                                                            .ValueAsString(CoreConsts.UNKNOWN));
 
             WriteLog(MessageType.Info, FROM, "Glue made");
-           
+
             BeforeGlueStart(m_Glue);
-           
+
             if (m_Glue is Service)
             {
               if (((Service)m_Glue).StartByApplication())
@@ -1031,7 +1031,7 @@ namespace NFX.ApplicationModel
             throw new NFXException(msg, error);
           }
 
-        
+
 
 
         WriteLog(MessageType.Info, FROM, "Common application initialized in '{0}' time location".Args(this.TimeLocation));
@@ -1067,8 +1067,8 @@ namespace NFX.ApplicationModel
              WriteLog(MessageType.CatastrophicError, FROM, "Error finalizing Glue: " + error.ToMessageWithType(), error);
            }
          }
-         
-         
+
+
          if (m_ObjectStore!=null)
          {
            WriteLog(MessageType.Info, FROM, "Finalizing ObjectStore");
@@ -1133,7 +1133,7 @@ namespace NFX.ApplicationModel
              }
          }
 
-         
+
          if (m_Instrumentation != null)
          {
            WriteLog(MessageType.Info, FROM, "Finalizing Instrumentation");
@@ -1145,7 +1145,7 @@ namespace NFX.ApplicationModel
                  ((Service)m_Instrumentation).WaitForCompleteStop();
                  WriteLog(MessageType.Info, FROM, "Instrumentation stopped");
              }
-             
+
              m_Instrumentation.Dispose();
              WriteLog(MessageType.Info, FROM, "Instrumentation disposed");
            }
@@ -1189,7 +1189,7 @@ namespace NFX.ApplicationModel
                  ((Service)m_EventTimer).WaitForCompleteStop();
                  WriteLog(MessageType.Info, FROM, "EventTimer stopped");
              }
-             
+
              m_EventTimer.Dispose();
              WriteLog(MessageType.Info, FROM, "EventTimer disposed");
            }
@@ -1211,7 +1211,7 @@ namespace NFX.ApplicationModel
                  ((Service)m_TimeSource).WaitForCompleteStop();
                  WriteLog(MessageType.Info, FROM, "TimeSource stopped");
              }
-             
+
              m_TimeSource.Dispose();
              WriteLog(MessageType.Info, FROM, "TimeSource disposed");
              WriteLog(MessageType.Info, FROM, "Log msg times are machine-local now");
@@ -1221,7 +1221,7 @@ namespace NFX.ApplicationModel
              WriteLog(MessageType.Error, FROM, "Error finalizing TimeSource: " + error.ToMessageWithType(), error);
            }
          }
-         
+
 
          if (m_Log!=null)
          {
@@ -1239,11 +1239,11 @@ namespace NFX.ApplicationModel
              {
                //nowhere to log
              }
-         } 
+         }
 
       }
 
     #endregion
   }
-  
+
 }

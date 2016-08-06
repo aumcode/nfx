@@ -35,8 +35,8 @@ namespace phash
                 Console.Write("Enter password to hash: ");
                 pwd = ConsoleUtils.ReadPassword('*');
                 Console.WriteLine();
-            }   
-            
+            }
+
             Console.WriteLine("Hash is:");
             Console.WriteLine("        " + pwd.ToMD5String());
         }

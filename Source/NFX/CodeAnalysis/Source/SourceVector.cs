@@ -23,13 +23,13 @@ namespace NFX.CodeAnalysis.Source
    {
          public readonly string SourceName;
          public readonly SourcePosition Position;
-     
+
          public SourceVector(string srcName, SourcePosition position)
          {
            SourceName = srcName;
            Position = position;
          }
-   
+
    }
 
 

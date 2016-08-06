@@ -33,7 +33,7 @@ namespace NFX.Geometry
   public static class VectorUtils
   {
 
-    
+
     /// <summary>
     /// Calculates callout balloon vertexes suitable for curve drawing
     /// </summary>
@@ -84,8 +84,8 @@ namespace NFX.Geometry
 
       return result.ToArray();
     }
-    
-    
+
+
     /// <summary>
     /// Inflates balloon body and target point
     /// </summary>
@@ -93,11 +93,11 @@ namespace NFX.Geometry
     {
       Point center = new Point(body.Left + body.Width / 2, body.Top + body.Height / 2);
       PolarPoint pp = new PolarPoint(center, target);
-      
+
       body.Inflate(deltaBody, deltaBody);
-            
+
       pp.R += deltaTarget;
-      
+
       target = pp.Point;
       target.Offset(center.X, center.Y);
     }
@@ -108,9 +108,9 @@ namespace NFX.Geometry
     public static void InflateBalloon(ref Rectangle body, ref Point target, int delta)
     {
       InflateBalloon(ref body, ref target, delta, delta);
-    } 
-  
-  
-  
+    }
+
+
+
   }
 }

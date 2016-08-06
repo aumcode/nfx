@@ -26,7 +26,7 @@ namespace NFX.Log.Bin
     public const int PAGE_HEADER_SZ = 16;
 
     public enum PageHeaderReadStatus{OK = 0, EOF, Corruption}
-    
+
     public static void WritePageHeader(Stream stream, DateTime ts)
     {
       stream.WriteBEUInt64(PAGE_HEADER);
@@ -51,7 +51,7 @@ namespace NFX.Log.Bin
       return PageHeaderReadStatus.OK;
     }
 
-    
+
     public static void WriteTimeStamp(Stream stream, DateTime ts)
     {
       var nix = ts.ToMicrosecondsSinceUnixEpochStart();
@@ -89,7 +89,7 @@ namespace NFX.Log.Bin
 
     #region buf readers
       [ThreadStatic] private static byte[] ts_Buff32;
-                       
+
       [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
       internal static byte[] getBuff32()
       {
@@ -117,7 +117,7 @@ namespace NFX.Log.Bin
         }while(total<count);
 
         return total;
-      } 
+      }
     #endregion
 
   }

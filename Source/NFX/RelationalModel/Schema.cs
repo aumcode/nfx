@@ -36,13 +36,13 @@ namespace NFX.RelationalModel
             public const string CONFIG_INCLUDE_SECTION = "include";
 
         #endregion
-        
+
         #region .ctor
-            
+
             public Schema(string fileName,  IEnumerable<string> includePaths = null, bool runScript = true, ScriptRunner runner = null)
                           :this(Configuration.ProviderLoadFromFile(fileName), includePaths, runScript, runner)
             {
-            
+
             }
 
             public Schema(Configuration source,  IEnumerable<string> includePaths = null, bool runScript = true, ScriptRunner runner = null)
@@ -55,7 +55,7 @@ namespace NFX.RelationalModel
                 if (runScript)
                 {
                     m_SourceScriptRunner = runner ?? new ScriptRunner();
-                    
+
                     m_Source = new MemoryConfiguration();
 
                     m_SourceScriptRunner.Execute(m_SourceOriginal, m_Source);
@@ -63,9 +63,9 @@ namespace NFX.RelationalModel
                 else
                     m_Source = m_SourceOriginal;
 
-                
+
             }
-            
+
 
         #endregion
 
@@ -81,10 +81,10 @@ namespace NFX.RelationalModel
         #endregion
 
         #region Properties
-           
-            
-            
-            
+
+
+
+
             /// <summary>
             /// Returns script runner used for schema source evaluation. Null returned when no scripts were executed
             /// </summary>
@@ -105,11 +105,11 @@ namespace NFX.RelationalModel
             /// Returns include paths that are searched for included files
             /// </summary>
             public IEnumerable<string> IncludePaths { get { return m_IncludePaths;} }
-        
+
         #endregion
 
         #region Public
-            
+
         #endregion
 
         #region .pvt
@@ -144,7 +144,7 @@ namespace NFX.RelationalModel
 
                     var included = Configuration.ProviderLoadFromFile( include );
                     processIncludes(included.Root, alreadyIncluded);
-                    
+
                     includeNode.Configuration.Include(includeNode, included.Root);
                 }
             }

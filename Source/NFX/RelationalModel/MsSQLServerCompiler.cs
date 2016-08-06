@@ -28,7 +28,7 @@ namespace NFX.RelationalModel
     public class MsSQLServerCompiler : RDBMSCompiler
     {
         #region .ctor
-            
+
             public MsSQLServerCompiler(Schema schema) : base(schema)
             {
 

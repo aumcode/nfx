@@ -69,12 +69,6 @@ namespace NFX.Environment
             /// </summary>
             bool Exists { get; }
 
-            //DKh20140109 Added INamed, so this is not needed anymore
-            ///////// <summary>
-            ///////// Retrieves node name
-            ///////// </summary>
-            //////string Name { get; }
-
             /// <summary>
             /// Returns varbatim (without variable evaluation) node value or null
             /// </summary>
@@ -164,7 +158,7 @@ namespace NFX.Environment
       public interface IConfigSectionNode : IConfigNode
       {
             /// <summary>
-            /// Indicates whether this node has any child section nodes 
+            /// Indicates whether this node has any child section nodes
             /// </summary>
             bool HasChildren { get; }
 
@@ -174,7 +168,7 @@ namespace NFX.Environment
             int ChildCount { get; }
 
             /// <summary>
-            /// Indicates whether this node has any associated attributes 
+            /// Indicates whether this node has any associated attributes
             /// </summary>
             bool HasAttributes { get; }
 
@@ -204,13 +198,13 @@ namespace NFX.Environment
             /// </summary>
             IConfigSectionNode this[int idx] { get; }
 
-                      
+
 
             /// <summary>
             /// Returns attribute node by its name or empty attribute if real attribute with such name does not exist
             /// </summary>
             IConfigAttrNode AttrByName(string name, bool autoCreate = false);
-            
+
             /// <summary>
             /// Returns attribute node by its index or empty attribute if real attribute with such index does not exist
             /// </summary>
@@ -220,7 +214,7 @@ namespace NFX.Environment
             /// Navigates the path and return the appropriate node. Example '!/nfx/logger/destination/$file-name'
             /// </summary>
             /// <param name="path">If path starts from '!' then exception will be thrown if such a node does not exist;
-            ///  Use '/' as leading char for root, 
+            ///  Use '/' as leading char for root,
             ///  '..' for step up,
             ///  '$' for attribute name. Multiple paths may be coalesced using '|' or ';'
             /// </param>
@@ -231,7 +225,7 @@ namespace NFX.Environment
             /// Navigates the path and return the appropriate section node. Example '!/nfx/logger/destination'
             /// </summary>
             /// <param name="path">If path starts from '!' then exception will be thrown if such a section node does not exist;
-            ///  Use '/' as leading char for root, 
+            ///  Use '/' as leading char for root,
             ///  '..' for step up. Multiple paths may be coalesced using '|' or ';'
             /// </param>
             IConfigSectionNode NavigateSection(string path);
@@ -239,7 +233,7 @@ namespace NFX.Environment
             /// <summary>
             /// Evaluates a value string expanding all variables with var-paths relative to this node.
             /// Evaluates configuration variables such as "$(varname)" or "$(@varname)". Varnames are paths
-            /// to other config nodes from the same configuration or variable names when prefixed with "~". If varname starts with "@" then it gets combined 
+            /// to other config nodes from the same configuration or variable names when prefixed with "~". If varname starts with "@" then it gets combined
             ///  with input as path string. "~" is used to qualify environment vars that get resolved through Configuration.EnvironmentVarResolver
             ///  Example: `....add key="Schema.$(/A/B/C/$attr)" value="$(@~HOME)bin\Transforms\"...`
             /// </summary>
@@ -277,6 +271,11 @@ namespace NFX.Environment
             /// Serializes configuration tree rooted at this node into JSON configuration format and returns it as a string
             /// </summary>
             string ToJSONString(NFX.Serialization.JSON.JSONWritingOptions options = null);
+
+            /// <summary>
+            /// Returns attribute values as string map
+            /// </summary>
+            Collections.StringMap AttrsToStringMap(bool verbatim = false);
       }
 
       /// <summary>
@@ -295,13 +294,13 @@ namespace NFX.Environment
       /// Usually classes that implement this interface are singleton and they get registered with the application using IApplication.RegisterConfigSettings()
       /// method. Warning: the implementation must be thread-safe and allow property getters to keep reading while ConfigChanged() notification happens
       /// </summary>
-      public interface IConfigSettings 
+      public interface IConfigSettings
       {
           /// <summary>
-          /// Notifies the implementer that underlying source configuration has changed and memory-resident 
+          /// Notifies the implementer that underlying source configuration has changed and memory-resident
           /// fields need to be re-read from config nodes. Usually this method is called by application container
           ///  when instance of this class has been registered with the application using IApplication.RegisterConfigSettings().
-          /// Warning: the implementation must be thread-safe and allow getters to keep reading while notification happens 
+          /// Warning: the implementation must be thread-safe and allow getters to keep reading while notification happens
           /// </summary>
           /// <param name="atNode">
           /// Passes the most top-level node that covers all of the changes that happened in the source config system.
@@ -311,5 +310,5 @@ namespace NFX.Environment
       }
 
 
-  
+
 }

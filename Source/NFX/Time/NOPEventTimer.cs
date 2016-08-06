@@ -33,19 +33,19 @@ namespace NFX.Time
     public NOPEventTimer() {}
 
     public static NOPEventTimer Instance { get { return s_Instance;}}
-    
+
 
 
     public int ResolutionMs{ get { return 1000;} set {}}
 
     public void __InternalRegisterEvent(Event evt)
     {
-      
+
     }
 
     public void __InternalUnRegisterEvent(Event evt)
     {
-      
+
     }
 
 
@@ -80,7 +80,7 @@ namespace NFX.Time
 
     public void Configure(Environment.IConfigSectionNode node)
     {
-      
+
     }
   }
 }

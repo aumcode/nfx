@@ -43,7 +43,7 @@ namespace NFX.Instrumentation.Telemetry
         }
 
        #endregion
-      
+
        #region Properties
 
         /// <summary>
@@ -62,35 +62,35 @@ namespace NFX.Instrumentation.Telemetry
         /// Provides name for reporting site, if this property is blank then App.Name is used instead
         /// </summary>
         [Config]
-        public string SiteName { get; set; } 
+        public string SiteName { get; set; }
 
        #endregion
 
 
 
-       
+
 
         private TelemetryReceiverClient m_Client;
 
-        
+
         public override void Write(Datum aggregatedDatum)
         {
            if (!App.Available) return;
 
-           if (UseLog)         
+           if (UseLog)
              base.Write(aggregatedDatum);
 
            var node = ReceiverNode;
 
            if (node.IsNullOrWhiteSpace()) return;
-          
-          
+
+
            string site;
-           if (SiteName.IsNotNullOrWhiteSpace()) 
+           if (SiteName.IsNotNullOrWhiteSpace())
              site = SiteName;
            else
              site = "{0}::{1}@{2}".Args(App.Name, App.InstanceID, System.Environment.MachineName);
-          
+
            try
            {
                if (m_Client==null)
@@ -109,7 +109,7 @@ namespace NFX.Instrumentation.Telemetry
         {
            var cl = m_Client;
            if (cl==null) return;
-           
+
            try
            {
                m_Client = null;

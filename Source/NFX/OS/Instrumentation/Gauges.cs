@@ -45,7 +45,7 @@ namespace NFX.OS.Instrumentation
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new CPUUsage(src, value)); 
+             inst.Record(new CPUUsage(src, value));
         }
 
 
@@ -55,7 +55,7 @@ namespace NFX.OS.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new CPUUsage(this.Source, 0); 
+            return new CPUUsage(this.Source, 0);
         }
     }
 
@@ -68,7 +68,7 @@ namespace NFX.OS.Instrumentation
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new RAMUsage(value)); 
+             inst.Record(new RAMUsage(value));
         }
 
 
@@ -78,7 +78,7 @@ namespace NFX.OS.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new RAMUsage(0); 
+            return new RAMUsage(0);
         }
     }
 
@@ -91,7 +91,7 @@ namespace NFX.OS.Instrumentation
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new AvailableRAM(src, value)); 
+             inst.Record(new AvailableRAM(src, value));
         }
 
 
@@ -101,7 +101,7 @@ namespace NFX.OS.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new AvailableRAM(this.Source, 0); 
+            return new AvailableRAM(this.Source, 0);
         }
     }
 

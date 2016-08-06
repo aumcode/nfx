@@ -43,15 +43,15 @@ namespace NFX.Serialization.JSON
             /// </summary>
             public JSONDynamicObject(JSONDynamicObjectKind kind, bool caseSensitiveMap = true)
             {
-                m_Data = (kind==JSONDynamicObjectKind.Map) ? (IJSONDataObject)new JSONDataMap(caseSensitiveMap) 
+                m_Data = (kind==JSONDynamicObjectKind.Map) ? (IJSONDataObject)new JSONDataMap(caseSensitiveMap)
                                                            : (IJSONDataObject)new JSONDataArray();
             }
-            
+
             public JSONDynamicObject(IJSONDataObject data)
             {
                 m_Data = data;
             }
-                
+
         #endregion
 
         #region Fields
@@ -59,12 +59,12 @@ namespace NFX.Serialization.JSON
         #endregion
 
         #region Properties
-            
+
             public JSONDynamicObjectKind Kind
             {
-                get 
+                get
                 {
-                     return m_Data is JSONDataMap ? JSONDynamicObjectKind.Map 
+                     return m_Data is JSONDataMap ? JSONDynamicObjectKind.Map
                                                   : JSONDynamicObjectKind.Array;
                 }
             }
@@ -76,10 +76,10 @@ namespace NFX.Serialization.JSON
             {
                 get { return m_Data; }
             }
-           
+
 
         #endregion
-        
+
         #region Public
 
             public override IEnumerable<string> GetDynamicMemberNames()
@@ -101,7 +101,7 @@ namespace NFX.Serialization.JSON
                 {
                   var arr = m_Data as JSONDataArray;
                   if (arr!=null)
-                  { 
+                  {
                       if (binder.Name=="Count" || binder.Name=="Length")
                       {
                         result = arr.Count;
@@ -115,11 +115,11 @@ namespace NFX.Serialization.JSON
                       }
 
                   }
-                  
+
                   result = null;
                   return false;
                 }
-                           
+
                 if (map.ContainsKey(binder.Name))
                   result = map[binder.Name];
                 else
@@ -127,8 +127,8 @@ namespace NFX.Serialization.JSON
 
                 if (result is IJSONDataObject)
                     result = new JSONDynamicObject((IJSONDataObject)result);
-                
-                return true; 
+
+                return true;
             }
 
             public override bool TrySetMember(SetMemberBinder binder, object value)
@@ -144,7 +144,7 @@ namespace NFX.Serialization.JSON
                 map[binder.Name] = value;
                 return true;
             }
-               
+
             public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
             {
                 if (binder.Name.Equals("tojson",StringComparison.OrdinalIgnoreCase))
@@ -155,7 +155,7 @@ namespace NFX.Serialization.JSON
 
                 return base.TryInvokeMember(binder, args, out result);
             }
-           
+
 
             public override bool TryConvert(ConvertBinder binder, out object result)
             {
@@ -185,8 +185,8 @@ namespace NFX.Serialization.JSON
 
                         if (result is IJSONDataObject)
                             result = new JSONDynamicObject((IJSONDataObject)result);
-                
-                        return true; 
+
+                        return true;
                     }
                   }
                   return false;
@@ -197,11 +197,11 @@ namespace NFX.Serialization.JSON
 
                 if(idx<arr.Count)
                   result = arr[idx];
-               
+
                 if (result is IJSONDataObject)
                     result = new JSONDynamicObject((IJSONDataObject)result);
-                
-                return true; 
+
+                return true;
             }
 
             public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
@@ -218,9 +218,9 @@ namespace NFX.Serialization.JSON
                         if (value is JSONDynamicObject)
                              value = ((JSONDynamicObject)value).m_Data;
 
-                        map[(string)indexes[0]] = value;      
-                
-                        return true; 
+                        map[(string)indexes[0]] = value;
+
+                        return true;
                     }
                   }
                   return false;
@@ -231,12 +231,12 @@ namespace NFX.Serialization.JSON
                     value = ((JSONDynamicObject)value).m_Data;
 
                 var idx = (int)indexes[0];
-               
-                //autogrow 
+
+                //autogrow
                 while(idx>=arr.Count)
-                 arr.Add(null); 
-               
-                arr[idx] = value;      
+                 arr.Add(null);
+
+                arr[idx] = value;
                 return true;
             }
 

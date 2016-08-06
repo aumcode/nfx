@@ -64,7 +64,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTransportCount(node.ToString(), value)); 
+             inst.Record(new ServerTransportCount(node.ToString(), value));
         }
 
 
@@ -74,7 +74,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTransportCount(this.Source, 0); 
+            return new ServerTransportCount(this.Source, 0);
         }
     }
 
@@ -88,7 +88,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTransportChannelCount(node.ToString(), value)); 
+             inst.Record(new ServerTransportChannelCount(node.ToString(), value));
         }
 
 
@@ -98,7 +98,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTransportChannelCount(this.Source, 0); 
+            return new ServerTransportChannelCount(this.Source, 0);
         }
     }
 
@@ -113,7 +113,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerBytesReceived(node.ToString(), value)); 
+             inst.Record(new ServerBytesReceived(node.ToString(), value));
         }
 
 
@@ -123,7 +123,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerBytesReceived(this.Source, 0); 
+            return new ServerBytesReceived(this.Source, 0);
         }
     }
 
@@ -137,7 +137,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTotalBytesReceived(node.ToString(), value)); 
+             inst.Record(new ServerTotalBytesReceived(node.ToString(), value));
         }
 
 
@@ -147,7 +147,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTotalBytesReceived(this.Source, 0); 
+            return new ServerTotalBytesReceived(this.Source, 0);
         }
     }
 
@@ -160,7 +160,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerBytesSent(node.ToString(), value)); 
+             inst.Record(new ServerBytesSent(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many bytes server sent"; }}
@@ -169,7 +169,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerBytesSent(this.Source, 0); 
+            return new ServerBytesSent(this.Source, 0);
         }
     }
 
@@ -183,7 +183,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTotalBytesSent(node.ToString(), value)); 
+             inst.Record(new ServerTotalBytesSent(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many bytes server sent"; }}
@@ -192,7 +192,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTotalBytesSent(this.Source, 0); 
+            return new ServerTotalBytesSent(this.Source, 0);
         }
     }
 
@@ -206,7 +206,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerMsgReceived(node.ToString(), value)); 
+             inst.Record(new ServerMsgReceived(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many messages server received"; }}
@@ -214,7 +214,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerMsgReceived(this.Source, 0); 
+            return new ServerMsgReceived(this.Source, 0);
         }
     }
 
@@ -227,7 +227,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTotalMsgReceived(node.ToString(), value)); 
+             inst.Record(new ServerTotalMsgReceived(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many messages server received"; }}
@@ -235,7 +235,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTotalMsgReceived(this.Source, 0); 
+            return new ServerTotalMsgReceived(this.Source, 0);
         }
     }
 
@@ -248,7 +248,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerMsgSent(node.ToString(), value)); 
+             inst.Record(new ServerMsgSent(node.ToString(), value));
         }
 
 
@@ -257,7 +257,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerMsgSent(this.Source, 0); 
+            return new ServerMsgSent(this.Source, 0);
         }
     }
 
@@ -270,7 +270,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTotalMsgSent(node.ToString(), value)); 
+             inst.Record(new ServerTotalMsgSent(node.ToString(), value));
         }
 
 
@@ -279,7 +279,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTotalMsgSent(this.Source, 0); 
+            return new ServerTotalMsgSent(this.Source, 0);
         }
     }
 
@@ -293,7 +293,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerErrors(node.ToString(), value)); 
+             inst.Record(new ServerErrors(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many times server errors happened"; }}
@@ -302,7 +302,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerErrors(this.Source, 0); 
+            return new ServerErrors(this.Source, 0);
         }
     }
 
@@ -316,7 +316,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ServerTotalErrors(node.ToString(), value)); 
+             inst.Record(new ServerTotalErrors(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many server errors happened"; }}
@@ -325,7 +325,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ServerTotalErrors(this.Source, 0); 
+            return new ServerTotalErrors(this.Source, 0);
         }
     }
 
@@ -345,7 +345,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTransportCount(node.ToString(), value)); 
+             inst.Record(new ClientTransportCount(node.ToString(), value));
         }
 
 
@@ -355,7 +355,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTransportCount(this.Source, 0); 
+            return new ClientTransportCount(this.Source, 0);
         }
     }
 
@@ -370,7 +370,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientBytesReceived(node.ToString(), value)); 
+             inst.Record(new ClientBytesReceived(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many bytes client received"; }}
@@ -378,7 +378,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientBytesReceived(this.Source, 0); 
+            return new ClientBytesReceived(this.Source, 0);
         }
     }
 
@@ -391,7 +391,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTotalBytesReceived(node.ToString(), value)); 
+             inst.Record(new ClientTotalBytesReceived(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many bytes client received"; }}
@@ -399,7 +399,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTotalBytesReceived(this.Source, 0); 
+            return new ClientTotalBytesReceived(this.Source, 0);
         }
     }
 
@@ -412,7 +412,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientBytesSent(node.ToString(), value)); 
+             inst.Record(new ClientBytesSent(node.ToString(), value));
         }
 
 
@@ -422,7 +422,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientBytesSent(this.Source, 0); 
+            return new ClientBytesSent(this.Source, 0);
         }
     }
 
@@ -436,7 +436,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTotalBytesSent(node.ToString(), value)); 
+             inst.Record(new ClientTotalBytesSent(node.ToString(), value));
         }
 
 
@@ -446,7 +446,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTotalBytesSent(this.Source, 0); 
+            return new ClientTotalBytesSent(this.Source, 0);
         }
     }
 
@@ -459,7 +459,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTimedOutCallSlotsRemoved(value)); 
+             inst.Record(new ClientTimedOutCallSlotsRemoved(value));
         }
 
 
@@ -469,7 +469,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTimedOutCallSlotsRemoved(0); 
+            return new ClientTimedOutCallSlotsRemoved(0);
         }
     }
 
@@ -483,7 +483,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientMsgReceived(node.ToString(), value)); 
+             inst.Record(new ClientMsgReceived(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many messages client received"; }}
@@ -491,7 +491,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientMsgReceived(this.Source, 0); 
+            return new ClientMsgReceived(this.Source, 0);
         }
     }
 
@@ -505,7 +505,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTotalMsgReceived(node.ToString(), value)); 
+             inst.Record(new ClientTotalMsgReceived(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many messages client received"; }}
@@ -513,7 +513,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTotalMsgReceived(this.Source, 0); 
+            return new ClientTotalMsgReceived(this.Source, 0);
         }
     }
 
@@ -526,7 +526,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientMsgSent(node.ToString(), value)); 
+             inst.Record(new ClientMsgSent(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many messages client sent"; }}
@@ -534,7 +534,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientMsgSent(this.Source, 0); 
+            return new ClientMsgSent(this.Source, 0);
         }
     }
 
@@ -548,7 +548,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTotalMsgSent(node.ToString(), value)); 
+             inst.Record(new ClientTotalMsgSent(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many messages client sent"; }}
@@ -556,7 +556,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTotalMsgSent(this.Source, 0); 
+            return new ClientTotalMsgSent(this.Source, 0);
         }
     }
 
@@ -570,7 +570,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientErrors(node.ToString(), value)); 
+             inst.Record(new ClientErrors(node.ToString(), value));
         }
 
         public override string Description { get{ return "How many times client errors happened"; }}
@@ -578,7 +578,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientErrors(this.Source, 0); 
+            return new ClientErrors(this.Source, 0);
         }
     }
 
@@ -592,7 +592,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientTotalErrors(node.ToString(), value)); 
+             inst.Record(new ClientTotalErrors(node.ToString(), value));
         }
 
         public override string Description { get{ return "Total of how many times client errors happened"; }}
@@ -600,7 +600,7 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientTotalErrors(this.Source, 0); 
+            return new ClientTotalErrors(this.Source, 0);
         }
     }
 
@@ -615,7 +615,7 @@ namespace NFX.Glue.Instrumentation
         {
            var inst = ExecutionContext.Application.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new ClientCallRoundtripTime(key, value)); 
+             inst.Record(new ClientCallRoundtripTime(key, value));
         }
 
         public override string Description { get{ return "How long does a two-way last known call take"; }}
@@ -623,10 +623,10 @@ namespace NFX.Glue.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new ClientCallRoundtripTime(this.Source, 0); 
+            return new ClientCallRoundtripTime(this.Source, 0);
         }
     }
 
-    
+
 
 }

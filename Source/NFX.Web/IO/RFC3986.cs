@@ -46,7 +46,7 @@ namespace NFX.Web.IO
     #region Static
 
       /// <summary>
-      /// Encodes URL string according to RFC3986 
+      /// Encodes URL string according to RFC3986
       /// </summary>
       public static string URLEncode(string input)
       {
@@ -54,7 +54,7 @@ namespace NFX.Web.IO
       }
 
       /// <summary>
-      /// Encodes string according to RFC3986 
+      /// Encodes string according to RFC3986
       /// </summary>
       public static string Encode(string input)
       {

@@ -1,0 +1,4 @@
+﻿#pragma
+modify=MyInvoice
+
+{'_id': '$$id'}

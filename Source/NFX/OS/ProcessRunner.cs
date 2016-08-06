@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -159,8 +159,8 @@ namespace NFX.OS
             p.StartInfo.UseShellExecute = false;//so we can redir IO gotta be false
             p.StartInfo.CreateNoWindow = true;
             p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;    
-            
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
             p.OutputDataReceived += (sender, e) =>
             {
                 if (e.Data != null)
@@ -168,12 +168,12 @@ namespace NFX.OS
                     m_BufferedOutput.AppendLine(e.Data);
                 }
             };
-            
+
 
             p.Start();
             watch.Start();
-            
-            p.BeginOutputReadLine();   
+
+            p.BeginOutputReadLine();
 
             if (timeoutMs>0)
                 p.WaitForExit(timeoutMs);
@@ -191,7 +191,7 @@ namespace NFX.OS
             else
                 m_ExitCode = p.ExitCode;
 
-              
+
           }//using
 
           return m_ExitCode;

@@ -110,7 +110,7 @@ namespace NFX.Erlang
           if (m_Items.Select(i => !(i is ErlByte)).Any())
             throw new ErlIncompatibleTypesException(this, typeof(string));
           return Encoding.UTF8.GetString(m_Items.Select(i => (byte)((ErlByte)i).ValueAsInt).ToArray());
-        } 
+        }
       }
 
     #endregion

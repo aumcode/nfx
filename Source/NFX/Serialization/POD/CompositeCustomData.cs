@@ -22,7 +22,7 @@ using System.Text;
 
 namespace NFX.Serialization.POD
 {
-    
+
     /// <summary>
     /// Used in custom data bags to specify the type of the object contained in Data property if it is intended to be re-interpreted
     /// </summary>
@@ -31,8 +31,8 @@ namespace NFX.Serialization.POD
         public int TypeIndex;
         public object Data;
     }
-    
-    
+
+
     /// <summary>
     /// Represents a composite (non primitive) data stored in Portable Object Document.
     /// This data is obtained from native types using ISerializable interface or running PortableObjectDocumentTransform attribute.
@@ -43,18 +43,18 @@ namespace NFX.Serialization.POD
     public sealed class CompositeCustomData : CompositeData
     {
        #region .ctor
-           
+
             internal CompositeCustomData(PortableObjectDocument document, ISerializable data, int metaTypeIndex = -1)
                       : base(document, data, metaTypeIndex)
             {
-                if (!ExistingReference)    
+                if (!ExistingReference)
                     serializeFromISerializable(data);
             }
 
             internal CompositeCustomData(PortableObjectDocument document, object data, int metaTypeIndex = -1)
                       : base(document, data, metaTypeIndex)
             {
-                if (!ExistingReference)    
+                if (!ExistingReference)
                     serializeFromTransform(data);
             }
 
@@ -69,7 +69,7 @@ namespace NFX.Serialization.POD
         #endregion
 
         #region Properties
-            /// <summary>                                                             
+            /// <summary>
             /// Returns custom data that this instance contains, or null if this instance is a reference to another object
             /// </summary>
             public Dictionary<string, CustomTypedEntry> CustomData { get { return m_CustomData;} }
@@ -96,7 +96,7 @@ namespace NFX.Serialization.POD
                         value.Data = m_Document.NativeDataToPortableData( senum.Value );
                         m_CustomData[senum.Name] = value;
                     }
-                    
+
                 }
 
                 private void serializeFromTransform(object data)

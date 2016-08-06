@@ -70,7 +70,7 @@ namespace NFX.Erlang
     Bin             = 109,
     SmallBigInt     = 110,
     LargeBigInt     = 111,
-      
+
     Version         = 131,
   }
 }

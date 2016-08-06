@@ -36,7 +36,7 @@ namespace NFX.Serialization.Slim
            /// Denotes a special type which is object==null
            /// </summary>
            public static readonly VarIntStr NULL_HANDLE = new VarIntStr(0);
-       
+
        #endregion
 
        #region STATIC
@@ -104,7 +104,7 @@ namespace NFX.Serialization.Slim
                yield return typeof(DataAccess.CRUD.Row);
                yield return typeof(DataAccess.CRUD.Row[]);
                yield return typeof(List<DataAccess.CRUD.Row>);
-               
+
                yield return typeof(DataAccess.CRUD.DynamicRow);
                yield return typeof(DataAccess.CRUD.TypedRow);
                yield return typeof(DataAccess.CRUD.Query);
@@ -120,7 +120,7 @@ namespace NFX.Serialization.Slim
                yield return typeof(DataAccess.Distributed.Parcel);
                yield return typeof(DataAccess.Distributed.Parcel[]);
                yield return typeof(DataAccess.Distributed.IReplicationVersionInfo);
-               
+
              }
            }
 
@@ -146,6 +146,8 @@ namespace NFX.Serialization.Slim
                yield return typeof(NFX.Serialization.JSON.JSONDataArray);
                yield return typeof(NFX.Serialization.JSON.JSONDataMap);
                yield return typeof(NFX.Serialization.JSON.JSONDynamicObject);
+
+               yield return typeof(NFX.Collections.StringMap);
              }
            }
 
@@ -233,7 +235,7 @@ namespace NFX.Serialization.Slim
            }
 
 
-           
+
            //20140701 DKh - speed optimization
            private const int STR_HNDL_POOL_SIZE = 512;
            internal readonly static string[] STR_HNDL_POOL;
@@ -241,7 +243,7 @@ namespace NFX.Serialization.Slim
            static TypeRegistry()
            {
               STR_HNDL_POOL = new string[STR_HNDL_POOL_SIZE];
-              STR_HNDL_POOL[0] = "$N"; 
+              STR_HNDL_POOL[0] = "$N";
               for(var i=1; i<STR_HNDL_POOL_SIZE; i++)
                STR_HNDL_POOL[i] = '$'+i.ToString();
            }
@@ -251,7 +253,7 @@ namespace NFX.Serialization.Slim
        #endregion
 
        #region .ctors
-          
+
            private struct NULL_HANDLE_FAKE_TYPE{}
 
 
@@ -275,11 +277,11 @@ namespace NFX.Serialization.Slim
               info.AddValue("tps", m_List.Skip(4/*system type count see ctor*/).Select( t => t.AssemblyQualifiedName).ToArray());
             }
 
-          
+
            /// <summary>
            /// Initializes TypeRegistry with types from other sources
            /// </summary>
-           public TypeRegistry(params IEnumerable<Type>[] others) 
+           public TypeRegistry(params IEnumerable<Type>[] others)
            {
              initCtor();
 
@@ -294,10 +296,10 @@ namespace NFX.Serialization.Slim
            }
 
                          private void initCtor()
-                         {  
+                         {
                             m_Types =  new Dictionary<Type, int>(0xff);
                             m_List = new List<Type>(0xff);
-           
+
                             //WARNING!!! These types MUST be at the following positions always at the pre-defined index:
                             add(typeof(NULL_HANDLE_FAKE_TYPE));//must be at index zero - NULL HANDLE
                             add(typeof(object));//must be at index 1 - object(not null)
@@ -317,7 +319,7 @@ namespace NFX.Serialization.Slim
 
 
        #region Properties
-           
+
            /// <summary>
            /// How many items in the registry
            /// </summary>
@@ -328,7 +330,7 @@ namespace NFX.Serialization.Slim
            /// It is updated when new types get added into the registry
            /// </summary>
            public ulong CSum{  get{ return m_CSum;}}
-           
+
 
 
                       private static Dictionary<string, Type> s_Types = new Dictionary<string,Type>(StringComparer.Ordinal);
@@ -343,7 +345,7 @@ namespace NFX.Serialization.Slim
               try
               {
                 if (IsNullHandle(handle)) return typeof(object);
-            
+
                 if (handle.StringValue==null)
                 {
                     var idx = (int)handle.IntValue;
@@ -382,7 +384,7 @@ namespace NFX.Serialization.Slim
               try
               {
                 if (IsNullHandle(handle)) return typeof(object);
-            
+
                 if (handle[0]=='$')
                 {
                    // var idx = int.Parse(handle.Substring(1));
@@ -425,14 +427,14 @@ namespace NFX.Serialization.Slim
                         result += d;
                       }
 
-                      return result; 
+                      return result;
                    }
 
 
        #endregion
 
        #region Public
-               
+
                /// <summary>
                /// Adds the type if it not already in registry and returns true
                /// </summary>
@@ -443,8 +445,8 @@ namespace NFX.Serialization.Slim
                  add(type);
                  return true;
                }
-               
-               
+
+
                /// <summary>
                /// Returns a string with the type index formatted as handle if type exists in registry, or fully qualified type name otherwise
                /// </summary>
@@ -460,7 +462,7 @@ namespace NFX.Serialization.Slim
 
                  return type.AssemblyQualifiedName;
                }
-               
+
                /// <summary>
                /// Returns a VarIntStr with the type index formatted as handle if type exists in registry, or fully qualified type name otherwise
                /// </summary>
@@ -499,8 +501,8 @@ namespace NFX.Serialization.Slim
 
              var tn = t.FullName;
              var len = tn.Length;
-             int csum =   (  ((byte)tn[0])     << 16 )  | 
-                          (  ((byte)tn[len-1]) << 8  )  | 
+             int csum =   (  ((byte)tn[0])     << 16 )  |
+                          (  ((byte)tn[len-1]) << 8  )  |
                           (   len & 0xff             );
 
              m_CSum += (ulong)csum; //unchecked is not needed as there is never going to be> 4,000,000,000 types in registry

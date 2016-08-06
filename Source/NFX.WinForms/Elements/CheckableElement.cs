@@ -47,7 +47,7 @@ namespace NFX.WinForms.Elements
      public bool Checked
      {
       get { return m_Checked;}
-      set 
+      set
       {
         m_Checked = value;
         OnCheckedChanged(EventArgs.Empty);
@@ -57,9 +57,9 @@ namespace NFX.WinForms.Elements
 
     #endregion
 
-    
+
     #region Events
-    
+
      public event EventHandler CheckedChanged;
     #endregion
 
@@ -75,7 +75,7 @@ namespace NFX.WinForms.Elements
       {
         if (CheckedChanged!=null) CheckedChanged(this, e);
       }
-    
+
     #endregion
 
 
@@ -85,5 +85,5 @@ namespace NFX.WinForms.Elements
     #endregion
 
   }
-  
+
 }

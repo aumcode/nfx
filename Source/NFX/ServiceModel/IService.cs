@@ -16,7 +16,7 @@ namespace NFX.ServiceModel
       /// Current service status
       /// </summary>
       ControlStatus Status { get;}
-      
+
       /// <summary>
       /// Returns true when service is active or about to become active.
       /// Check in service implementation loops/threads/tasks
@@ -42,5 +42,5 @@ namespace NFX.ServiceModel
       /// Blocks execution of current thread until this service has completely stopped
       /// </summary>
       void WaitForCompleteStop();
-    } 
+    }
 }

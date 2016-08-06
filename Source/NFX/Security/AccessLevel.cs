@@ -33,7 +33,7 @@ namespace NFX.Security
       public sealed class AccessLevel
       {
         #region CONSTS
-     
+
             public const int DENIED = 0;
             public const int VIEW = 1;
             public const int VIEW_CHANGE = 2;
@@ -44,7 +44,7 @@ namespace NFX.Security
             public static readonly IConfigSectionNode DENIED_CONF = "p{level=0}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
         #endregion
-    
+
         #region .ctor
 
             public static AccessLevel DeniedFor(User user, Permission permission)
@@ -63,17 +63,17 @@ namespace NFX.Security
 
 
         #region Fields
-            
+
             private User m_User;
             private Permission m_Permission;
             private IConfigSectionNode m_Data;
-            
+
 
         #endregion
 
-       
+
         #region Properties
-          
+
             /// <summary>
             /// Returns user that this access level is for
             /// </summary>

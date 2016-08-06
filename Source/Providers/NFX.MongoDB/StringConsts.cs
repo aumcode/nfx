@@ -57,7 +57,7 @@ namespace NFX.DataAccess.MongoDB
 
     public const string KEY_SUPPORT_ERROR =
         "MongoDB driver supports only the following IDataStoreKey implementations:  NameValueDataStoreKey";
-   
+
     public const string LOADING_ENTITY_NOT_FOUND_ERROR =
         "Could not load entity as store returned no data for supplied key:\n{0}";
 
@@ -111,7 +111,7 @@ namespace NFX.DataAccess.MongoDB
 
     public const string PROTO_SERVER_REPLIED_WITH_NO_DOCUMENTS_ERROR =
         "Server replied with no documents";
-    
+
     public const string PROTO_REPLY_DOC_COUNT_EXCEED_LIMIT_ERROR =
         "Can not process OP_REPLY as it contains {0} documents which exceeds the limit of {1} documents. Socket connection is most likely corrupted";
 
@@ -122,7 +122,7 @@ namespace NFX.DataAccess.MongoDB
     public const string CURSOR_ENUM_ALREADY_STARTED_ERROR =
         "Cursor can be enumerated only once and can not be Reset() again";
 
-    
+
     public const string QUERY_FINISH_STATEMENT_COMPILE_ERROR =
         "Current query statement should be finished with one of the following statements: Equals(), NotEquals(), GreaterThan(), NotGreaterThan(), LessThan(), NotLessThan(), Exists()";
 

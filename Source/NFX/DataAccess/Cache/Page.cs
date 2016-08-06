@@ -26,7 +26,7 @@ namespace NFX.DataAccess.Cache
     /// </summary>
     public abstract class Bucketed : DisposableObject
     {
-        
+
     }
 
     /// <summary>
@@ -42,5 +42,5 @@ namespace NFX.DataAccess.Cache
     }
 
 
-    
+
 }

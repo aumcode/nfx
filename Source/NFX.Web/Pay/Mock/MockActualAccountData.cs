@@ -42,7 +42,7 @@ namespace NFX.Web.Pay.Mock
       {
         return FactoryUtils.MakeAndConfigure<MockActualAccountData>(node, typeof(MockActualAccountData));
       }
-    
+
     #endregion
 
     #region ctor
@@ -119,7 +119,7 @@ namespace NFX.Web.Pay.Mock
     #endregion
 
     #region Public methods
-      
+
       public void Configure(IConfigSectionNode node)
       {
         ConfigAttribute.Apply(this, node);

@@ -51,7 +51,7 @@ namespace NFX.DataAccess.Distributed
     }
 
     /// <summary>
-    /// Holds data per IParcelCachePolicy contract 
+    /// Holds data per IParcelCachePolicy contract
     /// </summary>
     public struct CachePolicyData : ICachePolicy
     {

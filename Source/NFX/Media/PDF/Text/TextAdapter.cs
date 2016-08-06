@@ -5,7 +5,7 @@ using System.Text;
 namespace NFX.Media.PDF.Text
 {
   /// <summary>
-  /// Utility class for operations with text 
+  /// Utility class for operations with text
   /// </summary>
   public static class TextAdapter
   {

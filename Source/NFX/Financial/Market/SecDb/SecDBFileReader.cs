@@ -20,8 +20,8 @@ namespace NFX.Financial.Market.SecDb
     Summary = 5,
     Message = 6
   }
-  
-  
+
+
   /// <summary>
   /// Represents SecDB file. This class is thread-safe.
   /// See: https://github.com/saleyn/secdb/wiki/Data-Format
@@ -61,12 +61,12 @@ namespace NFX.Financial.Market.SecDb
         m_FileName = fileName;
 
         workWithFile<bool, bool>( (_, file) => { parseHeadersAndMetadata(file); return true; }, true);
-      } 
+      }
 
     #endregion
 
     #region .pvt
-      
+
       private FileSystem m_FS;
       private FileSystemSessionConnectParams m_FSConnect;
       private string m_FileName;
@@ -119,7 +119,7 @@ namespace NFX.Financial.Market.SecDb
       {
         return m_Candles_Meta.Candles.FirstOrDefault( ch => ch.ResolutionSec == resolutionSec);
       }
-      
+
       /// <summary>
       /// Tries to find a candle stream with the specified exact resolution skipping the specified number of seconds and returns it, or
       /// returns an empty enumerable if resolution is not available
@@ -128,7 +128,7 @@ namespace NFX.Financial.Market.SecDb
       {
         var hdr = GetCandleHeader(resolutionSec);
         if (!hdr.IsAssigned) return Enumerable.Empty<CandleData>();
-        return GetCandleData(hdr, skipSeconds); 
+        return GetCandleData(hdr, skipSeconds);
       }
 
       /// <summary>
@@ -139,7 +139,7 @@ namespace NFX.Financial.Market.SecDb
       {
         var hdr = GetCandleHeader(resolutionSec);
         if (!hdr.IsAssigned) return Enumerable.Empty<CandleData>();
-        return GetCandleData(hdr, hdr.GetSkipSecondsUntil(startTimeUTC)); 
+        return GetCandleData(hdr, hdr.GetSkipSecondsUntil(startTimeUTC));
       }
 
 
@@ -162,10 +162,10 @@ namespace NFX.Financial.Market.SecDb
 
 
         return workWithFile<enumerateCandleDataArgs, IEnumerable<CandleData>>(
-                                 enumerateCandleData, 
+                                 enumerateCandleData,
                                  new enumerateCandleDataArgs
                                  {
-                                   Header = header, 
+                                   Header = header,
                                    SkipSeconds = skipSeconds
                                  });
       }
@@ -179,12 +179,12 @@ namespace NFX.Financial.Market.SecDb
         var hdr = GetCandleHeader(resolutionSec);
         if (!hdr.IsAssigned) return Enumerable.Empty<CandleSample>();
         return this.GetCandleData(hdr, hdr.GetSkipSecondsUntil(startTimeUTC))
-                   .Select( cd => 
-                           { 
+                   .Select( cd =>
+                           {
                             var cs = cd.ToCandleSample();
                             cs.TimeSpanMs = hdr.ResolutionSec * 1000;
-                            return cs; 
-                           }); 
+                            return cs;
+                           });
       }
 
 
@@ -197,11 +197,11 @@ namespace NFX.Financial.Market.SecDb
         var hdr = GetCandleHeader(resolutionSec);
         if (!hdr.IsAssigned) return Enumerable.Empty<CandleSample>();
         return this.GetCandleData(hdr, skipSeconds)
-                   .Select( cd => 
-                           { 
+                   .Select( cd =>
+                           {
                             var cs = cd.ToCandleSample();
                             cs.TimeSpanMs = hdr.ResolutionSec * 1000;
-                            return cs; 
+                            return cs;
                            });
       }
 
@@ -220,11 +220,11 @@ namespace NFX.Financial.Market.SecDb
       public IEnumerable<CandleSample> GetCandleDataAsCandleSamples(CandleHeader header, int skipSeconds = 0)
       {
         return this.GetCandleData(header, skipSeconds)
-                   .Select( cd => 
-                           { 
+                   .Select( cd =>
+                           {
                              var cs = cd.ToCandleSample();
                              cs.TimeSpanMs = header.ResolutionSec * 1000;
-                             return cs; 
+                             return cs;
                            });
       }
 
@@ -268,10 +268,10 @@ namespace NFX.Financial.Market.SecDb
         if (!candle.IsAssigned) return Enumerable.Empty<StreamSample>();
 
         return workWithFile<enumerateStreamDataArgs, IEnumerable<StreamSample>>(
-                                 enumerateStreamData, 
+                                 enumerateStreamData,
                                  new enumerateStreamDataArgs
                                  {
-                                   Candle = candle 
+                                   Candle = candle
                                  });
       }
 
@@ -282,10 +282,10 @@ namespace NFX.Financial.Market.SecDb
       public IEnumerable<StreamSample> GetAllStreamData()
       {
         return workWithFile<enumerateStreamDataArgs, IEnumerable<StreamSample>>(
-                                 enumerateStreamData, 
+                                 enumerateStreamData,
                                  new enumerateStreamDataArgs
                                  {
-                                   Candle = new CandleData() 
+                                   Candle = new CandleData()
                                  });
       }
 
@@ -293,16 +293,16 @@ namespace NFX.Financial.Market.SecDb
     #endregion
 
     #region .pvt
-      
+
       private TResult workWithFile<TContext, TResult>(Func<TContext, FileSystemFile, TResult> body, TContext context)
       {
          using(var session = m_FS.StartSession(m_FSConnect))
          {
            var file = session[m_FileName] as FileSystemFile;
-           if (file==null) 
+           if (file==null)
             throw new FinancialException(StringConsts.SECDB_FILE_NOT_FOUND_ERROR.Args(m_FileName, "{0}('{1}')".Args(m_FS.GetType().FullName, m_FS.Name)));
-       
-           using(file) 
+
+           using(file)
              return body(context, file);
          }
       }
@@ -345,7 +345,7 @@ namespace NFX.Financial.Market.SecDb
                   }
 
                   var i = line.IndexOf(':');
-                  if (i<=0) 
+                  if (i<=0)
                     throw new FinancialException("Header line syntax '{0}'".Args(line));
 
                   var key = line.Substring(0, i);
@@ -353,7 +353,7 @@ namespace NFX.Financial.Market.SecDb
 
                   if (m_Headers.ContainsKey(key))
                     throw new FinancialException("Duplicate header key '{0}'".Args(key));
-            
+
                   m_Headers.Add(key, value.TrimStart());
                 }
 
@@ -370,7 +370,7 @@ namespace NFX.Financial.Market.SecDb
           throw new FinancialException(StringConsts.SECDB_FILE_HEADER_ERROR + error.ToMessageWithType());
         }
 
-        
+
       }
 
 
@@ -395,17 +395,17 @@ namespace NFX.Financial.Market.SecDb
         m_Streams_Metas = new StreamMeta[ scount+1 ];
         m_Streams_Metas[0] = new StreamMeta(StreamID.Seconds);
 
-        //StreamMeta 
+        //StreamMeta
         for(var i=1; i<=scount; i++) //<= as scount does not include zeros element which is mandatory
         {
           bt = SecDBPrimitives.ReadByte(stream);
           if (bt!=0x02)//0x2 - Stream header
-            throw new FinancialException("StreamMeta.Header != 0x02"); 
+            throw new FinancialException("StreamMeta.Header != 0x02");
 
           //StreamID
           bt = SecDBPrimitives.ReadByte(stream);
           if (bt>(byte)StreamID.MAX_ID)
-            throw new FinancialException("StreamMeta.StreamID {0} = invalid".Args(bt)); 
+            throw new FinancialException("StreamMeta.StreamID {0} = invalid".Args(bt));
 
           var sid = (StreamID)bt;
           m_Streams_Metas[i] = new StreamMeta(sid);
@@ -419,7 +419,7 @@ namespace NFX.Financial.Market.SecDb
         stream.Seek(m_Streams_DataOffset, SeekOrigin.Begin);
         var magic = SecDBPrimitives.ReadUInt32(stream);
         if (magic!=0xABBABABA)
-           throw new FinancialException("StreamDataMarker != 0xABBABABA"); 
+           throw new FinancialException("StreamDataMarker != 0xABBABABA");
 
       }
 
@@ -442,7 +442,7 @@ namespace NFX.Financial.Market.SecDb
            bt = SecDBPrimitives.ReadByte(stream);
            if (bt!=0x04)//0x4 -  Candle Header
              throw new FinancialException("CandleHeader.Header != 0x04");
-           
+
            //Filler
            bt = SecDBPrimitives.ReadByte(stream);
 
@@ -455,10 +455,10 @@ namespace NFX.Financial.Market.SecDb
            if (resolution==0)
              throw new FinancialException("CandleHeader.Resolution == 0x00");
 
-           var sdt = new DateTime(m_SystemHeader.Date.Year, 
-                                  m_SystemHeader.Date.Month, 
+           var sdt = new DateTime(m_SystemHeader.Date.Year,
+                                  m_SystemHeader.Date.Month,
                                   m_SystemHeader.Date.Day,
-                                  0, 0, 0, DateTimeKind.Utc).AddSeconds( starttime ); 
+                                  0, 0, 0, DateTimeKind.Utc).AddSeconds( starttime );
 
            var ch = new CandleHeader(this, resolution, starttime, sdt, count, offset);
            chdrs[i] = ch;
@@ -479,7 +479,7 @@ namespace NFX.Financial.Market.SecDb
         {
           //Candle data start
           stream.Seek(header.DataOffset, SeekOrigin.Begin);
-          
+
           DateTime ts = header.StartTime;
           var i = 0;
 
@@ -525,7 +525,7 @@ namespace NFX.Financial.Market.SecDb
            stream.Seek((long)candle.FirstStreamOffset, SeekOrigin.Begin);
           else
            stream.Seek((long)(m_Streams_DataOffset+sizeof(int)), SeekOrigin.Begin);
-          
+
           DateTime currentTS = candle.TimeStamp;
 
           StreamSample[] prior = new StreamSample[(int)StreamID.MAX_ID + 1];
@@ -538,15 +538,15 @@ namespace NFX.Financial.Market.SecDb
             var sid = hdr & 0x7f;
             if ((StreamID)sid>StreamID.MAX_ID || sid>=STREAM_SAMPLE_FACTORIES.Length)
               throw new FinancialException(StringConsts.SECDB_STREAM_CORRUPTED_ERROR+"enumerateStreamData(sid>StreamIS.MAX_ID)");
-          
+
             if (sid==(int)StreamID.Seconds)
             {
               int ts =  SecDBPrimitives.ReadMidnightSecond(stream);
-              currentTS = new DateTime(m_SystemHeader.Date.Year, 
-                                     m_SystemHeader.Date.Month, 
+              currentTS = new DateTime(m_SystemHeader.Date.Year,
+                                     m_SystemHeader.Date.Month,
                                      m_SystemHeader.Date.Day,
                                      0, 0, 0, DateTimeKind.Utc).AddSeconds( ts );
-              //Second resets all other 
+              //Second resets all other
               for(var i=0; i<prior.Length; i++)
                 prior[i] = null;
             }
@@ -557,11 +557,11 @@ namespace NFX.Financial.Market.SecDb
               currentTS = currentTS.AddTicks((long)ticks);
             }
 
-            
+
             var priorSampleOfThisType = prior[sid];
             if (priorSampleOfThisType==null && isDelta)
                throw new FinancialException(StringConsts.SECDB_STREAM_CORRUPTED_ERROR+"prior sample of '{0}' type is null, but IsDelta = 1".Args((StreamID)sid));
-            
+
             var priorSecond = prior[0] as SecondSample;
             if (sid!=0 && priorSecond==null)
                throw new FinancialException(StringConsts.SECDB_STREAM_CORRUPTED_ERROR+"missing SecondSample before '{0}' sample".Args((StreamID)sid));

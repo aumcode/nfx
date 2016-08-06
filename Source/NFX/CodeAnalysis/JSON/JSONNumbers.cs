@@ -51,7 +51,7 @@ namespace NFX.CodeAnalysis.JSON
       if (strToFloat(str, out fnum))
       {
         type = JSONTokenType.tDoubleLiteral;
-        
+
         return fnum;
       }
 
@@ -96,8 +96,8 @@ namespace NFX.CodeAnalysis.JSON
 
     private static bool strToFloat(string str, out double num)
     {
-      return Double.TryParse(str, 
-                             NumberStyles.Float, 
+      return Double.TryParse(str,
+                             NumberStyles.Float,
                              CultureInfo.InvariantCulture,  out num);
     }
 

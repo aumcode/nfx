@@ -40,7 +40,7 @@ namespace NFX.Environment
             public const string DEFAULT_KEYWORD_CALL  = "_CALL";
 
             public const string DEFAULT_SCRIPT_ONLY_ATTR  = "script-only";
-            
+
             public const string CONFIG_TIMEOUT_ATTR  = "timeout-ms";
 
             public const int DEFAULT_TIMEOUT_MS  = 250;
@@ -79,51 +79,51 @@ namespace NFX.Environment
         #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// Gets/sets BLOCK keyword - used for unconditional script evaluation block
             /// </summary>
             public string KeywordBLOCK
-            { 
+            {
                 get { return m_KeywordBLOCK.IsNullOrWhiteSpace() ? DEFAULT_KEYWORD_BLOCK : m_KeywordBLOCK; }
                 set { m_KeywordBLOCK = value; }
             }
-            
-            
+
+
             /// <summary>
             /// Gets/sets IF keyword - used for conditional block
             /// </summary>
             public string KeywordIF
-            { 
+            {
                 get { return m_KeywordIF.IsNullOrWhiteSpace() ? DEFAULT_KEYWORD_IF : m_KeywordIF; }
                 set { m_KeywordIF = value; }
             }
-            
+
             /// <summary>
             /// Gets/sets ELSE keyword - used for IF-complementary conditional block
             /// </summary>
             public string KeywordELSE
-            { 
+            {
                 get { return m_KeywordELSE.IsNullOrWhiteSpace() ? DEFAULT_KEYWORD_ELSE : m_KeywordELSE; }
                 set { m_KeywordELSE = value; }
             }
-            
+
             /// <summary>
             /// Gets/sets LOOP keyword - used for repetition block
             /// </summary>
             public string KeywordLOOP
-            { 
+            {
                 get { return m_KeywordLOOP.IsNullOrWhiteSpace() ? DEFAULT_KEYWORD_LOOP : m_KeywordLOOP; }
                 set { m_KeywordLOOP = value; }
             }
-           
-            
+
+
 
             /// <summary>
             /// Gets/sets SET keyword - used for variable assignment statement
             /// </summary>
             public string KeywordSET
-            { 
+            {
                 get { return m_KeywordSET.IsNullOrWhiteSpace() ? DEFAULT_KEYWORD_SET : m_KeywordSET; }
                 set { m_KeywordSET = value; }
             }
@@ -132,18 +132,18 @@ namespace NFX.Environment
             /// Gets/sets CALL keyword - used for sub-routine invocation
             /// </summary>
             public string KeywordCALL
-            { 
+            {
                 get { return m_KeywordCALL.IsNullOrWhiteSpace() ? DEFAULT_KEYWORD_CALL : m_KeywordCALL; }
                 set { m_KeywordCALL = value; }
             }
-                                   
+
 
 
             /// <summary>
             /// Gets/sets attribute name that indicates that marked entity should not be brough over into script output target
             /// </summary>
             public string AttributeScriptOnly
-            { 
+            {
                 get { return m_AttributeScriptOnly.IsNullOrWhiteSpace() ? DEFAULT_SCRIPT_ONLY_ATTR : m_AttributeScriptOnly; }
                 set { m_AttributeScriptOnly = value; }
             }
@@ -161,7 +161,7 @@ namespace NFX.Environment
         #endregion
 
         #region Public
-           
+
             /// <summary>
             /// Runs script on the configuration
             /// </summary>
@@ -176,7 +176,7 @@ namespace NFX.Environment
                         throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_TARGET_CONFIGURATION_MUST_BE_EMPTY_ERROR);
 
                     target.Root.Name = source.Root.Name;
-                    cloneAttributes(source.Root, target.Root); 
+                    cloneAttributes(source.Root, target.Root);
                     doNode(sw, source.Root, target.Root);
                }
                catch(Exception error)
@@ -184,8 +184,8 @@ namespace NFX.Environment
                     throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_EXECUTION_ERROR + error.ToMessageWithType(), error);
                }
             }
-            
-            
+
+
             public void Configure(IConfigSectionNode node)
             {
                 ConfigAttribute.Apply(this, node);
@@ -220,12 +220,12 @@ namespace NFX.Environment
                         var scriptOnlyAttr = subSource.AttrByName(AttributeScriptOnly);
                         if (scriptOnlyAttr.Exists)
                          scriptOnly = scriptOnlyAttr.ValueAsBool(false);
-                       
+
                         if (!scriptOnly)
                         {
                             var underStatement = false;
                             var p = subSource;
-                            while(p!=null && p.Exists) 
+                            while(p!=null && p.Exists)
                             {
                                 if (p.m_Script_Statement)
                                 {
@@ -248,7 +248,7 @@ namespace NFX.Environment
             }
 
 
-                            
+
                             private void doBLOCK(Stopwatch sw, ConfigSectionNode blockStatement, ConfigSectionNode target)
                             {
                                 initStatement(blockStatement);
@@ -267,10 +267,10 @@ namespace NFX.Environment
 
                             private void doELSE(Stopwatch sw, ConfigSectionNode elseStatement, ConfigSectionNode priorStatement, ConfigSectionNode target)
                             {
-                                
+
                                 if (priorStatement==null || !priorStatement.IsSameName(DEFAULT_KEYWORD_IF))
                                     throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_ELSE_NOT_AFTER_IF_ERROR.Args(elseStatement.RootPath));
-                                
+
                                 initStatement(elseStatement);
 
                                 var condition =  priorStatement.m_Script_Bool_Condition_Result;
@@ -336,11 +336,11 @@ namespace NFX.Environment
                                     var evl = new Evaluator( expression );
                                     var evlResult = evl.Evaluate();
 
-                                    var condition = evlResult=="1" || 
+                                    var condition = evlResult=="1" ||
                                                     evlResult.Equals("yes", StringComparison.InvariantCultureIgnoreCase) ||
                                                     evlResult.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||
                                                     evlResult.Equals("t", StringComparison.InvariantCultureIgnoreCase);
-                                
+
                                     exprContainer.m_Script_Bool_Condition_Result = condition;
                                     return condition;
                                 }
@@ -374,13 +374,13 @@ namespace NFX.Environment
                             private void cloneAttributes(ConfigSectionNode from, ConfigSectionNode to, bool evaluate = false)
                             {
                                 if (evaluate)
-                                   foreach(var atr in from.Attributes) to.AddAttributeNode(atr.Name, atr.Value); 
+                                   foreach(var atr in from.Attributes) to.AddAttributeNode(atr.Name, atr.Value);
                                 else
-                                   foreach(var atr in from.Attributes) to.AddAttributeNode(atr.Name, atr.VerbatimValue); 
+                                   foreach(var atr in from.Attributes) to.AddAttributeNode(atr.Name, atr.VerbatimValue);
                             }
 
         #endregion
 
-            
+
     }
 }

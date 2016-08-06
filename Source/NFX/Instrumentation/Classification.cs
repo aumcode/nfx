@@ -28,10 +28,10 @@ namespace NFX.Instrumentation
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited=false)]
     public sealed class InstrumentViewGroup : Attribute { public InstrumentViewGroup(){}}
-                                                                            
-    
-    
-    
+
+
+
+
     /// <summary>
     /// Root marker interface for instrumentation data classification.
     /// Instruments are primarily classified by their derivation from Datum ancestor, however this interface-based
@@ -49,7 +49,7 @@ namespace NFX.Instrumentation
             /// </summary>
             [InstrumentViewGroup]
             public interface IWarningInstrument : IProblemClass { }
-     
+
 
             /// <summary>
             /// Data of this class indicates a definite abnormality, however the system is going to continue functioning
@@ -60,7 +60,7 @@ namespace NFX.Instrumentation
             /// <summary>
             /// Data of this class indicates an abnormality that will most likely lead to system inability to continue functioning as expected
             /// </summary>
-            [InstrumentViewGroup] 
+            [InstrumentViewGroup]
             public interface ICatastropyInstrument : IProblemClass {  }
 
 
@@ -70,7 +70,7 @@ namespace NFX.Instrumentation
         /// A class of operations that instrument measures
         /// </summary>
         public interface IOperationClass : IInstrumentClass { }
-            
+
             /// <summary>
             /// IO-related operations
             /// </summary>
@@ -85,20 +85,20 @@ namespace NFX.Instrumentation
                 /// <summary>
                 /// Network operations (i.e. sockets)
                 /// </summary>
-                [InstrumentViewGroup] 
+                [InstrumentViewGroup]
                 public interface INetInstrument : IIOInstrumentClass { }
 
             /// <summary>
             /// Instruments that measure instrumentation itself
             /// </summary>
-            [InstrumentViewGroup] 
+            [InstrumentViewGroup]
             public interface IInstrumentationInstrument : IOperationClass { }
 
-                
+
             /// <summary>
             /// CPU-related operations
             /// </summary>
-            [InstrumentViewGroup] 
+            [InstrumentViewGroup]
             public interface ICPUInstrument : IOperationClass { }
 
             /// <summary>
@@ -146,14 +146,14 @@ namespace NFX.Instrumentation
             /// </summary>
             [InstrumentViewGroup]
             public interface IGDIDInstrument : IOperationClass { }
-    
+
             /// <summary>
             /// Timer/scheduling-related operations
             /// </summary>
             [InstrumentViewGroup]
             public interface ISchedulingInstrument : IOperationClass { }
 
-            
+
 
 
             /// <summary>
@@ -174,6 +174,6 @@ namespace NFX.Instrumentation
                 [InstrumentViewGroup]
                 public interface ISocialLogic : IBusinessLogic { }
 
-    
-   
+
+
 }

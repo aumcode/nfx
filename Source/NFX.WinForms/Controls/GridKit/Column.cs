@@ -25,23 +25,23 @@ using NFX.Environment;
 
 namespace NFX.WinForms.Controls.GridKit
 {
-  
-  
+
+
   /// <summary>
   /// Represents grid column definition
   /// </summary>
   public abstract class Column : DisposableObject, IConfigurable, IConfigurationPersistent
   {
-      
+
       #region CONSTS
        public const int    MIN_MIN_WIDTH        = 1;
-       
+
        public const string CONFIG_WIDTH_ATTR    = "width";
        public const string CONFIG_SORT_ATTR     = "sort";
        public const string CONFIG_VISIBLE_ATTR  = "visible";
-       
+
      #endregion
-      
+
       protected Column(Grid grid, string id, int fieldIndex)
       {
         m_Grid = grid;
@@ -58,67 +58,67 @@ namespace NFX.WinForms.Controls.GridKit
         m_Grid.UnregisterColumn(this);
         base.Destructor();
       }
-      
-      
+
+
       #region Private Fiels
-      
+
          private Grid m_Grid;
-         
+
          private string m_ID;
-         
+
          private string m_Description;
-         
+
          private int m_FieldIndex;
-         
+
          private string m_Title;
-         
+
          private int m_Width;
          private int m_MinWidth = MIN_MIN_WIDTH;
-         
+
          private Style m_Style;
          private Style m_HeaderStyle;
          private Style m_SelectedStyle;
-         
-         
+
+
          private string m_FormatString;
-         
+
          private bool m_HasCellSelection;
-         
+
          private bool m_Visible = true;
-         
-         
+
+
          private bool m_SortingAllowed;
          private SortDirection m_SortDirection;
-      
+
       #endregion
-      
-      
+
+
       #region Pub Fields
-      
+
         /// <summary>
         /// Handy field for attaching some business-related object to a column
         /// </summary>
         public object ArbitraryData;
-        
+
       #endregion
-      
-      
+
+
       #region Events
-      
+
         /// <summary>
         /// Occurs when user select a cell that belongs to this column
         /// </summary>
-        public event CellSelectionEventHandler CellSelection; 
-        
+        public event CellSelectionEventHandler CellSelection;
+
       #endregion
-      
+
       #region Properties
-      
+
          public Grid Grid
          {
            get { return m_Grid; }
          }
-         
+
          /// <summary>
          /// Provides unique column ID
          /// </summary>
@@ -126,8 +126,8 @@ namespace NFX.WinForms.Controls.GridKit
          {
            get { return m_ID; }
          }
-         
-         
+
+
          /// <summary>
          /// Provides column description
          /// </summary>
@@ -136,98 +136,98 @@ namespace NFX.WinForms.Controls.GridKit
            get { return m_Description??string.Empty;}
            set { m_Description = value;}
          }
-         
+
          /// <summary>
-         /// Returns field index - this may be handy for associating column in array position so 
+         /// Returns field index - this may be handy for associating column in array position so
          /// column accessors may read data from list/array by index for faster response times
          /// </summary>
          public int FieldIndex
          {
            get { return m_FieldIndex;}
          }
-         
+
          public abstract Type DataType { get; }
-         
+
          /// <summary>
          /// Provides the title of the column. If title not set the column ID is returned
          /// </summary>
          public string Title
          {
            get { return m_Title ?? ID;}
-           set 
+           set
            {
              if (m_Title==value) return;
              m_Title = value;
              m_Grid.columnAttributesChanged(this);
            }
          }
-         
-         
+
+
          /// <summary>
          /// Gets/sets columns width
          /// </summary>
          public int Width
          {
            get { return m_Width;}
-           set 
+           set
            {
              if (value<m_MinWidth) value = m_MinWidth;
-             
+
              if (m_Width==value) return;
              m_Width = value;
              m_Grid.columnAttributesChanged(this);
            }
          }
-         
-         
+
+
          /// <summary>
          /// Gets/sets columns minimum width
          /// </summary>
          public int MinWidth
          {
            get { return m_MinWidth;}
-           set 
+           set
            {
              if (value<MIN_MIN_WIDTH) value = MIN_MIN_WIDTH;
-             
+
              if (m_MinWidth==value) return;
              m_MinWidth = value;
-             
-             if (m_Width<m_MinWidth) 
+
+             if (m_Width<m_MinWidth)
                Width = MinWidth;//this may trigger grid rebuild
            }
          }
-         
-         
+
+
          /// <summary>
          /// Provides column formatting string
          /// </summary>
          public string FormatString
          {
            get { return m_FormatString ?? string.Empty;}
-           set 
+           set
            {
              if (m_FormatString==value) return;
              m_FormatString = value;
              m_Grid.columnAttributesChanged(this);
            }
          }
-         
+
          /// <summary>
          /// Determines whether column is shown in grid
          /// </summary>
          public bool Visible
          {
            get { return m_Visible;}
-           set 
+           set
            {
              if (m_Visible==value) return;
              m_Visible = value;
              m_Grid.columnAttributesChanged(this);
            }
          }
-         
-         
+
+
          /// <summary>
          /// Determines whether this column may be sorted by
          /// </summary>
@@ -241,33 +241,33 @@ namespace NFX.WinForms.Controls.GridKit
              m_Grid.columnAttributesChanged(this);
            }
          }
-         
-         
+
+
          /// <summary>
-         /// Returns/Sets sort direction for this column. 
+         /// Returns/Sets sort direction for this column.
          /// Grid and column sorting must be allowed otherwise setting this property has no effect and get
          ///  always returns SortDirection.None
          /// </summary>
          public SortDirection SortDirection
          {
-           get 
+           get
            {
             if (m_Grid.SortingAllowed && m_SortingAllowed)  return m_SortDirection;
-            return SortDirection.None;   
+            return SortDirection.None;
            }
            set
            {
              if (!m_Grid.SortingAllowed || !m_SortingAllowed) return;
              if (m_SortDirection==value) return;
              m_SortDirection = value;
-             
+
              m_Grid.columnSortChanged(this);
            }
          }
-         
-         
-         
-         
+
+
+
+
          /// <summary>
          /// Indicartes whether this column has selected cell
          /// </summary>
@@ -275,8 +275,8 @@ namespace NFX.WinForms.Controls.GridKit
          {
            get { return m_HasCellSelection;}
          }
-         
-         
+
+
          /// <summary>
          /// Returns style for data cells in this column
          /// </summary>
@@ -284,7 +284,7 @@ namespace NFX.WinForms.Controls.GridKit
          {
            get { return m_Style;}
          }
-         
+
          /// <summary>
          /// Returns style for header cell in this column
          /// </summary>
@@ -292,7 +292,7 @@ namespace NFX.WinForms.Controls.GridKit
          {
            get { return m_HeaderStyle;}
          }
-         
+
          /// <summary>
          /// Returns style for cell in this column for selected row
          /// </summary>
@@ -300,20 +300,20 @@ namespace NFX.WinForms.Controls.GridKit
          {
            get { return m_SelectedStyle;}
          }
-         
-         
-      
+
+
+
       #endregion
-  
+
       #region Public Methods
-         
-        public abstract bool HasValueInRow(object row); 
-        
+
+        public abstract bool HasValueInRow(object row);
+
         public abstract object GetValueFromRow(object row);
-        
+
         public abstract string GetCommentFromRow(object row);
-        
-        
+
+
         /// <summary>
         /// Override to create instance of cell view specific to particular column and row
         /// </summary>
@@ -321,7 +321,7 @@ namespace NFX.WinForms.Controls.GridKit
         {
           return new CellElement(m_Grid.m_CellView, row, this);
         }
-         
+
         // IConfigurable Members
         public void Configure(IConfigSectionNode node)
         {
@@ -330,14 +330,14 @@ namespace NFX.WinForms.Controls.GridKit
           {
             Width   = node.AttrByName(CONFIG_WIDTH_ATTR).ValueAsInt(m_Width);
             Visible = node.AttrByName(CONFIG_VISIBLE_ATTR).ValueAsBool(m_Visible);
-            
+
             if (SortingAllowed)
               SortDirection = node.AttrByName(CONFIG_SORT_ATTR).ValueAsEnum(SortDirection.None);
           }
           finally
           {
             Grid.EndBatchChange();
-          }  
+          }
         }
 
         // IConfigurationPersistent Members
@@ -351,8 +351,8 @@ namespace NFX.WinForms.Controls.GridKit
           if (SortingAllowed)
             cn.AddAttributeNode(CONFIG_SORT_ATTR, m_SortDirection);
         }
-        
-        
+
+
         /// <summary>
         /// Converts/formats cell object value as string so it can be painted. This implementation relies on FormatString.
         /// Row instanced is also passed so formatting may be done per particular row state
@@ -363,9 +363,9 @@ namespace NFX.WinForms.Controls.GridKit
            if (string.IsNullOrEmpty(m_FormatString))
                 return value.ToString();
 
-          return string.Format(FormatString, value); 
+          return string.Format(FormatString, value);
         }
-         
+
         /// <summary>
         /// Dispatches appropriate events and performs row selection in the grid
         /// </summary>
@@ -373,17 +373,17 @@ namespace NFX.WinForms.Controls.GridKit
         {
           foreach(var col in m_Grid.m_Columns)
             col.m_HasCellSelection = false;
-          
+
           if (m_Grid.CellSelectionAllowed)
           {
             m_HasCellSelection = true;
             OnCellSelection(m_Grid.SelectedCell, cell);
-          } 
-           
+          }
+
           m_Grid.DispatchCellSelection(cell);
-        } 
-        
-        
+        }
+
+
         /// <summary>
         /// Repositions this column in place of other
         /// </summary>
@@ -391,12 +391,12 @@ namespace NFX.WinForms.Controls.GridKit
         {
           m_Grid.RepositionColumn(this, other);
         }
-         
+
       #endregion
-      
-      
+
+
       #region Protected
-      
+
         /// <summary>
         /// Invokes event
         /// </summary>
@@ -407,27 +407,27 @@ namespace NFX.WinForms.Controls.GridKit
 
       #endregion
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   /// <summary>
   /// Event handler that gets data for columns from rows
   /// </summary>
-  public delegate TValue GetValueHandler<TRow, TValue>(Column<TRow, TValue> column, TRow row); 
-  
+  public delegate TValue GetValueHandler<TRow, TValue>(Column<TRow, TValue> column, TRow row);
+
   /// <summary>
   /// Event handler that determine whether row has data for this column
   /// </summary>
   public delegate bool GetHasValueHandler<TRow, TValue>(Column<TRow, TValue> column, TRow row);
-  
-  
+
+
   /// <summary>
-  /// Event handler that gets comment value(if any) for the cell 
+  /// Event handler that gets comment value(if any) for the cell
   /// </summary>
   public delegate string GetCommentHandler<TRow>(Column column, TRow row);
-  
+
   /// <summary>
   /// Represents typed grid column definition
   /// </summary>
@@ -437,88 +437,88 @@ namespace NFX.WinForms.Controls.GridKit
       public Column(Grid grid, string id, int idx) : base(grid, id, idx)
       {
       }
-      
+
       public Column(Grid grid, string id) : base(grid, id, 0)
       {
       }
-     
+
      #endregion
-     
-     
+
+
      #region Properties
-      
+
          public override Type DataType
          {
            get { return typeof(TValue); }
          }
-                  
-      
+
+
      #endregion
-     
+
      #region Events
-     
+
         /// <summary>
-        /// Invoked to extract data value from row 
+        /// Invoked to extract data value from row
         /// </summary>
         public GetValueHandler<TRow, TValue> GetValue;
-       
+
         /// <summary>
-        /// Invoked to determine whether a row has data for this column 
+        /// Invoked to determine whether a row has data for this column
         /// </summary>
         public GetHasValueHandler<TRow, TValue> GetHasValue;
-        
+
         /// <summary>
-        /// Invoked to get comment value(if any) for the cell  
+        /// Invoked to get comment value(if any) for the cell
         /// </summary>
         public GetCommentHandler<TRow> GetComment;
-     
+
      #endregion
-     
+
      #region Public Methods
-     
+
         /// <summary>
         /// Returns value for specified row. Base implementation calls event handler
         /// </summary>
         public virtual TValue GetValueFromRow(TRow row)
         {
-          if (GetValue!=null) 
+          if (GetValue!=null)
             return GetValue(this, row);
           else
-            return default(TValue);  
-        } 
-        
+            return default(TValue);
+        }
+
         /// <summary>
         /// Returns true when specified row has value. Base implementation calls event handler
         /// </summary>
         public virtual bool HasValueInRow(TRow row)
         {
-          if (GetHasValue!=null) 
+          if (GetHasValue!=null)
             return GetHasValue(this, row);
           else
-            return false;  
+            return false;
         }
-        
+
         /// <summary>
         /// Returns comment for row
         /// </summary>
         public virtual string GetCommentFromRow(TRow row)
         {
-          if (GetComment!=null) 
+          if (GetComment!=null)
             return GetComment(this, row);
           else
-            return null;  
+            return null;
         }
-        
-        
+
+
         public override bool HasValueInRow(object row)
         {
           if (row==null) return false;
           if (row is TRow)
            return this.HasValueInRow((TRow)row);
           else
-           return false; 
-        } 
-        
+           return false;
+        }
+
         public override object GetValueFromRow(object row)
         {
           if (row==null) return null;
@@ -527,7 +527,7 @@ namespace NFX.WinForms.Controls.GridKit
           else
            return null;
         }
-        
+
        public override string GetCommentFromRow(object row)
        {
          if (row==null || row is TRow)
@@ -535,13 +535,13 @@ namespace NFX.WinForms.Controls.GridKit
          else
            return null;
        }
-        
-        
+
+
      #endregion
   }
-  
-  
+
+
   internal class ColumnList : List<Column>{}
-  
-  
+
+
 }

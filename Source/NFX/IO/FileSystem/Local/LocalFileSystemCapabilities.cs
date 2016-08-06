@@ -27,9 +27,9 @@ namespace NFX.IO.FileSystem.Local
   public sealed class LocalFileSystemCapabilities : IFileSystemCapabilities
   {
     #region Static /.ctor
-                                                                  
+
       private static readonly char[] PATH_SEPARATORS = new char[]{System.IO.Path.DirectorySeparatorChar, '/'};
-     
+
       private static LocalFileSystemCapabilities s_Instance = new LocalFileSystemCapabilities();
 
       private LocalFileSystemCapabilities() {}
@@ -37,7 +37,7 @@ namespace NFX.IO.FileSystem.Local
       public static LocalFileSystemCapabilities Instance { get { return s_Instance;} }
 
     #endregion
-    
+
     #region IFileSystemCapabilities
 
       public bool SupportsVersioning { get{ return false;} }
@@ -67,7 +67,7 @@ namespace NFX.IO.FileSystem.Local
       public bool SupportsStreamSeek { get{ return true;} }
 
       public bool SupportsFileModification { get{ return true;} }
-      
+
       public bool SupportsCreationTimestamps     { get { return true;  }}
       public bool SupportsModificationTimestamps { get { return true;  }}
       public bool SupportsLastAccessTimestamps   { get { return true;  }}

@@ -51,8 +51,8 @@ namespace NFX.OS
       public ulong TotalVirtBytes { get; internal set; }
       public ulong AvailableVirtBytes { get; internal set; }
     }
-    
-    
+
+
     /// <summary>
     /// Facilitates various computer-related tasks such as CPU usage, memory utilization etc.
     /// </summary>
@@ -72,8 +72,8 @@ namespace NFX.OS
             }
 
         #endif
-        
-        
+
+
         /// <summary>
         /// Returns current computer-wide CPU utilization percentage
         /// </summary>
@@ -100,7 +100,7 @@ namespace NFX.OS
             {
                 #if LINUX
                     return 0;
-                #else        
+                #else
                     //Note this is Windows-only implementation
                     return (int)s_RAMAvailableCounter.NextValue();
                 #endif
@@ -157,7 +157,7 @@ namespace NFX.OS
         /// </summary>
         public static string UniqueNetworkSignature
         {
-          get 
+          get
           {
              if (s_UniqueNetworkSignature==null)
                s_UniqueNetworkSignature = NetworkUtils.GetMachineUniqueMACSignature();
@@ -196,20 +196,20 @@ namespace NFX.OS
           public static MemoryStatus GetMemoryStatus()
           {
             var stat = new MEMORYSTATUSEX();
-           
+
             if (OSFamily==OS.OSFamily.Windows)
              GlobalMemoryStatusEx( stat );
 
-            return new MemoryStatus() 
-            { 
+            return new MemoryStatus()
+            {
               LoadPct = stat.dwMemoryLoad,
-              
+
               TotalPhysicalBytes = stat.ullTotalPhys,
               AvailablePhysicalBytes = stat.ullAvailPhys,
-              
+
               TotalPageFileBytes = stat.ullTotalPageFile,
               AvailablePageFileBytes = stat.ullAvailPageFile,
-              
+
               TotalVirtBytes = stat.ullTotalVirtual,
               AvailableVirtBytes = stat.ullAvailVirtual
             };

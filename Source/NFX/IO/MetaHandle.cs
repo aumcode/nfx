@@ -21,7 +21,7 @@ using System.Text;
 
 namespace NFX.IO
 {
-    
+
     /// <summary>
     /// Holds either an integer or a string value.
     /// This is useful for metadata, i.e. types, if type is known an integer is sent, otherwise a full type name is sent
@@ -31,7 +31,7 @@ namespace NFX.IO
     {
       public VarIntStr(uint value)   { IntValue = value; StringValue = null;  }
       public VarIntStr(string value) { IntValue = 0;     StringValue = value; }
-      
+
       public readonly uint   IntValue;
       public readonly string StringValue;
 
@@ -55,29 +55,29 @@ namespace NFX.IO
         return IntValue.GetHashCode() + (StringValue!=null ? StringValue.GetHashCode() : 0);
       }
     }
-    
-    
-    
-    
+
+
+
+
     /// <summary>
     /// Represents a tuple of an unsigned integer with optional int or string metadata. If metadata is null then integer is stored by itself in an efficient way.
     /// The type is useful for storage of handles/indexes (such as pointer surrogates) with optional description of pointed-to data (such as type information).
-    /// A special case is reserved for strings which are immutable yet reference types, in which case a special handle INLINED_STRING_HANDLE is set to indicate that 
+    /// A special case is reserved for strings which are immutable yet reference types, in which case a special handle INLINED_STRING_HANDLE is set to indicate that
     ///  "Metadata" really contains string data that this handle should resolve into. Check "IsInlinedString" property to see if string was inlined.
-    /// Check "IsInlinedValueType" is set to true when a struct/valuetype is inlined and "Metadata" contains type spec 
+    /// Check "IsInlinedValueType" is set to true when a struct/valuetype is inlined and "Metadata" contains type spec
     /// </summary>
     [Serializable]
-    public struct MetaHandle : IEquatable<MetaHandle>     
-    {                               
+    public struct MetaHandle : IEquatable<MetaHandle>
+    {
       internal const uint INLINED_STRING_HANDLE = 0;
       internal const uint INLINED_VALUETYPE_HANDLE = 1;
       internal const uint INLINED_REFTYPE_HANDLE = 2;
       internal const uint INLINED_TYPEVAL_HANDLE = 3;
       internal const uint HANDLE_OFFSET = 4;
 
-      
-      internal uint m_Handle;     
-      private VarIntStr? m_Metadata;   
+
+      internal uint m_Handle;
+      private VarIntStr? m_Metadata;
 
 
       /// <summary>
@@ -106,13 +106,13 @@ namespace NFX.IO
       /// </summary>
       public bool IsInlinedTypeValue { get { return m_Handle == INLINED_TYPEVAL_HANDLE;}}
 
-      
+
       public VarIntStr? Metadata   { get{ return m_Metadata;} }
       public uint   IntMetadata    { get{ return m_Metadata.HasValue ? m_Metadata.Value.IntValue : 0;}}
       public string StringMetadata { get{ return m_Metadata.HasValue ? m_Metadata.Value.StringValue : null;}}
 
 
-      
+
       public MetaHandle(uint handle)
       {
         m_Handle = handle + HANDLE_OFFSET;
@@ -206,7 +206,7 @@ namespace NFX.IO
          var h1 = m_Metadata.HasValue;
          var h2 = other.m_Metadata.HasValue;
 
-         return m_Handle==other.m_Handle && 
+         return m_Handle==other.m_Handle &&
                ((!h1 && !h2) || (h1 && h2 && m_Metadata.Value.Equals(other.m_Metadata.Value)));
       }
     }

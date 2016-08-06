@@ -87,7 +87,7 @@ namespace NFX.Instrumentation
        /// </summary>
        public int Count
        {
-         get 
+         get
          {
            return m_Count;
          }
@@ -98,7 +98,7 @@ namespace NFX.Instrumentation
        /// </summary>
        public string Source
        {
-         get {return m_Source ?? UNSPECIFIED_SOURCE; } 
+         get {return m_Source ?? UNSPECIFIED_SOURCE; }
        }
 
        /// <summary>
@@ -109,11 +109,11 @@ namespace NFX.Instrumentation
          get
          {
            if (m_Count<=0) return CoreConsts.UNKNOWN;
-         
+
            var span = m_UTCEndTime - m_UTCTime;
 
-           if (m_Count==1 && span.TotalMilliseconds<0.1) return string.Empty;           
-           
+           if (m_Count==1 && span.TotalMilliseconds<0.1) return string.Empty;
+
            var rate = m_Count / span.TotalSeconds;
 
            if (rate>1.0)
@@ -121,15 +121,15 @@ namespace NFX.Instrumentation
 
            rate = rate * 1000;
            return string.Format("{0:0.00}/msec.", rate);
-         } 
+         }
        }
-       
-       
+
+
        /// <summary>
        /// Returns description for data that this datum represents. Base implementation returns full type name of this instance
        /// </summary>
        public virtual string Description
-       { 
+       {
          get { return GetType().FullName; }
        }
 
@@ -168,7 +168,7 @@ namespace NFX.Instrumentation
            IEnumerable<Type> result = null;
            if (dict.TryGetValue(tDatum, out result)) return result;
 
-           result = tDatum.GetInterfaces().Where(i => Attribute.IsDefined(i, typeof(InstrumentViewGroup))); 
+           result = tDatum.GetInterfaces().Where(i => Attribute.IsDefined(i, typeof(InstrumentViewGroup)));
 
            dict = new Dictionary<Type,IEnumerable<Type>>(dict);
            dict[tDatum] = result;
@@ -179,7 +179,7 @@ namespace NFX.Instrumentation
        }
 
 
-       
+
        /// <summary>
        /// Aggregates events, for example from multiple threads into one
        /// </summary>
@@ -188,9 +188,9 @@ namespace NFX.Instrumentation
             var start = DateTime.MaxValue;
             var end = DateTime.MinValue;
             var cnt = 0;
-            
+
             var result = MakeAggregateInstance();
-         
+
             foreach(var e in many)
             {
               cnt++;
@@ -205,12 +205,12 @@ namespace NFX.Instrumentation
             result.SummarizeAggregation();
 
             return result;
-       }   
-       
-       
+       }
+
+
        /// <summary>
        /// Override to set a new source value which is less-specific than existing source.
-       /// ReductionLevel specifies how much detail should be lost. The function is idempotent, that is - calling more than once with the same arg does not 
+       /// ReductionLevel specifies how much detail should be lost. The function is idempotent, that is - calling more than once with the same arg does not
        /// change the state of the object.
        /// The default implementation removes all source details (unspecified source) when reductionLevel less than zero.
        /// Example:
@@ -223,10 +223,10 @@ namespace NFX.Instrumentation
        public virtual void ReduceSourceDetail(int reductionLevel)
        {
          if (reductionLevel<0) m_Source = string.Empty;
-       } 
+       }
 
 
-       
+
        protected abstract Datum MakeAggregateInstance();
        protected virtual void AggregateEvent(Datum dat) { }
        protected virtual void SummarizeAggregation() { }
@@ -238,9 +238,9 @@ namespace NFX.Instrumentation
          if (t!=d) t = t + " '" + d + "'";
          var r = Rate;
          if (r.IsNotNullOrWhiteSpace())
-            return "[{0}] {1} {2} @ {3} Value: {4} {5}".Args(t, Source, Count, r, ValueAsObject, ValueUnitName);  
+            return "[{0}] {1} {2} @ {3} Value: {4} {5}".Args(t, Source, Count, r, ValueAsObject, ValueUnitName);
          else
-            return "[{0}] {1} {2} Value: {3} {4}".Args(t, Source, Count, ValueAsObject, ValueUnitName); 
+            return "[{0}] {1} {2} Value: {3} {4}".Args(t, Source, Count, ValueAsObject, ValueUnitName);
        }
 
 
@@ -261,7 +261,7 @@ namespace NFX.Instrumentation
           data["rate"] = this.Rate;
           data["val"]  = this.ValueAsObject;
           data["plt"] = this.PlotValue;
-          
+
           if (options!=null && options.Purpose >= JSONSerializationPurpose.Marshalling)
           {
             data["src"]   = this.m_Source;

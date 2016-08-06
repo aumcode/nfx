@@ -61,9 +61,12 @@ namespace WinFormsTest
       this.pb1 = new System.Windows.Forms.PictureBox();
       this.sbEra = new System.Windows.Forms.HScrollBar();
       this.button2 = new System.Windows.Forms.Button();
+      this.btnPuzzle = new System.Windows.Forms.Button();
+      this.pic = new System.Windows.Forms.PictureBox();
       ((System.ComponentModel.ISupportInitialize)(this.pb3)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pb2)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pb1)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.pic)).BeginInit();
       this.SuspendLayout();
       // 
       // tbELink
@@ -229,11 +232,32 @@ namespace WinFormsTest
       this.button2.UseVisualStyleBackColor = true;
       this.button2.Click += new System.EventHandler(this.button2_Click);
       // 
+      // btnPuzzle
+      // 
+      this.btnPuzzle.Location = new System.Drawing.Point(221, 268);
+      this.btnPuzzle.Name = "btnPuzzle";
+      this.btnPuzzle.Size = new System.Drawing.Size(130, 28);
+      this.btnPuzzle.TabIndex = 17;
+      this.btnPuzzle.Text = "Puzzle";
+      this.btnPuzzle.UseVisualStyleBackColor = true;
+      this.btnPuzzle.Click += new System.EventHandler(this.btnPuzzle_Click);
+      // 
+      // pic
+      // 
+      this.pic.Location = new System.Drawing.Point(25, 314);
+      this.pic.Name = "pic";
+      this.pic.Size = new System.Drawing.Size(100, 50);
+      this.pic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+      this.pic.TabIndex = 18;
+      this.pic.TabStop = false;
+      // 
       // ELinkForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1383, 535);
+      this.Controls.Add(this.pic);
+      this.Controls.Add(this.btnPuzzle);
       this.Controls.Add(this.button2);
       this.Controls.Add(this.sbEra);
       this.Controls.Add(this.cb2);
@@ -257,6 +281,7 @@ namespace WinFormsTest
       ((System.ComponentModel.ISupportInitialize)(this.pb3)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.pb2)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.pb1)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.pic)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -281,5 +306,7 @@ namespace WinFormsTest
         private System.Windows.Forms.CheckBox cb2;
         private System.Windows.Forms.HScrollBar sbEra;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnPuzzle;
+        private System.Windows.Forms.PictureBox pic;
     }
 }

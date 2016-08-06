@@ -27,7 +27,7 @@ namespace NFX.IO.FileSystem.GoogleDrive
   {
     public static void NotNull(object value, string name)
     {
-      if (value != null) 
+      if (value != null)
         return;
 
       throw new ArgumentNullException(name);

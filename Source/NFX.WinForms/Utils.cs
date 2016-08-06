@@ -43,7 +43,7 @@ namespace NFX.WinForms
       UserApi.EnumWindows(delegate(IntPtr hwnd, int LParam)
       {
         StringBuilder windowTextHolder = new StringBuilder(1024, 1024);
-        
+
         UserApi.GetWindowText(hwnd, windowTextHolder, windowTextHolder.Capacity);
 
         if (windowTextHolder.ToString() == text)
@@ -52,7 +52,7 @@ namespace NFX.WinForms
           return 0;
         }
 
-        return 1;    
+        return 1;
       }, 0);
     }
 
@@ -81,41 +81,41 @@ namespace NFX.WinForms
             if (IsControlDesignerHosted(ctrl.Parent))
                 return true;
         }
-        
+
         return false;
     }
-    
+
     /// <summary>
     /// Walks the whole child control tree and returns all controls as a flat enumeration
     /// </summary>
     public static IEnumerable<Control> AllChildControls(Control ctl)
     {
       if (ctl==null) yield break;
-      
+
       foreach (Control c in ctl.Controls)
       {
         yield return c;
-      
+
         foreach(Control subc in AllChildControls(c))
            yield return subc;
       }
     }
-    
-    
-    
+
+
+
     /// <summary>
     /// Draws string on the background rectangle
     /// </summary>
     public static void DrawStringWithBackground(Graphics gr, string text,
                                                 Font font,
                                                 Brush textBrush,
-                                                Brush backBrush,  
+                                                Brush backBrush,
                                                 int x, int y)
     {
       SizeF size = gr.MeasureString(text,font);
-      
+
       RectangleF rect = new RectangleF(x, y, size.Width, size.Height);
-      
+
       gr.FillRectangle(backBrush, rect);
       gr.DrawString(text, font, textBrush, x, y);
     }
@@ -150,11 +150,11 @@ namespace NFX.WinForms
 
         }
       }
-      
+
       return newBitmap;
     }
-    
-    
+
+
     /// <summary>
     /// Draws an underline. Similar concept to VS or MS Word
     /// </summary>
@@ -163,18 +163,18 @@ namespace NFX.WinForms
       using(Pen pen = new Pen(color, 2f))
       {
         pen.DashStyle = DashStyle.Dot;
-        
+
         Point p1 = start;
         Point p2 = new Point(start.X+length, start.Y);
-        
+
         gr.DrawLine(pen, p1, p2);
-        
+
         p1.Offset(+2, 1);
-        p2.Offset(+2, 1); 
-        
+        p2.Offset(+2, 1);
+
         gr.DrawLine(pen, p1, p2);
       }
-    
+
     }
 
     /// <summary>
@@ -185,11 +185,11 @@ namespace NFX.WinForms
       using (Pen pen = new Pen(color, 2f))
       {
         pen.DashStyle = DashStyle.Dot;
-        
-        //top       
+
+        //top
         gr.DrawLine(pen, rect.Left, rect.Top, rect.Right, rect.Top);
         gr.DrawLine(pen, rect.Left+2, rect.Top+1, rect.Right-2, rect.Top+1);
-        
+
         //bottom
         gr.DrawLine(pen, rect.Left, rect.Bottom, rect.Right, rect.Bottom);
         gr.DrawLine(pen, rect.Left + 2, rect.Bottom - 1, rect.Right - 2, rect.Bottom - 1);
@@ -197,7 +197,7 @@ namespace NFX.WinForms
         //left
         gr.DrawLine(pen, rect.Left, rect.Top, rect.Left, rect.Bottom-1);
         gr.DrawLine(pen, rect.Left + 1, rect.Top + 2, rect.Left + 1, rect.Bottom -1);
-        
+
         //right
         gr.DrawLine(pen, rect.Right, rect.Top, rect.Right, rect.Bottom - 1);
         gr.DrawLine(pen, rect.Right - 1, rect.Top + 2, rect.Right - 1, rect.Bottom - 1);
@@ -245,7 +245,7 @@ namespace NFX.WinForms
             textRect = new Rectangle(rect.Left + (rect.Width / 2) - (int)size.Width / 2,
                                     rect.Location.Y,
                                     (int)size.Width, (int)size.Height);
-          else//LEFT 
+          else//LEFT
             textRect = new Rectangle(rect.Left, rect.Top, (int)size.Width, (int)size.Height);
 
       }
@@ -285,7 +285,7 @@ namespace NFX.WinForms
 
 
           gr.FillClosedCurve(br, pnt, FillMode.Alternate, 0.07f + (float)(rnd.NextDouble() / 6d));
-          y += lineHeight + 2;//1 px padding top and bottom  
+          y += lineHeight + 2;//1 px padding top and bottom
         }
       }//using brush
     }
@@ -305,11 +305,11 @@ namespace NFX.WinForms
 
       if (focusedHandle != IntPtr.Zero)
         focusedControl = Control.FromHandle(focusedHandle); // Fcused Control may be non-net control
-        
+
       return focusedControl;
-    } 
-    
-    
+    }
+
+
   }
 
 }

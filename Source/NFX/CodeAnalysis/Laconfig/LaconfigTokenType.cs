@@ -34,21 +34,21 @@ namespace NFX.CodeAnalysis.Laconfig
         NONLANG_END,
 
             tComment,
-         
-        SYMBOLS_START,    
+
+        SYMBOLS_START,
             tBraceOpen,
             tBraceClose,
-                           
-            
+
+
         SYMBOLS_END,
 
             tEQ,
             tIdentifier,
-            
+
         LITERALS_START,
-           
+
             tStringLiteral,
-           
+
         LITERALS_END
   }
 }

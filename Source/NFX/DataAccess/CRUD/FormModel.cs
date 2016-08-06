@@ -31,7 +31,7 @@ namespace NFX.DataAccess.CRUD
   /// </summary>
   public enum FormMode { Unspecified = 0, Insert, Edit}
 
-  
+
   /// <summary>
   /// Represents a "model" (in MVC terms) of a data-entry form.
   /// Form models are statically typed - contain fields and can contain "extra amorphous" data
@@ -46,7 +46,7 @@ namespace NFX.DataAccess.CRUD
 
       protected FormModel() {}
 
-     
+
       /// <summary>
       /// Gets/sets form mode - unspecified|insert|edit. This field may be queried by validate and save, i.e. Validate may perform extra cross checks on Insert - i.e. check whether
       /// some other user is already registered with the specified email in this form etc.
@@ -74,7 +74,7 @@ namespace NFX.DataAccess.CRUD
       {
         get
         {
-          if (m_RoundtripBag==null) 
+          if (m_RoundtripBag==null)
             m_RoundtripBag = new JSONDataMap();
 
           return m_RoundtripBag;
@@ -98,7 +98,7 @@ namespace NFX.DataAccess.CRUD
 
          m_RoundtripBag = content.JSONToDataObject() as JSONDataMap;
       }
-      
+
       /// <summary>
       /// Saves form into data store. The form is validated first and validation error is returned which indicates that save did not succeed due to validation error/s.
       /// The core implementation is in DoSave() that can also abort by either returning execption when predictable failure happens on save (i.e. key violation).
@@ -125,7 +125,7 @@ namespace NFX.DataAccess.CRUD
       {
         var err = this.Validate(DataStoreTargetName);
         saveResult = null;
-        if (err!=null) return err;    
+        if (err!=null) return err;
         this.BeforeSave(DataStoreTargetName);
         return DoSave(out saveResult);
       }

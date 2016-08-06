@@ -37,15 +37,15 @@ namespace NFX.Wave.Handlers
 
            public const string SITE_ACTION = "site";
            public const string DEFAULT_SITE_PATH = "Home.htm";
-           
+
            public const string VAR_PATH = "path";
 
            public const int DEFAULT_CACHE_MAX_AGE_SEC = 24  * //hrs
                                                         60  * //min
                                                         60;   //sec
-       
+
      #endregion
-    
+
      #region Inner Classes
           /// <summary>
           /// Represents an action that can be dispatched by a EmbeddedSiteHandler.
@@ -61,20 +61,20 @@ namespace NFX.Wave.Handlers
 
 
      #endregion
-     
-     
+
+
      #region .ctor
 
       protected EmbeddedSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
                           : base(dispatcher, name, order, match)
       {
-         foreach(var action in GetActions()) m_Actions.Register(action); 
+         foreach(var action in GetActions()) m_Actions.Register(action);
       }
 
       protected EmbeddedSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher, confNode)
       {
          ConfigAttribute.Apply(this, confNode);
-         foreach(var action in GetActions()) m_Actions.Register(action); 
+         foreach(var action in GetActions()) m_Actions.Register(action);
       }
 
      #endregion
@@ -82,9 +82,12 @@ namespace NFX.Wave.Handlers
      #region Fields
 
       private Registry<IAction> m_Actions = new Registry<IAction>();
-     
+
       [Config(Default=DEFAULT_CACHE_MAX_AGE_SEC)]
       private int m_CacheMaxAgeSec = DEFAULT_CACHE_MAX_AGE_SEC;
+
+      [Config]
+      private string m_VersionSegmentPrefix;
 
      #endregion
 
@@ -121,9 +124,20 @@ namespace NFX.Wave.Handlers
         }
 
         /// <summary>
+        /// When set indicates the case-insensitive prefix of a path segment that should be ignored by the handler path resolver.
+        /// Version prefixes are used for attaching a surrogate path "folder" that makes resource differ based on their content.
+        /// For example when prefix is "@",  path '/embedded/img/@767868768768/picture.png' resolves to actual '/embedded/img/picture.png'
+        /// </summary>
+        public string VersionSegmentPrefix
+        {
+          get { return m_VersionSegmentPrefix;}
+          set { m_VersionSegmentPrefix = value;}
+        }
+
+        /// <summary>
         /// Specifies the maximum age in cache in seconds for resource file content. Zero means - do not cache the file
         /// </summary>
-        public int CacheMaxAgeSec 
+        public int CacheMaxAgeSec
         {
            get {return m_CacheMaxAgeSec;}
            set {m_CacheMaxAgeSec = value<0 ? 0 : value;}
@@ -152,12 +166,11 @@ namespace NFX.Wave.Handlers
       }
 
 
-
       protected override void DoHandleWork(WorkContext work)
       {
         string path;
         var action = ParseWork(work, out path);
-           
+
         DispatchAction(work, action, path);
       }
 
@@ -169,7 +182,7 @@ namespace NFX.Wave.Handlers
               path = string.Empty;
               var fullPath = work.MatchedVars[VAR_PATH].AsString();
               if (fullPath.IsNullOrWhiteSpace()) return SiteAction;
-        
+
               string action = null;
 
               var segs = fullPath.Split(DELIMS);
@@ -179,9 +192,9 @@ namespace NFX.Wave.Handlers
                 action = segs[0];
                 path = string.Join("/",segs, 1, segs.Length-1);
               }
-              else 
+              else
                if (segs.Length==1) action=segs[0];
-              
+
               if (action.IsNullOrWhiteSpace())
                 action = SiteAction;
 
@@ -227,12 +240,15 @@ namespace NFX.Wave.Handlers
             {
               if (sitePath.IsNullOrWhiteSpace())
                 sitePath = DefaultSitePath;
-              
+
               var assembly = this.GetType().Assembly;
-             
+
+              //Cut the surrogate out of path, i.e. '/static/img/@@767868768768/picture.png' -> '/static/img/picture.png'
+              sitePath = FileDownloadHandler.CutVersionSegment(sitePath, m_VersionSegmentPrefix);
+
               var resName = getResourcePath(sitePath);
 
-              
+
 
               using (Stream strm = assembly.GetManifestResourceStream(resName))
                if (strm!=null)
@@ -241,7 +257,7 @@ namespace NFX.Wave.Handlers
                  SetResourceCacheHeader(work, sitePath, resName);
                  work.Response.WriteStream(strm);
                }
-               else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);  
+               else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);
             }
 
             private string getResourcePath(string sitePath)
@@ -266,8 +282,8 @@ namespace NFX.Wave.Handlers
               string[] segments = sitePath.Split(DELIMS);
               for(var i=0; i<segments.Length-1; i++) //not the resource name
                 segments[i] = segments[i].Replace('-','_').Replace(' ','_');
-            
-                               
+
+
               var result = new StringBuilder();
               var first = true;
               foreach(var seg in segments)
@@ -286,9 +302,9 @@ namespace NFX.Wave.Handlers
             {
               if (res==null)
                  return ContentType.HTML;
-             
+
               var i = res.LastIndexOf('.');
-             
+
               if (i<0 || i>res.Length-1)
                  return ContentType.HTML;
 

@@ -35,11 +35,11 @@ namespace NFX.Wave
       /// Returns object {OK = false}
       /// </summary>
       public static readonly object JSON_RESULT_ERROR = new {OK = false};
-      
+
 
       public const string HEADER_API_VERSION = "wv-api-ver";
       public const string HEADER_API_SESSION = "wv-api-session";
-      
+
       public const string WAVE_LOG_TOPIC = "WAVE";
       public const string NULL_STRING = "<null>";
 

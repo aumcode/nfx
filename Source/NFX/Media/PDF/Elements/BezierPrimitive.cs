@@ -27,27 +27,27 @@ namespace NFX.Media.PDF.Elements
     /// X coordinate of Bezier's curve first control point
     /// </summary>
     public float FirstControlX { get; set; }
-     
+
     /// <summary>
     /// Y coordinate of Bezier's curve first control point
     /// </summary>
     public float FirstControlY { get; set; }
-     
+
     /// <summary>
     /// X coordinate of Bezier's curve second control point
     /// </summary>
     public float SecondControlX { get; set; }
-            
+
     /// <summary>
     /// Y coordinate of Bezier's curve second control point
     /// </summary>
     public float SecondControlY { get; set; }
-      
+
     /// <summary>
     /// X coordinate of Bezier's curve last point
     /// </summary>
     public float EndX { get; set; }
-      
+
     /// <summary>
     /// Y coordinate of Bezier's curve last point
     /// </summary>
@@ -59,11 +59,11 @@ namespace NFX.Media.PDF.Elements
     /// <returns></returns>
     public override string ToPdfString()
     {
-      return BEZIER_TO_FORMAT.Args(TextAdapter.FormatFloat(FirstControlX), 
-                                   TextAdapter.FormatFloat(FirstControlY), 
-                                   TextAdapter.FormatFloat(SecondControlX), 
-                                   TextAdapter.FormatFloat(SecondControlY), 
-                                   TextAdapter.FormatFloat(EndX), 
+      return BEZIER_TO_FORMAT.Args(TextAdapter.FormatFloat(FirstControlX),
+                                   TextAdapter.FormatFloat(FirstControlY),
+                                   TextAdapter.FormatFloat(SecondControlX),
+                                   TextAdapter.FormatFloat(SecondControlY),
+                                   TextAdapter.FormatFloat(EndX),
                                    TextAdapter.FormatFloat(EndY));
     }
   }

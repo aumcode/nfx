@@ -22,7 +22,7 @@ using NFX.CodeAnalysis.Source;
 
 namespace NFX.CodeAnalysis
 {
-    
+
     /// <summary>
     /// Defines various languages
     /// </summary>
@@ -60,16 +60,16 @@ namespace NFX.CodeAnalysis
                     IEnumerable<Language> result;
                     lock(s_Languages)
                         result = s_Languages.ToList();
-                    return result;     
+                    return result;
                 }
             }
 
             /// <summary>
-            /// Tries to find a language by file extension or returns UnspecifiedLanguage 
+            /// Tries to find a language by file extension or returns UnspecifiedLanguage
             /// </summary>
             public static Language TryFindLanguageByFileExtension(string fileExtension)
             {
-                return All.FirstOrDefault( 
+                return All.FirstOrDefault(
                             lng => lng.FileExtensions.Contains( fileExtension, StringComparer.InvariantCultureIgnoreCase)
                            ) ?? UnspecifiedLanguage.Instance;
             }
@@ -138,7 +138,7 @@ namespace NFX.CodeAnalysis
         {
             throw new NotSupportedException("UnspecifiedLanguage.MakeLexer()");
         }
-    } 
+    }
 
 
 }

@@ -47,7 +47,7 @@ namespace NFX.DataAccess.CRUD
           /// </summary>
           /// <param name="schema">Schema, which is used for creation of DynamicRows and their derivatives</param>
           /// <param name="tRow">
-          /// A type of row to create, if the type is TypedRow-descending then a parameterless .ctor is called, 
+          /// A type of row to create, if the type is TypedRow-descending then a parameterless .ctor is called,
           /// otherwise a type must have a .ctor that takes schema as a sole argument
           /// </param>
           /// <returns>
@@ -59,11 +59,11 @@ namespace NFX.DataAccess.CRUD
             if (tRow!=null)
             {
                 if (typeof(TypedRow).IsAssignableFrom(tRow))
-                    return Activator.CreateInstance(tRow) as Row;  
+                    return Activator.CreateInstance(tRow) as Row;
                 else                                         //todo Compile do dynamic functors for speed
                     return Activator.CreateInstance(tRow, schema) as Row;
             }
-                
+
             return new DynamicRow(schema);
           }
 
@@ -90,7 +90,7 @@ namespace NFX.DataAccess.CRUD
                   allMatch = false;
                   continue;
                 }
-                
+
                 if (setFieldFunc==null)
                   row.SetFieldValue(fdef, kvp.Value);
                 else
@@ -99,17 +99,18 @@ namespace NFX.DataAccess.CRUD
                   if (!ok) allMatch = false;
                 }
               }
+              if (map.Count!=row.Schema.FieldCount) allMatch = false;
             }
             else
             {
               var arr = jsonData as JSONDataArray;
               if (arr==null) return false;
 
-              for(var i=0; i<row.Schema.FieldCount; i++) 
+              for(var i=0; i<row.Schema.FieldCount; i++)
               {
                  if (i==arr.Count) break;
                  var fdef = row.Schema[i];
-                 
+
                  if (setFieldFunc==null)
                    row.SetFieldValue(fdef, arr[i]);
                  else
@@ -128,7 +129,7 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
 
-       
+
         #region Properties
 
             /// <summary>
@@ -137,7 +138,7 @@ namespace NFX.DataAccess.CRUD
             public abstract Schema Schema { get; }
 
             /// <summary>
-            /// Gets/sets field values by name 
+            /// Gets/sets field values by name
             /// </summary>
             public object this[string fieldName]
             {
@@ -145,7 +146,7 @@ namespace NFX.DataAccess.CRUD
                 {
                     try
                     {
-                        return GetFieldValue( Schema.GetFieldDefByName(fieldName) );       
+                        return GetFieldValue( Schema.GetFieldDefByName(fieldName) );
                     }
                     catch(Exception error)
                     {
@@ -171,10 +172,10 @@ namespace NFX.DataAccess.CRUD
             public object this[int fieldIdx]
             {
                 get
-                {          
+                {
                     try
                     {
-                        return GetFieldValue( Schema.GetFieldDefByIndex( fieldIdx ) );       
+                        return GetFieldValue( Schema.GetFieldDefByIndex( fieldIdx ) );
                     }
                     catch(Exception error)
                     {
@@ -208,7 +209,7 @@ namespace NFX.DataAccess.CRUD
             }
 
         #endregion
-        
+
         #region Public
 
             /// <summary>
@@ -226,7 +227,7 @@ namespace NFX.DataAccess.CRUD
             {
                 throw new NotImplementedException();
             }
-            
+
             /// <summary>
             /// Performs validation of data in the row returning exception object that provides description
             /// in cases when validation does not pass. Validation is performed not targeting any particular backend
@@ -235,8 +236,8 @@ namespace NFX.DataAccess.CRUD
             {
                 return Validate(null);
             }
-            
-            
+
+
             /// <summary>
             /// Validates row using row schema and supplied field definitions.
             /// Override to perform custom validations,
@@ -250,7 +251,130 @@ namespace NFX.DataAccess.CRUD
                 {
                     var error = ValidateField(targetName, fd);
                     if (error!=null) return error;
-                }   
+                }
+
+                return null;
+            }
+
+            /// <summary>
+            /// Validates row field by name.
+            /// Shortcut to ValidateField(Schema.FieldDef)
+            /// </summary>
+            public Exception ValidateField(string targetName, string fname)
+            {
+              var fdef = Schema[fname];
+              return ValidateField(targetName, fdef);
+            }
+
+            /// <summary>
+            /// Validates row field using Schema.FieldDef settings.
+            /// This method is invoked by base Validate() implementation.
+            /// The method is not expected to throw exception in case of failed validation, rather return exception instance because
+            ///  throwing exception really hampers validation performance when many rows need to be validated
+            /// </summary>
+            public virtual Exception ValidateField(string targetName, Schema.FieldDef fdef)
+            {
+                if (fdef == null)
+                  throw new CRUDFieldValidationException(Schema.Name,
+                                                         StringConsts.NULL_STRING,
+                                                         StringConsts.ARGUMENT_ERROR + ".ValidateField(fdef=null)");
+
+                var atr = fdef[targetName];
+                if (atr==null) return null;
+
+                var value = GetFieldValue(fdef);
+
+                if (value==null ||
+                    (value is string && ((string)value).IsNullOrWhiteSpace()) ||
+                    (value is Distributed.GDID && ((Distributed.GDID)value).IsZero)
+                   )
+                {
+                   if (atr.Required)
+                    return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_REQUIRED_ERROR);
+
+                   return null;
+                }
+
+                if (value is IValidatable)
+                   return (((IValidatable)value).Validate(targetName));
+
+                if (value is IEnumerable<IValidatable>)//List<IValidatable>, IValidatable[]
+                {
+                   foreach(var v in (IEnumerable<IValidatable>)value)
+                   {
+                     if (v==null) continue;
+                     var error = v.Validate(targetName);
+                     if (error!=null) return error;
+                   }
+                   return null;
+                }
+
+                if (value is IEnumerable<KeyValuePair<string, IValidatable>>)//Dictionary<string, IValidatable>
+                {
+                   foreach(var kv in (IEnumerable<KeyValuePair<string, IValidatable>>)value)
+                   {
+                     var v = kv.Value;
+                     if (v==null) continue;
+                     var error = v.Validate(targetName);
+                     if (error!=null) return error;
+                   }
+                   return null;
+                }
+
+                if (atr.HasValueList)//check dictionary
+                {
+                    var parsed = atr.ParseValueList();
+                    if (!parsed.ContainsKey(value.ToString()))
+                        return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_IS_NOT_IN_LIST_ERROR);
+                }
+
+                if (atr.MinLength>0)
+                    if (value.ToString().Length<atr.MinLength)
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MIN_LENGTH_ERROR);
+
+                if (atr.MaxLength>0)
+                    if (value.ToString().Length>atr.MaxLength)
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MAX_LENGTH_ERROR);
+
+                if (atr.Kind==DataKind.ScreenName)
+                {
+                    if (!NFX.Parsing.DataEntryUtils.CheckScreenName(value.ToString()))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_SCREEN_NAME_ERROR);
+                }
+                else if (atr.Kind==DataKind.EMail)
+                {
+                    if (!NFX.Parsing.DataEntryUtils.CheckEMail(value.ToString()))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_EMAIL_ERROR);
+                }
+                else if (atr.Kind==DataKind.Telephone)
+                {
+                    if (!NFX.Parsing.DataEntryUtils.CheckTelephone(value.ToString()))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_PHONE_ERROR);
+                }
+
+
+
+                if (value is IComparable)
+                {
+                    var error = CheckMinMax(atr, fdef.Name, (IComparable)value);
+                    if (error!=null) return error;
+                }
+
+                if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
+                {
+                   //For those VERY RARE cases when RegExpFormat may need to be applied to complex types, i.e. StringBuilder
+                   //set the flag in metadata to true, otherwise regexp gets matched only for STRINGS
+                   var complex = atr.Metadata==null? false
+                                                   : atr.Metadata
+                                                        .AttrByName("validate-format-regexp-complex-types")
+                                                        .ValueAsBool(false);
+                   if (complex || value is string)
+                   {
+                     if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
+                       return new CRUDFieldValidationException(Schema.Name, fdef.Name,
+                         StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription ?? "Input format: {0}".Args(atr.FormatRegExp)));
+                   }
+                }
 
                 return null;
             }
@@ -263,15 +387,15 @@ namespace NFX.DataAccess.CRUD
             {
                 if (other==null) return false;
                 if (!this.Schema.IsEquivalentTo(other.Schema)) return false;
-        
+
                 foreach(var fdef in Schema.AnyTargetKeyFieldDefs)
                 {
                      var obj1 = this[fdef.Order];
                      var obj2 = other[fdef.Order];
-                     if (obj1==null && obj2==null) continue; 
+                     if (obj1==null && obj2==null) continue;
                      if (! obj1.Equals(obj2) ) return false;
-                } 
-        
+                }
+
                 return true;
             }
 
@@ -293,7 +417,7 @@ namespace NFX.DataAccess.CRUD
                 {
                      var val = this[fdef.Order];
                      if (val!=null) result+= val.GetHashCode();
-                } 
+                }
                 return result;
             }
 
@@ -305,43 +429,43 @@ namespace NFX.DataAccess.CRUD
             public bool SimpleFilterPredicate(string filter, bool caseSensitive = false)
             {
               if (filter==null) return false;
-      
+
               if (!caseSensitive)
                 filter = filter.ToUpperInvariant();
-              
+
               var sany = false;
               var eany = false;
-      
+
               if (filter.StartsWith("*"))
               {
                 sany = true;
                 filter = filter.Remove(0, 1);
               }
-      
+
               if (filter.EndsWith("*"))
               {
                 eany = true;
                 filter = filter.Remove(filter.Length-1, 1);
               }
-      
+
               foreach(var val in this)
               {
                  if (val==null) continue;
-         
+
                  var sval = val.ToString();
-                 
+
                  if (!caseSensitive)
                     sval = sval.ToUpperInvariant();
-         
+
                  if (sany && eany && sval.Contains(filter)) return true;
-         
+
                  if (!sany && eany && sval.StartsWith(filter)) return true;
-         
+
                  if (sany && !eany && sval.EndsWith(filter)) return true;
-         
+
                  if (!sany && !eany && sval==filter) return true;
               }
-      
+
               return false;
             }
 
@@ -373,7 +497,7 @@ namespace NFX.DataAccess.CRUD
             /// Converts field value to the type specified by Schema.FieldDef. For example converts GDID->ulong or ulong->GDID.
             /// This method can be overridden to perform custom handling of types,
             ///  for example one can assign bool field as "Si" that would convert to TRUE.
-            /// This method is called by SetFieldValue(...) before assigning actual field buffer 
+            /// This method is called by SetFieldValue(...) before assigning actual field buffer
             /// </summary>
             /// <param name="fdef">Field being converted</param>
             /// <param name="value">Value to convert</param>
@@ -383,7 +507,7 @@ namespace NFX.DataAccess.CRUD
               if (value==DBNull.Value) value = null;
 
               if (value == null) return null;
-           
+
               var tv = value.GetType();
 
               if (tv != fdef.NonNullableType && !fdef.NonNullableType.IsAssignableFrom(tv))
@@ -392,18 +516,18 @@ namespace NFX.DataAccess.CRUD
                   if (value is ObjectValueConversion.TriStateBool)
                   {
                     var tsb = (ObjectValueConversion.TriStateBool)value;
-                    if (tsb==ObjectValueConversion.TriStateBool.Unspecified) 
+                    if (tsb==ObjectValueConversion.TriStateBool.Unspecified)
                       value = null;
                     else
                       value = tsb==ObjectValueConversion.TriStateBool.True;
 
                     return value;
                   }
-                
+
                   if (fdef.NonNullableType==typeof(ObjectValueConversion.TriStateBool))
                   {
                     var nb = value.AsNullableBool();
-                    if (!nb.HasValue) 
+                    if (!nb.HasValue)
                       value = ObjectValueConversion.TriStateBool.Unspecified;
                     else
                       value = nb.Value ? ObjectValueConversion.TriStateBool.True : ObjectValueConversion.TriStateBool.False;
@@ -411,7 +535,7 @@ namespace NFX.DataAccess.CRUD
                     return value;
                   }
 
-                
+
                   // 20150224 DKh, addedEra to GDID. Only GDIDS with ERA=0 can be converted to/from INT64
                   if (fdef.NonNullableType==typeof(NFX.DataAccess.Distributed.GDID))
                   {
@@ -501,11 +625,11 @@ namespace NFX.DataAccess.CRUD
                    var ofd = other.Schema[kvp.Key];
                    if (ofd!=null)
                    {
-                     try 
+                     try
                      {
                        if (!isFieldDefLoaded(target, ofd)) continue;
 
-                       other.SetFieldValue(ofd, kvp.Value); 
+                       other.SetFieldValue(ofd, kvp.Value);
                        continue;
                      }catch{} //this may be impossible, then we assign to amorphous in other
                    }
@@ -521,11 +645,11 @@ namespace NFX.DataAccess.CRUD
                 if (!isFieldDefLoaded(target, fdef)) continue;
 
                 var ofd = other.Schema[fdef.Name];
-                if (ofd==null) 
+                if (ofd==null)
                 {
                   if (oad!=null && oad.AmorphousDataEnabled)// IF amorphous behavior is enabled in destination
                   {
-                    oad.AmorphousData[fdef.Name] = GetFieldValue(fdef); 
+                    oad.AmorphousData[fdef.Name] = GetFieldValue(fdef);
                   }
                   continue;
                 }
@@ -545,7 +669,7 @@ namespace NFX.DataAccess.CRUD
 
 
             /// <summary>
-            /// For fields with ValueList returns value's description per specified targeted schema 
+            /// For fields with ValueList returns value's description per specified targeted schema
             /// </summary>
             public string GetFieldValueDescription(string fieldName, string targetName=null, bool caseSensitiveKeys=false)
             {
@@ -557,7 +681,7 @@ namespace NFX.DataAccess.CRUD
             }
 
             /// <summary>
-            /// For fields with ValueList returns value's description per specified targeted schema 
+            /// For fields with ValueList returns value's description per specified targeted schema
             /// </summary>
             public string GetFieldValueDescription(int fieldIndex, string targetName=null, bool caseSensitiveKeys=false)
             {
@@ -607,7 +731,7 @@ namespace NFX.DataAccess.CRUD
 
                       if (atr==null || atr.DisplayFormat.IsNullOrWhiteSpace())
                         return value.ToString();
-                
+
                       return atr.DisplayFormat.Args(value);
                   }
 
@@ -629,7 +753,7 @@ namespace NFX.DataAccess.CRUD
 
             /// <summary>
             /// Override to perform dynamic substitute of field def for the specified field.
-            /// This method is used by client ui/scaffolding to extract dynamic definition for a field 
+            /// This method is used by client ui/scaffolding to extract dynamic definition for a field
             /// (i.e. field description, requirement, value list etc.) as dictated by business logic.
             /// This method IS NOT used by row validation, only by client that feeds from row's metadata.
             /// The default implementation returns the original field def, you can return a substituted field def
@@ -678,13 +802,13 @@ namespace NFX.DataAccess.CRUD
                 foreach(var fd in Schema)
                 {
                   string name;
-                  
+
                   var val = FilterJSONSerializerField(fd, options, out name);
                   if (name.IsNullOrWhiteSpace()) continue;
 
                   map[name] = val;
                 }
-                
+
                 if (this is IAmorphousData)
                 {
                   var amorph = (IAmorphousData)this;
@@ -698,118 +822,10 @@ namespace NFX.DataAccess.CRUD
                 }
 
                 JSONWriter.WriteMap(wri, map, nestingLevel, options);
-            } 
+            }
         #endregion
 
         #region Protected
-
-            /// <summary>
-            /// Validates row field using Schema.FieldDef settings.
-            /// This method is invoked by base Validate() implementation.
-            /// The method is not expected to throw exception in case of failed validation, rather return exception instance because
-            ///  throwing exception really hampers validation performance when many rows need to be validated
-            /// </summary>
-            protected virtual Exception ValidateField(string targetName, Schema.FieldDef  fdef)
-            {
-                var atr = fdef[targetName];
-                if (atr==null) return null;
-                
-                var value = GetFieldValue(fdef);
-                
-                if (value==null || 
-                    (value is string && ((string)value).IsNullOrWhiteSpace()) ||
-                    (value is Distributed.GDID && ((Distributed.GDID)value).IsZero)
-                   )
-                {
-                   if (atr.Required) 
-                    return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_REQUIRED_ERROR);
-                   
-                   return null;
-                }
-
-                if (value is IValidatable)
-                   return (((IValidatable)value).Validate(targetName));
-
-                if (value is IEnumerable<IValidatable>)//List<IValidatable>, IValidatable[]
-                {
-                   foreach(var v in (IEnumerable<IValidatable>)value)
-                   {
-                     if (v==null) continue;
-                     var error = v.Validate(targetName);
-                     if (error!=null) return error;
-                   }
-                   return null; 
-                }
-
-                if (value is IEnumerable<KeyValuePair<string, IValidatable>>)//Dictionary<string, IValidatable>
-                {
-                   foreach(var kv in (IEnumerable<KeyValuePair<string, IValidatable>>)value)
-                   {
-                     var v = kv.Value;
-                     if (v==null) continue;
-                     var error = v.Validate(targetName);
-                     if (error!=null) return error;
-                   }
-                   return null; 
-                }
-
-                if (atr.HasValueList)//check dictionary
-                {
-                    var parsed = atr.ParseValueList();
-                    if (!parsed.ContainsKey(value.ToString()))
-                        return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_IS_NOT_IN_LIST_ERROR);
-                }
-
-                if (atr.MinLength>0)
-                    if (value.ToString().Length<atr.MinLength)
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MIN_LENGTH_ERROR);
-
-                if (atr.MaxLength>0)
-                    if (value.ToString().Length>atr.MaxLength)
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_MAX_LENGTH_ERROR);
-                
-                if (atr.Kind==DataKind.ScreenName)
-                {
-                    if (!NFX.Parsing.DataEntryUtils.CheckScreenName(value.ToString()))
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_SCREEN_NAME_ERROR);
-                }
-                else if (atr.Kind==DataKind.EMail)
-                {
-                    if (!NFX.Parsing.DataEntryUtils.CheckEMail(value.ToString()))
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_EMAIL_ERROR);
-                }
-                else if (atr.Kind==DataKind.Telephone)
-                {
-                    if (!NFX.Parsing.DataEntryUtils.CheckTelephone(value.ToString()))
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_PHONE_ERROR);
-                }
-
-
-
-                if (value is IComparable)
-                {
-                    var error = CheckMinMax(atr, fdef.Name, (IComparable)value);
-                    if (error!=null) return error;
-                }
-
-                if (atr.FormatRegExp.IsNotNullOrWhiteSpace())
-                {
-                   //For those VERY RARE cases when RegExpFormat may need to be applied to complex types, i.e. StringBuilder
-                   //set the flag in metadata to true, otherwise regexp gets matched only for STRINGS
-                   var complex = atr.Metadata==null? false
-                                                   : atr.Metadata
-                                                        .AttrByName("validate-format-regexp-complex-types")
-                                                        .ValueAsBool(false);
-                   if (complex || value is string)
-                   {
-                     if (!System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), atr.FormatRegExp))
-                       return new CRUDFieldValidationException(Schema.Name, fdef.Name,
-                         StringConsts.CRUD_FIELD_VALUE_REGEXP_ERROR.Args(atr.FormatDescription ?? "Input format: {0}".Args(atr.FormatRegExp)));
-                   }
-                }
-                     
-                return null;
-            }
 
             protected Exception CheckMinMax(FieldAttribute atr, string fName, IComparable val)
             {
@@ -822,7 +838,7 @@ namespace NFX.DataAccess.CRUD
 
                         bound = Convert.ChangeType(bound, tval) as IComparable;
 
-                        if (val.CompareTo(bound)<0) 
+                        if (val.CompareTo(bound)<0)
                             return new CRUDFieldValidationException(Schema.Name, fName, StringConsts.CRUD_FIELD_VALUE_MIN_BOUND_ERROR);
                     }
                }
@@ -836,7 +852,7 @@ namespace NFX.DataAccess.CRUD
 
                         bound = Convert.ChangeType(bound, tval) as IComparable;
 
-                        if (val.CompareTo(bound)>0) 
+                        if (val.CompareTo(bound)>0)
                             return new CRUDFieldValidationException(Schema.Name, fName, StringConsts.CRUD_FIELD_VALUE_MAX_BOUND_ERROR);
                     }
                }
@@ -851,7 +867,7 @@ namespace NFX.DataAccess.CRUD
             protected virtual object FilterJSONSerializerField(Schema.FieldDef def, JSONWritingOptions options, out string name)
             {
               var tname = options!=null ? options.RowMapTargetName : null;
-              
+
               if (tname.IsNotNullOrWhiteSpace())
               {
                 FieldAttribute attr;
@@ -863,7 +879,7 @@ namespace NFX.DataAccess.CRUD
                     name = null;
                     return null;
                   }
-                  
+
                   var dflt = attr.Default;
                   if (dflt!=null)
                   {
@@ -886,17 +902,17 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
 
-      
+
         #region .pvt
 
             private class rowFieldValueEnumerator : IEnumerator<object>
             {
-                
+
                 internal rowFieldValueEnumerator(Row row)
                 {
                     m_Row = row;
                 }
-                
+
                 public void Dispose()
                 {
 
@@ -927,9 +943,9 @@ namespace NFX.DataAccess.CRUD
 
         #endregion
 
-           
+
     }
 
 
-   
+
 }

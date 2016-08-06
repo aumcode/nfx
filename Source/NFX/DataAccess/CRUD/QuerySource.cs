@@ -37,13 +37,13 @@ namespace NFX.DataAccess.CRUD
     ///@first_name=fname
     ///.doctor_id=This is description for column
     ///
-    ///select                     
-    /// t1.ssn,                   
+    ///select
+    /// t1.ssn,
     /// t1.lname as last_name,
     /// t1.fname as first_name,
-    /// t1.c_doctor, 
-    /// t2.phone as doctor_phone, 
-    /// t2.NPI	as doctor_id       
+    /// t1.c_doctor,
+    /// t2.phone as doctor_phone,
+    /// t2.NPI	as doctor_id
     ///from
     /// tbl_patient t1
     ///  left outer join tbl_doctor t2 on t1.c_doctor = t2.counter
@@ -61,7 +61,7 @@ namespace NFX.DataAccess.CRUD
                     internal ColumnDef(string name)
                     {
                         m_Name = name;
-                        
+
                         //Defaults
                         m_StoreFlag = StoreFlag.LoadAndStore;
                         m_Visible = true;
@@ -86,9 +86,9 @@ namespace NFX.DataAccess.CRUD
 
                 }
         #endregion
-        
+
         #region CONSTS
-            
+
             public const string PRAGMA = "#pragma";
             public const string TABLE_MODIFY_SECTION = "modify";
             public const string COLUMN_KEY_SECTION = "key";
@@ -100,7 +100,7 @@ namespace NFX.DataAccess.CRUD
 
             public const string COLUMN_ALIAS_PREFIX = "@";
             public const string COLUMN_DESCRIPTION_PREFIX = ".";
-            
+
         #endregion
 
         #region .ctor
@@ -115,10 +115,10 @@ namespace NFX.DataAccess.CRUD
                 m_Columns = new Registry<ColumnDef>();
                 var lines = source.SplitLines();
 
-                if (lines.Length<4) return;// pragma, 1 line, space, statement = 4 
+                if (lines.Length<4) return;// pragma, 1 line, space, statement = 4
 
                 if (lines[0]!=PRAGMA) return;
-                
+
                 m_HasPragma = true;
 
                 var pragma = true;
@@ -132,7 +132,7 @@ namespace NFX.DataAccess.CRUD
                     }
 
                     var line = lines[i].TrimStart();
-                    if (line.Length==0) 
+                    if (line.Length==0)
                     {
                         pragma = false;
                         continue;
@@ -150,11 +150,11 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Field
-            
+
             private string m_Name;
             private string m_OriginalSource;
             private string m_StatementSource;
-            
+
             private bool m_HasPragma;
             private string m_ModifyTarget;
 
@@ -163,7 +163,7 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Properties
-            
+
 
             /// <summary>
             /// Rerurns name of query source
@@ -208,36 +208,36 @@ namespace NFX.DataAccess.CRUD
             {
                 if (TABLE_MODIFY_SECTION.EqualsOrdIgnoreCase(name))
                 {
-                    m_ModifyTarget = value;   
+                    m_ModifyTarget = value;
                     return;
-                } 
+                }
 
                 if (COLUMN_KEY_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var keys = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var key in keys)
-                        getDef(key).Key = true;   
-                    
+                        getDef(key).Key = true;
+
                     return;
                 }
-                
+
                 if (COLUMN_REQUIRED_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var keys = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var key in keys)
-                        getDef(key).Required = true;   
-                    
+                        getDef(key).Required = true;
+
                     return;
-                } 
-                
+                }
+
                 if (COLUMN_INVISIBLE_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var keys = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var key in keys)
-                        getDef(key).Visible = false;   
-                    
+                        getDef(key).Visible = false;
+
                     return;
-                }  
+                }
 
                 if (COLUMN_LOAD_SECTION.EqualsOrdIgnoreCase(name))
                 {
@@ -246,7 +246,7 @@ namespace NFX.DataAccess.CRUD
                         getDef(column).StoreFlag = StoreFlag.OnlyLoad;
                     return;
                 }
-                
+
                 if (COLUMN_STORE_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var columns = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
@@ -254,30 +254,30 @@ namespace NFX.DataAccess.CRUD
                         getDef(column).StoreFlag = StoreFlag.OnlyStore;
                     return;
                 }
-                
+
                 if (COLUMN_IGNORE_SECTION.EqualsOrdIgnoreCase(name))
                 {
                     var columns = value.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach(var column in columns)
                         getDef(column).StoreFlag = StoreFlag.None;
                     return;
-                }    
-                
+                }
+
                 if (name.StartsWith(COLUMN_ALIAS_PREFIX))
                 {
                     name = name.Substring(1);
                     getDef(name).BackendName = value.Trim();
                     return;
-                } 
-                
+                }
+
                 if (name.StartsWith(COLUMN_DESCRIPTION_PREFIX))
                 {
                     name = name.Substring(1);
                     getDef(name).Description = value;
                     return;
-                }     
-                
-                throw new CRUDException(StringConsts.CRUD_QUERY_SOURCE_PRAGMA_ERROR.Args(no, line, StringConsts.CRUD_QUERY_SOURCE_PRAGMA_LINE_ERROR.Args(name, value)));   
+                }
+
+                throw new CRUDException(StringConsts.CRUD_QUERY_SOURCE_PRAGMA_ERROR.Args(no, line, StringConsts.CRUD_QUERY_SOURCE_PRAGMA_LINE_ERROR.Args(name, value)));
             }
 
             private ColumnDef getDef(string name)
@@ -295,5 +295,5 @@ namespace NFX.DataAccess.CRUD
     }
 
 
-    
+
 }

@@ -24,7 +24,7 @@ namespace NFX.Web.Pay
 {
   /// <summary>
   /// Represents a web terminal for pay systems that tokenize sensitive CC data via a call to provider
-  /// so that actual CC numbers never touch our servers in a plain form, instead tokens/nonces are supplied 
+  /// so that actual CC numbers never touch our servers in a plain form, instead tokens/nonces are supplied
   /// back by the provider tokenizer. This is needed for PCI compliance.
   /// </summary>
   public interface IPayWebTerminal
@@ -35,21 +35,10 @@ namespace NFX.Web.Pay
     IPaySystem PaySystem { get; }
 
     /// <summary>
-    /// Returns the names of scripts that should be included in client web page in the order of return.
-    /// </summary>
-    IEnumerable<string> GetIncludeScripts(PaySession session);
-
-    /// <summary>
-    /// Returns client script body that initializes WAVE.Pay by calling WAVE.Pay.init(...) to perform operation 
+    /// Returns client script body that initializes WAVE.Pay by calling WAVE.Pay.init(...) to perform operation
     /// against the provider.
-    /// </summary>                                                                     
-    string GetPayInitScript(PaySession session);
-
-    /// <summary>
-    /// Performs necessary conversions (if any) of the token returned by IPayWebTerminal to account
-    /// so it can be used by Charge/Refund methods  
     /// </summary>
-    Account ConvertWebTerminalTokenToAccount(ITransactionContext context, object token);
+    object GetPayInit();
   }
 
 
@@ -61,11 +50,11 @@ namespace NFX.Web.Pay
     // /// <summary>
     // /// Returns a pay terminal is this payment provider supports it or null
     // /// </summary>
-    //todo: IPayWebTerminal WebTerminal { get; }
+    IPayWebTerminal WebTerminal { get; }
 
     /// <summary>
     /// Config node of params used inside <see cref="StartSession(PayConnectionParameters)"/> method
-    /// if PayConnectionParameters parameter is null 
+    /// if PayConnectionParameters parameter is null
     /// </summary>
     IConfigSectionNode DefaultSesssionConnectParamsCfg { get; set; }
 
@@ -73,7 +62,7 @@ namespace NFX.Web.Pay
     /// Processing fee types, such as: included in amount and surcharged.
     /// </summary>
     ProcessingFeeKind ChargeFeeKind { get; }
-               
+
     /// <summary>
     /// Processing fee types, such as: included in amount and surcharged.
     /// </summary>
@@ -89,7 +78,7 @@ namespace NFX.Web.Pay
     /// Returns true if this system supports transaction type in the specified currency (optional)
     /// </summary>
     bool IsTransactionTypeSupported(TransactionType type, string currencyISO = null);
-    
+
     /// <summary>
     /// Starts new pay session of system-specific type.
     /// If cParams parameter is null <see cref="DefaultSesssionConnectParamsCfg"/> is used

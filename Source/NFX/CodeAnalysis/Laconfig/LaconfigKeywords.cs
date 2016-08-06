@@ -41,7 +41,7 @@ namespace NFX.CodeAnalysis.Laconfig
         case '}': return LaconfigTokenType.tBraceClose;
         case '=': return LaconfigTokenType.tEQ;
       }
-      
+
       return LaconfigTokenType.tIdentifier;
     }
 

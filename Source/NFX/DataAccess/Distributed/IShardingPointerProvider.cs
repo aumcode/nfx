@@ -47,21 +47,21 @@ namespace NFX.DataAccess.Distributed
     /// Contains information about sharding parcel type and ID
     /// which is used to calculate the physical location of parcel data
     /// </summary>
-    public struct ShardingPointer 
+    public struct ShardingPointer
     {
       public ShardingPointer(Type tParcel, object id)
       {
          if (tParcel==null || id==null)
           throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+"ShardingPointer.ctor(parcel|id==null)");
-     
+
          if (!typeof(Parcel).IsAssignableFrom(tParcel))
           throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+"ShardingPointer.ctor(shardingParcel='"+tParcel.FullName+"' isnot Parcel-derived");
-                
+
 
          ParcelType = tParcel;
          ID = id;
       }
-      
+
       public readonly Type ParcelType;
       public readonly object ID;
 
@@ -73,19 +73,19 @@ namespace NFX.DataAccess.Distributed
         return IsAssigned ? ParcelType.DisplayNameWithExpandedGenericArgs() + "::" + ID.ToString() : "<not assigned>";
       }
     }
-    
-    
-    
-    
+
+
+
+
     /// <summary>
-    /// Denotes an entity which provides a sharding parcel type along with sharding ID (ShardingPointer) that can be used to determine 
+    /// Denotes an entity which provides a sharding parcel type along with sharding ID (ShardingPointer) that can be used to determine
     /// data location via conversion of this id into physical shard #(particular server) that this entity represents
     /// </summary>
     public interface IShardingPointerProvider
     {
         /// <summary>
-        /// Returns the parcel type and ID used for sharding. 
-        /// This pointer is converted into physical shard # (particular server) where data represented by this entity resides. 
+        /// Returns the parcel type and ID used for sharding.
+        /// This pointer is converted into physical shard # (particular server) where data represented by this entity resides.
         /// WARNING! The ShardingPointer is immutable during the lifecycle of the entity. See Parcel.ShardingPointer
         /// </summary>
         ShardingPointer ShardingPointer { get; }

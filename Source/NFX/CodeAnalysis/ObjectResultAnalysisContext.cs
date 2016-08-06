@@ -21,15 +21,15 @@ using System.Text;
 
 namespace NFX.CodeAnalysis
 {
-    
+
     /// <summary>
-    /// A context that can hold analysis result as TObject. 
+    /// A context that can hold analysis result as TObject.
     /// This class is useful for cases like dynamic language parsers (i.e. JSON)
     /// </summary>
     public abstract class ObjectResultAnalysisContext<TObject> : CommonCodeProcessor, IAnalysisContext where TObject : class
     {
         protected ObjectResultAnalysisContext(IAnalysisContext context, MessageList messages = null, bool throwErrors = false):
-                                               base(context, messages, throwErrors) 
+                                               base(context, messages, throwErrors)
         {
 
         }

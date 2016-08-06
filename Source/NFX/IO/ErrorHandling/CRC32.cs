@@ -33,10 +33,10 @@ namespace NFX.IO.ErrorHandling
   public struct CRC32
   {
     #region CONSTS
-     
+
        //see http://en.wikipedia.org/wiki/CRC32
-       // polynom 0x EDB8 8320  
-       private static uint[] TABLE = new uint[] 
+       // polynom 0x EDB8 8320
+       private static uint[] TABLE = new uint[]
        {
 			 0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
 			 0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
@@ -90,21 +90,21 @@ namespace NFX.IO.ErrorHandling
 			 0xcdd70693, 0x54de5729, 0x23d967bf, 0xb3667a2e, 0xc4614ab8,
 			 0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b,
 			 0x2d02ef8d
-		 };    
-    
+		 };
+
          private const uint SEED = 0xffffffff;
-    
+
     #endregion
-    
-    
+
+
     #region Static
-    
+
       /// <summary>
       /// Computes CRC32 for string
       /// </summary>
       public static uint ForEncodedString(string text, System.Text.Encoding encoding)
       {
-        if (encoding==null) encoding = System.Text.Encoding.UTF8; 
+        if (encoding==null) encoding = System.Text.Encoding.UTF8;
         var buff =  encoding.GetBytes( text );
         return CRC32.ForBytes( buff );
       }
@@ -123,7 +123,7 @@ namespace NFX.IO.ErrorHandling
         return crc.m_CRC;
       }
 
-      
+
        /// <summary>
       /// Computes CRC32 for byte array
       /// </summary>
@@ -132,11 +132,11 @@ namespace NFX.IO.ErrorHandling
         var crc = new CRC32();
         crc.Add( buff );
         return crc.m_CRC;
-      } 
-    
+      }
+
     #endregion
-    
-    
+
+
     #region Private Fields
       private uint m_CRC;
     #endregion
@@ -145,15 +145,15 @@ namespace NFX.IO.ErrorHandling
     #region Properties
 
       /// <summary>
-      /// Returns present checksum for the pushed data 
+      /// Returns present checksum for the pushed data
       /// </summary>
       public uint Value {  get { return m_CRC; } }
-    
+
     #endregion
 
     #region Public
-    
-      
+
+
 
       /// <summary>
       /// Adds integer value into checksum
@@ -186,7 +186,7 @@ namespace NFX.IO.ErrorHandling
           idx++;
           length--;
         }
-        
+
         m_CRC ^= SEED;
       }
 

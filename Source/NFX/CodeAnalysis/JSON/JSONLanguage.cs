@@ -42,8 +42,8 @@ namespace NFX.CodeAnalysis.JSON
         {
             get
             {
-                yield return "jsn"; 
-                yield return "json"; 
+                yield return "jsn";
+                yield return "json";
             }
         }
 

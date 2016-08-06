@@ -26,7 +26,7 @@ using NFX.DataAccess.CRUD;
 namespace NFX.DataAccess.MongoDB
 {
     /// <summary>
-    /// Provides query execution environment in MongoDB database context 
+    /// Provides query execution environment in MongoDB database context
     /// </summary>
     public struct MongoDBCRUDQueryExecutionContext : ICRUDQueryExecutionContext
     {

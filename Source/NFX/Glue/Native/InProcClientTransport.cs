@@ -25,7 +25,7 @@ using NFX.Glue.Protocol;
 namespace NFX.Glue.Native
 {
     /// <summary>
-    /// Provides client-side functionality for synchronous communication pattern based on 
+    /// Provides client-side functionality for synchronous communication pattern based on
     ///  in-memory message exchange without serialization
     /// </summary>
     public class InProcClientTransport : ClientTransport<InProcBinding>
@@ -49,7 +49,7 @@ namespace NFX.Glue.Native
 
                 protected override CallSlot DoSendRequest(ClientEndPoint endpoint, RequestMsg request, CallOptions options)
                 {
-                  
+
                   request.__setServerTransport(findServerTransport(endpoint));
                   //notice: no serialization because we are in the same address space
                   ResponseMsg response;
@@ -62,7 +62,7 @@ namespace NFX.Glue.Native
                     response = Glue.ServerHandleRequestFailure(request.RequestID, request.OneWay, e, request.BindingSpecificContext);
                   }
 
-                  if (request.OneWay) 
+                  if (request.OneWay)
                    return new CallSlot(endpoint, this, request, CallStatus.Dispatched, options.TimeoutMs);
 
                   var result = new CallSlot(endpoint, this, request, CallStatus.ResponseOK);
@@ -70,7 +70,7 @@ namespace NFX.Glue.Native
 
                   return result;
                 }
-        
+
         #endregion
 
 

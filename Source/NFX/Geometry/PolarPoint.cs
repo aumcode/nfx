@@ -35,7 +35,7 @@ namespace NFX.Geometry
   {
 
     #region .ctor
-      
+
       /// <summary>
       /// Initializes polar coordinates
       /// </summary>
@@ -64,7 +64,7 @@ namespace NFX.Geometry
 
     #endregion
 
-    #region Private Fields 
+    #region Private Fields
       private double m_R;
       private double m_Theta;
 
@@ -116,9 +116,9 @@ namespace NFX.Geometry
       }
     #endregion
 
-    
-      
-    #region Operators  
+
+
+    #region Operators
       public static bool operator ==(PolarPoint left, PolarPoint right)
       {
         return (left.m_R == right.m_R) && (left.m_Theta == right.m_Theta);
@@ -129,15 +129,15 @@ namespace NFX.Geometry
         return (left.m_R != right.m_R) || (left.m_Theta != right.m_Theta);
       }
     #endregion
-    
-    
+
+
     #region Object overrides
       public override bool Equals(object obj)
       {
         if (obj is PolarPoint)
          return this==((PolarPoint)obj);
         else
-         return false; 
+         return false;
       }
 
       public override int GetHashCode()
@@ -149,10 +149,10 @@ namespace NFX.Geometry
       {
         return string.Format("Distance: {0}; Angle: {1} rad.", m_R, m_Theta);
       }
-    
-    
+
+
     #endregion
-    
+
   }
 
 

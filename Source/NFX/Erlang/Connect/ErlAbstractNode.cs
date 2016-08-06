@@ -39,14 +39,14 @@ namespace NFX.Erlang
   /// particular they cannot be mixed freely in a network of
   /// communicating nodes, however Jinterface makes no distinction. See
   /// the Erlang documentation for more information about nodenames.
-  /// 
+  ///
   /// The constructors for the AbstractNode classes will create names
   /// exactly as you provide them as long as the name contains '@'. If
   /// the string you provide contains no '@', it will be treated as an
   /// alivename and the name of the local host will be appended,
   /// resulting in a shortname. Nodenames longer than 255 characters will
   /// be truncated without warning.
-  /// 
+  ///
   /// Upon initialization, this class attempts to read the file
   /// .erlang.cookie in the user's home directory, and uses the trimmed
   /// first line of the file as the default cookie by those constructors
@@ -160,7 +160,7 @@ namespace NFX.Erlang
     }
 
     /// <summary>
-    /// This constructor 
+    /// This constructor
     /// </summary>
     /// <param name="name"></param>
     /// <param name="config"></param>

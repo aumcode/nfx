@@ -26,7 +26,7 @@ namespace NFX.DataAccess.CRUD
       public static CRUDOperationCallContext Current
       {
         get
-        { 
+        {
           return ts_Instances!=null && ts_Instances.Count>0 ? ts_Instances.Peek() : null;
         }
       }
@@ -38,14 +38,14 @@ namespace NFX.DataAccess.CRUD
 
         ts_Instances.Push(this);
       }
-      
+
       protected override void Destructor()
       {
         if (ts_Instances.Count>0)
         {
           if (ts_Instances.Pop()==this) return;
         }
-        
+
         throw new CRUDException(StringConsts.CRUD_OPERATION_CALL_CONTEXT_SCOPE_MISMATCH_ERROR);
       }
 

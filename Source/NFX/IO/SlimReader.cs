@@ -30,10 +30,10 @@ namespace NFX.IO
     /// Reads primitives and other supported types from Slim-format stream. Use factory method of SlimFormat intance to create a new instance of SlimReader class
     /// </summary>
     [Inventory(Concerns=SystemConcerns.Testing | SystemConcerns.MissionCriticality)]
-    public class SlimReader : ReadingStreamer 
+    public class SlimReader : ReadingStreamer
     {
         #region .ctor
-        
+
             protected internal SlimReader(Encoding encoding=null) : base(encoding)
             {
             }
@@ -42,7 +42,7 @@ namespace NFX.IO
 
         #region Fields
 
-           
+
         #endregion
 
 
@@ -59,20 +59,20 @@ namespace NFX.IO
 
         #endregion
 
-       
+
         #region Public
-         
-          
-         
-         
-         
-          
-        
+
+
+
+
+
+
+
           public override bool ReadBool()
           {
             var b = m_Stream.ReadByte();
             if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadBool(): eof");
-            
+
             return b!=0;
           }
 
@@ -102,7 +102,7 @@ namespace NFX.IO
 
                 return null;
               }
-        
+
 
           public override byte[] ReadByteArray()
           {
@@ -181,7 +181,7 @@ namespace NFX.IO
 
 
 
-  
+
           public override char ReadChar()
           {
             return (char)this.ReadShort();
@@ -196,7 +196,7 @@ namespace NFX.IO
               }
 
 
-  
+
           public override char[] ReadCharArray()
           {
             byte[] buf = this.ReadByteArray();
@@ -211,7 +211,7 @@ namespace NFX.IO
             var has = this.ReadBool();
             if (!has) return null;
             var len = this.ReadInt();
-            
+
             if (len>SlimFormat.MAX_STRING_ARRAY_CNT)
               throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "strings", SlimFormat.MAX_STRING_ARRAY_CNT));
 
@@ -223,7 +223,7 @@ namespace NFX.IO
 
             return result;
           }
-          
+
           //DKh 20160418
           //public override decimal ReadDecimal()
           //{
@@ -242,9 +242,9 @@ namespace NFX.IO
             var bits_2 = this.ReadInt();
             var bits_3 = this.ReadByte();
             return new Decimal(bits_0,
-                               bits_1, 
-                               bits_2, 
-                               (bits_3 & 0x80) != 0, 
+                               bits_1,
+                               bits_2,
+                               (bits_3 & 0x80) != 0,
                                (byte)(bits_3 & 0x7F));
           }
 
@@ -256,20 +256,20 @@ namespace NFX.IO
 
                 return null;
               }
-        
+
 
           public unsafe override double ReadDouble()
           {
             ReadFromStream(m_Buff32, 8);
-          
-            uint seg1 = (uint)((int)m_Buff32[0] | 
-                               (int)m_Buff32[1] << 8 | 
-                               (int)m_Buff32[2] << 16 | 
+
+            uint seg1 = (uint)((int)m_Buff32[0] |
+                               (int)m_Buff32[1] << 8 |
+                               (int)m_Buff32[2] << 16 |
                                (int)m_Buff32[3] << 24);
 
-	          uint seg2 = (uint)((int)m_Buff32[4] | 
+	          uint seg2 = (uint)((int)m_Buff32[4] |
                                (int)m_Buff32[5] << 8 |
-                               (int)m_Buff32[6] << 16 | 
+                               (int)m_Buff32[6] << 16 |
                                (int)m_Buff32[7] << 24);
 
 	          ulong core = (ulong)seg2 << 32 | (ulong)seg1;
@@ -291,7 +291,7 @@ namespace NFX.IO
           {
             ReadFromStream(m_Buff32, 4);
 
-            uint core = (uint)((int)m_Buff32[0] | 
+            uint core = (uint)((int)m_Buff32[0] |
                                (int)m_Buff32[1] << 8 |
                                (int)m_Buff32[2] << 16 |
                                (int)m_Buff32[3] << 24);
@@ -300,26 +300,26 @@ namespace NFX.IO
               public override float? ReadNullableFloat()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadFloat();
 
                 return null;
               }
-        
 
-          public override int ReadInt()  
+
+          public override int ReadInt()
           {
             int result = 0;
             var b = m_Stream.ReadByte();
             if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadInt(): eof");
-           
+
             var neg = ((b & 1) != 0);
-             
-           
+
+
             var has = (b & 0x80) > 0;
             result |= ((b & 0x7f) >> 1);
             var bitcnt = 6;
-            
+
             while(has)
             {
                if (bitcnt>31)
@@ -339,7 +339,7 @@ namespace NFX.IO
               public override int? ReadNullableInt()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadInt();
 
                 return null;
@@ -352,12 +352,12 @@ namespace NFX.IO
             if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadLong(): eof");
 
             var neg = ((b & 1) != 0);
-             
-           
+
+
             var has = (b & 0x80) > 0;
             result |= ((long)(b & 0x7f) >> 1);
             var bitcnt = 6;
-            
+
             while(has)
             {
                if (bitcnt>63)
@@ -377,13 +377,13 @@ namespace NFX.IO
               public override long? ReadNullableLong()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadLong();
 
                 return null;
               }
 
-        
+
           public override sbyte ReadSByte()
           {
             var b = m_Stream.ReadByte();
@@ -393,26 +393,26 @@ namespace NFX.IO
               public override sbyte? ReadNullableSByte()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadSByte();
 
                 return null;
               }
-        
+
 
           public override short ReadShort()
           {
             short result = 0;
             var b = m_Stream.ReadByte();
             if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadShort(): eof");
-           
+
             var neg = ((b & 1) != 0);
-             
-           
+
+
             var has = (b & 0x80) > 0;
             result |= (short)((b & 0x7f) >> 1);
             var bitcnt = 6;
-            
+
             while(has)
             {
                if (bitcnt>15)
@@ -430,24 +430,24 @@ namespace NFX.IO
               public override short? ReadNullableShort()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return ReadShort();
 
                 return null;
               }
-        
+
           private const int STR_BUF_SZ = 32 * 1024;
 
           [ThreadStatic]
           private static byte[] ts_StrBuff;
 
-          
+
           public override string ReadString()
           {
             //20150626 DKh
             //var buf = this.ReadByteArray();
             //if (buf==null) return null;
-            
+
             //return m_Encoding.GetString(buf);
 
             var has = this.ReadBool();
@@ -461,7 +461,7 @@ namespace NFX.IO
               return m_Encoding.GetString(ts_StrBuff, 0, bsz);
             }
 
-           
+
             if (bsz>SlimFormat.MAX_BYTE_ARRAY_LEN)
               throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(bsz, "string bytes", SlimFormat.MAX_BYTE_ARRAY_LEN));
 
@@ -472,7 +472,7 @@ namespace NFX.IO
             return m_Encoding.GetString(buf);
           }
 
-         
+
 
 
           public override uint ReadUInt()
@@ -480,7 +480,7 @@ namespace NFX.IO
             uint result = 0;
             var bitcnt = 0;
             var has = true;
-            
+
             while(has)
             {
                if (bitcnt>31)
@@ -499,20 +499,20 @@ namespace NFX.IO
               public override uint? ReadNullableUInt()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadUInt();
 
                 return null;
               }
 
 
-        
+
           public override ulong ReadULong()
           {
             ulong result = 0;
             var bitcnt = 0;
             var has = true;
-            
+
             while(has)
             {
                if (bitcnt>63)
@@ -531,7 +531,7 @@ namespace NFX.IO
               public override ulong? ReadNullableULong()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadULong();
 
                 return null;
@@ -542,7 +542,7 @@ namespace NFX.IO
             ushort result = 0;
             var bitcnt = 0;
             var has = true;
-            
+
             while(has)
             {
                if (bitcnt>31)
@@ -561,12 +561,12 @@ namespace NFX.IO
               public override ushort? ReadNullableUShort()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadUShort();
 
                 return null;
               }
-          
+
 
           public override MetaHandle ReadMetaHandle()
           {
@@ -575,12 +575,12 @@ namespace NFX.IO
             if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadMetaHandle(): eof");
 
             var meta = ((b & 1) != 0);
-             
-           
+
+
             var has = (b & 0x80) > 0;
             handle |= ((uint)(b & 0x7f) >> 1);
             var bitcnt = 6;
-            
+
             while(has)
             {
                if (bitcnt>31)
@@ -604,17 +604,17 @@ namespace NFX.IO
 
             return new MetaHandle(true, handle);
           }
-            
+
 
               public override MetaHandle? ReadNullableMetaHandle()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadMetaHandle();
 
                 return null;
               }
-          
+
 
 
           public override DateTime ReadDateTime()
@@ -631,7 +631,7 @@ namespace NFX.IO
               public override DateTime? ReadNullableDateTime()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadDateTime();
 
                 return null;
@@ -647,7 +647,7 @@ namespace NFX.IO
               public override TimeSpan? ReadNullableTimeSpan()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadTimeSpan();
 
                 return null;
@@ -663,7 +663,7 @@ namespace NFX.IO
               public override Guid? ReadNullableGuid()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadGuid();
 
                 return null;
@@ -679,7 +679,7 @@ namespace NFX.IO
               public override NFX.DataAccess.Distributed.GDID? ReadNullableGDID()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadGDID();
 
                 return null;
@@ -691,7 +691,7 @@ namespace NFX.IO
             var result = new NFX.Glue.Protocol.TypeSpec();
             result.m_Name = this.ReadString();
             result.m_Hash = m_Stream.ReadBEUInt64();
-            return result;   
+            return result;
          }
 
          public override NFX.Glue.Protocol.MethodSpec ReadMethodSpec()
@@ -714,7 +714,7 @@ namespace NFX.IO
               public override FID? ReadNullableFID()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadFID();
 
                 return null;
@@ -731,14 +731,14 @@ namespace NFX.IO
               public override NFX.ApplicationModel.Pile.PilePointer? ReadNullablePilePointer()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadPilePointer();
 
                 return null;
               }
-        
-        
-        
+
+
+
           public override VarIntStr ReadVarIntStr()
           {
             var str = this.ReadString();
@@ -750,7 +750,7 @@ namespace NFX.IO
               public override VarIntStr? ReadNullableVarIntStr()
               {
                 var has = this.ReadBool();
-                                                  
+
                 if (has) return this.ReadVarIntStr();
 
                 return null;
@@ -782,6 +782,26 @@ namespace NFX.IO
 
                 return null;
               }
+
+          public override Collections.StringMap ReadStringMap()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var senseCase = this.ReadBool();
+
+            var dict = Collections.StringMap.MakeDictionary(senseCase);
+
+            var count = this.ReadInt();
+            for(var i=0; i<count; i++)
+            {
+              var key = this.ReadString();
+              var value = this.ReadString();
+              dict[key] = value;
+            }
+
+            return new Collections.StringMap(senseCase, dict);
+          }
 
         #endregion
 

@@ -19,7 +19,7 @@ namespace NFX.Erlang
   {
     #region Fields
 
-    private static Dictionary<ErlPasswordSession, ErlPasswordSession> s_PassCache = 
+    private static Dictionary<ErlPasswordSession, ErlPasswordSession> s_PassCache =
                new Dictionary<ErlPasswordSession, ErlPasswordSession>();
 
     #endregion

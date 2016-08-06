@@ -29,7 +29,7 @@ namespace NFX.Security
     /// </summary>
     public interface ISecurityManager : IApplicationComponent
     {
-       
+
        /// <summary>
        /// Authenticates user by checking the supplied credentials against the
        /// authentication store that this manager represents.
@@ -38,7 +38,7 @@ namespace NFX.Security
        /// If rights are computed on authentication than Authorize() just checks existing in-memory structure, otherwise
        ///  Authorize() may re-fetch permissions from store on every call or cache them for the specified interval in memory
        /// </summary>
-       /// <param name="credentials">User credentials. 
+       /// <param name="credentials">User credentials.
        /// Particular manager implementation may elect to support multiple credential types, i.e.
        /// IdPassword, Twitter, Facebook, OAuth, LegacySystemA/B/C etc.
        /// </param>
@@ -62,7 +62,7 @@ namespace NFX.Security
        /// </returns>
        User Authenticate(AuthenticationToken token);
 
-      
+
        /// <summary>
        /// Authenticates user by checking the supplied user's token against the
        /// authentication store that this manager represents.

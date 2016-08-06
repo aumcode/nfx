@@ -28,12 +28,12 @@ namespace NFX.Parsing
     /// <summary>
     /// Implements an evaluator that compiles all expressions represented by instances of this class in a certain scope into dynamic assemblies.
     /// Every unique scope name creates a separate assembly.
-    /// The compilation of scope is triggered either by a call to Compile() or first attempt to call Evaluate() on any instance within a scope. 
+    /// The compilation of scope is triggered either by a call to Compile() or first attempt to call Evaluate() on any instance within a scope.
     /// Once a scope has been compiled, no further allocations in this scoped are allowed, this is because CLR does not allow to unload assemblies dynamically.
     /// Within an expression context is passed as "ctx" and argument as "arg".
     /// This class is thread-safe.
     /// </summary>
-    public class CompilingExpressionEvaluator<TContext, TResult, TArg>  
+    public class CompilingExpressionEvaluator<TContext, TResult, TArg>
     {
        #region inner
             private class _ScopeData
@@ -41,10 +41,10 @@ namespace NFX.Parsing
               internal Assembly Assembly;
               internal NFXException CompileException;
               internal List<CompilingExpressionEvaluator<TContext, TResult, TArg>> m_Expressions = new List<CompilingExpressionEvaluator<TContext, TResult, TArg>>();
-              
+
               internal List<string> m_ReferencedAssemblies = new List<string>();
               internal List<string> m_Usings = new List<string>();
-              
+
               public _ScopeData()
               {
                  m_ReferencedAssemblies.Add("System.dll");
@@ -53,7 +53,7 @@ namespace NFX.Parsing
                  m_ReferencedAssemblies.Add("System.Xml.dll");
                  m_ReferencedAssemblies.Add("System.Xml.Linq.dll");
                  m_ReferencedAssemblies.Add("NFX.dll");
-                 
+
                  m_Usings.Add("System");
                  m_Usings.Add("System.Text");
                  m_Usings.Add("System.IO");
@@ -61,20 +61,20 @@ namespace NFX.Parsing
                  m_Usings.Add("System.Linq");
                  m_Usings.Add("NFX");
               }
-              
-               
+
+
             }
 
             private class _Scopes : Dictionary<string, _ScopeData>{ }
 
-            private static class _G 
+            private static class _G
             {
               internal static _Scopes s_Scopes = new _Scopes();
             }
 
        #endregion
-       
-       
+
+
        #region Static
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace NFX.Parsing
 
 
        #endregion
-       
+
        #region .ctor
          /// <summary>
          /// Allocates a new expression. This call fails if the scope was already compiled
@@ -103,17 +103,17 @@ namespace NFX.Parsing
          /// <param name="expression">A C# expression to compile</param>
          /// <param name="referencedAssemblies"> An enumerable of assemblies that compiler should reference while building scope assembly i.e. "MyCompany.dll"</param>
          /// <param name="usings">Extra usings i.e. "System.IO", "MyCode.Routines" etc.</param>
-         public CompilingExpressionEvaluator(string scope, 
-                                             string expression, 
+         public CompilingExpressionEvaluator(string scope,
+                                             string expression,
                                              IEnumerable<string> referencedAssemblies = null,
                                              IEnumerable<string> usings = null)
-         {       
+         {
             if (string.IsNullOrWhiteSpace(scope)||
                 string.IsNullOrWhiteSpace(expression)) throw new ArgumentException(StringConsts.ARGUMENT_ERROR + "CompilingExpressionEvaluator(scope,expression)");
-            
+
             m_Scope = scope.Trim();
             m_Expression = expression;
-           
+
             _ScopeData sdata = null;
             lock(_G.s_Scopes)
             {
@@ -122,13 +122,13 @@ namespace NFX.Parsing
                 sdata = new _ScopeData();
                 _G.s_Scopes.Add(scope, sdata);
               }
-             
+
               if (sdata.Assembly!=null)
                  throw new NFXException(StringConsts.CAN_NOT_CREATE_MORE_SCOPE_EXPRESSIONS_ERROR + scope);
 
               if (sdata.CompileException!=null)
                  throw new NFXException(StringConsts.CAN_NOT_ADD_FAILED_SCOPE_COMPILE_ERROR + scope, sdata.CompileException);
-                 
+
               sdata.m_Expressions.Add(this);
 
               if (referencedAssemblies!=null)
@@ -151,7 +151,7 @@ namespace NFX.Parsing
          private string m_Scope;
          private string m_Expression;
 
-         private MethodInfo m_EvalMethod; 
+         private MethodInfo m_EvalMethod;
 
        #endregion
 
@@ -159,15 +159,15 @@ namespace NFX.Parsing
        #region Properties
 
          /// <summary>
-         /// Returns a scope (similar to compilation unit / assembly) that this expression is in 
+         /// Returns a scope (similar to compilation unit / assembly) that this expression is in
          /// </summary>
          public string Scope
          {
            get { return m_Scope;}
          }
-         
+
          /// <summary>
-         /// Returns an original expression as string that is to be evaluated 
+         /// Returns an original expression as string that is to be evaluated
          /// </summary>
          public string Expression
          {
@@ -195,8 +195,8 @@ namespace NFX.Parsing
                if (sdata.CompileException!=null) throw sdata.CompileException;
              }
           }
-          
-          
+
+
           /// <summary>
           /// Evaluates expression using supplied arg in a context.
           /// Context is passed as "ctx" and argument as "arg".
@@ -205,7 +205,7 @@ namespace NFX.Parsing
           {
             if (m_EvalMethod==null) Compile();
 
-            return (TResult) m_EvalMethod.Invoke(null, new object[] {context, arg}); 
+            return (TResult) m_EvalMethod.Invoke(null, new object[] {context, arg});
           }
 
 
@@ -216,14 +216,14 @@ namespace NFX.Parsing
          private void doCompile(_ScopeData sdata)
          {
             CSharpCodeProvider comp = new CSharpCodeProvider();
-           
+
             CompilerParameters cp = new CompilerParameters();
               foreach(var ass in sdata.m_ReferencedAssemblies)
                  cp.ReferencedAssemblies.Add(ass);
               cp.GenerateExecutable = false;
               cp.GenerateInMemory = true;
-              
-           
+
+
             var ns = "NFX.Parsing.CompilingExpressionEvaluator."+m_Scope;
 
             StringBuilder code = new StringBuilder();
@@ -236,7 +236,7 @@ namespace NFX.Parsing
               for(var i=0; i<sdata.m_Expressions.Count; i++)
               {
                  var expr = sdata.m_Expressions[i];
-                      
+
                       code.AppendLine(
                         string.Format(" public static {0} DoEval_{1}({2} ctx, {3} arg)",
                            tname(typeof(TResult)),
@@ -245,7 +245,7 @@ namespace NFX.Parsing
                            tname(typeof(TArg))
                         )
                       );
-                      
+
                       code.AppendLine("  { ");
 
                       code.AppendLine("       return (" + expr.m_Expression + ");");
@@ -266,13 +266,13 @@ namespace NFX.Parsing
                 {
                   error.AppendFormat("{0}\n", err.ErrorText);
                 }
-                
+
                 sdata.CompileException =  new NFXException(StringConsts.EXPRESSION_SCOPE_COMPILE_ERROR + error.ToString());
                 return;
               }
 
             sdata.Assembly = cr.CompiledAssembly;
-            
+
             for(var i=0; i<sdata.m_Expressions.Count; i++)
             {
                var expr = sdata.m_Expressions[i];
@@ -291,14 +291,14 @@ namespace NFX.Parsing
            if (type.IsGenericType)
            {
              result = result.Remove(result.LastIndexOf('`'));
-             
+
              var gal = string.Empty;
              foreach(var at in type.GetGenericArguments())
              {
-               gal += tname(at) + ","; 
+               gal += tname(at) + ",";
              }
              gal = gal.Remove(gal.Length-1);
-             result = result + "<"+gal+">"; 
+             result = result + "<"+gal+">";
            }
            return result;
          }

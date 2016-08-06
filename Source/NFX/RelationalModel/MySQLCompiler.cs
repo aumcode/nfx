@@ -28,7 +28,7 @@ namespace NFX.RelationalModel
     public class MySQLCompiler : RDBMSCompiler
     {
         #region .ctor
-            
+
             public MySQLCompiler(Schema schema) : base(schema)
             {
 
@@ -88,7 +88,7 @@ namespace NFX.RelationalModel
                 //if (chk.IsNotNullOrWhiteSpace())
                 //    result = "{0}{1}{2}".Args(result, " ".PadLeft(result.Length%TAB), chk);
 
-                
+
                 if (comment.IsNotNullOrWhiteSpace())
                     result = "{0}{1}{2}".Args(result, " ".PadLeft(result.Length%TAB), comment);
 

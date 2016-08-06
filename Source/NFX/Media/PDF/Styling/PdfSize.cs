@@ -75,7 +75,7 @@ namespace NFX.Media.PDF.Styling
       if (other == null) return false;
       return Math.Abs(this.Height - other.Height) < double.Epsilon &&
              Math.Abs(this.Width - other.Width) < double.Epsilon &&
-             this.Unit == null ? (other.Unit == null) : this.Unit.Equals(other.Unit); 
+             this.Unit == null ? (other.Unit == null) : this.Unit.Equals(other.Unit);
     }
   }
 }

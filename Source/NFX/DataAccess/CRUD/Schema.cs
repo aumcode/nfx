@@ -37,28 +37,28 @@ namespace NFX.DataAccess.CRUD
         public const string EXTRA_SUPPORTS_INSERT_ATTR = "supports-insert";
         public const string EXTRA_SUPPORTS_UPDATE_ATTR = "supports-update";
         public const string EXTRA_SUPPORTS_DELETE_ATTR = "supports-delete";
-        
-        
+
+
         #region Inner Classes
-            
+
             /// <summary>
             /// Provides a definition for a single field of a row
             /// </summary>
             [Serializable]
             public sealed class FieldDef : INamed, IOrdered, ISerializable, IJSONWritable
             {
-                
-                public FieldDef(string name, Type type, FieldAttribute attr) 
+
+                public FieldDef(string name, Type type, FieldAttribute attr)
                 {
                     ctor(name, 0, type, new[]{attr}, null);
                 }
 
-                public FieldDef(string name, Type type, IEnumerable<FieldAttribute> attrs) 
+                public FieldDef(string name, Type type, IEnumerable<FieldAttribute> attrs)
                 {
                     ctor(name, 0, type, attrs, null);
                 }
 
-                public FieldDef(string name, Type type, QuerySource.ColumnDef columnDef) 
+                public FieldDef(string name, Type type, QuerySource.ColumnDef columnDef)
                 {
                     FieldAttribute attr;
                     if (columnDef!=null)
@@ -71,11 +71,11 @@ namespace NFX.DataAccess.CRUD
                                                   description: columnDef.Description);
                     else
                        attr =  new FieldAttribute(targetName: TargetedAttribute.ANY_TARGET);
-                    
+
                     var attrs = new FieldAttribute[1] { attr };
                     ctor(name, 0, type, attrs, null);
                 }
-                
+
                 internal FieldDef(string name, int order, Type type, IEnumerable<FieldAttribute> attrs, PropertyInfo memberInfo = null)
                 {
                     ctor(name, order, type, attrs, memberInfo);
@@ -85,7 +85,7 @@ namespace NFX.DataAccess.CRUD
                 {
                     if (name.IsNullOrWhiteSpace() || type==null || attrs==null)
                         throw new CRUDException(StringConsts.ARGUMENT_ERROR + "FieldDef.ctor(..null..)");
-                   
+
                     m_Name = name;
                     m_Order = order;
                     m_Type = type;
@@ -111,7 +111,7 @@ namespace NFX.DataAccess.CRUD
 
                     m_AnyTargetKey = this[null].Key;
                 }
-                
+
 
                 internal FieldDef(SerializationInfo info, StreamingContext context)
                 {
@@ -126,7 +126,7 @@ namespace NFX.DataAccess.CRUD
                     if (mtp!=null)
                     {
                         var tp = Type.GetType( mtp, true);
-                    
+
                         var mn = info.GetString("mn");
                         if (mn!=null)
                         {
@@ -172,7 +172,7 @@ namespace NFX.DataAccess.CRUD
                 /// Returns the name of the field
                 /// </summary>
                 public string                        Name  { get { return m_Name;}}
-                
+
                 /// <summary>
                 /// Returns the field type
                 /// </summary>
@@ -183,7 +183,7 @@ namespace NFX.DataAccess.CRUD
                 /// For reference types returns the same type as Type property
                 /// </summary>
                 public Type                          NonNullableType  { get { return m_NonNullableType;}}
-                
+
                 /// <summary>
                 /// Returns field attributes
                 /// </summary>
@@ -208,7 +208,7 @@ namespace NFX.DataAccess.CRUD
                 /// <summary>
                 /// Returns true when this field is attributed as being a visible in any of the targeted attribute
                 /// </summary>
-                public bool AnyVisible { get { return m_Attrs.Any(a=>a.Visible);} } 
+                public bool AnyVisible { get { return m_Attrs.Any(a=>a.Visible);} }
 
 
                 /// <summary>
@@ -238,11 +238,11 @@ namespace NFX.DataAccess.CRUD
                   var atr = this[target];
                   if (atr==null) return fieldValue.AsString(string.Empty);
                   var vl = atr.ParseValueList(caseSensitiveKeys);
-                  
+
                   return vl[sv].AsString(string.Empty);
                 }
-                
-                
+
+
                 /// <summary>
                 /// Returns true when at least one attribute was marked as NonUI - meaning that this field must not be serialized-to/deserialized-from client UI
                 /// </summary>
@@ -251,9 +251,9 @@ namespace NFX.DataAccess.CRUD
                   get { return m_Attrs.Any(a=>a.NonUI);}
                 }
 
-                
+
                        private volatile Dictionary<string, FieldAttribute> m_TargetAttrsCache = new Dictionary<string, FieldAttribute>();
-                
+
                 /// <summary>
                 /// Returns a FieldAttribute that matches the supplied targetName, or if one was not defined then
                 ///  returns FieldAttribute which matches any target or null
@@ -266,7 +266,7 @@ namespace NFX.DataAccess.CRUD
 
                       FieldAttribute result = null;
                       if (!m_TargetAttrsCache.TryGetValue(targetName, out result))
-                      {  
+                      {
                         if (targetName!=FieldAttribute.ANY_TARGET)
                         {
                             result = m_Attrs.FirstOrDefault(a => targetName.EqualsIgnoreCase(a.TargetName));
@@ -275,7 +275,7 @@ namespace NFX.DataAccess.CRUD
                         if (result==null)
                           result = m_Attrs.FirstOrDefault(a => TargetedAttribute.ANY_TARGET.EqualsIgnoreCase(a.TargetName) );
 
-                        var dict = new Dictionary<string, FieldAttribute>(m_TargetAttrsCache); 
+                        var dict = new Dictionary<string, FieldAttribute>(m_TargetAttrsCache);
                         dict[targetName] = result;
                         m_TargetAttrsCache = dict;//atomic
                       }
@@ -338,7 +338,11 @@ namespace NFX.DataAccess.CRUD
                 {
                     var attr = this[null];
 
-                    if (attr.NonUI) return;//nothing to write for NONUI
+                    if (attr.NonUI)
+                    {
+                      wri.Write("{}");
+                      return;//nothing to write for NONUI
+                    }
 
                     bool typeIsNullable;
                     string tp = JSONMappings.MapCLRTypeToJSON(m_Type, out typeIsNullable);
@@ -369,19 +373,19 @@ namespace NFX.DataAccess.CRUD
                     }
 
                     JSONWriter.WriteMap(wri, map, nestingLevel, options);
-                } 
+                }
 
-                
+
             }
 
 
         #endregion
 
         #region CONSTS
-            
+
 
         #endregion
-        
+
         #region .ctor / static
 
             /// <summary>
@@ -401,13 +405,13 @@ namespace NFX.DataAccess.CRUD
                 else
                     return local;
             }
-            
+
 
             public static Schema FromJSON(string json, bool readOnly = false)
             {
               return FromJSON(JSONReader.DeserializeDataObject( json ) as JSONDataMap, readOnly);
             }
-            
+
             public static Schema FromJSON(JSONDataMap map, bool readOnly = false)
             {
               if (map==null || map.Count==0)
@@ -430,13 +434,23 @@ namespace NFX.DataAccess.CRUD
                 var req = mdef["IsRequired"].AsBool();
                 var key = mdef["IsKey"].AsBool();
                 var vis = mdef["Visible"].AsBool();
+                var desc = mdef["Description"].AsString();
+                var minLen = mdef["MinLen"].AsInt();
+                var maxLen = mdef["MaxLen"].AsInt();
+                var valList = mdef["ValueList"].AsString();
+                var strKind = mdef["Kind"].AsString();
+                var dataKind = strKind==null ? DataKind.Text : (DataKind)Enum.Parse(typeof(DataKind), strKind);
+                var strCase = mdef["CharCase"].AsString();
+                var chrCase = strCase==null ? CharCase.AsIs : (CharCase)Enum.Parse(typeof(CharCase), strCase);
 
                 var tp = mdef["Type"].AsString(string.Empty).ToLowerInvariant().Trim();
                 var tpn = mdef["Nullable"].AsBool();
 
                 var type = JSONMappings.MapJSONTypeToCLR(tp, tpn);
 
-                var atr = new FieldAttribute(required: req, key: key, visible: vis);
+                var atr = new FieldAttribute(required: req, key: key, visible: vis, description: desc,
+                                             minLength: minLen, maxLength: maxLen,
+                                             valueList: valList, kind: dataKind, charCase: chrCase);
                 var def = new Schema.FieldDef(fname, type, atr);
                 defs.Add(def);
               }
@@ -450,7 +464,7 @@ namespace NFX.DataAccess.CRUD
 
             private static Registry<Schema> s_TypedRegistry = new Registry<Schema>();
 
-            
+
             /// <summary>
             /// Returns schema instance for the TypedRow instance by fetching schema object from cache or
             ///  creating it if it has not been cached yet
@@ -478,7 +492,7 @@ namespace NFX.DataAccess.CRUD
             {
                 if (!typeof(TypedRow).IsAssignableFrom(trow))
                     throw new CRUDException(StringConsts.CRUD_TYPE_IS_NOT_DERIVED_FROM_TYPED_ROW_ERROR.Args(trow.FullName));
-                
+
                 var name = trow.AssemblyQualifiedName;
 
                 var schema = s_TypedRegistry[name];
@@ -502,13 +516,13 @@ namespace NFX.DataAccess.CRUD
                 {
                   if (s_TypeLatch.Contains(trow))
                    throw new CRUDException(StringConsts.CRUD_TYPED_ROW_RECURSIVE_FIELD_DEFINITION_ERROR.Args(trow.FullName));
-                
+
                   s_TypeLatch.Add(trow);
                   try
                   {
                       m_Name = trow.AssemblyQualifiedName;
-                
-                
+
+
                       var tattrs = trow.GetCustomAttributes(typeof(TableAttribute), false).Cast<TableAttribute>();
                       m_TableAttrs = new List<TableAttribute>( tattrs );
 
@@ -521,21 +535,21 @@ namespace NFX.DataAccess.CRUD
                           var fattrs = prop.GetCustomAttributes(typeof(FieldAttribute), false)
                                            .Cast<FieldAttribute>()
                                            .ToArray();
-                          
+
                           //20160318 DKh. Interpret [Field(CloneFromType)]
                           for(var i=0; i<fattrs.Length; i++)
                           {
                             var attr = fattrs[i];
                             if (attr.CloneFromRowType==null) continue;
-                            
+
                             if (fattrs.Length>1)
                              throw new CRUDException(StringConsts.CRUD_TYPED_ROW_SINGLE_CLONED_FIELD_ERROR.Args(trow.FullName, prop.Name));
-                            
+
                             var clonedSchema = Schema.GetForTypedRow(attr.CloneFromRowType);
                             var clonedDef = clonedSchema[prop.Name];
                             if (clonedDef==null)
                              throw new CRUDException(StringConsts.CRUD_TYPED_ROW_CLONED_FIELD_NOTEXISTS_ERROR.Args(trow.FullName, prop.Name));
-                           
+
                             fattrs = clonedDef.Attrs.ToArray();//replace these attrs from the cloned target
                             break;
                           }
@@ -599,7 +613,7 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Fields
-            
+
             private string m_Name;
             private bool m_ReadOnly;
             private Type m_TypedRowType;
@@ -611,7 +625,7 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// For TypedRows, returns a unique fully-qualified row type name, whichs is the global identifier of this schema instance
             /// </summary>
@@ -627,9 +641,9 @@ namespace NFX.DataAccess.CRUD
             {
                 get { return m_ReadOnly;}
             }
-            
+
             /// <summary>
-            /// Returns a type of TypedRow if schema was created for TypedRow, or null 
+            /// Returns a type of TypedRow if schema was created for TypedRow, or null
             /// </summary>
             public Type TypedRowType
             {
@@ -640,7 +654,7 @@ namespace NFX.DataAccess.CRUD
             /// Returns table-level attributes
             /// </summary>
             public IEnumerable<TableAttribute> TableAttrs { get { return m_TableAttrs;}}
-            
+
             /// <summary>
             /// Returns FieldDefs in their order within rows that this schema describes
             /// </summary>
@@ -692,7 +706,7 @@ namespace NFX.DataAccess.CRUD
               {
                 if (m_ExtraData==null)
                   m_ExtraData = new JSONDataMap(false);
-                
+
                 return m_ExtraData;
               }
             }
@@ -766,7 +780,7 @@ namespace NFX.DataAccess.CRUD
             {
                 return "Schema(Name: '{0}', Count: {1})".Args(Name, m_FieldDefs.Count);
             }
-            
+
 
             /// <summary>
             /// Performs logical equivalence testing of two schemas
@@ -778,7 +792,7 @@ namespace NFX.DataAccess.CRUD
 
                 if (compareNames)
                  if (!Name.EqualsIgnoreCase(other.Name)) return false;
-                
+
                 if (this.m_TableAttrs.Count != other.m_TableAttrs.Count ||
                     this.m_FieldDefs.Count != other.m_FieldDefs.Count) return false;
 
@@ -803,20 +817,41 @@ namespace NFX.DataAccess.CRUD
             /// </summary>
             public void WriteAsJSON(System.IO.TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
             {
+                IEnumerable<FieldDef> defs = m_FieldDefs;
+
+                if (options!=null && options.RowMapTargetName.IsNotNullOrWhiteSpace())
+                {
+                  var newdefs = new List<FieldDef>();
+                  foreach(var def in defs)
+                  {
+                     FieldAttribute attr;
+                     var name = def.GetBackendNameForTarget(options.RowMapTargetName, out attr);
+                     if (attr!=null)
+                     {
+                       if(attr.StoreFlag==StoreFlag.None || attr.StoreFlag==StoreFlag.OnlyLoad)
+                       {
+                        continue;
+                       }
+                     }
+                     newdefs.Add(def);
+                  }
+                  defs = newdefs;
+                }
+
                 var map = new Dictionary<string, object>
                 {
-                  {"Name", "JSON"+m_Name.GetHashCode()},       
-                  {"FieldDefs", m_FieldDefs}
+                  {"Name", "JSON"+m_Name.GetHashCode()},
+                  {"FieldDefs", defs}
                 };
                 JSONWriter.WriteMap(wri, map, nestingLevel, options);
-            } 
+            }
 
 
         #endregion
 
 
         #region Comparer
-          
+
 
           /// <summary>
           /// Returns an instance of IEqualityComparer(Schema) that performs logical equivalence testing
@@ -840,12 +875,12 @@ namespace NFX.DataAccess.CRUD
               }
             }
         #endregion
-            
+
     }
 
 
 
-   
+
 
 
 

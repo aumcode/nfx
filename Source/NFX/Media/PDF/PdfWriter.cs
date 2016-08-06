@@ -104,7 +104,7 @@ namespace NFX.Media.PDF
         }
       }
 
-      // trailer 
+      // trailer
       document.Trailer.XRefOffset = m_Stream.Position;
       Write(document.Trailer);
     }
@@ -116,7 +116,7 @@ namespace NFX.Media.PDF
     }
 
     /// <summary>
-    /// Writes PDF font into file stream 
+    /// Writes PDF font into file stream
     /// </summary>
     /// <param name="font">PDF font</param>
     internal void Write(PdfFont font)
@@ -133,7 +133,7 @@ namespace NFX.Media.PDF
     }
 
     /// <summary>
-    /// Writes PDF header into file stream 
+    /// Writes PDF header into file stream
     /// </summary>
     /// <param name="root">PDF document root</param>
     internal void Write(PdfRoot root)

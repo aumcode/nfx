@@ -70,7 +70,7 @@ namespace NFX.Erlang.Internal
 
   #region Public
 
-    
+
 
     public void Stop()
     {

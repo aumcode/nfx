@@ -46,7 +46,7 @@ namespace NFX.Web.Pay
 
        var mapping = node.Children.FirstOrDefault( c => c.IsSameName(from.CurrencyISO) && c.Value.EqualsOrdIgnoreCase(targetCurrencyISO));
 
-       if (mapping==null) 
+       if (mapping==null)
          throw new PaymentException(StringConsts.PAYMENT_CURRENCY_CONVERSION_MAPPING_ERROR.Args(from.CurrencyISO, targetCurrencyISO, GetType().FullName));
 
 
@@ -58,7 +58,7 @@ namespace NFX.Web.Pay
        var rate = rateAttr.ValueAsDecimal();
 
        return new Amount(targetCurrencyISO, from.Value * rate);
-       
+
        //m_Node...search
         //      {
         //  usd=yen{ rate=17.345 }
@@ -70,7 +70,7 @@ namespace NFX.Web.Pay
         //     {
         //        usd=yen{ rate=12.345 }
         //        usd=rub{ rate=67.11  }
-        //     } 
+        //     }
 
         //  }
         //}
@@ -82,6 +82,6 @@ namespace NFX.Web.Pay
                                  [PaySystem.CONFIG_CURRENCY_MARKET_SECTION];
       return result;
     }
-    
+
   }
 }

@@ -52,7 +52,7 @@ namespace NFX.IO.FileSystem.SVN
 
     #region .ctor
 
-      public SVNFileSystem(string name, IConfigSectionNode node = null) : base(name, node) 
+      public SVNFileSystem(string name, IConfigSectionNode node = null) : base(name, node)
       {
         NFX.Web.WebSettings.RequireInitializedSettings();
       }
@@ -100,7 +100,7 @@ namespace NFX.IO.FileSystem.SVN
         WebDAV.Directory pathDirectory = session.WebDAV.Root.NavigatePath(wdDirectory.Path) as WebDAV.Directory;
 
         if (pathDirectory == null) return null;
-	    
+
         return pathDirectory.Directories.Select(c => c.Name);
       }
 
@@ -113,7 +113,7 @@ namespace NFX.IO.FileSystem.SVN
         WebDAV.Directory pathDirectory = session.WebDAV.Root.NavigatePath(wdDirectory.Path) as WebDAV.Directory;
 
         if (pathDirectory == null) return null;
-	    
+
         return pathDirectory.Files.Select(c => c.Name);
       }
 
@@ -270,7 +270,7 @@ namespace NFX.IO.FileSystem.SVN
 
     #endregion
 
-    
+
   } //SVNFileSystem
 
 }

@@ -25,9 +25,9 @@ using NFX.Environment;
 
 namespace NFX.Serialization.POD
 {
-    
+
     /// <summary>
-    /// Provides information about data types stored in Portable Object Document 
+    /// Provides information about data types stored in Portable Object Document
     /// </summary>
     [Serializable]
     public abstract class MetaType
@@ -54,7 +54,7 @@ namespace NFX.Serialization.POD
                     mtp = new MetaPrimitiveType(document, type);
                 else
                     mtp = new MetaComplexType(document, type);
-                
+
                 //1. add to dict so no infinite loop happens during recursive call to this func
                 result = document.m_Types.Count;
                 document.m_Types.Add(mtp);
@@ -67,10 +67,10 @@ namespace NFX.Serialization.POD
             }
 
         #endregion
-        
+
         #region .ctor
             internal MetaType() {}
-            
+
             internal MetaType(PortableObjectDocument document, Type type)
             {
                 __CLRType = type;
@@ -90,16 +90,16 @@ namespace NFX.Serialization.POD
             private string m_Name;
             private string m_Namespace;
             private string m_AssemblyQualifiedName;
-        #endregion 
+        #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// Returns document instance that contains this type
             /// </summary>
             public PortableObjectDocument Document { get { return m_Document;} }
-            
-            
+
+
             /// <summary>
             /// Returns Type.Name
             /// </summary>
@@ -117,7 +117,7 @@ namespace NFX.Serialization.POD
        #endregion
 
        #region Protected
-        
+
             protected virtual void Build()
             {
 
@@ -125,7 +125,7 @@ namespace NFX.Serialization.POD
 
 
        #endregion
- 
+
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ namespace NFX.Serialization.POD
         }
     }
 
-    
+
     /// <summary>
     /// Represents information about the composite type of data that is stored in Portable Object Document
     /// </summary>
@@ -156,13 +156,13 @@ namespace NFX.Serialization.POD
             public class MetaField
             {
                 internal MetaField() {}
-                
+
                 internal MetaField(MetaComplexType declaringType, FieldInfo fieldInfo)
                 {
                     m_DeclaringType = declaringType;
                     m_FieldInfo = fieldInfo;
                     m_FieldName = fieldInfo.Name;
-                    m_FieldMetaTypeIndex = MetaType.GetExistingOrNewMetaTypeIndex(declaringType.Document, fieldInfo.FieldType);    
+                    m_FieldMetaTypeIndex = MetaType.GetExistingOrNewMetaTypeIndex(declaringType.Document, fieldInfo.FieldType);
                 }
 
                 [NonSerialized]
@@ -184,14 +184,14 @@ namespace NFX.Serialization.POD
                 public string            FieldName     { get { return m_FieldName;} }
                 public int               FieldMetaTypeIndex     { get { return m_FieldMetaTypeIndex;} }
             }
-        
+
         #endregion
 
-        
+
         #region .ctor
 
             internal MetaComplexType() {}
-            
+
             internal MetaComplexType(PortableObjectDocument document,  Type type) : base(document, type)
             {
 
@@ -206,11 +206,11 @@ namespace NFX.Serialization.POD
                 m_IsVisible = type.IsVisible;
                 m_IsArray = type.IsArray;
                 m_IsAbstract = type.IsAbstract;
-                               
+
                 if (m_IsArray)
                 {
                     m_ArrayRank = type.GetArrayRank();
-                    m_ArrayElementTypeIndex = MetaType.GetExistingOrNewMetaTypeIndex(m_Document, type.GetElementType()); 
+                    m_ArrayElementTypeIndex = MetaType.GetExistingOrNewMetaTypeIndex(m_Document, type.GetElementType());
                 }
 
                 m_Fields = new List<MetaField>();
@@ -231,7 +231,7 @@ namespace NFX.Serialization.POD
 
 
         #region Fields
-            private BuildInformation m_BuildInformation;  
+            private BuildInformation m_BuildInformation;
             internal List<MetaField> m_Fields;
 
             private bool m_IsValueType;
@@ -246,10 +246,10 @@ namespace NFX.Serialization.POD
             internal List<MethodInfo> m_MethodsOnSerializing;
             [NonSerialized]
             internal List<MethodInfo> m_MethodsOnSerialized;
-        #endregion 
+        #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// Returns assembly build information
             /// </summary>
@@ -279,13 +279,13 @@ namespace NFX.Serialization.POD
             /// Returns the serializable field count described by this type
             /// </summary>
             public int FieldCount { get { return m_Fields.Count; } }
-           
+
 
         #endregion
 
 
         #region Public
-           
+
             public void OnDeserialization(object sender)
             {
                 for(var i=0; i<m_Fields.Count; i++)
@@ -293,7 +293,7 @@ namespace NFX.Serialization.POD
                     var f = m_Fields[i];
                     f.m_Index = i;
                     f.m_DeclaringType = this;
-                }   
+                }
             }
 
             public IEnumerator<MetaComplexType.MetaField> GetEnumerator()
@@ -308,6 +308,6 @@ namespace NFX.Serialization.POD
 
         #endregion
 
-            
+
     }
 }

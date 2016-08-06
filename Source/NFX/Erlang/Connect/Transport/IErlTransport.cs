@@ -93,7 +93,7 @@ namespace NFX.Erlang
     /// ConnectTimeout in milliseconds
     /// </summary>
     int ConnectTimeout { get; set; }
-    
+
     /// <summary>
     /// Port of SSH server
     /// </summary>

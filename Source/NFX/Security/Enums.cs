@@ -22,32 +22,32 @@
  */
 namespace NFX.Security
 {
-  
+
   /// <summary>
   /// User status enumeration -  super-permission levels
   /// </summary>
   public enum UserStatus
   {
-        
+
         /// <summary>
         /// Invalid user, not authenticated and not authorized
         /// </summary>
         Invalid = 0,
-        
+
         /// <summary>
         /// The lowest level of a user, bound by permissions inside their domain and domain section (such as facility)
         /// </summary>
-        User = 1,  
+        User = 1,
         Usr = User,
-        
+
         /// <summary>
-        /// Administrators may run administration console, but always bound by their domain 
+        /// Administrators may run administration console, but always bound by their domain
         /// </summary>
         Administrator = 1000,
 
         Admin = Administrator,
         Adm = Administrator,
-        
+
         /// <summary>
         /// Cross domain user, all restrictions are lifted
         /// </summary>

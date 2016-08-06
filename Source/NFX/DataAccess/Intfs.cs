@@ -32,25 +32,25 @@ using NFX.Instrumentation;
 namespace NFX.DataAccess
 {
       /// <summary>
-      /// Represents a store that can save and retrieve data 
+      /// Represents a store that can save and retrieve data
       /// </summary>
-      public interface IDataStore : IApplicationComponent 
+      public interface IDataStore : IApplicationComponent
       {
          /// <summary>
          /// Returns the name of the underlying store technology, i.e. "ORACLE".
          /// This property is used by some metadata-based validation logic which is target-dependent
          /// </summary>
          string TargetName{get;}
-         
+
          /// <summary>
-         /// Tests connection and throws an exception if connection could not be established 
+         /// Tests connection and throws an exception if connection could not be established
          /// </summary>
          void TestConnection();
       }
 
 
       /// <summary>
-      /// Represents a store that can save and retrieve data 
+      /// Represents a store that can save and retrieve data
       /// </summary>
       public interface IDataStoreImplementation : IDataStore, IDisposable, IConfigurable, IInstrumentable
       {
@@ -60,5 +60,5 @@ namespace NFX.DataAccess
          StoreLogLevel LogLevel { get; set; }
       }
 
-  
+
 }

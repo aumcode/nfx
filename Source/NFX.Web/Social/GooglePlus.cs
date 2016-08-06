@@ -34,7 +34,7 @@ namespace NFX.Web.Social
       //do not localize
 
       public const string GOOGLE_PLUS_PUB_SERVICE_URL = "http://plus.google.com";
-            
+
       //private const string LOGIN_LINK_TEMPLATE = "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={0}&redirect_uri={1}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile";
       private const string LOGIN_LINK_TEMPLATE = "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={0}&redirect_uri={1}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/plus.login";
 
@@ -76,9 +76,9 @@ namespace NFX.Web.Social
       private const string USERINFO_NAME_PARAMNAME = "name";
 
     #endregion
-        
+
     #region Static
-            
+
       private static object s_Lock = new object();
       private static GooglePlus s_Instance;
 
@@ -101,7 +101,7 @@ namespace NFX.Web.Social
       private GooglePlus(string name = null, IConfigSectionNode cfg = null) : base(name, cfg) { }
 
     #endregion
-      
+
     #region Properties
 
       /// <summary>
@@ -142,8 +142,8 @@ namespace NFX.Web.Social
       public override string GetExternalLoginReference(string returnURL)
       {
         return LOGIN_LINK_TEMPLATE.Args(ClientCode, PrepareReturnURLParameter(returnURL));
-      }      
-      
+      }
+
     #endregion
 
     #region Protected
@@ -177,7 +177,7 @@ namespace NFX.Web.Social
 
       private string getAccessToken(string code, string redirectURI)
       {
-        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.POST, 
+        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.POST,
           bodyParameters: new Dictionary<string, string>() {
           {ACCESSTOKEN_CODE_PARAMNAME, code},
           {ACCESSTOKEN_CLIENTID_PARAMNAME, ClientCode},
@@ -234,7 +234,7 @@ namespace NFX.Web.Social
     public override string LongTermProviderToken
     {
       get { return AccessToken; }
-      internal set 
+      internal set
       {
         AccessToken = value;
         base.LongTermProviderToken = value;

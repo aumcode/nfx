@@ -21,7 +21,7 @@ using System.Text;
 
 namespace NFX.Glue
 {
-    
+
     /// <summary>
     /// Decorates interfaces that represent glued contract points
     /// </summary>
@@ -37,13 +37,13 @@ namespace NFX.Glue
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public class ArgsMarshallingAttribute : Attribute
     {
-         public ArgsMarshallingAttribute(Type requestMsgType) 
+         public ArgsMarshallingAttribute(Type requestMsgType)
          {
             if (requestMsgType==null ||
                 requestMsgType==typeof(Protocol.RequestAnyMsg) ||
                 !requestMsgType.IsSubclassOf(typeof(Protocol.RequestMsg)))
-            
-             throw new InvalidGlueOperationException(StringConsts.GLUE_ARGS_MARSHALLING_INVALID_REQUEST_MSG_TYPE_ERROR); 
+
+             throw new InvalidGlueOperationException(StringConsts.GLUE_ARGS_MARSHALLING_INVALID_REQUEST_MSG_TYPE_ERROR);
 
             RequestMsgType = requestMsgType;
          }
@@ -96,21 +96,21 @@ namespace NFX.Glue
         /// The server MUST be thread-safe
         /// </summary>
         Singleton = 0,
-       
+
         /// <summary>
         /// Indicates that every request for a particular contract will create an instance which will live until the method exits
         /// </summary>
         PerCall,
-            
+
         /// <summary>
-        /// Indicates that the instance is stateful and will live between a call to 
+        /// Indicates that the instance is stateful and will live between a call to
         ///  [Constructor]-decorated method and [Destructor]-decorated method, or until timeout interval has passed.
         /// The implementation may or may not be thread-safe, if it is, then [ThreadSafe] attribute may be used to avoid instance locking
         /// </summary>
         Stateful,
-        
+
         /// <summary>
-        /// Indicates that the instance is stateful and will live between a call to 
+        /// Indicates that the instance is stateful and will live between a call to
         ///  either [Constructor]-decorated method or first call to any method, and [Destructor]-decorated method or until timeout interval has passed.
         /// The implementation may or may not be thread-safe, if it is then [ThreadSafe] attribute may be used to avoid instance locking.
         /// This mode is simiar to 'Stateful' but does not require the caller to explicitly call the [Constructor]-decorated method first
@@ -127,13 +127,13 @@ namespace NFX.Glue
     public class LifeCycleAttribute : Attribute
     {
         public LifeCycleAttribute() {}
-      
-        public LifeCycleAttribute(ServerInstanceMode mode) 
+
+        public LifeCycleAttribute(ServerInstanceMode mode)
         {
           m_Mode = mode;
         }
 
-        public LifeCycleAttribute(ServerInstanceMode mode, int timeoutMs) 
+        public LifeCycleAttribute(ServerInstanceMode mode, int timeoutMs)
         {
           m_Mode = mode;
           m_TimeoutMs = timeoutMs;
@@ -163,7 +163,7 @@ namespace NFX.Glue
 
 
     /// <summary>
-    /// Indicates that contract supports authentication using AuthenticationHeader. 
+    /// Indicates that contract supports authentication using AuthenticationHeader.
     /// When header is passed then Glue server will use its data to set user context through Application.SecurityManager.
     /// If this attribute not set then Glue runtime will ignore AuthenticationHeader
     /// </summary>

@@ -81,9 +81,9 @@ namespace NFX.ApplicationModel
 
         public virtual Throttling.IThrottling Throttling { get; set; }
 
-        public virtual Environment.ConfigSectionNode ConfigRoot 
+        public virtual Environment.ConfigSectionNode ConfigRoot
         {
-           get{return m_ConfigRoot;} 
+           get{return m_ConfigRoot;}
            set
            {
              if (value==null)
@@ -93,7 +93,7 @@ namespace NFX.ApplicationModel
                 value = conf.Root;
              }
              m_ConfigRoot = value;
-           } 
+           }
          }
 
         public virtual DataAccess.IDataStore DataStore { get; set; }

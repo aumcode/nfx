@@ -67,7 +67,7 @@ namespace NFX.WinForms.Elements
 
     #region Protected
 
-    
+
         protected internal override void Paint(System.Drawing.Graphics gr)
         {
           base.Paint(gr);

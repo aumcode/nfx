@@ -66,7 +66,7 @@ namespace NFX.CodeAnalysis.CSharp
         else
           type = CSTokenType.tFloatLiteral;
 
-        return fnum;          
+        return fnum;
       }
 
 
@@ -99,12 +99,12 @@ namespace NFX.CodeAnalysis.CSharp
       else if (str.EndsWith(S_FLOAT))
       {
         str = str.Replace(S_FLOAT, string.Empty);
-        type = CSTokenType.tFloatLiteral;       
+        type = CSTokenType.tFloatLiteral;
       }
        else if (str.EndsWith(S_DOUBLE))
       {
         str = str.Replace(S_DOUBLE, string.Empty);
-        type = CSTokenType.tDoubleLiteral;       
+        type = CSTokenType.tDoubleLiteral;
       }
       else if (str.EndsWith(S_DECIMAL))
       {
@@ -124,7 +124,7 @@ namespace NFX.CodeAnalysis.CSharp
         {
           //safeguard - this will never happen unless system supports 128bit arithmetic
           if (inum > UInt32.MaxValue)
-            throw new ArgumentException(S_UINT + ": " + inum);//caught by lexer 
+            throw new ArgumentException(S_UINT + ": " + inum);//caught by lexer
           return inum;
         }
       }
@@ -135,7 +135,7 @@ namespace NFX.CodeAnalysis.CSharp
           if (
              (type == CSTokenType.tFloatLiteral) &&
              (fnum > float.MaxValue)
-             ) throw new ArgumentException(S_FLOAT + ": " + fnum);//caught by lexer 
+             ) throw new ArgumentException(S_FLOAT + ": " + fnum);//caught by lexer
 
           return fnum;
         }

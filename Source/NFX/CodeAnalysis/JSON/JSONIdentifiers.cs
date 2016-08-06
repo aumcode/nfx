@@ -14,10 +14,10 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
-/*  
+/*
  *  Refer to Copyright.txt, Originated by Dmitriy Khmaladze, 1997 - 2008
  *  No party shall claim exclusive commercial rights to this software
-*/ 
+*/
 
 using System;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace NFX.CodeAnalysis.JSON
     {
       return (c >= '0' && c <= '9');
     }
-    
+
     /// <summary>
     /// Checks whether supplied string is a valid JSON grammar identifier
     /// </summary>

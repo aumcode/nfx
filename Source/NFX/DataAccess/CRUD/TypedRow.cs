@@ -43,22 +43,22 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// References a schema for a table that this row is a part of
             /// </summary>
             public sealed override Schema Schema
             {
                 get
-                { 
+                {
                     if (m_CachedSchema==null)
-                        m_CachedSchema = Schema.GetForTypedRow(this); 
-                        
+                        m_CachedSchema = Schema.GetForTypedRow(this);
+
                     return m_CachedSchema;
                 }
             }
 
-        #endregion 
+        #endregion
 
         #region Public
 
@@ -75,9 +75,9 @@ namespace NFX.DataAccess.CRUD
             public override void SetFieldValue(Schema.FieldDef fdef, object value)
             {
                 var pinf = fdef.MemberInfo;
-                
+
                 value = ConvertFieldValueToDef(fdef, value);
-                
+
                 pinf.SetValue(this, value, null);
             }
 
@@ -108,29 +108,29 @@ namespace NFX.DataAccess.CRUD
         #endregion
 
         #region Properties
-           
+
             /// <summary>
             /// True by default for rows
             /// </summary>
             public virtual bool AmorphousDataEnabled { get{return true;}}
-            
+
             /// <summary>
             /// Returns data that does not comply with known schema (dynamic data). The field names are NOT case-sensitive
             /// </summary>
             public IDictionary<string, object> AmorphousData
             {
               get
-              { 
-                if (m_AmorphousData==null) 
+              {
+                if (m_AmorphousData==null)
                   m_AmorphousData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
                 return m_AmorphousData;
               }
             }
 
-        #endregion 
-    
-    
+        #endregion
+
+
         #region Public
             /// <summary>
             /// Invoked to allow the row to transform its state into AmorphousData bag.
@@ -142,14 +142,14 @@ namespace NFX.DataAccess.CRUD
             {
 
             }
-           
+
             /// <summary>
             /// Invoked to allow the row to hydrate its fields/state from AmorphousData bag.
             /// For example, this may be used to reconstruct some temporary object state that is not stored as a part of established business schema.
             /// The operation is performed per particular targetName (name of physical backend).
             /// Simply put, this method allows business code to "specify what to do after object gets loaded from THE PARTICULAR TARGET backend store".
             /// An example: suppose current MongoDB collection stores 3 fields for name, and we want to collapse First/Last/Middle name fields into one field.
-            /// If we change rowschema then it will only contain 1 field which is not present in the database, however those 'older' fields will get populated 
+            /// If we change rowschema then it will only contain 1 field which is not present in the database, however those 'older' fields will get populated
             /// into AmorphousData giving us an option to merge older 3 fields into 1 within AfterLoad() implementation
             /// </summary>
             public virtual void AfterLoad(string targetName)
@@ -157,7 +157,7 @@ namespace NFX.DataAccess.CRUD
 
             }
         #endregion
-    } 
+    }
 
 
 

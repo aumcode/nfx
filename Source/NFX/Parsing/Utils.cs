@@ -53,14 +53,14 @@ namespace NFX.Parsing
       {
         var curr = fieldName[i];
         if (
-            !FIELD_NAME_DELIMETERS.Contains(prev) && 
+            !FIELD_NAME_DELIMETERS.Contains(prev) &&
             !FIELD_NAME_DELIMETERS.Contains(curr) &&
             (charCaseTransition(prev, curr) || charDigitTransition(prev, curr))
            )
         {
             builder.Append(SPACE);
         }
-        
+
         builder.Append(curr);
         prev = curr;
       }
@@ -125,7 +125,7 @@ namespace NFX.Parsing
     public static string CapturePatternMatch(this string str,     //     Pages/Dima/Welcome
                                                   string pattern,
                                                   char wc ='*',
-                                                  StringComparison comparisonType = StringComparison.InvariantCultureIgnoreCase) 
+                                                  StringComparison comparisonType = StringComparison.InvariantCultureIgnoreCase)
 
     {
        var i = pattern.IndexOf(wc);
@@ -157,7 +157,7 @@ namespace NFX.Parsing
                                          string pattern, //     some*e?s
                                          char wc ='*',
                                          char wsc ='?',
-                                         bool senseCase = false) 
+                                         bool senseCase = false)
     {
        if (str.IsNullOrWhiteSpace() && pattern.IsNullOrWhiteSpace()) return true;
 
@@ -176,7 +176,7 @@ namespace NFX.Parsing
        {
           var pc = pattern[ipat];
           if (pc==wsc)//?
-            continue; 
+            continue;
 
           if (pc==wc)//*
           {
@@ -186,7 +186,7 @@ namespace NFX.Parsing
             pattern = pattern.Substring(ipat+1);
             return MatchPattern(str.Substring(str.Length-pattern.Length), pattern, wc, wsc, senseCase);
           }
-           
+
           var sc = str[istr];
           if (!charEqual(sc, pc, senseCase)) return false;
        }

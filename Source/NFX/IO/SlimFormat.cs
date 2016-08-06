@@ -26,15 +26,15 @@ namespace NFX.IO
        public const int MAX_DOUBLE_ARRAY_LEN =  MAX_BYTE_ARRAY_LEN / 8;
 
        public const int MAX_STRING_ARRAY_CNT =  MAX_BYTE_ARRAY_LEN / 48;
-       
-       
+
+
        protected SlimFormat() : base()
        {
           TypeSchema = new Serialization.Slim.TypeSchema(this);
        }
 
        private static SlimFormat s_Instance = new SlimFormat();
-      
+
        /// <summary>
        /// Returns a singleton format instance
        /// </summary>

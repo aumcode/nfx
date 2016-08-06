@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NFX.Log.Bin
 {
-  
+
   /// <summary>
   /// Denotes entities that represent metadata - extra information about data such as timestamps and corruptions
   /// </summary>
@@ -14,8 +14,8 @@ namespace NFX.Log.Bin
   {
 
   }
-  
-  
+
+
   /// <summary>
   /// Denotes a special surrogate structure that wraps DatTime in log.
   /// These structures get inserted in log automatically by binary log writers to indicate te point in time
@@ -40,7 +40,7 @@ namespace NFX.Log.Bin
     /// Singleton instance of LogCorruption
     /// </summary>
     public static readonly LogCorruption Instance = new LogCorruption();
-    
+
     private LogCorruption(){ }//for faster Slim ser
   }
 }

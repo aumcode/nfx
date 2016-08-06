@@ -58,7 +58,7 @@ namespace NFX.Environment
   [Serializable]
   public sealed class BehaviorApplyException : ConfigException
   {
-    
+
     public BehaviorApplyException()
     {
     }

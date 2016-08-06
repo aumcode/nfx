@@ -36,7 +36,7 @@ namespace NFX.Time
        private static TimeLocation s_Parent = new TimeLocation(true);
        private static TimeLocation s_UTC = new TimeLocation(TimeSpan.Zero, "UTC", true);
 
-       
+
        /// <summary>
        /// Returns a singleton instance of timelocation which uses parent setting
        /// </summary>
@@ -52,9 +52,9 @@ namespace NFX.Time
        {
           get { return s_UTC; }
        }
-       
-       
-       
+
+
+
        /// <summary>
        /// Creates instance that uses entity's parent settings. May use TimeLocation.Parent static instance instead
        /// </summary>

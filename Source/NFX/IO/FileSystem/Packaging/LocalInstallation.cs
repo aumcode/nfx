@@ -25,7 +25,7 @@ using NFX.Environment;
 
 namespace NFX.IO.FileSystem.Packaging
 {
-  
+
   /// <summary>
   /// Represents the local installation - facilitates working with locally installed packages
   /// </summary>
@@ -57,15 +57,15 @@ namespace NFX.IO.FileSystem.Packaging
                {
                  throw new NFXIOException(StringConsts.LOCAL_INSTALL_INSTALL_SET_PACKAGE_MANIFEST_READ_ERROR.Args(Name, error.ToMessageWithType()), error);
                }
-          
+
           if (manifest==null)
            throw new NFXIOException(StringConsts.LOCAL_INSTALL_INSTALL_SET_PACKAGE_WITHOUT_MANIFEST_ERROR.Args(Name, ManifestUtils.MANIFEST_FILE_NAME));
-           
-          manifest.AttrByName(ManifestUtils.CONFIG_NAME_ATTR, true).Value = name;  
+
+          manifest.AttrByName(ManifestUtils.CONFIG_NAME_ATTR, true).Value = name;
           manifest.AttrByName(ManifestUtils.CONFIG_LOCAL_PATH_ATTR, true).Value = relPath;
-          manifest.ResetModified(); 
-          
-          Manifest = manifest; 
+          manifest.ResetModified();
+
+          Manifest = manifest;
         }
 
         public readonly string Name;
@@ -90,8 +90,8 @@ namespace NFX.IO.FileSystem.Packaging
           return "['{0}']{1}".Args(Name, RelativePath);
         }
       }
-     
-     
+
+
       /// <summary>
       /// Initializes local installation, tries to read local manifest from rootPath or localManifestDir if it is !=null
       /// </summary>
@@ -99,13 +99,13 @@ namespace NFX.IO.FileSystem.Packaging
       {
         if (rootPath.IsNullOrWhiteSpace())
           throw new NFXIOException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".ctor(rootPath==null|empty)");
-        
+
         var parent = Directory.GetParent(rootPath);
         if (!parent.Exists)
           throw new NFXIOException(StringConsts.LOCAL_INSTALL_ROOT_PATH_NOT_FOUND_ERROR.Args(parent.FullName));
 
         m_RootPath = rootPath;
-       
+
         var manifestDir = localManifestDir.IsNotNullOrWhiteSpace() ? localManifestDir : m_RootPath;
 
         if (Directory.Exists(manifestDir))
@@ -121,7 +121,7 @@ namespace NFX.IO.FileSystem.Packaging
             throw new NFXIOException(StringConsts.LOCAL_INSTALL_LOCAL_MANIFEST_READ_ERROR.Args(fn, error.ToMessageWithType()), error);
           }
         }
-       
+
         if (m_Packages==null)
         {
           var cfg = new LaconicConfiguration();
@@ -161,7 +161,7 @@ namespace NFX.IO.FileSystem.Packaging
       /// </summary>
       public IEnumerable<string> PackageNames
       {
-        get 
+        get
         {
           return m_Packages.Children.Where(cn=>cn.IsSameName(ManifestUtils.CONFIG_PACKAGE_SECTION))
                                                  .Select(n=>n.AttrByName(Configuration.CONFIG_NAME_ATTR)
@@ -198,35 +198,35 @@ namespace NFX.IO.FileSystem.Packaging
         m_InstallationStarted = true;
 
       }
-      
+
       /// <summary>
       /// Unconditionally installs a package - copies a set of files contained in the FileSystemDirectory assigning it some mnemonic name
       /// </summary>
       public void InstallPackage(PackageInfo package)
       {
-        if (!m_InstallationStarted) 
+        if (!m_InstallationStarted)
          throw new NFXIOException(StringConsts.LOCAL_INSTALL_NOT_STARTED_INSTALL_PACKAGE_ERROR);
 
         var path = m_RootPath;
-        if (package.RelativePath.IsNotNullOrWhiteSpace()) 
+        if (package.RelativePath.IsNotNullOrWhiteSpace())
         {
          path = Path.Combine(path, package.RelativePath);
          IOMiscUtils.EnsureAccessibleDirectory(path);
         }
-        
+
         var packageName = package.Name;
         var source = package.Source;
         var manifest = package.Manifest;
-        
+
         using(var lfs = new Local.LocalFileSystem(null))
          using(var fss = lfs.StartSession(null))
          {
            var targetDir = fss[path] as FileSystemDirectory;
            if (targetDir==null)
              throw new NFXIOException(StringConsts.LOCAL_INSTALL_ROOT_PATH_NOT_FOUND_ERROR.Args(path));
-           
-           source.DeepCopyTo(targetDir, FileSystemDirectory.DirCopyFlags.FilesAndDirsOnly, 
-              filter: (item) => 
+
+           source.DeepCopyTo(targetDir, FileSystemDirectory.DirCopyFlags.FilesAndDirsOnly,
+              filter: (item) =>
               {
                 var file = item as FileSystemFile;
                 if (file==null) return true;
@@ -235,16 +235,16 @@ namespace NFX.IO.FileSystem.Packaging
 
                 return true;
               }
-           
+
             );
          }
-        
+
         var existing = this[packageName];
         if (existing!=null) ((ConfigSectionNode)existing).Delete();
         m_Packages.AddChildNode(manifest);
-       
+
         m_Modified = true;
-      } 
+      }
 
       /// <summary>
       /// Updates local installation manifest if changes have been made (Modified=true)
@@ -253,7 +253,7 @@ namespace NFX.IO.FileSystem.Packaging
       {
         if (!m_InstallationStarted) return;
         if (!m_Modified) return;
-        
+
         var fn = Path.Combine(m_RootPath, ManifestUtils.MANIFEST_FILE_NAME);
         if (File.Exists(fn))
            throw new NFXIOException(StringConsts.LOCAL_INSTALL_PACKAGES_MANIFEST_FILE_NAME_COLLISION_ERROR.Args(fn));
@@ -262,7 +262,7 @@ namespace NFX.IO.FileSystem.Packaging
 
         m_Modified = false;
         m_InstallationStarted = false;
-      } 
+      }
 
 
       /// <summary>
@@ -272,7 +272,7 @@ namespace NFX.IO.FileSystem.Packaging
       public PackageInfo FindMissingOrDifferentPackage(IEnumerable<PackageInfo> installSet)
       {
         foreach(var pi in installSet)
-        {  
+        {
           var local = this[pi.Name];
           if (local==null) return pi;//not found locally
           if (!local.HasTheSameContent( pi.Manifest)) return pi;//different content
@@ -296,7 +296,7 @@ namespace NFX.IO.FileSystem.Packaging
 
         BeginInstallation();
         try
-        {             
+        {
           installSet.ForEach(pi => InstallPackage(pi));
         }
         finally

@@ -178,8 +178,11 @@
 
        var schema = {
 		          id: { 
-                type: "text", 
-                plh: "Key", 
+                type: "textarea", 
+                plh: "Key",
+                dflt: "sex",
+                required: true,
+                items: {int: "Integer", str: "string"}
               },
 		        //  "nls-name": {
 			    //      type: "ps",
@@ -206,7 +209,7 @@
 
         schema.id.validate = function(val) {
           return {
-            ok: val !== 'fuck',
+            ok: !WAVE.strEmpty(val),
             value: val,
             msg: "Value should not be fuck",
             showError: function(target) {
@@ -223,7 +226,6 @@
         var editor = new WAVE.GUI.ObjectEditor({
           canRaw : true,
           DIV: WAVE.id("cont"),
-          //content: {  },
           //readonly: true,
           //meta: {
           //  //dflt: {id:"", name:""},
@@ -264,12 +266,23 @@
           //    }
           //  }
           //}
+          //content: [ {  } ],
           meta: {
-	          dflt: [],
-	          type: "array",
-            maxLength: 5,
-	          //canAdd: false,
-	          schema: schema
+            type: "Object",
+            schema: {
+	            id: {
+                canDel: true,
+                plh: "Key",
+              },
+              Name: { 
+                canDel: true,
+                plh: "Name",
+              },
+              Pan: { 
+                canDel: true,
+                plh: "Pan",
+              },
+            }
           }
         });
         

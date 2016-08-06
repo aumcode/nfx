@@ -31,7 +31,7 @@ namespace NFX.ApplicationModel
 {
 
   /// <summary>
-  /// Describes general application model - usually a dependency injection container 
+  /// Describes general application model - usually a dependency injection container
   ///  that governs application initialization, state management, logging etc...
   /// An applications is usually implemented with a singleton class that has static
   ///  conduits to instance properties. Applications may be passed by reference (hence this interface)
@@ -45,18 +45,18 @@ namespace NFX.ApplicationModel
      /// however in some cases this flag is usefull. It is not exposed via App. static accessors
      /// </summary>
      bool IsUnitTest{ get;}
-     
+
      /// <summary>
      /// Returns unique identifier of this running instance
      /// </summary>
      Guid InstanceID { get; }
 
      /// <summary>
-     /// Returns timestamp when application started as localized app time 
+     /// Returns timestamp when application started as localized app time
      /// </summary>
      DateTime StartTime { get; }
-     
-     
+
+
      /// <summary>
      /// Returns true when application instance is active and working. This property returns false as soon as application finalization starts on shutdown or Stop() was called
      /// Use to exit long-running loops and such
@@ -74,11 +74,11 @@ namespace NFX.ApplicationModel
      bool ShutdownStarted { get;}
 
      /// <summary>
-     /// Initiates the stop of the application by setting its Stopping to true and Active to false so dependent services may start to terminate 
+     /// Initiates the stop of the application by setting its Stopping to true and Active to false so dependent services may start to terminate
      /// </summary>
      void Stop();
-     
-     
+
+
      /// <summary>
      /// References app log
      /// </summary>
@@ -87,28 +87,28 @@ namespace NFX.ApplicationModel
      /// <summary>
      /// References instrumentation for this application instance
      /// </summary>
-     Instrumentation.IInstrumentation Instrumentation { get; } 
+     Instrumentation.IInstrumentation Instrumentation { get; }
 
      /// <summary>
      /// References throttling for this application instance
      /// </summary>
-     Throttling.IThrottling Throttling { get; } 
-     
+     Throttling.IThrottling Throttling { get; }
+
      /// <summary>
      /// References application configuration root
      /// </summary>
      Environment.ConfigSectionNode  ConfigRoot { get; }
-     
+
      /// <summary>
      /// References application data store
      /// </summary>
      DataAccess.IDataStore DataStore { get; }
 
      /// <summary>
-     /// References object store that may be used to persist object graphs between volatile application shutdown cycles  
+     /// References object store that may be used to persist object graphs between volatile application shutdown cycles
      /// </summary>
      Volatile.IObjectStore ObjectStore { get; }
-     
+
      /// <summary>
      /// References glue implementation that may be used to "glue" remote instances/processes/contracts together
      /// </summary>
@@ -118,7 +118,7 @@ namespace NFX.ApplicationModel
      /// References security manager that performs user authentication based on passed credentials and other security-related global tasks
      /// </summary>
      Security.ISecurityManager SecurityManager { get; }
-     
+
      /// <summary>
      /// References time source - an entity that supplies local and UTC times. The concrete implementation
      ///  may elect to get accurate times from the network or other external precision time sources (i.e. NASA atomic clock)
@@ -171,6 +171,6 @@ namespace NFX.ApplicationModel
      /// <returns>True if notifiable instance was found and removed</returns>
      bool UnregisterAppFinishNotifiable(IApplicationFinishNotifiable notifiable);
   }
-  
-  
+
+
 }

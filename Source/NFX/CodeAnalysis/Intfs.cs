@@ -28,12 +28,12 @@ namespace NFX.CodeAnalysis
     /// </summary>
     public interface ICodeProcessor
     {
-        
+
         /// <summary>
         /// Returns context that this processor operates under
         /// </summary>
         IAnalysisContext Context { get; }
-        
+
         /// <summary>
         /// References language that this entity supports
         /// </summary>
@@ -49,7 +49,7 @@ namespace NFX.CodeAnalysis
         /// When true, throws an exception on the first error even when MessageList is set.
         /// When MessageList is not set any error is always thrown regardless of this parameter
         /// </summary>
-        bool ThrowErrors{ get; } 
+        bool ThrowErrors{ get; }
 
         /// <summary>
         /// Returns string representation of message code which is output by this processor
@@ -64,12 +64,12 @@ namespace NFX.CodeAnalysis
     /// </summary>
     public interface IAnalysisContext : ICodeProcessor
     {
-       
+
     }
 
 
     /// <summary>
-    /// Describes general lexer interface. 
+    /// Describes general lexer interface.
     /// Lexers turn string source input which is obtained via ISourceText implementation (i.e. FileSource,WebSource...)
     ///  into tokenized stream. Some lexer implementations may support lazy analysis, that is - source text analysis which is done
     ///   in chunks when lexer is iterated over, others may lex the whole source text at once
@@ -80,14 +80,14 @@ namespace NFX.CodeAnalysis
         /// References source code that was lexed
         /// </summary>
         SourceCodeRef SourceCodeReference { get; }
-        
+
         /// <summary>
         /// References source code text that was lexed
         /// </summary>
         ISourceText Source { get; }
 
         /// <summary>
-        /// Enumerates Token stream - depending on implementation enumeration may do 
+        /// Enumerates Token stream - depending on implementation enumeration may do
         /// lexical analysis token-by-token or in chunks with every enumerator advance
         /// </summary>
         IEnumerable<Token> TokenStream { get; }
@@ -112,7 +112,7 @@ namespace NFX.CodeAnalysis
        /// <summary>
        /// Lists source lexers that supply token stream for parsing
        /// </summary>
-       IEnumerable<ILexer> SourceInput { get; } 
+       IEnumerable<ILexer> SourceInput { get; }
 
        /// <summary>
        /// Indicates whether Parse() already happened

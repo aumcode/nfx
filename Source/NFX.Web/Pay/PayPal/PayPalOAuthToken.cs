@@ -9,14 +9,14 @@ namespace NFX.Web.Pay.PayPal
     /// </summary>
     public class PayPalOAuthToken
     {
-        private const string APP_ID = "app_id"; 
+        private const string APP_ID = "app_id";
         private const string EXPIRES_IN = "expires_in";
-        private const string ACCESS_TOKEN = "access_token"; 
-        private const string SCOPE = "scope"; 
+        private const string ACCESS_TOKEN = "access_token";
+        private const string SCOPE = "scope";
         private const string NONCE = "nonce";
 
         public PayPalOAuthToken(JSONDataMap response, int expirationMargin)
-        {   
+        {
             m_ObtainTime = App.TimeSource.Now;
             m_ExpirationMargin = expirationMargin;
             m_ApplicationID = response[APP_ID].AsString();

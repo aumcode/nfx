@@ -23,6 +23,7 @@ using System.Text;
 using NUnit.Framework;
 
 using NFX;
+using NFX.DataAccess.Distributed;
 
 namespace NFX.NUnit
 {
@@ -192,7 +193,7 @@ namespace NFX.NUnit
             Assert.AreEqual(true, obj.AsNullableBool());
 
             Assert.AreEqual("123", obj.AsString());
-         
+
             Assert.AreEqual(TestEnum.B, obj.AsEnum(TestEnum.A));
 
         }
@@ -491,7 +492,7 @@ namespace NFX.NUnit
 
             Assert.AreEqual(new Guid("CF04F818-6194-48C3-B618-8965ACA4D229"), obj.AsGUID(Guid.Empty));
         }
-        
+
 
         [TestCase]
         public void GUID_5()
@@ -551,5 +552,103 @@ namespace NFX.NUnit
         }
 
 
+        [TestCase]
+        public void GDID()
+        {
+            object obj = new GDID(3,4,5);
+
+            Assert.AreEqual(obj, obj.AsGDID());
+            Assert.AreEqual(obj, obj.AsGDID(new GDID(2,3,4)));
+
+
+            Assert.AreEqual(obj, "3:4:5".AsGDID(new GDID(2,3,4)));
+            Assert.AreEqual(new GDID(2,3,4), "3rewtfef:4:5".AsGDID(new GDID(2,3,4)));
+
+            try
+            {
+              "3rewtfef:4:5".AsGDID(new GDID(2,3,4), handling: ConvertErrorHandling.Throw);
+              Assert.Fail("No execpetion");
+            }
+            catch
+            {
+              Assert.Pass();
+            }
+        }
+
+        [TestCase]
+        public void NullableGDID()
+        {
+            object obj = new GDID(3,4,5);
+
+            Assert.AreEqual(obj, obj.AsNullableGDID());
+            Assert.AreEqual(obj, obj.AsNullableGDID(new GDID(2,3,4)));
+
+
+            Assert.AreEqual(obj, "3:4:5".AsNullableGDID(new GDID(2,3,4)));
+            object on = null;
+            Assert.IsNull( on.AsNullableGDID() );
+
+            Assert.IsNull( on.AsNullableGDID(new GDID(3,4,5)));
+
+            Assert.AreEqual(obj, "fdwsfsdfds".AsNullableGDID(new GDID(3,4,5)));
+        }
+
+
+        [TestCase]
+        public void GDIDSymbol()
+        {
+            object obj = new GDIDSymbol(new GDID(3,4,5), "ABC");
+
+            Assert.AreEqual(obj, obj.AsGDIDSymbol());
+            Assert.AreEqual(obj, obj.AsGDIDSymbol(new GDIDSymbol(new GDID(23,14,15), "ABC")));
+
+
+            var link = new ELink(new GDID(4,12,8721));
+
+
+            Assert.AreEqual(link.AsGDIDSymbol, link.Link.AsGDIDSymbol());
+            Assert.AreEqual(link.AsGDIDSymbol, "3rewtfef:4:5".AsGDIDSymbol(link.AsGDIDSymbol()));
+
+            try
+            {
+              "3rewtfef:4:5".AsGDIDSymbol(link.AsGDIDSymbol, handling: ConvertErrorHandling.Throw);
+              Assert.Fail("No excepetion");
+            }
+            catch
+            {
+              Assert.Pass();
+            }
+        }
+
+
+        [TestCase]
+        public void NullableGDIDSymbol()
+        {
+            var obj = new GDIDSymbol(new GDID(3,4,5), "3:4:5");
+
+            Assert.AreEqual(obj, obj.AsNullableGDIDSymbol());
+            Assert.AreEqual(obj, obj.AsNullableGDIDSymbol(new GDIDSymbol(new GDID(13,14,15), "ABC")));
+
+
+            Assert.AreEqual(obj, "3:4:5".AsNullableGDIDSymbol(new GDIDSymbol(new GDID(13,14,15), "ABC")));
+            object on = null;
+            Assert.IsNull( on.AsNullableGDIDSymbol() );
+
+            Assert.IsNull( on.AsNullableGDIDSymbol(obj));
+
+            Assert.AreEqual(obj, "fdwsfsdfds".AsNullableGDIDSymbol(obj));
+        }
+
+        [TestCase]
+        public void Uri()
+        {
+          Assert.AreEqual(null, new { _ = "" }.AsUri());
+
+          Assert.Throws<NFXException>(() => NFX.DataAccess.Distributed.GDID.Zero.AsUri(handling: ConvertErrorHandling.Throw), "GDID.AsUri");
+
+          object obj = "https://example.com";
+
+          Assert.AreEqual(new Uri("https://example.com"), obj.AsUri());
+        }
     }
 }

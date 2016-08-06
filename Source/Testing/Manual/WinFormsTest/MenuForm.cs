@@ -192,5 +192,10 @@ Performance
     {
       new ChartFormDemo().Show();
     }
-  }
+
+        private void btnMailSink_Click(object sender, EventArgs e)
+        {
+            new MailForm().Show();
+        }
+    }
 }

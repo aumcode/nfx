@@ -35,10 +35,10 @@ namespace NFX.Environment
        {
        }
     }
-    
-    
-    
-    
+
+
+
+
     /// <summary>
     /// Specifies how to apply configuration values to classes/fields/props
     /// </summary>
@@ -55,7 +55,7 @@ namespace NFX.Environment
        public ConfigAttribute()
        {
        }
-      
+
        /// <summary>
        /// Decorates members that will be configured from supplied path
        /// </summary>
@@ -83,7 +83,7 @@ namespace NFX.Environment
        /// <summary>
        /// Default value used when configuration does not specify any other value
        /// </summary>
-       public object Default { get; set;} 
+       public object Default { get; set;}
 
 
        /// <summary>
@@ -102,7 +102,7 @@ namespace NFX.Environment
          //---
 
          var cattr = etp.GetCustomAttributes(typeof(ConfigAttribute), true).FirstOrDefault() as ConfigAttribute;
-         
+
          if (cattr!=null)//rebase root config node per supplied path
          {
            cattr.evalAttributeVars(etp);
@@ -114,12 +114,12 @@ namespace NFX.Environment
          }
 
          var members =  getAllFieldsOrProps( etp );
-         
+
          foreach(var mem in members)
          {
            var mattr = mem.GetCustomAttributes(typeof(ConfigAttribute), true).FirstOrDefault() as ConfigAttribute;
            if (mattr==null) continue;
-             
+
            //20130708 DKh - default attribute name taken from member name if path==null
            if (string.IsNullOrWhiteSpace(mattr.Path))
                 mattr.Path =  GetConfigPathsForMember(mem);
@@ -128,16 +128,16 @@ namespace NFX.Environment
            mattr.evalAttributeVars(etp);
 
            var mnode = node.Navigate(mattr.Path);
-                           
+
            if (mem.MemberType == MemberTypes.Field)
            {
                  var finf = (FieldInfo)mem;
-                           
+
                  if (typeof(IConfigSectionNode).IsAssignableFrom(finf.FieldType))
                  {
-                       if (finf.IsInitOnly) 
+                       if (finf.IsInitOnly)
                          throw new ConfigException(string.Format(StringConsts.CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR, etp.FullName, finf.Name));
-               
+
                        var snode = mnode as IConfigSectionNode;
                        if (snode==null)
                           throw new ConfigException(string.Format(StringConsts.CONFIGURATION_PATH_ICONFIGSECTION_SECTION_ERROR, etp.FullName, finf.Name));
@@ -149,15 +149,15 @@ namespace NFX.Environment
                        var snode = mnode as IConfigSectionNode;
                        if (snode==null)
                           throw new ConfigException(string.Format(StringConsts.CONFIGURATION_PATH_ICONFIGURABLE_SECTION_ERROR, etp.FullName, finf.Name));
-              
+
                        if (finf.GetValue(entity)!=null)
                          ((IConfigurable)finf.GetValue(entity)).Configure(snode);
                  }
-                 else    
+                 else
                  {
-                       if (finf.IsInitOnly) 
+                       if (finf.IsInitOnly)
                          throw new ConfigException(string.Format(StringConsts.CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR, etp.FullName, finf.Name));
-               
+
                        if (mnode.Exists && mnode.VerbatimValue!=null)
                         finf.SetValue(entity, getVal(mnode, finf.FieldType, etp.FullName, finf.Name));
                        else
@@ -173,9 +173,9 @@ namespace NFX.Environment
 
                  if (typeof(IConfigSectionNode).IsAssignableFrom(pinf.PropertyType))
                  {
-                       if (!pinf.CanWrite) 
+                       if (!pinf.CanWrite)
                          throw new ConfigException(string.Format(StringConsts.CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR, etp.FullName, pinf.Name));
-               
+
                        var snode = mnode as IConfigSectionNode;
                        if (snode==null)
                           throw new ConfigException(string.Format(StringConsts.CONFIGURATION_PATH_ICONFIGSECTION_SECTION_ERROR, etp.FullName, pinf.Name));
@@ -187,13 +187,13 @@ namespace NFX.Environment
                        var snode = mnode as IConfigSectionNode;
                        if (snode==null)
                           throw new ConfigException(string.Format(StringConsts.CONFIGURATION_PATH_ICONFIGURABLE_SECTION_ERROR, etp.FullName, pinf.Name));
-               
+
                        if (pinf.GetValue(entity, null)!=null)
                          ((IConfigurable)pinf.GetValue(entity, null)).Configure(snode);
                  }
                  else
                  {
-                       if (!pinf.CanWrite) 
+                       if (!pinf.CanWrite)
                          throw new ConfigException(string.Format(StringConsts.CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR, etp.FullName, pinf.Name));
 
                        if (mnode.Exists && mnode.VerbatimValue!=null)
@@ -202,7 +202,7 @@ namespace NFX.Environment
                         if (mattr.Default!=null) pinf.SetValue(entity, mattr.Default, null);
                  }
            }
-               
+
          }//for members
 
        }
@@ -216,7 +216,7 @@ namespace NFX.Environment
        public static string GetConfigPathsForMember(MemberInfo member)
        {
            var mn = member.Name;
-           
+
            if (member is FieldInfo)
            {
                 var fi = (FieldInfo)member;
@@ -226,7 +226,7 @@ namespace NFX.Environment
                         mn.StartsWith("s_", StringComparison.InvariantCulture)) mn = mn.Remove(0, 2);
                 }
            }
-                                      
+
            var sb = new StringBuilder();
            var first = true;
            var plc = false;
@@ -250,21 +250,21 @@ namespace NFX.Environment
             {
                 var fields = t.GetFields(BindingFlags.NonPublic  |
                                            BindingFlags.Public   |
-                                           BindingFlags.Instance | 
+                                           BindingFlags.Instance |
                                            BindingFlags.DeclaredOnly);
                 result.AddRange(fields);
-                
+
                 var props = t.GetProperties(BindingFlags.NonPublic  |
                                                BindingFlags.Public   |
-                                               BindingFlags.Instance | 
+                                               BindingFlags.Instance |
                                                BindingFlags.DeclaredOnly);
                 result.AddRange(props);
 
 
-                t = t.BaseType;     
+                t = t.BaseType;
             }
 
-         return result; 
+         return result;
        }
 
        private static object getVal(IConfigNode node, Type type, string tname, string mname)
@@ -283,9 +283,9 @@ namespace NFX.Environment
        private void evalAttributeVars(Type type)
        {
          if (Path==null) return;
-         
-         Path = Path.Replace("@type@", type.FullName); 
-         Path = Path.Replace("@assembly@", type.Assembly.GetName().Name); 
+
+         Path = Path.Replace("@type@", type.FullName);
+         Path = Path.Replace("@assembly@", type.Assembly.GetName().Name);
 
        }
 

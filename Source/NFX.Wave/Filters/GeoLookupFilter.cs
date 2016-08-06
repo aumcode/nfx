@@ -61,24 +61,24 @@ namespace NFX.Wave.Filters
       /// Returns matches used by the filter to determine whether user's location should be looked-up
       /// </summary>
       public OrderedRegistry<WorkMatch> LookupMatches { get{ return m_LookupMatches;}}
-      
+
     #endregion
 
     #region Protected
 
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         var needLookup = true;
         var address = work.Request.RemoteEndPoint.Address;
 
-        if (work.GeoEntity!=null) 
+        if (work.GeoEntity!=null)
          needLookup = !string.Equals(work.GeoEntity.Query, address);
-        
-        
+
+
         if (needLookup && m_LookupMatches.Count>0)
         {
           foreach(var match in m_LookupMatches.OrderedValues)
-          { 
+          {
             var matched = match.Make(work);
             needLookup = matched!=null;
 
@@ -88,7 +88,7 @@ namespace NFX.Wave.Filters
               if (useAddr!=null)
               {
                 IPAddress ip;
-                if (IPAddress.TryParse(useAddr.ToString(), out ip)) 
+                if (IPAddress.TryParse(useAddr.ToString(), out ip))
                   address = ip;
               }
               break;
@@ -100,29 +100,29 @@ namespace NFX.Wave.Filters
         {
           var lookedUp = GeoLookupService.Instance.Lookup(address);
           work.GeoEntity = lookedUp;
-          
+
           if (Server.m_InstrumentationEnabled)
           {
             Interlocked.Increment(ref Server.m_Stat_GeoLookup);
             if (lookedUp!=null)
-               Interlocked.Increment(ref Server.m_Stat_GeoLookupHit);  
+               Interlocked.Increment(ref Server.m_Stat_GeoLookupHit);
           }
         }
-          
+
         this.InvokeNextWorker(work, filters, thisFilterIndex);
       }
 
-    #endregion 
-    
+    #endregion
+
     #region .pvt
      private void configureMatches(IConfigSectionNode confNode)
       {
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_LookupMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName)));
       }
-    
-    #endregion  
+
+    #endregion
   }
 
 }

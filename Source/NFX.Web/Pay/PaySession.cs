@@ -54,8 +54,9 @@ namespace NFX.Web.Pay
 
       protected override void Destructor()
       {
-        lock (m_PaySystem.m_Sessions)
-          m_PaySystem.m_Sessions.Remove(this);
+        if (m_PaySystem != null)
+          lock (m_PaySystem.m_Sessions)
+            m_PaySystem.m_Sessions.Remove(this);
 
         base.Destructor();
       }
@@ -76,6 +77,7 @@ namespace NFX.Web.Pay
       public string Name { get { return m_Name; } }
       public User User { get { return m_User; } }
 
+      public bool IsValid { get { return m_User != null && m_User != Security.User.Fake; } }
     #endregion
 
     #region Public
@@ -108,7 +110,7 @@ namespace NFX.Web.Pay
       /// Has the same semantics as corresponding PaySystem method executed in context of this session
       /// </summary>
       public Transaction Refund(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
-      { 
+      {
         return m_PaySystem.Refund(this, context, ref charge, amount, description, extraData);
       }
 

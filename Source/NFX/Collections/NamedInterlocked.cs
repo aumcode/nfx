@@ -22,7 +22,7 @@ namespace NFX.Collections
           private class slot : INamed
           {
              public slot(string name) { m_Name = name;}
-             
+
              private string m_Name;
 
              public string Name { get { return m_Name;}}
@@ -42,7 +42,7 @@ namespace NFX.Collections
         get { return m_Data.Count;}
       }
 
-      
+
       /// <summary>
       /// Enumerates all slot names. This operation is thread-safe, and returns a snapshot of the instance taken at the time of the first call
       /// </summary>
@@ -50,13 +50,13 @@ namespace NFX.Collections
       {
         get { return m_Data.Names; }
       }
-      
+
       /// <summary>
       /// Enumerates all named integers. This operation is thread-safe, and returns a snapshot of the instance taken at the time of the first call
       /// </summary>
       public IEnumerable<KeyValuePair<string, int>> AllInts
       {
-         get{ return m_Data.Select(s => new KeyValuePair<string, int>(s.Name, s.Integer)); } 
+         get{ return m_Data.Select(s => new KeyValuePair<string, int>(s.Name, s.Integer)); }
       }
 
       /// <summary>
@@ -64,12 +64,12 @@ namespace NFX.Collections
       /// </summary>
       public IEnumerable<KeyValuePair<string, long>> AllLongs
       {
-         get{ return m_Data.Select(s => new KeyValuePair<string, long>(s.Name, s.Long)); } 
+         get{ return m_Data.Select(s => new KeyValuePair<string, long>(s.Name, s.Long)); }
       }
 
-      
-      
-      
+
+
+
       /// <summary>
       /// Deletes all state for all slots
       /// </summary>
@@ -77,7 +77,7 @@ namespace NFX.Collections
       {
          m_Data.Clear();
       }
-      
+
       /// <summary>
       /// Deletes all state for the named slot returning true if the slot was found and removed
       /// </summary>
@@ -144,7 +144,7 @@ namespace NFX.Collections
 
 
       /// <summary>
-      /// Captures the current value of a named int value. 
+      /// Captures the current value of a named int value.
       /// If slot does not exist, creates it and captures the value (which may be non-zero even if the slot was just created)
       /// </summary>
       public int VolatileReadInt(string name)
@@ -154,7 +154,7 @@ namespace NFX.Collections
       }
 
       /// <summary>
-     /// Captures the current value of a named long value.  
+     /// Captures the current value of a named long value.
       /// If slot does not exist, creates it and captures the value (which may be non-zero even if the slot was just created)
       /// </summary>
       public long VolatileReadLong(string name)
