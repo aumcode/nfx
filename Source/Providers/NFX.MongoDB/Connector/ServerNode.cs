@@ -33,7 +33,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         public const int MAX_EXISTING_ACQUISITION_TIMEOUT_MS_MAX = 90 * 1000;
         public const int MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT = 15 * 1000;
       #endregion
-      
+
       #region .ctor
         internal ServerNode(MongoClient client, Node node) : base(client)
         {
@@ -56,14 +56,14 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
           if (!m_Client.DisposeStarted)
             m_Client.m_Servers.Unregister( this );
-         
+
           killCursors(true);
 
           CloseAllConnections(true);//must be the last thing
           base.Destructor();
         }
       #endregion
-      
+
       #region Fields
         private int m_ID_SEED;
         private MongoClient m_Client;
@@ -71,7 +71,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         private object m_NewConnectionSync = new object();
         private object m_ListSync = new object();
         private volatile List<Connection> m_List = new List<Connection>();
-      
+
         internal Registry<Database> m_Databases = new Registry<Database>(true);
 
         private WriteConcern m_WriteConcern;
@@ -83,7 +83,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         private int m_MaxExistingAcquisitionTimeoutMs = MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT;
         //Timeouts and socket buffers setup
         private int m_IdleConnectionTimeoutSec = DEFAULT_IDLE_TIMEOUT_SEC;
-            
+
         private int m_SocketReceiveBufferSize = DEFAULT_RCV_BUFFER_SIZE;
         private int m_SocketSendBufferSize    = DEFAULT_SND_BUFFER_SIZE;
 
@@ -101,7 +101,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         public MongoClient Client{ get{ return m_Client;} }
 
         public Node Node { get{ return m_Node;} }
-        
+
         public string Name { get{ return m_Node.ConnectString;} }
 
 
@@ -129,7 +129,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         /// When greater than zero, imposes a limit on the open connection count
         /// </summary>
         [Config]
-        public int MaxConnections 
+        public int MaxConnections
         {
             get { return m_MaxConnections; }
             set { m_MaxConnections = value <0 ? 0 : value; }
@@ -143,44 +143,44 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
             get { return m_MaxExistingAcquisitionTimeoutMs; }
             set
-            { 
-              m_MaxExistingAcquisitionTimeoutMs = 
+            {
+              m_MaxExistingAcquisitionTimeoutMs =
                    value <MAX_EXISTING_ACQUISITION_TIMEOUT_MS_MIN ? MAX_EXISTING_ACQUISITION_TIMEOUT_MS_MIN :
                    value >MAX_EXISTING_ACQUISITION_TIMEOUT_MS_MAX ? MAX_EXISTING_ACQUISITION_TIMEOUT_MS_MAX :
                    value;
-            }         
+            }
         }
 
         [Config]
-        public int IdleConnectionTimeoutSec 
+        public int IdleConnectionTimeoutSec
         {
             get { return m_IdleConnectionTimeoutSec; }
             set { m_IdleConnectionTimeoutSec = value <MIN_IDLE_TIMEOUT_SEC ? MIN_IDLE_TIMEOUT_SEC : value;}
         }
 
         [Config]
-        public int SocketReceiveBufferSize 
+        public int SocketReceiveBufferSize
         {
             get { return m_SocketReceiveBufferSize; }
             set { m_SocketReceiveBufferSize = value <=0 ? DEFAULT_RCV_BUFFER_SIZE : value;}
         }
 
         [Config]
-        public int SocketSendBufferSize 
+        public int SocketSendBufferSize
         {
             get { return m_SocketSendBufferSize; }
             set { m_SocketSendBufferSize = value <=0 ? DEFAULT_SND_BUFFER_SIZE : value;}
         }
 
         [Config]
-        public int SocketReceiveTimeout 
+        public int SocketReceiveTimeout
         {
             get { return m_SocketReceiveTimeout; }
             set { m_SocketReceiveTimeout = value <=0 ? DEFAULT_RCV_TIMEOUT : value;}
         }
 
         [Config]
-        public int SocketSendTimeout 
+        public int SocketSendTimeout
         {
             get { return m_SocketSendTimeout; }
             set { m_SocketSendTimeout = value <=0 ? DEFAULT_SND_TIMEOUT : value;}
@@ -197,7 +197,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
              if (name.IsNullOrWhiteSpace())
                throw new MongoDBConnectorException(StringConsts.ARGUMENT_ERROR+"ServerNode[name==null|empty]");
-             
+
              return m_Databases.GetOrRegister(name, (n) => new Database(this, n), name);
           }
         }
@@ -216,12 +216,12 @@ namespace NFX.DataAccess.MongoDB.Connector
           {
             allClosed = true;
             var lst = m_List;
-             
+
             foreach(var cnn in lst)
               if (cnn.TryAcquire())
                 cnn.Dispose();
               else
-                allClosed = false;  
+                allClosed = false;
 
           } while(wait && !allClosed);
         }
@@ -312,7 +312,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         private Connection tryAcquireExistingConnection()
         {
           int GRANULARITY_MS = 5 + ((System.Threading.Thread.CurrentThread.GetHashCode() & CoreConsts.ABS_HASH_MASK) % 15);
-          
+
           var wasActive = App.Active;//remember whether app was active during start
           var elapsed = 0;
           while ((App.Active | !wasActive) && !DisposeStarted)
@@ -369,7 +369,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
           const int BATCH = 256;
           var toKill = new List<Cursor>();
-          
+
           do
           {
               lock(m_Cursors)
@@ -401,7 +401,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                 toKill.Clear();
               }
               else break;
-              
+
           }
           while(killAll);
         }

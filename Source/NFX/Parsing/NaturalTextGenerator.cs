@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -147,7 +147,7 @@ namespace NFX.Parsing
       "Phoenix", "San Diego", "Austin", "Indianapolis", "Athens", "Angola", "San Antonio", "Nordonia", "Macedinia",
       "North Royalton", "Seattle", "Denver", "Boston", "Nashville", "Brighton", "Albuquerque", "Omaha", "Oakland",
       "Raleigh", "Belgorod", "Belgrade", "Sofia", "Sevastopol", "Khersones", "Miami", "Atlanta", "Baltimore",
-      "Tucson", "Newark", "Henderson", "Lincoln", "Greensboro", "Toledo", "Winston–Salem", "Chesapeake", "Richmond",
+      "Tucson", "Newark", "Henderson", "Lincoln", "Greensboro", "Toledo", "Winstonï¿½Salem", "Chesapeake", "Richmond",
       "Chattanooga", "Choochoo"
     };
 

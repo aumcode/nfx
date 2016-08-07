@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -456,7 +456,7 @@ namespace NFX.Wave.Handlers
                 if (c < '-') return false;
                 if (c > '9' && c < 'A') return false;
                 if (c > 'Z' && c < 'a' && c != '\\') return false;
-                if (c > 'z' && c < 'À') return false;
+                if (c > 'z' && c < 'ï¿½') return false;
               }
 
               return true;

@@ -16,7 +16,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 {
   /// <summary>
   /// Represent a connection to MongoDB server. Normally developers should not work with this class directly
-  /// as connections are managed by the Client. 
+  /// as connections are managed by the Client.
   /// This class is not thread safe and must be Acquired first before sending data
   /// </summary>
   public sealed class Connection : ApplicationComponent
@@ -25,7 +25,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         public const string DEFAULT_MONGO_BINDING = "mongo";
         public const string DEFAULT_LOCAL_MONGO_HOST = "localhost";
         public const int DEFAULT_MONGO_PORT = 27017;
-      
+
         public static readonly Node DEFAUL_LOCAL_NODE = new Node("{0}://{1}:{2}".Args(DEFAULT_MONGO_BINDING, DEFAULT_LOCAL_MONGO_HOST, DEFAULT_MONGO_PORT));
 
         private const int FREE = 0;
@@ -87,7 +87,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
           if (!callFromManager)
             m_ExpirationStartUTC = null;
-          
+
           Interlocked.Exchange(ref m_Acquired, FREE);
         }
 
@@ -96,19 +96,19 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           m_BufferStream.Position = 0;
-          var total = Protocol.Write_QUERY(m_BufferStream, 
-                                           requestID, 
+          var total = Protocol.Write_QUERY(m_BufferStream,
+                                           requestID,
                                            collection.Database,
-                                           collection, 
+                                           collection,
                                            Protocol.QueryFlags.None,
                                            0,
-                                           -1,// If the number is negative, then the database will return that number and close the cursor. 
-                                              // No futher results for that query can be fetched. If numberToReturn is 1 the server will treat it as -1 
+                                           -1,// If the number is negative, then the database will return that number and close the cursor.
+                                              // No futher results for that query can be fetched. If numberToReturn is 1 the server will treat it as -1
                                               //(closing the cursor automatically).
-                                           query, 
+                                           query,
                                            selector);
           writeSocket(total);
-       
+
           var got = readSocket();
           var reply = Protocol.Read_REPLY(got);
           Protocol.CheckReplyDataForErrors(reply);
@@ -125,17 +125,17 @@ namespace NFX.DataAccess.MongoDB.Connector
           if (fetchBy<=0) fetchBy = Cursor.DEFAULT_FETCH_BY;
 
           m_BufferStream.Position = 0;
-          var total = Protocol.Write_QUERY(m_BufferStream, 
-                                           requestID, 
+          var total = Protocol.Write_QUERY(m_BufferStream,
+                                           requestID,
                                            collection.Database,
-                                           collection, 
+                                           collection,
                                            Protocol.QueryFlags.None,
                                            skipCount,
                                            fetchBy,
-                                           query, 
+                                           query,
                                            selector);
           writeSocket(total);
-       
+
           var got = readSocket();
           var reply = Protocol.Read_REPLY(got);
           Protocol.CheckReplyDataForErrors(reply);
@@ -150,12 +150,12 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           m_BufferStream.Position = 0;
-          var total = Protocol.Write_GET_MORE(m_BufferStream, 
-                                           requestID, 
+          var total = Protocol.Write_GET_MORE(m_BufferStream,
+                                           requestID,
                                            cursor.Collection,
                                            cursor);
           writeSocket(total);
-       
+
           var got = readSocket();
           var reply = Protocol.Read_REPLY(got);
 
@@ -174,7 +174,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           var total = Protocol.Write_KILL_CURSORS(m_BufferStream, requestID, cursors);
 
           writeSocket(total);
-       
+
           //KILL_CURSORS returns nothing!
           //////var got = readSocket();
           //////but what gets returned back? NOTHING!
@@ -238,7 +238,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           Protocol.CheckReplyDataForErrors(reply);
           if (Protocol.IsOKReplyDoc(reply)) return;
 
-          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_PING_REPLY_ERROR); 
+          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_PING_REPLY_ERROR);
         }
 
         internal string[] GetCollectionNames(int requestID, Database db)
@@ -266,7 +266,7 @@ namespace NFX.DataAccess.MongoDB.Connector
               }
             }
           }
-          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_LIST_COLLECTIONS_REPLY_ERROR); 
+          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_LIST_COLLECTIONS_REPLY_ERROR);
         }
 
         internal long Count(int requestID, Collection collection, Query query = null, int limit = -1, int skip = -1, object hint = null)
@@ -274,15 +274,15 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           m_BufferStream.Position = 0;
-          var total = Protocol.Write_COUNT(m_BufferStream, 
-                                           requestID, 
-                                           collection, 
+          var total = Protocol.Write_COUNT(m_BufferStream,
+                                           requestID,
+                                           collection,
                                            query,
                                            limit,
                                            skip,
                                            hint);
           writeSocket(total);
-       
+
           var got = readSocket();
           var reply = Protocol.Read_REPLY(got);
           Protocol.CheckReplyDataForErrors(reply);
@@ -291,7 +291,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           {
             return reply.Documents[0]["n"].AsLong();
           }
-          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_COUNT_REPLY_ERROR); 
+          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_COUNT_REPLY_ERROR);
         }
 
         internal BSONDocument RunCommand(int requestID, Database database, BSONDocument command)
@@ -299,12 +299,12 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           m_BufferStream.Position = 0;
-          var total = Protocol.Write_RUN_COMMAND(m_BufferStream, 
-                                           requestID, 
-                                           database, 
+          var total = Protocol.Write_RUN_COMMAND(m_BufferStream,
+                                           requestID,
+                                           database,
                                            command);
           writeSocket(total);
-       
+
           var got = readSocket();
           var reply = Protocol.Read_REPLY(got);
           Protocol.CheckReplyDataForErrors(reply);
@@ -313,7 +313,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           {
             return reply.Documents[0];
           }
-          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_RUN_COMMAND_REPLY_ERROR + command.ToString()); 
+          throw new MongoDBConnectorProtocolException(StringConsts.PROTO_RUN_COMMAND_REPLY_ERROR + command.ToString());
         }
 
       #endregion
@@ -326,15 +326,23 @@ namespace NFX.DataAccess.MongoDB.Connector
             throw new MongoDBConnectorProtocolException(StringConsts.PROTO_SOCKET_WRITE_EXCEED_LIMIT_ERROR.Args(total, Protocol.BSON_SIZE_LIMIT));
 
           ensureSocket();
-          m_TcpClient.GetStream().Write(m_BufferStream.GetBuffer(), 0, total);
-          //todo inc stats
+          try
+          {
+            m_TcpClient.GetStream().Write(m_BufferStream.GetBuffer(), 0, total);
+            //todo inc stats
+          }
+          catch
+          { //todo inc failure stats
+            disconnectSocket();
+            throw;
+          }
         }
 
         private Stream readSocket()
         {
           var nets = m_TcpClient.GetStream();
           var total = BinUtils.ReadInt32(nets);
-          
+
           if (total>=Protocol.BSON_SIZE_LIMIT)
             throw new MongoDBConnectorProtocolException(StringConsts.PROTO_SOCKET_READ_EXCEED_LIMIT_ERROR.Args(total, Protocol.BSON_SIZE_LIMIT));
 
@@ -365,7 +373,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
           var node = m_Server.Node;
           return (node.Host + ':' + node.Service).ToIPEndPoint(DEFAULT_MONGO_PORT);
-        } 
+        }
 
         private void ensureSocket()
         {
@@ -377,25 +385,33 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
           disconnectSocket();
           var server = getIPEndPoint();
-        
+
           m_TcpClient = new TcpClient();
-        
-          m_TcpClient.Connect( server );
 
-          m_TcpClient.NoDelay = true;
-          m_TcpClient.LingerState.Enabled = false;
+          try
+          {
+            m_TcpClient.Connect( server );
 
-          m_TcpClient.ReceiveBufferSize =  m_Server.SocketReceiveBufferSize;
-          m_TcpClient.SendBufferSize    =  m_Server.SocketSendBufferSize; 
-            
-          m_TcpClient.ReceiveTimeout    =  m_Server.SocketReceiveTimeout;
-          m_TcpClient.SendTimeout       =  m_Server.SocketSendTimeout;
+            m_TcpClient.NoDelay = true;
+            m_TcpClient.LingerState.Enabled = false;
+
+            m_TcpClient.ReceiveBufferSize =  m_Server.SocketReceiveBufferSize;
+            m_TcpClient.SendBufferSize    =  m_Server.SocketSendBufferSize;
+
+            m_TcpClient.ReceiveTimeout    =  m_Server.SocketReceiveTimeout;
+            m_TcpClient.SendTimeout       =  m_Server.SocketSendTimeout;
+          }
+          catch
+          {
+            disconnectSocket();
+            throw;
+          }
         }
 
         private void disconnectSocket()
         {
           if (m_TcpClient==null) return;
-          m_TcpClient.Close();
+          try {  m_TcpClient.Close();  } catch { }
           m_TcpClient = null;
         }
       #endregion
