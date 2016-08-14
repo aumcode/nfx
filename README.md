@@ -3,6 +3,7 @@
 
 [![Join the chat at https://gitter.im/aumcode/nfx](https://badges.gitter.im/aumcode/nfx.svg)](https://gitter.im/aumcode/nfx?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+Real feeadback from developers and users of NFX - http://www.nfxsucks.com/
 
 License: Apache 2.0
 
