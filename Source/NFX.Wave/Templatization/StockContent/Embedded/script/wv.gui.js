@@ -1,12 +1,12 @@
 ﻿"use strict";
-/*jshint devel: true,browser: true, sub: true */ 
+/*jshint devel: true,browser: true, sub: true */
 /*global WAVE: true,$: true */
 
 /*!
- * Wave Java Script Library Default UI v2.0.0 
+ * Wave Java Script Library Default UI v2.0.0
  *
- * Based on IT Adapter JS Library 2002-2011 
- * License: Unrestricted use/modification with mandatory reference to IT Adapter Corp. as the original author  
+ * Based on IT Adapter JS Library 2002-2011
+ * License: Unrestricted use/modification with mandatory reference to IT Adapter Corp. as the original author
  * (c) 2002-2011, 2013-2014 IT Adapter Corp.
  * http://www.itadapter.com/
  * Authors: Dmitriy Khmaladze
@@ -17,7 +17,7 @@ WAVE.GUI = (function(){
 
     var tUNDEFINED = "undefined";
 
-    var published = { 
+    var published = {
         TUNDEFINED: tUNDEFINED,
         CLS_TOAST: "wvToast",
         CLS_CURTAIN: "wvCurtain",
@@ -48,7 +48,7 @@ WAVE.GUI = (function(){
         EVT_PHASE_BEFORE: "before",
         EVT_PHASE_AFTER:  "after",
 
-        
+
         EVT_TREE_NODE_ADD: 'tree-node-add',
         EVT_TREE_NODE_REMOVE: 'tree-node-remove',
 
@@ -200,7 +200,12 @@ WAVE.GUI = (function(){
 
     var fCurtains = [];
     var fCurtainDIV = null;
-    var fBodyOverflow = null;
+
+    var fBodyScrollTop = 0;
+    var fBodyPosition = null;
+    var fBodyOverflowY = null;
+    var fBodyTop = null;
+    var fScrollFixed = false;
 
     function preventFocusLeak(e) {
       if (fCurtains.length > 0){
@@ -235,8 +240,18 @@ WAVE.GUI = (function(){
         if (fCurtains.length === 1 && !WAVE.Platform.Mobile) {
           window.addEventListener("focus", preventFocusLeak, true);
 
-          fBodyOverflow = document.body.style.overflow;
-          document.body.style.overflow = "hidden";
+          fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          fBodyTop = document.body.style.top;
+          fBodyPosition = document.body.style.position;
+          fBodyOverflowY = document.body.style.overflowY;
+
+          if (document.body.parentElement.offsetHeight > window.innerHeight) {
+            fScrollFixed = true;
+
+            document.body.style.top = (-(fBodyScrollTop) + "px");
+            document.body.style.position = "fixed";
+            document.body.style.overflowY = "scroll";
+          }
         }
     };
 
@@ -247,13 +262,19 @@ WAVE.GUI = (function(){
             div.__DIALOG.cancel();
             return;
         }
-                
+
         document.body.removeChild(div);
         WAVE.arrayDelete(fCurtains, div);
         //return scrolling and remove focus handler
         if (fCurtains.length === 0 && !WAVE.Platform.Mobile) {
           window.removeEventListener("focus", preventFocusLeak, true);
-          document.body.style.overflow = fBodyOverflow;
+
+          if (fScrollFixed) {
+            document.body.style.top = fBodyTop;
+            document.body.style.position = fBodyPosition;
+            document.body.style.overflowY = fBodyOverflowY;
+            document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
+          }
         }
     };
 
@@ -458,7 +479,7 @@ WAVE.GUI = (function(){
     published.isDirty = function(){
       return fDirty || published.currentDialog()!==null;
     };
-    
+
     //Set to true to bypass check on page unload
     published.SUPPRESS_UNLOAD_CHECK = false;
 
@@ -473,7 +494,7 @@ WAVE.GUI = (function(){
     published.PuzzleKeypad = function(init)
     {
         if (typeof(init)===tUNDEFINED || init===null || typeof(init.DIV)===tUNDEFINED || WAVE.strEmpty(init.Image)) throw "PuzzleKeypad.ctor(init.DIV, init.Image)";
-        
+
         var keypad = this;
         WAVE.extend(keypad, WAVE.EventManager);
 
@@ -500,11 +521,11 @@ WAVE.GUI = (function(){
               bid: "btnClear_"+seed,
               iid: "img_"+seed,
               help: fHelp,
-              question: fQuestion, 
+              question: fQuestion,
               img: fImage + "&req="+WAVE.genRndKey(),
               clear: "Clear"
             };
-  
+
             var html = WAVE.strTemplate(
                         "<div class='wvPuzzleHelp'     id='@hid@'>@help@</div>"+
                         "<div class='wvPuzzleQuestion' id='@qid@'>@question@</div>"+
@@ -519,7 +540,7 @@ WAVE.GUI = (function(){
                fValue = [];
                keypad.eventInvoke(published.EVT_PUZZLE_KEYPAD_CHANGE, fValue);
              });
-             
+
             $("#"+args.iid).click(function(e){//IMAGE click
                var offset = $(this).offset();
                var point = {x: Math.round(e.pageX-offset.left), y: Math.round(e.pageY-offset.top)};
@@ -578,7 +599,7 @@ WAVE.GUI = (function(){
 
       var DEFAULT_SCOPE_NAME = "";
 
-      var fScopeInfos = [], fScopeInfosWlk = WAVE.arrayWalkable(fScopeInfos); // [{name: , cfg: [{}], elementInfos: []}] 
+      var fScopeInfos = [], fScopeInfosWlk = WAVE.arrayWalkable(fScopeInfos); // [{name: , cfg: [{}], elementInfos: []}]
       var fElementInfos = [], // [{element: , ruler: , cfg: {getInfo: , scopeMouseEnter: , scopeMouseLeave: , scopeMouseMove: }}, scopeInfos: []]
           fElementInfosWlk = WAVE.arrayWalkable(fElementInfos);
 
@@ -657,7 +678,7 @@ WAVE.GUI = (function(){
           WAVE.arrayWalkable(elementInfo.scopeInfos).wEach(function(s) { WAVE.arrayDelete(s.elementInfos, elementInfo); });
           elementInfo.scopeInfos.splice(0, elementInfo.scopeInfos.length);
         }
-        
+
         if (elementInfo.scopeInfos.length === 0) {
           var jElement = $(element);
           jElement.unbind("mouseenter", onMouseEnter);
@@ -832,7 +853,7 @@ WAVE.GUI = (function(){
         var divHintRect = divHint.getBoundingClientRect();
 
         var hintRc = WAVE.Geometry.toRectWH(divHintRect.left, divHintRect.top, divHintRect.width, divHintRect.height);
-        
+
         var hintPos = getHintPos(e.clientX, e.clientY, hintRc, parentRc);
 
         divHint.style.left = hintPos.x() + "px";
@@ -842,7 +863,7 @@ WAVE.GUI = (function(){
 
         var r = fCfg.getMasterInfo ?
                   fCfg.getMasterInfo({clientPoint: new WAVE.Geometry.Point(e.clientX, e.clientY)}) :
-                  { elementRcPoint: new WAVE.Geometry.Point(elX, elY), isInParentRc: true }; 
+                  { elementRcPoint: new WAVE.Geometry.Point(elX, elY), isInParentRc: true };
 
         ensureDivsVisibility(e.clientX, e.clientY, r.isInParentRc);
 
@@ -950,7 +971,7 @@ WAVE.GUI = (function(){
           clientY = slaveParentRc.top() + elementRcPoint.y();
         }
 
-        
+
 
         ensureDivsVisibility(clientX, clientY, e.masterRes.isInParentRc && slaveIsInParentRc);
 
@@ -1034,7 +1055,7 @@ WAVE.GUI = (function(){
 
         function removeDiv(div) {
           if (div === null) return;
-          document.body.removeChild(div); 
+          document.body.removeChild(div);
         }
 
         function getHintPos(cx, cy, hintRc, parentElementRc) {
@@ -1076,7 +1097,7 @@ WAVE.GUI = (function(){
       fRulerManager.unset(e);
     };
 
-    published.rulerSetScope = function (scopeName, cfg) { 
+    published.rulerSetScope = function (scopeName, cfg) {
       if (fRulerManager === null) fRulerManager = new RulerManager();
       fRulerManager.setScope(scopeName, cfg);
     };
@@ -1246,7 +1267,7 @@ WAVE.GUI = (function(){
                     return fParent.level() + 1;
                   };
 
-                  this.html = function(val) { 
+                  this.html = function(val) {
                     if (fParent === null) return null;
                     if (typeof(val) === tUNDEFINED) return fDIVOwn.innerHTML;
 
@@ -1281,7 +1302,7 @@ WAVE.GUI = (function(){
                         treeEventInvoke(published.EVT_TREE_NODE_SELECTION, evtArgsBefore);
                         if (evtArgsBefore.abort === true) return;
                       }
-                    
+
                       fSelected = val;
                       fDIVOwn.className = fSelected ? node.wvTreeNodeOwnSelected() : node.wvTreeNodeOwn();
 
@@ -1352,7 +1373,7 @@ WAVE.GUI = (function(){
                   };
 
                   var fData = nodeInit.data;
-                  this.data = function(val) { 
+                  this.data = function(val) {
                     if (typeof(val) === tUNDEFINED) return fData;
                     if (fData === val) return;
 
@@ -1380,7 +1401,7 @@ WAVE.GUI = (function(){
                     fExpander.className = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
                     fExpander.innerHTML = val ? fExpandedContent : fCollapsedContent;
                     fDIVChildren.style.display = val ? fChildrenDisplayVisible : "none";
-                      
+
                     var evtArgsAfter = { phase: published.EVT_PHASE_AFTER, node: node, value: val};
                     treeEventInvoke(published.EVT_TREE_NODE_EXPANSION, evtArgsAfter);
                   };
@@ -1432,7 +1453,7 @@ WAVE.GUI = (function(){
                         return true;
 
                         function moveChildrenWalker() {
-                          if (!childrenWalker.moveNext()) { 
+                          if (!childrenWalker.moveNext()) {
                             currentType = 0;
                             return false;
                           } else {
@@ -1560,7 +1581,7 @@ WAVE.GUI = (function(){
                       child.remove();
                     }
                   };
-                  
+
                   // public }
 
                   if (fParent !== null) {
@@ -1577,9 +1598,9 @@ WAVE.GUI = (function(){
                     nodeTemplateClsArgs.wvTreeNodeButton = fExpanded ? node.wvTreeNodeButtonExpanded() : node.wvTreeNodeButtonCollapsed();
 
                     var html = WAVE.strTemplate(TREE_NODE_TEMPLATE, nodeTemplateClsArgs);
-                  
+
                     var parentDIV = fParent.__divChildren();
-                    
+
                     fDIV = document.createElement("div");
                     fDIV.id = "root_" + fElmID;
                     var cls = "";
@@ -1588,7 +1609,7 @@ WAVE.GUI = (function(){
                     fDIV.innerHTML = html;
 
                     parentDIV.appendChild(fDIV);
-                    
+
                     fDIVContent = WAVE.id("content_" + fElmID);
                     fDIVOwn = WAVE.id("own_" + fElmID);
                     fDIVChildren = WAVE.id("children_" + fElmID);
@@ -1612,7 +1633,7 @@ WAVE.GUI = (function(){
                     fDIVChildren.style.display = exp ? fChildrenDisplayVisible : "none";
                   }
 
-                }; //Node class 
+                }; //Node class
 
 
       if (typeof(init)===tUNDEFINED || init===null || typeof(init.DIV)===tUNDEFINED || init.DIV===null) throw "Tree.ctor(init.DIV)";
@@ -1647,7 +1668,7 @@ WAVE.GUI = (function(){
         var evtArgsAfter;
 
         if (fTreeSelectionType === published.TREE_SELECTION_SINGLE) {
-          
+
           if (val === true) {
             fRootNode.getDescendants().wEach(function(n) {
               if (n.node !== node && n.node.selected() === true) {
@@ -1693,7 +1714,7 @@ WAVE.GUI = (function(){
       };
 
       var fSupressEvents = init.supressEvents === true;
-      this.supressEvents = function(val) { 
+      this.supressEvents = function(val) {
         if (typeof(val) === tUNDEFINED) return fSupressEvents;
         fSupressEvents = val;
       };
@@ -1733,7 +1754,7 @@ WAVE.GUI = (function(){
           var objToEdit = obj;
           for (var i = 0; i < keys.length-1; i++)
               objToEdit = objToEdit[keys[i]];
-              
+
           objToEdit[keys[keys.length - 1]] = e.target.value;
       }
 
@@ -1752,7 +1773,7 @@ WAVE.GUI = (function(){
             });
 
             cn = troot.addChild({ html: html });
-            
+
             var input = WAVE.id(editorID);
             input.objpath = cn.path();
             input.addEventListener("input", onInput);
@@ -1780,7 +1801,7 @@ WAVE.GUI = (function(){
       if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "MultiLineTextBox.ctor(init.DIV)";
       if (WAVE.strEmpty(init.id)) throw "MultiLineTextBox.ctor(init.id)";
 
-      var editor = this; 
+      var editor = this;
       WAVE.extend(editor, WAVE.EventManager);
       var fDIV = init.DIV;
       var fId = init.id;
@@ -1790,16 +1811,16 @@ WAVE.GUI = (function(){
       var fReadOnly = WAVE.strAsBool(init.readonly, false);
       var fDisabled = WAVE.strAsBool(init.disabled, false);
       var fValue = WAVE.strDefault(init.value);
-      var fAttrs = WAVE.tryParseJSON(init.attrs).obj; 
+      var fAttrs = WAVE.tryParseJSON(init.attrs).obj;
 
-      var fTemplate = 
+      var fTemplate =
         "<div id='@shdwDivId@' style='position: fixed;visibility: hidden;height: auto;width: auto;'></div>" +
         (fAddLabel ? "<label for='@id@'>@placeholder@</label>" : "") +
         "<textarea id='@id@' @disabled@ @readonly@ style='resize: none' placeholder='@placeholder@' title='@placeholder@'></textarea>";
 
       fDIV.innerHTML = WAVE.strHTMLTemplate(fTemplate, {
         shdwDivId: fShadowDivId,
-        id : fId,             
+        id : fId,
         disabled: fDisabled ? "disabled" : "",
         readonly: fReadOnly ? "readonly" : "",
         placeholder : fPlaceholder
@@ -1857,8 +1878,8 @@ WAVE.GUI = (function(){
   // {
   //   "DIV": html container, --required
   //   "outputFormFieldName" : "fieldId"
-  //   "sets" :[], 
-  //   "content": "{}", 
+  //   "sets" :[],
+  //   "content": "{}",
   //   "disabled": false,
   //   "readonly": false,
   //   "canAdd": true,
@@ -2088,10 +2109,10 @@ WAVE.GUI = (function(){
         }
 
         var html =
-          "<fieldset id='@langId@'>" +      
+          "<fieldset id='@langId@'>" +
           "<legend id='@isoLabelId@' class='@langClass@'></legend>" +
           "<div class='@textEditorsContainerClass@' id='@controlContainerId@'>" +
-          "</div>" + 
+          "</div>" +
           (fCanDel && !fReadOnly && !fDisable ? "<input type='button' id='@deleteButtonId@' class='@delCls@' value='@delText@'/>" : "") +
           "</fieldset>";
 
@@ -2171,20 +2192,20 @@ WAVE.GUI = (function(){
       this.jsonContent = function () { return fContent; };
 
       this.content = function (value, rebuild) {
-        if (typeof (value) === tUNDEFINED) 
+        if (typeof (value) === tUNDEFINED)
           return WAVE.empty(fContent) ? "" : JSON.stringify(fContent, null, 2);
-                  
+
         var parsed = WAVE.tryParseJSON(value);
         if (parsed.ok) {
           rebuild = WAVE.strAsBool(rebuild, true);
-          if (rebuild) { 
+          if (rebuild) {
             for (var iso in fContent) {
               WAVE.removeElem(getLangContainerId(iso));
-            } 
+            }
           }
 
           fContent = WAVE.memberClone(parsed.obj);
-          
+
           if(rebuild) buildEditors();
 
           setHiddenValue();
@@ -2204,7 +2225,7 @@ WAVE.GUI = (function(){
 
       this.enable = function (value) {
         if (typeof(value) === tUNDEFINED) return !fDisable;
-        
+
         fDisable = !(value===true);
         rebuild();
         return value;
@@ -2212,7 +2233,7 @@ WAVE.GUI = (function(){
 
       this.readOnly = function (value) {
         if (typeof(value) === tUNDEFINED) return fReadOnly;
-        
+
         fReadOnly = value===true;
         rebuild();
         return value;
@@ -2220,7 +2241,7 @@ WAVE.GUI = (function(){
 
       this.canAdd = function (value) {
         if (typeof(value) === tUNDEFINED) return fCanAdd;
-        
+
         fCanAdd = value===true;
         rebuild();
         return value;
@@ -2228,7 +2249,7 @@ WAVE.GUI = (function(){
 
       this.canDel = function (value) {
         if (typeof(value) === tUNDEFINED) return fCanDel;
-        
+
         fCanDel = value===true;
         rebuild();
         return value;
@@ -2236,7 +2257,7 @@ WAVE.GUI = (function(){
 
       this.canRaw = function (value) {
         if (typeof (value) === tUNDEFINED) return fCanRaw;
-        
+
         fCanRaw = value===true;
         rebuild();
         return value;
@@ -2291,7 +2312,7 @@ WAVE.GUI = (function(){
     //}
     published.ObjectEditor = function(init) {
       if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "ObjectEditor.ctor(init.DIV)";
-      
+
       var editor = this;
       WAVE.extend(editor, WAVE.EventManager);
 
@@ -2328,7 +2349,7 @@ WAVE.GUI = (function(){
         outputHiddenId: "edit_conf_out_" + fSeed,
         btnRawId: "edit_raw_" + fSeed,
         btnDelId: "edit_del_" + fSeed
-      }; 
+      };
 
       var fTexts = WAVE.get(init, "texts", {});
         fTexts.addTitle = getText("add-title", "Add New Language");
@@ -2360,7 +2381,7 @@ WAVE.GUI = (function(){
         var sets = WAVE.mergeArrays([], meta.sets, function(a, b) { return a.toLowerCase() === b.toLowerCase(); }, function(a) { return a.toLowerCase(); });
         var items = WAVE.isObject(meta.items) ? meta.items : {};
         var disabled = WAVE.strAsBool(meta.disabled, fDisabled);
-        var readonly = WAVE.strAsBool(meta.readonly, fReadOnly); 
+        var readonly = WAVE.strAsBool(meta.readonly, fReadOnly);
         var canRaw = WAVE.strAsBool(meta.canRaw, false);
         var canDel = WAVE.strAsBool(meta.canDel, true);
         var canAdd = WAVE.strAsBool(meta.canAdd, true);
@@ -2369,8 +2390,8 @@ WAVE.GUI = (function(){
         var errMsg = WAVE.strDefault(meta.errMsg, required ? fTexts.required : "");
         var showError = WAVE.isFunction(meta.showError) ? meta.showError : function() { WAVE.id(errorDivId).innerText = errMsg; };
         var hideError = WAVE.isFunction(meta.hideError) ? meta.hideError : function() { WAVE.id(errorDivId).innerText = ""; };
-        var validFunction = WAVE.isFunction(meta.validate) ? 
-          meta.validate : 
+        var validFunction = WAVE.isFunction(meta.validate) ?
+          meta.validate :
           function(sender, v, inIndex) {
           var res = true;
           if (required) {
@@ -2378,14 +2399,14 @@ WAVE.GUI = (function(){
             if (type === "array" || type === "multiple") res = WAVE.isArray(v) && v.length > 0;
             if (type === "object" || type === "ps") res = WAVE.isObject(v) && !WAVE.empty(v);
           }
-          return {ok: res, value: v, index: inIndex}; 
+          return {ok: res, value: v, index: inIndex};
         };
 
         var divId = uName(name, fControlsIds.editorContainerId);
         var inputId = uName(name, fControlsIds.inputId);
         var errorDivId = divId + "_err";
         var ed = null;
-        var i, l, nId, radios, key, html, vFunc, arr; 
+        var i, l, nId, radios, key, html, vFunc, arr;
 
         if (type === "text" || type === "textarea" || type === "combo" || type === "check") {
           vFunc = function() {
@@ -2408,13 +2429,13 @@ WAVE.GUI = (function(){
               if (radios[i].checked) {
                 arr.push(radios[i].value);
               }
-            } 
+            }
             return validateField(validFunction, radios, type === "multiple" ? arr : (arr.length > 0 ? arr[0] : null), fIdx, errorDivId, errMsg, showError, hideError);
           };
         }
         fValidators.push(vFunc);
 
-        var strHtml = 
+        var strHtml =
           "<div class='@nodeCont@'>" +
             (WAVE.strEmpty(plh) ? "" : "<label class='@lblCls@' for='@labelFor@'>@plh@</label>") +
             "<div class='@errorDivCls@' id='@errorDivId@'></div>" +
@@ -2431,10 +2452,10 @@ WAVE.GUI = (function(){
           errorDivCls: "wvError",
           errorDivId: errorDivId,
           divId: divId,
-          ccCls: type === "array" ? 
-            published.CLS_OBJECT_EDITOR_ARRAY_CONTAIER : 
-            ((type === "object" || type === "ps") ? 
-              published.CLS_OBJECT_EDITOR_OBJECT_CONTAIER : 
+          ccCls: type === "array" ?
+            published.CLS_OBJECT_EDITOR_ARRAY_CONTAIER :
+            ((type === "object" || type === "ps") ?
+              published.CLS_OBJECT_EDITOR_OBJECT_CONTAIER :
               published.CLS_OBJECT_EDITOR_INPUT_CONTAIER)
         }));
 
@@ -2482,7 +2503,7 @@ WAVE.GUI = (function(){
             checkAndSave();
           });
         }else if(type === "check") {
-          gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='checkbox' placeholder='@plh@' title='@plh@' />", 
+          gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='checkbox' placeholder='@plh@' title='@plh@' />",
           {
             id: inputId,
             disabled: strDisabled,
@@ -2499,7 +2520,7 @@ WAVE.GUI = (function(){
           html = "";
           for(key in items) {
             nId = inputId + "_+ " + key;
-            html += WAVE.strHTMLTemplate("<label for='@id@'>@name@</label>", 
+            html += WAVE.strHTMLTemplate("<label for='@id@'>@name@</label>",
             {
               id: nId,
               name: WAVE.strDefault(items[key], key)
@@ -2524,7 +2545,7 @@ WAVE.GUI = (function(){
           html = "";
           for(key in items){
             nId = inputId + "_+ " + key;
-            html += WAVE.strHTMLTemplate("<label for='@id@'>@name@</label>", 
+            html += WAVE.strHTMLTemplate("<label for='@id@'>@name@</label>",
             {
               id: nId,
               name: WAVE.strDefault(items[key], key)
@@ -2552,7 +2573,7 @@ WAVE.GUI = (function(){
             html += "<option value=''></option>";
           }
           for(key in items) {
-            html += WAVE.strHTMLTemplate("<option @selected@ value='@value@'>@text@</option>", 
+            html += WAVE.strHTMLTemplate("<option @selected@ value='@value@'>@text@</option>",
             {
               selected: content === key ? "selected" : "",
               value: key,
@@ -2574,7 +2595,7 @@ WAVE.GUI = (function(){
             checkAndSave();
           };
         } else if(type === "text") {
-          gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='text' placeholder='@plh@' title='@plh@' value='@value@'/>", 
+          gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='text' placeholder='@plh@' title='@plh@' value='@value@'/>",
           {
             id: inputId,
             disabled: strDisabled,
@@ -2595,7 +2616,7 @@ WAVE.GUI = (function(){
 
       function localize(text, dflt){
         return WAVE.strLocalize(fCurrentLocal, fLocalizerSchema, fLocalizerField, WAVE.strDefault(text, dflt));
-      } 
+      }
 
       var fClasses = WAVE.get(init, "btnClasses", {});
         fClasses.addBtnCls = WAVE.strDefault(fClasses.addBtnCls, published.CLS_PS_BTN_ADD);
@@ -2609,11 +2630,11 @@ WAVE.GUI = (function(){
       }
 
       this.content = function(value, rebuild) {
-        if (typeof (value) === tUNDEFINED) 
+        if (typeof (value) === tUNDEFINED)
           return WAVE.empty(fContent) ? "" : JSON.stringify(fContent, null, 2);
-                  
+
         var parsed = WAVE.tryParseJSON(value);
-        if (parsed.ok) { 
+        if (parsed.ok) {
           fContent = parsed.obj;
 
           setHiddenValue();
@@ -2654,7 +2675,7 @@ WAVE.GUI = (function(){
 
       function validateField(func, control ,value, idx, errorDivId, errMsg, showError, hideError) {
         var res = func(editor, value, idx);
-        if (res.ok) { 
+        if (res.ok) {
           hideError();
           editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS, { phase: published.EVT_PHASE_AFTER, target: control });
         } else {
@@ -2670,9 +2691,9 @@ WAVE.GUI = (function(){
 
       function build() {
         fValidators = [];
-        fDIV.innerHTML = WAVE.strHTMLTemplate("<div id='@contId@'></div><div id='@buttonsId@'></div>", 
+        fDIV.innerHTML = WAVE.strHTMLTemplate("<div id='@contId@'></div><div id='@buttonsId@'></div>",
           {
-            contId: fControlsIds.editorContainerId, 
+            contId: fControlsIds.editorContainerId,
             buttonsId: fControlsIds.buttonsContainerId
           });
         var nodeDIV = WAVE.id(fControlsIds.editorContainerId);
@@ -2682,7 +2703,7 @@ WAVE.GUI = (function(){
             for(var i = 0; i < fContent.length; i++){
               createArrItem(i, nodeDIV);
             }
-          } 
+          }
         } else {
           for(var o in fSchema){
             var ed = new Control(o, nodeDIV);
@@ -2694,7 +2715,7 @@ WAVE.GUI = (function(){
           buttonsDIV.insertAdjacentHTML("beforeend", "<input type='button' value='" + fTexts.btnAdd + "' id='" + buttonAddId + "' class='" + fClasses.addBtnCls + "'/>");
           WAVE.id(buttonAddId).onclick = function () {
             if(!WAVE.isArray(fContent)) fContent = [];
-            fContent.push({}); 
+            fContent.push({});
             editor.content(fContent, true);
             editor.validate();
           };
@@ -2756,10 +2777,10 @@ WAVE.GUI = (function(){
         }));
         var ed = new published.ObjectEditor({
           DIV: WAVE.id(id),
-          content: fContent[idx],  
+          content: fContent[idx],
           meta: m,
           disabled : fDisabled,
-          readonly : fReadOnly 
+          readonly : fReadOnly
         });
         ed.eventBind(published.EVT_OBJECT_EDITOR_UPDATED, function (e, data) {
           fContent[idx] = data;
@@ -2767,7 +2788,7 @@ WAVE.GUI = (function(){
         });
         ed.eventBind(published.EVT_OBJECT_EDITOR_VALIDATION_ERROR,function(e, args) {
           editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_ERROR, { phase: published.EVT_PHASE_AFTER, target: args.target });
-        });  
+        });
         ed.eventBind(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS,function(e, args) {
           editor.eventInvoke(published.EVT_OBJECT_EDITOR_VALIDATION_SUCCESS, { phase: published.EVT_PHASE_AFTER, target: args.target });
         });
@@ -2802,7 +2823,7 @@ WAVE.GUI = (function(){
     //  "DIV" : DIV,
     //  "unswitchable" : false,
     //  "parse": true|false
-    //  "tabs" : [ 
+    //  "tabs" : [
     //    {
     //      "title" : "text",
     //      "name" : "name of tab",
@@ -2849,7 +2870,7 @@ WAVE.GUI = (function(){
         var baseDisplay;
 
         function renderContent() {
-          if(fIsHtml) 
+          if(fIsHtml)
             fCont.innerHTML = fContent;
           else
             fCont.innerText = fContent;
@@ -2902,7 +2923,7 @@ WAVE.GUI = (function(){
         this.tab = function() { return fLi; };
         this.cont = function() { return fCont; };
         this.isActive = function(val) {
-          if (typeof (val) === tUNDEFINED || val === null) return fIsActive; 
+          if (typeof (val) === tUNDEFINED || val === null) return fIsActive;
 
           fIsActive = val;
         };
@@ -2927,7 +2948,7 @@ WAVE.GUI = (function(){
           for(var i = 0, l = fTabs.length; i < l; i++) {
             var t = fTabs[i];
             if (t.visible() && fTabs[0].name() !== fName) {
-              if (fIsActive && !fVisible) 
+              if (fIsActive && !fVisible)
                 tabs.tabActive(t.name());
               allInvisible = false;
             }
@@ -2983,7 +3004,7 @@ WAVE.GUI = (function(){
 
       this.unswitchable = function(value) {
         if (typeof(value) === tUNDEFINED) return fUnswitchable;
-        
+
         fUnswitchable = value === true;
         for(var i = 0; i < fTabs.length; i++){
           var tab = fTabs[i];
@@ -2991,7 +3012,7 @@ WAVE.GUI = (function(){
             if(!fTabs[i].isActive())
               tab.tab().className += " " + published.CLS_TABS_LI_DISABLED;
           }
-          else 
+          else
             WAVE.removeClass(tab.tab(), published.CLS_TABS_LI_DISABLED);
         }
         return value;
@@ -3078,7 +3099,7 @@ WAVE.GUI = (function(){
         }
         tab.content(value);
         return value;
-      };  
+      };
 
       this.tabTitle = function(name, value) {
         if (typeof(name) === tUNDEFINED || name === null || WAVE.strEmpty(name)) return null;
@@ -3101,7 +3122,7 @@ WAVE.GUI = (function(){
           return tab.visible();
         }
 
-        val = val === true; 
+        val = val === true;
         tab.visible(val);
         return val;
       };
@@ -3126,13 +3147,13 @@ WAVE.GUI = (function(){
               fTabs.push(new Tab(tab));
             }
         } else {
-          var html = 
+          var html =
             "<div id='@divTabsId@' class='@ulContainer@'>" +
               "<ul id='@ulId@' class='@ulClass@'></ul>" +
             "</div>" +
             "<div id='@divContId@' class='@divClass@'></div>";
 
-          fDIV.innerHTML = WAVE.strHTMLTemplate(html, 
+          fDIV.innerHTML = WAVE.strHTMLTemplate(html,
           {
             divTabsId : fControlsIds.divTabsContId,
             divContId : fControlsIds.divContentContId,
@@ -3245,7 +3266,7 @@ WAVE.GUI = (function(){
         if (fHideOnFocus) {
           window.addEventListener("focus", hideEventHandler, true);
           setTimeout(function(){ window.addEventListener("mousemove", moveEventHandler, false); } , 1);
-        } 
+        }
         if (fHideOnClick)
           setTimeout(function(){ window.addEventListener("click", hideEventHandler, false); }, 1);
       }
@@ -3274,7 +3295,7 @@ WAVE.GUI = (function(){
             });
             fTitleControl = WAVE.id(titleId);
 
-            if (fIsTitleHtml) 
+            if (fIsTitleHtml)
               fTitleControl.innerHTML = fTitle;
             else
               fTitleControl.innerText = fTitle;
@@ -3301,12 +3322,12 @@ WAVE.GUI = (function(){
         } else if (fTitleControl !== null && fContentControl !== null) {
           WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE);
           WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT);
-        } else 
+        } else
           throw "Details.build(unacceptable init)";
 
         setTitle(fTitle);
 
-        if (fShowOnClick) 
+        if (fShowOnClick)
           fTitleControl.addEventListener("click", __show, false);
         if (fShowOnFocus)
           fTitleControl.onmouseover = fTitleControl.onfocus = __show;
@@ -3317,7 +3338,7 @@ WAVE.GUI = (function(){
       function setTitle(cont) {
         if(WAVE.strEmpty(fTitle)) return;
 
-        if (fIsTitleHtml) 
+        if (fIsTitleHtml)
           fTitleControl.innerHTML = cont;
         else
           fTitleControl.innerText = cont;
@@ -3368,7 +3389,7 @@ WAVE.GUI = (function(){
         if (fMode === "modal") {
           fDialog = new published.Dialog({
             cls: published.CLS_DETAILS_CONTENT + " " + contId,
-            content: fContent, 
+            content: fContent,
             onShow: hideContent
           });
           fContentControl = document.getElementsByClassName(contId)[0];
@@ -3429,7 +3450,7 @@ WAVE.GUI = (function(){
       img.onerror = function () {
         image.error = true;
         if (typeof(onerror) !== tUNDEFINED)
-          onerror.apply(img, arguments);          
+          onerror.apply(img, arguments);
       };
       if (WAVE.has(image, 'clip')) {
         var clip = image.clip;
@@ -3437,7 +3458,7 @@ WAVE.GUI = (function(){
         var right  = clip.right|0;
         var bottom = clip.bottom|0;
         var top    = clip.top|0;
-        var 
+        var
           clipWidth = right - left,
           clipHeight = bottom - top;
         var canvas = document.createElement('canvas');
@@ -3467,7 +3488,7 @@ WAVE.GUI = (function(){
       }
       img.src = image.url;
       image.free = free;
-      
+
       return image;
 
       function free() {
@@ -3510,7 +3531,7 @@ WAVE.GUI = (function(){
         document.addEventListener('touchend', touchend, false);
         function mousemove(event) {
           event.preventDefault();
-          var 
+          var
             pageX = event.pageX,
             pageY = event.pageY;
           dragmove(x, y, x - pageX, y - pageY);
@@ -3519,7 +3540,7 @@ WAVE.GUI = (function(){
         function touchmove(event) {
           event.preventDefault();
           var touches = event.touches;
-          var 
+          var
             pageX = touches[0].pageX,
             pageY = touches[0].pageY;
           dragmove(x, y, x - pageX, y - pageY);
@@ -3537,7 +3558,7 @@ WAVE.GUI = (function(){
           document.removeEventListener('mousemove', mousemove, false);
           document.removeEventListener('touchmove', touchmove, false);
           document.removeEventListener('mouseup',   mouseup,   false);
-          document.removeEventListener('touchend',  touchend,  false);            
+          document.removeEventListener('touchend',  touchend,  false);
         }
       }
       function dragmove(x, y, offsetX, offsetY) {
@@ -3566,7 +3587,7 @@ WAVE.GUI = (function(){
       var fViewbox = build(WAVE.isString(init.DIV) ? WAVE.id(init.DIV) : init.DIV);
 
       var fImage;
-      imageView.image = function (image) { 
+      imageView.image = function (image) {
         if (typeof(image) !== tUNDEFINED)  {
           fImage = updateImage(image);
         }
@@ -3579,28 +3600,28 @@ WAVE.GUI = (function(){
       };
 
       imageView.image(init.image);
-      
+
       window.addEventListener('resize', function() { update(imageView.image() || {}); }, false);
 
       return imageView;
-      
+
       function build(parent) {
         var viewbox = document.createElement('div');
         viewbox.className = published.CLS_IMAGE_VIEW;
         parent.appendChild(viewbox);
         makeDraggable(viewbox, function (x, y) {
-          var 
+          var
             image = imageView.image(),
             offset = position(viewbox),
             box = size(viewbox),
             client = { x: x - offset.x - box.x / 2, y: y - offset.y - box.y / 2 },
-            sz = size(fImage.element), 
-            newClient = { 
-              x: client.x * fImage.width / sz.x, 
-              y: client.y * fImage.height / sz.y 
+            sz = size(fImage.element),
+            newClient = {
+              x: client.x * fImage.width / sz.x,
+              y: client.y * fImage.height / sz.y
             };
           if (fImage.width > sz.x || fImage.height > sz.y) {
-            viewbox.className += ' ' + published.CLS_IMAGE_VIEW_ZOOM;          
+            viewbox.className += ' ' + published.CLS_IMAGE_VIEW_ZOOM;
             var scr = scroll(viewbox);
             viewbox.scrollLeft = newClient.x + scr.x / 2 - (x - offset.x);
             viewbox.scrollTop = newClient.y + scr.y / 2 - (y - offset.y);
@@ -3634,13 +3655,13 @@ WAVE.GUI = (function(){
         if (typeof(fViewbox) === tUNDEFINED) return;
         fViewbox.className = published.CLS_IMAGE_VIEW;
         if (image.error) fViewbox.className += ' ' + published.CLS_IMAGE_BOX_ERROR;
-        else if (!image.load) fViewbox.className += ' ' + published.CLS_IMAGE_BOX_LOADING; 
+        else if (!image.load) fViewbox.className += ' ' + published.CLS_IMAGE_BOX_LOADING;
         else {
-          var 
+          var
             sz = size(fViewbox), aspect = sz.x / sz.y,
             imageAspect = (image.width|0) / (image.height|0);
           if (!isNaN(imageAspect))
-            fViewbox.className += ' ' + ((imageAspect >= aspect) ? published.CLS_IMAGE_BOX_WIDER : published.CLS_IMAGE_BOX_HIGHER);          
+            fViewbox.className += ' ' + ((imageAspect >= aspect) ? published.CLS_IMAGE_BOX_WIDER : published.CLS_IMAGE_BOX_HIGHER);
         }
       }
 
@@ -3695,7 +3716,7 @@ WAVE.GUI = (function(){
       var fUpdate;
       var fThumbnails = build(WAVE.isString(init.thumbnails) ? WAVE.id(init.thumbnails) : init.thumbnails);
       var fPreview = WAVE.isString(init.preview) ? new published.ImageView(init.preview, gallery.urls) : init.preview;
-      
+
       var fCurrent;
       var fItems = [];
       var fItemsLookup = {};
@@ -3707,7 +3728,7 @@ WAVE.GUI = (function(){
         var fId = WAVE.isObject(init) && WAVE.has(init, 'id') ? init.id : seqId;
         init.id = fId;
         var fInit = {};
-        
+
         var item = this;
         WAVE.extend(item, WAVE.EventManager);
 
@@ -3723,36 +3744,36 @@ WAVE.GUI = (function(){
         fThumb.className = published.CLS_GALLERY_THUMBNAIL;
         fElem.appendChild(fThumb);
         fElem.appendChild(fContent);
-        fElem.onclick = function() { 
+        fElem.onclick = function() {
           gallery.current(fId);
         };
 
         item.id        = function () { return fId; };
-        item.title     = function (title) { 
-          if (typeof(title) !== tUNDEFINED 
-            && fInit.title !== title) 
+        item.title     = function (title) {
+          if (typeof(title) !== tUNDEFINED
+            && fInit.title !== title)
             updateTitle(fInit.title = title);
-          return WAVE.strDefault(fInit.title, fId); 
+          return WAVE.strDefault(fInit.title, fId);
         };
-        item.content   = function (content, isText) { 
-          if (typeof(content) !== tUNDEFINED 
+        item.content   = function (content, isText) {
+          if (typeof(content) !== tUNDEFINED
             && (fInit.content !== content
-              || !!fInit.isText !== !!isText)) 
+              || !!fInit.isText !== !!isText))
             updateContent(fInit.content = content, fInit.isText = !!isText);
-          return WAVE.strDefault(fInit.content); 
+          return WAVE.strDefault(fInit.content);
         };
         item.isText    = function () { return !!fInit.isText; };
-        item.image     = function (image) { 
-          if (typeof(image) !== tUNDEFINED 
-            && !equalsImage(fInit.image, image)) 
-            updateImage(fInit.image = image);
-          return fImage; 
-        };
-        item.thumb     = function (image) { 
+        item.image     = function (image) {
           if (typeof(image) !== tUNDEFINED
-            && !equalsImage(fInit.thumb, image)) 
+            && !equalsImage(fInit.image, image))
+            updateImage(fInit.image = image);
+          return fImage;
+        };
+        item.thumb     = function (image) {
+          if (typeof(image) !== tUNDEFINED
+            && !equalsImage(fInit.thumb, image))
             updateThumbnail(fInit.thumb = image);
-          return fThumbImage; 
+          return fThumbImage;
         };
         item.data      = function (data) {
           if (typeof(data) !== tUNDEFINED) {
@@ -3796,13 +3817,13 @@ WAVE.GUI = (function(){
         }
 
         function updateThumbnail(image) {
-          fThumb.innerHTML = '';          
+          fThumb.innerHTML = '';
           fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' ' + published.CLS_IMAGE_BOX_LOADING;
           fThumbImage = loadImage(image, function() {
             this.className = published.CLS_GALLERY_IMAGE;
             this.id = published.CLS_GALLERY_IMAGE + item.id();
             fThumb.appendChild(this);
-            fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' ' 
+            fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' '
               + ((this.width >= this.height) ? published.CLS_IMAGE_BOX_WIDER : published.CLS_IMAGE_BOX_HIGHER);
           }, function () {
             fThumb.className = published.CLS_GALLERY_THUMBNAIL + ' ' + published.CLS_IMAGE_BOX_ERROR;
@@ -3844,7 +3865,7 @@ WAVE.GUI = (function(){
       return gallery;
 
       function build(parent) {
-        var 
+        var
           thumbnails = document.createElement('ul'),
           prev = document.createElement('div'),
           next = document.createElement('div');
@@ -3861,7 +3882,7 @@ WAVE.GUI = (function(){
           var sz = size(thumbnails.firstChild);
           scroll(thumbnails, sz, 400, undefined, update);
         };
-        makeDraggable(thumbnails, undefined, update, update);      
+        makeDraggable(thumbnails, undefined, update, update);
         parent.appendChild(prev);
         parent.appendChild(thumbnails);
         parent.appendChild(next);
@@ -3869,10 +3890,10 @@ WAVE.GUI = (function(){
         fUpdate = update;
         return thumbnails;
         function update() {
-          prev.className = published.CLS_GALLERY_PREV 
+          prev.className = published.CLS_GALLERY_PREV
             + ((fThumbnails.scrollLeft === 0 && fThumbnails.scrollTop === 0) ? ' ' + published.CLS_GALLERY_DISABLED : '');
-          next.className = published.CLS_GALLERY_NEXT 
-            + ((fThumbnails.scrollLeft + fThumbnails.offsetWidth === fThumbnails.scrollWidth 
+          next.className = published.CLS_GALLERY_NEXT
+            + ((fThumbnails.scrollLeft + fThumbnails.offsetWidth === fThumbnails.scrollWidth
               && fThumbnails.scrollTop + fThumbnails.offsetHeight === fThumbnails.scrollHeight) ? ' ' + published.CLS_GALLERY_DISABLED : '');
         }
       }
@@ -3893,15 +3914,15 @@ WAVE.GUI = (function(){
         return it;
       }
 
-      function has(id) { 
+      function has(id) {
         if (typeof(id) === tUNDEFINED) return false;
-        return WAVE.has(fItemsLookup, id); 
+        return WAVE.has(fItemsLookup, id);
       }
 
       function get(id) { return fItemsLookup[id]; }
 
       function updateCurrent(id) {
-        if (!has(id)) return; 
+        if (!has(id)) return;
         var item = get(id);
 
         if (typeof(fCurrent) !== tUNDEFINED)
@@ -3912,7 +3933,7 @@ WAVE.GUI = (function(){
       }
 
       function remove(id) {
-        if (!has(id)) return true;  
+        if (!has(id)) return true;
         get(id).free();
         fItems = fItems.filter(function (it) { return it.id() !== id; });
         delete fItemsLookup[id];
@@ -3950,7 +3971,7 @@ WAVE.GUI = (function(){
       }
       function scroll(elm, to, duration, delta, onstep) {
         var scr = { x: elm.scrollLeft, y: elm.scrollTop };
-        animate({ 
+        animate({
           duration: duration,
           delta: delta,
           step: function (delta) {
@@ -3973,13 +3994,13 @@ WAVE.GUI = (function(){
           evtArgs.phase = published.EVT_PHASE_AFTER;
           delete evtArgs.abort;
           that.eventInvoke(evt, evtArgs);
-          return result;          
+          return result;
         };
       }
     };//Gallery
 
     published.GallerySimple = function (init) {
-      if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "GallerySimple.ctor(init.DIV)";      
+      if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "GallerySimple.ctor(init.DIV)";
       var fDIV = WAVE.isString(init.DIV) ? WAVE.id(init.DIV) : init.DIV;
       var preview = document.createElement('div');
       preview.className = published.CLS_GALLERY_SIMPLE_PREVIEW;
@@ -4000,7 +4021,7 @@ WAVE.RecordModel.GUI = (function(){
 
     var tUNDEFINED = "undefined";
 
-    var published = { 
+    var published = {
         CLS_ERROR: 'wvError',
         CLS_REQ: 'wvRequired',
         CLS_MOD: 'wvModified',
@@ -4011,7 +4032,7 @@ WAVE.RecordModel.GUI = (function(){
 
         var AIKEY = "__wv.rm.gui";
         var fErroredInput = null;
-        
+
         function buildTestControl(fldView){
           fldView.DIV().innerHTML = WAVE.strHTMLTemplate("<div>@about@</div><input type='text' name='@fName@' value='@fValue@'/>",
                                                         {about: fldView.field().about(), fName: fldView.field().name(), fValue: fldView.field().value()});
@@ -4022,7 +4043,7 @@ WAVE.RecordModel.GUI = (function(){
           return "_"+fldView.recView().ID()+"_"+id;
         }
 
-        
+
         function buildTextBox(fldView){
           var field = fldView.field();
           var divRoot = fldView.DIV();
@@ -4032,7 +4053,7 @@ WAVE.RecordModel.GUI = (function(){
 
           var html = WAVE.strHTMLTemplate("<label for='@tbid@' class='@cls@'>@about@</label>",
                                       {
-                                        tbid: idInput, 
+                                        tbid: idInput,
                                         about: field.about(),
                                         cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
                                       });
@@ -4074,7 +4095,7 @@ WAVE.RecordModel.GUI = (function(){
                 if (fErroredInput===self || fErroredInput===null)
                 {
                     fErroredInput = self;
-                    setTimeout(function() 
+                    setTimeout(function()
                            {
                              if (!self.ERRORED) $(self).blur(function(){$(self).change();});
                              self.focus();
@@ -4095,7 +4116,7 @@ WAVE.RecordModel.GUI = (function(){
 
           var html = WAVE.strHTMLTemplate("<label for='@tbid@' class='@cls@'>@about@</label>",
                                       {
-                                        tbid: idInput, 
+                                        tbid: idInput,
                                         about: field.about(),
                                         cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
                                       });
@@ -4130,7 +4151,7 @@ WAVE.RecordModel.GUI = (function(){
                 if (fErroredInput===self || fErroredInput===null)
                 {
                     fErroredInput = self;
-                    setTimeout(function() 
+                    setTimeout(function()
                            {
                              if (!self.ERRORED) $(self).blur(function(){$(self).change();});
                              self.focus();
@@ -4148,9 +4169,9 @@ WAVE.RecordModel.GUI = (function(){
 
           var dict = field.lookupDict();
           var keys = Object.keys(dict);
-          
+
           var html = "<fieldset>";
-          html+= WAVE.strHTMLTemplate("<legend class='@cls@'>@about@</legend>",{about: field.about(), 
+          html+= WAVE.strHTMLTemplate("<legend class='@cls@'>@about@</legend>",{about: field.about(),
                                                                                 cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
                                                                                });
 
@@ -4164,7 +4185,7 @@ WAVE.RecordModel.GUI = (function(){
              var keyDescr = dict[key];
 
               var idInput = "rbt"+ids+"_"+i;
-         
+
               html+= WAVE.strHTMLTemplate("<input id='@id@' type='radio' name='@name@' @disabled@ @readonly@ value='@value@' @required@ @checked@>",
                                           {
                                             id: idInput,
@@ -4178,29 +4199,29 @@ WAVE.RecordModel.GUI = (function(){
 
               html+= WAVE.strHTMLTemplate("<label for='@rbtid@'>@about@</label>",
                                           {
-                                            rbtid: idInput, 
-                                            about: keyDescr  
+                                            rbtid: idInput,
+                                            about: keyDescr
                                           });
 
 
-              
+
           }//for
 
           html+= "</fieldset>";
 
           divRoot.innerHTML = html;
-           
+
           //bind events
           function rbtChange(evt){
             var val = evt.target.value;
             var fld = evt.target.__fieldView.field();
-            if (!fld.readonly()) 
+            if (!fld.readonly())
                 fld.value(val, true);//from GUI
             else
                 rebuildControl(evt.target.__fieldView);
           }
 
-          for(var j in Object.keys(dict)){ 
+          for(var j in Object.keys(dict)){
            var idInp = "rbt"+ids+"_"+j;
            WAVE.id(idInp).__fieldView = fldView;
 
@@ -4230,7 +4251,7 @@ WAVE.RecordModel.GUI = (function(){
 
           html+= WAVE.strHTMLTemplate("<label for='@chkid@' class='@cls@'>@about@</label>",
                                       {
-                                        chkid: idInput, 
+                                        chkid: idInput,
                                         about: field.about(),
                                         cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
                                       });
@@ -4249,7 +4270,7 @@ WAVE.RecordModel.GUI = (function(){
                var val = this.checked;
                $("#h_"+idInput).val( val ? "true" : "false");
                var fld = this.__fieldView.field();
-               if (!fld.readonly()) 
+               if (!fld.readonly())
                  fld.value(val, true);//from GUI
                else
                  rebuildControl(this.__fieldView);
@@ -4293,10 +4314,10 @@ WAVE.RecordModel.GUI = (function(){
           var editor = WAVE.get(fldView, ekey, null);
           if (editor===null)
           {
-               editor =  new WAVE.GUI.PropSetEditor({ 
+               editor =  new WAVE.GUI.PropSetEditor({
                                     DIV: editorCont,
                                     outputFormFieldName: field.name(),
-                                    langs: WAVE.LOCALIZER.allLanguageISOs(), 
+                                    langs: WAVE.LOCALIZER.allLanguageISOs(),
                                     content: json,
                                     disable: field.isEnabled() ? false : true,
                                     readonly: field.readonly(),
@@ -4304,8 +4325,8 @@ WAVE.RecordModel.GUI = (function(){
                                 });
 
                fldView[ekey] = editor;
-             
-               editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED, 
+
+               editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED,
                                function (e, d){
                                  field.value(d, true);//from GUI
                                });
@@ -4322,7 +4343,7 @@ WAVE.RecordModel.GUI = (function(){
 
           var html = WAVE.strHTMLTemplate("<label for='@cbid@' class='@cls@'>@about@</label>",
                                       {
-                                        cbid: idInput, 
+                                        cbid: idInput,
                                         about: field.about(),
                                         cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
                                       });
@@ -4341,7 +4362,7 @@ WAVE.RecordModel.GUI = (function(){
                                         required: field.required() ? "required" : "",
                                         comboWrapCls: published.CLS_COMBO_WRAP
                                       });
-          
+
           var dict = field.lookupDict();
           var keys = Object.keys(dict);
           html += "<option value=''></option>";//add Blank
@@ -4354,7 +4375,7 @@ WAVE.RecordModel.GUI = (function(){
                                           });
           }//for options
 
-          html+=WAVE.strHTMLTemplate("</select><div id='@id@' class='@comboArrowCls@'></div></div>", 
+          html+=WAVE.strHTMLTemplate("</select><div id='@id@' class='@comboArrowCls@'></div></div>",
                                           {
                                             id: arrowId,
                                             comboArrowCls: published.CLS_COMBO_ARROW
@@ -4385,9 +4406,9 @@ WAVE.RecordModel.GUI = (function(){
         }
 
         function buildPuzzle(fldView){
-          
+
           if (fldView.PUZZLE) return;
-       
+
           var field = fldView.field();
           var divRoot = fldView.DIV();
 
@@ -4450,7 +4471,7 @@ WAVE.RecordModel.GUI = (function(){
                var err = allErrors[i];
                if (err!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: err});
             }
-            
+
           }
           else
           {

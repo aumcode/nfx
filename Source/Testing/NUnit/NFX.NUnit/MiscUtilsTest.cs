@@ -177,7 +177,7 @@ namespace NFX.NUnit
         {
             var buf = new byte[4];
             buf.WriteBEInt32(16909060);
-            
+
             Assert.AreEqual(new byte[] { 1, 2, 3, 4 }, buf);
 
             Assert.AreEqual(16909060, buf.ReadBEInt32());
@@ -204,7 +204,7 @@ namespace NFX.NUnit
         {
             var buf = new byte[8];
             buf.WriteBEUInt64(0xFACACA07EBEDDAFE);
-            
+
             Assert.AreEqual(new byte[] { 0xFA, 0xCA, 0xCA, 0x07, 0xEB, 0xED, 0xDA, 0xFE }, buf);
             Assert.AreEqual(0xFACACA07EBEDDAFE, buf.ReadBEUInt64());
             var idx = 0;
@@ -216,7 +216,7 @@ namespace NFX.NUnit
         [TestCase]
         public void StringLines()
         {
-            var txt = 
+            var txt =
 @"A,b,
 c,d,e
 f
@@ -237,7 +237,7 @@ f
         public void Type_FullNameWithExpandedGenericArgs1()
         {
             var t = typeof(List<string>);
-            
+
             Assert.AreEqual("System.Collections.Generic.List<System.String>", t.FullNameWithExpandedGenericArgs(false));
             Assert.AreEqual("@System.@Collections.@Generic.@List<@System.@String>", t.FullNameWithExpandedGenericArgs(true));
             Assert.AreEqual("@System.@Collections.@Generic.@List<@System.@String>", t.FullNameWithExpandedGenericArgs());
@@ -276,7 +276,7 @@ f
         public void Type_DisplayNameWithExpandedGenericArgs1()
         {
             var t = typeof(List<string>);
-            
+
             Assert.AreEqual("List<String>", t.DisplayNameWithExpandedGenericArgs());
         }
 
@@ -284,7 +284,7 @@ f
         public void Type_DisplayNameWithExpandedGenericArgs2()
         {
             var t = typeof(List<Dictionary<string, List<DateTime?>>>);
-            
+
             Assert.AreEqual("List<Dictionary<String, List<Nullable<DateTime>>>>", t.DisplayNameWithExpandedGenericArgs());
         }
 
@@ -469,16 +469,16 @@ f
           var sw = System.Diagnostics.Stopwatch.StartNew();
           for(var i = 0; i<CNT; i++)
             Assert.IsTrue( b1.MemBufferEquals(b2) );
-          
+
           sw.Stop();
-          
+
           Console.WriteLine("Fast Compared {0} in {1}ms at {2} ops/sec", CNT, sw.ElapsedMilliseconds, CNT / (sw.ElapsedMilliseconds / 1000d));
 
           sw = System.Diagnostics.Stopwatch.StartNew();
           for(var i = 0; i<CNT; i++)
            Assert.IsTrue( compareSlow(b1, b2) );
           sw.Stop();
-          
+
           Console.WriteLine("Slow Compared {0} in {1}ms at {2} ops/sec", CNT, sw.ElapsedMilliseconds, CNT / (sw.ElapsedMilliseconds / 1000d));
 
         }
@@ -508,19 +508,19 @@ f
           Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs(" ", null, "      /static/","site","\\content"));
           Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs("static", null, "site","", "", "\\content"));
         }
-    
+
         [Test]
         public void ComposeURLQueryString_Empty()
         {
           Dictionary<string, object> pars = null;
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual(string.Empty, result);
-        
+
           pars = new Dictionary<string, object>();
           result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual(string.Empty, result);
         }
-        
+
         [Test]
         public void ComposeURLQueryString_NullOrEmptyQueryParts()
         {
@@ -530,21 +530,21 @@ f
           };
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("name", result);
-          
+
           pars = new Dictionary<string, object>
           {
             { "name", string.Empty },
           };
           result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("name=", result);
-          
+
           pars = new Dictionary<string, object>
           {
             { string.Empty, "ABBA" }
           };
           result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual(string.Empty, result);
-        
+
           pars = new Dictionary<string, object>
           {
             { "name1", null },
@@ -553,7 +553,7 @@ f
           };
           result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("name1&name2=", result);
-        
+
           pars = new Dictionary<string, object>
           {
             { "name1", string.Empty },
@@ -564,16 +564,16 @@ f
           result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("name1=&name2&name3=John", result);
         }
-        
+
         [Test]
         public void ComposeURLQueryString_SpecSymbols()
         {
           var pars = new Dictionary<string, object> { { "name", "Petrov" }, { "age", 19 }, { "spec", @" -y~!@#$%^&*()_?><|';:\/=+" } };
-        
+
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("name=Petrov&age=19&spec=%20-y%7E%21%40%23%24%25%5E%26%2A%28%29_%3F%3E%3C%7C%27%3B%3A%5C%2F%3D%2B", result);
         }
-        
+
         [Test]
         public void ComposeURLQueryString_Types()
         {
@@ -586,11 +586,11 @@ f
             { "dec", 23.45M },
             { "float", -12.34F }
           };
-        
+
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("int=-257&bool=True&double=1.9&string=data%26data&dec=23.45&float=-12.34", result);
         }
-        
+
         [Test]
         public void ComposeURLQueryString_UTF8()
         {
@@ -604,11 +604,11 @@ f
             { "привет", "rus" },
             { "नमस्कार", "hind" }
           };
-        
+
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("eng=Hello%21&jap=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF&chi=%E4%B9%85%E6%9C%89%E5%BD%92%E5%A4%A9%E6%84%BF&chi2=%E4%BD%A0%E5%A5%BD&fra=All%C3%B4&%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82=rus&%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0=hind", result);
         }
-        
+
         [Test]
         public void ComposeURLQueryString_Mixed()
         {
@@ -622,11 +622,11 @@ f
             { "привет", string.Empty },
             { "नमस्कार", null }
           };
-        
+
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("eng=Hello%21&jap&chi=%E4%B9%85%E6%9C%89%E5%BD%92%E5%A4%A9%E6%84%BF&chi2=12&%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82=&%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0", result);
         }
-        
+
         [Test]
         public void ComposeURLQueryString_PlusAndSpaces()
         {
@@ -635,9 +635,49 @@ f
             { "eng", "Hello Lenin!" },
             { "rus", "Привет Ленин!" }
           };
-        
+
           var result = URIUtils.ComposeURLQueryString(pars);
           Assert.AreEqual("eng=Hello%20Lenin%21&rus=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%20%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%21", result);
+        }
+
+        [Test]
+        public void RoundToWeekDay()
+        {
+          var now = DateTime.Now;
+          checkDayOfWeek(now, DayOfWeek.Sunday);
+          checkDayOfWeek(now, DayOfWeek.Monday);
+          checkDayOfWeek(now, DayOfWeek.Tuesday);
+          checkDayOfWeek(now, DayOfWeek.Wednesday);
+          checkDayOfWeek(now, DayOfWeek.Thursday);
+          checkDayOfWeek(now, DayOfWeek.Friday);
+          checkDayOfWeek(now, DayOfWeek.Saturday);
+        }
+
+        private void checkDayOfWeek(DateTime now, DayOfWeek dayOfWeek)
+        {
+          var day = now.RoundToWeekDay(dayOfWeek);
+          var dt = (day - now.Date);
+          Assert.True(day.DayOfWeek == dayOfWeek && (TimeSpan.FromDays(0) <= dt) && (dt <= TimeSpan.FromDays(6)));
+        }
+
+        [Test]
+        public void RoundToNextWeekDay()
+        {
+          var now = DateTime.Now;
+          checkNextDayOfWeek(now, DayOfWeek.Sunday);
+          checkNextDayOfWeek(now, DayOfWeek.Monday);
+          checkNextDayOfWeek(now, DayOfWeek.Tuesday);
+          checkNextDayOfWeek(now, DayOfWeek.Wednesday);
+          checkNextDayOfWeek(now, DayOfWeek.Thursday);
+          checkNextDayOfWeek(now, DayOfWeek.Friday);
+          checkNextDayOfWeek(now, DayOfWeek.Saturday);
+        }
+
+        private void checkNextDayOfWeek(DateTime now, DayOfWeek dayOfWeek)
+        {
+          var day = now.RoundToNextWeekDay(dayOfWeek);
+          var dt = (day - now.Date);
+          Assert.True(day.DayOfWeek == dayOfWeek && (TimeSpan.FromDays(0) < dt) && (dt <= TimeSpan.FromDays(7)));
         }
 
     }

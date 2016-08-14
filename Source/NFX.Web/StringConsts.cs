@@ -198,7 +198,8 @@ namespace NFX.Web
     public const string PAYPAL_REFRESH_TOKEN_ERROR = "Critical error while refreshing OAuth token: {0}";
     public const string PAYPAL_PAYOUT_MESSAGE = "Performing payout (account: {0}, amount: {1}).";
     public const string PAYPAL_PAYOUT_ERROR = "Critical error while transaction (account: {0}, amount: {1}) processing: {2}";
-    public const string PAYPAL_PAYOUT_DENIED_MESSAGE = "Payout was DENIED. Error: {0}, Message: {1}, Description: {2}";
+    public const string PAYPAL_PAYOUT_CANCEL_ERROR = "Critical error while transaction cancellation: {0}";
+    public const string PAYPAL_PAYOUT_NOT_SUCCEEDED_MESSAGE = "Payout was not succeeded. Error: {0}, Message: {1}, Description: {2}";
 
     public const string TAX_CALCULATOR_DUPLICATE_NAME_ERROR = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
     public const string TAX_TAXJAR_TOADDRESS_ISNT_SUPPLIED_ERROR = "Either retailerAddress or wholesellerAddress must be provided. ";

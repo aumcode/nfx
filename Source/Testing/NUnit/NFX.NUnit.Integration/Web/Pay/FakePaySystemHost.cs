@@ -26,7 +26,7 @@ using NFX.Web.Pay.Mock;
 
 namespace NFX.NUnit.Integration.Web.Pay
 {
-  
+
 
   internal class FakePaySystemHost : PaySystemHost
   {
@@ -45,6 +45,7 @@ namespace NFX.NUnit.Integration.Web.Pay
     public readonly static Account BANK_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 2000001);
 
     public readonly static Account PAYPAL_CORRECT_ACCOUNT = new Account("user", 211, 3000001);
+    public readonly static Account PAYPAL_INCORRECT_ACCOUNT = new Account("user", 212, 3000011);
 
     #endregion
 
@@ -52,7 +53,7 @@ namespace NFX.NUnit.Integration.Web.Pay
 
       private static Lazy<FakePaySystemHost> s_Instance = new Lazy<FakePaySystemHost>(() => new FakePaySystemHost());
 
-      public static FakePaySystemHost Instance { get { return s_Instance.Value; } } 
+      public static FakePaySystemHost Instance { get { return s_Instance.Value; } }
 
     #endregion
 
@@ -60,7 +61,7 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     public readonly MockActualAccountData[] MockActualAccountDatas = {
         new MockActualAccountData() {
-          Account = PAYPAL_CORRECT_ACCOUNT, 
+          Account = PAYPAL_CORRECT_ACCOUNT,
           AccountData = new AccountData()
           {
             FirstName = "Pay",
@@ -69,7 +70,19 @@ namespace NFX.NUnit.Integration.Web.Pay
             BillingEmail = null // is taken from configuration
           }
         },
-     
+
+        new MockActualAccountData() {
+          Account = PAYPAL_INCORRECT_ACCOUNT,
+          AccountData = new AccountData()
+          {
+            FirstName = "Pay1",
+            LastName = "Pal1",
+            AccountNumber = "paypal-002",
+            BillingEmail = null // is taken from configuration
+          },
+          PrimaryEMail = "spmathf-fake123-rty567__234@gmail.com"
+        },
+
         new MockActualAccountData() {
           Account = CARD_ACCOUNT_STRIPE_CORRECT,
           AccountData = new AccountData()
@@ -245,7 +258,7 @@ namespace NFX.NUnit.Integration.Web.Pay
       public FakePaySystemHost() : base(typeof(FakePaySystemHost).Name, null) {}
 
       public FakePaySystemHost(string name, IConfigSectionNode node): base(name, node) { }
-      
+
       public FakePaySystemHost(string name, IConfigSectionNode node, object director): base(name, node, director)
       {
       }
@@ -287,7 +300,7 @@ namespace NFX.NUnit.Integration.Web.Pay
       /// In this implementation returns transaction from memory list by id
       /// </summary>
       public override Transaction FetchTransaction(ITransactionContext context, object id)
-     { 
+     {
         return m_TransactionList.FirstOrDefault(ta => ta.ID == id);
       }
 

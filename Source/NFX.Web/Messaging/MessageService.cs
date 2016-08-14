@@ -41,200 +41,222 @@ namespace NFX.Web.Messaging
   {
     #region CONSTS
 
-      public const string CONFIG_MESSAGING_SECTION = "messaging";
-      public const string CONFIG_MAILER_SECTION = "mailer";
-      public const string CONFIG_SINK_SECTION = "sink";
+    public const string CONFIG_MESSAGING_SECTION = "messaging";
+    public const string CONFIG_MAILER_SECTION = "mailer";
+    public const string CONFIG_SINK_SECTION = "sink";
+    public const string CONFIG_FALLBACK_SINK_SECTION = "fallback-sink";
 
-      private const string THREAD_NAME = "MailerService Thread";
-      private const int INSTRUMENTATION_GRANULARITY_MS = 10000;
+    private const string THREAD_NAME = "MailerService Thread";
+    private const int INSTRUMENTATION_GRANULARITY_MS = 10000;
     #endregion
 
     #region .ctor and static/lifecycle
-      private static object s_Lock = new object();
-      private static IMessengerImplementation s_Instance;
+    private static object s_Lock = new object();
+    private static IMessengerImplementation s_Instance;
 
-      /// <summary>
-      /// Returns a singleton instance of the default mailer
-      /// </summary>
-      public static IMessenger Instance
+    /// <summary>
+    /// Returns a singleton instance of the default mailer
+    /// </summary>
+    public static IMessenger Instance
+    {
+      get
       {
-        get
+        var instance = s_Instance;
+        if (instance != null) return instance;
+        lock (s_Lock)
         {
-          var instance = s_Instance;
-          if (instance!=null) return instance;
-          lock(s_Lock)
-          {
-            instance = s_Instance;
-            if (instance!=null) return instance;
+          instance = s_Instance;
+          if (instance != null) return instance;
 
-            instance = FactoryUtils.MakeAndConfigure<IMessengerImplementation>(App.ConfigRoot[CONFIG_MESSAGING_SECTION][CONFIG_MAILER_SECTION], typeof(MessageService));
-            instance.Start();
-            App.Instance.RegisterAppFinishNotifiable(instance);
-            s_Instance = instance;
-            return s_Instance;
-          }
+          instance = FactoryUtils.MakeAndConfigure<IMessengerImplementation>(App.ConfigRoot[CONFIG_MESSAGING_SECTION][CONFIG_MAILER_SECTION], typeof(MessageService));
+          instance.Start();
+          App.Instance.RegisterAppFinishNotifiable(instance);
+          s_Instance = instance;
+          return s_Instance;
         }
       }
+    }
 
-      /// <summary>
-      /// Constructs the service. For most-typical cases use MailerService.Instance instead
-      /// </summary>
-      public MessageService() : base(null) {}
+    /// <summary>
+    /// Constructs the service. For most-typical cases use MailerService.Instance instead
+    /// </summary>
+    public MessageService() : base(null) { }
 
-      protected override void Destructor()
-      {
-         base.Destructor();
-         if (s_Instance==this)  s_Instance = null;
-      }
+    protected override void Destructor()
+    {
+      base.Destructor();
+      if (s_Instance == this) s_Instance = null;
+    }
 
-      public void ApplicationFinishBeforeCleanup(IApplication application)
-      {
-        Dispose();
-      }
+    public void ApplicationFinishBeforeCleanup(IApplication application)
+    {
+      Dispose();
+    }
 
-      public void ApplicationFinishAfterCleanup(IApplication application) {}
+    public void ApplicationFinishAfterCleanup(IApplication application) { }
     #endregion
 
     #region Private Fields
 
-     private Thread m_Thread;
-     private ConcurrentQueue<Message>[] m_Queues;
-     private MessageSink m_Sink;
-     private AutoResetEvent m_Trigger;
-     private long m_stat_MessagesCount, m_stat_MessagesErrorCount;
+    private Thread m_Thread;
+    private ConcurrentQueue<Message>[] m_Queues;
+    private MessageSink m_Sink;
+    private MessageSink m_FallbackSink;
+    private AutoResetEvent m_Trigger;
+    private long m_stat_MessagesCount;
+    private long m_stat_MessagesErrorCount;
+    private long m_stat_FallbacksCount;
+    private long m_stat_FallbackErrorCount;
 
     #endregion
 
     #region Properties
 
-     /// <summary>
-     /// Gets/sets sink that performs sending
-     /// </summary>
-     public IMessageSink Sink
-     {
-        get { return m_Sink; }
-        set
-        {
-          CheckServiceInactive();
+    /// <summary>
+    /// Gets/sets sink that performs sending
+    /// </summary>
+    public IMessageSink Sink
+    {
+      get { return m_Sink; }
+      set
+      {
+        CheckServiceInactive();
 
-          if (value!=null && value.ComponentDirector!=this)
-            throw new WebException(StringConsts.MAILER_SINK_IS_NOT_OWNED_ERROR);
-          m_Sink = value as MessageSink;
-        }
-     }
+        if (value != null && value.ComponentDirector != this)
+          throw new WebException(StringConsts.MAILER_SINK_IS_NOT_OWNED_ERROR);
+        m_Sink = value as MessageSink;
+      }
+    }
 
+    public IMessageSink FallbackSink
+    {
+      get { return m_FallbackSink; }
+      set
+      {
+        CheckServiceInactive();
+
+        if (value != null && value.ComponentDirector != this)
+          throw new WebException(StringConsts.MAILER_SINK_IS_NOT_OWNED_ERROR);
+        m_FallbackSink = value as MessageSink;
+      }
+    }
 
     #endregion
 
     #region Public
 
-      public void SendMsg(Message msg)
-      {
-        if (!Running || msg==null) return;
-        var queues = m_Queues;
-        if (queues==null) return;
+    public void SendMsg(Message msg)
+    {
+      if (!Running || msg == null) return;
+      var queues = m_Queues;
+      if (queues == null) return;
 
-        var idx = (int)msg.Priority;
-        if (idx>queues.Length) idx=queues.Length-1;
+      var idx = (int)msg.Priority;
+      if (idx > queues.Length) idx = queues.Length - 1;
 
 
-        var queue = queues[idx];
-        queue.Enqueue(msg);
-        var trigger = m_Trigger;
-        if (trigger!=null) trigger.Set();
-      }
+      var queue = queues[idx];
+      queue.Enqueue(msg);
+      var trigger = m_Trigger;
+      if (trigger != null) trigger.Set();
+    }
 
     #endregion
 
     #region Protected
 
-      protected override void DoConfigure(Environment.IConfigSectionNode node)
+    protected override void DoConfigure(Environment.IConfigSectionNode node)
+    {
+      base.DoConfigure(node);
+
+      m_Sink = FactoryUtils.MakeAndConfigure<MessageSink>(node[CONFIG_SINK_SECTION], typeof(SMTPMessageSink), args: new object[] { this });
+      m_FallbackSink = FactoryUtils.MakeAndConfigure<MessageSink>(node[CONFIG_FALLBACK_SINK_SECTION], typeof(NOPMessageSink), args: new object[] { this });
+    }
+
+    protected override void DoStart()
+    {
+      log(MessageType.Info, "Entering DoStart()", null);
+
+      try
       {
-        base.DoConfigure(node);
-        m_Sink = FactoryUtils.MakeAndConfigure<MessageSink>(node[CONFIG_SINK_SECTION], typeof(SMTPMessageSink), args: new object[]{this});
+        if (m_Sink == null)
+          throw new WebException(StringConsts.MAILER_SINK_IS_NOT_SET_ERROR);
+
+        m_Trigger = new AutoResetEvent(false);
+
+        m_Queues = new ConcurrentQueue<Message>[(int)MsgPriority.Slowest + 1];
+        for (var i = 0; i < m_Queues.Length; i++)
+          m_Queues[i] = new ConcurrentQueue<Message>();
+
+        m_Sink.Start();
+        m_FallbackSink.Start();
+
+        m_Thread = new Thread(threadSpin);
+        m_Thread.Name = THREAD_NAME;
+        m_Thread.IsBackground = false;
+
+        m_Thread.Start();
       }
-
-      protected override void DoStart()
+      catch (Exception error)
       {
-        log(MessageType.Info, "Entering DoStart()", null);
+        AbortStart();
 
-        try
+        if (m_Thread != null)
         {
-          if (m_Sink==null)
-           throw new WebException(StringConsts.MAILER_SINK_IS_NOT_SET_ERROR);
-
-          m_Trigger = new AutoResetEvent(false);
-
-          m_Queues = new ConcurrentQueue<Message>[(int)MsgPriority.Slowest+1];
-          for(var i=0; i<m_Queues.Length; i++)
-           m_Queues[i] = new ConcurrentQueue<Message>();
-
-          m_Sink.Start();
-
-           m_Thread = new Thread(threadSpin);
-           m_Thread.Name = THREAD_NAME;
-           m_Thread.IsBackground = false;
-
-           m_Thread.Start();
-        }
-        catch (Exception error)
-        {
-          AbortStart();
-
-          if (m_Thread != null)
-          {
-            m_Thread.Join();
-            m_Thread = null;
-          }
-
-          log(MessageType.CatastrophicError, "DoStart() exception: " + error.Message, null);
-          throw error;
-        }
-
-        log(MessageType.Info, "Exiting DoStart()", null);
-      }
-
-      protected override void DoSignalStop()
-      {
-        log(MessageType.Info, "Entering DoSignalStop()", null);
-        try
-        {
-            m_Sink.SignalStop();
-            m_Trigger.Set();
-        }
-        catch (Exception error)
-        {
-          log(MessageType.CatastrophicError, "DoSignalStop() exception: " + error.Message, null);
-          throw error;
-        }
-
-        log(MessageType.Info, "Exiting DoSignalStop()", null);
-
-      }
-
-      protected override void DoWaitForCompleteStop()
-      {
-        log(MessageType.Info, "Entering DoWaitForCompleteStop()", null);
-
-        try
-        {
-          base.DoWaitForCompleteStop();
-
           m_Thread.Join();
           m_Thread = null;
-
-          m_Sink.WaitForCompleteStop();
-          m_Trigger.Dispose();
-          m_Trigger = null;
-        }
-        catch (Exception error)
-        {
-          log(MessageType.CatastrophicError, "DoWaitForCompleteStop() exception: " + error.Message, null);
-          throw error;
         }
 
-        log(MessageType.Info, "Exiting DoWaitForCompleteStop()", null);
+        log(MessageType.CatastrophicError, "DoStart() exception: " + error.Message, null);
+        throw error;
       }
+
+      log(MessageType.Info, "Exiting DoStart()", null);
+    }
+
+    protected override void DoSignalStop()
+    {
+      log(MessageType.Info, "Entering DoSignalStop()", null);
+      try
+      {
+        m_Sink.SignalStop();
+        m_FallbackSink.SignalStop();
+        m_Trigger.Set();
+      }
+      catch (Exception error)
+      {
+        log(MessageType.CatastrophicError, "DoSignalStop() exception: " + error.Message, null);
+        throw error;
+      }
+
+      log(MessageType.Info, "Exiting DoSignalStop()", null);
+
+    }
+
+    protected override void DoWaitForCompleteStop()
+    {
+      log(MessageType.Info, "Entering DoWaitForCompleteStop()", null);
+
+      try
+      {
+        base.DoWaitForCompleteStop();
+
+        m_Thread.Join();
+        m_Thread = null;
+
+        m_Sink.WaitForCompleteStop();
+        m_FallbackSink.WaitForCompleteStop();
+        m_Trigger.Dispose();
+        m_Trigger = null;
+      }
+      catch (Exception error)
+      {
+        log(MessageType.CatastrophicError, "DoWaitForCompleteStop() exception: " + error.Message, null);
+        throw error;
+      }
+
+      log(MessageType.Info, "Exiting DoWaitForCompleteStop()", null);
+    }
 
     #endregion
 
@@ -278,111 +300,141 @@ namespace NFX.Web.Messaging
     #endregion
 
     #region .pvt. impl.
-                private void log(MessageType type, string message, string parameters)
-                {
-                  App.Log.Write(
-                          new Log.Message
-                          {
-                            Text = message ?? string.Empty,
-                            Type = type,
-                            From = this.Name,
-                            Topic = StringConsts.MAILER_LOG_TOPIC,
-                            Parameters = parameters ?? string.Empty
-                          }
-                        );
-                }
+    private void log(MessageType type, string message, string parameters)
+    {
+      App.Log.Write(
+              new Log.Message
+              {
+                Text = message ?? string.Empty,
+                Type = type,
+                From = this.Name,
+                Topic = StringConsts.MAILER_LOG_TOPIC,
+                Parameters = parameters ?? string.Empty
+              }
+            );
+    }
 
-                private void threadSpin()
-                {
-                     try
-                     {
-                          var lastInstr = DateTime.Now;
-                          while (Running)
-                          {
-                            var count = 50;
-                            for(var i=0; i<m_Queues.Length && Running; i++)
-                            {
-                              write(m_Queues[i], count<1 ? 1 : count);
-                              count /= 2;
-                            }
+    private void threadSpin()
+    {
+      try
+      {
+        var lastInstr = App.TimeSource.UTCNow;
 
-                            m_Trigger.WaitOne(1000);
+        while (Running)
+        {
+          var count = 50;
+          for (var i = 0; i < m_Queues.Length && Running; i++)
+          {
+            write(m_Queues[i], count < 1 ? 1 : count);
+            count /= 2;
+          }
 
-                            var now = DateTime.Now;
+          m_Trigger.WaitOne(1000);
 
-                            if (InstrumentationEnabled && (now - lastInstr).TotalMilliseconds > INSTRUMENTATION_GRANULARITY_MS)
-                            {
-                              lastInstr = now;
-                              dumpStats();
-                            }
-                          }//while
+          var now = App.TimeSource.UTCNow;
+          if (InstrumentationEnabled && (now - lastInstr).TotalMilliseconds > INSTRUMENTATION_GRANULARITY_MS)
+          {
+            dumpStats();
+            lastInstr = now;
+          }
+        }//while
 
-                          for(var i=0; i<m_Queues.Length; i++)
-                           write(m_Queues[i], -1);
-                          dumpStats();
-                     }
-                     catch(Exception e)
-                     {
-                         log(MessageType.Emergency, " threadSpin() leaked exception", e.Message);
-                     }
+        for (var i = 0; i < m_Queues.Length; i++)
+          write(m_Queues[i], -1);
 
-                     log(MessageType.Info, "Exiting threadSpin()", null);
-                }
+        dumpStats();
+      }
+      catch (Exception e)
+      {
+        log(MessageType.Emergency, " threadSpin() leaked exception", e.Message);
+      }
 
-                private void write(ConcurrentQueue<Message> queue, int count)  //-1 ==all
-                {
-                   const int ABORT_TIMEOUT_MS = 10000;
+      log(MessageType.Info, "Exiting threadSpin()", null);
+    }
 
-                   var processed = 0;
-                   Message msg;
-                   var started = DateTime.Now;
-                   while( (count<0 || processed<count) && queue.TryDequeue(out msg))
-                   {
-                      if (!Running && (DateTime.Now-started).TotalMilliseconds>ABORT_TIMEOUT_MS)
-                      {
-                         log(MessageType.Error, "{0}.Write(msg) aborted on svc shutdown: timed-out after {1} ms.".Args( m_Sink.GetType().FullName, ABORT_TIMEOUT_MS), null);
-                         break;
-                      }
+    private void write(ConcurrentQueue<Message> queue, int count)  //-1 ==all
+    {
+      const int ABORT_TIMEOUT_MS = 10000;
 
-                      try
-                      {
-                        statSend();
-                        m_Sink.SendMsg(msg);
-                      }
-                      catch(Exception error)
-                      {
-                        statSendError();
-                        var et = error.ToMessageWithType();
-                        log(MessageType.Error, "{0}.Write(msg) leaked {1}".Args(m_Sink.GetType().FullName, et), et);
-                      }
-                      processed++;
-                   }
-                }
+      var processed = 0;
+      Message msg;
+      var started = App.TimeSource.UTCNow;
 
-                private void dumpStats()
-                {
-                  var src = this.Name;
-                  Instrumentation.MessagingSinkCount.Record(src, m_stat_MessagesCount);
-                  m_stat_MessagesCount = 0;
+      while ((count < 0 || processed < count) && queue.TryDequeue(out msg))
+      {
+        if (!Running && (App.TimeSource.UTCNow - started).TotalMilliseconds > ABORT_TIMEOUT_MS)
+        {
+          log(MessageType.Error, "{0}.Write(msg) aborted on svc shutdown: timed-out after {1} ms.".Args(m_Sink.GetType().FullName, ABORT_TIMEOUT_MS), null);
+          break;
+        }
 
-                  Instrumentation.MessagingSinkErrorCount.Record(src, m_stat_MessagesErrorCount);
-                  m_stat_MessagesErrorCount = 0;
-                }
+        try
+        {
+          statSend();
+          m_Sink.SendMsg(msg);
+        }
+        catch (Exception error)
+        {
+          statSendError();
+          var et = error.ToMessageWithType();
+          log(MessageType.Error, "{0}.Write(msg) leaked {1}".Args(m_Sink.GetType().FullName, et), et);
 
-                private void resetStats()
-                {
-                  m_stat_MessagesCount = 0;
-                  m_stat_MessagesErrorCount = 0;
-                }
-                private void statSendError()
-                {
-                  Interlocked.Increment(ref m_stat_MessagesErrorCount);
-                }
+          writeFallback(msg);
+        }
 
-                private void statSend()
-                {
-                  Interlocked.Increment(ref m_stat_MessagesCount);
-                }
+        processed++;
+      }
+    }
+
+    private void writeFallback(Message msg)
+    {
+      try
+      {
+        statFallback();
+        m_FallbackSink.SendMsg(msg);
+      }
+      catch (Exception error)
+      {
+        statFallbackError();
+        var et = error.ToMessageWithType();
+        log(MessageType.Error, "{0}.Write(msg) leaked {1}".Args(m_FallbackSink.GetType().FullName, et), et);
+      }
+    }
+
+    private void dumpStats()
+    {
+      Instrumentation.MessagingSinkCount.Record(Name, m_stat_MessagesCount);
+      m_stat_MessagesCount = 0;
+
+      Instrumentation.MessagingSinkErrorCount.Record(Name, m_stat_MessagesErrorCount);
+      m_stat_MessagesErrorCount = 0;
+
+      Instrumentation.MessagingFallbackCount.Record(Name, m_stat_FallbacksCount);
+      m_stat_FallbacksCount = 0;
+
+      Instrumentation.MessagingFallbackErrorCount.Record(Name, m_stat_FallbackErrorCount);
+      m_stat_FallbackErrorCount = 0;
+    }
+
+    private void statSendError()
+    {
+      Interlocked.Increment(ref m_stat_MessagesErrorCount);
+    }
+
+    private void statSend()
+    {
+      Interlocked.Increment(ref m_stat_MessagesCount);
+    }
+
+    private void statFallback()
+    {
+      Interlocked.Increment(ref m_stat_FallbacksCount);
+    }
+
+    private void statFallbackError()
+    {
+      Interlocked.Increment(ref m_stat_FallbackErrorCount);
+    }
     #endregion
 
   }//service

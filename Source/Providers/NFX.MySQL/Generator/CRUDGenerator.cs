@@ -36,15 +36,15 @@ namespace NFX.DataAccess.MySQL
       public static int CRUDInsert(MySQLDataStoreBase store, MySqlConnection cnn, MySqlTransaction trans, Row row, FieldFilterFunc filter)
       {
         try
-        {           
+        {
             return crudInsert(store, cnn, trans, row, filter);
         }
         catch(Exception error)
-        {          
+        {
            throw new MySQLDataAccessException(
                           StringConsts.CRUD_STATEMENT_EXECUTION_ERROR.Args("insert", error.ToMessageWithType(), error),
-                          error, 
-                          KeyViolationKind.Unspecified, 
+                          error,
+                          KeyViolationKind.Unspecified,
                           keyViolationName(error));
         }
       }
@@ -61,7 +61,7 @@ namespace NFX.DataAccess.MySQL
                          StringConsts.CRUD_STATEMENT_EXECUTION_ERROR.Args("update",
                          error.ToMessageWithType(), error),
                          error,
-                         KeyViolationKind.Unspecified, 
+                         KeyViolationKind.Unspecified,
                          keyViolationName(error)
                          );
         }
@@ -78,7 +78,7 @@ namespace NFX.DataAccess.MySQL
            throw new MySQLDataAccessException(
                         StringConsts.CRUD_STATEMENT_EXECUTION_ERROR.Args("upsert", error.ToMessageWithType(), error),
                         error,
-                        KeyViolationKind.Unspecified, 
+                        KeyViolationKind.Unspecified,
                         keyViolationName(error));
         }
       }
@@ -138,17 +138,17 @@ namespace NFX.DataAccess.MySQL
         if (fattr==null) continue;
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
-        
+
         if (filter!=null)//20160210 Dkh+SPol
         {
           if (!filter(row, null, fld)) continue;
         }
 
         var fname = fld.GetBackendNameForTarget(target);
-         
+
         var fvalue = getFieldValue(row, fld.Order, store);
-         
-          
+
+
         cnames.AppendFormat(" `{0}`,", fname);
 
         if ( fvalue != null)
@@ -182,7 +182,7 @@ namespace NFX.DataAccess.MySQL
       string tableName = getTableName(row.Schema, target);
 
       using(var cmd = cnn.CreateCommand())
-      {   
+      {
         var sql = "INSERT INTO `{0}` ({1}) VALUES ({2})".Args( tableName, cnames, values);
 
         cmd.Transaction = trans;
@@ -218,26 +218,26 @@ namespace NFX.DataAccess.MySQL
         if (fattr==null) continue;
 
         var fname = fld.GetBackendNameForTarget(target);
-        
+
         //20141008 DKh Skip update of key fields
         //20160124 DKh add update of keys if IDataStoreKey is present
         if (fattr.Key && !GeneratorUtils.HasFieldInNamedKey(fname, key)) continue;
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
-        
+
         if (filter!=null)//20160210 Dkh+SPol
         {
           if (!filter(row, key, fld)) continue;
         }
 
-         
-        var fvalue = getFieldValue(row, fld.Order, store); 
-        
-         
+
+        var fvalue = getFieldValue(row, fld.Order, store);
+
+
         if ( fvalue != null)
         {
                 var pname = string.Format("?VAL{0}", vpidx);
-                
+
                 values.AppendFormat(" `{0}` = {1},", fname, pname);
 
                 var par = new MySqlParameter();
@@ -264,9 +264,9 @@ namespace NFX.DataAccess.MySQL
       string tableName = getTableName(row.Schema, target);
 
       using(var cmd = cnn.CreateCommand())
-      {   
+      {
         var sql = string.Empty;
-        
+
         var pk = key ?? row.GetDataStoreKey(target);
 
         if (pk == null)
@@ -277,12 +277,12 @@ namespace NFX.DataAccess.MySQL
         if (!string.IsNullOrEmpty(where))
             sql = "UPDATE `{0}` T1  SET {1} WHERE {2}".Args( tableName, values, where);
         else
-            throw new MySQLDataAccessException(StringConsts.BROAD_UPDATE_ERROR);//20141008 DKh BROAD update 
+            throw new MySQLDataAccessException(StringConsts.BROAD_UPDATE_ERROR);//20141008 DKh BROAD update
 
         cmd.Transaction = trans;
         cmd.CommandText = sql;
         cmd.Parameters.AddRange(vparams.ToArray());
-        ConvertParameters(store, cmd.Parameters);     
+        ConvertParameters(store, cmd.Parameters);
 
         try
         {
@@ -313,7 +313,7 @@ namespace NFX.DataAccess.MySQL
         if (fattr==null) continue;
 
         if (fattr.StoreFlag != StoreFlag.LoadAndStore && fattr.StoreFlag != StoreFlag.OnlyStore) continue;
-        
+
 
         if (filter!=null)//20160210 Dkh+SPol
         {
@@ -321,10 +321,10 @@ namespace NFX.DataAccess.MySQL
         }
 
         var fname = fld.GetBackendNameForTarget(target);
-         
+
         var fvalue = getFieldValue(row, fld.Order, store);
-        
-          
+
+
         cnames.AppendFormat(" `{0}`,", fname);
 
         if ( fvalue != null)
@@ -332,7 +332,7 @@ namespace NFX.DataAccess.MySQL
                 var pname = string.Format("?VAL{0}", vpidx);
 
                 values.AppendFormat(" {0},", pname);
-                
+
                 if (!fattr.Key)
                     upserts.AppendFormat(" `{0}` = {1},", fname, pname);
 
@@ -363,8 +363,8 @@ namespace NFX.DataAccess.MySQL
       string tableName = getTableName(row.Schema, target);
 
       using(var cmd = cnn.CreateCommand())
-      {   
-        var sql = 
+      {
+        var sql =
         @"INSERT INTO `{0}` ({1}) VALUES ({2}) ON DUPLICATE KEY UPDATE {3}".Args( tableName, cnames, values, upserts);
 
         cmd.Transaction = trans;
@@ -448,7 +448,7 @@ namespace NFX.DataAccess.MySQL
         {
           return null;
         }
-        
+
         if(store.FullGDIDS)
         {
           value = (object)((GDID)value).Bytes;
@@ -478,7 +478,7 @@ namespace NFX.DataAccess.MySQL
       if (pars==null) return;
       for(var i=0; i<pars.Count; i++)
       {
-        var par = pars[i];  
+        var par = pars[i];
         MySqlDbType? convertedDbType;
         par.Value = CLRValueToDB(store, par.Value, out convertedDbType);
         if (convertedDbType.HasValue)

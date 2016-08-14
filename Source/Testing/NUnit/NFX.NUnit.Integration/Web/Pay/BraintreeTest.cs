@@ -132,15 +132,21 @@ namespace NFX.NUnit.Integration.Web.Pay
       var ctx = new FakeBraintreeTransactionContext { IsNewCustomer = true, OrderId = "TEST" };
       Transaction tran = null;
       using (var session = ps.StartSession())
-        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("USD", 100M), capture: false);
+        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("USD", 99M), capture: false);
 
       var split = tran.ProcessorToken.AsString().Split(':');
+
+      using (var session = ps.StartSession())
+        session.Capture(ctx, ref tran, new Amount("USD", 50M));
 
       ctx.IsNewCustomer = false;
       ctx.CustomerId = split[0];
       acc = new Account("Existing", "User", split[1]);
       using (var session = ps.StartSession())
-        session.Charge(ctx, acc, Account.EmptyInstance, new Amount("USD", 1000M), capture: true);
+        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("USD", 1000M), capture: false);
+
+      using (var session = ps.StartSession())
+        session.Capture(ctx, ref tran, new Amount("USD", 100M));
     }
 
     private IPaySystem m_PaySystem;

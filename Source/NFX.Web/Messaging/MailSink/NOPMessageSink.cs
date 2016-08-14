@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace NFX.Web.Messaging
 {
-  public sealed class NOPMessageSink:MessageSink
+  public sealed class NOPMessageSink : MessageSink
   {
     #region .ctor
     public NOPMessageSink(MessageService director)

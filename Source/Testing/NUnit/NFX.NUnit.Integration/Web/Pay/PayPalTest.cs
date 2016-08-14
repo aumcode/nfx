@@ -65,6 +65,22 @@ namespace NFX.NUnit.Integration.Web.Pay
         }
 
         [Test]
+        [ExpectedException(typeof(PayPalPaymentException), ExpectedMessage = "Receiver is unregistered", MatchType = MessageMatch.Contains)]
+        public void PayoutWithUngegisteredPPUserTest()
+        {
+            var conf = LACONF.AsLaconicConfig();
+            var paySystem = getPaySystem();
+
+            using (var app = new ServiceBaseApplication(null, conf))
+            using (var session = paySystem.StartSession() as PayPalSession)
+            {
+                var to = new Account("user", 212, 3000011);
+                var amount = new Amount("USD", 1.0m);
+                session.Transfer(null, Account.EmptyInstance, to, amount);
+            }
+        }
+
+        [Test]
         [ExpectedException(typeof(PayPalPaymentException))]
         public void PayoutLimitExceedPayoutTest()
         {

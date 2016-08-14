@@ -156,6 +156,26 @@ namespace NFX
     }
 
     /// <summary>
+    /// Round date to specific week day
+    /// </summary>
+    public static DateTime RoundToWeekDay(this DateTime now, DayOfWeek dayOfWeek, bool keepTime = false)
+    {
+      var dt = now.DayOfWeek - dayOfWeek;
+      var result = now.AddDays((7 - dt) % 7);
+      return keepTime ? result : result.Date;
+    }
+
+    /// <summary>
+    /// Round date to next specific week day
+    /// </summary>
+    public static DateTime RoundToNextWeekDay(this DateTime now, DayOfWeek dayOfWeek, bool keepTime = false)
+    {
+      var dt = now.DayOfWeek - dayOfWeek;
+      var result = now.AddDays(dt == 0 ? 7 : (7 - dt) % 7);
+      return keepTime ? result : result.Date;
+    }
+
+    /// <summary>
     /// Writes exception message with exception type
     /// </summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

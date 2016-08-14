@@ -162,6 +162,7 @@
     <EmbeddedResource Include="CRUD\LoadAllMyData.mon.json" />
     <EmbeddedResource Include="CRUD\LoadInvoice.mon.json" />
     <EmbeddedResource Include="CRUD\LoadMuchData.mon.json" />
+    <EmbeddedResource Include="CRUD\LoadPerzonAge.mon.json" />
     <None Include="CRUD\ErlSpecific\nfx_crud.erl" />
     <None Include="CRUD\ErlSpecific\nfx_test.erl" />
     <None Include="CRUD\ErlSpecific\StartErlNode.bat" />

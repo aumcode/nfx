@@ -45,6 +45,11 @@ namespace NFX.Web.Pay.Braintree
 
     public Uri URI_ClientToken(string merchantID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/client_token"); }
     public Uri URI_Transactions(string merchantID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions"); }
+    public Uri URI_SubmitForSettlement(string merchantID, string id)
+    {
+      return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions/{0}/submit_for_settlement".Args(id));
+    }
+    public Uri URI_Customer(string merchantID, string customerID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/customers/" + customerID); }
     #endregion
 
     #region .ctor
@@ -84,7 +89,7 @@ namespace NFX.Web.Pay.Braintree
     public object GenerateClientToken(BraintreeSession session)
     {
 
-      dynamic response = getResponse(session, URI_ClientToken(session.MerchantID), HTTPRequestMethod.POST,
+      dynamic response = getResponse(session, URI_ClientToken(session.MerchantID),
       new { client_token = new { version = "2" } });
       return response.clientToken.value;
     }
@@ -116,7 +121,19 @@ namespace NFX.Web.Pay.Braintree
           {
             var customer = (JSONDataMap)(transaction["customer"] = new JSONDataMap());
             customer["id"] = orderContex.CustomerId;
-          } else transaction["customer_id"] = orderContex.CustomerId;
+          }
+          else
+          {
+            try
+            {
+              check(session, URI_Customer(session.MerchantID, orderContex.CustomerId.AsString()));
+              transaction["customer_id"] = orderContex.CustomerId;
+            } catch
+            {
+              var customer = (JSONDataMap)(transaction["customer"] = new JSONDataMap());
+              customer["id"] = orderContex.CustomerId;
+            }
+          }
         }
 
         var billing = (JSONDataMap)(transaction["billing"] = new JSONDataMap());
@@ -144,7 +161,7 @@ namespace NFX.Web.Pay.Braintree
         if (orderContex != null)
           options["store_in_vault_on_success"] = isWeb;
 
-        dynamic obj = getResponse(session, URI_Transactions(session.MerchantID), HTTPRequestMethod.POST, request);
+        dynamic obj = getResponse(session, URI_Transactions(session.MerchantID), request);
 
         string created = obj.transaction.createdAt;
 
@@ -171,19 +188,57 @@ namespace NFX.Web.Pay.Braintree
           {
             var respStr = sr.ReadToEnd();
             var resp = respStr.IsNotNullOrWhiteSpace() ? respStr.JSONToDynamic() : null;
-            // TODO Exception Handilng
+            if (resp != null)
+              throw new PaymentException(resp.apiErrorResponse.message, ex);
           }
 
         }
 
-        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + this.GetType()
-          + " .Capture(session='{0}', card='{1}', amount='{2}')".Args(session, from, amount), ex);
+        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR + this.GetType()
+          + " .Charge(session='{0}', card='{1}', amount='{2}')".Args(session, from, amount), ex);
       }
     }
 
     public override void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
     {
-      throw new NotImplementedException();
+      Capture((BraintreeSession)session, context, ref charge, amount, description, extraData);
+    }
+
+    public void Capture(BraintreeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
+    {
+      try
+      {
+        var splitTran = charge.ProcessorToken.AsString().Split(':');
+
+        var request = new JSONDataMap();
+        var transaction = (JSONDataMap)(request["transaction"] = new JSONDataMap());
+        if (amount.HasValue)
+          transaction["amount"] = amount.Value.Value;
+
+        dynamic obj = getResponse(session, URI_SubmitForSettlement(session.MerchantID, splitTran[2]), request, HTTPRequestMethod.PUT);
+
+        StatCapture(charge, amount);
+      }
+      catch (Exception ex)
+      {
+        StatChargeError();
+
+        var wex = ex as System.Net.WebException;
+        if (wex != null)
+        {
+          using (var sr = new System.IO.StreamReader(wex.Response.GetResponseStream()))
+          {
+            var respStr = sr.ReadToEnd();
+            var resp = respStr.IsNotNullOrWhiteSpace() ? respStr.JSONToDynamic() : null;
+            if (resp != null)
+              throw new PaymentException(resp.apiErrorResponse.message, ex);
+          }
+
+        }
+
+        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + this.GetType()
+          + " .Capture(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount), ex);
+      }
     }
 
     public override Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
@@ -212,7 +267,7 @@ namespace NFX.Web.Pay.Braintree
     }
 
     #region .pvt
-    private JSONDynamicObject getResponse(BraintreeSession session, Uri uri, HTTPRequestMethod method, object body)
+    private JSONDynamicObject getResponse(BraintreeSession session, Uri uri, object body = null, HTTPRequestMethod method = HTTPRequestMethod.POST)
     {
       if (!session.IsValid)
         throw new PaymentException("Braintree: " + StringConsts.PAYMENT_BRAINTREE_SESSION_INVALID.Args(this.GetType().Name + ".getResponse"));
@@ -221,9 +276,9 @@ namespace NFX.Web.Pay.Braintree
       {
         Caller = this,
         Uri = uri,
-        Method = HTTPRequestMethod.POST,
-        AcceptType = ContentType.JSON,
+        Method = method,
         ContentType = ContentType.JSON,
+        AcceptType = ContentType.JSON,
         Headers = new Dictionary<string, string>()
         {
           { HDR_AUTHORIZATION, getAuthHeader(session.User.Credentials) },
@@ -233,6 +288,26 @@ namespace NFX.Web.Pay.Braintree
       };
 
       return WebClient.GetJsonAsDynamic(prms);
+    }
+
+    private string check(BraintreeSession session, Uri uri)
+    {
+      if (!session.IsValid)
+        throw new PaymentException("Braintree: " + StringConsts.PAYMENT_BRAINTREE_SESSION_INVALID.Args(this.GetType().Name + ".check"));
+
+      var prms = new WebClient.RequestParams()
+      {
+        Caller = this,
+        Uri = uri,
+        Method = HTTPRequestMethod.GET,
+        Headers = new Dictionary<string, string>()
+        {
+          { HDR_AUTHORIZATION, getAuthHeader(session.User.Credentials) },
+          { HDR_X_API_VERSION, API_VERSION }
+        }
+      };
+
+      return WebClient.GetString(prms);
     }
 
     private string getAuthHeader(Credentials credentials)

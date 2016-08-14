@@ -52,6 +52,7 @@ namespace NFX.Web.Pay.PayPal
           private const string URI_API_SANDBOX_BASE = "https://api.sandbox.paypal.com";
           private const string URI_GET_OAUTH_TOKEN = "/v1/oauth2/token";
           private const string URI_PAYOUTS = "/v1/payments/payouts";
+          private const string URI_CANCEL_UNCLAIMED_PAYOUT = "/v1/payments/payouts-item/{0}/cancel";
 
           private const string HDR_AUTHORIZATION = "Authorization";
           private const string HDR_AUTHORIZATION_BASIC = "Basic {0}";
@@ -80,6 +81,12 @@ namespace NFX.Web.Pay.PayPal
           private const string RESPONSE_ERRORS_DETAILS = "details";
           private const string RESPONSE_ITEMS_ITEMID = "payout_item_id";
           private const string RESPONSE_TIME_COMPLETED = "time_completed";
+          private const string RESPONSE_ITEM_TRAN_STATUS = "transaction_status";
+          private const string RESPONSE_ITEM_UNCLAIMED = "UNCLAIMED";
+          private const string RESPONSE_ITEM_SUCCESS= "SUCCESS";
+          private const string RESPONSE_ITEM_ERRORS = "errors";
+          private const string RESPONSE_ITEM_ERRORS_NAME = "name";
+          private const string RESPONSE_ITEM_ERRORS_MESSAGE = "message";
 
           private const string BASIC_AUTH_FORMAT = "{0}:{1}";
           private const string CURRENCY_FORMAT = "{0:0.00}";
@@ -278,7 +285,8 @@ namespace NFX.Web.Pay.PayPal
 
                   var response = WebClient.GetJson(request);
                   Log(MessageType.Info, "doTransfer()", response.ToJSON(), null, id);
-                  checkPayoutStatus(response);
+
+                  checkPayoutStatus(response, payPalSession);
 
                   var transaction = createPayoutTransaction(session, context, response, to, amount, description);
 
@@ -321,32 +329,71 @@ namespace NFX.Web.Pay.PayPal
                      }.ToJSON(JSONWritingOptions.Compact);
           }
 
-          private static string getBaseAuthString(Credentials credentials)
+          private void checkPayoutStatus(JSONDataMap response, PayPalSession payPalSession)
           {
-              var payPalCredentials = credentials as PayPalCredentials;
-              var bytes = Encoding.UTF8.GetBytes(BASIC_AUTH_FORMAT.Args(payPalCredentials.ClientID, payPalCredentials.ClientSecret));
-              return Convert.ToBase64String(bytes);
-          }
-
-          private static string generateBatchID()
-          {
-              return Guid.NewGuid().ToString("N").Substring(0, 30);
-          }
-
-          private static void checkPayoutStatus(JSONDataMap response)
-          {
-              var batchStatus = response.GetNodeByPath(RESPONSE_BATCH_HEADER, RESPONSE_BATCH_STATUS);
-              if (batchStatus.AsString() != RESPONSE_SUCCESS)
+              var batchStatus = response.GetNodeByPath(RESPONSE_BATCH_HEADER, RESPONSE_BATCH_STATUS).AsString();
+              if (!batchStatus.EqualsIgnoreCase(RESPONSE_SUCCESS))
               {
-                  var errorName = response.GetNodeByPath(RESPONSE_ERRORS, RESPONSE_ERRORS_NAME);
-                  var errorMessage = response.GetNodeByPath(RESPONSE_ERRORS, RESPONSE_ERRORS_MESSAGE);
-                  var errorDescription = response.GetNodeByPath(RESPONSE_ERRORS, RESPONSE_ERRORS_DETAILS);
-                  var message = StringConsts.PAYPAL_PAYOUT_DENIED_MESSAGE.Args(errorName ?? EMPTY,
-                                                                               errorMessage ?? EMPTY,
-                                                                               errorDescription ?? EMPTY);
-
-                  throw new PayPalPaymentException(message);
+                throwPaymentException(response.GetNodeByPath(RESPONSE_ERRORS, RESPONSE_ERRORS_NAME).AsString(),
+                                      response.GetNodeByPath(RESPONSE_ERRORS, RESPONSE_ERRORS_MESSAGE).AsString(),
+                                      response.GetNodeByPath(RESPONSE_ERRORS, RESPONSE_ERRORS_DETAILS).AsString());
               }
+
+              var items = response[RESPONSE_ITEMS] as JSONDataArray;
+              if (items == null || items.Count<=0) return;
+
+              // for the moment there is only one possible payment in a batch
+              var item = (JSONDataMap)items[0];
+              var status = item[RESPONSE_ITEM_TRAN_STATUS].AsString();
+
+              //todo: cancel unclaimed transaction?
+              if (status.EqualsIgnoreCase(RESPONSE_ITEM_UNCLAIMED))
+              {
+                var itemID = item[RESPONSE_ITEMS_ITEMID].AsString();
+                cancelUnclaimedPayout(itemID, payPalSession);
+
+                throwPaymentException(item.GetNodeByPath(RESPONSE_ITEM_ERRORS, RESPONSE_ITEM_ERRORS_NAME).AsString(),
+                                      item.GetNodeByPath(RESPONSE_ITEM_ERRORS, RESPONSE_ITEM_ERRORS_MESSAGE).AsString(),
+                                      EMPTY);
+              }
+
+              //todo: other statuses https://developer.paypal.com/docs/api/payments.payouts-batch#payouts_get
+              if (!status.EqualsIgnoreCase(RESPONSE_ITEM_SUCCESS))
+              {
+                throwPaymentException(item.GetNodeByPath(RESPONSE_ITEM_ERRORS, RESPONSE_ITEM_ERRORS_NAME).AsString(),
+                                      item.GetNodeByPath(RESPONSE_ITEM_ERRORS, RESPONSE_ITEM_ERRORS_MESSAGE).AsString(),
+                                      status);
+              }
+
+          }
+
+          private void cancelUnclaimedPayout(string itemID, PayPalSession payPalSession)
+          {
+            try
+            {
+                var request = new WebClient.RequestParams
+                {
+                    Caller = this,
+                    Uri = new Uri(m_ApiUri + URI_CANCEL_UNCLAIMED_PAYOUT.Args(itemID)),
+                    Method = HTTPRequestMethod.POST,
+                    ContentType = ContentType.JSON,
+                    Headers = new Dictionary<string, string>
+                        {
+                            { HDR_AUTHORIZATION, HDR_AUTHORIZATION_OAUTH.Args(payPalSession.AuthorizationToken.AccessToken) },
+                        }
+                };
+
+                var response = WebClient.GetJson(request);
+                Log(MessageType.Info, "cancelUnclaimedPayout()", response.ToJSON());
+            }
+            catch (Exception ex)
+            {
+                var message = StringConsts.PAYPAL_PAYOUT_CANCEL_ERROR.Args(ex.ToMessageWithType());
+                var error = PayPalPaymentException.ComposeError(message, ex);
+                Log(MessageType.Error, "cancelUnclaimedPayout()", error.Message, ex);
+
+                throw error;
+            }
           }
 
           private Transaction createPayoutTransaction(PaySession session, ITransactionContext context, JSONDataMap response, Account to, Amount amount, string description = null)
@@ -373,6 +420,26 @@ namespace NFX.Web.Pay.PayPal
                                      amount,
                                      transactionDate,
                                      description);
+          }
+
+          private static string getBaseAuthString(Credentials credentials)
+          {
+              var payPalCredentials = credentials as PayPalCredentials;
+              var bytes = Encoding.UTF8.GetBytes(BASIC_AUTH_FORMAT.Args(payPalCredentials.ClientID, payPalCredentials.ClientSecret));
+              return Convert.ToBase64String(bytes);
+          }
+
+          private static string generateBatchID()
+          {
+              return Guid.NewGuid().ToString("N").Substring(0, 30);
+          }
+
+          private static void throwPaymentException(string name, string message, string description)
+          {
+            var text = StringConsts.PAYPAL_PAYOUT_NOT_SUCCEEDED_MESSAGE.Args(name ?? EMPTY,
+                                                                             message ?? EMPTY,
+                                                                             description ?? EMPTY);
+            throw new PayPalPaymentException(text);
           }
 
         #endregion

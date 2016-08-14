@@ -73,7 +73,6 @@ namespace NFX.Web.Messaging
     #region Private Fields
 
     private int m_WebServiceCallTimeoutMs;
-    private MessageSink m_FallbackSink;
 
     #endregion
 
@@ -94,112 +93,94 @@ namespace NFX.Web.Messaging
     [Config]
     public bool TestMode { get; set; }
 
-    [Config]
-    public IMessageSink FallbackSink
-    {
-      get { return m_FallbackSink; }
-      set
-      {
-        m_FallbackSink = value as MessageSink;
-      }
-    }
     #endregion
 
     #region Protected
-    protected override void DoConfigure(Environment.IConfigSectionNode node)
-    {
-      base.DoConfigure(node);
-      m_FallbackSink = FactoryUtils.MakeAndConfigure<MessageSink>(node[CONFIG_FALLBACKSINK_SECTION], typeof(NOPMessageSink), args: new object[] { this.ComponentDirector });
-    }
-    protected override void DoStart()
-    {
-      base.DoStart();
-      if (m_FallbackSink != null)
-        m_FallbackSink.Start();
-    }
-
-    /// <summary>
-    /// MessageSink DoSendMsg implementation
-    /// </summary>
-    /// <param name="msg">Message</param>
-    protected override void DoSendMsg(Message msg)
-    {
-      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return;
-
-      var request = new WebClient.RequestParams()
+      protected override void DoConfigure(Environment.IConfigSectionNode node)
       {
-        Caller = this,
-        Method = HTTPRequestMethod.POST,
-        Uri = new Uri(ServiceUrl),
-        Headers = new Dictionary<string, string>(),
-        BodyParameters = new Dictionary<string, string>(),
-        UName = "api",
-        UPwd = AuthorizationKey
-      };
-
-      var fromAddress = "{0} <{1}>".Args(DefaultFromName, DefaultFromAddress);
-      if (msg.FROMAddress.IsNotNullOrWhiteSpace())
-      {
-        fromAddress = "{0} <{1}>".Args(msg.FROMName, msg.FROMAddress);
+        ConfigAttribute.Apply(this, node);
       }
 
-      addParameter(request.BodyParameters, MAIL_PARAM_FROM, fromAddress);
-      addParameter(request.BodyParameters, MAIL_PARAM_TO, "{0} <{1}>".Args(msg.TOName, msg.TOAddress));
-      addParameter(request.BodyParameters, MAIL_PARAM_CC, msg.CC);
-      addParameter(request.BodyParameters, MAIL_PARAM_BCC, msg.BCC);
-      addParameter(request.BodyParameters, MAIL_PARAM_SUBJECT, msg.Subject);
-      addParameter(request.BodyParameters, MAIL_PARAM_TEXT, msg.Body);
-      addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.HTMLBody);
-
-      if (TestMode)
+      protected override void DoStart()
       {
-        request.BodyParameters.Add(API_PARAM_TESTMODE, "Yes");
-      }
-      try
-      {
-        var result = WebClient.GetJsonAsDynamic(request);
-      }
-      catch (Exception e)
-      {
-        if (m_FallbackSink != null)
-          m_FallbackSink.SendMsg(msg);
+        base.DoStart();
       }
 
-    }
+      /// <summary>
+      /// MessageSink DoSendMsg implementation
+      /// </summary>
+      /// <param name="msg">Message</param>
+      protected override void DoSendMsg(Message msg)
+      {
+        if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return;
+
+        var request = new WebClient.RequestParams()
+        {
+          Caller = this,
+          Method = HTTPRequestMethod.POST,
+          Uri = new Uri(ServiceUrl),
+          Headers = new Dictionary<string, string>(),
+          BodyParameters = new Dictionary<string, string>(),
+          UName = "api",
+          UPwd = AuthorizationKey
+        };
+
+        var fromAddress = "{0} <{1}>".Args(DefaultFromName, DefaultFromAddress);
+        if (msg.FROMAddress.IsNotNullOrWhiteSpace())
+        {
+          fromAddress = "{0} <{1}>".Args(msg.FROMName, msg.FROMAddress);
+        }
+
+        addParameter(request.BodyParameters, MAIL_PARAM_FROM, fromAddress);
+        addParameter(request.BodyParameters, MAIL_PARAM_TO, "{0} <{1}>".Args(msg.TOName, msg.TOAddress));
+        addParameter(request.BodyParameters, MAIL_PARAM_CC, msg.CC);
+        addParameter(request.BodyParameters, MAIL_PARAM_BCC, msg.BCC);
+        addParameter(request.BodyParameters, MAIL_PARAM_SUBJECT, msg.Subject);
+        addParameter(request.BodyParameters, MAIL_PARAM_TEXT, msg.Body);
+        addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.HTMLBody);
+        // todo: attachments
+
+        if (TestMode)
+          request.BodyParameters.Add(API_PARAM_TESTMODE, "Yes");
+
+        WebClient.GetString(request);
+      }
     #endregion
 
     #region IWebClientCaller
 
-    [Config(Default = 20000)]
-    public int WebServiceCallTimeoutMs
-    {
-      get { return m_WebServiceCallTimeoutMs; }
-      set { m_WebServiceCallTimeoutMs = value < 0 ? 0 : value; }
-    }
-
-    [Config(Default = false)]
-    public bool KeepAlive { get; set; }
-
-    [Config(Default = false)]
-    public bool Pipelined { get; set; }
-
-    public string ServiceUrl
-    {
-      get
+      [Config(Default = 20000)]
+      public int WebServiceCallTimeoutMs
       {
-        return "{0}/{1}/messages".Args(BASE_SERVICE_URL, Domain);
+        get { return m_WebServiceCallTimeoutMs; }
+        set { m_WebServiceCallTimeoutMs = value < 0 ? 0 : value; }
       }
-    }
+
+      [Config(Default = false)]
+      public bool KeepAlive { get; set; }
+
+      [Config(Default = false)]
+      public bool Pipelined { get; set; }
+
+      public string ServiceUrl
+      {
+        get
+        {
+          return "{0}/{1}/messages".Args(BASE_SERVICE_URL, Domain);
+        }
+      }
     #endregion
 
     #region .pvt. impl.
-    private void addParameter(IDictionary<string, string> parameters, string name, string value)
-    {
-      if (parameters == null) return;
-      if (name.IsNullOrWhiteSpace() || value.IsNullOrWhiteSpace()) return;
 
-      parameters.Add(name, Uri.EscapeDataString(value));
-    }
+      private void addParameter(IDictionary<string, string> parameters, string name, string value)
+      {
+        if (parameters == null) return;
+        if (name.IsNullOrWhiteSpace() || value.IsNullOrWhiteSpace()) return;
+
+        parameters.Add(name, Uri.EscapeDataString(value));
+      }
+
     #endregion
   }
 }

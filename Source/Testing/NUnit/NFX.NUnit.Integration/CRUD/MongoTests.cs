@@ -112,6 +112,29 @@ namespace NFX.NUnit.Integration.CRUD
       }
 
       [Test]
+      public void InsertAndLoadWithProjection()
+      {
+          var row = new MyPerzon
+          {
+             GDID = new GDID(1, 1, 100),
+             Name = "Jeka Koshmar",
+             Age = 89
+          };
+
+          store.Insert(row);
+
+          var row2 = store.LoadOneRow(new Query("CRUD.LoadPerzonAge", typeof(MyPerzon))
+                           {
+                             new Query.Param("id", row.GDID)
+                           }) as MyPerzon;
+          Assert.IsNotNull( row2 );
+
+          Assert.AreEqual(GDID.Zero, row2.GDID);
+          Assert.AreEqual(null, row2.Name);
+          Assert.AreEqual(row.Age,  row2.Age);
+      }
+
+      [Test]
       public void InsertAndLoadRowIntoDynamicRow()
       {
           var row = new MyPerzon

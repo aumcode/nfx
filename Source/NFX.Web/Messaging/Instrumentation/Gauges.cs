@@ -48,6 +48,27 @@ namespace NFX.Web.Messaging.Instrumentation
     }
 
     [Serializable]
+    public class MessagingFallbackCount : MessagingSinkLongGauge
+    {
+      public MessagingFallbackCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var inst = App.Instrumentation;
+        if (inst.Enabled)
+          inst.Record(new MessagingFallbackCount(source, value));
+      }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new MessagingFallbackCount(this.Source, 0);
+      }
+
+      public override string Description { get { return "Fallbacks count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_MESSAGE; } }
+    }
+
+    [Serializable]
     public class MessagingSinkErrorCount : MessagingSinkLongGauge
     {
       protected MessagingSinkErrorCount(string source, long value) : base(source, value) { }
@@ -59,12 +80,33 @@ namespace NFX.Web.Messaging.Instrumentation
           inst.Record(new MessagingSinkErrorCount(source, value));
       }
 
-      public override string Description { get { return "Messsages error count"; } }
+      public override string Description { get { return "Messages error count"; } }
       public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_ERROR; } }
 
       protected override Datum MakeAggregateInstance()
       {
         return new MessagingSinkErrorCount(this.Source, 0);
+      }
+    }
+
+    [Serializable]
+    public class MessagingFallbackErrorCount : MessagingSinkLongGauge
+    {
+      protected MessagingFallbackErrorCount(string source, long value) : base(source, value) { }
+
+      public static void Record(string source, long value)
+      {
+        var inst = App.Instrumentation;
+        if (inst.Enabled)
+          inst.Record(new MessagingFallbackErrorCount(source, value));
+      }
+
+      public override string Description { get { return "Fallbacks error count"; } }
+      public override string ValueUnitName { get { return NFX.CoreConsts.UNIT_NAME_ERROR; } }
+
+      protected override Datum MakeAggregateInstance()
+      {
+        return new MessagingFallbackErrorCount(this.Source, 0);
       }
     }
 }

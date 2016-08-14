@@ -16,6 +16,8 @@ namespace NFX.DataAccess.MongoDB.Connector
   {
     public const string _ID = Protocol._ID;
 
+    public const string PROJECTION_ROOT = "$NFX-QUERY-PROJECTION";
+
 
     public static Query ID_EQ_Int32(Int32 id)
     {
@@ -51,16 +53,26 @@ namespace NFX.DataAccess.MongoDB.Connector
 
     public Query() : base() { }
     public Query(Stream stream) : base(stream) { }
-   
+
     /// <summary>
     /// Creates an instance of the query from JSON template with parameters populated from args optionally caching the template internal
     /// representation. Do not cache templates that change often
     /// </summary>
-    public Query(string template, bool cacheTemplate, params TemplateArg[] args):base(template, cacheTemplate, args)
+    public Query(string template, bool cacheTemplate, params TemplateArg[] args) : base(template, cacheTemplate, args)
     {
-
+      var projNode = this[PROJECTION_ROOT] as BSONDocumentElement;
+      if (projNode!=null)
+      {
+        this.ProjectionSelector = projNode.Value;
+        this.Delete(PROJECTION_ROOT);
+      }
     }
 
+    /// <summary>
+    /// Gets/sets projection document which should be embedded in query with '$NFX-QUERY-PROJECTION' see the PROJECTION_ROOT constant
+    /// https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results
+    /// </summary>
+    public BSONDocument ProjectionSelector{ get; set;}
   }
 
 }

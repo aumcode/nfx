@@ -95,6 +95,8 @@ namespace NFX.DataAccess.MongoDB.Connector
         {
           EnsureObjectNotDisposed();
 
+          if (selector==null) selector = query.ProjectionSelector;
+
           m_BufferStream.Position = 0;
           var total = Protocol.Write_QUERY(m_BufferStream,
                                            requestID,
@@ -123,6 +125,8 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           if (fetchBy<=0) fetchBy = Cursor.DEFAULT_FETCH_BY;
+
+          if (selector==null) selector = query.ProjectionSelector;
 
           m_BufferStream.Position = 0;
           var total = Protocol.Write_QUERY(m_BufferStream,
