@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -145,34 +145,34 @@ namespace NFX.Wave
       //*Instrumentation Statistics*//
       internal bool m_InstrumentationEnabled;
 
-          internal long m_Stat_ServerRequest;
-          internal long m_Stat_ServerGateDenial;
-          internal long m_Stat_ServerHandleException;
-          internal long m_Stat_FilterHandleException;
+          internal long m_stat_ServerRequest;
+          internal long m_stat_ServerGateDenial;
+          internal long m_stat_ServerHandleException;
+          internal long m_stat_FilterHandleException;
 
-          internal long m_Stat_ServerAcceptSemaphoreCount;
-          internal long m_Stat_ServerWorkSemaphoreCount;
+          internal long m_stat_ServerAcceptSemaphoreCount;
+          internal long m_stat_ServerWorkSemaphoreCount;
 
-          internal long m_Stat_WorkContextWrittenResponse;
-          internal long m_Stat_WorkContextBufferedResponse;
-          internal long m_Stat_WorkContextBufferedResponseBytes;
-          internal long m_Stat_WorkContextCtor;
-          internal long m_Stat_WorkContextDctor;
-          internal long m_Stat_WorkContextWorkSemaphoreRelease;
-          internal long m_Stat_WorkContextAborted;
-          internal long m_Stat_WorkContextHandled;
-          internal long m_Stat_WorkContextNoDefaultClose;
-          internal long m_Stat_WorkContextNeedsSession;
+          internal long m_stat_WorkContextWrittenResponse;
+          internal long m_stat_WorkContextBufferedResponse;
+          internal long m_stat_WorkContextBufferedResponseBytes;
+          internal long m_stat_WorkContextCtor;
+          internal long m_stat_WorkContextDctor;
+          internal long m_stat_WorkContextWorkSemaphoreRelease;
+          internal long m_stat_WorkContextAborted;
+          internal long m_stat_WorkContextHandled;
+          internal long m_stat_WorkContextNoDefaultClose;
+          internal long m_stat_WorkContextNeedsSession;
 
-          internal long m_Stat_SessionNew;
-          internal long m_Stat_SessionExisting;
-          internal long m_Stat_SessionEnd;
-          internal long m_Stat_SessionInvalidID;
+          internal long m_stat_SessionNew;
+          internal long m_stat_SessionExisting;
+          internal long m_stat_SessionEnd;
+          internal long m_stat_SessionInvalidID;
 
-          internal long m_Stat_GeoLookup;
-          internal long m_Stat_GeoLookupHit;
+          internal long m_stat_GeoLookup;
+          internal long m_stat_GeoLookupHit;
 
-          internal NamedInterlocked m_Stat_PortalRequest = new NamedInterlocked();
+          internal NamedInterlocked m_stat_PortalRequest = new NamedInterlocked();
 
     #endregion
 
@@ -355,7 +355,7 @@ namespace NFX.Wave
       {
          try
          {
-            if (m_InstrumentationEnabled) Interlocked.Increment(ref m_Stat_ServerHandleException);
+            if (m_InstrumentationEnabled) Interlocked.Increment(ref m_stat_ServerHandleException);
 
             //work may be null (when WorkContext is already disposed)
             if (work!=null)
@@ -630,7 +630,7 @@ namespace NFX.Wave
        {
          listenerContext = m_Listener.EndGetContext(result);
 
-         if (m_InstrumentationEnabled) Interlocked.Increment(ref m_Stat_ServerRequest);
+         if (m_InstrumentationEnabled) Interlocked.Increment(ref m_stat_ServerRequest);
 
 
          if (m_Gate!=null)
@@ -645,7 +645,7 @@ namespace NFX.Wave
                 listenerContext.Response.StatusDescription = Web.WebConsts.STATUS_403_DESCRIPTION;
                 listenerContext.Response.Close();
 
-                if (m_InstrumentationEnabled) Interlocked.Increment(ref m_Stat_ServerGateDenial);
+                if (m_InstrumentationEnabled) Interlocked.Increment(ref m_stat_ServerGateDenial);
                 return;
               }
             }
@@ -669,13 +669,13 @@ namespace NFX.Wave
              var acceptCount = m_AcceptSemaphore.Release();
 
              if (m_InstrumentationEnabled)
-              Thread.VolatileWrite(ref m_Stat_ServerAcceptSemaphoreCount, acceptCount);
+              Thread.VolatileWrite(ref m_stat_ServerAcceptSemaphoreCount, acceptCount);
 
              if (gateAccessDenied)//if access was denied then no work will be done either
              {
                 var workCount = m_WorkSemaphore.Release();
                 if (m_InstrumentationEnabled)
-                  Thread.VolatileWrite(ref m_Stat_ServerWorkSemaphoreCount, workCount);
+                  Thread.VolatileWrite(ref m_stat_ServerWorkSemaphoreCount, workCount);
              }
           }
        }
@@ -726,71 +726,71 @@ namespace NFX.Wave
 
      private void resetStats()
      {
-        m_Stat_ServerRequest                        = 0;
-        m_Stat_ServerGateDenial                     = 0;
-        m_Stat_ServerHandleException                = 0;
-        m_Stat_FilterHandleException                = 0;
+        m_stat_ServerRequest                        = 0;
+        m_stat_ServerGateDenial                     = 0;
+        m_stat_ServerHandleException                = 0;
+        m_stat_FilterHandleException                = 0;
 
-        m_Stat_ServerAcceptSemaphoreCount           = 0;
-        m_Stat_ServerWorkSemaphoreCount             = 0;
+        m_stat_ServerAcceptSemaphoreCount           = 0;
+        m_stat_ServerWorkSemaphoreCount             = 0;
 
-        m_Stat_WorkContextWrittenResponse           = 0;
-        m_Stat_WorkContextBufferedResponse          = 0;
-        m_Stat_WorkContextBufferedResponseBytes     = 0;
-        m_Stat_WorkContextCtor                      = 0;
-        m_Stat_WorkContextDctor                     = 0;
-        m_Stat_WorkContextWorkSemaphoreRelease      = 0;
-        m_Stat_WorkContextAborted                   = 0;
-        m_Stat_WorkContextHandled                   = 0;
-        m_Stat_WorkContextNoDefaultClose            = 0;
-        m_Stat_WorkContextNeedsSession              = 0;
+        m_stat_WorkContextWrittenResponse           = 0;
+        m_stat_WorkContextBufferedResponse          = 0;
+        m_stat_WorkContextBufferedResponseBytes     = 0;
+        m_stat_WorkContextCtor                      = 0;
+        m_stat_WorkContextDctor                     = 0;
+        m_stat_WorkContextWorkSemaphoreRelease      = 0;
+        m_stat_WorkContextAborted                   = 0;
+        m_stat_WorkContextHandled                   = 0;
+        m_stat_WorkContextNoDefaultClose            = 0;
+        m_stat_WorkContextNeedsSession              = 0;
 
-        m_Stat_SessionNew                           = 0;
-        m_Stat_SessionExisting                      = 0;
-        m_Stat_SessionEnd                           = 0;
-        m_Stat_SessionInvalidID                     = 0;
+        m_stat_SessionNew                           = 0;
+        m_stat_SessionExisting                      = 0;
+        m_stat_SessionEnd                           = 0;
+        m_stat_SessionInvalidID                     = 0;
 
-        m_Stat_GeoLookup                            = 0;
-        m_Stat_GeoLookupHit                         = 0;
+        m_stat_GeoLookup                            = 0;
+        m_stat_GeoLookupHit                         = 0;
 
-        m_Stat_PortalRequest.Clear();
+        m_stat_PortalRequest.Clear();
      }
 
      private void dumpStats()
      {
         var i = App.Instrumentation;
 
-        i.Record( new Instrumentation.ServerRequest                      (Name, m_Stat_ServerRequest                      ));
-        i.Record( new Instrumentation.ServerGateDenial                   (Name, m_Stat_ServerGateDenial                   ));
-        i.Record( new Instrumentation.ServerHandleException              (Name, m_Stat_ServerHandleException              ));
-        i.Record( new Instrumentation.FilterHandleException              (Name, m_Stat_FilterHandleException              ));
+        i.Record( new Instrumentation.ServerRequest                      (Name, m_stat_ServerRequest                      ));
+        i.Record( new Instrumentation.ServerGateDenial                   (Name, m_stat_ServerGateDenial                   ));
+        i.Record( new Instrumentation.ServerHandleException              (Name, m_stat_ServerHandleException              ));
+        i.Record( new Instrumentation.FilterHandleException              (Name, m_stat_FilterHandleException              ));
 
-        i.Record( new Instrumentation.ServerAcceptSemaphoreCount         (Name, m_Stat_ServerAcceptSemaphoreCount         ));
-        i.Record( new Instrumentation.ServerWorkSemaphoreCount           (Name, m_Stat_ServerWorkSemaphoreCount           ));
+        i.Record( new Instrumentation.ServerAcceptSemaphoreCount         (Name, m_stat_ServerAcceptSemaphoreCount         ));
+        i.Record( new Instrumentation.ServerWorkSemaphoreCount           (Name, m_stat_ServerWorkSemaphoreCount           ));
 
-        i.Record( new Instrumentation.WorkContextWrittenResponse         (Name, m_Stat_WorkContextWrittenResponse         ));
-        i.Record( new Instrumentation.WorkContextBufferedResponse        (Name, m_Stat_WorkContextBufferedResponse        ));
-        i.Record( new Instrumentation.WorkContextBufferedResponseBytes   (Name, m_Stat_WorkContextBufferedResponseBytes   ));
-        i.Record( new Instrumentation.WorkContextCtor                    (Name, m_Stat_WorkContextCtor                    ));
-        i.Record( new Instrumentation.WorkContextDctor                   (Name, m_Stat_WorkContextDctor                   ));
-        i.Record( new Instrumentation.WorkContextWorkSemaphoreRelease    (Name, m_Stat_WorkContextWorkSemaphoreRelease    ));
-        i.Record( new Instrumentation.WorkContextAborted                 (Name, m_Stat_WorkContextAborted                 ));
-        i.Record( new Instrumentation.WorkContextHandled                 (Name, m_Stat_WorkContextHandled                 ));
-        i.Record( new Instrumentation.WorkContextNoDefaultClose          (Name, m_Stat_WorkContextNoDefaultClose          ));
-        i.Record( new Instrumentation.WorkContextNeedsSession            (Name, m_Stat_WorkContextNeedsSession            ));
+        i.Record( new Instrumentation.WorkContextWrittenResponse         (Name, m_stat_WorkContextWrittenResponse         ));
+        i.Record( new Instrumentation.WorkContextBufferedResponse        (Name, m_stat_WorkContextBufferedResponse        ));
+        i.Record( new Instrumentation.WorkContextBufferedResponseBytes   (Name, m_stat_WorkContextBufferedResponseBytes   ));
+        i.Record( new Instrumentation.WorkContextCtor                    (Name, m_stat_WorkContextCtor                    ));
+        i.Record( new Instrumentation.WorkContextDctor                   (Name, m_stat_WorkContextDctor                   ));
+        i.Record( new Instrumentation.WorkContextWorkSemaphoreRelease    (Name, m_stat_WorkContextWorkSemaphoreRelease    ));
+        i.Record( new Instrumentation.WorkContextAborted                 (Name, m_stat_WorkContextAborted                 ));
+        i.Record( new Instrumentation.WorkContextHandled                 (Name, m_stat_WorkContextHandled                 ));
+        i.Record( new Instrumentation.WorkContextNoDefaultClose          (Name, m_stat_WorkContextNoDefaultClose          ));
+        i.Record( new Instrumentation.WorkContextNeedsSession            (Name, m_stat_WorkContextNeedsSession            ));
 
-        i.Record( new Instrumentation.SessionNew                         (Name, m_Stat_SessionNew                         ));
-        i.Record( new Instrumentation.SessionExisting                    (Name, m_Stat_SessionExisting                    ));
-        i.Record( new Instrumentation.SessionEnd                         (Name, m_Stat_SessionEnd                         ));
-        i.Record( new Instrumentation.SessionInvalidID                   (Name, m_Stat_SessionInvalidID                   ));
+        i.Record( new Instrumentation.SessionNew                         (Name, m_stat_SessionNew                         ));
+        i.Record( new Instrumentation.SessionExisting                    (Name, m_stat_SessionExisting                    ));
+        i.Record( new Instrumentation.SessionEnd                         (Name, m_stat_SessionEnd                         ));
+        i.Record( new Instrumentation.SessionInvalidID                   (Name, m_stat_SessionInvalidID                   ));
 
-        i.Record( new Instrumentation.GeoLookup                          (Name, m_Stat_GeoLookup                          ));
-        i.Record( new Instrumentation.GeoLookupHit                       (Name, m_Stat_GeoLookupHit                       ));
+        i.Record( new Instrumentation.GeoLookup                          (Name, m_stat_GeoLookup                          ));
+        i.Record( new Instrumentation.GeoLookupHit                       (Name, m_stat_GeoLookupHit                       ));
 
-        foreach(var kvp in m_Stat_PortalRequest.AllLongs)
+        foreach(var kvp in m_stat_PortalRequest.AllLongs)
             i.Record( new Instrumentation.ServerPortalRequest(Name+"."+kvp.Key, kvp.Value) );
 
-        var sample = (int)m_Stat_WorkContextBufferedResponseBytes;
+        var sample = (int)m_stat_WorkContextBufferedResponseBytes;
         if (sample!=0) ExternalRandomGenerator.Instance.FeedExternalEntropySample(sample);
      }
 

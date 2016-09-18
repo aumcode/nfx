@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -307,9 +307,10 @@ namespace NFX.Web.Pay.Mock
         throw new PaymentException(StringConsts.PAYMENT_INVALID_CARD_NUMBER_ERROR + this.GetType().Name + ".Charge");
       }
 
-      public override void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Financial.Amount? amount = null, string description = null, object extraData = null)
+      public override Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Financial.Amount? amount = null, string description = null, object extraData = null)
       {
         StatCapture(charge, amount);
+        return charge;
       }
 
       public override Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Financial.Amount? amount = null, string description = null, object extraData = null)

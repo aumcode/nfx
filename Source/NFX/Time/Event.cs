@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -95,12 +95,9 @@ namespace NFX.Time
 
     #region .ctor
 
-      public Event(IEventTimer timer, IConfigSectionNode config) : this(timer, null, null, null, config)
-      {
+      public Event(IEventTimer timer, IConfigSectionNode config) : this(timer, null, config: config) {}
 
-      }
-
-      public Event(IEventTimer timer, string name = null, TimerEvent body = null, TimeSpan? interval = null, IConfigSectionNode config = null) : base(timer)
+      public Event(IEventTimer timer, string name = null, TimerEvent body = null, TimeSpan? interval = null, IConfigSectionNode config = null, EventBodyAsyncModel bodyAsyncModel = EventBodyAsyncModel.AsyncTask) : base(timer)
       {
          if ((timer as IEventTimerImplementation) == null)
           throw new TimeException(StringConsts.ARGUMENT_ERROR + "Event.ctor(timer=null | timer!=IEventTimerImplementation)");
@@ -112,6 +109,8 @@ namespace NFX.Time
 
          if (interval.HasValue)
           m_Interval = interval.Value;
+
+         BodyAsyncModel = bodyAsyncModel;
 
          if (config!=null)
          {
@@ -163,7 +162,7 @@ namespace NFX.Time
 
       private object m_Context;
       private int m_CallCount;
-      private DateTime m_LastCall;
+      private DateTime m_LastCall = DateTime.MinValue;
       private Exception m_LastError;
 
     #endregion
@@ -567,6 +566,12 @@ namespace NFX.Time
         }
 
         setStatus(EventStatus.Started);
+
+        if (m_LastCall == DateTime.MinValue)
+        {
+          m_LastCall = localNow;
+          return true;
+        }
 
         return (localNow-m_LastCall)>=m_Interval;
       }

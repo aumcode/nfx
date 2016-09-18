@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -40,8 +40,26 @@ namespace NFX.Serialization.BSON
       Value = value;
     }
 
+    public TemplateArg(BSONElement element)
+    {
+      if (element==null && element.IsArrayElement)
+        throw new BSONException(StringConsts.ARGUMENT_ERROR+"TemplateArg.ctor(element==null|IsArrayElement)");
+
+      Name = element.Name;
+      BSONType = element.ElementType;
+      Value = element.ObjectValue;
+    }
+
+    public TemplateArg(string name, object value)
+    {
+      Name = name;
+      BSONType = null;
+      Value = value;
+    }
+
+
     public readonly string Name;
-    public readonly BSONElementType BSONType;
+    public readonly BSONElementType? BSONType;
     public readonly object Value;
   }
 
@@ -391,6 +409,7 @@ namespace NFX.Serialization.BSON
                 return result;
               }
 
+
               private JSONDataMap compileTemplate(string template)
               {
                 JSONDataMap result;
@@ -413,7 +432,27 @@ namespace NFX.Serialization.BSON
                   root.Set( jToB(kvp.Key, kvp.Value, args) );
               }
 
+
+              [ThreadStatic]
+              private static int ts_Depth;
+
               private BSONElement jToB(string name, object value, TemplateArg[] args)
+              {
+                try
+                {
+                  ts_Depth++;
+                  if (ts_Depth > 255) throw new BSONException(StringConsts.BSON_TEMPLATE_ARG_DEPTH_EXCEEDED);
+
+                  return jToBCore(name, value, args);
+                }
+                finally
+                {
+                  ts_Depth--;
+                }
+
+              }
+
+              private BSONElement jToBCore(string name, object value, TemplateArg[] args)
               {
                 if (name!=null)//array elm may be null
                   name = substName(name, args);
@@ -424,13 +463,19 @@ namespace NFX.Serialization.BSON
                     if (value is string)
                     {
                      var sv = (string)value;
-                     if (sv.Length>ARG_TPL_PREFIX.Length && sv.StartsWith(ARG_TPL_PREFIX))//parameter name
+                     if (args!=null && sv.Length>ARG_TPL_PREFIX.Length && sv.StartsWith(ARG_TPL_PREFIX))//parameter name
                      {
                       sv = sv.Substring(ARG_TPL_PREFIX.Length);//get rid of "$$"
                       var arg = args.FirstOrDefault(a=> a.Name.EqualsOrdIgnoreCase(sv));
                       if (arg.Name!=null)
                       {
-                        bType = arg.BSONType;
+                        if (!arg.BSONType.HasValue)
+                        {
+                          var be = jToB(arg.Name, arg.Value, null);
+                          return BSONElement.MakeOfType(be.ElementType, name, be.ObjectValue);
+                        }
+
+                        bType = arg.BSONType.Value;
                         value = arg.Value;
                       }
                       else
@@ -443,7 +488,11 @@ namespace NFX.Serialization.BSON
                     else if (value is Int32) bType = BSONElementType.Int32;
                     else if (value is Int64) bType = BSONElementType.Int64;
                     else if (value is bool) bType = BSONElementType.Boolean;
-                    else if (value is double || value is float || value is decimal) bType = BSONElementType.Double;
+                    else if (value is double || value is float) bType = BSONElementType.Double;
+                    else if (value is byte[])
+                    {
+                        return RowConverter.ByteBuffer_CLRtoBSON(name, (byte[])value);
+                    }
                     else if (value is JSONDataMap)
                     {
                         var doc = value as JSONDataMap;
@@ -452,11 +501,26 @@ namespace NFX.Serialization.BSON
                         value = subdoc;
                         bType = BSONElementType.Document;
                     }
-                    else if (value is JSONDataArray)
+                    else if (value is IEnumerable)
                     {
-                        var arr = value as JSONDataArray;
-                        value = arr.Select(e => jToB(null, e, args)).ToArray();
+                        var arr = value as IEnumerable;
+                        var list = new List<BSONElement>();
+                        foreach (var e in arr) list.Add(jToB(null, e, args));
+                        value = list.ToArray();
                         bType = BSONElementType.Array;
+                    }
+                    else if (value is NFX.DataAccess.Distributed.GDID)
+                    {
+                        return RowConverter.GDID_CLRtoBSON(name, (NFX.DataAccess.Distributed.GDID)value);
+                    }
+                    else if (value is decimal)
+                    {
+                        return RowConverter.Decimal_CLRtoBSON(name, (decimal)value);
+                    }
+
+                    else if (value is NFX.Financial.Amount)
+                    {
+                        return RowConverter.Amount_CLRtoBSON(name, (NFX.Financial.Amount)value);
                     }
                     else throw new BSONException("Template JSON value type '{0}' not supported in BSON binding".Args(value.GetType()));
                 }
@@ -466,7 +530,7 @@ namespace NFX.Serialization.BSON
 
               private string substName(string name, TemplateArg[] args)
               {
-                if (name.Length>ARG_TPL_PREFIX.Length && name.StartsWith(ARG_TPL_PREFIX))//parameter name
+                if (args!=null && name.Length>ARG_TPL_PREFIX.Length && name.StartsWith(ARG_TPL_PREFIX))//parameter name
                 {
                   var aname = name.Substring(ARG_TPL_PREFIX.Length);//get rid of "$$"
                   var arg = args.FirstOrDefault(a => a.Name.EqualsOrdIgnoreCase(aname));

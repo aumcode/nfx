@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ namespace WinFormsTest
 {
     public partial class SerializerForm2 : Form
     {
-       const int CNT = 750000;//50000;//100000;//10000;
-       
+       const int CNT = 1000000;//50000;//100000;//10000;
+
         public SerializerForm2()
         {
             InitializeComponent();
@@ -63,7 +63,7 @@ namespace WinFormsTest
                                        new Book() { Author = new Perzon()
                                                             { FirstName = "Kurt", LastName = "Vonnegut",
                                                               Names1 = new List<string>{"Felix Kutz", "Joseph Yong","Jerry Springer","Oleg Popoff"},
-                                                              Names2 = new List<string>{"A", "B","C","D","E","F","G","H","I","J","K","L","M","N","O"} 
+                                                              Names2 = new List<string>{"A", "B","C","D","E","F","G","H","I","J","K","L","M","N","O"}
                                                             },
                                                              Title = "Welcome to the Monkey House", Year = 1968},
 
@@ -106,7 +106,7 @@ namespace WinFormsTest
         }
 
 
-        //long[] data = 
+        //long[] data =
         //new long[]
         //{
         //  1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,
@@ -115,7 +115,7 @@ namespace WinFormsTest
         //  1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,
         //  1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0
         //};
-        
+
       // Library data = new Library();
        //Perzon data = new Perzon
        //{
@@ -142,7 +142,7 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
             {
              ms.Position = 0;
-             slim.Serialize(ms, data); 
+             slim.Serialize(ms, data);
             }
 
             w.Stop();
@@ -152,7 +152,7 @@ namespace WinFormsTest
               fs.Write(ms.GetBuffer(), 0, (int)ms.Length);
             }
 
-            Text = string.Format("Slim serialized {0} in {1} ms, {2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
+            Text = string.Format("Slim serialized {0:n2} in {1:n2} ms, {2:n2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
 
          //   MessageBox.Show( ms.GetBuffer().ToDumpString(DumpFormat.Hex,0, (int)ms.Length));
         }
@@ -167,7 +167,7 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
             {
              ms.Position = 0;
-             bf.Serialize(ms, data); 
+             bf.Serialize(ms, data);
             }
 
             w.Stop();
@@ -176,7 +176,7 @@ namespace WinFormsTest
             {
               fs.Write(ms.GetBuffer(), 0, (int)ms.Length);
             }
-            Text = string.Format("Bin Formatter serialized {0} in {1} ms, {2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
+            Text = string.Format("Bin Formatter serialized {0:n2} in {1:n2} ms, {2:n2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -189,24 +189,24 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
             {
              ms.Position = 0;
-            
+
              //XmlDictionaryWriter binaryDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(ms);
              //dcs.WriteObject(binaryDictionaryWriter, data);
              //binaryDictionaryWriter.Flush();
-            
+
              dcs.WriteObject(ms, data);
             }
 
-           
+
 
             w.Stop();
 
             using (var fs =new FileStream("C:\\NFX\\SerializerForm2.DATACONTRACT", FileMode.Create))
             {
               fs.Write(ms.GetBuffer(), 0, (int)ms.Length);
-            } 
+            }
 
-            Text = string.Format("Data Contract Serializer serialized {0} in {1} ms, {2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
+            Text = string.Format("Data Contract Serializer serialized {0:n2} in {1:n2} ms, {2:n2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -226,12 +226,12 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
             {
              ms2.Position = 0;
-             slim1.Deserialize(ms2); 
+             slim1.Deserialize(ms2);
             }
 
             w.Stop();
 
-            Text = string.Format("Slim deserialized {0} in {1} ms, {2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms2.Length);
+            Text = string.Format("Slim deserialized {0:n2} in {1:n2} ms, {2:n2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms2.Length);
 
         }
 
@@ -240,7 +240,7 @@ namespace WinFormsTest
            var ms = new MemoryStream();
 
             var dcs = new DataContractSerializer(typeof(Library));//Library
-            
+
             dcs.WriteObject(ms, data);
             //XmlDictionaryWriter binaryDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(ms);
             //dcs.WriteObject(binaryDictionaryWriter, data);
@@ -251,11 +251,11 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
             {
              ms.Position = 0;
-            
+
              dcs.ReadObject(ms);
             }
             w.Stop();
-            Text = string.Format("Data Contract Serializer deserialized {0} in {1} ms, {2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
+            Text = string.Format("Data Contract Serializer deserialized {0:n2} in {1:n2} ms, {2:n2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -274,7 +274,7 @@ namespace WinFormsTest
             }
 
             w.Stop();
-            Text = string.Format("Bin Formatter deserialized {0} in {1} ms, {2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
+            Text = string.Format("Bin Formatter deserialized {0:n2} in {1:n2} ms, {2:n2}/sec {3}bytes",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000, ms.Length);
         }
 
 
@@ -303,7 +303,7 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
                d(strs[i%3]);
             w.Stop();
-            Text += string.Format("Delegate {0} in {1} ms, {2}/sec",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000);
+            Text += string.Format("Delegate {0:n2} in {1:n2} ms, {2:n2}/sec",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -313,13 +313,13 @@ namespace WinFormsTest
             for(var i=0; i<CNT; i++)
              doWithFlag(i);
             w.Stop();
-            Text = string.Format("With Flag {0} in {1} ms, {2}/sec",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000);
+            Text = string.Format("With Flag {0:n2} in {1:n2} ms, {2:n2}/sec",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000);
 
             w = Stopwatch.StartNew();
             for(var i=0; i<CNT; i++)
                doWithException(i);
             w.Stop();
-            Text += string.Format("DoExeption {0} in {1} ms, {2}/sec",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000);
+            Text += string.Format("DoExeption {0:n2} in {1:n2} ms, {2:n2}/sec",CNT, w.ElapsedMilliseconds, (CNT/(double)w.ElapsedMilliseconds)*1000);
         }
 
         public int dummy1, dummy2, dummy3;
@@ -351,14 +351,14 @@ namespace WinFormsTest
             dummy3++;
             return true;
           }
-        
+
 
         private bool doWithException(int i)
         {
           try{ doWithException_1(i); return true; }
           catch{ return false;}
         }
-         
+
           private bool doWithException_1(int i)
           {
             if (i%10==0) throw new Exception();
@@ -380,10 +380,12 @@ namespace WinFormsTest
             return true;
           }
 
-          private Expression<Func<object, int, int>> expression1; 
-          private Expression<Func<object, int, int>> expression2; 
+          private Expression<Func<object, int, int>> expression1;
+          private Expression<Func<object, int, int>> expression2;
+          private Expression<Func<int, int>> expression3;
           private Func<object, int, int> test1;
           private Func<object, int, int> test2;
+          private Func<int, int> test3;
 
           private void prepare()
           {
@@ -394,16 +396,22 @@ namespace WinFormsTest
                  Expression.Multiply(p2, Expression.Constant(5)), p1, p2
              );
              expression2 = (o, x) => x * 5;
+
+             expression3 = Expression.Lambda<Func<int, int>>(
+                 Expression.Multiply(p2, Expression.Constant(5)), p2
+             );
+
              test1 = expression1.Compile();
-             test2 = expression2.Compile(); 
+             test2 = expression2.Compile();
+             test3 = expression3.Compile();
           }
 
 
           private void brnDynAss_Click(object sender, EventArgs e)
           {
             prepare();
-             
-             
+
+
               var asmBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
                     new AssemblyName("ZmeyaTeztx"), AssemblyBuilderAccess.Run);
               var modBuilder = asmBuilder.DefineDynamicModule("myModule");
@@ -411,7 +419,7 @@ namespace WinFormsTest
               var methodBuilder = tpBuilder.DefineMethod(
                            "myMethod_1", MethodAttributes.Public | MethodAttributes.Static);
               expression1.CompileToMethod(methodBuilder);
-              var tp = tpBuilder.CreateType();                            
+              var tp = tpBuilder.CreateType();
               var asmF1 = (Func<int, int>)Delegate.CreateDelegate( typeof(Func<int, int>), this, tp.GetMethod("myMethod_1"));
 
               Text = asmF1(5).ToString();
@@ -419,44 +427,51 @@ namespace WinFormsTest
               tpBuilder = modBuilder.DefineType("myType_2", TypeAttributes.Public);
               methodBuilder = tpBuilder.DefineMethod(
                            "myMethod_2", MethodAttributes.Public | MethodAttributes.Static);
+
               expression2.CompileToMethod(methodBuilder);
               tp = tpBuilder.CreateType();
               var asmF2 = (Func<int, int>)Delegate.CreateDelegate( typeof(Func<int, int>), this, tp.GetMethod("myMethod_2"));
 
-              Text += "    "+asmF2(5).ToString(); 
+              Text += "    "+asmF2(5).ToString();
 
               test1(this, 2);
               test2(this, 3);
+              test3(3);
 
               const int CNT = 500000000;
               for(var i=0; i<500000000; i++);
 
               var w = Stopwatch.StartNew();
-             
-             
-              w.Restart();             
+
+
+              w.Restart();
               for(var i=0; i<CNT; i++)  asmF1(3);
               var ts1 = w.ElapsedMilliseconds;
 
-              w.Restart();             
+              w.Restart();
               for(var i=0; i<CNT; i++)  asmF2(3);
               var ts2 = w.ElapsedMilliseconds;
 
-              w.Restart();             
+              w.Restart();
               for(var i=0; i<CNT; i++)  test1(this, 3);
               var ts3 = w.ElapsedMilliseconds;
 
-              w.Restart();             
+              w.Restart();
               for(var i=0; i<CNT; i++)  test2(this, 3);
               var ts4 = w.ElapsedMilliseconds;
 
+              w.Restart();
+              for(var i=0; i<CNT; i++)  test3(3);
+              var ts5 = w.ElapsedMilliseconds;
 
-              Text = "T1: {0:n2}/sec  T2: {1:n2}/sec  T3: {2:n2}/sec  T4: {3:n2}/sec".Args
+
+              Text = "T1: {0:n2}/sec  T2: {1:n2}/sec  T3: {2:n2}/sec  T4: {3:n2}/sec T5: {4:n2}/sec".Args
                       (
                          CNT / (ts1 / 1000d),
                          CNT / (ts2 / 1000d),
                          CNT / (ts3 / 1000d),
-                         CNT / (ts4 / 1000d)
+                         CNT / (ts4 / 1000d),
+                         CNT / (ts5 / 1000d)
                       );
           }
 
@@ -493,7 +508,7 @@ namespace WinFormsTest
             const int CNT = 8;
             const int SEARCHES = 8000000;
 
-            
+
 
 
             var rnds = new int[800];
@@ -524,18 +539,18 @@ namespace WinFormsTest
                 found1++;
                 break;//FOUND!!!
               }
-            }  
+            }
 
             var time1 = sw.ElapsedMilliseconds;
 
             sw.Restart();
-           
+
            for(var j=0; j<SEARCHES; j++)
             {
              var key = this;//WORST CASe, key is never found //lst[rnds[j%rnds.Length]];
              int idx;
              if (dict.TryGetValue(key, out idx)) found2++; //FOUND!
-            } 
+            }
 
             var time2 = sw.ElapsedMilliseconds;
 
@@ -562,7 +577,7 @@ namespace WinFormsTest
              System.Threading.Thread.SpinWait(100000000);
              const int CNT = 100000000;
              var sw = Stopwatch.StartNew();
-             
+
              long sum = 0;
              for(var i=0; i<CNT; i++)
                sum += (Math.Abs(i) % 3);
@@ -588,7 +603,7 @@ Did {0}:
 --------------------------------------
 Math.Abs() {1:n0} ms at @ {2:n0} ops/sec
 Bit &&     {3:n0} ms at @ {4:n0} ops/sec
-IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT, 
+IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT,
                   t1, CNT / (t1 / 1000d),
                   t2, CNT / (t2 / 1000d),
                   t3, CNT / (t3 / 1000d)  );
@@ -616,7 +631,7 @@ IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT,
 
       [DataMember]public List<Book> Books;
     }
-    
+
     [DataContract(IsReference=true)]
     [Serializable]
     public class Book
@@ -661,7 +676,7 @@ IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT,
       [DataMember]public DateTime Dt3;
 
     }
-    
+
     [DataContract(IsReference=true)]
     [Serializable]
     public class Perzon
@@ -671,12 +686,12 @@ IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT,
       [DataMember]public string LastName;
 
       [DataMember]public Perzon Parent;
- 
+
       [DataMember]public int Age1;
       [DataMember]public int Age2;
       [DataMember]public int? Age3;
       [DataMember]public int? Age4;
- 
+
       [DataMember]public double Salary1;
       [DataMember]public double? Salary2;
 
@@ -685,20 +700,20 @@ IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT,
       [DataMember]public Guid? ID3;
 
   //    [DataMember]byte[] Buffer = new byte[1024];
-  
-      [DataMember]public List<string> Names1; 
-      [DataMember]public List<string> Names2;        
-      
+
+      [DataMember]public List<string> Names1;
+      [DataMember]public List<string> Names2;
+
       [DataMember]public int O1;// = 1;
       [DataMember]public bool O2;// = true;
       [DataMember]public DateTime O3;// = DateTime.UtcNow;
       [DataMember]public TimeSpan O4;// = TimeSpan.FromHours(12);
       [DataMember]public decimal O5;// = 123.23M;
-  
+
     }
 
 
-  
+
     [DataContract]
     [Serializable] public class TradingRec
     {
@@ -717,7 +732,7 @@ IF         {5:n0} ms at @ {6:n0} ops/sec".Args(CNT,
             Price = ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 1000000) * 10000L
            };
          }
-    } 
+    }
 
 
 

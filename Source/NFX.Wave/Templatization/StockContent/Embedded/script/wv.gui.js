@@ -151,6 +151,7 @@ WAVE.GUI = (function(){
         CLS_DETAILS_CONTENT: "wvDetailsContent",
         CLS_DETAILS_CONTENT_VISIBLE: "wvDetailsContentVisible",
         CLS_DETAILS_CONTENT_HIDDEN: "wvDetailsContentHidden",
+        CLS_DETAILS_MODAL: "wvDetailsModal",
 
         EVT_DETAILS_SHOW: "wv-details-show",
         EVT_DETAILS_HIDE: "wv-details-hide"
@@ -160,6 +161,9 @@ WAVE.GUI = (function(){
     var TOAST_ZORDER   = 1000000;
 
     var fToastCount = 0;
+
+    published.pageWidth = function() { return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; }
+    published.pageHeight = function() { return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; }
 
     published.toast = function(msg, type, duration){
       var self = {};
@@ -329,18 +333,18 @@ WAVE.GUI = (function(){
         fdivBase.appendChild(fdivContent);
 
         function adjustBounds(){
-          var sw = $(window).width();
-          var sh = $(window).height();
+          var sw = published.pageWidth();
+          var sh = published.pageHeight();
           var cx = sw / 2;
           var cy = sh / 2;
 
           var w = fWidthPct===0 ? fdivBase.offsetWidth : Math.round( sw * (fWidthPct/100));
           var h = fHeightPct===0 ? fdivBase.offsetHeight : Math.round( sh * (fHeightPct/100));
-
-          fdivBase.style.left = Math.round(cx - (w / 2)) + "px";
-          fdivBase.style.top = Math.round(cy - (h / 2)) + "px";
           fdivBase.style.width  = fWidthPct===0  ? "auto" : w + "px";
           fdivBase.style.height = fHeightPct===0 ? "auto" : h + "px";
+
+          fdivBase.style.left = Math.round(cx - (fdivBase.offsetWidth / 2)) + "px";
+          fdivBase.style.top = Math.round(cy - (fdivBase.offsetHeight / 2)) + "px";
 
         //  fdivContent.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
           fdivContent.style.height  = fWidthPct===0  ? "auto" :
@@ -384,11 +388,13 @@ WAVE.GUI = (function(){
         //get/set content
         this.content = function(val){
           if (typeof(val)===tUNDEFINED || val===null) return fdivContent.innerHTML;
-          fdivContent.innerHTML = val;
+          $(fdivContent).html( val );
           adjustBounds();
         };
 
+        this.baseDIV = function() { return fdivBase; }
         this.contentDIV = function() { return fdivContent; };
+        this.titleDIV = function() { return fdivTitle; }
 
         //gets/sets width in screen size pct 0..100, where 0 = auto
         this.widthpct = function(val){
@@ -413,6 +419,8 @@ WAVE.GUI = (function(){
         fOnShow(this);
 
         adjustBounds();
+
+        return dialog;
     };//dialog
 
     //Displays a simple confirmation propmt dialog
@@ -3210,6 +3218,12 @@ WAVE.GUI = (function(){
       isTitleHtml: bool
       isContentHtml: bool
       mode: swap|modal
+      modalTitle: text
+      modalCls: css class
+
+      contentUrl: url for ajax
+      loadCallback: function(data) { optional returns text }
+
       showOnClick: bool
       showOnFocus: bool
       hideOnClick: bool
@@ -3232,8 +3246,14 @@ WAVE.GUI = (function(){
       var fTitle = WAVE.strDefault(init.title);
       var fAltTitle = WAVE.strDefault(init.altTitle, fTitle);
       var fContent = WAVE.strDefault(init.content);
+
+      var fContentUrl = WAVE.strDefault(init.contentUrl);
+      var fLoadCallback = WAVE.isFunction(init.loadCallback) ? init.loadCallback : null;
+
       var fIsTitleHtml = WAVE.strAsBool(init.isTitleHtml, true);
       var fIsContentHtml = WAVE.strAsBool(init.isContentHtml, true);
+      var fModalTitle = WAVE.strDefault(init.modalTitle);
+      var fModalCls = WAVE.strDefault(init.modalCls, published.CLS_DETAILS_MODAL);
 
       var fShowOnClick = WAVE.strAsBool(init.showOnClick, true);
       var fShowOnFocus = WAVE.strAsBool(init.showOnFocus, false);
@@ -3264,16 +3284,21 @@ WAVE.GUI = (function(){
           }, fTimeout);
         }
         if (fHideOnFocus) {
-          window.addEventListener("focus", hideEventHandler, true);
-          setTimeout(function(){ window.addEventListener("mousemove", moveEventHandler, false); } , 1);
+          WAVE.addEventHandler(window, "focus", hideEventHandler);
+          setTimeout(function(){ 
+            WAVE.addEventHandler(window, "mousemove", moveEventHandler); 
+          } , 1);
         }
         if (fHideOnClick)
-          setTimeout(function(){ window.addEventListener("click", hideEventHandler, false); }, 1);
+          setTimeout(function(){ 
+            WAVE.addEventHandler(window, "click", hideEventHandler);
+          }, 1);
       }
 
       function hideEventHandler(e) {
         var target = e.target;
-        if (!WAVE.isParentOf(fContentControl, target)) __hide();
+        var container = ((fMode === "modal") && (fDialog !== null)) ? fDialog.baseDIV() : fContentControl;
+        if (!WAVE.isParentOf(container, target)) __hide();
       }
 
       function moveEventHandler(e) {
@@ -3294,11 +3319,7 @@ WAVE.GUI = (function(){
               titleClass: published.CLS_DETAILS_TITLE
             });
             fTitleControl = WAVE.id(titleId);
-
-            if (fIsTitleHtml)
-              fTitleControl.innerHTML = fTitle;
-            else
-              fTitleControl.innerText = fTitle;
+            setTitle(fTitle);
 
           } else {
 
@@ -3312,12 +3333,7 @@ WAVE.GUI = (function(){
             fTitleControl = WAVE.id(titleId);
             fContentControl = WAVE.id(contId);
 
-
-            if (fIsContentHtml)
-              fContentControl.innerHTML = fContent;
-            else
-              fContentControl.innerText = fContent;
-
+            setContent(fContent);
           }
         } else if (fTitleControl !== null && fContentControl !== null) {
           WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE);
@@ -3328,9 +3344,11 @@ WAVE.GUI = (function(){
         setTitle(fTitle);
 
         if (fShowOnClick)
-          fTitleControl.addEventListener("click", __show, false);
-        if (fShowOnFocus)
-          fTitleControl.onmouseover = fTitleControl.onfocus = __show;
+          WAVE.addEventHandler(fTitleControl, "click", __show);
+        if (fShowOnFocus) {
+          WAVE.addEventHandler(fTitleControl, "mouseover", __show);
+          WAVE.addEventHandler(fTitleControl, "focus", __show);
+        }
 
         __hide();
       }
@@ -3344,6 +3362,13 @@ WAVE.GUI = (function(){
           fTitleControl.innerText = cont;
       }
 
+      function setContent(cont) {
+        if (fIsContentHtml)
+          fContentControl.innerHTML = cont;
+        else
+          fContentControl.innerText = cont;
+      }
+
       function __hide() {
         if(fHiddenState) return;
 
@@ -3353,9 +3378,9 @@ WAVE.GUI = (function(){
 
         setTitle(fTitle);
         if (fShowOnClick)
-          fTitleControl.addEventListener("click", __show, false);
+          WAVE.addEventHandler(fTitleControl, "click", __show);
         if (fHideOnTitle)
-          fTitleControl.removeEventListener("click", __hide, false);
+          WAVE.removeEventHandler(fTitleControl, "click", __hide);
 
         if (fMode === "modal" && fDialog !== null) fDialog.close();
         else {
@@ -3363,14 +3388,14 @@ WAVE.GUI = (function(){
           WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
         }
         fHiddenState = true;
-        window.removeEventListener("focus", hideEventHandler, false);
-        window.removeEventListener("click", hideEventHandler, false);
-        window.removeEventListener("mousemove", moveEventHandler, false);
+        WAVE.removeEventHandler(window, "focus", hideEventHandler);
+        WAVE.removeEventHandler(window, "click", hideEventHandler);
+        WAVE.removeEventHandler(window, "mousemove", moveEventHandler);
 
         WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE_HIDDEN);
         WAVE.removeClass(fTitleControl, published.CLS_DETAILS_TITLE_SHOWN);
 
-        details.eventInvoke(published.EVT_DETAILS_HIDE, { phase: published.EVT_PHASE_AFTE });
+        details.eventInvoke(published.EVT_DETAILS_HIDE, { phase: published.EVT_PHASE_AFTER });
       }
 
       function __show() {
@@ -3382,17 +3407,41 @@ WAVE.GUI = (function(){
 
         setTitle(fAltTitle);
         if (fShowOnClick)
-          fTitleControl.removeEventListener("click", __show, false);
+          WAVE.removeEventHandler(fTitleControl, "click", __show);
         if (fHideOnTitle)
-          fTitleControl.addEventListener("click", __hide, false);
+          WAVE.addEventHandler(fTitleControl, "click", __hide);
 
         if (fMode === "modal") {
           fDialog = new published.Dialog({
-            cls: published.CLS_DETAILS_CONTENT + " " + contId,
+            cls: published.CLS_DETAILS_CONTENT + " " + fModalCls,
             content: fContent,
-            onShow: hideContent
+            onShow: function(dialog) {
+              hideContent();
+
+              if (WAVE.strEmpty(fContentUrl)) return;
+
+              WAVE.ajaxGet(
+                fContentUrl,
+                function(data) {
+                  if (fLoadCallback !== null) {
+                    var result = fLoadCallback(data);
+                    if(!WAVE.strEmpty(result))
+                      dialog.content(result);
+                  } else {
+                    dialog.content(data);
+                  }
+                },
+                console.error,
+                console.error
+              );
+            },
+            title: fModalTitle
           });
-          fContentControl = document.getElementsByClassName(contId)[0];
+          fContentControl = fDialog.contentDIV();
+          if (WAVE.strEmpty(fModalTitle)) {
+            var t = fDialog.titleDIV();
+            t.style.display = "none";
+          }
         } else {//"swap" - default
           WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_HIDDEN);
           WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
@@ -3416,6 +3465,14 @@ WAVE.GUI = (function(){
       this.toggle = function() {
         if(fHiddenState) __show();
         else __hide();
+      };
+
+      this.content = function(value) {
+        if (typeof(value) === tUNDEFINED || value === null)
+          return fContent;
+
+        fContent = value;
+        setContent(fContent);
       };
 
       build();

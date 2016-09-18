@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -73,7 +73,9 @@ namespace NFX.NUnit.Integration.MongoDB
         db["t2"].Drop();
         db["t3"].Drop();
 
-        Assert.AreEqual(1, db.GetCollectionNames().Length);
+        var collectionCount = db.GetCollectionNames().Length;
+
+        Assert.IsTrue(collectionCount == 0 || collectionCount == 1);
 
         Assert.AreEqual(1, db["t1"].Insert( new BSONDocument().Set( new BSONInt32Element("_id", 1))
                                                               .Set( new BSONStringElement("val", "one"))
@@ -84,8 +86,10 @@ namespace NFX.NUnit.Integration.MongoDB
                            ).TotalDocumentsAffected);
 
         var collections = db.GetCollectionNames();
+        collectionCount = collections.Length;
 
-        Assert.AreEqual(3, collections.Length);
+        // Different MongoDB Server versions treat system collection differently (newer versions dont count)
+        Assert.IsTrue(collectionCount == 2 || collectionCount == 3);
         Assert.IsTrue( collections.Contains("t1"));
         Assert.IsTrue( collections.Contains("t2"));
       }

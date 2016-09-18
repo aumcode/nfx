@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -45,15 +45,9 @@ namespace NFX.DataAccess.MongoDB
         #endregion
 
         #region ICRUDQueryHandler
-            public string Name
-            {
-                get { return m_Source.Name; }
-            }
-
-            public ICRUDDataStore Store
-            {
-               get { return m_Store;}
-            }
+            public string Name {  get { return m_Source.Name; } }
+            public ICRUDDataStore Store { get { return m_Store;}}
+            public RowConverter Converter { get { return m_Store.Converter;}}
 
 
             public virtual Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
@@ -122,7 +116,6 @@ namespace NFX.DataAccess.MongoDB
 
               return new Connector.Query(m_Source.StatementSource, true, args);
             }
-
 
         #endregion
 

@@ -22,7 +22,9 @@ var WAVE = (function(){
     }
 
     var published = {
-      TUNDEFINED: tUNDEFINED
+      TUNDEFINED: tUNDEFINED,
+      CONTENT_TYPE_JSON: "application/json",
+      CONTENT_TYPE_MULTIPART: "multipart/form-data"
     };
 
     published.falseness = function() { return false; };
@@ -953,9 +955,31 @@ var WAVE = (function(){
     };
 
     published.removeClass = function(elem, className) {
-      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className)) return;
+      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className) || typeof(elem.className) === tUNDEFINED) return;
 
       elem.className = elem.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', "g") , '' );
+    };
+
+    published.addEventHandler = function(object, event, handler) {
+      if (typeof(object) === tUNDEFINED || object === null) return;
+
+      if (published.isFunction(object.addEventListener))
+        object.addEventListener(event, handler, false);
+      else if (published.isFunction(object.attachEvent))
+        object.attachEvent("on" + event, handler);
+      else
+        object["on"+event] = handler;
+    };
+
+    published.removeEventHandler = function(object, event, handler) {
+      if (typeof(object) === tUNDEFINED || object === null) return;
+
+      if (published.isFunction(object.removeEventListener))
+        object.removeEventListener(event, handler, false);
+      else if (published.isFunction(object.detachEvent))
+        object.detachEvent("on" + event, handler);
+      else
+        object["on"+event] = null;
     };
 
     var htmlEscapes = {
@@ -3393,9 +3417,67 @@ var WAVE = (function(){
       return svg;
     }());
 
+    //Ajax
+
+    function ajaxCall(verb, url, data, success, error, fail, a, ct) {
+      a = published.strDefault(a);
+      ct = published.strDefault(ct);
+
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+      xhr.open(verb, url);
+
+      if (WAVE.isFunction(fail))
+        xhr.onerror = fail;
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if (WAVE.isFunction(success))
+              success(xhr.responseText);
+          } else {
+            if (WAVE.isFunction(error))
+              error(xhr.responseText);
+          }
+        }
+      };
+      if (!published.strEmpty(a)) xhr.setRequestHeader('Accept', a);
+      if (!published.strEmpty(ct)) xhr.setRequestHeader('Content-Type', ct);
+      if (data !== null)
+        xhr.send(data);
+      else
+        xhr.send();
+
+      return xhr;
+    }
+
+    published.ajaxGet = function(url, success, error, fail, a) {
+      ajaxCall("GET", url, null, success, error, fail, a);
+    };
+
+    published.ajaxPost = function(url, data, success, error, fail, a, ct) {
+      ajaxCall("POST", url, data, success, error, fail, a, ct);
+    };
+
+    published.ajaxPostJSON = function(url, data, success, error, fail) {
+      ajaxCall("POST", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
+    };
 
 
+    //call func when dom is loaded
+    published.onReady = function(func) {
+      if (!published.isFunction(func)) return;
 
+      if (document.readyState !== 'loading'){
+        func();
+      } else if (published.isFunction(document.addEventListener)) {
+        document.addEventListener('DOMContentLoaded', func);
+      } else if (published.isFunction(document.attachEvent)) {
+        document.attachEvent('onreadystatechange', function() {
+          if (document.readyState !== 'loading')
+            func();
+        });
+      }
+    }
 
     return published;
 }());//WAVE

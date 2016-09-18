@@ -32,6 +32,22 @@
            mode: "modal"
          });
 
+         var d3 = new WAVE.GUI.Details({
+           DIV: WAVE.id("container-3"),
+           title: "Ajax modal",
+           content: "Loading..",
+           contentUrl: "http://api.fixer.io/latest",
+           loadCallback: function(d) {
+             var r = WAVE.tryParseJSON(d);
+             if (r.ok) {
+              return JSON.stringify(r.obj, null, 2);
+             }
+             return "Not valid JSON";
+           },
+           mode: "modal",
+           modalTitle: "Ajax Modal Details"
+         });
+
       }, false);
 
   </script>
@@ -55,6 +71,12 @@
 
   <div id="container-2"></div>
 
+  <br />
+  <br />
+  <br />
+
+  <div id="container-3"></div>
+
   <style>
 
   .wvDetailsTitle {
@@ -75,10 +97,6 @@
   }
 
   .wvDetailsContentHidden {
-    display: none;
-  }
-
-  .wvDetailsContent .wvDialogTitle {
     display: none;
   }
 

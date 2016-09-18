@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ namespace NFX.Wave
              var ie = srv.m_InstrumentationEnabled;
 
              if (ie && m_WasWrittenTo)
-              Interlocked.Increment(ref srv.m_Stat_WorkContextWrittenResponse);
+              Interlocked.Increment(ref srv.m_stat_WorkContextWrittenResponse);
 
              stowClientVars();
 
@@ -81,8 +81,8 @@ namespace NFX.Wave
 
                 if (ie)
                 {
-                  Interlocked.Increment(ref srv.m_Stat_WorkContextBufferedResponse);
-                  Interlocked.Add(ref srv.m_Stat_WorkContextBufferedResponseBytes, sz);
+                  Interlocked.Increment(ref srv.m_stat_WorkContextBufferedResponse);
+                  Interlocked.Add(ref srv.m_stat_WorkContextBufferedResponseBytes, sz);
                 }
              }
            }

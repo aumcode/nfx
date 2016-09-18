@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ namespace NFX.Web.Pay
     /// Config node of params used inside <see cref="StartSession(PayConnectionParameters)"/> method
     /// if PayConnectionParameters parameter is null
     /// </summary>
-    IConfigSectionNode DefaultSesssionConnectParamsCfg { get; set; }
+    IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }
 
     /// <summary>
     /// Processing fee types, such as: included in amount and surcharged.
@@ -81,7 +81,7 @@ namespace NFX.Web.Pay
 
     /// <summary>
     /// Starts new pay session of system-specific type.
-    /// If cParams parameter is null <see cref="DefaultSesssionConnectParamsCfg"/> is used
+    /// If cParams parameter is null <see cref="DefaultSessionConnectParamsCfg"/> is used
     /// </summary>
     PaySession StartSession(PayConnectionParameters cParams = null);
 
@@ -95,6 +95,11 @@ namespace NFX.Web.Pay
     /// Charges funds from one account to another
     /// </summary>
     Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null);
+
+    /// <summary>
+    /// Completely or partialy capture previuosly charged funds
+    /// </summary>
+    Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
 
     /// <summary>
     /// Completely or partialy refunds previuosly charged funds

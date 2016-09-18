@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -611,10 +611,24 @@ namespace NFX.Serialization.BSON
           return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement( bin);
         }
 
-        public static BSONBinaryElement ByteBuffer_CLRtoBSON(string name, byte[] buf)
+        /// <summary>
+        /// Encodes byte buffer purposed for id, using proper binary subtype
+        /// </summary>
+        public static BSONElement ByteBufferID_CLRtoBSON(string name, byte[] buf)
         {
+          if (buf == null) return new BSONNullElement(name);
           if (buf.Length > MAX_BYTE_BUFFER_SIZE)
-          throw new BSONException(StringConsts.BUFFER_LONGER_THAN_ALLOWED_ERROR.Args(buf.Length, MAX_BYTE_BUFFER_SIZE));
+            throw new BSONException(StringConsts.BUFFER_LONGER_THAN_ALLOWED_ERROR.Args(buf.Length, MAX_BYTE_BUFFER_SIZE));
+
+          var bin = new BSONBinary(BSONBinaryType.UserDefined, buf);
+          return new BSONBinaryElement(name, bin);
+        }
+
+        public static BSONElement ByteBuffer_CLRtoBSON(string name, byte[] buf)
+        {
+          if (buf == null) return new BSONNullElement(name);
+          if (buf.Length > MAX_BYTE_BUFFER_SIZE)
+            throw new BSONException(StringConsts.BUFFER_LONGER_THAN_ALLOWED_ERROR.Args(buf.Length, MAX_BYTE_BUFFER_SIZE));
 
           var bsonBin = new BSONBinary(BSONBinaryType.GenericBinary, buf);
           return name != null ? new BSONBinaryElement(name, bsonBin) : new BSONBinaryElement(bsonBin);

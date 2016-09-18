@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace NFX.IO
 {
 
     /// <summary>
-    /// Writes primitives and other supported types to Slim-format stream. Use factory method of SlimFormat intance to create a new instance of SlimWriter class
+    /// Writes primitives and other supported types to Slim-format stream. Use factory method of SlimFormat instance to create a new instance of SlimWriter class
     /// </summary>
     [Inventory(Concerns=SystemConcerns.Testing | SystemConcerns.MissionCriticality)]
     public class SlimWriter : WritingStreamer

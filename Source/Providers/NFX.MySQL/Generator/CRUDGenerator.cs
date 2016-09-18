@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ namespace NFX.DataAccess.MySQL
                           StringConsts.CRUD_STATEMENT_EXECUTION_ERROR.Args("insert", error.ToMessageWithType(), error),
                           error,
                           KeyViolationKind.Unspecified,
-                          keyViolationName(error));
+                          KeyViolationName(error));
         }
       }
 
@@ -62,7 +62,7 @@ namespace NFX.DataAccess.MySQL
                          error.ToMessageWithType(), error),
                          error,
                          KeyViolationKind.Unspecified,
-                         keyViolationName(error)
+                         KeyViolationName(error)
                          );
         }
       }
@@ -79,7 +79,7 @@ namespace NFX.DataAccess.MySQL
                         StringConsts.CRUD_STATEMENT_EXECUTION_ERROR.Args("upsert", error.ToMessageWithType(), error),
                         error,
                         KeyViolationKind.Unspecified,
-                        keyViolationName(error));
+                        KeyViolationName(error));
         }
       }
 
@@ -98,7 +98,7 @@ namespace NFX.DataAccess.MySQL
 
    #region .pvt impl.
 
-    private static string keyViolationName(Exception error)
+    internal static string KeyViolationName(Exception error)
     {
       if (error==null) return null;
       var msg = error.Message;

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -213,7 +213,7 @@ namespace NFX.Serialization.Slim
                     }
                     finally
                     {
-                      writer.UndindStream();
+                      writer.UnbindStream();
                       m_SerializeNestLevel--;
                       releasePool(pool);
                     }
@@ -257,7 +257,7 @@ namespace NFX.Serialization.Slim
                     }
                     finally
                     {
-                      reader.UndindStream();
+                      reader.UnbindStream();
                       m_DeserializeNestLevel--;
                       releasePool(pool);
                     }

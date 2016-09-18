@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -123,7 +123,7 @@ namespace NFX.Web.Pay.PayPal
           /// <summary>
           /// The operation is not supported in PayPal payout action.
           /// </summary>
-          public override void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
+          public override Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
           {
               throw new NotSupportedException();
           }
@@ -131,7 +131,7 @@ namespace NFX.Web.Pay.PayPal
           /// <summary>
           /// The operation is not supported in PayPal payout action.
           /// </summary>
-          public override Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
+          public override Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
           {
               throw new NotSupportedException();
           }

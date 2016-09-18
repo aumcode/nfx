@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ namespace NFX.Wave
         m_Response = new Response(this, listenerContext.Response);
 
         ApplicationModel.ExecutionContext.__SetThreadLevelContext(this, m_Response, null);
-        Interlocked.Increment(ref m_Server.m_Stat_WorkContextCtor);
+        Interlocked.Increment(ref m_Server.m_stat_WorkContextCtor);
       }
 
       /// <summary>
@@ -59,10 +59,10 @@ namespace NFX.Wave
       {
         if (m_Server.m_InstrumentationEnabled)
         {
-          Interlocked.Increment(ref m_Server.m_Stat_WorkContextDctor);
-          if (m_Aborted) Interlocked.Increment(ref m_Server.m_Stat_WorkContextAborted);
-          if (m_Handled) Interlocked.Increment(ref m_Server.m_Stat_WorkContextHandled);
-          if (m_NoDefaultAutoClose) Interlocked.Increment(ref m_Server.m_Stat_WorkContextNoDefaultClose);
+          Interlocked.Increment(ref m_Server.m_stat_WorkContextDctor);
+          if (m_Aborted) Interlocked.Increment(ref m_Server.m_stat_WorkContextAborted);
+          if (m_Handled) Interlocked.Increment(ref m_Server.m_stat_WorkContextHandled);
+          if (m_NoDefaultAutoClose) Interlocked.Increment(ref m_Server.m_stat_WorkContextNoDefaultClose);
         }
 
         ApplicationModel.ExecutionContext.__SetThreadLevelContext(null, null, null);
@@ -420,8 +420,8 @@ namespace NFX.Wave
           m_WorkSemaphoreReleased = true;
           if (m_Server.m_InstrumentationEnabled)
           {
-            Interlocked.Increment(ref m_Server.m_Stat_WorkContextWorkSemaphoreRelease);
-            Thread.VolatileWrite(ref m_Server.m_Stat_ServerWorkSemaphoreCount, workCount);
+            Interlocked.Increment(ref m_Server.m_stat_WorkContextWorkSemaphoreRelease);
+            Thread.VolatileWrite(ref m_Server.m_stat_ServerWorkSemaphoreCount, workCount);
           }
           return true;
         }
@@ -439,7 +439,7 @@ namespace NFX.Wave
       {
         if (m_Session!=null) return m_Session;
 
-        Interlocked.Increment(ref m_Server.m_Stat_WorkContextNeedsSession);
+        Interlocked.Increment(ref m_Server.m_stat_WorkContextNeedsSession);
 
         if (m_SessionFilter!=null)
           m_SessionFilter.FetchExistingOrMakeNewSession(this, onlyExisting);

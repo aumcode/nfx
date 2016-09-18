@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -66,6 +66,17 @@ namespace NFX.DataAccess.MySQL
     public const string CRUD_READONLY_SCHEMA_ERROR =
         "CRUD schema '{0}' is readonly and can not perform operation: {1}";
 
+    public const string EXECUTE_WITHOUT_FETCH_ERROR =
+        "Error executing wihtout fetch statement: ";
+
+    public const string OPEN_CURSOR_ERROR =
+        "Error executing open cursor statement: ";
+
+    public const string LOAD_ERROR =
+        "Error executing load statement: ";
+
+    public const string GET_SCHEMA_ERROR =
+        "Error executing get schema command: ";
   }
 }
 

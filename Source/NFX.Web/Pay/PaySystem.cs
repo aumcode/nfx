@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -212,7 +212,7 @@ namespace NFX.Web.Pay
       private bool m_InstrumentationEnabled;
       private Time.Event m_InstrumentationEvent;
 
-      private IConfigSectionNode m_DefaultSesssionConnParamsCfg;
+      private IConfigSectionNode m_DefaultSessionConnParamsCfg;
       private PayConnectionParameters m_DefaultSessionConnectParams;
 
       protected internal readonly List<PaySession> m_Sessions;
@@ -280,13 +280,13 @@ namespace NFX.Web.Pay
       }
 
       [Config("default-session-connect-params")]
-      public IConfigSectionNode DefaultSesssionConnectParamsCfg
+      public IConfigSectionNode DefaultSessionConnectParamsCfg
       {
-        get { return m_DefaultSesssionConnParamsCfg; }
+        get { return m_DefaultSessionConnParamsCfg; }
         set
         {
           m_DefaultSessionConnectParams = MakeDefaultSessionConnectParams(value);
-          m_DefaultSesssionConnParamsCfg = value;
+          m_DefaultSessionConnParamsCfg = value;
         }
       }
 
@@ -318,7 +318,7 @@ namespace NFX.Web.Pay
 
       public abstract Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null);
 
-      public abstract void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
+      public abstract Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
 
       public abstract Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
 

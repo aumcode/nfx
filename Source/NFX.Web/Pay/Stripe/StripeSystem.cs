@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -186,15 +186,15 @@ namespace NFX.Web.Pay.Stripe
       /// If set the amount of capture must be less than or equal to the original amount.
       /// Developers, don't call this method directly. Call Transaction.Capture instead.
       /// </summary>
-      public override void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+      public override Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
       {
-        Capture((StripeSession)session, context, ref charge, amount, description, extraData);
+        return Capture((StripeSession)session, context, ref charge, amount, description, extraData);
       }
 
       /// <summary>
       /// Overload of Capture method with Stripe-typed session parameter
       /// </summary>
-      public void Capture(StripeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+      public Transaction Capture(StripeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
       {
         try
         {
@@ -217,6 +217,7 @@ namespace NFX.Web.Pay.Stripe
           dynamic obj = WebClient.GetJsonAsDynamic(prms);
 
           StatCapture(charge, amount);
+          return charge;
         }
         catch (Exception ex)
         {

@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2016 IT Adapter Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -163,7 +179,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
           if (updates==null || updates.Length<1)
            throw new MongoDBConnectorException(StringConsts.ARGUMENT_ERROR+"Collection.Update(updates==null|empty)");
-          
+
           var connection = Server.AcquireConnection();
           try
           {
@@ -200,7 +216,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                    multi: false,
                    upsert: true
             ) };
-            
+
             return connection.Update(reqId, this, updates);
           }
           finally
@@ -229,7 +245,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
           if (deletes==null || deletes.Length<1)
            throw new MongoDBConnectorException(StringConsts.ARGUMENT_ERROR+"Collection.Delete(deletes==null|empty)");
-          
+
           var connection = Server.AcquireConnection();
           try
           {
@@ -277,7 +293,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           if (hint!=null && (!(hint is string)) && (!(hint is BSONDocument)))
-            throw new MongoDBConnectorException(StringConsts.ARGUMENT_ERROR+"Collection.Count(hint must be string | BSONDocument)"); 
+            throw new MongoDBConnectorException(StringConsts.ARGUMENT_ERROR+"Collection.Count(hint must be string | BSONDocument)");
 
           var connection = Server.AcquireConnection();
           try
@@ -294,7 +310,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
       #endregion
 
-      
+
   }
 
 }

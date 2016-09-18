@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ using NFX.Environment;
 using NFX.Financial;
 using NFX.Security;
 using NFX.Serialization.JSON;
+using System.Xml.Linq;
 
 namespace NFX.Web.Pay.Braintree
 {
@@ -48,6 +49,10 @@ namespace NFX.Web.Pay.Braintree
     public Uri URI_SubmitForSettlement(string merchantID, string id)
     {
       return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions/{0}/submit_for_settlement".Args(id));
+    }
+    public Uri URI_Void(string merchantID, string id)
+    {
+      return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions/{0}/void".Args(id));
     }
     public Uri URI_Customer(string merchantID, string customerID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/customers/" + customerID); }
     #endregion
@@ -89,9 +94,8 @@ namespace NFX.Web.Pay.Braintree
     public object GenerateClientToken(BraintreeSession session)
     {
 
-      dynamic response = getResponse(session, URI_ClientToken(session.MerchantID),
-      new { client_token = new { version = "2" } });
-      return response.clientToken.value;
+      var response = getResponse(session, URI_ClientToken(session.MerchantID), new XDocument(new XElement("client-token", new XElement("version", 2))));
+      return response.Element("client-token").Element("value").Value;
     }
 
     public override Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
@@ -108,70 +112,81 @@ namespace NFX.Web.Pay.Braintree
       try
       {
         var isWeb = fromActualData.Account.IsWebTerminalToken;
-        var request = new JSONDataMap();
-
-        var transaction = (JSONDataMap)(request["transaction"] = new JSONDataMap());
-        transaction["type"] = "sale";
-        transaction["amount"] = amount.Value;
-        transaction[isWeb ? "payment_method_nonce" : "payment_method_token"] = fromActualData.Account.AccountID;
+        var transaction = new XElement("transaction",
+                            new XElement("type", "sale"),
+                            new XElement("amount", amount.Value),
+                            new XElement(isWeb ? "payment-method-nonce" : "payment-method-token", fromActualData.Account.AccountID));
         if (orderContex != null)
         {
-          transaction["order_id"] = orderContex.OrderId;
-          if (orderContex.IsNewCustomer)
+          transaction.Add(new XElement("order-id", orderContex.OrderId));
+          if (isWeb)
           {
-            var customer = (JSONDataMap)(transaction["customer"] = new JSONDataMap());
-            customer["id"] = orderContex.CustomerId;
-          }
-          else
-          {
-            try
-            {
-              check(session, URI_Customer(session.MerchantID, orderContex.CustomerId.AsString()));
-              transaction["customer_id"] = orderContex.CustomerId;
-            } catch
-            {
-              var customer = (JSONDataMap)(transaction["customer"] = new JSONDataMap());
-              customer["id"] = orderContex.CustomerId;
-            }
+            if (orderContex.IsNewCustomer)
+              transaction.Add(new XElement("customer", new XElement("id", orderContex.CustomerId)));
+            else
+              try
+              {
+                getResponse(session, URI_Customer(session.MerchantID, orderContex.CustomerId.AsString()), method: HTTPRequestMethod.GET);
+                transaction.Add(new XElement("customer-id", orderContex.CustomerId));
+              }
+              catch
+              {
+                transaction.Add(new XElement("customer", new XElement("id", orderContex.CustomerId)));
+              }
           }
         }
+        if (isWeb)
+        {
+          var billing = new XElement("billing");
 
-        var billing = (JSONDataMap)(transaction["billing"] = new JSONDataMap());
-        if (fromActualData.FirstName.IsNotNullOrWhiteSpace())
-          billing["first_name"] = fromActualData.FirstName;
-        if (fromActualData.LastName.IsNotNullOrWhiteSpace())
-          billing["last_name"] = fromActualData.LastName;
-        if (fromActualData.BillingAddress.Address1.IsNotNullOrWhiteSpace())
-          billing["street_address"] = fromActualData.BillingAddress.Address1;
-        if (fromActualData.BillingAddress.Address2.IsNotNullOrWhiteSpace())
-          billing["extended_address"] = fromActualData.BillingAddress.Address2;
-        if (fromActualData.BillingAddress.City.IsNotNullOrWhiteSpace())
-          billing["locality"] = fromActualData.BillingAddress.City;
-        if (fromActualData.BillingAddress.Country.IsNotNullOrWhiteSpace())
-          billing["country_code_alpha3"] = fromActualData.BillingAddress.Country;
-        if (fromActualData.BillingAddress.Region.IsNotNullOrWhiteSpace())
-          billing["region"] = fromActualData.BillingAddress.Region;
-        if (fromActualData.BillingAddress.PostalCode.IsNotNullOrWhiteSpace())
-          billing["postal_code"] = fromActualData.BillingAddress.PostalCode;
-        if (fromActualData.BillingAddress.Company.IsNotNullOrWhiteSpace())
-          billing["company"] = fromActualData.BillingAddress.Company;
+          if (fromActualData.FirstName.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("first-name", fromActualData.FirstName));
+          if (fromActualData.LastName.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("last-name", fromActualData.LastName));
+          if (fromActualData.BillingAddress.Address1.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("street-address", fromActualData.BillingAddress.Address1));
+          if (fromActualData.BillingAddress.Address2.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("extended-address", fromActualData.BillingAddress.Address2));
+          if (fromActualData.BillingAddress.City.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("locality", fromActualData.BillingAddress.City));
+          if (fromActualData.BillingAddress.Country.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("country-code-alpha3", fromActualData.BillingAddress.Country));
+          if (fromActualData.BillingAddress.Region.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("region", fromActualData.BillingAddress.Region));
+          if (fromActualData.BillingAddress.PostalCode.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("postal-code", fromActualData.BillingAddress.PostalCode));
+          if (fromActualData.BillingAddress.Company.IsNotNullOrWhiteSpace())
+            billing.Add(new XElement("company", fromActualData.BillingAddress.Company));
 
-        var options = (JSONDataMap)(transaction["options"] = new JSONDataMap());
-        options["submit_for_settlement"] = capture;
-        if (orderContex != null)
-          options["store_in_vault_on_success"] = isWeb;
+          transaction.Add(billing);
+        }
 
-        dynamic obj = getResponse(session, URI_Transactions(session.MerchantID), request);
+        var options = new XElement("options", new XElement("submit-for-settlement", capture));
+        if (orderContex != null && isWeb)
+          options.Add(new XElement("store-in-vault-on-success", true));
 
-        string created = obj.transaction.createdAt;
+        transaction.Add(options);
+
+        var response = getResponse(session, URI_Transactions(session.MerchantID), new XDocument(transaction));
+
+        transaction = response.Root;
+
+        var transactionID = transaction.Element("id").Value;
+        var status = transaction.Element("status").Value;
+        var captured = status.EqualsOrdIgnoreCase("submitted_for_settlement");
+        var created = transaction.Element("created-at").Value.AsDateTime();
+        var customerID = transaction.Element("customer").Element("id").Value;
+        var token = transaction.Element("credit-card").Element("token").Value;
+
+        var amountAuth = new Amount(amount.CurrencyISO, transaction.Element("amount").Value.AsDecimal());
+        var amountCaptured = captured ? (Amount?)amountAuth : null;
 
         var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
-
-        string customerID = obj.transaction.customer.id;
-        string token = obj.transaction.creditCard.token;
-        string transactionID = obj.transaction.id;
-
-        var ta = Transaction.Charge(taId, this.Name, "{0}:{1}:{2}".Args(customerID, token, transactionID), from, to, amount, created.AsDateTime(), description);
+        var ta = Transaction.Charge(taId, Name,
+                                    "{0}:{1}:{2}".Args(customerID, token, transactionID),
+                                    from, to,
+                                    amountAuth, created, description,
+                                    amountCaptured: amountCaptured);
 
         StatCharge(amount);
 
@@ -180,70 +195,114 @@ namespace NFX.Web.Pay.Braintree
       catch (Exception ex)
       {
         StatChargeError();
-
-        var wex = ex as System.Net.WebException;
-        if (wex != null)
-        {
-          using (var sr = new System.IO.StreamReader(wex.Response.GetResponseStream()))
-          {
-            var respStr = sr.ReadToEnd();
-            var resp = respStr.IsNotNullOrWhiteSpace() ? respStr.JSONToDynamic() : null;
-            if (resp != null)
-              throw new PaymentException(resp.apiErrorResponse.message, ex);
-          }
-
-        }
-
-        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR + this.GetType()
+        if (ex is PaymentException) throw ex;
+        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + GetType().Name
           + " .Charge(session='{0}', card='{1}', amount='{2}')".Args(session, from, amount), ex);
       }
     }
 
-    public override void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
+    public override Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
     {
-      Capture((BraintreeSession)session, context, ref charge, amount, description, extraData);
+      return Capture((BraintreeSession)session, context, ref charge, amount, description, extraData);
     }
 
-    public void Capture(BraintreeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
+    public Transaction Capture(BraintreeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
     {
+      if (!charge.ProcessorName.EqualsIgnoreCase(Name))
+        throw new PaymentException(StringConsts.PAYMENT_INVALID_PAYSYSTEM_ERROR + GetType().Name
+          + ".Capture(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount.Value));
+
+      if (amount.HasValue && !charge.Amount.CurrencyISO.EqualsOrdIgnoreCase(amount.Value.CurrencyISO))
+        throw new PaymentException(StringConsts.PAYMENT_CAPTURE_CURRENCY_MUST_MATCH_CHARGE_ERROR + GetType().Name
+          + ".Capture(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount.Value));
+
+      var orderContex = context as IOrderTransactionContext;
+
       try
       {
         var splitTran = charge.ProcessorToken.AsString().Split(':');
 
-        var request = new JSONDataMap();
-        var transaction = (JSONDataMap)(request["transaction"] = new JSONDataMap());
-        if (amount.HasValue)
-          transaction["amount"] = amount.Value.Value;
+        var transaction = new XElement("transaction");
+        if (amount.HasValue) transaction.Add(new XElement("amount", amount.Value.Value));
+        if (orderContex != null) transaction.Add(new XElement("order-id", orderContex.OrderId));
 
-        dynamic obj = getResponse(session, URI_SubmitForSettlement(session.MerchantID, splitTran[2]), request, HTTPRequestMethod.PUT);
+        var response = getResponse(session, URI_SubmitForSettlement(session.MerchantID, splitTran[2]), new XDocument(transaction), HTTPRequestMethod.PUT);
+
+        transaction = response.Root;
+        var transactionID = transaction.Element("id").Value;
+        var created = transaction.Element("created-at").Value.AsDateTime();
+        var customerID = transaction.Element("customer").Element("id").Value;
+        var token = transaction.Element("credit-card").Element("token").Value;
+
+        var amountCaptured = new Amount(charge.Amount.CurrencyISO, transaction.Element("amount").Value.AsDecimal());
+
+        charge = Transaction.Charge(charge.ID, Name,
+                                    "{0}:{1}:{2}".Args(customerID, token, transactionID),
+                                    charge.From, charge.To,
+                                    charge.Amount, created, description,
+                                    amountCaptured);
 
         StatCapture(charge, amount);
+        return charge;
       }
       catch (Exception ex)
       {
         StatChargeError();
-
-        var wex = ex as System.Net.WebException;
-        if (wex != null)
-        {
-          using (var sr = new System.IO.StreamReader(wex.Response.GetResponseStream()))
-          {
-            var respStr = sr.ReadToEnd();
-            var resp = respStr.IsNotNullOrWhiteSpace() ? respStr.JSONToDynamic() : null;
-            if (resp != null)
-              throw new PaymentException(resp.apiErrorResponse.message, ex);
-          }
-
-        }
-
-        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + this.GetType()
+        if (ex is PaymentException) throw ex;
+        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + GetType().Name
           + " .Capture(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount), ex);
       }
     }
 
     public override Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
     {
-      throw new NotImplementedException();
+      return Refund((BraintreeSession)session, context, ref charge, amount, description, extraData);
+    }
+
+    public Transaction Refund(BraintreeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = default(Amount?), string description = null, object extraData = null)
+    {
+      if (!charge.ProcessorName.EqualsIgnoreCase(Name))
+        throw new PaymentException(StringConsts.PAYMENT_INVALID_PAYSYSTEM_ERROR + GetType().Name
+          + ".Refund(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount.Value));
+
+      if (amount.HasValue && !charge.Amount.CurrencyISO.EqualsOrdIgnoreCase(amount.Value.CurrencyISO))
+        throw new PaymentException(StringConsts.PAYMENT_REFUND_CURRENCY_MUST_MATCH_CHARGE_ERROR + GetType().Name
+          + ".Refund(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount.Value));
+
+      var orderContex = context as IOrderTransactionContext;
+
+      try
+      {
+        var splitTran = charge.ProcessorToken.AsString().Split(':');
+
+        if (charge.AmountCaptured.Value != 0m) throw new NotImplementedException();
+
+        var response = getResponse(session, URI_Void(session.MerchantID, splitTran[2]), method: HTTPRequestMethod.PUT);
+
+        var transaction = response.Root;
+        var transactionID = transaction.Element("id").Value;
+        var created = transaction.Element("created-at").Value.AsDateTime();
+        var customerID = transaction.Element("customer").Element("id").Value;
+        var token = transaction.Element("credit-card").Element("token").Value;
+
+        var amountRefunded = new Amount(charge.Amount.CurrencyISO, transaction.Element("amount").Value.AsDecimal());
+
+        charge = Transaction.Refund(charge.ID, Name,
+                                    "{0}:{1}:{2}".Args(customerID, token, transactionID),
+                                    charge.From, charge.To,
+                                    charge.Amount, created, description,
+                                    amountRefunded, charge.ID);
+
+        StatRefund(charge, charge.AmountCaptured);
+        return charge;
+      }
+      catch (Exception ex)
+      {
+        StatRefundError();
+        if (ex is PaymentException) throw ex;
+        throw new PaymentException(StringConsts.PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR + GetType().Name
+          + " .Refund(session='{0}', charge='{1}', amount='{2}')".Args(session, charge, amount), ex);
+      }
     }
 
     public override Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null)
@@ -267,7 +326,7 @@ namespace NFX.Web.Pay.Braintree
     }
 
     #region .pvt
-    private JSONDynamicObject getResponse(BraintreeSession session, Uri uri, object body = null, HTTPRequestMethod method = HTTPRequestMethod.POST)
+    private XDocument getResponse(BraintreeSession session, Uri uri, XDocument body = null, HTTPRequestMethod method = HTTPRequestMethod.POST)
     {
       if (!session.IsValid)
         throw new PaymentException("Braintree: " + StringConsts.PAYMENT_BRAINTREE_SESSION_INVALID.Args(this.GetType().Name + ".getResponse"));
@@ -277,37 +336,43 @@ namespace NFX.Web.Pay.Braintree
         Caller = this,
         Uri = uri,
         Method = method,
-        ContentType = ContentType.JSON,
-        AcceptType = ContentType.JSON,
+        AcceptType = ContentType.XML_APP,
+        ContentType = ContentType.XML_APP,
         Headers = new Dictionary<string, string>()
         {
           { HDR_AUTHORIZATION, getAuthHeader(session.User.Credentials) },
           { HDR_X_API_VERSION, API_VERSION }
         },
-        Body = body != null ? body.ToJSON(JSONWritingOptions.Compact) : null
+        Body = body != null ? new XDeclaration("1.0", "UTF-8", null).ToString() + body.ToString(SaveOptions.DisableFormatting) : null
       };
 
-      return WebClient.GetJsonAsDynamic(prms);
-    }
-
-    private string check(BraintreeSession session, Uri uri)
-    {
-      if (!session.IsValid)
-        throw new PaymentException("Braintree: " + StringConsts.PAYMENT_BRAINTREE_SESSION_INVALID.Args(this.GetType().Name + ".check"));
-
-      var prms = new WebClient.RequestParams()
+      try {
+        return WebClient.GetXML(prms);
+      }
+      catch (System.Net.WebException ex)
       {
-        Caller = this,
-        Uri = uri,
-        Method = HTTPRequestMethod.GET,
-        Headers = new Dictionary<string, string>()
-        {
-          { HDR_AUTHORIZATION, getAuthHeader(session.User.Credentials) },
-          { HDR_X_API_VERSION, API_VERSION }
-        }
-      };
+        StatChargeError();
+        var resp = (System.Net.HttpWebResponse)ex.Response;
 
-      return WebClient.GetString(prms);
+        if (resp != null && resp.StatusCode == (System.Net.HttpStatusCode)422)
+        {
+          using (var sr = new StreamReader(resp.GetResponseStream()))
+          {
+            var respStr = sr.ReadToEnd();
+            var response = respStr.IsNotNullOrWhiteSpace() ? XDocument.Parse(respStr) : null;
+            if (response != null)
+            {
+              var apiErrorResponse = response.Element("api-error-response");
+              throw new PaymentException(apiErrorResponse.Element("message").Value, ex);
+            }
+          }
+        }
+        throw;
+      }
+      catch
+      {
+        throw;
+      }
     }
 
     private string getAuthHeader(Credentials credentials)

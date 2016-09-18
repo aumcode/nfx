@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2016 IT Adapter Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,6 +23,8 @@ using System.Threading.Tasks;
 using NFX.DataAccess.Distributed;
 using NFX.Serialization.BSON;
 using NUnit.Framework;
+using NFX.Serialization.JSON;
+using NFX.Financial;
 
 namespace NFX.NUnit.Serialization
 {
@@ -64,7 +82,7 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(8), BitConverter.GetBytes(Math.PI)); // ensure element value is Math.PI
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 17); // ensure whole document readed
       }
     }
@@ -94,7 +112,7 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(12), Encoding.UTF8.GetBytes("Hello World!")); // ensure element value is 'Hello World!'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure string value terminator 0x00 is present
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 33); // ensure whole document readed
       }
     }
@@ -121,8 +139,8 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(5), Encoding.UTF8.GetBytes("lucky")); // ensure element name is 'lucky'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(7)); // ensure element value is 7
-        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00 
-         
+        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
+
         Assert.AreEqual(stream.Position, 16); // ensure whole document readed
       }
     }
@@ -150,7 +168,7 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(8), BitConverter.GetBytes(10000000000000)); // ensure element value is 10000000000000
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 34); // ensure whole document readed
       }
     }
@@ -193,8 +211,8 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(7));        // string content length is 7
         CollectionAssert.AreEqual(reader.ReadBytes(6),Encoding.UTF8.GetBytes("orange")); // string content length is 'orange'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                  // last byte is terminator 0x00
-         
-        Assert.AreEqual(reader.ReadByte(), (byte)BSONElementType.String);                // element type is string 0x02 
+
+        Assert.AreEqual(reader.ReadByte(), (byte)BSONElementType.String);                // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(1), Encoding.UTF8.GetBytes("2"));     // element name is '2'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                  // last byte is terminator 0x00
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(5));        // string content length is 5
@@ -243,14 +261,14 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                              // last byte is terminator 0x00
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(1984)); // value is 1984
 
-        Assert.AreEqual(reader.ReadByte(), (byte)BSONElementType.Int32);             // element type is int32 0x10 
+        Assert.AreEqual(reader.ReadByte(), (byte)BSONElementType.Int32);             // element type is int32 0x10
         CollectionAssert.AreEqual(reader.ReadBytes(1), Encoding.UTF8.GetBytes("2")); // element name is '2'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                              // last byte is terminator 0x00
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(2015)); // value is 2015
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 38); // ensure whole document readed
       }
     }
@@ -299,7 +317,7 @@ namespace NFX.NUnit.Serialization
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 48); // ensure whole document readed
       }
     }
@@ -309,7 +327,7 @@ namespace NFX.NUnit.Serialization
     /// </summary>
     [TestCase]
     public void WriteStringAndInt32Pair()
-    { 
+    {
       using (var stream = new MemoryStream())
       using (var reader = new BinaryReader(stream))
       {
@@ -335,7 +353,7 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(1934)); // ensure element value is int 1934
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 34); // ensure whole document readed
       }
     }
@@ -374,7 +392,7 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // last byte is terminator 0x00
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 38); // ensure whole document readed
       }
     }
@@ -407,11 +425,11 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(19), data);                            // byte content is correct
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 37); // ensure whole document readed
       }
-    } 
-    
+    }
+
     /// <summary>
     ///  { objectId: <bytes from hex '507f1f77bcf86cd799439011'> }
     /// </summary>
@@ -441,12 +459,12 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                     // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(12), data);                              // byte content is correct
 
-        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00 
-         
+        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
+
         Assert.AreEqual(stream.Position, 27); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     ///  { booleanTrue: true }
     /// </summary>
@@ -470,12 +488,12 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                         // string name terminator 0x00 is present
         Assert.AreEqual(reader.ReadByte(), (byte)BSONBoolean.True);                             // byte content is correct
 
-        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00 
-         
+        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
+
         Assert.AreEqual(stream.Position, 19); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     ///  { booleanFalse: false }
     /// </summary>
@@ -500,11 +518,11 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)BSONBoolean.False);                             // byte content is correct
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 20); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     /// { null: null }
     /// </summary>
@@ -556,7 +574,7 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // ensure string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(8), BitConverter.GetBytes(now.ToMillisecondsSinceUnixEpochStart())); // ensure element value is correct
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // ensure last byte is terminator 0x00
-                                              
+
         Assert.AreEqual(stream.Position, 18); // ensure whole document readed
       }
     }
@@ -618,10 +636,10 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                // ensure string value terminator 0x00 is present
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 55); // ensure whole document readed
       }
-    }   
+    }
 
     /// <summary>
     /// { code: "function(){var x=1;var y='abc';return 1;};" }
@@ -650,7 +668,7 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(42), Encoding.UTF8.GetBytes(code)); // element value is code
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                // string value terminator 0x00 is present
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                // last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 58); // ensure whole document readed
       }
     }
@@ -694,10 +712,10 @@ namespace NFX.NUnit.Serialization
 
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // last byte is terminator 0x00
         Assert.AreEqual(reader.ReadByte(), (byte)0x00); // last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 83); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// { stamp: <seconds since Unix epoch to DateTime from 635000000000000000 ticks with 123 increment> }
@@ -725,11 +743,11 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(123));      // increment is correct
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes((int)now.ToSecondsSinceUnixEpochStart())); // datetime is correct
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                                 // last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 20); // ensure whole document readed
       }
-    } 
-    
+    }
+
     /// <summary>
     /// { minkey: <minkey> }
     /// </summary>
@@ -752,11 +770,11 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(6), Encoding.UTF8.GetBytes("minkey")); // ensure element name is 'minkey'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                   // ensure string name terminator 0x00 is present
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                   // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 13); // ensure whole document readed
       }
-    } 
-    
+    }
+
     /// <summary>
     /// { maxkey: <maxkey> }
     /// </summary>
@@ -779,18 +797,18 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(6), Encoding.UTF8.GetBytes("maxkey")); // ensure element name is 'maxkey'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                   // ensure string name terminator 0x00 is present
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                   // ensure last byte is terminator 0x00
-         
+
         Assert.AreEqual(stream.Position, 13); // ensure whole document readed
       }
     }
 
     /// <summary>
-    /// { 
-    ///   eng: "hello", 
-    ///   rus: "привет", 
-    ///   chi: "你好", 
-    ///   jap: "こんにちは", 
-    ///   gre: "γεια σας", 
+    /// {
+    ///   eng: "hello",
+    ///   rus: "привет",
+    ///   chi: "你好",
+    ///   jap: "こんにちは",
+    ///   gre: "γεια σας",
     ///   alb: "përshëndetje",
     ///   arm: "բարեւ Ձեզ",
     ///   vie: "xin chào",
@@ -837,35 +855,35 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(13));     // string content length is 13
         CollectionAssert.AreEqual(reader.ReadBytes(12), Encoding.UTF8.GetBytes("привет"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-        
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("chi")); // element name is 'chi'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(7));      // string content length is 7
         CollectionAssert.AreEqual(reader.ReadBytes(6), Encoding.UTF8.GetBytes("你好"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-         
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("jap")); // element name is 'jap'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(16));     // string content length is 16
         CollectionAssert.AreEqual(reader.ReadBytes(15), Encoding.UTF8.GetBytes("こんにちは"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-           
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("gre")); // element name is 'gre'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(16));     // string content length is 16
         CollectionAssert.AreEqual(reader.ReadBytes(15), Encoding.UTF8.GetBytes("γεια σας"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-         
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("alb")); // element name is 'alb'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(15));     // string content length is 15
         CollectionAssert.AreEqual(reader.ReadBytes(14), Encoding.UTF8.GetBytes("përshëndetje"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-          
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("arm")); // element name is 'arm'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
@@ -879,21 +897,21 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(10));     // string content length is 10
         CollectionAssert.AreEqual(reader.ReadBytes(9), Encoding.UTF8.GetBytes("xin chào"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-         
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("por")); // element name is 'por'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(5));      // string content length is 5
         CollectionAssert.AreEqual(reader.ReadBytes(4), Encoding.UTF8.GetBytes("Olá"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-         
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("ukr")); // element name is 'ukr'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(13));     // string content length is 13
         CollectionAssert.AreEqual(reader.ReadBytes(12), Encoding.UTF8.GetBytes("Привіт"));
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string value terminator 0x00 is present
-                                
+
         Assert.AreEqual(reader.ReadByte(), (byte) BSONElementType.String);             // element type is string 0x02
         CollectionAssert.AreEqual(reader.ReadBytes(3), Encoding.UTF8.GetBytes("ger")); // element name is 'ger'
         Assert.AreEqual(reader.ReadByte(), (byte) 0x00);                               // string name terminator 0x00 is present
@@ -941,7 +959,7 @@ namespace NFX.NUnit.Serialization
           Assert.AreEqual(reader.ReadByte(), (byte) 0x00); // string value terminator 0x00 is present
           Assert.AreEqual(reader.ReadByte(), (byte) 0x00); // last byte is terminator 0x00
 
-          Assert.AreEqual(stream.Position, 16 + i); // ensure whole document readed 
+          Assert.AreEqual(stream.Position, 16 + i); // ensure whole document readed
           stream.Position = 0;
 
           // Read
@@ -993,7 +1011,7 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(6), Encoding.UTF8.GetBytes("intMax"));    // element name is 'intMax'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                      // string name terminator 0x00 is present
         CollectionAssert.AreEqual(reader.ReadBytes(4), BitConverter.GetBytes(int.MaxValue)); // element value is int.MaxValue
-        
+
         Assert.AreEqual(reader.ReadByte(), (byte)BSONElementType.Int64);                      // element type is int64 0x12
         CollectionAssert.AreEqual(reader.ReadBytes(7), Encoding.UTF8.GetBytes("longMin"));    // element name is 'longMin'
         Assert.AreEqual(reader.ReadByte(), (byte)0x00);                                       // string name terminator 0x00 is present
@@ -1005,8 +1023,8 @@ namespace NFX.NUnit.Serialization
         CollectionAssert.AreEqual(reader.ReadBytes(8), BitConverter.GetBytes(long.MaxValue)); // element value is long.MaxValue
 
 
-        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00 
-         
+        Assert.AreEqual(reader.ReadByte(), (byte)0x00); // ensure last byte is terminator 0x00
+
         Assert.AreEqual(stream.Position, 63); // ensure whole document readed
       }
     }
@@ -1050,13 +1068,13 @@ namespace NFX.NUnit.Serialization
 
         var element = root["pi"] as BSONDoubleElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Double); 
-        Assert.AreEqual(element.Name, "pi"); 
-        Assert.IsTrue(Math.Abs(element.Value - Math.PI) < double.Epsilon); 
+        Assert.AreEqual(element.ElementType, BSONElementType.Double);
+        Assert.AreEqual(element.Name, "pi");
+        Assert.IsTrue(Math.Abs(element.Value - Math.PI) < double.Epsilon);
         Assert.AreEqual(stream.Position, 17); // ensure whole document readed
       }
     }
-        
+
     /// <summary>
     /// { greetings: "Hello World!" }
     /// </summary>
@@ -1074,8 +1092,8 @@ namespace NFX.NUnit.Serialization
 
         var element = root["greetings"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "greetings"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "greetings");
         Assert.AreEqual(element.Value, "Hello World!");
         Assert.AreEqual(stream.Position, 33); // ensure whole document readed
       }
@@ -1098,8 +1116,8 @@ namespace NFX.NUnit.Serialization
 
         var element = root["lucky"] as BSONInt32Element;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Int32); 
-        Assert.AreEqual(element.Name, "lucky"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.Int32);
+        Assert.AreEqual(element.Name, "lucky");
         Assert.AreEqual(element.Value, 7);
         Assert.AreEqual(stream.Position, 16); // ensure whole document readed
       }
@@ -1122,13 +1140,13 @@ namespace NFX.NUnit.Serialization
 
         var element = root["solarSystemDiameter"] as BSONInt64Element;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Int64); 
-        Assert.AreEqual(element.Name, "solarSystemDiameter"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.Int64);
+        Assert.AreEqual(element.Name, "solarSystemDiameter");
         Assert.AreEqual(element.Value, 10000000000000);
         Assert.AreEqual(stream.Position, 34); // ensure whole document readed
       }
-    }  
-    
+    }
+
     /// <summary>
     /// Array of strings
     /// { 'fruits': ['apple, 'orange', 'plum'] } --> { 'fruits': { '0': 'apple', '1': 'orange', '2': 'plum' } }
@@ -1147,33 +1165,33 @@ namespace NFX.NUnit.Serialization
 
         var element = root["fruits"] as BSONArrayElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.Name, "fruits"); 
-        Assert.AreEqual(element.ElementType, BSONElementType.Array); 
-        Assert.IsNotNull(element.Value); 
-        Assert.AreEqual(element.Value.Length, 3); 
+        Assert.AreEqual(element.Name, "fruits");
+        Assert.AreEqual(element.ElementType, BSONElementType.Array);
+        Assert.IsNotNull(element.Value);
+        Assert.AreEqual(element.Value.Length, 3);
 
         var item1 = element.Value[0] as BSONStringElement;
         Assert.IsNotNull(item1);
-        Assert.IsTrue(item1.IsArrayElement); 
-        Assert.AreEqual(item1.ElementType, BSONElementType.String); 
+        Assert.IsTrue(item1.IsArrayElement);
+        Assert.AreEqual(item1.ElementType, BSONElementType.String);
         Assert.AreEqual(item1.Value, "apple");
 
         var item2 = element.Value[1] as BSONStringElement;
         Assert.IsNotNull(item2);
-        Assert.IsTrue(item2.IsArrayElement); 
-        Assert.AreEqual(item2.ElementType, BSONElementType.String); 
+        Assert.IsTrue(item2.IsArrayElement);
+        Assert.AreEqual(item2.ElementType, BSONElementType.String);
         Assert.AreEqual(item2.Value, "orange");
 
         var item3 = element.Value[2] as BSONStringElement;
         Assert.IsNotNull(item3);
-        Assert.AreEqual(item3.ElementType, BSONElementType.String); 
-        Assert.IsTrue(item3.IsArrayElement); 
+        Assert.AreEqual(item3.ElementType, BSONElementType.String);
+        Assert.IsTrue(item3.IsArrayElement);
         Assert.AreEqual(item3.Value, "plum");
 
-        Assert.AreEqual(stream.Position, 57); // ensure whole document readed  
+        Assert.AreEqual(stream.Position, 57); // ensure whole document readed
       }
     }
-                
+
     /// <summary>
     /// Array of int32
     /// { 'years': [1963, 1984, 2015] } --> { 'years': { '0': 1963, '1': 1984, '2': 2015 } }
@@ -1192,32 +1210,32 @@ namespace NFX.NUnit.Serialization
 
         var element = root["years"] as BSONArrayElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.Name, "years"); 
-        Assert.AreEqual(element.ElementType, BSONElementType.Array); 
-        Assert.IsNotNull(element.Value); 
-        Assert.AreEqual(element.Value.Length, 3); 
+        Assert.AreEqual(element.Name, "years");
+        Assert.AreEqual(element.ElementType, BSONElementType.Array);
+        Assert.IsNotNull(element.Value);
+        Assert.AreEqual(element.Value.Length, 3);
 
         var item1 = element.Value[0] as BSONInt32Element;
         Assert.IsNotNull(item1);
-        Assert.AreEqual(item1.ElementType, BSONElementType.Int32); 
-        Assert.IsTrue(item1.IsArrayElement); 
+        Assert.AreEqual(item1.ElementType, BSONElementType.Int32);
+        Assert.IsTrue(item1.IsArrayElement);
         Assert.AreEqual(item1.Value, 1963);
-                      
+
         var item2 = element.Value[1] as BSONInt32Element;
         Assert.IsNotNull(item2);
-        Assert.AreEqual(item2.ElementType, BSONElementType.Int32); 
-        Assert.IsTrue(item2.IsArrayElement); 
+        Assert.AreEqual(item2.ElementType, BSONElementType.Int32);
+        Assert.IsTrue(item2.IsArrayElement);
         Assert.AreEqual(item2.Value, 1984);
-        
+
         var item3 = element.Value[2] as BSONInt32Element;
         Assert.IsNotNull(item3);
-        Assert.AreEqual(item3.ElementType, BSONElementType.Int32); 
-        Assert.IsTrue(item3.IsArrayElement); 
+        Assert.AreEqual(item3.ElementType, BSONElementType.Int32);
+        Assert.IsTrue(item3.IsArrayElement);
         Assert.AreEqual(item3.Value, 2015);
-        
+
         Assert.AreEqual(stream.Position, 38); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// Array of strings
@@ -1237,39 +1255,39 @@ namespace NFX.NUnit.Serialization
 
         var element = root["stuff"] as BSONArrayElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.Name, "stuff"); 
-        Assert.AreEqual(element.ElementType, BSONElementType.Array); 
-        Assert.IsNotNull(element.Value); 
-        Assert.AreEqual(element.Value.Length, 3); 
+        Assert.AreEqual(element.Name, "stuff");
+        Assert.AreEqual(element.ElementType, BSONElementType.Array);
+        Assert.IsNotNull(element.Value);
+        Assert.AreEqual(element.Value.Length, 3);
 
         var item1 = element.Value[0] as BSONStringElement;
         Assert.IsNotNull(item1);
-        Assert.IsTrue(item1.IsArrayElement); 
-        Assert.AreEqual(item1.ElementType, BSONElementType.String); 
-        Assert.AreEqual(item1.Value, "apple");  
+        Assert.IsTrue(item1.IsArrayElement);
+        Assert.AreEqual(item1.ElementType, BSONElementType.String);
+        Assert.AreEqual(item1.Value, "apple");
 
         var item2 = element.Value[1] as BSONInt32Element;
         Assert.IsNotNull(item2);
-        Assert.IsTrue(item2.IsArrayElement); 
-        Assert.AreEqual(item2.ElementType, BSONElementType.Int32); 
-        Assert.AreEqual(item2.Value, 3);  
+        Assert.IsTrue(item2.IsArrayElement);
+        Assert.AreEqual(item2.ElementType, BSONElementType.Int32);
+        Assert.AreEqual(item2.Value, 3);
 
         var item3 = element.Value[2] as BSONDoubleElement;
         Assert.IsNotNull(item3);
-        Assert.IsTrue(item3.IsArrayElement); 
-        Assert.AreEqual(item3.ElementType, BSONElementType.Double); 
+        Assert.IsTrue(item3.IsArrayElement);
+        Assert.AreEqual(item3.ElementType, BSONElementType.Double);
         Assert.AreEqual(item3.Value, 2.14D);
-        
+
         Assert.AreEqual(stream.Position, 48); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// { name: "Gagarin", birth: 1934 }
     /// </summary>
     [TestCase]
     public void ReadStringAndInt32Pair()
-    { 
+    {
       var src = Convert.FromBase64String(@"IgAAAAJuYW1lAAgAAABHYWdhcmluABBiaXJ0aACOBwAAAA==");
 
       using (var stream = new MemoryStream(src))
@@ -1281,20 +1299,20 @@ namespace NFX.NUnit.Serialization
 
         var element1 = root["name"] as BSONStringElement;
         Assert.IsNotNull(element1);
-        Assert.AreEqual(element1.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element1.Name, "name"); 
-        Assert.AreEqual(element1.Value, "Gagarin"); 
-               
+        Assert.AreEqual(element1.ElementType, BSONElementType.String);
+        Assert.AreEqual(element1.Name, "name");
+        Assert.AreEqual(element1.Value, "Gagarin");
+
         var element2 = root["birth"] as BSONInt32Element;
         Assert.IsNotNull(element2);
-        Assert.AreEqual(element2.ElementType, BSONElementType.Int32); 
-        Assert.AreEqual(element2.Name, "birth"); 
+        Assert.AreEqual(element2.ElementType, BSONElementType.Int32);
+        Assert.AreEqual(element2.Name, "birth");
         Assert.AreEqual(element2.Value, 1934);
-        
-        Assert.AreEqual(stream.Position, 34); // ensure whole document readed 
+
+        Assert.AreEqual(stream.Position, 34); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     /// { nested: { capital: "Moscow" } }
     /// </summary>
@@ -1313,20 +1331,20 @@ namespace NFX.NUnit.Serialization
         var element = root["nested"] as BSONDocumentElement;
         Assert.IsNotNull(element);
         Assert.AreEqual(element.Name, "nested");
-        Assert.IsNotNull(element.Value); 
-        Assert.AreEqual(element.ElementType, BSONElementType.Document); 
+        Assert.IsNotNull(element.Value);
+        Assert.AreEqual(element.ElementType, BSONElementType.Document);
         Assert.AreEqual(element.Value.Count, 1);
 
         var nested = element.Value["capital"] as BSONStringElement;
         Assert.IsNotNull(nested);
-        Assert.AreEqual(nested.ElementType, BSONElementType.String); 
+        Assert.AreEqual(nested.ElementType, BSONElementType.String);
         Assert.AreEqual(nested.Name, "capital");
         Assert.AreEqual(nested.Value, "Moscow");
-        
+
         Assert.AreEqual(stream.Position, 38); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     ///  { binary: <bytes from 'This is binary data'> }
     /// </summary>
@@ -1345,15 +1363,15 @@ namespace NFX.NUnit.Serialization
 
         var element = root["binary"] as BSONBinaryElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Binary); 
+        Assert.AreEqual(element.ElementType, BSONElementType.Binary);
         Assert.AreEqual(element.Name, "binary");
         Assert.AreEqual(element.Value.Data, data);
         Assert.AreEqual(element.Value.Type, BSONBinaryType.BinaryOld);
-        
+
         Assert.AreEqual(stream.Position, 37); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     ///  { objectId: <bytes from hex '507f1f77bcf86cd799439011'> }
     /// </summary>
@@ -1376,14 +1394,14 @@ namespace NFX.NUnit.Serialization
 
         var element = root["objectId"] as BSONObjectIDElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.ObjectID); 
+        Assert.AreEqual(element.ElementType, BSONElementType.ObjectID);
         Assert.AreEqual(element.Name, "objectId");
         Assert.AreEqual(element.Value.Bytes, data);
-        
+
         Assert.AreEqual(stream.Position, 27); // ensure whole document readed
       }
-    } 
-    
+    }
+
     /// <summary>
     /// { booleanTrue: true }
     /// </summary>
@@ -1401,14 +1419,14 @@ namespace NFX.NUnit.Serialization
 
         var element = root["booleanTrue"] as BSONBooleanElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Boolean); 
+        Assert.AreEqual(element.ElementType, BSONElementType.Boolean);
         Assert.AreEqual(element.Name, "booleanTrue");
-        Assert.AreEqual(element.Value, true); 
-        
-        Assert.AreEqual(stream.Position, 19); // ensure whole document readed 
+        Assert.AreEqual(element.Value, true);
+
+        Assert.AreEqual(stream.Position, 19); // ensure whole document readed
       }
-    }  
-    
+    }
+
     /// <summary>
     /// { booleanFalse: false }
     /// </summary>
@@ -1426,14 +1444,14 @@ namespace NFX.NUnit.Serialization
 
         var element = root["booleanFalse"] as BSONBooleanElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Boolean); 
+        Assert.AreEqual(element.ElementType, BSONElementType.Boolean);
         Assert.AreEqual(element.Name, "booleanFalse");
-        Assert.AreEqual(element.Value, false); 
-        
-        Assert.AreEqual(stream.Position, 20); // ensure whole document readed 
+        Assert.AreEqual(element.Value, false);
+
+        Assert.AreEqual(stream.Position, 20); // ensure whole document readed
       }
     }
-    
+
     /// <summary>
     /// { null: null }
     /// </summary>
@@ -1451,17 +1469,17 @@ namespace NFX.NUnit.Serialization
 
         var element = root["null"] as BSONNullElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.Null); 
-        Assert.AreEqual(element.Name, "null");     
+        Assert.AreEqual(element.ElementType, BSONElementType.Null);
+        Assert.AreEqual(element.Name, "null");
       }
-    } 
+    }
 
     /// <summary>
     /// { now: <DateTime from 635000000000000000 ticks> }
     /// </summary>
     [TestCase]
     public void ReadSingleDateTime()
-    {                                     
+    {
       var src = Convert.FromBase64String(@"EgAAAAlub3cAAKDErD0BAAAA");
 
       using (var stream = new MemoryStream(src))
@@ -1469,18 +1487,18 @@ namespace NFX.NUnit.Serialization
         var now = new DateTime(635000000000000000, DateTimeKind.Utc);
         var root = new BSONDocument(stream);
 
-        Assert.AreEqual(root.ByteSize, 18); 
+        Assert.AreEqual(root.ByteSize, 18);
         Assert.AreEqual(root.Count, 1);
 
         var element = root["now"] as BSONDateTimeElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.DateTime); 
-        Assert.AreEqual(element.Name, "now"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.DateTime);
+        Assert.AreEqual(element.Name, "now");
         Assert.AreEqual(element.Value, now);
-        
-        Assert.AreEqual(stream.Position, 18); // ensure whole document readed 
+
+        Assert.AreEqual(stream.Position, 18); // ensure whole document readed
       }
-    }     
+    }
 
     /// <summary>
     /// { email: <pattern='^[-.\w]+@(?:[a-z\d]{2,}\.)+[a-z]{2,6}$' options=I,M,U> }
@@ -1496,19 +1514,19 @@ namespace NFX.NUnit.Serialization
         var pattern = @"^[-.\w]+@(?:[a-z\d]{2,}\.)+[a-z]{2,6}$";
         var options = BSONRegularExpressionOptions.I | BSONRegularExpressionOptions.M |BSONRegularExpressionOptions.U;
 
-        Assert.AreEqual(root.ByteSize, 55); 
+        Assert.AreEqual(root.ByteSize, 55);
         Assert.AreEqual(root.Count, 1);
 
         var element = root["email"] as BSONRegularExpressionElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.Name, "email"); 
-        Assert.AreEqual(element.ElementType, BSONElementType.RegularExpression); 
+        Assert.AreEqual(element.Name, "email");
+        Assert.AreEqual(element.ElementType, BSONElementType.RegularExpression);
         Assert.AreEqual(element.Value.Pattern, pattern);
         Assert.AreEqual(element.Value.Options, options);
-        
+
         Assert.AreEqual(stream.Position, 55); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// { code: "function(){var x=1;var y='abc';return 1;};" }
@@ -1528,13 +1546,13 @@ namespace NFX.NUnit.Serialization
 
         var element = root["code"] as BSONJavaScriptElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.JavaScript); 
-        Assert.AreEqual(element.Name, "code"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.JavaScript);
+        Assert.AreEqual(element.Name, "code");
         Assert.AreEqual(element.Value, code);
-        
+
         Assert.AreEqual(stream.Position, 58); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// { codeWithScope: "function(){var x=1;var y='abc';return z;}; <with scope: z=23>" }
@@ -1554,8 +1572,8 @@ namespace NFX.NUnit.Serialization
 
         var element = root["codeWithScope"] as BSONJavaScriptWithScopeElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.JavaScriptWithScope); 
-        Assert.AreEqual(element.Name, "codeWithScope"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.JavaScriptWithScope);
+        Assert.AreEqual(element.Name, "codeWithScope");
         Assert.AreEqual(element.Value.Code, code);
 
         var scope = element.Value.Scope;
@@ -1564,13 +1582,13 @@ namespace NFX.NUnit.Serialization
 
         var scopeVar = scope["z"] as BSONInt32Element;
         Assert.IsNotNull(scopeVar);
-        Assert.AreEqual(scopeVar.ElementType, BSONElementType.Int32); 
-        Assert.AreEqual(scopeVar.Name, "z"); 
-        Assert.AreEqual(scopeVar.Value, 23); 
-        
+        Assert.AreEqual(scopeVar.ElementType, BSONElementType.Int32);
+        Assert.AreEqual(scopeVar.Name, "z");
+        Assert.AreEqual(scopeVar.Value, 23);
+
         Assert.AreEqual(stream.Position, 83); // ensure whole document readed
       }
-    }   
+    }
 
     /// <summary>
     /// { stamp: <seconds since Unix epoch to DateTime from 635000000000000000 ticks with 123 increment> }
@@ -1591,14 +1609,14 @@ namespace NFX.NUnit.Serialization
 
         var element = root["stamp"] as BSONTimestampElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.Name, "stamp"); 
+        Assert.AreEqual(element.Name, "stamp");
         Assert.AreEqual(element.ElementType, BSONElementType.TimeStamp);
         Assert.AreEqual(element.Value.EpochSeconds, now.ToSecondsSinceUnixEpochStart());
-        Assert.AreEqual(element.Value.Increment, increment); 
-        
+        Assert.AreEqual(element.Value.Increment, increment);
+
         Assert.AreEqual(stream.Position, 20); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// { maxkey: <maxkey> }
@@ -1616,13 +1634,13 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(root.Count, 1);
 
         var element = root["maxkey"] as BSONMaxKeyElement;
-        Assert.IsNotNull(element);   
+        Assert.IsNotNull(element);
         Assert.AreEqual(element.ElementType, BSONElementType.MaxKey);
         Assert.AreEqual(element.Name, "maxkey");
-        
-        Assert.AreEqual(stream.Position, 13); // ensure whole document readed 
+
+        Assert.AreEqual(stream.Position, 13); // ensure whole document readed
       }
-    } 
+    }
 
     /// <summary>
     /// { minkey: <minkey> }
@@ -1640,13 +1658,13 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual(root.Count, 1);
 
         var element = root["minkey"] as BSONMinKeyElement;
-        Assert.IsNotNull(element);      
+        Assert.IsNotNull(element);
         Assert.AreEqual(element.ElementType, BSONElementType.MinKey);
         Assert.AreEqual(element.Name, "minkey");
-        
-        Assert.AreEqual(stream.Position, 13); // ensure whole document readed 
+
+        Assert.AreEqual(stream.Position, 13); // ensure whole document readed
       }
-    }   
+    }
 
     [TestCase]
     public void WriteReadSingleDateTime()
@@ -1673,12 +1691,12 @@ namespace NFX.NUnit.Serialization
     }
 
     /// <summary>
-    /// { 
-    ///   eng: "hello", 
-    ///   rus: "привет", 
-    ///   chi: "你好", 
-    ///   jap: "こんにちは", 
-    ///   gre: "γεια σας", 
+    /// {
+    ///   eng: "hello",
+    ///   rus: "привет",
+    ///   chi: "你好",
+    ///   jap: "こんにちは",
+    ///   gre: "γεια σας",
     ///   alb: "përshëndetje",
     ///   arm: "բարեւ Ձեզ",
     ///   vie: "xin chào",
@@ -1697,72 +1715,72 @@ namespace NFX.NUnit.Serialization
         var root = new BSONDocument(stream);
 
         Assert.AreEqual(root.ByteSize, 232);
-        Assert.AreEqual(root.Count, 11);   
+        Assert.AreEqual(root.Count, 11);
 
         var element = root["eng"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "eng"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "eng");
         Assert.AreEqual(element.Value, "hello");
 
         element = root["rus"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "rus"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "rus");
         Assert.AreEqual(element.Value, "привет");
 
         element = root["chi"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "chi"); 
-        Assert.AreEqual(element.Value, "你好"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "chi");
+        Assert.AreEqual(element.Value, "你好");
 
         element = root["jap"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "jap"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "jap");
         Assert.AreEqual(element.Value, "こんにちは");
 
         element = root["gre"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "gre"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "gre");
         Assert.AreEqual(element.Value, "γεια σας");
 
         element = root["alb"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "alb"); 
-        Assert.AreEqual(element.Value, "përshëndetje"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "alb");
+        Assert.AreEqual(element.Value, "përshëndetje");
 
         element = root["arm"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "arm"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "arm");
         Assert.AreEqual(element.Value, "բարեւ Ձեզ");
 
         element = root["vie"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "vie"); 
-        Assert.AreEqual(element.Value, "xin chào"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "vie");
+        Assert.AreEqual(element.Value, "xin chào");
 
         element = root["por"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "por"); 
-        Assert.AreEqual(element.Value, "Olá");  
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "por");
+        Assert.AreEqual(element.Value, "Olá");
 
         element = root["ukr"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "ukr"); 
-        Assert.AreEqual(element.Value, "Привіт"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "ukr");
+        Assert.AreEqual(element.Value, "Привіт");
 
         element = root["ger"] as BSONStringElement;
         Assert.IsNotNull(element);
-        Assert.AreEqual(element.ElementType, BSONElementType.String); 
-        Assert.AreEqual(element.Name, "ger"); 
+        Assert.AreEqual(element.ElementType, BSONElementType.String);
+        Assert.AreEqual(element.Name, "ger");
         Assert.AreEqual(element.Value, "wünsche");
 
         Assert.AreEqual(stream.Position, 232); // ensure whole document readed
@@ -1786,27 +1804,27 @@ namespace NFX.NUnit.Serialization
 
         var element1 = root["intMin"] as BSONInt32Element;
         Assert.IsNotNull(element1);
-        Assert.AreEqual(element1.ElementType, BSONElementType.Int32); 
-        Assert.AreEqual(element1.Name, "intMin"); 
-        Assert.AreEqual(element1.Value, int.MinValue); 
+        Assert.AreEqual(element1.ElementType, BSONElementType.Int32);
+        Assert.AreEqual(element1.Name, "intMin");
+        Assert.AreEqual(element1.Value, int.MinValue);
 
         var element2 = root["intMax"] as BSONInt32Element;
         Assert.IsNotNull(element2);
-        Assert.AreEqual(element2.ElementType, BSONElementType.Int32); 
-        Assert.AreEqual(element2.Name, "intMax"); 
+        Assert.AreEqual(element2.ElementType, BSONElementType.Int32);
+        Assert.AreEqual(element2.Name, "intMax");
         Assert.AreEqual(element2.Value, int.MaxValue);
-                                                   
+
         var element3 = root["longMin"] as BSONInt64Element;
         Assert.IsNotNull(element3);
-        Assert.AreEqual(element3.ElementType, BSONElementType.Int64); 
-        Assert.AreEqual(element3.Name, "longMin"); 
+        Assert.AreEqual(element3.ElementType, BSONElementType.Int64);
+        Assert.AreEqual(element3.Name, "longMin");
         Assert.AreEqual(element3.Value, long.MinValue);
-                                                   
+
         var element4 = root["longMax"] as BSONInt64Element;
         Assert.IsNotNull(element4);
-        Assert.AreEqual(element4.ElementType, BSONElementType.Int64); 
-        Assert.AreEqual(element4.Name, "longMax"); 
-        Assert.AreEqual(element4.Value, long.MaxValue); 
+        Assert.AreEqual(element4.ElementType, BSONElementType.Int64);
+        Assert.AreEqual(element4.Name, "longMax");
+        Assert.AreEqual(element4.Value, long.MaxValue);
 
         Assert.AreEqual(stream.Position, 63); // ensure whole document readed
       }
@@ -1835,7 +1853,7 @@ namespace NFX.NUnit.Serialization
       var int64  = element.AsLong();
       var lac    = element.AsLaconicConfig(null);
       var sbt    = element.AsSByte((sbyte)23);
-      var single = element.AsFloat(); 
+      var single = element.AsFloat();
       var str    = element.AsString();
       var uint16 = element.AsUShort();
       var uint32 = element.AsUInt();
@@ -1854,17 +1872,17 @@ namespace NFX.NUnit.Serialization
       var n_int32  = element.AsNullableInt();
       var n_int64  = element.AsNullableLong();
       var n_sbt    = element.AsNullableSByte((sbyte)23);
-      var n_single = element.AsNullableFloat(); 
+      var n_single = element.AsNullableFloat();
       var n_uint16 = element.AsNullableUShort();
       var n_uint32 = element.AsNullableUInt();
       var n_uint64 = element.AsNullableULong();
 
-      Assert.AreEqual(bl, true); 
+      Assert.AreEqual(bl, true);
       Assert.AreEqual(bt, (byte)23);
       Assert.AreEqual(chr, Convert.ToChar(1256));
       Assert.AreEqual(date, new DateTime(1256));
       Assert.AreEqual(decim, 1256);
-      Assert.AreEqual(doubl, 1256.0D);   
+      Assert.AreEqual(doubl, 1256.0D);
       Assert.AreEqual(enm, (BSONElementType)1256);
       Assert.AreEqual(lac, null);
       Assert.AreEqual(gdid, new GDID(0, 0, 1256));
@@ -1879,12 +1897,12 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(uint32, 1256);
       Assert.AreEqual(uint64, 1256);
 
-      Assert.AreEqual(n_bl, true); 
+      Assert.AreEqual(n_bl, true);
       Assert.AreEqual(n_bt, (byte)23);
       Assert.AreEqual(n_chr, Convert.ToChar(1256));
       Assert.AreEqual(n_date, new DateTime(1256));
       Assert.AreEqual(n_decim, 1256);
-      Assert.AreEqual(n_doubl, 1256.0D);   
+      Assert.AreEqual(n_doubl, 1256.0D);
       Assert.AreEqual(n_ts, TimeSpan.FromTicks(1256));
       Assert.AreEqual(n_gdid, new GDID(0, 0, 1256));
       Assert.AreEqual(n_guid, Guid.Empty);
@@ -1908,11 +1926,11 @@ namespace NFX.NUnit.Serialization
       var decim = element.AsDecimal();
       var doubl = element.AsDouble();
       var int64 = element.AsLong();
-      var single = element.AsFloat(); 
+      var single = element.AsFloat();
       var str = element.AsString();
       var uint64 = element.AsULong();
 
-      Assert.AreEqual(bl, true); 
+      Assert.AreEqual(bl, true);
       Assert.AreEqual(date, new DateTime(1256000000000));
       Assert.AreEqual(decim, 1256000000000);
       Assert.AreEqual(doubl, 1256000000000.0D);
@@ -1920,7 +1938,7 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(single, 1256000000000);
       Assert.AreEqual(str, "1256000000000");
       Assert.AreEqual(uint64, 1256000000000);
-    } 
+    }
 
     [TestCase]
     public void TestDoubleElementIConvertable()
@@ -1933,13 +1951,13 @@ namespace NFX.NUnit.Serialization
       var int16 = element.AsShort();
       var int32 = element.AsInt();
       var int64 = element.AsLong();
-      var single = element.AsFloat(); 
+      var single = element.AsFloat();
       var str = element.AsString();
       var uint16 = element.AsUShort();
       var uint32 = element.AsUInt();
       var uint64 = element.AsULong();
 
-      Assert.AreEqual(bl, true); 
+      Assert.AreEqual(bl, true);
       Assert.AreEqual(decim, 1256.1234M);
       Assert.AreEqual(doubl, 1256.1234D);
       Assert.AreEqual(int16, 1256);
@@ -1950,7 +1968,7 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(uint16, 1256);
       Assert.AreEqual(uint32, 1256);
       Assert.AreEqual(uint64, 1256);
-    } 
+    }
 
     [TestCase]
     public void TestStringElementConvertable()
@@ -1965,13 +1983,13 @@ namespace NFX.NUnit.Serialization
       var int16 = element.AsShort();
       var int32 = element.AsInt();
       var int64 = element.AsLong();
-      var single = element.AsFloat(); 
+      var single = element.AsFloat();
       var str = element.AsString();
       var uint16 = element.AsUShort();
       var uint32 = element.AsUInt();
       var uint64 = element.AsULong();
 
-      Assert.AreEqual(bl, true); 
+      Assert.AreEqual(bl, true);
       Assert.AreEqual(chr, '1');
       Assert.AreEqual(date, new DateTime(1256));
       Assert.AreEqual(decim, 1256);
@@ -1996,13 +2014,13 @@ namespace NFX.NUnit.Serialization
       var int16 = element.AsShort();
       var int32 = element.AsInt();
       var int64 = element.AsLong();
-      var single = element.AsFloat(); 
+      var single = element.AsFloat();
       var str = element.AsString();
       var uint16 = element.AsUShort();
       var uint32 = element.AsUInt();
       var uint64 = element.AsULong();
 
-      Assert.AreEqual(bl, true); 
+      Assert.AreEqual(bl, true);
       Assert.AreEqual(decim, 1);
       Assert.AreEqual(doubl, 1);
       Assert.AreEqual(int16, 1);
@@ -2013,7 +2031,7 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(uint16, 1);
       Assert.AreEqual(uint32, 1);
       Assert.AreEqual(uint64, 1);
-    }  
+    }
 
     [TestCase]
     public void TestDateTimeElementIConvertable()
@@ -2024,7 +2042,7 @@ namespace NFX.NUnit.Serialization
       var bl = element.AsBool();
       var date = element.AsDateTime();
       var str = element.AsString(null);
-      Assert.AreEqual(bl, true); 
+      Assert.AreEqual(bl, true);
       Assert.AreEqual(date, value);
     }
 
@@ -2035,11 +2053,11 @@ namespace NFX.NUnit.Serialization
     [TestCase]
     public void Templatization_QuerySinglePrimitiveTypes()
     {
-      var qry1 = new BSONDocument("{ age: '$$count' }", true, 
+      var qry1 = new BSONDocument("{ age: '$$count' }", true,
                             new TemplateArg("count", BSONElementType.Int32, 67));
-      var qry2 = new BSONDocument("{ max: '$$long' }", true, 
+      var qry2 = new BSONDocument("{ max: '$$long' }", true,
                             new TemplateArg("long", BSONElementType.Int64, long.MaxValue));
-      var qry3 = new BSONDocument("{ array: '$$items' }", true, 
+      var qry3 = new BSONDocument("{ array: '$$items' }", true,
                             new TemplateArg("items", BSONElementType.Array,
                               new BSONElement[]
                               {
@@ -2047,9 +2065,9 @@ namespace NFX.NUnit.Serialization
                                 new BSONDoubleElement("name", -1.2345D),
                                 new BSONInt32Element("name", 2000000000)
                               }));
-      var qry4 = new BSONDocument("{ why: '$$answer' }", true, 
+      var qry4 = new BSONDocument("{ why: '$$answer' }", true,
                             new TemplateArg("answer", BSONElementType.Boolean, true));
-      var qry5 = new BSONDocument("{ qty: '$$value' }", true, 
+      var qry5 = new BSONDocument("{ qty: '$$value' }", true,
                             new TemplateArg("value", BSONElementType.Double, 123456.789012D));
 
       Assert.AreEqual(qry1.Count, 1);
@@ -2084,20 +2102,20 @@ namespace NFX.NUnit.Serialization
       Assert.IsNotNull(qry5["qty"]);
       Assert.IsInstanceOf<BSONDoubleElement>(qry5["qty"]);
       Assert.AreEqual(qry5["qty"].ObjectValue, 123456.789012D);
-    }  
+    }
 
     [TestCase]
     public void Templatization_SinglePrimitiveNames()
     {
-      var qry1 = new BSONDocument("{ '$$age': 67 }", true, 
+      var qry1 = new BSONDocument("{ '$$age': 67 }", true,
                             new TemplateArg("age", BSONElementType.String, "myage"));
-      var qry2 = new BSONDocument("{ '$$max': 9223372036854775807 }", true, 
+      var qry2 = new BSONDocument("{ '$$max': 9223372036854775807 }", true,
                             new TemplateArg("max", BSONElementType.String, "longMax"));
-      var qry3 = new BSONDocument("{ '$$items': [1, '2', 3] }", true, 
+      var qry3 = new BSONDocument("{ '$$items': [1, '2', 3] }", true,
                             new TemplateArg("items", BSONElementType.String, "array"));
-      var qry4 = new BSONDocument("{ '$$why': true }", true, 
+      var qry4 = new BSONDocument("{ '$$why': true }", true,
                             new TemplateArg("why", BSONElementType.String, "whyTrue"));
-      var qry5 = new BSONDocument("{ '$$qty': 123456.789012 }", true, 
+      var qry5 = new BSONDocument("{ '$$qty': 123456.789012 }", true,
                             new TemplateArg("qty", BSONElementType.String, "qtyName"));
 
       Assert.AreEqual(qry1.Count, 1);
@@ -2137,14 +2155,14 @@ namespace NFX.NUnit.Serialization
     [TestCase]
     public void Templatization_SinglePrimitiveNamesAndValues()
     {
-      var qry1 = new BSONDocument("{ '$$age': '$$ageValue' }", true, 
-                            new TemplateArg("age", BSONElementType.String, "myage"), 
+      var qry1 = new BSONDocument("{ '$$age': '$$ageValue' }", true,
+                            new TemplateArg("age", BSONElementType.String, "myage"),
                             new TemplateArg("ageValue", BSONElementType.Int32, 30));
-      var qry2 = new BSONDocument("{ '$$max': '$$maxValue' }", true, 
-                            new TemplateArg("max", BSONElementType.String, "longMax"), 
+      var qry2 = new BSONDocument("{ '$$max': '$$maxValue' }", true,
+                            new TemplateArg("max", BSONElementType.String, "longMax"),
                             new TemplateArg("maxValue", BSONElementType.Int64, long.MaxValue));
-      var qry3 = new BSONDocument("{ '$$items': '$$arrayValue' }", true, 
-                            new TemplateArg("items", BSONElementType.String, "array"), 
+      var qry3 = new BSONDocument("{ '$$items': '$$arrayValue' }", true,
+                            new TemplateArg("items", BSONElementType.String, "array"),
                             new TemplateArg("arrayValue", BSONElementType.Array,
                               new BSONElement[]
                               {
@@ -2152,11 +2170,11 @@ namespace NFX.NUnit.Serialization
                                 new BSONDoubleElement("name", -1.2345D),
                                 new BSONInt32Element("name", 2000000000)
                               }));
-      var qry4 = new BSONDocument("{ '$$why': '$$whyValue' }", true, 
-                            new TemplateArg("why", BSONElementType.String, "whyTrue"), 
+      var qry4 = new BSONDocument("{ '$$why': '$$whyValue' }", true,
+                            new TemplateArg("why", BSONElementType.String, "whyTrue"),
                             new TemplateArg("whyValue", BSONElementType.Boolean, true));
-      var qry5 = new BSONDocument("{ '$$qty': '$$qtyValue' }", true, 
-                            new TemplateArg("qty", BSONElementType.String, "qtyName"), 
+      var qry5 = new BSONDocument("{ '$$qty': '$$qtyValue' }", true,
+                            new TemplateArg("qty", BSONElementType.String, "qtyName"),
                             new TemplateArg("qtyValue", BSONElementType.Double, 123456.789012D));
 
       Assert.AreEqual(qry1.Count, 1);
@@ -2192,25 +2210,25 @@ namespace NFX.NUnit.Serialization
       Assert.IsInstanceOf<BSONDoubleElement>(qry5["qtyName"]);
       Assert.AreEqual(qry5["qtyName"].ObjectValue, 123456.789012D);
     }
-    
+
     [TestCase]
     public void Templatization_QuerySingleObjects()
-    {  
-      var qry0 = new BSONDocument("{ '$$docName': { '$$intName': '$$intValue' } }", true, 
+    {
+      var qry0 = new BSONDocument("{ '$$docName': { '$$intName': '$$intValue' } }", true,
                             new TemplateArg("docName", BSONElementType.String, "doc0"),
-                            new TemplateArg("intName", BSONElementType.String, "int"), 
+                            new TemplateArg("intName", BSONElementType.String, "int"),
                             new TemplateArg("intValue", BSONElementType.Int32, int.MinValue));
-      var qry1 = new BSONDocument("{ '$$docName': { '$$longName': '$$longValue' } }", true, 
+      var qry1 = new BSONDocument("{ '$$docName': { '$$longName': '$$longValue' } }", true,
                             new TemplateArg("docName", BSONElementType.String, "doc1"),
-                            new TemplateArg("longName", BSONElementType.String, "long"), 
+                            new TemplateArg("longName", BSONElementType.String, "long"),
                             new TemplateArg("longValue", BSONElementType.Int64, long.MinValue));
-      var qry2 = new BSONDocument("{ '$$docName': { '$$stringName': '$$stringValue' } }", true, 
+      var qry2 = new BSONDocument("{ '$$docName': { '$$stringName': '$$stringValue' } }", true,
                             new TemplateArg("docName", BSONElementType.String, "doc2"),
-                            new TemplateArg("stringName", BSONElementType.String, "string"), 
+                            new TemplateArg("stringName", BSONElementType.String, "string"),
                             new TemplateArg("stringValue", BSONElementType.String, "Hello world!"));
-      var qry3 = new BSONDocument("{ '$$docName': { '$$arrayName': '$$arrayValue' } }", true, 
+      var qry3 = new BSONDocument("{ '$$docName': { '$$arrayName': '$$arrayValue' } }", true,
                             new TemplateArg("docName", BSONElementType.String, "doc3"),
-                            new TemplateArg("arrayName", BSONElementType.String, "array"), 
+                            new TemplateArg("arrayName", BSONElementType.String, "array"),
                             new TemplateArg("arrayValue", BSONElementType.Array,
                               new BSONElement[]
                               {
@@ -2218,15 +2236,15 @@ namespace NFX.NUnit.Serialization
                                 new BSONDoubleElement(-1.2345D),
                                 new BSONInt32Element(2000000000)
                               }));
-      var qry4 = new BSONDocument("{ '$$docName': { '$$boolName': '$$boolValue' } }", true, 
+      var qry4 = new BSONDocument("{ '$$docName': { '$$boolName': '$$boolValue' } }", true,
                             new TemplateArg("docName", BSONElementType.String, "doc4"),
-                            new TemplateArg("boolName", BSONElementType.String, "bool"), 
+                            new TemplateArg("boolName", BSONElementType.String, "bool"),
                             new TemplateArg("boolValue", BSONElementType.Boolean, true));
-      var qry5 = new BSONDocument("{ '$$docName': { '$$doubleName': '$$doubleValue' } }", true, 
+      var qry5 = new BSONDocument("{ '$$docName': { '$$doubleName': '$$doubleValue' } }", true,
                             new TemplateArg("docName", BSONElementType.String, "doc5"),
-                            new TemplateArg("doubleName", BSONElementType.String, "double"), 
+                            new TemplateArg("doubleName", BSONElementType.String, "double"),
                             new TemplateArg("doubleValue", BSONElementType.Double, double.MinValue));
-          
+
       Assert.AreEqual(qry0.Count, 1);
       Assert.IsNotNull(qry0["doc0"]);
       Assert.IsInstanceOf<BSONDocumentElement>(qry0["doc0"]);
@@ -2282,7 +2300,7 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(doc4.Value.Count, 1);
       Assert.IsNotNull(doc4.Value["bool"]);
       Assert.IsInstanceOf<BSONBooleanElement>(doc4.Value["bool"]);
-      Assert.AreEqual(doc4.Value["bool"].ObjectValue, true); 
+      Assert.AreEqual(doc4.Value["bool"].ObjectValue, true);
 
       Assert.AreEqual(qry5.Count, 1);
       Assert.IsNotNull(qry5["doc5"]);
@@ -2298,13 +2316,13 @@ namespace NFX.NUnit.Serialization
     [TestCase]
     public void Templatization_ArrayOfUnicodeStringValues()
     {
-      var qry0 = new BSONDocument("{ '$$unicode': [ '$$eng', '$$rus', '$$chi', '$$jap', '$$gre', '$$alb', '$$arm', '$$vie', '$$por', '$$ukr', '$$ger' ] }", true, 
-                           new TemplateArg("unicode", BSONElementType.String, "strings"), 
-                           new TemplateArg("eng", BSONElementType.String, "hello"), 
-                           new TemplateArg("rus", BSONElementType.String, "привет"), 
-                           new TemplateArg("chi", BSONElementType.String, "你好"), 
-                           new TemplateArg("jap", BSONElementType.String, "こんにちは"), 
-                           new TemplateArg("gre", BSONElementType.String, "γεια σας"), 
+      var qry0 = new BSONDocument("{ '$$unicode': [ '$$eng', '$$rus', '$$chi', '$$jap', '$$gre', '$$alb', '$$arm', '$$vie', '$$por', '$$ukr', '$$ger' ] }", true,
+                           new TemplateArg("unicode", BSONElementType.String, "strings"),
+                           new TemplateArg("eng", BSONElementType.String, "hello"),
+                           new TemplateArg("rus", BSONElementType.String, "привет"),
+                           new TemplateArg("chi", BSONElementType.String, "你好"),
+                           new TemplateArg("jap", BSONElementType.String, "こんにちは"),
+                           new TemplateArg("gre", BSONElementType.String, "γεια σας"),
                            new TemplateArg("alb", BSONElementType.String, "përshëndetje"),
                            new TemplateArg("arm", BSONElementType.String, "բարեւ Ձեզ"),
                            new TemplateArg("vie", BSONElementType.String, "xin chào"),
@@ -2318,28 +2336,28 @@ namespace NFX.NUnit.Serialization
       var array = ((BSONArrayElement)qry0["strings"]).Value;
       Assert.IsNotNull(array);
       Assert.AreEqual(array.Length, 11);
-      Assert.AreEqual(((BSONStringElement)array[0]).Value, "hello"); 
-      Assert.AreEqual(((BSONStringElement)array[1]).Value, "привет");  
-      Assert.AreEqual(((BSONStringElement)array[2]).Value, "你好"); 
-      Assert.AreEqual(((BSONStringElement)array[3]).Value, "こんにちは"); 
-      Assert.AreEqual(((BSONStringElement)array[4]).Value, "γεια σας"); 
+      Assert.AreEqual(((BSONStringElement)array[0]).Value, "hello");
+      Assert.AreEqual(((BSONStringElement)array[1]).Value, "привет");
+      Assert.AreEqual(((BSONStringElement)array[2]).Value, "你好");
+      Assert.AreEqual(((BSONStringElement)array[3]).Value, "こんにちは");
+      Assert.AreEqual(((BSONStringElement)array[4]).Value, "γεια σας");
       Assert.AreEqual(((BSONStringElement)array[5]).Value, "përshëndetje");
       Assert.AreEqual(((BSONStringElement)array[6]).Value, "բարեւ Ձեզ");
       Assert.AreEqual(((BSONStringElement)array[7]).Value, "xin chào");
       Assert.AreEqual(((BSONStringElement)array[8]).Value, "Olá");
       Assert.AreEqual(((BSONStringElement)array[9]).Value, "Привіт");
-      Assert.AreEqual(((BSONStringElement)array[10]).Value, "wünsche"); 
-    }  
+      Assert.AreEqual(((BSONStringElement)array[10]).Value, "wünsche");
+    }
 
     [TestCase]
     public void Templatization_ArrayOfUnicodeStringNames()
     {
-      var qry0 = new BSONDocument("{ '$$eng': 'eng', '$$rus': 'rus', '$$chi': 'chi', '$$jap': 'jap', '$$gre': 'gre', '$$alb': 'alb', '$$arm': 'arm', '$$vie': 'vie', '$$por': 'por', '$$ukr': 'ukr', '$$ger': 'ger' }", true, 
-                           new TemplateArg("eng", BSONElementType.String, "hello"), 
-                           new TemplateArg("rus", BSONElementType.String, "привет"), 
-                           new TemplateArg("chi", BSONElementType.String, "你好"), 
-                           new TemplateArg("jap", BSONElementType.String, "こんにちは"), 
-                           new TemplateArg("gre", BSONElementType.String, "γεια σας"), 
+      var qry0 = new BSONDocument("{ '$$eng': 'eng', '$$rus': 'rus', '$$chi': 'chi', '$$jap': 'jap', '$$gre': 'gre', '$$alb': 'alb', '$$arm': 'arm', '$$vie': 'vie', '$$por': 'por', '$$ukr': 'ukr', '$$ger': 'ger' }", true,
+                           new TemplateArg("eng", BSONElementType.String, "hello"),
+                           new TemplateArg("rus", BSONElementType.String, "привет"),
+                           new TemplateArg("chi", BSONElementType.String, "你好"),
+                           new TemplateArg("jap", BSONElementType.String, "こんにちは"),
+                           new TemplateArg("gre", BSONElementType.String, "γεια σας"),
                            new TemplateArg("alb", BSONElementType.String, "përshëndetje"),
                            new TemplateArg("arm", BSONElementType.String, "բարեւ Ձեզ"),
                            new TemplateArg("vie", BSONElementType.String, "xin chào"),
@@ -2351,57 +2369,57 @@ namespace NFX.NUnit.Serialization
       Assert.IsNotNull(qry0["hello"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["hello"]);
       Assert.AreEqual(((BSONStringElement)qry0["hello"]).Value, "eng");
-       
+
       Assert.IsNotNull(qry0["привет"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["привет"]);
-      Assert.AreEqual(((BSONStringElement)qry0["привет"]).Value, "rus"); 
-           
+      Assert.AreEqual(((BSONStringElement)qry0["привет"]).Value, "rus");
+
       Assert.IsNotNull(qry0["你好"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["你好"]);
-      Assert.AreEqual(((BSONStringElement)qry0["你好"]).Value, "chi"); 
-               
+      Assert.AreEqual(((BSONStringElement)qry0["你好"]).Value, "chi");
+
       Assert.IsNotNull(qry0["こんにちは"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["こんにちは"]);
-      Assert.AreEqual(((BSONStringElement)qry0["こんにちは"]).Value, "jap"); 
-          
+      Assert.AreEqual(((BSONStringElement)qry0["こんにちは"]).Value, "jap");
+
       Assert.IsNotNull(qry0["γεια σας"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["γεια σας"]);
-      Assert.AreEqual(((BSONStringElement)qry0["γεια σας"]).Value, "gre"); 
-           
+      Assert.AreEqual(((BSONStringElement)qry0["γεια σας"]).Value, "gre");
+
       Assert.IsNotNull(qry0["përshëndetje"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["përshëndetje"]);
       Assert.AreEqual(((BSONStringElement)qry0["përshëndetje"]).Value, "alb");
-           
+
       Assert.IsNotNull(qry0["բարեւ Ձեզ"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["բարեւ Ձեզ"]);
       Assert.AreEqual(((BSONStringElement)qry0["բարեւ Ձեզ"]).Value, "arm");
-           
+
       Assert.IsNotNull(qry0["xin chào"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["xin chào"]);
       Assert.AreEqual(((BSONStringElement)qry0["xin chào"]).Value, "vie");
-           
+
       Assert.IsNotNull(qry0["Olá"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["Olá"]);
       Assert.AreEqual(((BSONStringElement)qry0["Olá"]).Value, "por");
-          
+
       Assert.IsNotNull(qry0["Привіт"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["Привіт"]);
       Assert.AreEqual(((BSONStringElement)qry0["Привіт"]).Value, "ukr");
-             
+
       Assert.IsNotNull(qry0["wünsche"]);
       Assert.IsInstanceOf<BSONStringElement>(qry0["wünsche"]);
-      Assert.AreEqual(((BSONStringElement)qry0["wünsche"]).Value, "ger"); 
+      Assert.AreEqual(((BSONStringElement)qry0["wünsche"]).Value, "ger");
     }
 
     [TestCase]
     public void Templatization_ComplexObjectNoTemplate()
     {
       var qry0 = new BSONDocument(
-        "{" + 
-          "item1: 23," + 
-          "item2: [1, 'こん好արüвіт', 123.456], " + 
-          "item3: { item31: false, item32: [true, true, false], item33: {} }," + 
-          "item4: {" + 
+        "{" +
+          "item1: 23," +
+          "item2: [1, 'こん好արüвіт', 123.456], " +
+          "item3: { item31: false, item32: [true, true, false], item33: {} }," +
+          "item4: {" +
             "item41: [1, 2, 3]," +
             "item42: false," +
             "item43: -123.4567," +
@@ -2420,36 +2438,36 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(((BSONStringElement)item2[1]).Value, "こん好արüвіт");
       Assert.AreEqual(((BSONDoubleElement)item2[2]).Value, 123.456D);
 
-      var item3 = ((BSONDocumentElement)qry0["item3"]).Value; 
+      var item3 = ((BSONDocumentElement)qry0["item3"]).Value;
       Assert.AreEqual(item3.Count, 3);
       Assert.AreEqual(((BSONBooleanElement)item3["item31"]).Value, false);
-      var arr = ((BSONArrayElement)item3["item32"]).Value;        
+      var arr = ((BSONArrayElement)item3["item32"]).Value;
       Assert.AreEqual(arr.Length, 3);
       Assert.AreEqual(((BSONBooleanElement)arr[0]).Value, true);
       Assert.AreEqual(((BSONBooleanElement)arr[1]).Value, true);
       Assert.AreEqual(((BSONBooleanElement)arr[2]).Value, false);
-      var item33 = ((BSONDocumentElement)item3["item33"]).Value;        
+      var item33 = ((BSONDocumentElement)item3["item33"]).Value;
       Assert.AreEqual(item33.Count, 0);
 
-      var item4 = ((BSONDocumentElement)qry0["item4"]).Value; 
+      var item4 = ((BSONDocumentElement)qry0["item4"]).Value;
       Assert.AreEqual(item4.Count, 5);
       var item41 = ((BSONArrayElement)item4["item41"]).Value;
       Assert.AreEqual(item41.Length, 3);
       Assert.AreEqual(((BSONInt32Element)item41[0]).Value, 1);
       Assert.AreEqual(((BSONInt32Element)item41[1]).Value, 2);
       Assert.AreEqual(((BSONInt32Element)item41[2]).Value, 3);
-      Assert.AreEqual(((BSONBooleanElement)item4["item42"]).Value, false); 
-      Assert.AreEqual(((BSONDoubleElement)item4["item43"]).Value, -123.4567D);  
+      Assert.AreEqual(((BSONBooleanElement)item4["item42"]).Value, false);
+      Assert.AreEqual(((BSONDoubleElement)item4["item43"]).Value, -123.4567D);
       Assert.AreEqual(((BSONStringElement)item4["item44"]).Value, "こんこんвапаъü");
 
-      var item45 = ((BSONDocumentElement)item4["item45"]).Value; 
+      var item45 = ((BSONDocumentElement)item4["item45"]).Value;
       Assert.AreEqual(item45.Count, 3);
       var item451 = ((BSONArrayElement)item45["item451"]).Value;
       Assert.AreEqual(item451.Length, 1);
       Assert.AreEqual(((BSONInt32Element)item451[0]).Value, 2);
       Assert.AreEqual(((BSONBooleanElement)item45["item452"]).Value, true);
 
-      var item453 =  ((BSONDocumentElement)item45["item453"]).Value;        
+      var item453 =  ((BSONDocumentElement)item45["item453"]).Value;
       Assert.AreEqual(item453.Count, 0);
     }
 
@@ -2457,11 +2475,11 @@ namespace NFX.NUnit.Serialization
     public void Templatization_QueryComplexObject()
     {
       var qry0 = new BSONDocument(
-        "{" + 
-          "'$$item1': 23," + 
-          "item2: [1, '$$item21', 123.456], " + 
-          "'$$item3': { item31: '$$false', item32: '$$array', item33: {} }," + 
-          "'$$item4': {" + 
+        "{" +
+          "'$$item1': 23," +
+          "item2: [1, '$$item21', 123.456], " +
+          "'$$item3': { item31: '$$false', item32: '$$array', item33: {} }," +
+          "'$$item4': {" +
             "'$$item41': [1, 2, 3]," +
             "'$$item42': false," +
             "item43: '$$double'," +
@@ -2501,37 +2519,122 @@ namespace NFX.NUnit.Serialization
       Assert.AreEqual(((BSONStringElement)item2[1]).Value, "こん好արüвіт");
       Assert.AreEqual(((BSONDoubleElement)item2[2]).Value, 123.456D);
 
-      var item3 = ((BSONDocumentElement)qry0["item3"]).Value; 
+      var item3 = ((BSONDocumentElement)qry0["item3"]).Value;
       Assert.AreEqual(item3.Count, 3);
       Assert.AreEqual(((BSONBooleanElement)item3["item31"]).Value, false);
-      var arr = ((BSONArrayElement)item3["item32"]).Value;        
+      var arr = ((BSONArrayElement)item3["item32"]).Value;
       Assert.AreEqual(arr.Length, 3);
       Assert.AreEqual(((BSONBooleanElement)arr[0]).Value, true);
       Assert.AreEqual(((BSONBooleanElement)arr[1]).Value, true);
       Assert.AreEqual(((BSONBooleanElement)arr[2]).Value, false);
-      var item33 =  ((BSONDocumentElement)item3["item33"]).Value;        
+      var item33 =  ((BSONDocumentElement)item3["item33"]).Value;
       Assert.AreEqual(item33.Count, 0);
 
-      var item4 = ((BSONDocumentElement)qry0["item4"]).Value; 
+      var item4 = ((BSONDocumentElement)qry0["item4"]).Value;
       Assert.AreEqual(item4.Count, 5);
       var item41 = ((BSONArrayElement)item4["item41"]).Value;
       Assert.AreEqual(item41.Length, 3);
       Assert.AreEqual(((BSONInt32Element)item41[0]).Value, 1);
       Assert.AreEqual(((BSONInt32Element)item41[1]).Value, 2);
       Assert.AreEqual(((BSONInt32Element)item41[2]).Value, 3);
-      Assert.AreEqual(((BSONBooleanElement)item4["item42"]).Value, false); 
-      Assert.AreEqual(((BSONDoubleElement)item4["item43"]).Value, -123.4567D);  
+      Assert.AreEqual(((BSONBooleanElement)item4["item42"]).Value, false);
+      Assert.AreEqual(((BSONDoubleElement)item4["item43"]).Value, -123.4567D);
       Assert.AreEqual(((BSONStringElement)item4["item44"]).Value, "こんこんвапаъü");
 
-      var item45 = ((BSONDocumentElement)item4["item45"]).Value; 
+      var item45 = ((BSONDocumentElement)item4["item45"]).Value;
       Assert.AreEqual(item45.Count, 3);
       var item451 = ((BSONArrayElement)item45["item451"]).Value;
       Assert.AreEqual(item451.Length, 1);
       Assert.AreEqual(((BSONInt64Element)item451[0]).Value, 2);
       Assert.AreEqual(((BSONBooleanElement)item45["item452"]).Value, true);
 
-      var item453 =  ((BSONDocumentElement)item45["item453"]).Value;        
+      var item453 =  ((BSONDocumentElement)item45["item453"]).Value;
       Assert.AreEqual(item453.Count, 0);
+    }
+
+    [Test]
+    public void Templatization_QuerySinglePrimitiveTypes_Inference()
+    {
+      var qryInt = new BSONDocument("{ int: '$$value' }",    true, new TemplateArg("value", int.MinValue));
+      var qryLong = new BSONDocument("{ long: '$$value' }",   true, new TemplateArg("value", long.MaxValue));
+      var qryBool = new BSONDocument("{ bool: '$$value' }",   true, new TemplateArg("value", true));
+      var qryDouble = new BSONDocument("{ double: '$$value' }", true, new TemplateArg("value", double.Epsilon));
+      var qryString = new BSONDocument("{ string: '$$value' }", true, new TemplateArg("value", "string"));
+      var qryArray = new BSONDocument("{ array: '$$value' }", true, new TemplateArg("value", new object[] { "string", int.MaxValue, false }));
+      var gdid = new GDID(uint.MaxValue, GDID.AUTHORITY_MAX, GDID.COUNTER_MAX);
+      var qryGDID = new BSONDocument("{ gdid: '$$value' }", true, new TemplateArg("value", gdid));
+      var dec = 150666333000.1234M;
+      var qryDecimal = new BSONDocument("{ decimal: '$$value' }", true, new TemplateArg("value", dec));
+      var amount = new Amount("RUB", dec);
+      var qryAmount = new BSONDocument("{ amount: '$$value' }", true, new TemplateArg("value", amount));
+
+      Assert.AreEqual(qryInt.Count, 1);
+      Assert.IsNotNull(qryInt["int"]);
+      Assert.IsInstanceOf<BSONInt32Element>(qryInt["int"]);
+      Assert.AreEqual(int.MinValue, qryInt["int"].ObjectValue);
+
+      Assert.AreEqual(qryLong.Count, 1);
+      Assert.IsNotNull(qryLong["long"]);
+      Assert.IsInstanceOf<BSONInt64Element>(qryLong["long"]);
+      Assert.AreEqual(long.MaxValue, qryLong["long"].ObjectValue);
+
+      Assert.AreEqual(qryBool.Count, 1);
+      Assert.IsNotNull(qryBool["bool"]);
+      Assert.IsInstanceOf<BSONBooleanElement>(qryBool["bool"]);
+      Assert.AreEqual(true, qryBool["bool"].ObjectValue);
+
+      Assert.AreEqual(qryDouble.Count, 1);
+      Assert.IsNotNull(qryDouble["double"]);
+      Assert.IsInstanceOf<BSONDoubleElement>(qryDouble["double"]);
+      Assert.AreEqual(double.Epsilon, qryDouble["double"].ObjectValue);
+
+      Assert.AreEqual(qryString.Count, 1);
+      Assert.IsNotNull(qryString["string"]);
+      Assert.IsInstanceOf<BSONStringElement>(qryString["string"]);
+      Assert.AreEqual("string", qryString["string"].ObjectValue);
+
+      Assert.AreEqual(qryArray.Count, 1);
+      Assert.IsNotNull(qryArray["array"]);
+      Assert.IsInstanceOf<BSONArrayElement>(qryArray["array"]);
+      var elements = ((BSONArrayElement)qryArray["array"]).Value;
+      Assert.IsNotNull(elements);
+      Assert.AreEqual(elements.Length, 3);
+      Assert.IsInstanceOf<BSONStringElement>(elements[0]);
+      Assert.IsInstanceOf<BSONInt32Element>(elements[1]);
+      Assert.IsInstanceOf<BSONBooleanElement>(elements[2]);
+      Assert.AreEqual("string", elements[0].ObjectValue);
+      Assert.AreEqual(int.MaxValue, elements[1].ObjectValue);
+      Assert.AreEqual(false, elements[2].ObjectValue);
+
+      Assert.AreEqual(qryGDID.Count, 1);
+      Assert.IsNotNull(qryGDID["gdid"]);
+      Assert.IsInstanceOf<BSONBinaryElement>(qryGDID["gdid"]);
+      var binGDID = ((BSONBinaryElement)qryGDID["gdid"]).Value.Data;
+      var expectedGDID = ((BSONBinaryElement)RowConverter.GDID_CLRtoBSON("gdid", gdid)).Value.Data;
+      Assert.IsTrue(expectedGDID.SequenceEqual(binGDID));
+
+      Assert.AreEqual(qryDecimal.Count, 1);
+      Assert.IsNotNull(qryDecimal["decimal"]);
+      Assert.IsInstanceOf<BSONInt64Element>(qryDecimal["decimal"]);
+      Assert.AreEqual(RowConverter.Decimal_CLRtoBSON("decimal", dec).ObjectValue, qryDecimal["decimal"].ObjectValue);
+
+      Assert.AreEqual(qryAmount.Count, 1);
+      Assert.IsNotNull(qryAmount["amount"]);
+      Assert.IsInstanceOf<BSONDocumentElement>(qryAmount["amount"]);
+      var docAmount = ((BSONDocumentElement)qryAmount["amount"]).Value;
+      Assert.AreEqual("RUB", docAmount["c"].ObjectValue);
+      Assert.AreEqual(RowConverter.Decimal_CLRtoBSON("decimal", dec).ObjectValue, docAmount["v"].ObjectValue);
+    }
+
+    [Test]
+    [ExpectedException(typeof(BSONException), ExpectedMessage = StringConsts.BSON_TEMPLATE_ARG_DEPTH_EXCEEDED, MatchType = MessageMatch.Contains)]
+    public void Templatization_Recursive()
+    {
+      var map1 = new JSONDataMap { { "a", 1 } };
+      var map2 = new JSONDataMap { { "b", 2 }, { "c", map1 } };
+      map1.Add("d", map2);
+
+      var qry = new BSONDocument("{ rec: '$$value' }", true, new TemplateArg("value", map1));
     }
 
     #endregion

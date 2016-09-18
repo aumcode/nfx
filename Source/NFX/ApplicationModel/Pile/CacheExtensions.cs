@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -60,12 +60,12 @@ namespace NFX.ApplicationModel.Pile
 
       if (caching==null) caching = CacheParams.DefaultCache;
 
-      if (caching.ReadCacheMaxAgeSec>=0)
+      if (caching.ReadCacheMaxAgeSec>=0 || caching.WriteCacheMaxAgeSec>=0)
         tbl = cache.GetOrCreateTable<TKey>(tblCache);
 
       TResult result = null;
 
-      if (tbl!=null)
+      if (caching.ReadCacheMaxAgeSec>=0)
       {
         var cached = tbl.Get(key, caching.ReadCacheMaxAgeSec);
         if (cached is AbsentValue)
@@ -84,7 +84,7 @@ namespace NFX.ApplicationModel.Pile
       if (result==null && !caching.CacheAbsentData) return null;
 
       var wAge = caching.WriteCacheMaxAgeSec;
-      if (tbl!=null && wAge>=0)
+      if (wAge>=0)
         tbl.Put(key, (object)result ?? AbsentValue.Instance, wAge >0 ? wAge : (int?)null, caching.WriteCachePriority);
 
       return result;

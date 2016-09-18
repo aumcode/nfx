@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -1075,6 +1075,10 @@ namespace NFX
 
     public const string BSON_TEMPLATE_COMPILE_ERROR =
         "BSONDocument template compilation error: {0}. Template source: ' {1} '";
+
+    public const string BSON_TEMPLATE_ARG_DEPTH_EXCEEDED =
+        "BSONDocument template arg binding error: depth exceeded (possible recursion)";
+
 
     public const string BSON_ARRAY_ELM_DOC_ERROR =
         "BSONElement '{0}' is an array element and can not be used in document directly";

@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2016 IT Adapter Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +31,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
 
  //Changed in version 2.6: A new protocol for write operations integrates write concerns with the write operations, eliminating the need for a separate getLastError.
- // Most write methods now return the status of the write operation, including error information. In previous versions, clients typically used the getLastError in 
+ // Most write methods now return the status of the write operation, including error information. In previous versions, clients typically used the getLastError in
  //combination with a write operation to verify that the write succeeded.
 // http://docs.mongodb.org/manual/reference/command/getLastError/
 
@@ -44,7 +60,7 @@ namespace NFX.DataAccess.MongoDB.Connector
   internal static class Protocol
   {
       private const string NOT_AVAIL = "<n/a>";
-      
+
       public const string COMMAND_COLLECTION = "$cmd";
 
       public const string _ID = "_id";
@@ -54,8 +70,8 @@ namespace NFX.DataAccess.MongoDB.Connector
 
       public const int MAX_DOC_COUNT_LIMIT = BSON_SIZE_LIMIT / 5;//suppose that every doc is at least 5 bytes
 
-      public const Int32 STD_HDR_LEN = 4 * 4;//4 fields 
-      
+      public const Int32 STD_HDR_LEN = 4 * 4;//4 fields
+
       /* struct MsgHeader {
           int32   messageLength; // total message size, including this
           int32   requestID;     // identifier for this message             //This ID is unique per connection
@@ -90,7 +106,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         var concern = collection.Server.WriteConcern;
 
         if (concern<WriteConcern.Acknowledged) return null;//none
-        
+
         var result = new BSONDocument();
 
         result.Set( new BSONInt32Element("w", concern >= WriteConcern.Acknowledged ? 1 : 0));
@@ -110,7 +126,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                         {
                            None = 0,
                            /// <summary>
-                           ///Set when getMore is called but the cursor id is not valid at the server. Returned with zero results. 
+                           ///Set when getMore is called but the cursor id is not valid at the server. Returned with zero results.
                            /// </summary>
                            CursorNotFound = 1,
 
@@ -120,7 +136,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                            QueryFailure = 1 << 1,
 
                            /// <summary>
-                           ///Drivers should ignore this. Only mongos will ever see this set, in which case, it needs to update config from the server. 
+                           ///Drivers should ignore this. Only mongos will ever see this set, in which case, it needs to update config from the server.
                            /// </summary>
                            ShardConfigStale = 1 << 2,
 
@@ -139,18 +155,18 @@ namespace NFX.DataAccess.MongoDB.Connector
                               Flags = flags;
                               CursorID = cursorID;
                               StartingFrom = startingFrom;
-                              Documents = docs; 
+                              Documents = docs;
                            }
 
                            public readonly Int32 HDR_RequestID;
                            public readonly Int32 HDR_ResponseTo;
 
-                           public readonly ResponseFlags Flags; 
+                           public readonly ResponseFlags Flags;
                            public readonly Int64 CursorID;
                            public readonly Int32 StartingFrom;
                            public readonly BSONDocument[] Documents;
                         }
-                        
+
                         /*
                         struct {
                             MsgHeader header;         // standard message header
@@ -171,7 +187,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                            var hdrRespTo = BinUtils.ReadInt32(stream);
                            var hdrOpCode = BinUtils.ReadInt32(stream);
                            if (hdrOpCode!=OP_REPLY)
-                             throw new MongoDBConnectorProtocolException(StringConsts.PROTO_READ_OP_REPLY_ERROR+" not OP_REPLY"); 
+                             throw new MongoDBConnectorProtocolException(StringConsts.PROTO_READ_OP_REPLY_ERROR+" not OP_REPLY");
 
                            var flags = (ResponseFlags)BinUtils.ReadInt32(stream);
                            var cursorID = BinUtils.ReadInt64(stream);
@@ -185,7 +201,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
                            for(var i=0; i < numReturned; i++)
                              docs[i] = new BSONDocument(stream);
-                             
+
                            return new ReplyData(hdrReqID, hdrRespTo, flags, cursorID, startingFrom, docs);
                         }
 
@@ -203,7 +219,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
                         public static bool IsOKReplyDoc(ReplyData reply)
                         {
-                             return (reply.Documents!=null) && 
+                             return (reply.Documents!=null) &&
                                     (reply.Documents.Length>=0) &&
                                     (reply.Documents[0]["ok"].AsInt()==1);
                         }
@@ -232,7 +248,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                           {
                             var code = body["code"];
                             var errmsg = body["errmsg"];
-                            
+
                             throw new MongoDBConnectorServerException(StringConsts.SERVER_OPERATION_RETURNED_ERROR
                                                                      .Args(operation,
                                                                            code!=null ? code.ObjectValue : NOT_AVAIL,
@@ -250,7 +266,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                           if (we!=null)
                            _wErrors = we.Value.Cast<BSONDocumentElement>()
                                               .Select( ed => ed.Value)
-                                              .Select( doc => 
+                                              .Select( doc =>
                                                         {
                                                           var ei = doc["errInfo"];
 
@@ -261,14 +277,14 @@ namespace NFX.DataAccess.MongoDB.Connector
                                                             ei!=null ? ei.ObjectValue : null
                                                           );
                                                         }).ToArray();
-                          
+
                           //upserted
                           CRUDUpsertInfo[] _upserted = null;
                           var ue = body["upserted"] as BSONArrayElement;
                           if (ue!=null)
                            _upserted = ue.Value.Cast<BSONDocumentElement>()
                                                .Select( ud => ud.Value)
-                                               .Select( doc => 
+                                               .Select( doc =>
                                                         {
                                                           var oi = doc[_ID];
 
@@ -296,7 +312,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                                                          Collection collection,
                                                          BSONDocument[] data)
                         {
-                         
+
                           var body = new BSONDocument();
                           body.Set( new BSONStringElement("insert", collection.Name) );
 
@@ -400,27 +416,27 @@ namespace NFX.DataAccess.MongoDB.Connector
                         {
                           None = 0,
 
-                          TailableCursor = 1,//Tailable means cursor is not closed when the last data is retrieved. Rather, the cursor marks the final object’s position. 
-                                             //You can resume using the cursor later, from where it was located, if more data were received. Like any “latent cursor”, 
+                          TailableCursor = 1,//Tailable means cursor is not closed when the last data is retrieved. Rather, the cursor marks the final object’s position.
+                                             //You can resume using the cursor later, from where it was located, if more data were received. Like any “latent cursor”,
                                              //the cursor may become invalid at some point (CursorNotFound) – for example if the final object it references were deleted.
-                        
+
                           SlaveOk = 1 << 1, //	Allow query of replica slave. Normally these return an error except for namespace “local”.
-                        
+
                           OplogReplay = 1 << 2,//	Internal replication use only - driver should not set
-                        
-                          NoCursorTimeout = 1 << 3,// The server normally times out idle cursors after an inactivity period (10 minutes) to prevent excess memory use. 
+
+                          NoCursorTimeout = 1 << 3,// The server normally times out idle cursors after an inactivity period (10 minutes) to prevent excess memory use.
                                                    //Set this option to prevent that.
                           AwaitData = 1 << 4, // 	Use with TailableCursor. If we are at the end of the data, block for a while rather than returning no data.
                                              // After a timeout period, we do return as normal.
-                          Exhaust  = 1 << 5, //	Stream the data down full blast in multiple “more” packages, on the assumption that the client will fully read all data 
-                                             // queried. Faster when you are pulling a lot of data and know you want to pull it all down. Note: the client is not allowed 
+                          Exhaust  = 1 << 5, //	Stream the data down full blast in multiple “more” packages, on the assumption that the client will fully read all data
+                                             // queried. Faster when you are pulling a lot of data and know you want to pull it all down. Note: the client is not allowed
                                              // to not read all the data unless it closes the connection.
                          	Partial = 1 << 6  //	Get partial results from a mongos if some shards are down (instead of throwing an error)
                         }
 
                         public static Int32 Write_QUERY(Stream stream,
                                             Int32 requestID,
-                                            Database db, 
+                                            Database db,
                                             Collection collection, //may be null for $CMD
                                             QueryFlags flags,
                                             Int32 numberToSkip,
@@ -436,20 +452,20 @@ namespace NFX.DataAccess.MongoDB.Connector
                           //if collection==null then query the $CMD collection
                           var fullNameBuffer = collection!=null ? collection.m_FullNameCStringBuffer : db.m_CMD_NameCStringBuffer;
                           stream.Write(fullNameBuffer, 0, fullNameBuffer.Length);
-                          
+
 
                           BinUtils.WriteInt32(stream, numberToSkip);
                           BinUtils.WriteInt32(stream, numberToReturn);
 
                           query.WriteAsBSON(stream);
-                          
+
                           if (selector!=null)
                            selector.WriteAsBSON(stream);
 
                           var total = (Int32)stream.Position;
                           stream.Position = 0;
                           writeStandardHeader(stream, total, requestID, 0, OP_QUERY);
-                          return total; 
+                          return total;
                         }
                  #endregion
 
@@ -481,7 +497,7 @@ namespace NFX.DataAccess.MongoDB.Connector
                           var total = (Int32)stream.Position;
                           stream.Position = 0;
                           writeStandardHeader(stream, total, requestID, 0, OP_KILL_CURSORS);
-                          return total; 
+                          return total;
                         }
                  #endregion
 
@@ -535,7 +551,7 @@ namespace NFX.DataAccess.MongoDB.Connector
 
                 #region COUNT
 
-                        public static Int32 Write_COUNT(Stream stream, 
+                        public static Int32 Write_COUNT(Stream stream,
                                                                    Int32 requestID,
                                                                    Collection collection,
                                                                    Query query,
@@ -576,14 +592,14 @@ namespace NFX.DataAccess.MongoDB.Connector
                           BinUtils.WriteInt32(stream, 0);//ZERO
 
                           BinUtils.WriteInt32(stream, cursors.Length);
-                          
+
                           for(var i=0; i<cursors.Length; i++)
                            BinUtils.WriteInt64(stream, cursors[i].ID);
 
                           var total = (Int32)stream.Position;
                           stream.Position = 0;
                           writeStandardHeader(stream, total, requestID, 0, OP_KILL_CURSORS);
-                          return total; 
+                          return total;
                         }
 
                 #endregion
@@ -621,13 +637,13 @@ namespace NFX.DataAccess.MongoDB.Connector
                           var total = (Int32)stream.Position;
                           stream.Position = 0;
                           writeStandardHeader(stream, total, requestID, 0, OP_GET_MORE);
-                          return total; 
+                          return total;
                         }
                 #endregion
-          
+
           #endregion
 
   }
 
 }
- 
+

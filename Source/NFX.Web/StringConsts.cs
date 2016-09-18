@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -162,6 +162,7 @@ namespace NFX.Web
     public const string PAYMENT_CANNOT_CREATE_RECIPIENT_ERROR = "Recipient couldn't be created. ";
     public const string PAYMENT_CANNOT_TRANSFER_ERROR = "Transfer failed. ";
     public const string PAYMENT_INVALID_PAYSYSTEM_ERROR = "Payment was created in other pay system. ";
+    public const string PAYMENT_CAPTURE_CURRENCY_MUST_MATCH_CHARGE_ERROR = "Capture currency must be the same as original charge currency.";
     public const string PAYMENT_REFUND_CANNOT_BE_REFUNDED_ERROR = "Transaction '{0}' couldn't be refunded. It could have wrong type, not captured or already completely refunded. ";
     public const string PAYMENT_REFUND_CURRENCY_MUST_MATCH_CHARGE_ERROR = "Refund currency must be the same as original charge currency. ";
     public const string PAYMENT_REFUND_EXCEEDS_CHARGE_ERROR = "Required refund value '{0}' in sum with previously refunded value '{1}' exceeds original charge '{2}'. ";
@@ -200,6 +201,17 @@ namespace NFX.Web
     public const string PAYPAL_PAYOUT_ERROR = "Critical error while transaction (account: {0}, amount: {1}) processing: {2}";
     public const string PAYPAL_PAYOUT_CANCEL_ERROR = "Critical error while transaction cancellation: {0}";
     public const string PAYPAL_PAYOUT_NOT_SUCCEEDED_MESSAGE = "Payout was not succeeded. Error: {0}, Message: {1}, Description: {2}";
+
+    public const string SHIPPING_SYSTEM_HOST_NULL_ERROR = "Shipping system host is not set";
+    public const string SHIPPING_SYSTEM_DUPLICATE_NAME_ERROR = "Can not have shipping system instance of type '{0}' with the name '{1}' as this name is already registered. ";
+    public const string SHIPPO_CREATE_LABEL_MESSAGE = "Perform create label: from {0}, to {1}";
+    public const string SHIPPO_CREATE_LABEL_ERROR = "Critical error while create shipping label from {0}, to {1}: {2}";
+    public const string SHIPPO_CREATE_RETURN_LABEL_ERROR = "Critical error while create return label from {0}, to {1}, return {2}: {3}";
+    public const string SHIPPO_CREATE_LABEL_FAIL = "Label can not be created";
+    public const string SHIPPO_CAN_NOT_MAP_LABEL_FORMAT = "Unknown label format";
+    public const string SHIPPO_GET_RATE_ERROR = "Critical error while fetch label rate";
+    public const string SHIPPO_TRACK_SHIPMENT_MESSAGE = "Perform track shipment by number '{0}'";
+    public const string SHIPPO_TRACK_SHIPMENT_ERROR = "Critical error while tracking shipment '{0}': {1}";
 
     public const string TAX_CALCULATOR_DUPLICATE_NAME_ERROR = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
     public const string TAX_TAXJAR_TOADDRESS_ISNT_SUPPLIED_ERROR = "Either retailerAddress or wholesellerAddress must be provided. ";

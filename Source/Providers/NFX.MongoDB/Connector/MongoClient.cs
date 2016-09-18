@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2016 IT Adapter Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,10 +34,39 @@ namespace NFX.DataAccess.MongoDB.Connector
       #region CONSTS
 
           public const string CONFIG_MONGO_CLIENT_SECTION = "mongo-db-client";
-         
+
+          public const string CONFIG_CS_ROOT_SECTION = "mongo";
+          public const string CONFIG_CS_SERVER_ATTR = "server";
+          public const string CONFIG_CS_DB_ATTR = "db";
+
           private static readonly TimeSpan MANAGEMENT_INTERVAL = TimeSpan.FromMilliseconds(4795);
       #endregion
-      
+
+      /// <summary>
+      /// Return a Database instance per supplied connection string in the following form:
+      /// <code>
+      /// mongo{server="mongo://localhost:27017" db="myDB"}
+      /// </code>
+      /// </summary>
+      public static Database DatabaseFromConnectString(string cString)
+      {
+        if (cString.IsNullOrWhiteSpace())
+          throw new MongoDBConnectorException(StringConsts.CONNECTION_STRING_NULL_OR_EMPTY_ERROR);
+
+        var root = cString.AsLaconicConfig();
+        if (root == null || !root.IsSameName(CONFIG_CS_ROOT_SECTION))
+          throw new MongoDBConnectorException(StringConsts.CONNECTION_STRING_INVALID_ERROR.Args(cString, "Unparsable or not '{0}' root".Args(CONFIG_CS_ROOT_SECTION)));
+
+        var cs = root.AttrByName(CONFIG_CS_SERVER_ATTR).Value;
+        var dbn = root.AttrByName(CONFIG_CS_DB_ATTR).Value;
+        if (cs.IsNullOrWhiteSpace() || dbn.IsNullOrWhiteSpace())
+          throw new MongoDBConnectorException(StringConsts.CONNECTION_STRING_INVALID_ERROR.Args(cString, "Missing attr '{0}' or '{1}'".Args(CONFIG_CS_SERVER_ATTR, CONFIG_CS_DB_ATTR)));
+
+        var server = Instance[ new NFX.Glue.Node(cs)];
+        var database = server[dbn];
+        return database;
+      }
+
       #region .ctor/Lifecycle
           private static object s_InstanceLock = new object();
           private static volatile MongoClient s_Instance;
@@ -49,18 +94,18 @@ namespace NFX.DataAccess.MongoDB.Connector
 
 
           /// <summary>
-          /// Creates a new instance of client. 
+          /// Creates a new instance of client.
           /// For most applications it is sufficient to use the default singleton instance Client.Instance
           /// </summary>
           public MongoClient(string name) : base(null)
           {
-            if (name.IsNullOrWhiteSpace()) 
+            if (name.IsNullOrWhiteSpace())
               name = Guid.NewGuid().ToString();
-            
+
             m_Name = name;
-            m_ManagementEvent = new Time.Event(App.EventTimer, 
-                                               "MongoClient('{0}'::{1})".Args(m_Name, Guid.NewGuid().ToString()), 
-                                               e => managementEventBody(), 
+            m_ManagementEvent = new Time.Event(App.EventTimer,
+                                               "MongoClient('{0}'::{1})".Args(m_Name, Guid.NewGuid().ToString()),
+                                               e => managementEventBody(),
                                                MANAGEMENT_INTERVAL);
           }
 
@@ -68,7 +113,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           {
             DisposableObject.DisposeAndNull(ref m_ManagementEvent);
 
-            foreach(var server in m_Servers) 
+            foreach(var server in m_Servers)
               server.Dispose();
 
             base.Destructor();
@@ -78,13 +123,13 @@ namespace NFX.DataAccess.MongoDB.Connector
                s_Instance = null;
             }
           }
-      
+
           void IApplicationFinishNotifiable.ApplicationFinishBeforeCleanup(IApplication application){   }
-          void IApplicationFinishNotifiable.ApplicationFinishAfterCleanup(IApplication application) 
+          void IApplicationFinishNotifiable.ApplicationFinishAfterCleanup(IApplication application)
           {
             try
-            { 
-             this.Dispose(); 
+            {
+             this.Dispose();
             }
             catch(Exception error)
             {
@@ -93,7 +138,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           }
 
       #endregion
-      
+
       #region Fields
         private IConfigSectionNode m_ConfigRoot;
 
@@ -104,12 +149,12 @@ namespace NFX.DataAccess.MongoDB.Connector
         internal Registry<ServerNode> m_Servers = new Registry<ServerNode>();
 
       #endregion
-      
-      
+
+
       #region Properties
 
         public string Name{ get{ return m_Name;}}
-        
+
         [Config]
         public bool InstrumentationEnabled { get{ return m_InstrumentationEnabled; } set { m_InstrumentationEnabled = value;} }
 
@@ -150,7 +195,7 @@ namespace NFX.DataAccess.MongoDB.Connector
       #endregion
 
       #region Public
-        
+
 
         /// <summary>
         /// Sets config root. If this method is never called then configuration is done of the App.CONFIG_MONGO_CLIENT_SECTION section
@@ -162,7 +207,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           m_ConfigRoot = node;
           ConfigAttribute.Apply(this, ConfigRoot);
         }
-        
+
         public override string ToString()
         {
           return "Client('{0}')".Args(m_Name);
@@ -174,15 +219,15 @@ namespace NFX.DataAccess.MongoDB.Connector
             public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
 
             public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            { 
-              return ExternalParameterAttribute.GetParameters(this, groups); 
+            {
+              return ExternalParameterAttribute.GetParameters(this, groups);
             }
 
             public bool ExternalGetParameter(string name, out object value, params string[] groups)
             {
                return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
             }
-          
+
             public bool ExternalSetParameter(string name, object value, params string[] groups)
             {
               return ExternalParameterAttribute.SetParameter(this, name, value, groups);

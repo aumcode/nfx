@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -132,21 +132,19 @@ namespace NFX.NUnit.Integration.Web.Pay
       var ctx = new FakeBraintreeTransactionContext { IsNewCustomer = true, OrderId = "TEST" };
       Transaction tran = null;
       using (var session = ps.StartSession())
-        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("USD", 99M), capture: false);
+        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("usd", 99M), capture: false);
 
       var split = tran.ProcessorToken.AsString().Split(':');
 
-      using (var session = ps.StartSession())
-        session.Capture(ctx, ref tran, new Amount("USD", 50M));
+      tran.Capture(ctx);
 
       ctx.IsNewCustomer = false;
       ctx.CustomerId = split[0];
       acc = new Account("Existing", "User", split[1]);
       using (var session = ps.StartSession())
-        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("USD", 1000M), capture: false);
+        tran = session.Charge(ctx, acc, Account.EmptyInstance, new Amount("usd", 1000M), capture: false);
 
-      using (var session = ps.StartSession())
-        session.Capture(ctx, ref tran, new Amount("USD", 100M));
+      tran.Refund(ctx);
     }
 
     private IPaySystem m_PaySystem;

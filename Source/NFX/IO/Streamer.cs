@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ namespace NFX.IO
             /// <summary>
             /// Unbinds the current stream. This call is coupled with BindStream(stream)
             /// </summary>
-            public void UndindStream()
+            public void UnbindStream()
             {
               if (m_Stream==null) return;
 

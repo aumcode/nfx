@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -71,10 +71,14 @@ namespace NFX.DataAccess.MongoDB
           if (schema!=null)
             result = new Rowset(schema);
 
+          var p = query[QUERY_PARAM_SKIP_COUNT];
+          var skipCount  = p!=null ? p.Value.AsInt(0) : 0;
 
-          var skipCount  = query[QUERY_PARAM_SKIP_COUNT].AsInt(0);
-          var fetchBy    = query[QUERY_PARAM_FETCH_BY].AsInt(0);
-          var fetchLimit = query[QUERY_PARAM_FETCH_LIMIT].AsInt(-1);
+          p = query[QUERY_PARAM_FETCH_BY];
+          var fetchBy    = p!=null ? p.Value.AsInt(0) : 0;
+
+          p = query[QUERY_PARAM_FETCH_LIMIT];
+          var fetchLimit = p!=null ? p.Value.AsInt(-1) : -1;
 
           using(var cursor = collection.Find(qry, skipCount, oneRow ? 1: fetchBy))
             foreach(var doc in cursor)
@@ -108,8 +112,11 @@ namespace NFX.DataAccess.MongoDB
             schema = Schema.GetForTypedRow(query.ResultRowType);
 
 
-          var skipCount = query[QUERY_PARAM_SKIP_COUNT].AsInt(0);
-          var fetchBy = query[QUERY_PARAM_FETCH_BY].AsInt(0);
+          var p = query[QUERY_PARAM_SKIP_COUNT];
+          var skipCount  = p!=null ? p.Value.AsInt(0) : 0;
+
+          p = query[QUERY_PARAM_FETCH_BY];
+          var fetchBy    = p!=null ? p.Value.AsInt(0) : 0;
 
           var mcursor = collection.Find(qry, skipCount, fetchBy);
           var enumerable = enumOpenCursor(schema, query, mcursor);

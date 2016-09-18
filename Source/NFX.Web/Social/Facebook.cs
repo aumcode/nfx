@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -67,6 +67,7 @@ namespace NFX.Web.Social
           private const string USER_PICTURE_URL_PARAMNAME = "url";
 
         private const string PUBLISH_BASEURL_PATTERN = "https://graph.facebook.com/{0}/feed";
+        private const string GET_USER_PICTURE_URL_PATTERN = "https://graph.facebook.com/{0}/picture?type=large&redirect=false";
 
         private const string MESSAGE_PARAMNAME = "message";
 
@@ -229,7 +230,8 @@ namespace NFX.Web.Social
           userInfo.Locale = responseObj[USER_LOCALE_PARAMNAME];
           userInfo.TimezoneOffset = ((int)responseObj[USER_TIMEZONE_PARAMNAME]) * 60 * 60;
 
-          userInfo.PictureLink = responseObj[USER_PICTURE_PARAMNAME][USER_PICTURE_DATA_PARAMNAME][USER_PICTURE_URL_PARAMNAME];
+          dynamic picObj = WebClient.GetJsonAsDynamic(GET_USER_PICTURE_URL_PATTERN.Args(userInfo.ID), this, HTTPRequestMethod.GET);
+          userInfo.PictureLink = picObj[USER_PICTURE_DATA_PARAMNAME][USER_PICTURE_URL_PARAMNAME];
         }
 
         private string getLongTermAccessToken(string accessToken)

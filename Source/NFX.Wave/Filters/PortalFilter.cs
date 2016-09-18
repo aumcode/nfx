@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -149,7 +149,7 @@ namespace NFX.Wave.Filters
                 work.m_Portal!=null &&
                 work.m_Portal.InstrumentationEnabled)
             {
-              Server.m_Stat_PortalRequest.IncrementLong(work.m_Portal.Name);
+              Server.m_stat_PortalRequest.IncrementLong(work.m_Portal.Name);
             }
 
             this.InvokeNextWorker(work, filters, thisFilterIndex);

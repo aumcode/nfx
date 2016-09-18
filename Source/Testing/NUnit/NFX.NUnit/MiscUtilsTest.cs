@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -671,6 +671,19 @@ f
           checkNextDayOfWeek(now, DayOfWeek.Thursday);
           checkNextDayOfWeek(now, DayOfWeek.Friday);
           checkNextDayOfWeek(now, DayOfWeek.Saturday);
+        }
+
+        [Test]
+        public void EscapeURIStringWithPlus()
+        {
+          var goodURL = "https://shippo-delivery-east.s3.amazonaws.com/fff5ec643c2c44539e5a26940d29e917.pdf?Signature=UUd8Pyuki6EDp8RJ/JtEIcSm524=&Expires=1505468405&AWSAccessKeyId=AKIAJGLCC5MYLLWIG42A";
+          var badURL  = "https://shippo-delivery-east.s3.amazonaws.com/6dcf1e56f4fe49b892716393de92dd7e.pdf?Signature=/4iTy32xguuMX7Eba+5qc8TFCbs=&Expires=1505468476&AWSAccessKeyId=AKIAJGLCC5MYLLWIG42A";
+
+          var escapedGoodURL = goodURL.EscapeURIStringWithPlus();
+          var escapedBadURL = badURL.EscapeURIStringWithPlus();
+
+          Assert.AreEqual(goodURL, escapedGoodURL);
+          Assert.AreEqual("https://shippo-delivery-east.s3.amazonaws.com/6dcf1e56f4fe49b892716393de92dd7e.pdf?Signature=/4iTy32xguuMX7Eba%2B5qc8TFCbs=&Expires=1505468476&AWSAccessKeyId=AKIAJGLCC5MYLLWIG42A", escapedBadURL);
         }
 
         private void checkNextDayOfWeek(DateTime now, DayOfWeek dayOfWeek)

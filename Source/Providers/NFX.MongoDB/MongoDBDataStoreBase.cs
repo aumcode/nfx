@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace NFX.DataAccess.MongoDB
   /// Implements MongoDB store base functionality
   /// Connect string takes form of:
   /// <code>
-  ///  mongodb://[username:password@]hostname[:port][/[database][?options]]
+  /// mongo{server="mongo://localhost:27017" db="myDB"}
   /// </code>
   /// </summary>
   public abstract class MongoDBDataStoreBase : ApplicationComponent, IDataStoreImplementation
@@ -216,14 +216,14 @@ namespace NFX.DataAccess.MongoDB
         if (lactxt!=null)
         {
           lactxt = lactxt.Trim();
-          if (lactxt.StartsWith("mongo{"))//quick reject filter
+          if (lactxt.StartsWith(MongoClient.CONFIG_CS_ROOT_SECTION + "{"))//quick reject filter
           {
             var root = lactxt.AsLaconicConfig();
             if (root!=null)
             {
-              cstring = root.AttrByName("server").Value;
+              cstring = root.AttrByName(MongoClient.CONFIG_CS_SERVER_ATTR).Value;
               if (dbn.IsNullOrWhiteSpace())
-                dbn = root.AttrByName("db").Value;
+                dbn = root.AttrByName(MongoClient.CONFIG_CS_DB_ATTR).Value;
             }
           }
         }

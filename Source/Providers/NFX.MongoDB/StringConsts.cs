@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -128,6 +128,9 @@ namespace NFX.DataAccess.MongoDB
 
     public const string QUERY_START_STATEMENT_COMPILE_ERROR =
         "Current query statement should start with element name. Use Add(string) method";
+
+    public const string CONNECTION_STRING_NULL_OR_EMPTY_ERROR = "Connection string null or empty";
+    public const string CONNECTION_STRING_INVALID_ERROR = "Connection string '{0}' is invalid: {1}";
   }
 }
 

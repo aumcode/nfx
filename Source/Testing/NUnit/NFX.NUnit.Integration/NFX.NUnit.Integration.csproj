@@ -100,10 +100,12 @@
     </Compile>
     <Compile Include="Web\Pay\AutostarterTest.cs" />
     <Compile Include="Web\Pay\FakePaySystemHost.cs" />
+    <Compile Include="Web\Shipping\FakeShippingSystemHost.cs" />
     <Compile Include="Web\Pay\MockTest.cs" />
     <Compile Include="Web\Pay\PayPalTest.cs" />
     <Compile Include="Web\Pay\PayTestCommon.cs" />
     <Compile Include="Web\Pay\BraintreeTest.cs" />
+    <Compile Include="Web\Shipping\ShippoTest.cs" />
     <Compile Include="Web\Pay\StripeTest.cs" />
     <Compile Include="Web\Social\AutostarterTest.cs" />
   </ItemGroup>

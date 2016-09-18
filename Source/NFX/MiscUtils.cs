@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -80,6 +80,28 @@ namespace NFX
       if (str==null) return null;
       if (str.Length<=count) return str;
       return str.Substring(0, count) + (ellipsis ?? string.Empty);
+    }
+
+    /// <summary>
+    /// Encodes string with standart UTF8 encoder
+    /// </summary>
+    public static byte[] ToUTF8Bytes(this string str)
+    {
+      if (str==null) return null;
+
+      return Encoding.UTF8.GetBytes(str);
+    }
+
+    /// <summary>
+    /// Decode string with standart UTF8 decoder
+    /// </summary>
+    public static string FromUTF8Bytes(this byte[] buf, int idx = -1, int cnt = -1)
+    {
+      if (buf==null) return null;
+
+      return idx >= 0
+            ? Encoding.UTF8.GetString(buf, idx, cnt < 0 ? buf.Length - idx : cnt)
+            : Encoding.UTF8.GetString(buf);
     }
 
     /// <summary>
@@ -1009,6 +1031,25 @@ namespace NFX
       return sb.ToString();
     }
 
+    /// <summary>
+    /// Performs escaping plus sign in URL into its hex value
+    /// </summary>
+    public static string EscapeURIStringWithPlus(this string uri)
+    {
+      const string PQ = "%2B";
+
+      if (uri.IsNullOrWhiteSpace()) return string.Empty;
+
+      var builder = new StringBuilder();
+      for (int i=0; i< uri.Length; i++)
+      {
+        var c = uri[i];
+        if (c == '+') builder.Append(PQ);
+        else builder.Append(c);
+      }
+
+      return builder.ToString();
+    }
 
     /// <summary>
     /// Performs URI.EscapeDataString with additional replacement of " and ' chars with their hex equivalents.

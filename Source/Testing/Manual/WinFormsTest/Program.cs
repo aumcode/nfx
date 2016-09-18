@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -49,14 +49,14 @@ namespace WinFormsTest
       //    Application.Run(new LogForm());
 
        //  Application.Run(new SerializerForm());
-//          Application.Run(new SerializerForm2());
+          Application.Run(new SerializerForm2());
 
 //        Application.Run(new WinFormsTest.Glue.JokeCalculatorClientForm());
          //Application.Run(new SerializerForm());
 //         Application.Run(new SerializerForm2());
-        
+
   //      Application.Run(new GlueForm());
-       Application.Run(new ELinkForm());
+     //  Application.Run(new ELinkForm());
    //     Application.Run(new CacheTest());
 
        // Application.Run(new QRTestForm());
@@ -68,10 +68,10 @@ namespace WinFormsTest
   // Application.Run(new FIDForm());
 
      //   Application.Run(new WinFormsTest.ConsoleUtils.ConsoleUtilsFrm());
-      }  
+      }
 
     //   Application.Run(new BlankForm());
     }
-    
+
   }
 }

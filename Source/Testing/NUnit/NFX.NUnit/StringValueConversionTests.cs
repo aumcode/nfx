@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -334,7 +334,7 @@ namespace NFX.NUnit
         {
           Assert.AreEqual(new Uri("https://example.org/absolute/URI/resource.txt"), "https://example.org/absolute/URI/resource.txt".AsUri());
           Assert.AreEqual(new Uri("ftp://example.org/resource.txt"), "ftp://example.org/resource.txt".AsUri());
-          Assert.AreEqual(new Uri("urn:ISSN:1535–3613"), "urn:ISSN:1535–3613".AsType(typeof(Uri)));
+          Assert.AreEqual(new Uri("urn:ISSN:1535ï¿½3613"), "urn:ISSN:1535ï¿½3613".AsType(typeof(Uri)));
           Assert.AreEqual(null, "   ".AsType(typeof(Uri)));
 
           Assert.Throws<UriFormatException>(() => "resource.txt".AsUri(handling: ConvertErrorHandling.Throw));

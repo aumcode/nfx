@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ namespace NFX.Wave.Filters
             App.ObjectStore.UndoCheckout(sid.Value);
             session = null;//The secret password does not match
             if (Server.m_InstrumentationEnabled)
-              Interlocked.Increment(ref Server.m_Stat_SessionInvalidID);
+              Interlocked.Increment(ref Server.m_stat_SessionInvalidID);
           }
         }
 
@@ -164,7 +164,7 @@ namespace NFX.Wave.Filters
         }
 
         if (foundExisting && Server.m_InstrumentationEnabled)
-           Interlocked.Increment(ref Server.m_Stat_SessionExisting);
+           Interlocked.Increment(ref Server.m_stat_SessionExisting);
 
         session.Acquire();
         if (work.GeoEntity!=null)
@@ -219,7 +219,7 @@ namespace NFX.Wave.Filters
 
 
             if (Server.m_InstrumentationEnabled)
-               Interlocked.Increment(ref Server.m_Stat_SessionEnd);
+               Interlocked.Increment(ref Server.m_stat_SessionEnd);
           }
         }
         finally
@@ -250,7 +250,7 @@ namespace NFX.Wave.Filters
           if (guid.HasValue) return guid.Value;
 
           if (Server.m_InstrumentationEnabled)
-              Interlocked.Increment(ref Server.m_Stat_SessionInvalidID);
+              Interlocked.Increment(ref Server.m_stat_SessionInvalidID);
         }
 
         idSecret = 0;
@@ -298,7 +298,7 @@ namespace NFX.Wave.Filters
       protected WaveSession MakeNewSession(WorkContext work)
       {
         if (Server.m_InstrumentationEnabled)
-          Interlocked.Increment(ref Server.m_Stat_SessionNew);
+          Interlocked.Increment(ref Server.m_stat_SessionNew);
 
         return MakeNewSessionInstance(work);
       }

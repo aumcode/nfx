@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -69,13 +69,13 @@ namespace NFX.NUnit.Integration.Time
   [TestFixture]
   public class EventTimerTests
   {
-        
+
         public const string CONFIG1=@"
 nfx
 {
   event-timer
   {
-    resolution-ms=150 
+    resolution-ms=150
   }
 }";
 
@@ -83,10 +83,10 @@ nfx
 nfx
 {
   time-location {utc-offset='04:45:10' description='Arzamas-7'}
-  
+
   event-timer
   {
-    resolution-ms=150 
+    resolution-ms=150
   }
 }";
 
@@ -96,8 +96,8 @@ nfx
   event-timer
   {
     resolution-ms=150
-    event{ name='A' interval='0:0:1' Context='ItonTV' handler{type='NFX.NUnit.Integration.Time.TeztHandler, NFX.NUnit.Integration' arg0='Gorin' arg1='true'} } 
-    event{ name='B' interval='0:0:3' Context='Nativ'  handler{type='NFX.NUnit.Integration.Time.TeztHandler, NFX.NUnit.Integration' arg0='Kedmi' arg1='false'} } 
+    event{ name='A' interval='0:0:1' Context='ItonTV' handler{type='NFX.NUnit.Integration.Time.TeztHandler, NFX.NUnit.Integration' arg0='Gorin' arg1='true'} }
+    event{ name='B' interval='0:0:3' Context='Nativ'  handler{type='NFX.NUnit.Integration.Time.TeztHandler, NFX.NUnit.Integration' arg0='Kedmi' arg1='false'} }
   }
 }";
 
@@ -121,8 +121,8 @@ nfx
               Assert.AreEqual(234, app.EventTimer.Events["B"].Context);
 
 
-              Thread.Sleep(10000);       
-              
+              Thread.Sleep(10000);
+
               app.EventTimer.Events["A"].Dispose();
               app.EventTimer.Events["B"].Dispose();
 
@@ -131,7 +131,7 @@ nfx
               Console.WriteLine(string.Join(" , ", lst));
               Assert.AreEqual(10, lst.Count(s=>s=="a"));
               Assert.AreEqual(4, lst.Count(s=>s=="b"));
-            }   
+            }
         }
 
         [Test]
@@ -147,8 +147,8 @@ nfx
               new Event(app.EventTimer, "A", (e) => {lock(lst) lst.Add("a");}) { Interval = new TimeSpan(0,0,1)};
               new Event(app.EventTimer, "B", (e) => {lock(lst) lst.Add("b");}) { Interval = new TimeSpan(0,0,3), Enabled = false};
 
-              Thread.Sleep(10000);       
-              
+              Thread.Sleep(10000);
+
               app.EventTimer.Events["A"].Dispose();
               app.EventTimer.Events["B"].Dispose();
 
@@ -157,7 +157,7 @@ nfx
               Console.WriteLine(string.Join(" , ", lst));
               Assert.AreEqual(10, lst.Count(s=>s=="a"));
               Assert.AreEqual(0, lst.Count(s=>s=="b"));
-            }   
+            }
         }
 
 
@@ -176,8 +176,8 @@ nfx
               new Event(app.EventTimer, "A", (e) => {lock(lst) lst.Add("a");}) { Interval = new TimeSpan(0,0,1), StartDate = appNow.AddSeconds(3.0)};
               new Event(app.EventTimer, "B", (e) => {lock(lst) lst.Add("b");}) { Interval = new TimeSpan(0,0,3), StartDate = appNow.AddSeconds(-100.0)};
 
-              Thread.Sleep(10000);       
-              
+              Thread.Sleep(10000);
+
               app.EventTimer.Events["A"].Dispose();
               app.EventTimer.Events["B"].Dispose();
 
@@ -186,10 +186,10 @@ nfx
               Console.WriteLine(string.Join(" , ", lst));
               Assert.AreEqual(7, lst.Count(s=>s=="a"));
               Assert.AreEqual(4, lst.Count(s=>s=="b"));
-            }   
+            }
         }
 
-        
+
         [Test]
         public void T4()
         {
@@ -209,8 +209,8 @@ nfx
               new Event(app.EventTimer, "A", (e) => {lock(lst) lst.Add("a");}, new TimeSpan(0,0,1)) { TimeLocation = limpopoTime, StartDate = utcNow.AddSeconds(-2) };
               new Event(app.EventTimer, "B", (e) => {lock(lst) lst.Add("b");}, new TimeSpan(0,0,3)) { TimeLocation = TimeLocation.UTC, StartDate = utcNow };
 
-              Thread.Sleep(10000);       
-              
+              Thread.Sleep(10000);
+
               app.EventTimer.Events["A"].Dispose();
               app.EventTimer.Events["B"].Dispose();
 
@@ -219,8 +219,8 @@ nfx
               Console.WriteLine(string.Join(" , ", lst));
               Assert.AreEqual(10, lst.Count(s=>s=="a"));
               Assert.AreEqual(4, lst.Count(s=>s=="b"));
-            }   
-        } 
+            }
+        }
 
 
         [Test]
@@ -231,15 +231,15 @@ nfx
               Assert.AreEqual(150, app.EventTimer.ResolutionMs);
 
 
-              var lst = new List<string>();          
+              var lst = new List<string>();
 
               var utcNow = app.TimeSource.UTCNow;
 
               new Event(app.EventTimer, "A", (e) => {lock(lst) lst.Add("a");}) { Interval = new TimeSpan(0,0,1), StartDate = DateTime.SpecifyKind(utcNow + ARZAMAS_OFFSET, DateTimeKind.Local) };
               new Event(app.EventTimer, "B", (e) => {lock(lst) lst.Add("b");}) { Interval = new TimeSpan(0,0,3), StartDate = utcNow };
 
-              Thread.Sleep(10000);       
-              
+              Thread.Sleep(10000);
+
               app.EventTimer.Events["A"].Dispose();
               app.EventTimer.Events["B"].Dispose();
 
@@ -248,8 +248,8 @@ nfx
               Console.WriteLine(string.Join(" , ", lst));
               Assert.AreEqual(10, lst.Count(s=>s=="a"));
               Assert.AreEqual(4, lst.Count(s=>s=="b"));
-            }   
-        } 
+            }
+        }
 
 
         [Test]
@@ -257,7 +257,7 @@ nfx
         {
             var lst = TeztHandler.s_List;
             lst.Clear();
-            
+
             using(var app = new ServiceBaseApplication(null, CONFIG3_HANDLERS.AsLaconicConfig()))
             {
               Thread.Sleep(10000);
@@ -266,8 +266,8 @@ nfx
             Console.WriteLine(string.Join(" , ", lst));
             Assert.AreEqual(14, lst.Count);
             Assert.AreEqual(10, lst.Count(s=>s=="ItonTV::Gorin.True"));
-            Assert.AreEqual(4, lst.Count(s=>s=="Nativ::Kedmi.False"));   
-        } 
+            Assert.AreEqual(4, lst.Count(s=>s=="Nativ::Kedmi.False"));
+        }
 
 
 
@@ -278,11 +278,11 @@ nfx
             {
 
               new Event(app.EventTimer, "A")
-              { 
-                Interval = new TimeSpan(0,0,1), 
+              {
+                Interval = new TimeSpan(0,0,1),
                 Context = 123,
                 StartDate = new DateTime(2079, 12, 12),
-                EndDate = new DateTime(1980, 1, 1) 
+                EndDate = new DateTime(1980, 1, 1)
               };
 
               Assert.AreEqual(EventStatus.NotStarted, app.EventTimer.Events["A"].Status);
@@ -292,11 +292,11 @@ nfx
               app.EventTimer.Events["A"].StartDate = new DateTime(1979, 1,1);
               Thread.Sleep(2000);
               Assert.AreEqual(EventStatus.Expired, app.EventTimer.Events["A"].Status);
-              
+
               app.EventTimer.Events["A"].EndDate = new DateTime(2979, 1,1);
               Thread.Sleep(2000);
               Assert.AreEqual(EventStatus.Started, app.EventTimer.Events["A"].Status);
-            }   
+            }
         }
 
 
@@ -311,15 +311,15 @@ nfx
               new Event(app.EventTimer, "A", (e) => {lock(lst) lst.Add("a");}) { Interval = new TimeSpan(0,0,1), Context = 123, MaxCount=2 };
               new Event(app.EventTimer, "B", (e) => {lock(lst) lst.Add("b");}) { Interval = new TimeSpan(0,0,3), Context = 234 };
 
-              Thread.Sleep(10000);       
-              
+              Thread.Sleep(10000);
+
               app.EventTimer.Events["A"].Dispose();
               app.EventTimer.Events["B"].Dispose();
 
               Console.WriteLine(string.Join(" , ", lst));
               Assert.AreEqual(2, lst.Count(s=>s=="a"));
               Assert.AreEqual(4, lst.Count(s=>s=="b"));
-            }   
+            }
         }
 
 

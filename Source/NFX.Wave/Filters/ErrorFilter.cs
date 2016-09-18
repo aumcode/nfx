@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -265,7 +265,7 @@ namespace NFX.Wave.Filters
         {
           HandleException(work, error, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectURL, m_CustomErrorPageType);
           if (Server.m_InstrumentationEnabled)
-               Interlocked.Increment(ref Server.m_Stat_FilterHandleException);
+               Interlocked.Increment(ref Server.m_stat_FilterHandleException);
         }
        }
 

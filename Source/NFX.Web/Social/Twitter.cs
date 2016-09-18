@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -288,7 +288,7 @@ namespace NFX.Web.Social
         {
           bool hasDefaultProfileImage = response[USER_DEFAULTPROFILEIMAGE_PARAMNAME];
           if (!hasDefaultProfileImage)
-            twUserInfo.PictureLink = response[USER_PROFILEIMAGEURL_PARAMNAME];
+            twUserInfo.PictureLink = response[USER_PROFILEIMAGEURL_PARAMNAME].Replace("_normal.", ".");
 
           twUserInfo.Locale = response[USER_LANG_PARAMNAME];
 

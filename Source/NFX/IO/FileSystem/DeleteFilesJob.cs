@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 Dmitriy Khmaladze, IT Adapter Inc / 2015-2016 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ namespace NFX.IO.FileSystem
                            FileSystem fs = null,
                            FileSystemSessionConnectParams fsConnectParams = null,
                            string fsRootPath = null
-                         ) : base(timer, name, null, interval, config)
+                         ) : base(timer, name, null, interval, config, EventBodyAsyncModel.LongRunningAsyncTask)
     {
       if (fs!=null) m_FS = fs;
       if (fsConnectParams!=null) m_FSConnectParams = fsConnectParams;
