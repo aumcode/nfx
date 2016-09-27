@@ -177,6 +177,7 @@ namespace NFX.Web.Shipping
       private long m_stat_CreateLabelCount, m_stat_CreateLabelErrorCount;
       private long m_stat_CreateReturnLabelCount, m_stat_CreateReturnLabelErrorCount;
       private long m_stat_TrackShipmentCount, m_stat_TrackShipmentErrorCount;
+      private long m_stat_ValidateAddressCount, m_stat_ValidateAddressErrorCount;
 
     #endregion
 
@@ -253,6 +254,8 @@ namespace NFX.Web.Shipping
 
       public abstract TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string trackingNumber);
 
+      public abstract Exception ValidateAddress(ShippingSession session, IShippingContext context, Address address);
+
     #endregion
 
     #region Protected
@@ -314,14 +317,14 @@ namespace NFX.Web.Shipping
           if (type < LogLevel) return Guid.Empty;
 
           var logMessage = new Message
-                            {
-                                Topic = LOG_TOPIC,
-                                Text = message ?? string.Empty,
-                                Type = type,
-                                From = "{0}.{1}".Args(this.GetType().Name, from),
-                                Exception = error,
-                                Parameters = parameters
-                            };
+                           {
+                             Topic = LOG_TOPIC,
+                             Text = message ?? string.Empty,
+                             Type = type,
+                             From = "{0}.{1}".Args(this.GetType().Name, from),
+                             Exception = error,
+                             Parameters = parameters
+                           };
           if (relatedMessageID.HasValue) logMessage.RelatedTo = relatedMessageID.Value;
 
           App.Log.Write(logMessage);
@@ -363,6 +366,16 @@ namespace NFX.Web.Shipping
         Interlocked.Increment(ref m_stat_TrackShipmentCount);
       }
 
+      protected void StatValidateAddressErrorCount()
+      {
+        Interlocked.Increment(ref m_stat_ValidateAddressErrorCount);
+      }
+
+      protected void StatValidateAddressCount()
+      {
+        Interlocked.Increment(ref m_stat_ValidateAddressCount);
+      }
+
     #endregion
 
     #region .pvt
@@ -388,6 +401,12 @@ namespace NFX.Web.Shipping
 
         Instrumentation.LabelErrorCount.Record(src, m_stat_TrackShipmentErrorCount);
         m_stat_TrackShipmentErrorCount = 0;
+
+        Instrumentation.LabelErrorCount.Record(src, m_stat_ValidateAddressErrorCount);
+        m_stat_ValidateAddressErrorCount = 0;
+
+        Instrumentation.LabelErrorCount.Record(src, m_stat_ValidateAddressCount);
+        m_stat_ValidateAddressCount = 0;
       }
 
       private void resetStats()
@@ -398,6 +417,8 @@ namespace NFX.Web.Shipping
         m_stat_CreateReturnLabelErrorCount = 0;
         m_stat_TrackShipmentCount = 0;
         m_stat_TrackShipmentErrorCount = 0;
+        m_stat_ValidateAddressCount = 0;
+        m_stat_ValidateAddressErrorCount = 0;
       }
 
     #endregion

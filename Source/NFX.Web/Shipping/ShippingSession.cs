@@ -96,5 +96,13 @@ namespace NFX.Web.Shipping
     {
       return m_ShippingSystem.TrackShipment(this, context, trackingNumber);
     }
+
+    /// <summary>
+    /// Validates shipping address
+    /// </summary>
+    public Exception ValidateAddress(IShippingContext context, Address address)
+    {
+      return m_ShippingSystem.ValidateAddress(this, context, address);
+    }
   }
 }

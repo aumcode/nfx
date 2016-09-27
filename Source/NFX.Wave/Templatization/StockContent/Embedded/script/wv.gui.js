@@ -3284,24 +3284,24 @@ WAVE.GUI = (function(){
           }, fTimeout);
         }
         if (fHideOnFocus) {
-          WAVE.addEventHandler(window, "focus", hideEventHandler);
+          WAVE.addEventHandler(window, "focus", outsideClickHandler);
           setTimeout(function(){ 
-            WAVE.addEventHandler(window, "mousemove", moveEventHandler); 
+            WAVE.addEventHandler(window, "mousemove", outsideMouseMoveHandler); 
           } , 1);
         }
         if (fHideOnClick)
           setTimeout(function(){ 
-            WAVE.addEventHandler(window, "click", hideEventHandler);
+            WAVE.addEventHandler(window, "click", outsideClickHandler);
           }, 1);
       }
 
-      function hideEventHandler(e) {
+      function outsideClickHandler(e) {
         var target = e.target;
         var container = ((fMode === "modal") && (fDialog !== null)) ? fDialog.baseDIV() : fContentControl;
         if (!WAVE.isParentOf(container, target)) __hide();
       }
 
-      function moveEventHandler(e) {
+      function outsideMouseMoveHandler(e) {
         var target = e.target;
         if (!WAVE.isParentOf(fContentControl, target) && !WAVE.isParentOf(fTitleControl, target)) __hide();
       }
@@ -3388,9 +3388,9 @@ WAVE.GUI = (function(){
           WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
         }
         fHiddenState = true;
-        WAVE.removeEventHandler(window, "focus", hideEventHandler);
-        WAVE.removeEventHandler(window, "click", hideEventHandler);
-        WAVE.removeEventHandler(window, "mousemove", moveEventHandler);
+        WAVE.removeEventHandler(window, "focus", outsideClickHandler);
+        WAVE.removeEventHandler(window, "click", outsideClickHandler);
+        WAVE.removeEventHandler(window, "mousemove", outsideMouseMoveHandler);
 
         WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE_HIDDEN);
         WAVE.removeClass(fTitleControl, published.CLS_DETAILS_TITLE_SHOWN);

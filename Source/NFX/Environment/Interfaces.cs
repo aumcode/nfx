@@ -53,6 +53,16 @@ namespace NFX.Environment
         void PersistConfiguration(ConfigSectionNode node);
       }
 
+      /// <summary>
+      /// Represents an entity that provides config node. It is primarily used for includes
+      /// </summary>
+      public interface IConfigNodeProvider : IConfigurable
+      {
+        /// <summary>
+        /// Returns config node per optional context
+        /// </summary>
+        ConfigSectionNode ProvideConfigNode(object context = null);
+      }
 
       /// <summary>
       /// Provides read-only configuration node abstraction for section and attribute nodes

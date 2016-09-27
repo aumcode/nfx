@@ -140,6 +140,44 @@ namespace NFX.NUnit.Integration.Web.Shipping
       }
     }
 
+    [Test]
+    public void ValidateAddress_Valid()
+    {
+      using (var session = ShippingSystem.StartSession())
+      {
+        var address = getDefaultAddress();
+        var error = session.ValidateAddress(null, address);
+
+        Assert.IsNull(error);
+      }
+    }
+
+    [Test]
+    public void ValidateAddress_Invalid()
+    {
+      using (var session = ShippingSystem.StartSession())
+      {
+        var address = getDefaultAddress();
+        address.Street1 = "Starokubanskaya 33";
+        var error = session.ValidateAddress(null, address);
+        Assert.IsNotNull(error);
+        Assert.IsTrue(error.Message.Contains("Address Not Found"));
+
+        address = getDefaultAddress();
+        address.Street1 = "587000 Kiva Street";
+        error = session.ValidateAddress(null, address);
+        Assert.IsNotNull(error);
+        Assert.IsTrue(error.Message.Contains("Address Not Found"));
+
+        address = getDefaultAddress();
+        address.City = "New York";
+        address.PostalCode = "350011";
+        error = session.ValidateAddress(null, address);
+        Assert.IsNotNull(error);
+        Assert.IsTrue(error.Message.Contains("Invalid City"));
+      }
+    }
+
 
     private Address getDefaultAddress()
     {
@@ -149,7 +187,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         Country = "US",
         State = "NM",
         City = "Los Alamos",
-        EMail = "s-ulam@itadapter.com",
+        EMail = "s-ulam@myime.com",
         Street1 = "587 Kiva Street",
         PostalCode = "87544",
         Phone = "(333) 777-77-77"
@@ -174,7 +212,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
           Country = "US",
           State = "NY",
           City = "New York",
-          EMail = "jlondon@itadapter.com",
+          EMail = "jlondon@myime.com",
           Street1 = "183 Canal Street",
           PostalCode = "10013",
           Phone = "(111) 222-33-44"
@@ -185,7 +223,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
           Country = "US",
           State = "CA",
           City = "Los Angeles",
-          EMail = "aeinstein@itadapter.com",
+          EMail = "aeinstein@myime.com",
           Street1 = "1782 West 25th Street",
           PostalCode = "90018",
           Phone = "(111) 333-44-55"

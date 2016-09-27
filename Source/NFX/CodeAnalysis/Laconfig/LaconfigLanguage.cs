@@ -47,7 +47,7 @@ namespace NFX.CodeAnalysis.Laconfig
                 yield return "laconf";
                 yield return "laconfig";
                 yield return "rschema";
-                yield return "acmb";
+                yield return "amb";
             }
         }
 

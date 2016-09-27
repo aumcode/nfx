@@ -212,6 +212,9 @@ namespace NFX.Web
     public const string SHIPPO_GET_RATE_ERROR = "Critical error while fetch label rate";
     public const string SHIPPO_TRACK_SHIPMENT_MESSAGE = "Perform track shipment by number '{0}'";
     public const string SHIPPO_TRACK_SHIPMENT_ERROR = "Critical error while tracking shipment '{0}': {1}";
+    public const string SHIPPO_VALIDATE_ADDRESS_MESSAGE = "Perform address validation";
+    public const string SHIPPO_VALIDATE_ADDRESS_ERROR = "Critical error while validate address: {0}";
+    public const string SHIPPO_VALIDATE_ADDRESS_INVALID_ERROR = "Address is invalid: {0}";
 
     public const string TAX_CALCULATOR_DUPLICATE_NAME_ERROR = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
     public const string TAX_TAXJAR_TOADDRESS_ISNT_SUPPLIED_ERROR = "Either retailerAddress or wholesellerAddress must be provided. ";

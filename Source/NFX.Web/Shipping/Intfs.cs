@@ -68,10 +68,14 @@ namespace NFX.Web.Shipping
     /// </summary>
     TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string trackingNumber);
 
+    /// <summary>
+    /// Validates shipping address
+    /// </summary>
+    Exception ValidateAddress(ShippingSession session, IShippingContext context, Address address);
+
+
     // CalculateRates
-    // TrackShipment
     // RefundLabel
-    // ValidateAddress
   }
 
   /// <summary>

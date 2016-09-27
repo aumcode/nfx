@@ -40,7 +40,7 @@ namespace NFX.IO.FileSystem
     /// This class is not thread-safe unless stated otherwise on method level, however multiple threads are allowed to obtain their own FileSystemSession
     ///  object via a call to StartSession() which is thread safe
     /// </summary>
-    public abstract class FileSystem : ApplicationComponent,  IFileSystem, IConfigurable
+    public abstract class FileSystem : ApplicationComponent,  IFileSystemImplementation
     {
       #region CONSTS
 

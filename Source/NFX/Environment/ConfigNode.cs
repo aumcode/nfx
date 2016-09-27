@@ -1410,7 +1410,8 @@ namespace NFX.Environment
         /// <summary>
         /// Replaces all include pragmas - sections with specified names ('_include' by default), with pointed to configuration file content
         /// as obtained via the call to file system specified in every pragma.
-        /// If no FS specified then LocalFileStsrem is used. Returns true if include pragmas were found.
+        /// If no FS specified then LocalFileSystem is used. If no file name specified when try to allocate config node provider.
+        /// Returns true if include pragmas were found.
         /// Note: this method does not process new include pragmas that may have fetched during this call.
         /// Caution: the file system used in the operation may rely on the App container that may need to be set-up for the call to succeed,
         /// therefore calling this method before app has activated may fail, in such cases a temp app container may be set to get the config file
@@ -1564,69 +1565,98 @@ namespace NFX.Environment
 
     #region .pvt .impl
 
-
         private ConfigSectionNode getIncludedNode(ConfigSectionNode pragma)
         {
           try
           {
-              var fileName = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR).ValueAsString();
-              if (fileName.IsNullOrWhiteSpace())
-                throw new ConfigException("missing '{0}'".Args(Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR));
+            var root = getIncludedNodeRoot(pragma);
 
-              var required = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_REQUIRED_ATTR).ValueAsBool(true);
+            //name section wrap
+            var asname = pragma.AttrByName(Configuration.CONFIG_NAME_ATTR).ValueAsString();
+            if (asname.IsNotNullOrWhiteSpace())
+            {
+              var wrap = new MemoryConfiguration();
+              wrap.Create();
+              wrap.Root.AddChildNode( root ).Name = asname;
+              root = wrap.Root;
+            }
 
-              var ndFs = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_FS_SECTION];
-
-              using(var fs = FactoryUtils.MakeAndConfigure<FileSystem>(ndFs, typeof(NFX.IO.FileSystem.Local.LocalFileSystem)))
-              {
-                FileSystemSessionConnectParams cParams;
-
-                var ndSession = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_SESSION_SECTION];
-
-                if (ndSession.Exists)
-                  cParams = FileSystemSessionConnectParams.Make<FileSystemSessionConnectParams>(ndSession);
-                else
-                  cParams = new FileSystemSessionConnectParams(){ User = NFX.Security.User.Fake};
-
-                string source = "";
-                using(var fsSession = fs.StartSession(cParams))
-                {
-                   var file = fsSession[fileName] as NFX.IO.FileSystem.FileSystemFile;
-
-                   if (file==null)
-                   {
-                     if (required) throw new ConfigException("Referenced file '{0}' does not exist".Args(fileName));
-                     return null;
-                   }
-
-
-                   source = file.ReadAllText();
-
-                   string fmt = null;
-                   var j = fileName.LastIndexOf('.');
-                   if (j>0&&j<fileName.Length-1) fmt = fileName.Substring(j+1);
-
-                   if (fmt.IsNullOrWhiteSpace()) fmt = Configuration.CONFIG_LACONIC_FORMAT;
-
-                   var root = Configuration.ProviderLoadFromString(source, fmt).Root;
-
-                   //name section wrap
-                   var asname = pragma.AttrByName(Configuration.CONFIG_NAME_ATTR).ValueAsString();
-                   if (asname.IsNotNullOrWhiteSpace())
-                   {
-                     var wrap = new MemoryConfiguration();
-                     wrap.Create();
-                     wrap.Root.AddChildNode( root ).Name = asname;
-                     root = wrap.Root;
-                   }
-
-                   return root;
-                }
-              }
+            return root;
           }
           catch(Exception inner)
           {
             throw new ConfigException(StringConsts.CONFIGURATION_INCLUDE_PRAGMA_ERROR.Args(pragma.RootPath, inner.ToMessageWithType()), inner);
+          }
+        }
+
+
+        private ConfigSectionNode getIncludedNodeRoot(ConfigSectionNode pragma)
+        {
+          var ndProvider = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION];
+
+          var fileName = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR).ValueAsString();
+          if (fileName.IsNullOrWhiteSpace() && !ndProvider.Exists)
+            throw new ConfigException("missing '{0}' or '{1}'".Args(Configuration.CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION,
+                                                                    Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR));
+
+          var required = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_REQUIRED_ATTR).ValueAsBool(true);
+
+          //1  Try to get content form IConfigNodeProvider
+          if (ndProvider.Exists)
+          {
+            var provider = FactoryUtils.MakeAndConfigure<IConfigNodeProvider>(ndProvider, Configuration.ProcesswideConfigNodeProviderType);
+            try
+            {
+              var root = provider.ProvideConfigNode(this);
+
+              if (required && root==null) throw new ConfigException("'{0}'.ProvideConfigNode() returned null".Args(provider.GetType().FullName));
+
+              return root;
+            }
+            finally
+            {
+              var disposable = provider as IDisposable;
+              if (disposable!=null) disposable.Dispose();
+            }
+          }
+
+          //2 Try to get content form the file system
+          var ndFs = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_FS_SECTION];
+
+          using(var fs = FactoryUtils.MakeAndConfigure<IFileSystemImplementation>(ndFs, typeof(NFX.IO.FileSystem.Local.LocalFileSystem)))
+          {
+            FileSystemSessionConnectParams cParams;
+
+            var ndSession = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_SESSION_SECTION];
+
+            if (ndSession.Exists)
+              cParams = FileSystemSessionConnectParams.Make<FileSystemSessionConnectParams>(ndSession);
+            else
+              cParams = new FileSystemSessionConnectParams(){ User = NFX.Security.User.Fake};
+
+            string source = "";
+            using(var fsSession = fs.StartSession(cParams))
+            {
+              var file = fsSession[fileName] as NFX.IO.FileSystem.FileSystemFile;
+
+              if (file==null)
+              {
+                if (required) throw new ConfigException("Referenced file '{0}' does not exist".Args(fileName));
+                return null;
+              }
+
+              source = file.ReadAllText();
+
+              string fmt = null;
+              var j = fileName.LastIndexOf('.');
+              if (j>0&&j<fileName.Length-1) fmt = fileName.Substring(j+1);
+
+              if (fmt.IsNullOrWhiteSpace()) fmt = Configuration.CONFIG_LACONIC_FORMAT;
+
+              var root = Configuration.ProviderLoadFromString(source, fmt).Root;
+
+              return root;
+            }
           }
         }
 

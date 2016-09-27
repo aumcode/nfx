@@ -21,6 +21,7 @@ using System.Text;
 
 using NFX.Security;
 using NFX.ApplicationModel;
+using NFX.Environment;
 
 namespace NFX.IO.FileSystem
 {
@@ -57,10 +58,15 @@ namespace NFX.IO.FileSystem
         /// </summary>
         FileSystemSession StartSession(FileSystemSessionConnectParams cParams);
 
-       /// <summary>
+        /// <summary>
         /// Combines two or more path segments joining them using primary file system path separator
         /// </summary>
         string CombinePaths(string first, params string[] others);
+    }
+
+    public interface IFileSystemImplementation : IFileSystem, IConfigurable
+    {
+
     }
 
     /// <summary>

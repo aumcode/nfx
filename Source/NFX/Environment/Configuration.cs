@@ -41,6 +41,8 @@ namespace NFX.Environment
 
           public const  string  DEFAULT_CONFIG_INCLUDE_PRAGMA = "_include";
 
+          public const  string  CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION = "provider";
+
           public const  string  CONFIG_INCLUDE_PRAGMA_FS_SECTION = "fs";
           public const  string  CONFIG_INCLUDE_PRAGMA_SESSION_SECTION = "session";
           public const  string  CONFIG_INCLUDE_PRAGMA_FILE_ATTR = "file";
@@ -168,6 +170,11 @@ namespace NFX.Environment
         /// </summary>
         public static IEnvironmentVariableResolver ProcesswideEnvironmentVarResolver;
 
+        /// <summary>
+        /// Gets/sets global implementor of IConfigNodeProvider that is used by all configurations in this process instance
+        /// when type is not specified
+        /// </summary>
+        public static Type ProcesswideConfigNodeProviderType;
     #endregion
 
 

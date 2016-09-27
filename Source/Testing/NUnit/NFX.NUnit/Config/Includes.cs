@@ -31,7 +31,7 @@ namespace NFX.NUnit.Config
 
 static string xml1 = @"
  <root>
-    
+
     <section-a>
         <sub1>Sub Value 1</sub1>
         <sub2>Sub Value 2</sub2>
@@ -40,8 +40,8 @@ static string xml1 = @"
         <destination name='B' type='SMTPMail'> </destination>
     </section-a>
 
-    <section-b _override='attributes' age='32'>  
-    
+    <section-b _override='attributes' age='32'>
+
     </section-b>
 
     <section-c _override='fail'>
@@ -50,12 +50,12 @@ static string xml1 = @"
 
     <section-d _override='stop'>This can not be overridden and no exception will be thrown</section-d>
 
-    <section-e _override='replace' some-attr='123'>  
+    <section-e _override='replace' some-attr='123'>
        <a> </a>
        <b> </b>
     </section-e>
 
-    <section-f _override='sections' some-attr='423'>  
+    <section-f _override='sections' some-attr='423'>
        <a> </a>
        <b> </b>
     </section-f>
@@ -68,12 +68,12 @@ static string xml2 = @"
  <root
    meduza='Greece'
  >
-    
+
     <a />
     <b />
     <c yes='true'/>
 
-   
+
 
  </root>
 ";
@@ -83,9 +83,9 @@ static string xml2 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+
           conf1.Include(conf1.Root["section-a"], conf2.Root);
-                                                              
+
 
           Assert.IsFalse(conf1.Root["section-a"].Exists);
           Assert.IsTrue(conf1.Root.AttrByName("meduza").Exists);
@@ -104,9 +104,9 @@ static string xml2 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+
           conf1.Include(conf1.Root["section-a"], conf2.Root);
-                                                              
+
           var lst = conf1.Root.Children.ToList();
 
           Assert.AreEqual(8, lst.Count);
@@ -120,7 +120,7 @@ static string xml2 = @"
           Assert.AreEqual("section-e", lst[6].Name);
           Assert.AreEqual("section-f", lst[7].Name);
 
-          
+
         }
 
         [TestCase]
@@ -128,9 +128,9 @@ static string xml2 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+
           conf1.Include(conf1.Root["section-f"], conf2.Root);
-                                                              
+
           var lst = conf1.Root.Children.ToList();
 
           Assert.AreEqual(8, lst.Count);
@@ -144,13 +144,13 @@ static string xml2 = @"
           Assert.AreEqual("b", lst[6].Name);
           Assert.AreEqual("c", lst[7].Name);
 
-          
+
         }
 
         [TestCase]
         public void PRAGMA_1()
         {
-          var conf1 = 
+          var conf1 =
 @"
 nfx
 {
@@ -186,9 +186,73 @@ nfx
             Assert.AreEqual(189, conf.Navigate("/WithNewName/$a").ValueAsInt());
             Assert.AreEqual(2, conf.Navigate("/WithNewName/$file.b").ValueAsInt());
             Assert.AreEqual(3, conf.Navigate("/WithNewName/$file.c").ValueAsInt());
-                                                     
+
             Assert.AreEqual("another one", conf.Navigate("/WithNewName/sub-sect/$name").Value);
 
         }
+
+
+                   public class TeztConfigNodeProvider : IConfigNodeProvider
+                   {
+
+                     public ConfigSectionNode ProvideConfigNode(object context = null)
+                     {
+                       return @"zhaba{ _override='all' age=129 people{  a=Alex{}  b=Boris{} }  }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+                     }
+
+                     public void Configure(IConfigSectionNode node)
+                     {
+                       Console.WriteLine("Configuring");
+                     }
+                   }
+
+
+
+        [TestCase]
+        public void Include_Provider()
+        {
+          var conf =
+@"
+myapp
+{
+  _include
+  {
+    name=WithNewName
+    provider{ type='NFX.NUnit.Config.Includes+TeztConfigNodeProvider,NFX.NUnit'}
+  }
+
+  city{ name='Cleveland'}
+
+  _include
+  {
+    //without name
+    provider{ type='NFX.NUnit.Config.Includes+TeztConfigNodeProvider,NFX.NUnit'}
+  }
+}
+
+".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+
+          conf.ProcessIncludePragmas(true);
+
+          Console.WriteLine( conf.ToLaconicString(NFX.CodeAnalysis.Laconfig.LaconfigWritingOptions.PrettyPrint) );
+
+          Assert.AreEqual(3, conf.ChildCount);
+
+          Assert.AreEqual(129, conf.AttrByName("age").ValueAsInt());
+          Assert.AreEqual("all", conf.AttrByName("_override").Value);
+
+          Assert.AreEqual("Alex", conf.Navigate("/WithNewName/people/a").Value);
+          Assert.AreEqual("Boris", conf.Navigate("/WithNewName/people/b").Value);
+
+          Assert.AreEqual("Cleveland", conf.Navigate("/city/$name").Value);
+
+          Assert.AreEqual("Alex", conf.Navigate("/people/a").Value);
+          Assert.AreEqual("Boris", conf.Navigate("/people/b").Value);
+
+
+        }
+
+
     }
 }

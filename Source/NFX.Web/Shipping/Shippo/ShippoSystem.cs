@@ -36,6 +36,9 @@ namespace NFX.Web.Shipping.Shippo
       public const string PURCHASE_LABEL_PURPOSE = "PURCHASE";
       public const string STATUS_SUCCESS = "SUCCESS";
       public const string STATUS_ERROR = "ERROR";
+      public const string STATUS_VALID = "VALID";
+      public const string STATUS_INVALID = "INVALID";
+      public const string UNKNOWN_TXT = "-";
 
       public const string USPS_PRIORITY_SERVICE = "usps_priority";
 
@@ -45,7 +48,8 @@ namespace NFX.Web.Shipping.Shippo
       public const string URI_API_BASE = "https://api.goshippo.com";
       public const string URI_TRANSACTIONS = "/v1/transactions";
       public const string URI_RATES = "/v1/rates/{0}";
-      public const string URI_TRACKING = "v1/tracks/";
+      public const string URI_TRACKING = "/v1/tracks/";
+      public const string URI_ADDRESS = "/v1/addresses";
 
       public static readonly Dictionary<LabelFormat, string> FORMATS = new Dictionary<LabelFormat, string>
       {
@@ -171,10 +175,35 @@ namespace NFX.Web.Shipping.Shippo
         }
         catch (Exception ex)
         {
-          StatCreateLabelError();
+          StatTrackShipmentErrorCount();
 
           var header = StringConsts.SHIPPO_TRACK_SHIPMENT_ERROR.Args(trackingNumber,ex.ToMessageWithType());
           Log(MessageType.Error, "TrackShipment()", header, ex, logID);
+          var error = ShippingException.ComposeError(ex.Message, ex);
+
+          throw error;
+        }
+      }
+
+      public override Exception ValidateAddress(ShippingSession session, IShippingContext context, Address address)
+      {
+        return ValidateAddress((ShippoSession)session, context, address);
+      }
+
+      public Exception ValidateAddress(ShippoSession session, IShippingContext context, Address address)
+      {
+        var logID = Log(MessageType.Info, "ValidateAddress()", StringConsts.SHIPPO_VALIDATE_ADDRESS_MESSAGE);
+
+        try
+        {
+          return doValidateAddress(session, context, address, logID);
+        }
+        catch (Exception ex)
+        {
+          StatValidateAddressErrorCount();
+
+          var header = StringConsts.SHIPPO_VALIDATE_ADDRESS_ERROR.Args(ex.ToMessageWithType());
+          Log(MessageType.Error, "ValidateAddress()", header, ex, logID);
           var error = ShippingException.ComposeError(ex.Message, ex);
 
           throw error;
@@ -345,6 +374,46 @@ namespace NFX.Web.Shipping.Shippo
           Log(MessageType.Error, "getRate()", StringConsts.SHIPPO_CREATE_LABEL_ERROR, error, relatedMessageID: logID);
           return null;
         }
+      }
+
+      private Exception doValidateAddress(ShippoSession session, IShippingContext context, Address address, Guid logID)
+      {
+        var cred = (ShippoCredentials)session.User.Credentials;
+        var body = getAddressBody(address);
+        body["validate"] = true;
+
+        // validate address request
+        var request = new WebClient.RequestParams
+        {
+          Caller = this,
+          Uri = new Uri(URI_API_BASE + URI_ADDRESS),
+          Method = HTTPRequestMethod.POST,
+          ContentType = ContentType.JSON,
+          Headers = new Dictionary<string, string>
+            {
+              { HDR_AUTHORIZATION, HDR_AUTHORIZATION_TOKEN.Args(cred.PrivateToken) }
+            },
+          Body = body.ToJSON(JSONWritingOptions.Compact)
+        };
+
+        var response = WebClient.GetJson(request);
+        var state = response["object_state"].AsString(STATUS_INVALID);
+        if (state.EqualsIgnoreCase(STATUS_VALID)) return null;
+
+        Log(MessageType.Info, "doValidateAddress()", response.ToJSON(), relatedMessageID: logID);
+
+        // if any error
+        var messages = response["messages"] as JSONDataArray;
+        JSONDataMap message = null;
+        if (messages != null) message = messages.FirstOrDefault() as JSONDataMap;
+
+        string details = message == null ?
+                         UNKNOWN_TXT :
+                         "{0} - {1}".Args(message["code"].AsString(UNKNOWN_TXT), message["text"].AsString(UNKNOWN_TXT));
+
+        Log(MessageType.Error, "doValidateAddress()", response.ToJSON(), relatedMessageID: logID);
+
+        return new ShippingException(StringConsts.SHIPPO_VALIDATE_ADDRESS_INVALID_ERROR.Args(details));
       }
 
     #endregion
