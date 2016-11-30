@@ -209,7 +209,7 @@ namespace NFX.DataAccess.Erlang
         return new ErlCRUDMailbox(this, name);
       }
 
-      public ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
+      public CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
       {
         CheckServiceActive();
         return new ErlCRUDScriptQueryHandler(this, querySource);

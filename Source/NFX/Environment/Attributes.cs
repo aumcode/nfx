@@ -89,9 +89,17 @@ namespace NFX.Environment
        /// <summary>
        /// Applies config values to fields/properties as specified by config attributes
        /// </summary>
-       public static void Apply(object entity, IConfigSectionNode node)
+       public static T Apply<T>(T entity, IConfigSectionNode node)
        {
-         if (entity==null || node==null) return;
+          return (T)Apply((object)entity, node);
+       }
+
+       /// <summary>
+       /// Applies config values to fields/properties as specified by config attributes
+       /// </summary>
+       public static object Apply(object entity, IConfigSectionNode node)
+       {
+         if (entity==null || node==null) return entity;
 
          var etp = entity.GetType();
 
@@ -205,6 +213,7 @@ namespace NFX.Environment
 
          }//for members
 
+        return entity;
        }
 
 

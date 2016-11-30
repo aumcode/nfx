@@ -21,40 +21,51 @@ using System.Text;
 
 namespace NFX.Web.Shipping
 {
+  /// <summary>
+  /// Shipping status
+  /// </summary>
   public enum TrackStatus
   {
     Unknown = 0,
-    InProcess = 1,
+    Transit = 1,
     Delivered = 2,
-    Transit = 3,
-    Failure = 4,
-    Returned = 5,
-    Cancelled = 6,
-    Error = 7
+    Failure = 3,
+    Returned = 4,
+    Cancelled = 5,
+    Error = 4
   }
 
-  public struct TrackInfo
+  /// <summary>
+  /// Track shipping info
+  /// </summary>
+  public class TrackInfo
   {
-    public TrackInfo(string trackingNumber,
-                     Carrier carrier,
-                     TrackStatus status,
-                     string details,
-                     DateTime localTime,
-                     Address? location) : this()
+    #region Inner
+
+      public class HistoryItem
+      {
+        public DateTime? Date     { get; set; }
+        public TrackStatus Status { get; set; }
+        public string Details     { get; set; }
+        public Address Location   { get; set; }
+      }
+
+    #endregion
+
+    public TrackInfo()
     {
-      TrackingNumber = trackingNumber;
-      Carrier = carrier;
-      Status = status;
-      Details = details;
-      LocalTime = localTime;
-      Location = location;
+      History = new List<HistoryItem>();
     }
 
-    public string TrackingNumber { get; private set; }
-    public Carrier Carrier { get; private set; }
-    public TrackStatus Status { get; private set; }
-    public string Details { get; private set; }
-    public DateTime LocalTime { get; private set; }
-    public Address? Location { get; private set; }
+    public DateTime? Date        { get; set; }
+    public string Service        { get; set; }
+    public string TrackingNumber { get; set; }
+    public TrackStatus Status    { get; set; }
+    public string Details        { get; set; }
+    public Address FromAddress   { get; set; }
+    public Address ToAddress     { get; set; }
+    public Address Location      { get; set; }
+
+    public List<HistoryItem> History { get; private set; }
   }
 }

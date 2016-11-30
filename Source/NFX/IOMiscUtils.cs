@@ -18,11 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
-using System.Linq;
+using System.Net;
 using System.Text;
 
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using NFX.Security;
 
 namespace NFX
 {
@@ -53,6 +56,36 @@ namespace NFX
             return buf.ToString();
         }
 
+        /// <summary>
+        /// Fetch the content of a given URL.
+        /// </summary>
+        /// <returns>
+        /// Return fetched URL as a string, or null string when resulting status code is not HttpStatusCode.OK.
+        /// </returns>
+        public static KeyValuePair<HttpStatusCode,string> GetURL(string urlAddress, int timeout = 5000)
+        {
+            var req     = (HttpWebRequest)WebRequest.Create(urlAddress);
+            req.Timeout = timeout;
+            var res     = (HttpWebResponse)req.GetResponse();
+            try
+            {
+                if (res.StatusCode == HttpStatusCode.OK)
+                {
+                    var strm = res.GetResponseStream();
+                    var rds  = res.CharacterSet == null
+                             ? new StreamReader(strm)
+                             : new StreamReader(strm, Encoding.GetEncoding(res.CharacterSet));
+                    var s = rds.ReadToEnd();
+                    rds.Close();
+                    return new KeyValuePair<HttpStatusCode, string>(res.StatusCode, s);
+                }
+            }
+            finally
+            {
+                res.Close();
+            }
+            return new KeyValuePair<HttpStatusCode, string>(res.StatusCode, null);
+        }
 
         [ThreadStatic] private static byte[] copyBuffer;
         /// <summary>
@@ -604,6 +637,4 @@ namespace NFX
          return result;
        }
     }
-
-
 }

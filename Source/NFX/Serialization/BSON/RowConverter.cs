@@ -87,7 +87,7 @@ namespace NFX.Serialization.BSON
           { typeof(ulong),    (v) => (ulong)((BSONInt64Element)v).Value },
           { typeof(float),    (v) => (float)((BSONDoubleElement)v).Value },
           { typeof(double),   (v) => ((BSONDoubleElement)v).Value },
-          { typeof(decimal),  (v) => Decimal_BSONtoCLR((BSONInt64Element)v) },
+          { typeof(decimal),  (v) => Decimal_BSONtoCLR(v) },
           { typeof(Amount),   (v) => {  if (v is BSONDocumentElement) return Amount_BSONtoCLR((BSONDocumentElement)v); return Amount.Parse(Convert.ToString(v.ObjectValue)); }},
           { typeof(GDID),     (v) => GDID_BSONtoCLR((BSONBinaryElement)v) },
           { typeof(DateTime), (v) => ((BSONDateTimeElement)v).Value },
@@ -638,6 +638,20 @@ namespace NFX.Serialization.BSON
 
       #region BSONtoCLR
 
+        public static decimal Decimal_BSONtoCLR(BSONElement el)
+        {
+          if (el is BSONInt32Element)
+            return Decimal_BSONtoCLR((BSONInt32Element)el);
+          if (el is BSONInt64Element)
+            return Decimal_BSONtoCLR((BSONInt64Element)el);
+          throw new BSONException(StringConsts.BSON_DECIMAL_INT32_INT64_CONVERTION_ERROR);
+        }
+
+        public static decimal Decimal_BSONtoCLR(BSONInt32Element el)
+        {
+          return el.Value / DECIMAL_LONG_MUL;
+        }
+
         public static decimal Decimal_BSONtoCLR(BSONInt64Element el)
         {
           return el.Value / DECIMAL_LONG_MUL;
@@ -647,7 +661,7 @@ namespace NFX.Serialization.BSON
         {
           var doc = el.Value;
           var iso = ((BSONStringElement)doc["c"]).Value;
-          var val = Decimal_BSONtoCLR((BSONInt64Element)doc["v"]);
+          var val = Decimal_BSONtoCLR(doc["v"]);
           return new Amount(iso, val);
         }
 

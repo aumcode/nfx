@@ -128,7 +128,7 @@ namespace NFX.NUnit.Integration.Web.Pay
 
         Assert.AreEqual(new NFX.Financial.Amount("usd", .0M), charge.AmountRefunded);
 
-        FakePaySystemHost.Instance.SaveTransaction(charge);
+        FakePaySystemHost.SaveTransaction(charge);
 
         var refund = charge.Refund(null);
 
@@ -141,7 +141,7 @@ namespace NFX.NUnit.Integration.Web.Pay
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
           new NFX.Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
 
-        FakePaySystemHost.Instance.SaveTransaction(charge);
+        FakePaySystemHost.SaveTransaction(charge);
 
         var refundTA = charge.Refund(null, new NFX.Financial.Amount("usd", 20.00M));
 
@@ -153,14 +153,14 @@ namespace NFX.NUnit.Integration.Web.Pay
         var charge = sess.Charge(null, FakePaySystemHost.CARD_ACCOUNT_STRIPE_CORRECT, Account.EmptyInstance,
           new NFX.Financial.Amount("usd", 20.00M), true, "Refund Full Explicit Charge");
 
-        FakePaySystemHost.Instance.SaveTransaction(charge);
+        FakePaySystemHost.SaveTransaction(charge);
 
         var refund1 = charge.Refund(null, new NFX.Financial.Amount("usd", 15.00M), "fraudulent");
 
         Assert.IsNotNull(refund1);
         Assert.AreEqual(charge.ID, refund1.ParentTransactionID);
 
-        FakePaySystemHost.Instance.SaveTransaction(refund1);
+        FakePaySystemHost.SaveTransaction(refund1);
 
         var refund2 = charge.Refund(null, new NFX.Financial.Amount("usd", 5.00M), "requested_by_customer");
 
@@ -185,7 +185,7 @@ namespace NFX.NUnit.Integration.Web.Pay
 
       public static void TransferToCard(PaySession sess)
       {
-          var transferTA = sess.Transfer(null, Account.EmptyInstance, FakePaySystemHost.CARD_DEBIT_ACCOUNT_STRIPE_CORRECT, 
+          var transferTA = sess.Transfer(null, Account.EmptyInstance, FakePaySystemHost.CARD_DEBIT_ACCOUNT_STRIPE_CORRECT,
             new NFX.Financial.Amount("usd", 27.00M));
 
           Assert.IsNotNull(transferTA);

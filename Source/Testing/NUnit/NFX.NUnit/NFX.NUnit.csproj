@@ -105,8 +105,9 @@
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
+    <Compile Include="Serialization\CSVWriterTest.cs" />
     <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
-    <Compile Include="Parsing\CSVParserTest.cs" />
+    <Compile Include="Serialization\CSVParserTest.cs" />
     <Compile Include="SealedStringTests.cs" />
     <Compile Include="DataAccess\FieldAttrCloningTests.cs" />
     <Compile Include="DataAccess\RowCopyFields.cs" />
@@ -164,6 +165,8 @@
     <Compile Include="Serialization\Slim2.cs" />
     <Compile Include="Social\SocialSerialization.cs" />
     <Compile Include="Standards\Countries_ISO3166_1.cs" />
+    <Compile Include="Standards\DistanceTest.cs" />
+    <Compile Include="Standards\WeightTest.cs" />
     <Compile Include="StringValueConversionTests.cs" />
     <Compile Include="ObjectValueConversionTests.cs" />
     <Compile Include="DataAccess\QuerySourceParsing.cs" />
@@ -216,6 +219,8 @@
     <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />
     <Compile Include="Web\Pay\ConfigBasedCurrencyMarketTests.cs" />
     <Compile Include="Web\Pay\FeeTests.cs" />
+    <Compile Include="Web\Shipping\AddressComparatorTest.cs" />
+    <Compile Include="Web\CacheControlTests.cs" />
     <Compile Include="Web\WebSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -213,7 +213,7 @@ namespace NFX.Web.Pay
       private Time.Event m_InstrumentationEvent;
 
       private IConfigSectionNode m_DefaultSessionConnParamsCfg;
-      private PayConnectionParameters m_DefaultSessionConnectParams;
+      private ConnectionParameters m_DefaultSessionConnectParams;
 
       protected internal readonly List<PaySession> m_Sessions;
 
@@ -307,12 +307,12 @@ namespace NFX.Web.Pay
       /// <summary>
       /// Starts new pay session of system-specific type
       /// </summary>
-      public PaySession StartSession(PayConnectionParameters cParams = null)
+      public PaySession StartSession(ConnectionParameters cParams = null)
       {
         return DoStartSession(cParams);
       }
 
-      protected abstract PaySession DoStartSession(PayConnectionParameters cParams = null);
+      protected abstract PaySession DoStartSession(ConnectionParameters cParams = null);
 
       public abstract PaymentException VerifyPotentialTransaction(PaySession session, ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount);
 
@@ -373,7 +373,7 @@ namespace NFX.Web.Pay
 
     #region Protected
 
-      protected PayConnectionParameters DefaultSessionConnectParams
+      protected ConnectionParameters DefaultSessionConnectParams
       {
         get { return m_DefaultSessionConnectParams; }
       }
@@ -418,7 +418,7 @@ namespace NFX.Web.Pay
         dumpStats();
       }
 
-      protected abstract PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection);
+      protected abstract ConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection);
 
       protected Guid Log(MessageType type,
                          string from,

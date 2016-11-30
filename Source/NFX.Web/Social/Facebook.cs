@@ -34,7 +34,7 @@ namespace NFX.Web.Social
 
         public const string FACEBOOK_PUB_SERVICE_URL = "https://www.facebook.com";
 
-        private const string LOGIN_LINK_TEMPLATE = "https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&response_type=code&scope=publish_stream+email";
+        private const string LOGIN_LINK_TEMPLATE = "https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&response_type=code&scope={2}";
 
         private const string ACCESSTOKEN_BASEURL = "https://graph.facebook.com/oauth/access_token";
         private const string ACCESSTOKEN_CODE_PARAMNAME = "code";
@@ -123,7 +123,12 @@ namespace NFX.Web.Social
 
         public override string GetExternalLoginReference(string returnURL)
         {
-          return LOGIN_LINK_TEMPLATE.Args(AppID, PrepareReturnURLParameter(returnURL));
+          var sb = new StringBuilder();
+          if (GrantViewEmail)     sb.Append("email+");
+          if (GrantPost)          sb.Append("publish_actions+");
+          if (GrantAccessProfile) sb.Append("public_profile+");
+          if (GrantAccessFriends) sb.Append("user_friends+");
+          return LOGIN_LINK_TEMPLATE.Args(AppID, PrepareReturnURLParameter(returnURL), sb.Length > 0 ? sb.ToString(0, sb.Length - 1) : string.Empty);
         }
 
         protected override void DoObtainTokens(SocialUserInfo userInfo, JSONDataMap request, string returnPageURL)

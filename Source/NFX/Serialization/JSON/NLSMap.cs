@@ -114,6 +114,21 @@ namespace NFX.Serialization.JSON
       }
 
 
+      /// <summary>
+      /// Takes entries from this instance and overides them by ISO keys from another instance returning the new instance
+      /// </summary>
+      public NLSMap OverrideBy(NLSMap other)
+      {
+        var result = new NLSMap(true);
+
+        foreach (var kvp in this)
+          result.m_Data[kvp.Key] = kvp.Value;
+        foreach (var kvp in other)
+          result.m_Data[kvp.Key] = kvp.Value;
+
+        return result;
+      }
+
       public enum GetParts{ Name, Description, NameOrDescription, DescriptionOrName, NameAndDescription, DescriptionAndName}
 
       /// <summary>

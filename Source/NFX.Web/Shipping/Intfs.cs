@@ -54,27 +54,31 @@ namespace NFX.Web.Shipping
     ShippingSession StartSession(ShippingConnectionParameters cParams = null);
 
     /// <summary>
-    /// Creates shipping label
+    /// Creates shipping direct/return label
     /// </summary>
     Label CreateLabel(ShippingSession session, IShippingContext context, Shipment shipment);
 
     /// <summary>
-    /// Creates return label for existed shipping label
-    /// </summary>
-    Label CreateReturnLabel(ShippingSession session, IShippingContext context, Shipment shipment, object labelID);
-
-    /// <summary>
     /// Retrieves shipment tracking info
     /// </summary>
-    TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string trackingNumber);
+    TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber);
 
     /// <summary>
-    /// Validates shipping address
+    /// Validates shipping address.
+    /// Returns new Address instance which may contain corrected address fields ('New Yourk' -> 'New York')
     /// </summary>
-    Exception ValidateAddress(ShippingSession session, IShippingContext context, Address address);
+    Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error);
 
+    /// <summary>
+    /// Returns all the carriers allowed for the system
+    /// </summary>
+    IEnumerable<ShippingCarrier> GetShippingCarriers(ShippingSession session, IShippingContext context);
 
-    // CalculateRates
+    /// <summary>
+    /// Estimates shipping label cost
+    /// </summary>
+    Financial.Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment);
+
     // RefundLabel
   }
 

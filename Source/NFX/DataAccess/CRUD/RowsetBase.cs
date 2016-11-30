@@ -99,7 +99,66 @@ namespace NFX.DataAccess.CRUD
               return result;
             }
 
+            /// <summary>
+            /// Reads either Table or Rowset from JSON created by WriteAsJSON.
+            /// </summary>
+            /// <returns>Total number of rows found in JSON. If this number is less than
+            /// result.Count, then not all rows matched the schema of the resulting rowset.</returns>
+            /// <remarks>
+            /// The schema of "result" must match the schema of the typed row T.
+            /// It's the responsibility of the caller to clear the "result" prior to
+            /// calling this function - the function appends rows to existing rowset.
+            /// </remarks>
+            public static int FromJSON<T>(string json,
+                                          ref RowsetBase result,
+                                          SetFieldFunc setFieldFunc = null)
+              where T : TypedRow, new()
+            {
+              var map = JSONReader.DeserializeDataObject(json) as JSONDataMap;
+              return FromJSON<T>(map, ref result, setFieldFunc);
+            }
 
+            /// <summary>
+            /// Reads either Table or Rowset from JSON created by WriteAsJSON.
+            /// </summary>
+            /// <returns>Total number of rows found in JSON. If this number is less than
+            /// result.Count, then not all rows matched the schema of the resulting rowset.</returns>
+            /// <remarks>
+            /// The schema of "result" must match the schema of the typed row T.
+            /// It's the responsibility of the caller to clear the "result" prior to
+            /// calling this function - the function appends rows to existing rowset.
+            /// </remarks>
+            public static int FromJSON<T>(JSONDataMap jsonMap,
+                                          ref RowsetBase result,
+                                          SetFieldFunc setFieldFunc = null)
+              where T : TypedRow, new()
+            {
+              if (jsonMap == null || jsonMap.Count == 0)
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(jsonMap=null)");
+              if (result == null)
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(result=null)");
+
+              var typedRow = new T();
+              if (result.Schema != typedRow.Schema)
+                throw new CRUDException(StringConsts.ARGUMENT_ERROR + "RowsetBase.FromJSON(): invalid result schema");
+
+              var rows = jsonMap["Rows"] as JSONDataArray;
+              if (rows==null) return 0;
+
+              foreach(var jrow in rows)
+              {
+                var jdo = jrow as IJSONDataObject;
+                if (jdo==null)
+                  continue;
+
+                var row = new T();
+
+                if (Row.TryFillFromJSON(row, jdo, setFieldFunc))
+                  result.Add(row);
+              }
+
+              return rows.Count;
+            }
 
             /// <summary>
             /// Creates an empty rowset

@@ -53,7 +53,7 @@ namespace WinFormsTest
         c.Insert( new BSONDocument()
                        .Set( new BSONInt32Element("_id", i) )
                        .Set( new BSONStringElement("name", "Kozlov-"+i.ToString()) )
-                       .Set( new BSONInt32Element("age", i) )
+                       .Set( new BSONInt32Element("age", i&0xf) )
                 );
       }
 
@@ -145,7 +145,7 @@ namespace WinFormsTest
         var query = new Query();
         for(var i=0; i<10; i++)
           c.Find(query);
-       
+
      }
 
      private void btnListCollections_Click(object sender, EventArgs e)
@@ -164,12 +164,12 @@ namespace WinFormsTest
            '$query': {'_id': {'$lte': '$$ID'}},
            '$orderby': {'age': '$$ORD'}
           }",
-           true, 
-         
+           true,
+
          new TemplateArg("ID", BSONElementType.Int32, 197),
          new TemplateArg("ORD", BSONElementType.Int32, -1)
         );
-        
+
         var data = c.FindAndFetchAll(query, cursorFetchLimit: 4);
         MessageBox.Show( "Got {0} \n=======================\n {1}".Args(data.Count, data.ToJSON(JSONWritingOptions.PrettyPrint)) );
      }
@@ -213,5 +213,117 @@ namespace WinFormsTest
         MessageBox.Show( db.RunCommand( idx ).ToString() );
      }
 
+    private void btnAgregate_Click(Object sender,EventArgs e)
+    {
+      var sw = new System.Diagnostics.Stopwatch();
+
+      var query = new Query(
+@"
+{
+  'aggregate': 't1',
+  'pipeline': [
+     {
+       '$group':
+         {
+           '_id': '$age',
+           'totalAmount': { '$sum': '$_id' },
+           'count': { '$sum': 1 }
+         }
+     }
+   ]
+}", false);
+
+      sw.Start();
+      var doc = MongoClient.Instance.DefaultLocalServer["db1"].RunCommand(query);
+      var cnt = 500000;//((doc["result"] as BSONArrayElement).Value[0] as BSONDocumentElement).Value["count"].ObjectValue.AsLong();
+
+      var el = sw.ElapsedMilliseconds;
+
+      Text = "Fetched {0} in {1} ms at {2}ops/sec".Args(cnt, el, cnt / (el / 1000d));
+      MessageBox.Show(doc.ToString());
+
+    }
+
+    private void btnInserComplexObjects_Click(Object sender,EventArgs e)
+    {
+      const int CNT = 10555000;
+
+      var c = MongoClient.Instance.DefaultLocalServer["db1"]["t1"];
+
+      var sw = new System.Diagnostics.Stopwatch();
+
+       //for(var i=0; i < CNT; i++)
+      Parallel.For(0 ,CNT, (i) =>
+      {
+        if (i==1) sw.Start();
+
+        var k = i + 1;
+        double total;
+        var lines = getRndOrderLines(out total);
+
+        var v = ExternalRandomGenerator.Instance.NextScaledRandomInteger(1, 23);
+        var vendorId = (v == 0 ? 11 : v) + 123456789123000;
+
+        c.Insert( new BSONDocument()
+                        .Set( new BSONInt32Element("_id", k) )
+                        .Set( new BSONStringElement("desc", "order-" + k) )
+                        .Set( new BSONStringElement("customer", "Albert-" + k) )
+                        .Set( new BSONStringElement("vendor", "John-" + v) )
+                        .Set( new BSONInt64Element("vid", vendorId) )
+                        .Set( new BSONDoubleElement("total", total) )
+                        .Set( lines )
+                );
+      });
+
+      var el = sw.ElapsedMilliseconds;
+
+      Text = "Inserted {0} in {1} ms at {2}ops/sec".Args(CNT, el, CNT / (el / 1000d));
+    }
+
+
+    private BSONArrayElement getRndOrderLines(out double total)
+    {
+      var linesCnt = ExternalRandomGenerator.Instance.NextScaledRandomInteger(2, 7);
+      var arr = new BSONDocumentElement[linesCnt];
+      total = 0;
+      for(var i = 0; i < linesCnt; i ++)
+      {
+        var k = i + 1;
+        var e = new BSONDocument();
+        e.Set( new BSONInt32Element("lid", k) );
+        e.Set( new BSONStringElement("desc", "odr-ln-" + k) );
+        e.Set( new BSONStringElement("name", "product-" + k) );
+
+        var amt =ExternalRandomGenerator.Instance.NextScaledRandomDouble(35, 749);
+        total += amt;
+        e.Set( new BSONDoubleElement("amnt", amt) );
+
+        arr[i] = new BSONDocumentElement(e);
+      }
+
+      return new BSONArrayElement("lines", arr);
+    }
+
+    private void btnAggComplex_Click(Object sender,EventArgs e)
+    {
+      var sw = new System.Diagnostics.Stopwatch();
+
+      var query = new Query(tbQuery.Text, false);
+
+      sw.Start();
+      var doc = MongoClient.Instance.DefaultLocalServer["db1"].RunCommand(query);
+
+      var el = sw.ElapsedMilliseconds;
+
+      var cnt = 0;
+      var arr = doc["result"] as BSONArrayElement;
+      for(var i = 0; i < arr.Value.Length; i++)
+      {
+        cnt += (arr.Value[i] as BSONDocumentElement).Value["count"].ObjectValue.AsInt();
+      }
+
+      Text = "Fetched {0} in {1} ms at {2}ops/sec".Args(cnt, el, cnt / (el / 1000d));
+      MessageBox.Show(doc.ToString());
+    }
   }
 }

@@ -20,7 +20,7 @@ using NFX.Security;
 
 namespace NFX.Web.Pay.Stripe
 {
-  public class StripeConnectionParameters: PayConnectionParameters
+  public class StripeConnectionParameters: ConnectionParameters
   {
     public const string STRIPE_REALM = "stripe";
 

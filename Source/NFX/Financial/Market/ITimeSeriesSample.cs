@@ -15,23 +15,25 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NFX.Financial.Market
 {
   /// <summary>
-  /// Represents a sample of a TimeSeries stream
+  /// Represents an interface to an object that has a timestamp
   /// </summary>
-  public interface ITimeSeriesSample
+  public interface ITimedSample
   {
     /// <summary>
     /// Timestamp of the sample
     /// </summary>
-    DateTime TimeStamp{ get; }
+    DateTime TimeStamp { get; set; }
+  }
 
+  /// <summary>
+  /// Represents a sample of a TimeSeries stream
+  /// </summary>
+  public interface ITimeSeriesSample : ITimedSample
+  {
     /// <summary>
     /// Associates an arbitrary data
     /// </summary>
@@ -66,7 +68,7 @@ namespace NFX.Financial.Market
 
     private DateTime m_TimeStamp;
 
-    public DateTime TimeStamp{ get{ return m_TimeStamp;} }
+    public DateTime TimeStamp{ get { return m_TimeStamp;} set { m_TimeStamp = value; } }
 
     /// <summary>
     /// Associates an arbitrary data

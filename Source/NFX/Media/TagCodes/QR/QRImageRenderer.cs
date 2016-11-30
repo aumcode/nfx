@@ -24,8 +24,10 @@
  * Based on zXing / Apache 2.0; See NOTICE and CHANGES for attribution
  */
 
-using NFX.Media.Graphics;
 using System.Drawing;
+using System.Drawing.Imaging;
+
+using NFX.Media.Graphics;
 
 namespace NFX.Media.TagCodes.QR
 {
@@ -46,39 +48,65 @@ namespace NFX.Media.TagCodes.QR
 
     #region Public
 
-      public static void ToBMP(this QRMatrix matrix, System.IO.Stream stream,
-        Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
+      public static void ToBMP(this QRMatrix matrix,
+                               System.IO.Stream stream,
+                               Color? trueColor = null,
+                               Color? falseColor = null,
+                               ImageScale? scale = ImageScale.Scale1x)
       {
-        matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Bmp, trueColor, falseColor, scale);
+        var output = createDrawingOutput(matrix, trueColor, falseColor, scale);
+        output.ToImage(stream, ImageFormat.Bmp);
       }
 
-      public static void ToPNG(this QRMatrix matrix, System.IO.Stream stream,
-        Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
+      public static void ToPNG(this QRMatrix matrix,
+                               System.IO.Stream stream,
+                               Color? trueColor = null,
+                               Color? falseColor = null,
+                               ImageScale? scale = ImageScale.Scale1x)
       {
-        matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Png, trueColor, falseColor, scale);
+        var output = createDrawingOutput(matrix, trueColor, falseColor, scale);
+        output.ToImage(stream, ImageFormat.Png);
       }
 
-      public static void ToJPG(this QRMatrix matrix, System.IO.Stream stream,
-        Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
+      public static void ToJPG(this QRMatrix matrix,
+                               System.IO.Stream stream,
+                               Color? trueColor = null,
+                               Color? falseColor = null,
+                               ImageScale? scale = ImageScale.Scale1x)
       {
-        matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Jpeg, trueColor, falseColor, scale);
+        var output = createDrawingOutput(matrix, trueColor, falseColor, scale);
+        output.ToImage(stream, ImageFormat.Jpeg);
       }
 
-      public static void ToGIF(this QRMatrix matrix, System.IO.Stream stream,
-        Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
+      public static void ToGIF(this QRMatrix matrix,
+                               System.IO.Stream stream,
+                               Color? trueColor = null,
+                               Color? falseColor = null,
+                               ImageScale? scale = ImageScale.Scale1x)
       {
-        matrix.ToImage( stream, System.Drawing.Imaging.ImageFormat.Gif, trueColor, falseColor, scale);
+        var output = createDrawingOutput(matrix, trueColor, falseColor, scale);
+        output.ToImage(stream, ImageFormat.Gif);
+      }
+
+      public static DrawingOutput CreateDrawingOutput(this QRMatrix matrix,
+                                                       Color? trueColor = null,
+                                                       Color? falseColor = null,
+                                                       ImageScale? scale = ImageScale.Scale1x)
+      {
+        return createDrawingOutput(matrix, trueColor, falseColor, scale);
       }
 
     #endregion
 
     #region .pvt. impl.
 
-      private static void ToImage(this QRMatrix matrix, System.IO.Stream stream, System.Drawing.Imaging.ImageFormat format,
-        Color? trueColor = null, Color? falseColor = null, ImageScale? scale = ImageScale.Scale1x)
+      private static DrawingOutput createDrawingOutput(QRMatrix matrix,
+                                                        Color? trueColor = null,
+                                                        Color? falseColor = null,
+                                                        ImageScale? scale = ImageScale.Scale1x)
       {
-        Color black = trueColor ?? Color.Black;
-        Color white = falseColor ?? Color.White;
+        var black = trueColor ?? Color.Black;
+        var white = falseColor ?? Color.White;
 
         if (black == white)
           throw new NFXException(StringConsts.ARGUMENT_ERROR + typeof(QRImageRenderer).Name + ".ToBitmap(trueColor!=falseColor)");
@@ -88,26 +116,26 @@ namespace NFX.Media.TagCodes.QR
         int canvasWidth = matrix.Width * scaleFactor;
         int canvasHeight = matrix.Height * scaleFactor;
 
-        //TODO: Can we not cache brush instances on color in static dictionary? i.e. var blackbrush = BRUSHES[black]; Is brush thread safe for reading only?
-        Brush blackBrush = new SolidBrush(black);
-        Brush whiteBrush = new SolidBrush(white);
-
-        DrawingOutput drawingOutput = new DrawingOutput(canvasWidth, canvasHeight, blackBrush);
-
-        for (int yMatrix = 0, yCanvasStart = 0, yCanvasStop = scaleFactor;
-          yMatrix < matrix.Height;
-          yMatrix++, yCanvasStart+=scaleFactor, yCanvasStop+=scaleFactor)
+    //TODO: Can we not cache brush instances on color in static dictionary? i.e. var blackbrush = BRUSHES[black]; Is brush thread safe for reading only?
+        using(var blackBrush = new SolidBrush(black))
+        using(var whiteBrush = new SolidBrush(white))
         {
-          for (int xMatrix = 0, xCanvasStart = 0, xCanvasStop = scaleFactor;
-            xMatrix < matrix.Width;
-            xMatrix++, xCanvasStart+=scaleFactor, xCanvasStop+=scaleFactor)
+          var drawingOutput = new DrawingOutput(canvasWidth, canvasHeight, blackBrush);
+          for (int yMatrix = 0, yCanvasStart = 0, yCanvasStop = scaleFactor;
+            yMatrix < matrix.Height;
+            yMatrix++, yCanvasStart+=scaleFactor, yCanvasStop+=scaleFactor)
           {
-            if (matrix[xMatrix, yMatrix] == 0)
-              drawingOutput.SetPixelScaled(xMatrix, yMatrix, whiteBrush, scaleFactor);
+            for (int xMatrix = 0, xCanvasStart = 0, xCanvasStop = scaleFactor;
+              xMatrix < matrix.Width;
+              xMatrix++, xCanvasStart+=scaleFactor, xCanvasStop+=scaleFactor)
+            {
+              if (matrix[xMatrix, yMatrix] == 0)
+                drawingOutput.SetPixelScaled(xMatrix, yMatrix, whiteBrush, scaleFactor);
+            }
           }
-        }
 
-        drawingOutput.ToImage(stream, format);
+          return drawingOutput;
+        }
       }
 
     #endregion

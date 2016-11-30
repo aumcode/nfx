@@ -211,8 +211,7 @@ nfx
         [TestCase]
         public void Include_Provider()
         {
-          var conf =
-@"
+          var conf =@"
 myapp
 {
   _include
@@ -228,9 +227,7 @@ myapp
     //without name
     provider{ type='NFX.NUnit.Config.Includes+TeztConfigNodeProvider,NFX.NUnit'}
   }
-}
-
-".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
 
           conf.ProcessIncludePragmas(true);
@@ -252,7 +249,5 @@ myapp
 
 
         }
-
-
-    }
+  }
 }

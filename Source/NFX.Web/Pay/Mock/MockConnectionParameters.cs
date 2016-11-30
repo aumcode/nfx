@@ -27,7 +27,7 @@ using NFX.Security;
 
 namespace NFX.Web.Pay.Mock
 {
-  public class MockConnectionParameters: PayConnectionParameters
+  public class MockConnectionParameters: ConnectionParameters
   {
     #region Consts
 

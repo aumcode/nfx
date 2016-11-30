@@ -46,6 +46,15 @@ namespace NFX.RelationalModel
         ErlScript
     }
 
+    /// <summary>
+    /// Denotes naming case sensitivity
+    /// </summary>
+    public enum NameCaseSensitivity
+    {
+       ToLower = 0,
+       ToUpper,
+       AsIs
+    }
 
 
     /// <summary>
@@ -135,7 +144,7 @@ namespace NFX.RelationalModel
             protected List<SchemaCompilationException> m_CompileErrors = new List<SchemaCompilationException>();
 
 
-            private bool m_CaseSensitiveNames;
+            private NameCaseSensitivity m_NameCaseSensitivity;
             private string m_OutputPath;
 
             private string m_OutputPrefix;
@@ -189,14 +198,14 @@ namespace NFX.RelationalModel
             /// <summary>
             /// Determines whether output script is case sensitive
             /// </summary>
-            [Config("$case-sensitive-names|$case-sensitive")]
-            public virtual bool CaseSensitiveNames
+            [Config("$name-case-sensitivity|$case-sensitivity")]
+            public virtual NameCaseSensitivity NameCaseSensitivity
             {
-                get{ return m_CaseSensitiveNames; }
+                get{ return m_NameCaseSensitivity; }
                 set
                 {
                     EnsureNotCompiled();
-                    m_CaseSensitiveNames = value;
+                    m_NameCaseSensitivity = value;
                 }
 
             }
@@ -206,7 +215,7 @@ namespace NFX.RelationalModel
             /// </summary>
             public StringComparison NameComparison
             {
-                get { return CaseSensitiveNames ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase; }
+                get { return m_NameCaseSensitivity== RelationalModel.NameCaseSensitivity.AsIs ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase; }
             }
 
             /// <summary>

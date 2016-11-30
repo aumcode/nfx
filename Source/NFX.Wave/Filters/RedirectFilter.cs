@@ -17,8 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using NFX.Environment;
 
@@ -31,6 +29,7 @@ namespace NFX.Wave.Filters
   {
     #region CONSTS
       public const string VAR_REDIRECT_URL = "redirect-url";
+      public const string VAR_REDIRECT_TARGET = "redirect-target";
 
     #endregion
 
@@ -69,8 +68,19 @@ namespace NFX.Wave.Filters
           var url = matched[VAR_REDIRECT_URL].AsString();
           if (url.IsNotNullOrWhiteSpace())
           {
-             work.Response.RedirectAndAbort(url);
-             return;
+            var target = matched[VAR_REDIRECT_TARGET].AsString();
+            if (target.IsNotNullOrWhiteSpace())
+            {
+              var partsA = url.Split('#');
+              var parts = partsA[0].Split('?');
+              var query = parts.Length > 1 ? parts[0] + "&" : string.Empty;
+              url = "{0}?{1}{2}={3}{4}".Args(parts[0], query,
+                target, Uri.EscapeDataString(work.Request.Url.PathAndQuery),
+                partsA.Length > 1 ? "#" + partsA[1] : string.Empty);
+            }
+
+            work.Response.RedirectAndAbort(url);
+            return;
           }
         }
 

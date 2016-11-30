@@ -324,8 +324,11 @@ namespace NFX.DataAccess.CRUD
                 if (atr.HasValueList)//check dictionary
                 {
                     var parsed = atr.ParseValueList();
-                    if (!parsed.ContainsKey(value.ToString()))
-                        return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_IS_NOT_IN_LIST_ERROR);
+                    if (isSimpleKeyStringMap(parsed))
+                    {
+                      if (!parsed.ContainsKey(value.ToString()))
+                          return new CRUDFieldValidationException(Schema.Name, fdef.Name, StringConsts.CRUD_FIELD_VALUE_IS_NOT_IN_LIST_ERROR);
+                    }
                 }
 
                 if (atr.MinLength>0)
@@ -572,8 +575,18 @@ namespace NFX.DataAccess.CRUD
                           throw new CRUDException(StringConsts.CRUD_GDID_ERA_CONVERSION_ERROR.Args(fdef.Name, fdef.NonNullableType.Name));
                         value = gdid.ID;
                       }
+
+                      return value;
                   }
-                  else value = Convert.ChangeType(value, fdef.NonNullableType);
+
+                  // 20161026 Serge: handle values of enumerated field types
+                  if (fdef.NonNullableType.IsEnum)
+                  {
+                      value = value.AsString().AsType(fdef.NonNullableType);
+                      return value;
+                  }
+
+                  value = Convert.ChangeType(value, fdef.NonNullableType);
 
               }//Types Differ
 
@@ -904,6 +917,16 @@ namespace NFX.DataAccess.CRUD
 
 
         #region .pvt
+
+            private bool isSimpleKeyStringMap(JSONDataMap map)
+            {
+              if (map == null) return false;
+
+              foreach (var val in map.Values)
+                if (val != null && !(val is string)) return false;
+
+              return true;
+            }
 
             private class rowFieldValueEnumerator : IEnumerator<object>
             {

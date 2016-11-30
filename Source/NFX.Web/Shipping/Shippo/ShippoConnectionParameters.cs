@@ -38,9 +38,6 @@ namespace NFX.Web.Shipping.Shippo
 
     #endregion
 
-    public string CarrierID { get; set; }
-
-
     public override void Configure(IConfigSectionNode node)
     {
       base.Configure(node);
@@ -52,10 +49,6 @@ namespace NFX.Web.Shipping.Shippo
       var publicToken = node.AttrByName("public-token").ValueAsString();
       if (publicToken.IsNullOrWhiteSpace())
         User = User.Fake;
-
-      var carrierID = node.AttrByName("carrier-id").ValueAsString();
-      if (carrierID.IsNotNullOrWhiteSpace())
-        CarrierID = carrierID;
 
       var cred = new ShippoCredentials(privateToken, publicToken);
       var token = new AuthenticationToken(ShippoSystem.SHIPPO_REALM, null);

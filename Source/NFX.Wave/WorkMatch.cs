@@ -29,7 +29,7 @@ namespace NFX.Wave
   /// Decides whether the specifies WorkContext matches the requirements specified in the instance.
   /// The match may consider Request and Items properties of work context for match determination.
   /// Work matches do not belong to particular handler or filter, so they ARE STATELESS and their instances
-  ///  can be used by multiple different processors (i.e. handlers and filters).
+  /// can be used by multiple different processors (i.e. handlers and filters).
   /// </summary>
   public class WorkMatch : INamed, IOrdered
   {
@@ -205,6 +205,7 @@ namespace NFX.Wave
       private NameValuePair[] m_Cookies;
       private NameValuePair[] m_AbsentCookies;
       private NameValuePair[] m_Headers;
+      private NameValuePair[] m_AbsentHeaders;
       private bool? m_IsLocal;
       private bool? m_IsSocialNetBot;
       private int?  m_ApiMinVer;
@@ -346,6 +347,13 @@ namespace NFX.Wave
       }
 
       [Config]
+      public string AbsentHeaders
+      {
+        get { return m_AbsentHeaders==null ? null : NameValuePair.ToStringList(m_AbsentHeaders); }
+        set { m_AbsentHeaders = value.IsNullOrWhiteSpace() ? null : NameValuePair.ParseList(value).ToArray(); }
+      }
+
+      [Config]
       public bool? IsLocal
       {
         get { return m_IsLocal; }
@@ -399,13 +407,14 @@ namespace NFX.Wave
             !Check_Hosts(work) ||
             !Check_Ports(work) ||
             !Check_Schemes(work) ||
-            !Check_UserAgents(work)||
+            !Check_UserAgents(work) ||
             !Check_UserHosts(work) ||
             !Check_Permissions(work) ||
             !Check_Cookies(work) ||
             !Check_AbsentCookies(work) ||
             !Check_IsSocialNetBot(work) ||
             !Check_Headers(work) ||
+            !Check_AbsentHeaders(work) ||
             !Check_ApiVersions(work)
            ) return null;
 
@@ -553,9 +562,7 @@ namespace NFX.Wave
         {
           var cookie = work.Request.Cookies[pair.Name];
           if (cookie==null) continue;
-          if (string.Equals( cookie.Value,
-                             pair.Value,
-                             StringComparison.InvariantCultureIgnoreCase)) return true;
+          if (cookie.Value.EqualsIgnoreCase(pair.Value)) return true;
         }
         return false;
       }
@@ -567,9 +574,7 @@ namespace NFX.Wave
         {
           var cookie = work.Request.Cookies[pair.Name];
           if (cookie==null) return true;
-          if (!string.Equals( cookie.Value,
-                              pair.Value,
-                              StringComparison.InvariantCultureIgnoreCase)) return true;
+          if (!cookie.Value.EqualsIgnoreCase(pair.Value)) return true;
         }
         return false;
       }
@@ -578,9 +583,15 @@ namespace NFX.Wave
       {
         if (m_Headers==null) return true;
         foreach(var pair in m_Headers)
-          if (string.Equals( work.Request.Headers[pair.Name],
-                             pair.Value,
-                             StringComparison.InvariantCultureIgnoreCase)) return true;
+          if (work.Request.Headers[pair.Name].EqualsIgnoreCase(pair.Value)) return true;
+        return false;
+      }
+
+      protected virtual bool Check_AbsentHeaders(WorkContext work)
+      {
+        if (m_AbsentHeaders==null) return true;
+        foreach(var pair in m_AbsentHeaders)
+          if (!work.Request.Headers[pair.Name].EqualsIgnoreCase(pair.Value)) return true;
         return false;
       }
 

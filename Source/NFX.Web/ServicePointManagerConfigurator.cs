@@ -74,6 +74,8 @@ namespace NFX.Web
 
         public virtual bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
+          if (sslPolicyErrors == SslPolicyErrors.None) return true;
+
           var request = sender as HttpWebRequest;
           if (request != null)
           {

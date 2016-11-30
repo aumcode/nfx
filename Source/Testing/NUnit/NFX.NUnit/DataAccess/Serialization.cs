@@ -34,21 +34,21 @@ namespace NFX.NUnit.DataAccess
     [TestFixture]
     public class Serialization
     {
-       
+
         [TestCase]
         public void Slim_SerializeTable_TypedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var ser = new SlimSerializer();
             using(var ms = new MemoryStream())
             {
@@ -67,12 +67,12 @@ namespace NFX.NUnit.DataAccess
             }
         }
 
-       
+
         [TestCase]
         public void Slim_SerializeTable_DynamicRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
             {
                 var row = new DynamicRow( tbl.Schema );
@@ -82,7 +82,7 @@ namespace NFX.NUnit.DataAccess
                 row["LastName"] = "Popov-{0}".Args(i);
                 row["DOB"] = new DateTime(1953, 12, 10);
                 row["YearsInSpace"] = 12;
-            
+
                 tbl.Insert( row );
             }
 
@@ -107,7 +107,7 @@ namespace NFX.NUnit.DataAccess
         public void Slim_SerializeTable_ComplexTypedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(PersonWithNesting)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new PersonWithNesting{
                                     ID = "POP{0}".Args(i),
@@ -121,17 +121,17 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    });
-            
+
             var ser = new SlimSerializer();
             using(var ms = new MemoryStream())
             {
                 ser.Serialize(ms, tbl);
 
-               
+
          Console.WriteLine("{0} rows took {1} bytes".Args(tbl.Count, ms.Position));
-               
+
                 ms.Position = 0;
 
                 var tbl2 = ser.Deserialize(ms) as Table;
@@ -160,17 +160,17 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    };
-            
+
             var ser = new SlimSerializer();
             using(var ms = new MemoryStream())
             {
                 ser.Serialize(ms, row1);
 
-               
+
          Console.WriteLine("1 row took {0} bytes".Args(ms.Position));
-               
+
                 ms.Position = 0;
 
                 var row2 = ser.Deserialize(ms) as PersonWithNesting;
@@ -189,35 +189,59 @@ namespace NFX.NUnit.DataAccess
 
 
 
-        [TestCase] 
+        [TestCase]
         public void JSON_SerializeRowset_TypedRows()
         {
             var rowset = new Rowset(Schema.GetForTypedRow(typeof(Person)));
-                                        
+
             for(var i=0; i<10; i++)
              rowset.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
-            var json = rowset.ToJSON( NFX.Serialization.JSON.JSONWritingOptions.PrettyPrint);// );
-           
+
+            // Serialization without schema
+            var json = rowset.ToJSON(NFX.Serialization.JSON.JSONWritingOptions.PrettyPrint);
+
             Console.WriteLine( json);
 
             var rowset2 = json.JSONToDynamic();
 
             Assert.AreEqual("Popov-1", rowset2.Rows[1][2]);
 
+            RowsetBase rowset3 = new Rowset(Schema.GetForTypedRow(typeof(Person)));
+            var res = Rowset.FromJSON<Person>(json, ref rowset3);
+
+            Assert.AreEqual(10, res);
+            Assert.AreEqual(10, rowset3.Count);
+            Assert.AreEqual("Popov-1", rowset3[1][2]);
+
+            var options = new NFX.Serialization.JSON.JSONWritingOptions
+            {
+              RowsetMetadata  = true,
+              IndentWidth     = 2,
+              ObjectLineBreak = true,
+              MemberLineBreak = true,
+              SpaceSymbols    = true,
+              ASCIITarget     = false
+            };
+            rowset3.Clear();
+            var json2 = rowset.ToJSON(options);
+            var res2  = Rowset.FromJSON<Person>(json2, ref rowset3);
+
+            Assert.AreEqual(10, res);
+            Assert.AreEqual(10, rowset3.Count);
+            Assert.AreEqual("Popov-1", rowset3[1][2]);
         }
 
-        [TestCase] 
+        [TestCase]
         public void JSON_SerializeRowset_ComplexTypedRows_Array()
         {
             var rowset = new Rowset(Schema.GetForTypedRow(typeof(PersonWithNesting)));
-                                        
+
             for(var i=0; i<10; i++)
              rowset.Insert( new PersonWithNesting{
                                     ID = "POP{0}".Args(i),
@@ -231,11 +255,11 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    });
-            
+
             var json = rowset.ToJSON( NFX.Serialization.JSON.JSONWritingOptions.PrettyPrint);// );
-           
+
             Console.WriteLine( json);
 
             var rowset2 = json.JSONToDynamic();
@@ -245,11 +269,11 @@ namespace NFX.NUnit.DataAccess
         }
 
 
-        [TestCase] 
+        [TestCase]
         public void JSON_SerializeRowset_ComplexTypedRows_Map()
         {
             var rowset = new Rowset(Schema.GetForTypedRow(typeof(PersonWithNesting)));
-                                        
+
             for(var i=0; i<10; i++)
              rowset.Insert( new PersonWithNesting{
                                     ID = "POP{0}".Args(i),
@@ -263,11 +287,11 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    });
-            
+
             var json = rowset.ToJSON( NFX.Serialization.JSON.JSONWritingOptions.PrettyPrintRowsAsMap);// );
-           
+
             Console.WriteLine( json);
 
             var rowset2 = json.JSONToDynamic();
@@ -277,7 +301,7 @@ namespace NFX.NUnit.DataAccess
         }
 
 
-        [TestCase] 
+        [TestCase]
         public void JSON_SerializeRow_ComplexTypedRow_Map()
         {
             var row1 =  new PersonWithNesting{
@@ -292,11 +316,11 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    };
-            
+
             var json = row1.ToJSON( NFX.Serialization.JSON.JSONWritingOptions.PrettyPrintRowsAsMap);//AS MAP!!!!
-           
+
             Console.WriteLine(json);
 
             var row2 = json.JSONToDynamic();
@@ -309,7 +333,7 @@ namespace NFX.NUnit.DataAccess
             Assert.AreEqual("234234",  row2.History1[1].ID);
         }
 
-        [TestCase] 
+        [TestCase]
         public void JSON_SerializeRow_ComplexTypedRow_Array()
         {
             var row1 =  new PersonWithNesting{
@@ -324,11 +348,11 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    };
-            
+
             var json = row1.ToJSON( NFX.Serialization.JSON.JSONWritingOptions.PrettyPrint);//AS ARRAY
-           
+
             Console.WriteLine(json);
 
             var row2 = json.JSONToDynamic();
@@ -341,7 +365,7 @@ namespace NFX.NUnit.DataAccess
             Assert.AreEqual("234234",  row2[row1.Schema["History1"].Order][1][0]);
         }
 
-        [TestCase] 
+        [TestCase]
         public void JSON_SerializeRow_ComplexTypedRow_WithSchema()
         {
             var row1 =  new PersonWithNesting{
@@ -356,14 +380,14 @@ namespace NFX.NUnit.DataAccess
                                       new HistoryItem{ ID = "789211", StartDate = DateTime.Now, Description="Chaplin with us" },
                                       new HistoryItem{ ID = "234234", StartDate = DateTime.Now, Description="Chaplin with you" }
                                     },
-                                    History2  = new HistoryItem[2] 
+                                    History2  = new HistoryItem[2]
                                    };
-            
-            
+
+
             var tbl1 = new Rowset(row1.Schema);
             tbl1.Add(row1);
-            
-            
+
+
             var json = tbl1.ToJSON( new NFX.Serialization.JSON.JSONWritingOptions
                                    {
                                      RowsetMetadata = true,
@@ -371,10 +395,10 @@ namespace NFX.NUnit.DataAccess
                                        IndentWidth = 2,
                                         MemberLineBreak = true,
                                          ObjectLineBreak = true,
-                                          RowsAsMap = true, 
+                                          RowsAsMap = true,
                                            Purpose = JSONSerializationPurpose.Marshalling
                                    });//AS MAP
-           
+
             Console.WriteLine(json);
 
             var tbl2 = json.JSONToDynamic();

@@ -468,5 +468,45 @@ namespace NFX.NUnit.Web.Client
       Assert.AreEqual(DataKind.Text, attr.Kind);
       Assert.AreEqual("Default kind is Text", rec["DFT"]);
     }
+
+    [TestCase]
+    public void Validate_NoError_ComplexValueList()
+    {
+      var json =
+@"{
+  'fields':[
+  {'def':
+   {'Name':'Tax_Code',
+    'Type':'string',
+    'Description':'Tax Code',
+    'Required':true,
+    'MinSize':1,
+    'Size':32,
+    'LookupDict':
+    {'values':[
+      {'id':'GNR',
+       'val':'GNR',
+       'children':[
+       {'id':'A',
+        'val':'A',
+        'name':'Always Taxable',
+        'descr':null},
+       {'id':'N',
+        'val':'N',
+        'name':'Always Nontaxable',
+        'descr':null}
+       ]
+      }]
+    }}}]}";
+
+      var rec = new NFX.Wave.Client.Record(json);
+      rec["Tax_Code"] = "GNR.A";
+      var error = rec.Validate();
+      Assert.IsNull(error);
+
+      rec["Tax_Code"] = "CLTH";
+      error = rec.Validate();
+      Assert.IsNull(error);
+    }
   }
 }

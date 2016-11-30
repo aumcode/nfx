@@ -31,6 +31,9 @@ namespace NFX.Web.Shipping
   {
     #region CONSTS
 
+      public const string CONFIG_CARRIERS_SECTION = "carriers";
+      public const string CONFIG_CARRIER_SECTION = "carrier";
+
       public const string CONFIG_SHIPPING_PROCESSING_SECTION = "shipping-processing";
       public const string CONFIG_SHIPPING_SYSTEM_HOST_SECTION = "shipping-system-host";
       public const string CONFIG_SHIPPING_SYSTEM_SECTION = "shipping-system";
@@ -170,14 +173,16 @@ namespace NFX.Web.Shipping
 
       private readonly List<ShippingSession> m_Sessions;
 
+      private IEnumerable<ShippingCarrier> m_PreconfiguredShippingCarriers;
+
       private bool m_InstrumentationEnabled;
       private Time.Event m_InstrumentationEvent;
       private int m_WebServiceCallTimeoutMs;
 
       private long m_stat_CreateLabelCount, m_stat_CreateLabelErrorCount;
-      private long m_stat_CreateReturnLabelCount, m_stat_CreateReturnLabelErrorCount;
       private long m_stat_TrackShipmentCount, m_stat_TrackShipmentErrorCount;
       private long m_stat_ValidateAddressCount, m_stat_ValidateAddressErrorCount;
+      private long m_stat_EstimateShippingCostErrorCount, m_stat_EstimateShippingCostCount;
 
     #endregion
 
@@ -250,11 +255,16 @@ namespace NFX.Web.Shipping
 
       public abstract Label CreateLabel(ShippingSession session, IShippingContext context, Shipment shipment);
 
-      public abstract Label CreateReturnLabel(ShippingSession session, IShippingContext context, Shipment shipment, object labelID);
+      public abstract TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber);
 
-      public abstract TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string trackingNumber);
+      public abstract Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error);
 
-      public abstract Exception ValidateAddress(ShippingSession session, IShippingContext context, Address address);
+      public virtual IEnumerable<ShippingCarrier> GetShippingCarriers(ShippingSession session, IShippingContext context)
+      {
+        return m_PreconfiguredShippingCarriers;
+      }
+
+      public abstract Financial.Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment);
 
     #endregion
 
@@ -289,6 +299,16 @@ namespace NFX.Web.Shipping
         }
 
         ConfigAttribute.Apply(this, node);
+
+        var carriers = new List<ShippingCarrier>();
+
+        var snodes = node[CONFIG_CARRIERS_SECTION].Children.Where(n=>n.IsSameName(CONFIG_CARRIER_SECTION));
+        foreach(var snode in snodes)
+        {
+            var carrier = FactoryUtils.MakeAndConfigure<ShippingCarrier>(snode, typeof(ShippingCarrier), new object[] { this });
+            carriers.Add(carrier);
+        }
+        m_PreconfiguredShippingCarriers = carriers;
       }
 
       protected override void DoStart()
@@ -346,16 +366,6 @@ namespace NFX.Web.Shipping
         Interlocked.Increment(ref m_stat_CreateLabelCount);
       }
 
-      protected void StatCreateReturnLabelError()
-      {
-        Interlocked.Increment(ref m_stat_CreateReturnLabelErrorCount);
-      }
-
-      protected void StatCreateReturnLabel()
-      {
-        Interlocked.Increment(ref m_stat_CreateReturnLabelCount);
-      }
-
       protected void StatTrackShipmentErrorCount()
       {
         Interlocked.Increment(ref m_stat_TrackShipmentErrorCount);
@@ -376,6 +386,16 @@ namespace NFX.Web.Shipping
         Interlocked.Increment(ref m_stat_ValidateAddressCount);
       }
 
+      protected void StatEstimateShippingCostErrorCount()
+      {
+        Interlocked.Increment(ref m_stat_EstimateShippingCostErrorCount);
+      }
+
+      protected void StatEstimateShippingCostCount()
+      {
+        Interlocked.Increment(ref m_stat_EstimateShippingCostCount);
+      }
+
     #endregion
 
     #region .pvt
@@ -390,12 +410,6 @@ namespace NFX.Web.Shipping
         Instrumentation.LabelErrorCount.Record(src, m_stat_CreateLabelErrorCount);
         m_stat_CreateLabelErrorCount = 0;
 
-        Instrumentation.LabelErrorCount.Record(src, m_stat_CreateReturnLabelCount);
-        m_stat_CreateReturnLabelCount = 0;
-
-        Instrumentation.LabelErrorCount.Record(src, m_stat_CreateReturnLabelErrorCount);
-        m_stat_CreateReturnLabelErrorCount = 0;
-
         Instrumentation.LabelErrorCount.Record(src, m_stat_TrackShipmentCount);
         m_stat_TrackShipmentCount = 0;
 
@@ -407,18 +421,24 @@ namespace NFX.Web.Shipping
 
         Instrumentation.LabelErrorCount.Record(src, m_stat_ValidateAddressCount);
         m_stat_ValidateAddressCount = 0;
+
+        Instrumentation.LabelErrorCount.Record(src, m_stat_EstimateShippingCostErrorCount);
+        m_stat_EstimateShippingCostErrorCount = 0;
+
+        Instrumentation.LabelErrorCount.Record(src, m_stat_EstimateShippingCostCount);
+        m_stat_EstimateShippingCostCount = 0;
       }
 
       private void resetStats()
       {
         m_stat_CreateLabelCount = 0;
         m_stat_CreateLabelErrorCount = 0;
-        m_stat_CreateReturnLabelCount = 0;
-        m_stat_CreateReturnLabelErrorCount = 0;
         m_stat_TrackShipmentCount = 0;
         m_stat_TrackShipmentErrorCount = 0;
         m_stat_ValidateAddressCount = 0;
         m_stat_ValidateAddressErrorCount = 0;
+        m_stat_EstimateShippingCostCount = 0;
+        m_stat_EstimateShippingCostErrorCount = 0;
       }
 
     #endregion

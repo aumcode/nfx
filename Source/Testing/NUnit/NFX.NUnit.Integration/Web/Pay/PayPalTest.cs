@@ -14,112 +14,187 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
+
 using System;
 using System.Linq;
 
-using NFX.Web;
-using NFX.Web.Pay;
-using NFX.Web.Pay.PayPal;
 using NUnit.Framework;
-using NFX.Financial;
+
 using NFX.ApplicationModel;
+using NFX.Web.Pay;
+using NFX.Financial;
+using NFX.Web.Pay.PayPal;
 
 namespace NFX.NUnit.Integration.Web.Pay
 {
-    [TestFixture]
-    public class PayPalTest : ExternalCfg
+  [TestFixture]
+  public class PayPalTest
+  {
+    public const string LACONF = @"
+    nfx
     {
-        [Test]
-        public void GetAuthTokenTest()
-        {
-            var conf = LACONF.AsLaconicConfig();
-            var paySystem = getPaySystem();
+      paypal-server-url='https://api.sandbox.paypal.com'
 
-            using (var app = new ServiceBaseApplication(null, conf))
-            using (var session = paySystem.StartSession())
+      starters
+      {
+        starter
+        {
+          name='Pay Systems'
+          type='NFX.Web.Pay.PaySystemStarter, NFX.Web'
+          application-start-break-on-exception=true
+        }
+      }
+
+      web-settings
+      {
+        service-point-manager
+        {
+          security-protocol=4032 // Tls|Tls11|Tls12 binary flag
+
+          service-point { uri=$(/$paypal-server-url) expect-100-continue=true }
+
+          policy
+          {
+            default-certificate-validation
             {
-                Assert.IsNotNull(session);
-                Assert.IsInstanceOf<PayPalSession>(session);
-                Assert.IsNotNull(session.User);
-                Assert.AreEqual(session.User.AuthenticationType, PayPalSystem.PAYPAL_REALM);
-                Assert.IsNotNull(session.User.Credentials);
-                Assert.IsInstanceOf<PayPalCredentials>(session.User.Credentials);
-                Assert.IsNotNull(session.User.AuthToken.Data);
-                Assert.IsInstanceOf<PayPalOAuthToken>(session.User.AuthToken.Data);
-
-                var token = session.User.AuthToken.Data as PayPalOAuthToken;
-
-                Assert.IsTrue(token.ObtainTime > App.TimeSource.Now.AddMinutes(-1));
-                Assert.IsTrue(token.ObtainTime < App.TimeSource.Now);
-                Assert.AreEqual(3600, token.ExpirationMargin);
-                Assert.IsNotNullOrEmpty(token.ApplicationID);
-                Assert.IsTrue(token.ExpiresInSeconds > 0);
-                Assert.IsNotNullOrEmpty(token.AccessToken);
-                Assert.IsNotNullOrEmpty(token.Scope);
-                Assert.IsNotNullOrEmpty(token.Nonce);
+              case { uri=$(/$paypal-server-url) trusted=true}
             }
+          }
         }
 
-        [Test]
-        public void SimplePayoutTest()
+        payment-processing
         {
-            var conf = LACONF.AsLaconicConfig();
-            var paySystem = getPaySystem();
+          pay-system-host
+          {
+            name='PayPalPrimary'
+            type='NFX.NUnit.Integration.Web.Pay.FakePaySystemHost, NFX.NUnit.Integration'
 
-            using (var app = new ServiceBaseApplication(null, conf))
-            using (var session = paySystem.StartSession() as PayPalSession)
+            paypal-valid-account=$(~PAYPAL_SANDBOX_VALID_ACCOUNT)
+          }
+
+          pay-system
+          {
+            name='PayPal'
+            type='NFX.Web.Pay.PayPal.PayPalSystem, NFX.Web'
+            auto-start=true
+
+            api-uri=$(/$paypal-server-url)
+
+            payout-email-subject='Payout from NFX PayPalTest'
+            payout-note='Thanks for using NFX PayPalTest'
+
+            default-session-connect-params
             {
-                var to = new Account("user", 211, 3000001);
-                var amount = new Amount("USD", 1.0m);
-                var transaction = session.Transfer(null, Account.EmptyInstance, to, amount);
-                Assert.IsNotNull(transaction);
-                Assert.AreEqual(TransactionType.Transfer, transaction.Type);
-                Assert.AreEqual(amount, transaction.Amount);
-                Assert.AreEqual(Account.EmptyInstance, transaction.From);
-                Assert.AreEqual(to, transaction.To);
+              name='PayPalPayoutsPrimary'
+              type='NFX.Web.Pay.PayPal.PayPalConnectionParameters, NFX.Web'
+
+              client-id=$(~PAYPAL_SANDBOX_CLIENT_ID)
+              client-secret=$(~PAYPAL_SANDBOX_CLIENT_SECRET)
             }
+          }
         }
+      }
+    }";
 
-        [Test]
-        [ExpectedException(typeof(PayPalPaymentException), ExpectedMessage = "Receiver is unregistered", MatchType = MessageMatch.Contains)]
-        public void PayoutWithUngegisteredPPUserTest()
-        {
-            var conf = LACONF.AsLaconicConfig();
-            var paySystem = getPaySystem();
+    private ServiceBaseApplication m_App;
 
-            using (var app = new ServiceBaseApplication(null, conf))
-            using (var session = paySystem.StartSession() as PayPalSession)
-            {
-                var to = new Account("user", 212, 3000011);
-                var amount = new Amount("USD", 1.0m);
-                session.Transfer(null, Account.EmptyInstance, to, amount);
-            }
-        }
-
-        [Test]
-        [ExpectedException(typeof(PayPalPaymentException))]
-        public void PayoutLimitExceedPayoutTest()
-        {
-            var conf = LACONF.AsLaconicConfig();
-            var paySystem = getPaySystem();
-
-            using (var app = new ServiceBaseApplication(null, conf))
-            using (var session = paySystem.StartSession() as PayPalSession)
-            {
-                var to = new Account("user", 211, 3000001);
-                var amount = new Amount("USD", 100000.0m); // paypal payout limit is $10k
-                var transaction = session.Transfer(null, Account.EmptyInstance, to, amount);
-            }
-        }
-
-        private PaySystem getPaySystem()
-        {
-            var paymentSection = LACONF.AsLaconicConfig()[WebSettings.CONFIG_WEBSETTINGS_SECTION][PaySystem.CONFIG_PAYMENT_PROCESSING_SECTION];
-            var ppSection = paymentSection.Children.First(p => p.AttrByName("name").Value == "PayPal");
-
-            var ps = PaySystem.Make<PayPalSystem>(null, ppSection);
-
-            return ps;
-        }
+    [TestFixtureSetUp]
+    public void SetUp()
+    {
+      var config = LACONF.AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+      m_App = new ServiceBaseApplication(null, config);
     }
+
+    [TestFixtureTearDown]
+    public void TearDown() { DisposableObject.DisposeAndNull(ref m_App); }
+
+    [Test]
+    public void GetAuthTokenTest()
+    {
+      var ps = PaySystem;
+
+      using (var session = ps.StartSession())
+      {
+        Assert.IsNotNull(session);
+        Assert.IsInstanceOf<PayPalSession>(session);
+        Assert.IsNotNull(session.User);
+        Assert.AreEqual(session.User.AuthenticationType, PayPalSystem.PAYPAL_REALM);
+        Assert.IsNotNull(session.User.Credentials);
+        Assert.IsInstanceOf<PayPalCredentials>(session.User.Credentials);
+
+        // token occured on first api call
+      }
+    }
+
+    [Test]
+    public void SimplePayoutTest()
+    {
+      var ps = PaySystem;
+
+      using (var session = ps.StartSession())
+      {
+        var to = FakePaySystemHost.PAYPAL_CORRECT_ACCOUNT;
+        var amount = new Amount("USD", 1.0m);
+        var transaction = session.Transfer(null, Account.EmptyInstance, to, amount);
+        Assert.IsNotNull(transaction);
+        Assert.AreEqual(TransactionType.Transfer, transaction.Type);
+        Assert.AreEqual(amount, transaction.Amount);
+        Assert.AreEqual(Account.EmptyInstance, transaction.From);
+        Assert.AreEqual(to, transaction.To);
+
+        Assert.IsNotNull(session.User.AuthToken.Data); // token occured on first call
+        Assert.IsInstanceOf<PayPalOAuthToken>(session.User.AuthToken.Data);
+
+        var token = session.User.AuthToken.Data as PayPalOAuthToken;
+
+        Assert.IsTrue(token.ObtainTime > App.TimeSource.Now.AddMinutes(-1));
+        Assert.IsTrue(token.ObtainTime < App.TimeSource.Now);
+        Assert.AreEqual(3600, token.ExpirationMargin);
+        Assert.IsNotNullOrEmpty(token.ApplicationID);
+        Assert.IsTrue(token.ExpiresInSeconds > 0);
+        Assert.IsNotNullOrEmpty(token.AccessToken);
+        Assert.IsNotNullOrEmpty(token.Scope);
+        Assert.IsNotNullOrEmpty(token.Nonce);
+      }
+    }
+
+    [Test]
+    [ExpectedException(typeof(PayPalPaymentException), ExpectedMessage = "Receiver is unregistered", MatchType = MessageMatch.Contains)]
+    public void PayoutWithUngegisteredPPUserTest()
+    {
+      var ps = PaySystem;
+
+      using (var session = ps.StartSession())
+      {
+        var to = FakePaySystemHost.PAYPAL_INCORRECT_ACCOUNT;
+        var amount = new Amount("USD", 1.0m);
+        session.Transfer(null, Account.EmptyInstance, to, amount);
+      }
+    }
+
+    [Test]
+    [ExpectedException(typeof(PayPalPaymentException))]
+    public void PayoutLimitExceedPayoutTest()
+    {
+      var ps = PaySystem;
+
+      using (var session = ps.StartSession())
+      {
+        var to = new Account("user", 211, 3000001);
+        var amount = new Amount("USD", 100000.0m); // paypal payout limit is $10k
+        var transaction = session.Transfer(null, Account.EmptyInstance, to, amount);
+      }
+    }
+
+    private IPaySystem m_PaySystem;
+    public IPaySystem PaySystem
+    {
+      get
+      {
+        if (m_PaySystem == null) { m_PaySystem = NFX.Web.Pay.PaySystem.Instances["PayPal"]; }
+        return m_PaySystem;
+      }
+    }
+
+  }
 }

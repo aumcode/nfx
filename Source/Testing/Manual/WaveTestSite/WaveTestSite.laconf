@@ -305,8 +305,6 @@
                 match{ path="stock/{*path}"}
             }
 
-
-
             handler
             {
 
@@ -380,7 +378,7 @@
 
                 root-path=$"c:\users\anton\desktop"
 
-                //cache-max-age-sec="10"
+                //cache-control { max-age-sec=10 }
 
                 match
                 {

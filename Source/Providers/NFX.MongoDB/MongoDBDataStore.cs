@@ -287,7 +287,7 @@ namespace NFX.DataAccess.MongoDB
         }
 
 
-        public ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
+        public CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
         {
             return new MongoDBCRUDScriptQueryHandler(this, querySource);
         }

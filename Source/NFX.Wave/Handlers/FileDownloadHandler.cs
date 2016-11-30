@@ -33,6 +33,7 @@ namespace NFX.Wave.Handlers
   /// </summary>
   public class FileDownloadHandler : WorkHandler
   {
+     public const string CONFIG_CACHE_CONTROL_SECTION = "cache-control";
 
      public const string VAR_FILE_PATH  = "filePath";
      public const string VAR_ATTACHMENT = "attachment";
@@ -48,7 +49,10 @@ namespace NFX.Wave.Handlers
      protected FileDownloadHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher, confNode)
      {
         ConfigAttribute.Apply(this, confNode);
+        if (confNode != null && confNode.Exists)
+          m_CacheControl = ConfigAttribute.Apply(new CacheControl(), confNode[CONFIG_CACHE_CONTROL_SECTION]);
      }
+
 
      [Config]
      private string m_RootPath;
@@ -57,13 +61,12 @@ namespace NFX.Wave.Handlers
      private bool m_Throw = true;
 
      [Config]
-     private int m_CacheMaxAgeSec;
-
-     [Config]
      private bool m_UsePortalHub;
 
      [Config]
      private string m_VersionSegmentPrefix;
+
+     private CacheControl m_CacheControl = CacheControl.PublicMaxAgeSec();
 
      /// <summary>
      /// Specifies local root path
@@ -84,21 +87,18 @@ namespace NFX.Wave.Handlers
      }
 
      /// <summary>
-     /// Specifies the maximum age in cache in seconds. Zero means - do not cache the file
-     /// </summary>
-     public int CacheMaxAgeSec
-     {
-        get {return m_CacheMaxAgeSec;}
-        set {m_CacheMaxAgeSec = value<0 ? 0 : value;}
-     }
-
-     /// <summary>
      /// When true, downloads files from PortalHub.ContentFileSystem for selected portal
      /// </summary>
      public bool UsePortalHub
      {
        get { return m_UsePortalHub;}
        set { m_UsePortalHub = value;}
+     }
+
+     public CacheControl CacheControl
+     {
+       get { return m_CacheControl; }
+       set { m_CacheControl = value; }
      }
 
      /// <summary>
@@ -199,10 +199,7 @@ namespace NFX.Wave.Handlers
              if (!work.Response.WasWrittenTo)
                work.Response.Buffered = !chunked;
 
-             if (m_CacheMaxAgeSec>0)
-              work.Response.Headers[HttpResponseHeader.CacheControl] = "private, max-age={0}, must-revalidate".Args(m_CacheMaxAgeSec);
-             else
-              work.Response.Headers[HttpResponseHeader.CacheControl] = "no-cache";
+             work.Response.SetCacheControlHeaders(CacheControl);
 
              if (fsFile==null)
                work.Response.WriteFile(fileName, attachment: attachment);

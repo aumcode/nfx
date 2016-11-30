@@ -27,17 +27,17 @@ using NFX.Serialization.BSON;
 namespace NFX.DataAccess.MongoDB
 {
     /// <summary>
-    /// Executes MySql CRUD script-based queries
+    /// Executes MongoDB CRUD script-based queries
     /// </summary>
     public sealed class MongoDBCRUDScriptQueryHandler : MongoDBCRUDQueryHandlerBase
     {
-      public const string QUERY_PARAM_SKIP_COUNT  = "__SKIP_COUNT";
-      public const string QUERY_PARAM_FETCH_BY    = "__FETCH_BY";
-      public const string QUERY_PARAM_FETCH_LIMIT = "__FETCH_LIMIT";
+        public const string QUERY_PARAM_SKIP_COUNT  = "__SKIP_COUNT";
+        public const string QUERY_PARAM_FETCH_BY    = "__FETCH_BY";
+        public const string QUERY_PARAM_FETCH_LIMIT = "__FETCH_LIMIT";
 
-      public MongoDBCRUDScriptQueryHandler(MongoDBDataStore store, QuerySource source) : base(store, source)
-      {
-      }
+        public MongoDBCRUDScriptQueryHandler(MongoDBDataStore store, QuerySource source) : base(store, source)
+        {
+        }
 
 
         public override Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
@@ -45,12 +45,12 @@ namespace NFX.DataAccess.MongoDB
           var ctx = (MongoDBCRUDQueryExecutionContext)context;
 
           Connector.Collection collection;
-          var qry = MakeQuery(ctx.Database, query, out collection );
+          var qry = MakeQuery(ctx.Database, query, Source, out collection );
 
           var doc = collection.FindOne(qry);
           if (doc==null) return null;
 
-          return m_Store.Converter.InferSchemaFromBSONDocument(doc);
+          return Store.Converter.InferSchemaFromBSONDocument(doc);
         }
 
 
@@ -59,7 +59,7 @@ namespace NFX.DataAccess.MongoDB
           var ctx = (MongoDBCRUDQueryExecutionContext)context;
 
           Connector.Collection collection;
-          var qry = MakeQuery(ctx.Database, query, out collection );
+          var qry = MakeQuery(ctx.Database, query, Source, out collection );
 
           Schema schema = null;
           var rtp = query.ResultRowType;
@@ -85,12 +85,12 @@ namespace NFX.DataAccess.MongoDB
             {
               if (schema==null)
               {
-                schema = m_Store.Converter.InferSchemaFromBSONDocument(doc);
+                schema = Store.Converter.InferSchemaFromBSONDocument(doc);
                 result = new Rowset(schema);
               }
 
               var row = Row.MakeRow(schema, query.ResultRowType);
-              m_Store.Converter.BSONDocumentToRow(doc, row, m_Store.TargetName);
+              Store.Converter.BSONDocumentToRow(doc, row, Store.TargetName);
               result.Add( row );
 
               if (fetchLimit>0 && result.Count>=fetchLimit) break;
@@ -104,7 +104,7 @@ namespace NFX.DataAccess.MongoDB
           var ctx = (MongoDBCRUDQueryExecutionContext)context;
 
           Connector.Collection collection;
-          var qry = MakeQuery(ctx.Database, query, out collection );
+          var qry = MakeQuery(ctx.Database, query, Source, out collection );
 
           Schema schema = null;
           var rtp = query.ResultRowType;
@@ -131,11 +131,11 @@ namespace NFX.DataAccess.MongoDB
                 {
                   if (schema==null)
                   {
-                    schema = m_Store.Converter.InferSchemaFromBSONDocument(doc);
+                    schema = Store.Converter.InferSchemaFromBSONDocument(doc);
                   }
 
                   var row = Row.MakeRow(schema, query.ResultRowType);
-                  m_Store.Converter.BSONDocumentToRow(doc, row, m_Store.TargetName);
+                  Store.Converter.BSONDocumentToRow(doc, row, Store.TargetName);
                   yield return row;
                 }
             }
@@ -145,16 +145,9 @@ namespace NFX.DataAccess.MongoDB
         {
             var ctx = (MongoDBCRUDQueryExecutionContext)context;
 
-            var qry = MakeQuery(query);
+            var qry = MakeQuery(query, Source);
 
             return ctx.Database.RunCommand( qry ) != null ? 1 : 0;
         }
-
-
     }
-
-
-
-
-
 }

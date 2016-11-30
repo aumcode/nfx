@@ -51,7 +51,7 @@ namespace NFX.DataAccess.CRUD
             private string m_ScriptAssembly;
             private ICRUDDataStoreImplementation m_DataStore;
             private List<string> m_Locations = new List<string>();
-            private Registry<ICRUDQueryHandler> m_Handlers = new Registry<ICRUDQueryHandler>();
+            private Registry<CRUDQueryHandler> m_Handlers = new Registry<CRUDQueryHandler>();
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace NFX.DataAccess.CRUD
                 get { return m_Locations;}
             }
 
-            public IRegistry<ICRUDQueryHandler> Handlers
+            public IRegistry<CRUDQueryHandler> Handlers
             {
                 get { return m_Handlers;}
             }
@@ -107,7 +107,7 @@ namespace NFX.DataAccess.CRUD
             }
 
 
-            public ICRUDQueryHandler Resolve(Query query)
+            public CRUDQueryHandler Resolve(Query query)
             {
                 m_Started = true;
                 var name = query.Name;
@@ -160,7 +160,7 @@ namespace NFX.DataAccess.CRUD
             }
 
 
-            private ICRUDQueryHandler searchForType(string name)
+            private CRUDQueryHandler searchForType(string name)
             {
                 foreach(var loc in m_Locations)
                 {
@@ -177,16 +177,16 @@ namespace NFX.DataAccess.CRUD
                     var t = Type.GetType(tname, false, true);
                     if (t!=null)
                     {
-                        if (typeof(ICRUDQueryHandler).IsAssignableFrom(t))
+                        if (typeof(CRUDQueryHandler).IsAssignableFrom(t))
                         {
-                            return Activator.CreateInstance(t, m_DataStore) as ICRUDQueryHandler;
+                            return Activator.CreateInstance(t, m_DataStore, name) as CRUDQueryHandler;
                         }
                     }
                 }
                 return null;
             }
 
-            private ICRUDQueryHandler searchForScript(string name)
+            private CRUDQueryHandler searchForScript(string name)
             {
                 var asm = Assembly.Load(m_ScriptAssembly);
                 var asmname = asm.FullName;
@@ -195,9 +195,9 @@ namespace NFX.DataAccess.CRUD
                  asmname = asmname.Substring(0, ic);
                 var resources = asm.GetManifestResourceNames();
 
-                name = name + m_DataStore.ScriptFileSuffix;
+                var resName = name + m_DataStore.ScriptFileSuffix;
 
-                var res = resources.FirstOrDefault(r => r.EqualsIgnoreCase(name) || r.EqualsIgnoreCase(asmname+"."+name));
+                var res = resources.FirstOrDefault(r => r.EqualsIgnoreCase(resName) || r.EqualsIgnoreCase(asmname+"."+resName));
 
                 if (res!=null)
                 {

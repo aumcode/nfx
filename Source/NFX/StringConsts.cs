@@ -415,7 +415,7 @@ namespace NFX
         "JSONConfig must be represented by a valid JSON map(hash) with a single root key, not array or multikey map";
 
     public const string CONFIG_JSON_STRUCTURE_ERROR =
-        "JSONConfig wa supplied content with invalid logical structure, all members of an array must be non-null maps that represent config sub-sections";
+        "JSONConfig was supplied content with invalid logical structure, all members of an array must be non-null maps that represent config sub-sections";
 
     public const string WORK_ITEM_NOT_AGGREGATABLE_ERROR =
         "Work item must implement IAggregatableWorkItem interface to be posted in this queue";
@@ -1112,6 +1112,9 @@ namespace NFX
 
     public const string BUFFER_LONGER_THAN_ALLOWED_ERROR =
         "Byte[] buffer has a length of {0} bytes which is over the allowed maximum of {1} bytes";
+
+    public const string BSON_DECIMAL_INT32_INT64_CONVERTION_ERROR =
+        "Either BSONInt32 or BSONInt64 required for convertion to decimal";
 
     public const string GDID_BUFFER_ERROR =
         "Error converting GDID data buffer: {0}";

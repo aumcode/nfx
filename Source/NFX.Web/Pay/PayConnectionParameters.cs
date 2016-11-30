@@ -27,7 +27,7 @@ using NFX.Security;
 
 namespace NFX.Web.Pay
 {
-  public class PayConnectionParameters: INamed, IConfigurable
+  public class ConnectionParameters: INamed, IConfigurable
   {
     #region Static
 
@@ -43,13 +43,13 @@ namespace NFX.Web.Pay
       }
 
 
-      public static TParams Make<TParams>(IConfigSectionNode node) where TParams: PayConnectionParameters
+      public static TParams Make<TParams>(IConfigSectionNode node) where TParams: ConnectionParameters
       {
         return FactoryUtils.MakeAndConfigure<TParams>(node, typeof(TParams), args: new object[] {node});
       }
 
       public static TParams Make<TParams>(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
-        where TParams: PayConnectionParameters
+        where TParams: ConnectionParameters
       {
         var cfg = Configuration.ProviderLoadFromString(connStr, format).Root;
         return Make<TParams>(cfg);
@@ -59,11 +59,11 @@ namespace NFX.Web.Pay
 
     #region ctor
 
-		  public PayConnectionParameters() {}
+		  public ConnectionParameters() {}
 
-      public PayConnectionParameters(IConfigSectionNode node) { Configure(node); }
+      public ConnectionParameters(IConfigSectionNode node) { Configure(node); }
 
-      public PayConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
+      public ConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
       {
         var conf = Configuration.ProviderLoadFromString(connStr, format).Root;
       }

@@ -37,6 +37,7 @@ namespace NFX.Wave
       public static readonly object JSON_RESULT_ERROR = new {OK = false};
 
 
+      public const string HEADER_IF_MODIFIED_SINCE = "If-Modified-Since";
       public const string HEADER_API_VERSION = "wv-api-ver";
       public const string HEADER_API_SESSION = "wv-api-session";
 

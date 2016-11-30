@@ -324,10 +324,15 @@ namespace NFX.RelationalModel
                     entity.TransformedShortName = entity.TransformedName;
                 }
 
-                if (!CaseSensitiveNames)
+                if (NameCaseSensitivity==RelationalModel.NameCaseSensitivity.ToUpper)
                 {
                     entity.TransformedName = entity.TransformedName.ToUpperInvariant();
                     entity.TransformedShortName = entity.TransformedShortName.ToUpperInvariant();
+                }
+                 else if (NameCaseSensitivity==RelationalModel.NameCaseSensitivity.ToLower)
+                {
+                    entity.TransformedName = entity.TransformedName.ToLowerInvariant();
+                    entity.TransformedShortName = entity.TransformedShortName.ToLowerInvariant();
                 }
 
             }

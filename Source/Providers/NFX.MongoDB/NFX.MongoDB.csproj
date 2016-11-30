@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\Output\Release\NFX.MongoDB.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

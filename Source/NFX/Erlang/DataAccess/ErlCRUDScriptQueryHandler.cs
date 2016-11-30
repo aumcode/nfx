@@ -29,7 +29,7 @@ namespace NFX.DataAccess.Erlang
   /// <summary>
   /// Executes Erlang CRUD script-based queries
   /// </summary>
-  public sealed class ErlCRUDScriptQueryHandler : ICRUDQueryHandler
+  public sealed class ErlCRUDScriptQueryHandler : CRUDQueryHandler<ErlDataStore>
   {
     #region CONSTS
 
@@ -61,44 +61,31 @@ namespace NFX.DataAccess.Erlang
     #endregion
 
     #region .ctor
-        public ErlCRUDScriptQueryHandler(ErlDataStore store, QuerySource source)
-        {
-          m_Store = store;
-          m_Source = source;
-        }
-    #endregion
-
-    #region Fields
-        private ErlDataStore m_Store;
-        private QuerySource m_Source;
+      public ErlCRUDScriptQueryHandler(ErlDataStore store, QuerySource source) : base(store, source) {}
     #endregion
 
     #region ICRUDQueryHandler
 
+      public ErlDataStore ErlStore { get { return (ErlDataStore)Store; } }
 
-      public string Name{ get { return m_Source.Name; }}
-
-      public ICRUDDataStore Store{ get { return m_Store;}}
-
-
-      public Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
+      public override Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
       {
-        return m_Store.Map.GetCRUDSchemaForName(m_Source.OriginalSource);
+        return ErlStore.Map.GetCRUDSchemaForName(Source.OriginalSource);
       }
 
-      public Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
+      public override Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
       {
         return TaskUtils.AsCompletedTask(() => GetSchema(context, query) );
       }
 
-      public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+      public override RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
       {
         var store = ((ErlCRUDQueryExecutionContext)context).DataStore;
         var mbox = ((ErlCRUDQueryExecutionContext)context).ErlMailBox;
 
-        var parsed = prepareQuery(m_Source);
+        var parsed = prepareQuery(Source);
 
-        var reqID = m_Store.NextRequestID;
+        var reqID = ErlStore.NextRequestID;
 
         var bind = new ErlVarBind();
 
@@ -152,16 +139,16 @@ namespace NFX.DataAccess.Erlang
         //  {tca_jaba, 2344, zap, "Zaplya xochet pit", false},
         //  {tca_jaba, 8944, tav, "User is not good", false}
         //]};
-        return m_Store.Map.ErlCRUDResponseToRowset(schema, rows, query.ResultRowType);
+        return ErlStore.Map.ErlCRUDResponseToRowset(schema, rows, query.ResultRowType);
       }
 
-      public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+      public override Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
       {
         return TaskUtils.AsCompletedTask(() => Execute(context, query, oneRow) );
       }
 
       //used for subscription
-      public int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
+      public override int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
       {
         var store = ((ErlCRUDQueryExecutionContext)context).DataStore;
         var mbox = ((ErlCRUDQueryExecutionContext)context).ErlMailBox;
@@ -170,9 +157,9 @@ namespace NFX.DataAccess.Erlang
         if (!ts.HasValue)
           throw new ErlDataAccessException(StringConsts.ERL_DS_QUERY_TMSTAMP_CTX_ABSENT_ERROR);
 
-        var parsed = prepareQuery(m_Source);
+        var parsed = prepareQuery(Source);
 
-        var reqID = m_Store.NextRequestID;
+        var reqID = ErlStore.NextRequestID;
 
         var bind = new ErlVarBind();
 
@@ -240,18 +227,18 @@ namespace NFX.DataAccess.Erlang
         return 0;
       }
 
-      public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
+      public override Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
       {
         return TaskUtils.AsCompletedTask(() => ExecuteWithoutFetch(context, query) );
       }
 
 
-      public Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
+      public override Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
       {
         throw new NotSupportedException("Erl.OpenCursor");
       }
 
-      public Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
+      public override Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
       {
         throw new NotSupportedException("Erl.OpenCursorAsync");
       }

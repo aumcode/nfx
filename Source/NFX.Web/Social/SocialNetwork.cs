@@ -38,7 +38,6 @@ namespace NFX.Web.Social
     public abstract class SocialNetwork: ServiceWithInstrumentationBase<object>, IWebClientCaller, ISocialNetworkImplementation
     {
       #region Const
-
         public const string CONFIG_AUTO_START_ATTR = "auto-start";
 
         public const int DEFAULT_TIMEOUT_MS_DEFAULT = 30 * 1000;
@@ -51,11 +50,9 @@ namespace NFX.Web.Social
         public const string SOCIALPOSTMESSAGE_PARAMNAME = "message";
 
         private static readonly TimeSpan INSTR_INTERVAL = TimeSpan.FromMilliseconds(3700);
-
       #endregion
 
       #region Static
-
         private static Registry<SocialNetwork> s_Instances = new Registry<SocialNetwork>();
 
         /// <summary>
@@ -157,9 +154,6 @@ namespace NFX.Web.Social
 
           return false;
         }
-
-
-
       #endregion
 
           #region Inner classes
@@ -185,6 +179,14 @@ namespace NFX.Web.Social
 
         protected SocialNetwork(string name = null, IConfigSectionNode cfg = null): base()
         {
+          m_WebServiceCallTimeoutMs = DEFAULT_TIMEOUT_MS_DEFAULT;
+          KeepAlive = true;
+          Pipelined = true;
+          GrantViewEmail = true;
+          GrantPost = true;
+          GrantAccessProfile = true;
+          GrantAccessFriends = true;
+
           var networkName = name;
 
           if (cfg != null)
@@ -198,10 +200,6 @@ namespace NFX.Web.Social
           if (networkName.IsNullOrWhiteSpace()) networkName = GetType().Name;
 
           Name = networkName;
-
-          m_WebServiceCallTimeoutMs = DEFAULT_TIMEOUT_MS_DEFAULT;
-          KeepAlive = true;
-          Pipelined = true;
         }
 
         protected override void Destructor()
@@ -306,10 +304,20 @@ namespace NFX.Web.Social
         [Config(Default = true)]
         public bool Pipelined { get; set; }
 
+        [Config(Default = true)]
+        public bool GrantViewEmail { get; set; }
+
+        [Config(Default = true)]
+        public bool GrantPost { get; set; }
+
+        [Config(Default = true)]
+        public bool GrantAccessProfile { get; set; }
+
+        [Config(Default = true)]
+        public bool GrantAccessFriends { get; set; }
       #endregion
 
       #region Public
-
         /// <summary>
         /// Returns href to login via social system/site
         /// </summary>
@@ -504,7 +512,6 @@ namespace NFX.Web.Social
       #endregion
 
       #region Protected
-
         protected override void DoStart()
         {
           if (!s_Instances.Register(this))
@@ -520,11 +527,9 @@ namespace NFX.Web.Social
         {
           dumpStats();
         }
-
       #endregion
 
       #region .pvt .impl
-
                     private void dumpStats()
                     {
                       var src = this.Name;

@@ -32,7 +32,7 @@ namespace NFX.DataAccess.CRUD
     }
 
 
-    public ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
+    public CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
     {
       throw new NotImplementedException();
     }

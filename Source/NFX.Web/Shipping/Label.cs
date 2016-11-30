@@ -21,49 +21,32 @@ using System.Text;
 
 namespace NFX.Web.Shipping
 {
-  public enum LabelFormat
-  {
-    PDF = 0,
-    PDF_4X6 = 1,
-    PNG = 2,
-    ZPLII = 3
-  }
-
-  public enum Carrier
-  {
-    Unknown = 0,
-    USPS = 1
-  }
-
   public struct Label
   {
-    public Label(object id,
+    public Label(string id,
                  string url,
-                 byte[] data,
                  LabelFormat format,
                  string trackingNumber,
-                 Carrier carrier,
+                 CarrierType carrier,
                  NFX.Financial.Amount rate) : this()
     {
       ID = id;
       CreateDate = App.TimeSource.UTCNow;
       URL = url;
-      Data = data;
       Format = format;
       TrackingNumber = trackingNumber;
       Carrier = carrier;
       Rate = rate;
     }
 
-    public object ID { get; private set; } // system-inner label ID
+    public string ID { get; private set; } // system-inner label ID
     public DateTime CreateDate { get; private set; }
 
     public string URL { get; private set; }
-    public byte[] Data { get; private set; }
     public LabelFormat Format { get; private set; }
 
     public string TrackingNumber { get; private set; }
-    public Carrier Carrier { get; private set; }
+    public CarrierType Carrier { get; private set; }
     public NFX.Financial.Amount Rate { get; private set; }
   }
 }

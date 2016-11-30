@@ -141,7 +141,7 @@ namespace NFX.DataAccess.CRUD
 
     public interface ICRUDDataStoreImplementation : ICRUDDataStore, IDataStoreImplementation
     {
-        ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource);
+        CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource);
     }
 
     /// <summary>
@@ -152,13 +152,13 @@ namespace NFX.DataAccess.CRUD
         /// <summary>
         /// Retrieves a handler for supplied query. The implementation must be thread-safe
         /// </summary>
-        ICRUDQueryHandler Resolve(Query query);
+        CRUDQueryHandler Resolve(Query query);
 
         string ScriptAssembly { get; set; }
 
         IList<string> HandlerLocations { get; }
 
-        IRegistry<ICRUDQueryHandler> Handlers { get; }
+        IRegistry<CRUDQueryHandler> Handlers { get; }
 
         /// <summary>
         /// Registers handler location.
@@ -172,60 +172,6 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         bool UnregisterHandlerLocation(string location);
 
-    }
-
-    /// <summary>
-    /// Represents an entity that can execute a query. The implementation may be called by multiple threads and must be safe
-    /// </summary>
-    public interface ICRUDQueryHandler : INamed
-    {
-        /// <summary>
-        /// Store instance that handler is under
-        /// </summary>
-        ICRUDDataStore Store { get;}
-
-
-        /// <summary>
-        /// Executes query without fetching any data but schema. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Schema GetSchema(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query without fetching any data but schema. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false);
-
-        /// <summary>
-        /// Executes query. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false);
-
-        /// <summary>
-        /// Executes query into Cursor. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query into Cursor. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query that dows not return results. The implementation may be called by multiple threads and must be safe.
-        /// Returns rows affected
-        /// </summary>
-        int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query that dows not return results. The implementation may be called by multiple threads and must be safe.
-        /// Returns rows affected
-        /// </summary>
-        Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query);
     }
 
     /// <summary>

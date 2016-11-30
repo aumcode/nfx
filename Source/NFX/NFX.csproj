@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -115,6 +115,7 @@
     <Compile Include="Collections\NamedInterlocked.cs" />
     <Compile Include="Collections\StringMap.cs" />
     <Compile Include="DataAccess\CRUD\CacheParams.cs" />
+    <Compile Include="DataAccess\CRUD\CRUDQueryHandler.cs" />
     <Compile Include="DataAccess\CRUD\iListReadOnly.cs" />
     <Compile Include="DataAccess\CRUD\JSONMappings.cs" />
     <Compile Include="DataAccess\CRUD\NotImplementedCRUDDataStore.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
     <Compile Include="Environment\ConfigNodeEqualityComparer.cs" />
+    <Compile Include="Environment\ConfigStringBuilder.cs" />
     <Compile Include="Environment\JSONConfiguration.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTcpTransport.cs" />
     <Compile Include="Erlang\Connect\Transport\ErlTransportFactory.cs" />
@@ -350,7 +352,7 @@
     <Compile Include="OS\Instrumentation\Gauges.cs" />
     <Compile Include="OS\ManyReadersOneWriterSynchronizer.cs" />
     <Compile Include="OS\NetworkUtils.cs" />
-    <Compile Include="Parsing\CSVParser.cs" />
+    <Compile Include="Serialization\CSV\CSVParser.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
     <Compile Include="SealedString.cs" />
@@ -366,6 +368,7 @@
     <Compile Include="Serialization\BSON\Exceptions.cs" />
     <Compile Include="Serialization\BSON\BSONSpecialValues.cs" />
     <Compile Include="Serialization\BSON\RowConverter.cs" />
+    <Compile Include="Serialization\CSV\CSVWritingOptions.cs" />
     <Compile Include="Serialization\JSON\JSONExtensions.cs" />
     <Compile Include="Serialization\JSON\JSONReadableWritableIntfs.cs" />
     <Compile Include="CodeAnalysis\JSON\JSONPatternMatchAttribute.cs" />
@@ -603,6 +606,7 @@
     <Compile Include="Serialization\POD\PortableObjectDocumentTransforms.cs" />
     <Compile Include="Serialization\POD\MetaTypes.cs" />
     <Compile Include="Serialization\POD\PortableObjectDocument.cs" />
+    <Compile Include="Serialization\CSV\CSVWriter.cs" />
     <Compile Include="Serialization\SerializationUtils.cs" />
     <Compile Include="Serialization\Slim\Arrays.cs" />
     <Compile Include="Serialization\Slim\Attributes.cs" />
@@ -626,6 +630,8 @@
     <Compile Include="ServiceModel\WorkItemAggregatorService.cs" />
     <Compile Include="ServiceModel\WorkQueue.cs" />
     <Compile Include="Standards\Countries_ISO3166_1.cs" />
+    <Compile Include="Standards\Distance.cs" />
+    <Compile Include="Standards\Weight.cs" />
     <Compile Include="StringConsts.cs" />
     <Compile Include="StringValueConversion.cs" />
     <Compile Include="TaskUtils.cs" />

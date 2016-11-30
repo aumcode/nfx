@@ -112,6 +112,11 @@ namespace NFX.Wave
         m_Prefixes = new EventedList<string,WaveServer>(this, true);
         m_Prefixes.GetReadOnlyEvent = (l) => Status != ControlStatus.Inactive;
       }
+
+      public WaveServer(string name) : this()
+      {
+        Name = name;
+      }
     #endregion
 
     #region Fields
@@ -318,6 +323,13 @@ namespace NFX.Wave
           m_Gate = value;
         }
       }
+
+      [Config]
+      public string GateCallerRealIpAddressHeader
+      {
+        get; set;
+      }
+
 
       /// <summary>
       /// Gets/sets work dispatcher
@@ -636,7 +648,7 @@ namespace NFX.Wave
          if (m_Gate!=null)
             try
             {
-              var action = m_Gate.CheckTraffic(new HTTPIncomingTraffic(listenerContext.Request));
+              var action = m_Gate.CheckTraffic(new HTTPIncomingTraffic(listenerContext.Request, GateCallerRealIpAddressHeader));
               if (action!=GateAction.Allow)
               {
                 //access denied

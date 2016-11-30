@@ -32,22 +32,20 @@ namespace NFX.NUnit.Integration.CRUD.MongoSpecific
   public class CountPerzons : MongoDBCRUDQueryHandlerBase
   {
 
-    public CountPerzons(MongoDBDataStore store) : base(store, null)
-    {
-      m_Source = new QuerySource(GetType().FullName, 
+    public CountPerzons(MongoDBDataStore store, string name) : base(store, new QuerySource(name,
         @"#pragma
 modify=MyPerzon
 
-{'Age': {'$gt': '$$fromAge', '$lt': '$$toAge'}}");
-    }
-    
-    
+{'Age': {'$gt': '$$fromAge', '$lt': '$$toAge'}}"))
+    { }
+
+
     public override RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
     {
       var ctx = (MongoDBCRUDQueryExecutionContext)context;
 
       NFX.DataAccess.MongoDB.Connector.Collection collection;
-      var qry = MakeQuery(ctx.Database, query, out collection);
+      var qry = MakeQuery(ctx.Database, query, Source, out collection);
 
       var rrow = new TResult();
 

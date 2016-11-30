@@ -51,8 +51,8 @@ namespace NFX.Web.Pay.Stripe
       {
         get
         {
-          if (m_User == null || m_User == User.Fake) return string.Empty;
-          var cred = m_User.Credentials as StripeCredentials;
+          if (!IsValid) return string.Empty;
+          var cred = User.Credentials as StripeCredentials;
           if (cred == null) return string.Empty;
           return cred.Email;
         }
@@ -62,8 +62,8 @@ namespace NFX.Web.Pay.Stripe
       {
         get
         {
-          if (m_User == null || m_User == User.Fake) return string.Empty;
-          var cred = m_User.Credentials as StripeCredentials;
+          if (!IsValid) return string.Empty;
+          var cred = User.Credentials as StripeCredentials;
           if (cred == null) return string.Empty;
           return cred.SecretKey;
         }

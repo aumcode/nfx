@@ -85,7 +85,7 @@ namespace NFX.Web.Pay.Stripe
 
       public override IPayWebTerminal WebTerminal { get { throw new NotImplementedException(); } }
 
-      protected override PaySession DoStartSession(PayConnectionParameters cParams = null)
+      protected override PaySession DoStartSession(ConnectionParameters cParams = null)
       {
         var sessionParams = cParams ?? DefaultSessionConnectParams;
         return this.StartSession((StripeConnectionParameters)sessionParams);
@@ -337,9 +337,9 @@ namespace NFX.Web.Pay.Stripe
         }
       }
 
-      protected override PayConnectionParameters MakeDefaultSessionConnectParams(Environment.IConfigSectionNode paramsSection)
+      protected override ConnectionParameters MakeDefaultSessionConnectParams(Environment.IConfigSectionNode paramsSection)
       {
-        return PayConnectionParameters.Make<StripeConnectionParameters>(paramsSection);
+        return ConnectionParameters.Make<StripeConnectionParameters>(paramsSection);
       }
 
     #endregion

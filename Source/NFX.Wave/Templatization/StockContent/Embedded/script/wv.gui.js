@@ -22,8 +22,10 @@ WAVE.GUI = (function(){
         CLS_TOAST: "wvToast",
         CLS_CURTAIN: "wvCurtain",
         CLS_DIALOG_BASE: "wvDialogBase",
-        CLS_DIALOG_TITLE: "wvDialogTitle",
         CLS_DIALOG_CONTENT: "wvDialogContent",
+        CLS_DIALOG_HEADER: "wvDialogHeader",
+        CLS_DIALOG_BODY: "wvDialogBody",
+        CLS_DIALOG_FOOTER: "wvDialogFooter",
         CLS_DIALOG_CONFIRM_FOOTER: "wvConfirmDialogFooter",
         CLS_DIALOG_CONFIRM_BUTTON: "wvConfirmDialogButton",
 
@@ -153,6 +155,16 @@ WAVE.GUI = (function(){
         CLS_DETAILS_CONTENT_HIDDEN: "wvDetailsContentHidden",
         CLS_DETAILS_MODAL: "wvDetailsModal",
 
+        //ChainSelector control
+        CLS_CHAIN_SELECTOR: "wvChainSelector",
+        CLS_CS_DIV_INFO: "wvChainSelectorInfo",
+        CLS_CS_DIV_NAME: "wvChainSelectorName",
+        CLS_CS_DIV_DESCR: "wvChainSelectorDescription",
+        CLS_CS_DIV_COMBO_WRAP: "wvChainSelectorComboWrap",
+        CLS_CS_DIV_ARROW: "wvChainSelectorComboArrow",
+
+        EVT_CHAIN_SELECTOR_UPDATED: 'chain-selector-updated',
+
         EVT_DETAILS_SHOW: "wv-details-show",
         EVT_DETAILS_HIDE: "wv-details-hide"
     };
@@ -205,11 +217,12 @@ WAVE.GUI = (function(){
     var fCurtains = [];
     var fCurtainDIV = null;
 
-    var fBodyScrollTop = 0;
-    var fBodyPosition = null;
-    var fBodyOverflowY = null;
-    var fBodyTop = null;
-    var fScrollFixed = false;
+    var fBodyScrollTop = 0,
+        fBodyPosition = null,
+        fBodyOverflowY = null,
+        fBodyTop = null,
+        fBodyPaddingRight = null,
+        fScrollFixed = false;
 
     function preventFocusLeak(e) {
       if (fCurtains.length > 0){
@@ -224,12 +237,64 @@ WAVE.GUI = (function(){
       }
     }
 
-    published.curtainOn = function(){
+    function tryMakeBodyUnscrollable() {
+      if (fCurtains.length > 0 && !WAVE.Platform.Mobile) {
+        window.addEventListener("focus", preventFocusLeak, true);
+
+        fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        fBodyTop = document.body.style.top;
+        fBodyPosition = document.body.style.position;
+        fBodyOverflowY = document.body.style.overflowY;
+        fBodyPaddingRight = document.body.style.paddingRight;
+
+        if (document.body.parentElement.offsetHeight > window.innerHeight) {
+          fScrollFixed = true;
+
+          document.body.style.position = "fixed";
+          document.body.style.paddingRight = ((fBodyPaddingRight + published.getScrollBarWidth()) + "px");
+          document.body.style.overflow = "hidden";
+          document.body.style.top = (-(fBodyScrollTop) + "px");
+        }
+      }
+    }
+
+    function tryRetrunScrollingToBody() {
+      if (fCurtains.length === 0 && !WAVE.Platform.Mobile) {
+        window.removeEventListener("focus", preventFocusLeak, true);
+
+        if (fScrollFixed) {
+        
+          document.body.style.top = fBodyTop;
+          document.body.style.position = fBodyPosition;
+          document.body.style.overflowY = fBodyOverflowY;
+          document.body.style.paddingRight = fBodyPaddingRight;
+          document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
+        }
+      }
+    }
+
+    published.getScrollBarWidth = function() {
+      var scrollDiv = document.createElement("div");
+      scrollDiv.style.height = "100px";
+      scrollDiv.style.position = "absolute";
+      scrollDiv.style.top = "-10000px";
+      scrollDiv.style.width = "100px";
+      scrollDiv.style.overflow = "scroll";
+
+      document.body.appendChild(scrollDiv);
+      var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      document.body.removeChild(scrollDiv);
+      return scrollbarWidth;
+    }
+
+    published.curtainOn = function(cls){
         try{ document.activeElement.blur(); } catch(e){}
 
         var div = document.createElement("div");
         div.style.backgroundColor = "rgba(127,127,127,0.45)";
         div.className = published.CLS_CURTAIN;
+        if (!WAVE.strEmpty(cls))
+          div.className += " " + cls;
         div.style.position = "fixed";
         div.style.left = "0";
         div.style.top = "0";
@@ -240,46 +305,20 @@ WAVE.GUI = (function(){
         fCurtainDIV = div;
 
         fCurtains.push(div);
-        //prevent scrolling and add focus handler
-        if (fCurtains.length === 1 && !WAVE.Platform.Mobile) {
-          window.addEventListener("focus", preventFocusLeak, true);
-
-          fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          fBodyTop = document.body.style.top;
-          fBodyPosition = document.body.style.position;
-          fBodyOverflowY = document.body.style.overflowY;
-
-          if (document.body.parentElement.offsetHeight > window.innerHeight) {
-            fScrollFixed = true;
-
-            document.body.style.top = (-(fBodyScrollTop) + "px");
-            document.body.style.position = "fixed";
-            document.body.style.overflowY = "scroll";
-          }
-        }
+        tryMakeBodyUnscrollable();
     };
 
     published.curtainOff = function(){
         if (fCurtains.length===0) return;
         var div = fCurtains[fCurtains.length-1];
         if (typeof(div.__DIALOG)!==tUNDEFINED){
-            div.__DIALOG.cancel();
-            return;
+          div.__DIALOG.cancel();
+          return;
         }
 
         document.body.removeChild(div);
         WAVE.arrayDelete(fCurtains, div);
-        //return scrolling and remove focus handler
-        if (fCurtains.length === 0 && !WAVE.Platform.Mobile) {
-          window.removeEventListener("focus", preventFocusLeak, true);
-
-          if (fScrollFixed) {
-            document.body.style.top = fBodyTop;
-            document.body.style.position = fBodyPosition;
-            document.body.style.overflowY = fBodyOverflowY;
-            document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
-          }
-        }
+        tryRetrunScrollingToBody();
     };
 
     published.isCurtain = function(){ return fCurtains.length>0;};
@@ -292,7 +331,7 @@ WAVE.GUI = (function(){
     };
 
     //Dialog window:
-    //   {title: 'Title', content: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
+    //   {title: 'html markup', content: 'html markup', footer: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
     published.Dialog = function(init)
     {
         if (!WAVE.isObject(init)) init = {};
@@ -302,8 +341,6 @@ WAVE.GUI = (function(){
 
         var dialog = this;
         WAVE.extend(dialog, WAVE.EventManager);
-
-        published.curtainOn();
 
         var fdivBase = document.createElement("div");
         fdivBase.__DIALOG = this;
@@ -317,38 +354,56 @@ WAVE.GUI = (function(){
         if (fWidthPct>100) fWidthPct = 100;
         if (fHeightPct>100) fHeightPct = 100;
 
-
         document.body.appendChild(fdivBase);
 
         fCurtains.push(fdivBase);
 
-        var fdivTitle = document.createElement("div");
-        fdivTitle.className = published.CLS_DIALOG_TITLE;
-        fdivTitle.innerHTML = WAVE.strDefault(init['title'], 'Dialog');
-        fdivBase.appendChild(fdivTitle);
-
         var fdivContent = document.createElement("div");
         fdivContent.className = published.CLS_DIALOG_CONTENT;
-        fdivContent.innerHTML = WAVE.strDefault(init['content'], '&nbsp;');
+        fdivContent.style.position = "absolute";
         fdivBase.appendChild(fdivContent);
 
-        function adjustBounds(){
+        var fdivHeader = document.createElement("div");
+        fdivHeader.className = published.CLS_DIALOG_HEADER;
+        fdivHeader.innerHTML = WAVE.strDefault(init['header'], 'Dialog');
+        fdivContent.appendChild(fdivHeader);
+
+        var fdivBody = document.createElement("div");
+        fdivBody.className = published.CLS_DIALOG_BODY;
+        fdivBody.innerHTML = WAVE.strDefault(init['body'], '&nbsp;');
+        fdivContent.appendChild(fdivBody);
+
+        var fdivFooter = document.createElement("div");
+        fdivFooter.className = published.CLS_DIALOG_FOOTER;
+        fdivFooter.innerHTML = WAVE.strDefault(init['footer'], '');
+        fdivContent.appendChild(fdivFooter);
+
+        function __adjustBounds(){
           var sw = published.pageWidth();
           var sh = published.pageHeight();
           var cx = sw / 2;
           var cy = sh / 2;
 
-          var w = fWidthPct===0 ? fdivBase.offsetWidth : Math.round( sw * (fWidthPct/100));
-          var h = fHeightPct===0 ? fdivBase.offsetHeight : Math.round( sh * (fHeightPct/100));
-          fdivBase.style.width  = fWidthPct===0  ? "auto" : w + "px";
-          fdivBase.style.height = fHeightPct===0 ? "auto" : h + "px";
+          var w = fWidthPct === 0 ? fdivContent.offsetWidth : Math.round( sw * (fWidthPct/100));
+          var h = fHeightPct === 0 ? fdivContent.offsetHeight : Math.round( sh * (fHeightPct/100));
+          fdivContent.style.width  = fWidthPct === 0  ? "auto" : w + "px";
 
-          fdivBase.style.left = Math.round(cx - (fdivBase.offsetWidth / 2)) + "px";
-          fdivBase.style.top = Math.round(cy - (fdivBase.offsetHeight / 2)) + "px";
+          fdivContent.style.left = Math.round(cx - (fdivContent.offsetWidth / 2)) + "px";
+          var top = Math.round(cy - (fdivContent.offsetHeight / 2));
+          if (top < 0) top = 0;
 
-        //  fdivContent.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
-          fdivContent.style.height  = fWidthPct===0  ? "auto" :
-                                                      h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px";//todo This may need to be put as published.OFFSETY that depends on style
+          fdivContent.style.top = top + "px";
+
+        //  fdivBase.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
+          //fdivContent.style.height  = fWidthPct===0  ?
+          //                            "auto" :
+          //                            (h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px");//todo This may need to be put as published.OFFSETY that depends on style
+        }
+
+        var tmr = null;
+        function __resizeEventHandler() {
+          if (tmr) clearTimeout(tmr);//prevent unnecessary adjustments when too many resizes happen
+          tmr = setTimeout(function(){  __adjustBounds(); tmr = null; }, 500);
         }
 
         var fResult = published.DLG_UNDEFINED;
@@ -358,18 +413,20 @@ WAVE.GUI = (function(){
 
         //closes dialog with the specified result and returns the result
         this.close = function(result){
-            if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
-            if (fResult!==published.DLG_UNDEFINED) return fResult;
+          if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
+          if (fResult!==published.DLG_UNDEFINED) return fResult;
 
-            if (!fOnClose(this, result)) return published.DLG_UNDEFINED;//aka CloseQuery
+          if (!fOnClose(this, result)) return published.DLG_UNDEFINED;//aka CloseQuery
 
-            fResult = result;
+          fResult = result;
 
-            document.body.removeChild(fdivBase);
-            WAVE.arrayDelete(fCurtains, fdivBase);
-            published.curtainOff();
-            this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
-            return result;
+          document.body.removeChild(fdivBase);
+          WAVE.arrayDelete(fCurtains, fdivBase);
+          WAVE.removeEventHandler(window, "resize", __resizeEventHandler);
+          tryRetrunScrollingToBody();
+
+          this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
+          return result;
         };
 
         //closes dialog with OK result
@@ -380,45 +437,45 @@ WAVE.GUI = (function(){
 
         //get/set title
         this.title = function(val){
-          if (typeof(val)===tUNDEFINED || val===null) return fdivTitle.innerHTML;
-          fdivTitle.innerHTML = val;
-          adjustBounds();
+          if (typeof(val)===tUNDEFINED || val===null) return fdivHeader.innerHTML;
+          fdivHeader.innerHTML = val;
+          __adjustBounds();
         };
 
         //get/set content
         this.content = function(val){
-          if (typeof(val)===tUNDEFINED || val===null) return fdivContent.innerHTML;
-          $(fdivContent).html( val );
-          adjustBounds();
+          if (typeof(val)===tUNDEFINED || val===null) return fdivBody.innerHTML;
+          $(fdivBody).html( val );
+          __adjustBounds();
         };
 
         this.baseDIV = function() { return fdivBase; }
-        this.contentDIV = function() { return fdivContent; };
-        this.titleDIV = function() { return fdivTitle; }
+        this.headerDIV = function() { return fdivHeader; }
+        this.bodyDIV = function() { return fdivBody; };
+        this.footerDIV = function() { return fdivFooter; };
 
         //gets/sets width in screen size pct 0..100, where 0 = auto
         this.widthpct = function(val){
           if (typeof(val)===tUNDEFINED || val===fWidthPct) return fWidthPct;
           fWidthPct = val;
-          adjustBounds();
+          __adjustBounds();
         };
 
         //gets/sets height in screen size pct 0..100, where 0 = auto
         this.widthpct = function(val){
           if (typeof(val)===tUNDEFINED || val===fHeightPct) return fHeightPct;
           fHeightPct = val;
-          adjustBounds();
+          __adjustBounds();
         };
 
-        var tmr = null;
-        $(window).resize(function(){
-           if (tmr) clearTimeout(tmr);//prevent unnecessary adjustments when too many resizes happen
-           tmr = setTimeout(function(){  adjustBounds(); tmr = null; }, 500);
-        });
+        this.adjustBounds = function() { __adjustBounds(); }
+
+        WAVE.addEventHandler(window, "resize", __resizeEventHandler);
 
         fOnShow(this);
 
-        adjustBounds();
+        __adjustBounds();
+        tryMakeBodyUnscrollable();
 
         return dialog;
     };//dialog
@@ -457,22 +514,20 @@ WAVE.GUI = (function(){
       if (WAVE.inArray(buttons, published.DLG_CANCEL))
          btnCancel = createButtonHtml('Cancel', published.DLG_CANCEL);
 
-      var fullContent =
-        '<div>'+
-          content+
-          '<div class="'+published.CLS_DIALOG_CONFIRM_FOOTER+' '+footerCls+'" style="text-align:center; padding: 5px 0 0 0">'+
-            btnYes + btnNo + btnOk + btnCancel +
-          '</div>'+
-        '<div>';
+      var fullContent = '<div>' + content + '<div>';
 
-      var dialog = new published.Dialog(
-        {
-          title: WAVE.strDefault(title, 'Confirmation'),
-          content: fullContent,
-          cls: WAVE.strDefault(options['cls']),
-          onShow: function(dlg){},
-          onClose: callback
-        });
+      var divButtons = '<div class="' + published.CLS_DIALOG_CONFIRM_FOOTER + ' ' + footerCls + '">' +
+                         btnYes + btnNo + btnOk + btnCancel +
+                       '</div>'
+
+      var dialog = new published.Dialog({
+        header: WAVE.strDefault(title, 'Confirmation'),
+        body: fullContent,
+        footer: divButtons,
+        cls: WAVE.strDefault(options['cls']),
+        onShow: function(dlg){},
+        onClose: callback
+      });
     };
 
     var fDirty = false;
@@ -2510,7 +2565,7 @@ WAVE.GUI = (function(){
           ed.eventBind(published.EVT_PS_EDITOR_UPDATED, function (e, d) {
             checkAndSave();
           });
-        }else if(type === "check") {
+        } else if(type === "check") {
           gDiv.innerHTML = WAVE.strHTMLTemplate("<input id='@id@' @disabled@ @readonly@ type='checkbox' placeholder='@plh@' title='@plh@' />",
           {
             id: inputId,
@@ -2955,7 +3010,7 @@ WAVE.GUI = (function(){
           var allInvisible = true;
           for(var i = 0, l = fTabs.length; i < l; i++) {
             var t = fTabs[i];
-            if (t.visible() && fTabs[0].name() !== fName) {
+            if (t.visible() && fTabs[i].name() !== fName) {
               if (fIsActive && !fVisible)
                 tabs.tabActive(t.name());
               allInvisible = false;
@@ -3229,6 +3284,7 @@ WAVE.GUI = (function(){
       hideOnClick: bool
       hideOnFocus: bool
       hideOnTimer: bool
+      hideOnScroll: bool
       timeout: int
     }
   */
@@ -3261,6 +3317,7 @@ WAVE.GUI = (function(){
       var fHideOnClick = WAVE.strAsBool(init.hideOnClick, true);
       var fHideOnFocus = WAVE.strAsBool(init.hideOnFocus, false);
       var fHideOnTimer = WAVE.strAsBool(init.hideOnTimer, false);
+      var fHideOnScroll = WAVE.strAsBool(init.hideOnScroll, false);
 
       var fMode = WAVE.strDefault(init.mode, "swap");
       var r = WAVE.tryParseInt(init.timeout);
@@ -3285,25 +3342,29 @@ WAVE.GUI = (function(){
         }
         if (fHideOnFocus) {
           WAVE.addEventHandler(window, "focus", outsideClickHandler);
-          setTimeout(function(){ 
-            WAVE.addEventHandler(window, "mousemove", outsideMouseMoveHandler); 
+          setTimeout(function(){
+            WAVE.addEventHandler(window, "mousemove", outsideMouseMoveHandler);
           } , 1);
         }
         if (fHideOnClick)
-          setTimeout(function(){ 
+          setTimeout(function(){
             WAVE.addEventHandler(window, "click", outsideClickHandler);
+          }, 1);
+        if (fHideOnScroll)
+          setTimeout(function(){
+            WAVE.addEventHandler(window, "scroll", __hide);
           }, 1);
       }
 
       function outsideClickHandler(e) {
         var target = e.target;
         var container = ((fMode === "modal") && (fDialog !== null)) ? fDialog.baseDIV() : fContentControl;
-        if (!WAVE.isParentOf(container, target)) __hide();
+        if (e.target === fDialog.baseDIV() || !WAVE.isParentOf(container, target)) __hide();
       }
 
       function outsideMouseMoveHandler(e) {
         var target = e.target;
-        if (!WAVE.isParentOf(fContentControl, target) && !WAVE.isParentOf(fTitleControl, target)) __hide();
+        if ((!WAVE.isParentOf(fContentControl, target) && !WAVE.isParentOf(fTitleControl, target))) __hide();
       }
 
       function build()
@@ -3414,7 +3475,7 @@ WAVE.GUI = (function(){
         if (fMode === "modal") {
           fDialog = new published.Dialog({
             cls: published.CLS_DETAILS_CONTENT + " " + fModalCls,
-            content: fContent,
+            body: fContent,
             onShow: function(dialog) {
               hideContent();
 
@@ -3435,11 +3496,11 @@ WAVE.GUI = (function(){
                 console.error
               );
             },
-            title: fModalTitle
+            header: fModalTitle
           });
-          fContentControl = fDialog.contentDIV();
+          fContentControl = fDialog.bodyDIV();
           if (WAVE.strEmpty(fModalTitle)) {
-            var t = fDialog.titleDIV();
+            var t = fDialog.headerDIV();
             t.style.display = "none";
           }
         } else {//"swap" - default
@@ -4069,6 +4130,279 @@ WAVE.GUI = (function(){
       return published.Gallery.call(this, init);
     };//GallerySimple
 
+    var fChainSelectorSeed = 0;
+    /*
+    init : {
+      DIV: html container, requred,
+      outputFormFieldName : "fieldId",
+      classes: css names,
+      path: initail path ('Books.General.A'), optional,
+      readonly: true/false,
+      disabled: true/false,
+      values: [
+        { id: n1, val: node1, name: 'Some header', descr: 'Some text description' },
+        {
+          id: n2,
+          val: node2,
+          name: '...',
+          descr: '...',
+          children : [ { id: n21, val: node21, descr: '...' }, { id: n22, val: node22, descr: '...' } ]
+        },
+        ...
+      ]
+    }
+    */
+    published.ChainSelector = function (init) {
+      if (!WAVE.exists(init)) throw "ChainSelector.ctor(init=null)";
+
+      var chain = this;
+      WAVE.extend(chain, WAVE.EventManager);
+
+      var fId = "wvChainSelector_" + fChainSelectorSeed++;
+      var fDiv;
+      if (WAVE.has(init, 'DIV')) fDiv = WAVE.isString(init.DIV) ? WAVE.id(init.DIV) : init.DIV;
+      var fOutputFormFieldName = WAVE.strDefault(init.outputFormFieldName, null);
+      var fDescr = WAVE.strDefault(init.description);
+      var fValues = (WAVE.has(init, 'values') && WAVE.exists(init.values) && WAVE.isArray(init.values)) ? init.values : [];
+      var fPath = WAVE.strDefault(init.path, '');
+      var fReadOnly = WAVE.strAsBool(init.readonly, false);
+      var fDisabled = WAVE.strAsBool(init.disabled, false);
+      var fCombos = [];
+
+      var fClasses = WAVE.get(init, "classes", {});
+      fClasses.divWrapCls = WAVE.strDefault(fClasses.divWrapCls, published.CLS_CHAIN_SELECTOR);
+      fClasses.divInfoCls = WAVE.strDefault(fClasses.divInfoCls, published.CLS_CS_DIV_INFO);
+      fClasses.divNameCls = WAVE.strDefault(fClasses.divNameCls, published.CLS_CS_DIV_NAME);
+      fClasses.divDescrCls = WAVE.strDefault(fClasses.divDescrCls, published.CLS_CS_DIV_DESCR);
+      fClasses.divComboWrapCls = WAVE.strDefault(fClasses.divComboWrapCls, published.CLS_CS_DIV_COMBO_WRAP);
+      fClasses.divArrowCls = WAVE.strDefault(fClasses.divArrowCls, published.CLS_CS_DIV_ARROW);
+
+      var fSeed = "cs_" + fChainSelectorSeed;
+      var fControlIds = {
+        divInfoId: "divInfo_" + fSeed,
+        divNameId: "divName_" + fSeed,
+        divDescrId: "divDescr_" + fSeed,
+        divComboWrapId: "divComboWrap_" + fSeed + "_",
+        selectBodyId: "selectBodyId" + fSeed + "_",
+        divArrowId: "divArrow_" + fSeed + "_",
+        outputHiddenId : "hidden_" + fSeed
+      };
+
+      function getSelectorByIndex(idx) {
+        var sid = fControlIds.selectBodyId + idx.toString();
+        return WAVE.id(sid);
+      }
+
+      function selectorValueChanged(e) {
+        var elm = e.srcElement.parentNode;
+        var lvl = fCombos.indexOf(elm);
+        var newPath = __path().slice(0, lvl+1);
+        __navigate(newPath);
+      }
+
+      function addCombo(values, value) {
+        if (fDisabled || fReadOnly) return false;
+
+        // construct template
+        var lvl = fCombos.length;
+        var wid = fControlIds.divComboWrapId + lvl.toString();
+        var sid = fControlIds.selectBodyId + lvl.toString();
+        var html = WAVE.strHTMLTemplate("<div id='@divComboWrapId@' class='@divComboWrapCls@' @disabled@ @readonly@>" +
+                                          "<select id='@selectBodyId@'>" +
+                                            "<option value=''></option>", //add blank,
+                                        {
+                                          divComboWrapId:  wid,
+                                          divComboWrapCls: fClasses.divComboWrapCls,
+                                          selectBodyId: sid,
+                                          disabled: fDisabled ? "" : "disabled",
+                                          readonly: fReadOnly ? "readonly" : "",
+                                        });
+
+        values.wEach(function (v) {
+          html += WAVE.strHTMLTemplate("<option value='@value@' @selected@>@descr@</option>",
+                                       {
+                                         value:    v.id,
+                                         selected: WAVE.strSame(v.id, value) ? "selected" : "",
+                                         descr:    v.val
+                                       });
+        });
+
+        html += WAVE.strHTMLTemplate("</select><div id='@divArrowId@' class='@divArrowCls@'></div></div>",
+                                     {
+                                       divArrowId:  fControlIds.divArrowId + lvl.toString(),
+                                       divArrowCls: fClasses.divArrowCls
+                                     });
+
+        var divDescr = WAVE.id(fControlIds.divInfoId);
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        var divComboWrap = tmp.firstChild;
+        fDiv.insertBefore(divComboWrap, divDescr);
+        fCombos[lvl] = divComboWrap;
+
+        WAVE.addEventHandler(WAVE.id(sid), "change", selectorValueChanged);
+
+        return divComboWrap;
+      }
+
+      function removeComboxes(cnt) {
+        if (fDisabled || fReadOnly) return false;
+
+        for (var i=0; i<cnt; i++) {
+          var combo = fCombos.pop();
+          if (!WAVE.exists(combo)) return;
+
+          var lvl = fCombos.length;
+          WAVE.removeEventHandler(getSelectorByIndex(lvl), "change", selectorValueChanged);
+
+          fDiv.removeChild(combo);
+        }
+      }
+
+      function __navigate(path) {
+        if (fDisabled || fReadOnly) return false;
+        if (!WAVE.exists(path)) path = [''];
+        if (WAVE.isString(path)) path = path.split('.');
+        if (!WAVE.isArray(path)) return false;
+
+        var values = WAVE.arrayWalkable(fValues);
+        var children = null;
+        var part;
+        var node;
+        var result = true;
+
+        // init
+        removeComboxes(fCombos.length - path.length);
+        if (fCombos.length <= 0) addCombo(values, '');
+
+        // navigate to tree node
+        for (var i in path) {
+          part = path[i];
+
+          // special case: empty part resets current combo
+          if (WAVE.strSame(part, '')) {
+            removeComboxes(fCombos.length-i);
+            children = values;
+            break;
+          }
+
+          // seek for node with same name
+          if (values === null) {
+            result = false;
+            removeComboxes(fCombos.length-i);
+            break;
+          }
+          var n = values.wFirst(function (v) { return WAVE.strSame(v.id, part) });
+          if (n === null)
+          {
+            result = false;
+            removeComboxes(fCombos.length-i);
+            children = values;
+            break;
+          }
+          node = n;
+          children = WAVE.exists(node.children) ? WAVE.arrayWalkable(node.children) : null;
+
+          // add new combo if it does not exist, adjust next combos
+          var combo = fCombos[i];
+          if (!WAVE.exists(combo)) {
+            removeComboxes(fCombos.length-i);
+            addCombo(values, part);
+          } else {
+            var selector = getSelectorByIndex(i);
+            if (!WAVE.strSame(selector.value, part)) {
+              removeComboxes(fCombos.length-i-1);
+              selector.value = part;
+            }
+          }
+
+          values = children;
+        }
+
+        // add empty next combo if needed
+        if (WAVE.exists(children)) addCombo(children, '');
+
+        // update info
+        var divName = WAVE.id(fControlIds.divNameId);
+        var name = WAVE.exists(node) ? WAVE.strDefault(node.name, '') : '';
+        divName.innerText = !WAVE.strSame(name, '') ? "Name: " + name : '';
+        var descr = WAVE.exists(node) ? WAVE.strDefault(node.descr, '') : '';
+        var divDescr = WAVE.id(fControlIds.divDescrId);
+        divDescr.innerText = !WAVE.strSame(descr, '') ?"Description: " + descr : '';
+
+        setHiddenValue();
+        chain.eventInvoke(published.EVT_CHAIN_SELECTOR_UPDATED, __value());
+
+        return result;
+      }
+
+      function __path() {
+        var result = [];
+        for (var i in fCombos) {
+          var combo = fCombos[i];
+          var selector = WAVE.id(fControlIds.selectBodyId + i.toString());
+          result.push(selector.value);
+        }
+        return result;
+      }
+
+      function __value() {
+        var res = __path().join('.');
+        if (res.length > 0 && WAVE.strSame(res[res.length - 1], '.'))
+          res = res.substring(0, res.length - 1);
+        return res;
+      }
+
+      function setHiddenValue() {
+        if (fOutputFormFieldName !== null) WAVE.id(fControlIds.outputHiddenId).value = chain.value();
+      }
+
+      function build() {
+        if (!WAVE.exists(fDiv)) return;
+
+        WAVE.addClass(fDiv, fClasses.divWrapCls);
+
+        // build main html
+        var html = WAVE.strHTMLTemplate("<input id='@outerId@' type='hidden' name='@outerName@'/>" +
+                                        "<div id='@divInfoId@' class='@divInfoCls@'>" +
+                                          "<div id='@divNameId@' class='@divNameCls@'></div>" +
+                                          "<div id='@divDescrId@' class='@divDescrCls@'></div>" +
+                                        "</div>",
+                                        {
+                                          outerId: fControlIds.outputHiddenId,
+                                          outerName: WAVE.strDefault(fOutputFormFieldName, ''),
+                                          divInfoId:  fControlIds.divInfoId,
+                                          divInfoCls: fClasses.divInfoCls,
+                                          divNameId: fControlIds.divNameId,
+                                          divNameCls: fClasses.divNameCls,
+                                          divDescrId: fControlIds.divDescrId,
+                                          divDescrCls: fClasses.divDescrCls,
+                                        });
+        fDiv.innerHTML = html;
+
+        // inject first combobox
+        __navigate(fPath);
+      }
+
+      // public functions
+
+      this.navigate = function(path) {
+        return __navigate(path);
+      }
+
+      this.path = function() {
+        return __path();
+      }
+
+      this.value = function () {
+        return __value();
+      }
+
+      build();
+
+      return chain;
+    }//ChainSelector
+
     return published;
 }());//WAVE.GUI
 
@@ -4100,6 +4434,61 @@ WAVE.RecordModel.GUI = (function(){
           return "_"+fldView.recView().ID()+"_"+id;
         }
 
+        function buildChainSelector(fldView) {
+          var field = fldView.field();
+          var divRoot = fldView.DIV();
+
+          var genIdKey = "@#$CHAIN_SELECTOR_GEN_ID$#@";
+          var ids = WAVE.get(fldView, genIdKey, null);
+          if (ids === null) {
+            ids = genIDSeed(fldView);
+            fldView[genIdKey] = ids;
+          }
+          var idCSDiv = "divCS_" + ids;
+          var idLabelDiv = "labelCont_" + ids;
+
+          var labelCont = WAVE.id(idLabelDiv);
+          var editorCont = WAVE.id(idCSDiv);
+          if (labelCont === null || editorCont === null) {
+            divRoot.innerHTML = WAVE.strHTMLTemplate("<div id='@idLabelDiv@'></div><div id='@idCSDiv@'></div>",
+                                                     {
+                                                       idLabelDiv: idLabelDiv,
+                                                       idCSDiv: idCSDiv
+                                                     });
+            labelCont = WAVE.id(idLabelDiv);
+            editorCont = WAVE.id(idCSDiv);
+          }
+
+          var html = "";
+          var ve = field.validationError();
+          if (ve !== null) html += WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", { ec: published.CLS_ERROR, error: ve });
+          html += WAVE.strHTMLTemplate("<label class='@cls@'>@about@</label>",
+                                      {
+                                        about: field.about(),
+                                        cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
+                                      });
+
+          labelCont.innerHTML = html;
+
+          var dict = field.lookupDict();
+          var values = WAVE.exists(dict) ? dict.values : [];
+          var path = field.isNull() ? "" : field.value();
+
+          var selector = new WAVE.GUI.ChainSelector({
+            DIV: editorCont,
+            outputFormFieldName: field.name(),
+            classes: { divArrowCls: published.CLS_COMBO_ARROW, divComboWrapCls: published.CLS_COMBO_WRAP },
+            path: path,
+            disable: field.isEnabled() ? false : true,
+            readonly: field.readonly(),
+            values: values
+          });
+
+          selector.eventBind(WAVE.GUI.EVT_CHAIN_SELECTOR_UPDATED,
+                             function (e, d) {
+                               field.value(d, true);//from GUI
+                             });
+        }
 
         function buildTextBox(fldView){
           var field = fldView.field();
@@ -4498,6 +4887,7 @@ WAVE.RecordModel.GUI = (function(){
                    });
 
           var hidden = WAVE.id(idHiddenInput);
+          hidden.value = JSON.stringify(field.value());
 
           pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE, function(kpad){
                           field.value().Answer = kpad.value();
@@ -4543,6 +4933,10 @@ WAVE.RecordModel.GUI = (function(){
         function rebuildControl(fldView){
           var ct = published.getControlType(fldView);
 
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHECK))    { ensureField(fldView, ct); buildCheck(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHAIN_SELECTOR)) { ensureField(fldView, ct); buildChainSelector(fldView); }
+          else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHECK))    { ensureField(fldView, ct); buildCheck(fldView);}
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_RADIO))    { ensureField(fldView, ct); buildRadioGroup(fldView);}

@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -98,10 +99,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Web\Pay\AutostarterTest.cs" />
+    <Compile Include="Web\Pay\PayPalTest.cs" />
     <Compile Include="Web\Pay\FakePaySystemHost.cs" />
     <Compile Include="Web\Shipping\FakeShippingSystemHost.cs" />
     <Compile Include="Web\Pay\MockTest.cs" />
-    <Compile Include="Web\Pay\PayPalTest.cs" />
     <Compile Include="Web\Pay\PayTestCommon.cs" />
     <Compile Include="Web\Pay\BraintreeTest.cs" />
     <Compile Include="Web\Shipping\ShippoTest.cs" />

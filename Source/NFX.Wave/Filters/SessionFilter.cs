@@ -155,7 +155,7 @@ namespace NFX.Wave.Filters
             foundExisting = false;
             if (NetGate!=null && NetGate.Enabled)
                NetGate.IncreaseVariable(IO.Net.Gate.TrafficDirection.Incoming,
-                                     work.Request.RemoteEndPoint.Address.ToString(),
+                                     work.EffectiveCallerIPEndPoint.Address.ToString(),
                                      NETGATE_NEWSESSION_VAR_NAME,
                                      1);
 
@@ -171,6 +171,8 @@ namespace NFX.Wave.Filters
           session.GeoEntity = work.GeoEntity;
         work.m_Session = session;
         ApplicationModel.ExecutionContext.__SetThreadLevelSessionContext(session);
+
+        work.SetAuthenticated(session.User.IsAuthenticated);
       }
 
       /// <summary>

@@ -44,17 +44,17 @@ namespace WaveTestSite.Controllers
       {
         return new Pages.AboutUs();
       }
-      
-      
+
+
       [Action]
       public void SlowImage(string url, int dbDelayMs = 100, int netDelayMs = 0)
       {
         WorkContext.Response.ContentType = NFX.Web.ContentType.JPEG;
-        WorkContext.Response.SetPrivateMaxAgeCacheHeader(2);
+        WorkContext.Response.SetCacheControlHeaders(NFX.Web.CacheControl.PrivateMaxAgeSec(2), false);
 
         // emulate a pause accessing DB
-        Thread.Sleep(dbDelayMs); 
-      
+        Thread.Sleep(dbDelayMs);
+
         // get image from url or make random image
         var stream = WorkContext.Response.GetDirectOutputStreamForWriting();
         using (var image = string.IsNullOrWhiteSpace(url) ? MakeRandomImage() : DownloadImage(url))
@@ -65,17 +65,17 @@ namespace WaveTestSite.Controllers
             var count = image.Read(buffer, 0, buffer.Length);
             if (count == 0)
               break;
-             
+
             stream.Write(buffer, 0, count);
-            
+
             // emulate slow network
             Thread.Sleep(ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, netDelayMs));
           }
         }
       }
-      
-      
-      
+
+
+
       [Action]
       public object Zekret()
       {
@@ -105,19 +105,19 @@ namespace WaveTestSite.Controllers
        // WorkContext.NeedsSession();//<------!
         return "{0} {1}".Args(text, a+b);
       }
-           
-      
+
+
       [Action]
       public string Multiply(int a=2, int b=3, string text = "Was multiplied")
       {
         return "{0} {1}".Args(text, a*b);
-      } 
+      }
 
       [Action]
       public object Rnd(int from=0, int to = 100)
       {
          var list = new List<object>();
-         
+
 
 
          for(var i=from;i<to;i++)
@@ -129,7 +129,7 @@ namespace WaveTestSite.Controllers
 
          return list;
       }
-      
+
       [Action]
       public object SingleRnd()
       {
@@ -160,7 +160,7 @@ namespace WaveTestSite.Controllers
 
       [Action("download", 0, "match{is-local=true}")]//notice that this action is only allowed for local requestors
       public object Download(string fpath, bool attachment = false)
-      {                                
+      {
          return new FileDownload(fpath, attachment);
       }
 
@@ -175,8 +175,8 @@ namespace WaveTestSite.Controllers
 
       [Action]
       public object Echo(JSONDataMap data)
-      {    
-        return new 
+      {
+        return new
         {
           ServerMessage = "You have supplied content and here is my response",
           ServerDateTime = DateTime.Now,
@@ -193,17 +193,17 @@ namespace WaveTestSite.Controllers
         if (key.IsNotNullOrWhiteSpace() && WorkContext.Session!=null)
         {
           var pk = WorkContext.Session.Items[key] as PuzzleKeypad;
-          if (pk!=null) return pk.DefaultRender(); 
+          if (pk!=null) return pk.DefaultRender();
         }
-               
-        return (new PuzzleKeypad("01234")).DefaultRender(); 
+
+        return (new PuzzleKeypad("01234")).DefaultRender();
       }
 
       [Action]
       public object CAPTCHA2(string secret="0123456789", string fn = null)
       {
-        return new Picture((new PuzzleKeypad(secret)).DefaultRender(System.Drawing.Color.Yellow), 
-                            System.Drawing.Imaging.ImageFormat.Jpeg, fn);  
+        return new Picture((new PuzzleKeypad(secret)).DefaultRender(System.Drawing.Color.Yellow),
+                            System.Drawing.Imaging.ImageFormat.Jpeg, fn);
       }
 
       [Action("person", 1, "match{methods=GET}")]
@@ -222,17 +222,17 @@ namespace WaveTestSite.Controllers
 
       [Action("person", 1, "match{methods=POST}")]
       public object PersonPost(Person row)
-      {                      
+      {
         var puzzlePass = false;
         WorkContext.NeedsSession();
         if (WorkContext.Session!=null && row.Puzzle!=null)
         {
-          var pk = WorkContext.Session["PersonPuzzle"] as PuzzleKeypad; 
+          var pk = WorkContext.Session["PersonPuzzle"] as PuzzleKeypad;
           if (pk!=null)
           {
            var answer = row.Puzzle["Answer"] as JSONDataArray;
            if (answer!=null)
-            puzzlePass = pk.DecipherCoordinates(answer)==pk.Code; 
+            puzzlePass = pk.DecipherCoordinates(answer)==pk.Code;
           }
         }
 
@@ -247,7 +247,7 @@ namespace WaveTestSite.Controllers
 
         if (row.Puzzle!=null)
           row.Puzzle.Remove("Answer");
-        
+
         makePuzzle();
         return new ClientRecord(row, error);
       }
@@ -315,7 +315,7 @@ namespace WaveTestSite.Controllers
         NFX.Wave.Client.RecordModelGenerator.DefaultInstance.ModelLocalization += (_, schema, prop, val, lang) =>
         {
           if (prop=="Description" && val=="Private Status") return "Частный Статус";
-          if (prop=="Description" && val=="Salary") return "Заработная Плата";   
+          if (prop=="Description" && val=="Salary") return "Заработная Плата";
           return val;
         };
       }
@@ -327,24 +327,24 @@ namespace WaveTestSite.Controllers
        // make image
        var image = new Bitmap(200, 200);
        var imageFormat = ImageFormat.Jpeg;
-     
+
        //todo: ...
-     
+
        // save it to memory stream
        var stream = new MemoryStream();
        image.Save(stream, imageFormat);
        stream.Position = 0;
-     
+
        return stream;
      }
-     
+
      private Stream DownloadImage(string url)
      {
        var webClient = new WebClient();
        byte[] imageBytes = webClient.DownloadData(url);
        return new MemoryStream(imageBytes);
      }
-     
+
      #endregion .pvt
 
   }
@@ -359,10 +359,10 @@ namespace WaveTestSite.Controllers
 
           [Field(metadata:@"Placeholder='Enter Your First Name' Case='caps'")]// LookupDict='{""key1"": ""value1"", ""key2"": ""value2""}'}")]
           public string FirstName { get; set;}
-          
+
           [Field(required: true, visible: true)]
           public string LastName { get; set;}
-          
+
 
           [Field(required: true, description: "Public Status")]
           public StatusCode PubStatus{get; set;}
@@ -378,7 +378,7 @@ namespace WaveTestSite.Controllers
 
           [Field(required: true, description: "Salary")]
           public decimal Salary { get; set;}
-          
+
           [Field]
           public bool  Registered { get; set;}
 
@@ -386,7 +386,7 @@ namespace WaveTestSite.Controllers
           public string Various { get; set;}
 
           [Field(storeFlag: StoreFlag.None, metadata:@"ControlType=Puzzle Stored=true")]
-          public JSONDataMap Puzzle { get; set;} 
+          public JSONDataMap Puzzle { get; set;}
         }
 
 

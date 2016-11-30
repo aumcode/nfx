@@ -408,6 +408,16 @@ namespace NFX.ServiceModel
 
             }
 
+            /// <summary>
+            /// WARNING: Developers never call this method!!!
+            /// It is used by advanced derived implementations that need to synchronize status updates.
+            /// We do not want to make statuslock protected as it is almost never needed, hence this accessor
+            /// </summary>
+            protected object ____ObtainPrivateServiceStatusLockObject()
+            {
+              return m_StatusLock;
+            }
+
         #endregion
 
 

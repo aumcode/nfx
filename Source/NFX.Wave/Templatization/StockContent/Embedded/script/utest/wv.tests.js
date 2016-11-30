@@ -40,15 +40,15 @@
 
        run("Localizer", "allLanguageISOs", function(){
          var array = ['eng', 'rus', 'deu', 'fra', 'esp'];
-         
-         var keys = WAVE.LOCALIZER.allLanguageISOs(); 
+
+         var keys = WAVE.LOCALIZER.allLanguageISOs();
 
          assertTrue( WAVE.isSame(array, keys));
        });
 
-      
+
        WAVE.LOCALIZER.rus = {"--ANY-SCHEMA--": { "--ANY-FIELD--": {"Java Script is crap!": "Ява Скрипт - Говно!"}}};
-      
+
        run("Localizer", "strLocalize", function(){
 
          var val = WAVE.strLocalize('rus', 'tezt', 'fld', 'Java Script is crap!')
@@ -69,7 +69,7 @@
        run("Arrays", "arrayClear", function(){
          var array = [1,2,3];
          assertTrue( 3 === array.length);
-         
+
          WAVE.arrayClear(array);
 
          assertTrue( 0 === array.length);
@@ -81,13 +81,13 @@
 
          var arrayA = [1, 2, 3];
          var arrayB = [2, 3, 5, 7];
-         var r = WAVE.mergeArrays(arrayA, arrayB); 
+         var r = WAVE.mergeArrays(arrayA, arrayB);
 
          assertTrue(r.length === 5);
          assertTrue(WAVE.isSame(r, [1, 2, 3, 5, 7]));
 
          arrayB = [2, 3, 5, 7];
-         var r = WAVE.mergeArrays(arrayB); 
+         var r = WAVE.mergeArrays(arrayB);
 
          assertTrue(r.length === 4);
          assertTrue(WAVE.isSame(r, [2, 3, 5, 7]));
@@ -117,7 +117,7 @@
        run("Arrays", "arrayShallowCopy", function(){
          var array = [1,2,3];
          var copy = WAVE.arrayShallowCopy(array);
-         
+
          assertTrue( 3 === copy.length);
          assertTrue( 1 === copy[0]);
          assertTrue( 2 === copy[1]);
@@ -131,7 +131,7 @@
          assertTrue( WAVE.inArray(array, 'Doris'));
          assertFalse( WAVE.inArray(array, 'Joseph'));
        });
-      
+
 
        run("Objects", "tryParseJSON", function(){
 
@@ -155,7 +155,7 @@
          assertTrue( -3 === WAVE.tryParseJSON("[8, -3]").obj[1] );
 
          assertFalse( WAVE.tryParseJSON(function(){}).ok );
-         
+
          assertTrue(null === WAVE.tryParseJSON(null, null).obj, "a1");
          assertTrue(null !== WAVE.tryParseJSON(null).obj, "a2");
          assertTrue(78 === WAVE.tryParseJSON(null,{a: 78}).obj.a, "a3");
@@ -193,7 +193,7 @@
          assertTrue(res.A.B.E === 100);
          assertTrue(res.A.D === "pol");
          assertTrue(res.f);
-         
+
          obj = {A:{B:{c:21,E:100}, D:"pol"},f:true};
          res = WAVE.memberClone(obj, true);
          assertTrue(res.a.b.c === 21);
@@ -411,7 +411,7 @@
        run("Objects", "isSame-1", function(){
          var o1 = {a: 1, b: 2};
          var o2 = {a: 1, b: 2};
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -420,7 +420,7 @@
        run("Objects", "isSame-2", function(){
          var o1 = {a: 1, b: 12};
          var o2 = {a: 1, b: 2};
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -429,7 +429,7 @@
        run("Objects", "isSame-3", function(){
          var o1 = {a: 1, b: 2};
          var o2 = {a: 1, b: 12};
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -438,7 +438,7 @@
        run("Objects", "isSame-4", function(){
          var o1 = {a: 1, b: 2};
          var o2 = {a: 1, boba: 2};
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -447,7 +447,7 @@
        run("Objects", "isSame-5", function(){
          var o1 = {a: 1, boba: 2};
          var o2 = {a: 1, boba: 2};
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -456,7 +456,7 @@
        run("Objects", "isSame-6", function(){
          var o1 = {a: 1, boba: 2};
          var o2 = null;
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -465,7 +465,7 @@
        run("Objects", "isSame-7", function(){
          var o1 = [1,2,3,4,5,6,7];
          var o2 = [1,2,3,4,5,6,7];
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -474,7 +474,7 @@
        run("Objects", "isSame-8", function(){
          var o1 = [1,2,3,4,5,6,7];
          var o2 = [1,2,3,4,5,6,7,8];
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -483,7 +483,7 @@
        run("Objects", "isSame-9", function(){
          var o1 = [1,1,3,4,5,6,7,8];
          var o2 = [1,2,3,4,5,6,7,8];
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -492,7 +492,7 @@
        run("Objects", "isSame-10", function(){
          var o1 = [1,2,3,4,5,6,7,[]];
          var o2 = [1,2,3,4,5,6,7,[]];
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -501,7 +501,7 @@
        run("Objects", "isSame-11", function(){
          var o1 = [1,2,3,4,5,6,7,[]];
          var o2 = [1,2,3,4,5,6,7,[1]];
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -510,7 +510,7 @@
        run("Objects", "isSame-12", function(){
          var o1 = [1,2,3,4,5,6,7,[1,{a: 1}]];
          var o2 = [1,2,3,4,5,6,7,[1,{a: 1}]];
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -519,7 +519,7 @@
        run("Objects", "isSame-13", function(){
          var o1 = [1,2,3,4,5,6,7,[1,{a: 1, b:'Hello'}]];
          var o2 = [1,2,3,4,5,6,7,[1,{a: 1 }]];
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -528,7 +528,7 @@
         run("Objects", "isSame-14", function(){
          var o1 = [1,2,3,4,5,6,7,[1,{a: 1}]];
          var o2 = [1,2,3,4,5,6,7,[1,{a: 1, b:'Hello' }]];
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -538,7 +538,7 @@
        run("Objects", "isSame-15", function(){
          var o1 = [1,2,3,4,5,6,7,[1,{a: 1, b:'Hello'}]];
          var o2 = [1,2,3,4,5,6,7,[1,{a: 1, b:'Hello'}]];
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -547,7 +547,7 @@
        run("Objects", "isSame-16", function(){
          var o1 = {a: 1, b: 2};
          var o2 = {a: 1, b: 2, c: 3};
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -556,7 +556,7 @@
        run("Objects", "isSame-17", function(){
          var o1 = {a: 1, b: 2, c: 3};
          var o2 = {a: 1, b: 2, c: 3};
-        
+
 
          assertFalse( o1 === o2 );
          assertTrue( WAVE.isSame(o1, o2) );
@@ -565,7 +565,7 @@
        run("Objects", "isSame-18", function(){
          var o1 = {a: 1, b: 2, c: 3};
          var o2 = {a: 1, b: 2, c: true};
-        
+
 
          assertFalse( o1 === o2 );
          assertFalse( WAVE.isSame(o1, o2) );
@@ -574,14 +574,14 @@
        run("Objects", "isSame-primitives", function(){
          assertTrue( WAVE.isSame(1 , 1) );
          assertFalse( WAVE.isSame(1 , 2) );
-         
+
          assertTrue( WAVE.isSame(12.1 , 12.1) );
          assertFalse( WAVE.isSame(12.1 , 12.2) );
-        
+
          assertTrue( WAVE.isSame(true , true) );
          assertTrue( WAVE.isSame(false , false) );
          assertFalse( WAVE.isSame(true , false) );
-         
+
          assertTrue( WAVE.isSame("da" , "da") );
          assertFalse( WAVE.isSame("da" , "net") );
 
@@ -605,7 +605,7 @@
        run("Objects", "clone-1", function(){
          var o1 = {a: 1, b: 2};
          var o2 = WAVE.clone(o1);
-                                   
+
          assertFalse( o1 === o2);
          assertTrue( 1 === o2.a);
          assertTrue( 2 === o2.b);
@@ -616,7 +616,7 @@
        run("Objects", "clone-2", function(){
          var o1 = {a: 1, b: 2, c: {FirstName: 'Alex', LastName: 'Borisov'}};
          var o2 = WAVE.clone(o1);
-                                   
+
          assertFalse( o1 === o2);
          assertTrue( 1 === o2.a);
          assertTrue( 2 === o2.b);
@@ -627,7 +627,7 @@
        run("Objects", "clone-3", function(){
          var o1 = {a: 1, b: 2, c: {FirstName: 'Alex', LastName: 'Borisov', Contacts: ['sister','cousin']}};
          var o2 = WAVE.clone(o1);
-                                   
+
          assertFalse( o1 === o2);
          assertTrue( 1 === o2.a);
          assertTrue( 2 === o2.b);
@@ -661,28 +661,28 @@
           assertTrue( "TestShape Amorph2" === shape2.about() );
 
           shape2.about = WAVE.overrideFunction(shape2.about, function(){ return this.baseFunction() + "overridden"; });
-          
-          assertTrue( "TestShape Amorph1" === shape1.about() );         
+
+          assertTrue( "TestShape Amorph1" === shape1.about() );
           log( shape2.about());
-          assertTrue( "TestShape Amorph2overridden" === shape2.about() );         
+          assertTrue( "TestShape Amorph2overridden" === shape2.about() );
        });
 
 
        run("Objects", "propStrAsObject", function(){
          var o1 = {a: 1, b: '{"c": "yes", "d": "no"}'};
-        
+
          assertFalse( WAVE.isObject(o1.b));
          WAVE.propStrAsObject(o1, "b");
          assertTrue( WAVE.isObject(o1.b));
 
          assertTrue( "yes"===o1.b.c);
          assertTrue( "no"===o1.b.d);
-                    
+
        });
 
        run("Objects", "propStrAsObject-null", function(){
          var o1 = {a: 1, b: null};
-        
+
          assertFalse( WAVE.isObject(o1.b));
          WAVE.propStrAsObject(o1, "b");
          assertFalse( WAVE.isObject(o1.b));
@@ -690,18 +690,57 @@
 
        run("Objects", "propStrAsObject-undefined", function(){
          var o1 = {a: 1, z: 123};
-        
+
          assertFalse( WAVE.isObject(o1.b));
          WAVE.propStrAsObject(o1, "b");
          assertFalse( WAVE.isObject(o1.b));
        });
 
+       run("Objects", "isSimpleKeyStringMap-undefined", function () {
+         var o1 = undefined;
+         assertFalse(WAVE.isSimpleKeyStringMap(o1));
+       });
 
+       run("Objects", "isSimpleKeyStringMap-null", function () {
+         var o1 = null;
+         assertFalse(WAVE.isSimpleKeyStringMap(o1));
+       });
+
+       run("Objects", "isSimpleKeyStringMap-notAnObject", function () {
+         var o1 = ["", null];
+         assertFalse(WAVE.isSimpleKeyStringMap(o1));
+         var o2 = function () { return true; };
+         assertFalse(WAVE.isSimpleKeyStringMap(o2));
+       });
+
+       run("Objects", "isSimpleKeyStringMap-corectSimpleMap", function () {
+         var o1 = { };
+         assertTrue(WAVE.isSimpleKeyStringMap(o1));
+         var o2 = { a: "", b: "B", c: "math" };
+         assertTrue(WAVE.isSimpleKeyStringMap(o2));
+         var o1 = { a: null, b: "B", c: "math" };
+         assertTrue(WAVE.isSimpleKeyStringMap(o1));
+       });
+
+       run("Objects", "isSimpleKeyStringMap-complexMap", function () {
+         var o1 = { a: {} };
+         assertFalse(WAVE.isSimpleKeyStringMap(o1));
+         var o2 = { a: [] };
+         assertFalse(WAVE.isSimpleKeyStringMap(o2));
+         var o3 = { a: function () { return 1;} };
+         assertFalse(WAVE.isSimpleKeyStringMap(o3));
+         var o4 = { a: undefined };
+         assertFalse(WAVE.isSimpleKeyStringMap(o4));
+         var o5 = { a: { x: "12"} };
+         assertFalse(WAVE.isSimpleKeyStringMap(o5));
+         var o6 = { x: "1", y: "abba", a: { x: "12" } };
+         assertFalse(WAVE.isSimpleKeyStringMap(o6));
+       });
 
        run("Integers", "tryParseInt", function(){
-         var r = WAVE.tryParseInt();      
+         var r = WAVE.tryParseInt();
          assertTrue( r.ok === false && isNaN(r.value) );
-         r = WAVE.tryParseInt(null);      
+         r = WAVE.tryParseInt(null);
          assertTrue( r.ok === false && isNaN(r.value) );
          r = WAVE.tryParseInt({1:1});
          assertTrue( r.ok === false && isNaN(r.value) );
@@ -710,19 +749,19 @@
 
          r = WAVE.tryParseInt(1);
          assertTrue( r.ok === true && r.value === 1 );
-         r = WAVE.tryParseInt("1");      
-         assertTrue( r.ok === true && r.value === 1 ); 
-         r = WAVE.tryParseInt("1   3");      
+         r = WAVE.tryParseInt("1");
+         assertTrue( r.ok === true && r.value === 1 );
+         r = WAVE.tryParseInt("1   3");
          assertTrue( r.ok === false && isNaN(r.value) );
-         r = WAVE.tryParseInt("1.2");      
+         r = WAVE.tryParseInt("1.2");
          assertTrue( r.ok === false && r.value === 1.2 );
-         r = WAVE.tryParseInt("1,2");      
+         r = WAVE.tryParseInt("1,2");
          assertTrue( r.ok === false && isNaN(r.value) );
-         r = WAVE.tryParseInt("eee34");      
+         r = WAVE.tryParseInt("eee34");
          assertTrue( r.ok === false && isNaN(r.value) );
-         r = WAVE.tryParseInt("34eee");      
+         r = WAVE.tryParseInt("34eee");
          assertTrue( r.ok === false && isNaN(r.value) );
-         r = WAVE.tryParseInt("some text");      
+         r = WAVE.tryParseInt("some text");
          assertTrue( r.ok === false && isNaN(r.value) );
          r = WAVE.tryParseInt(-1);
          assertTrue( r.ok === true && r.value === -1 );
@@ -740,12 +779,12 @@
 
          r = WAVE.tryParseInt("-9.89", true);
          assertTrue( r.ok && r.value === -9);
-         
+
          var r = WAVE.tryParseInt("9.89");
          assertFalse( r.ok );
 
          r = WAVE.tryParseInt("-9.89");
-         assertFalse( r.ok ); 
+         assertFalse( r.ok );
 
          var r = WAVE.tryParseInt("9.001", true);
          assertTrue( r.ok && r.value === 9);
@@ -798,18 +837,18 @@
          assertFalse( WAVE.intValidPositiveOrZero(""));
          assertFalse( WAVE.intValidPositiveOrZero("some text"));
        });
-      
+
 
        run("Formatting", "formatMoneyBasic", function(){
            assertTrue( "125.08" === WAVE.formatMoney(125.0890));
            assertTrue( "1,256.08" === WAVE.formatMoney(1256.0890));
        });
-        
+
        run("Formatting", "formatMoneyDiffSeparators", function(){
            assertTrue( "1.256,08" === WAVE.formatMoney(1256.0890, ',', '.'));
            assertTrue( "1,256:::08" === WAVE.formatMoney(1256.0890, ':::'));
        });
-        
+
        run("Formatting", "formatMoneyNegative", function(){
            assertTrue( "-1,256.08" === WAVE.formatMoney(-1256.0890));
            assertTrue( "-1,256.09" === WAVE.formatMoney(-1256.0999));
@@ -818,7 +857,7 @@
            assertTrue( "16,345,256.41" === WAVE.formatMoney(16345256.41945));
            assertTrue( "-16,345,256.41" === WAVE.formatMoney(-16345256.41945));
        });
-        
+
        run("Formatting", "formatMoneyNegativeDiffSeparators", function(){
            assertTrue( "16.345.256`41" === WAVE.formatMoney(16345256.41945, '`', '.'));
            assertTrue( "-16.345.256`41" === WAVE.formatMoney(-16345256.41945, '`', '.'));
@@ -946,7 +985,7 @@
            nls = {n: "    ", d: "mydescr"};
            assertTrue( 'mydescr'===WAVE.nlsNameOrDescrDefault(nls) );
            assertTrue( 'mydescr'===WAVE.nlsNameOrDescrDefault(nls, 'aaa') );
-           
+
            nls.n = "againname";
            assertTrue( 'againname'===WAVE.nlsNameOrDescrDefault(nls) );
            assertTrue( 'againname'===WAVE.nlsNameOrDescrDefault(nls, 'aaa') );
@@ -982,7 +1021,7 @@
            nls = {n: "zzzz", d: "   "};
            assertTrue( 'zzzz'===WAVE.nlsDescrOrNameDefault(nls) );
            assertTrue( 'zzzz'===WAVE.nlsDescrOrNameDefault(nls, 'aaa') );
-           
+
            nls.d = "againd";
            assertTrue( 'againd'===WAVE.nlsDescrOrNameDefault(nls) );
            assertTrue( 'againd'===WAVE.nlsDescrOrNameDefault(nls, 'aaa') );
@@ -1113,6 +1152,18 @@
            assertTrue( "abc/def" === WAVE.strEnsureEnding("abc/def","/def") );
        });
 
+       run("Strings", "joinPathSegs", function () {
+         assertTrue("static/site/content"  === WAVE.joinPathSegs("static", "site", "content"));
+         assertTrue("static/site/content"  === WAVE.joinPathSegs(" static", "  site  ", " content"));
+         assertTrue("static/site/content"  === WAVE.joinPathSegs(" static", " \\ site  ", " // content"));
+         assertTrue("static/site/content"  === WAVE.joinPathSegs(" static/", "//site  ", " // content"));
+         assertTrue("static/site/content"  === WAVE.joinPathSegs(" static/", "/", "/site", "// content"));
+         assertTrue("static/site/content"  === WAVE.joinPathSegs("static", null, "site", "", "", "\\content"));
+         assertTrue("/static/site/content" === WAVE.joinPathSegs("/static/", "/", "/site", "// content"));
+         assertTrue("/static/site/content" === WAVE.joinPathSegs("      /static/", "site", "\\content"));
+         assertTrue("/static/site/content" === WAVE.joinPathSegs(" ", null, "      /static/", "site", "\\content"));
+       });
+
        run("Strings", "strEscapeHTML-1", function(){
            assertTrue( "A &lt; B?" === WAVE.strEscapeHTML("A < B?") );
            assertTrue( "A &gt; B?" === WAVE.strEscapeHTML("A > B?") );
@@ -1151,7 +1202,7 @@
 
 
         run("Strings", "strIsEmail", function(){
-          
+
            assertTrue( WAVE.strIsEMail("a@bc.de") );
            assertTrue( WAVE.strIsEMail("aaa@baaac.daaaae") );
            assertTrue( WAVE.strIsEMail("aron.borisov@do.notexist.com") );
@@ -1398,7 +1449,7 @@
           assertTrue( 02 === d.getMonth());
           assertTrue( 15 === d.getDate());
        });
-       
+
        run("Conversion", "null->bool", function(){
           assertTrue( false === WAVE.convertScalarType(false, null, "bool") );
        });
@@ -1498,8 +1549,8 @@
           for(var i=0; i<15; i++)
           {
            var key = WAVE.genRndKey(25, "azokuliABCDEF");
-           logi( key ); 
-           assertTrue( 25 === key.length); 
+           logi( key );
+           assertTrue( 25 === key.length);
           }
        });
 
@@ -1507,8 +1558,8 @@
           for(var i=0; i<15; i++)
           {
            var key = WAVE.genRndKey();
-           logi( key ); 
-           assertTrue(8 === key.length); 
+           logi( key );
+           assertTrue(8 === key.length);
           }
        });
 
@@ -1518,9 +1569,9 @@
           for(var i=0; i<5; i++)
           {
            counter = WAVE.genAutoincKey("CTR1",5);
-           logi( counter ); 
+           logi( counter );
           }
-          assertTrue( 20 === counter); 
+          assertTrue( 20 === counter);
        });
 
 
@@ -1529,17 +1580,17 @@
           for(var i=0; i<100; i++)
           {
            counter = WAVE.genAutoincKey();
-           logi( counter ); 
+           logi( counter );
           }
-          assertTrue( 99 === counter); 
+          assertTrue( 99 === counter);
        });
 
        run("Random Generation", "rnd-defltArgs", function(){
           for(var i=0; i<50; i++)
           {
            var num = WAVE.rnd();
-           logi( num ); 
-           assertTrue( num >= 0 && num <= 100); 
+           logi( num );
+           assertTrue( num >= 0 && num <= 100);
           }
        });
 
@@ -1547,8 +1598,8 @@
           for(var i=0; i<50; i++)
           {
            var num = WAVE.rnd(75);
-           logi( num ); 
-           assertTrue( num >= 0 && num <= 75); 
+           logi( num );
+           assertTrue( num >= 0 && num <= 75);
           }
        });
 
@@ -1556,8 +1607,8 @@
           for(var i=0; i<50; i++)
           {
            var num = WAVE.rnd(-10,10);
-           logi( num ); 
-           assertTrue( num >= -10 && num <= 10); 
+           logi( num );
+           assertTrue( num >= -10 && num <= 10);
           }
        });
 
@@ -1632,26 +1683,26 @@
 
        run("Geometry", "azimuthRad", function(){
          assertTrue(157 === Math.floor(WAVE.Geometry.azimuthRad(0, 0, 0, 100) * 100));
-         assertTrue(0 === Math.floor( WAVE.Geometry.azimuthRad( 0,0, 100,0 ) * 100)); 
+         assertTrue(0 === Math.floor( WAVE.Geometry.azimuthRad( 0,0, 100,0 ) * 100));
        });
 
        run("Geometry", "azimuthRadPoints", function(){
           var p = WAVE.Geometry.Point;
 
-          assertTrue( 157 === Math.floor( WAVE.Geometry.azimuthRadPoints( new p(0,0) , new p(0, 100) ) * 100)); 
-          assertTrue( 0 === Math.floor( WAVE.Geometry.azimuthRadPoints( new p(0,0) , new p(100,0) ) * 100)); 
+          assertTrue( 157 === Math.floor( WAVE.Geometry.azimuthRadPoints( new p(0,0) , new p(0, 100) ) * 100));
+          assertTrue( 0 === Math.floor( WAVE.Geometry.azimuthRadPoints( new p(0,0) , new p(100,0) ) * 100));
        });
 
        run("Geometry", "azimuthDeg", function(){
-          assertTrue( 90 === Math.round( WAVE.Geometry.azimuthDeg( 0,0, 0, 100 ) )); 
-          assertTrue( 0 === Math.round( WAVE.Geometry.azimuthDeg( 0,0, 100,0 ) )); 
+          assertTrue( 90 === Math.round( WAVE.Geometry.azimuthDeg( 0,0, 0, 100 ) ));
+          assertTrue( 0 === Math.round( WAVE.Geometry.azimuthDeg( 0,0, 100,0 ) ));
        });
 
        run("Geometry", "azimuthDegPoints", function(){
           var p = WAVE.Geometry.Point;
 
-          assertTrue( 90 === Math.round( WAVE.Geometry.azimuthDegPoints(new p(0,0), new p(0,100) ) )); 
-          assertTrue( 0 === Math.round( WAVE.Geometry.azimuthDegPoints( new p(0,0), new p(100,0) ) )); 
+          assertTrue( 90 === Math.round( WAVE.Geometry.azimuthDegPoints(new p(0,0), new p(0,100) ) ));
+          assertTrue( 0 === Math.round( WAVE.Geometry.azimuthDegPoints( new p(0,0), new p(100,0) ) ));
        });
 
        run("Geometry", "azimuthOfRadix", function () {
@@ -1664,7 +1715,7 @@
        run("Geometry", "azimuthOfRadixPoints", function(){
           var p = WAVE.Geometry.Point;
 
-          assertTrue( 3 === WAVE.Geometry.azimuthOfRadixPoints( new p(0, 0),new p(0, -100  ) ,  4 ) ); 
+          assertTrue( 3 === WAVE.Geometry.azimuthOfRadixPoints( new p(0, 0),new p(0, -100  ) ,  4 ) );
           assertTrue( 0 === WAVE.Geometry.azimuthOfRadixPoints( new p(0, 0),new p(100, -99) ,  4 ) );
           assertTrue( 1 === WAVE.Geometry.azimuthOfRadixPoints( new p(0, 0),new p(99, 100 ) ,  4 ) );
           assertTrue( 2 === WAVE.Geometry.azimuthOfRadixPoints( new p(0, 0),new p(-101, 100) ,  4 ) );
@@ -1673,45 +1724,45 @@
        run("Geometry", "toRectXY-1", function(){
           var rect = WAVE.Geometry.toRectXY(0,0, 100, 75);
 
-          assertTrue( 0   === rect.left() ); 
-          assertTrue( 0   === rect.top() ); 
-          assertTrue( 100 === rect.width() ); 
-          assertTrue( 75  === rect.height() ); 
+          assertTrue( 0   === rect.left() );
+          assertTrue( 0   === rect.top() );
+          assertTrue( 100 === rect.width() );
+          assertTrue( 75  === rect.height() );
        });
 
        run("Geometry", "toRectXY-2", function(){
           var rect = WAVE.Geometry.toRectXY(0,0, -100, -75);
 
-          assertTrue( -100   === rect.left() ); 
-          assertTrue( -75   === rect.top() ); 
-          assertTrue( 100 === rect.width() ); 
-          assertTrue( 75  === rect.height() ); 
+          assertTrue( -100   === rect.left() );
+          assertTrue( -75   === rect.top() );
+          assertTrue( 100 === rect.width() );
+          assertTrue( 75  === rect.height() );
        });
 
        run("Geometry", "toRectWH-1", function(){
           var rect = WAVE.Geometry.toRectWH(0,0, 100, 75);
 
-          assertTrue( 0   === rect.left() ); 
-          assertTrue( 0   === rect.top() ); 
-          assertTrue( 100 === rect.width() ); 
-          assertTrue( 75  === rect.height() ); 
+          assertTrue( 0   === rect.left() );
+          assertTrue( 0   === rect.top() );
+          assertTrue( 100 === rect.width() );
+          assertTrue( 75  === rect.height() );
        });
 
        run("Geometry", "toRectXY-2", function(){
           var rect = WAVE.Geometry.toRectWH(0,0, -100, -75);
 
-          assertTrue( -100   === rect.left() ); 
-          assertTrue( -75   === rect.top() ); 
-          assertTrue( 100 === rect.width() ); 
-          assertTrue( 75  === rect.height() ); 
+          assertTrue( -100   === rect.left() );
+          assertTrue( -75   === rect.top() );
+          assertTrue( 100 === rect.width() );
+          assertTrue( 75  === rect.height() );
        });
 
        run("Geometry", "overlapAreaRect", function(){
           var rect = WAVE.Geometry.Rectangle;
           var area = WAVE.Geometry.overlapAreaRect( WAVE.Geometry.toRectWH(0,0, 100,100),
-                                                    WAVE.Geometry.toRectWH(90,0, 100,100));  
+                                                    WAVE.Geometry.toRectWH(90,0, 100,100));
 
-          assertTrue( 10*100  === area); 
+          assertTrue( 10*100  === area);
        });
 
        run("Geometry", "overlapAreaWH", function(){
@@ -1805,7 +1856,7 @@
 
        run("Geometry", "perimeterViolationArea", function(){
           var rwh = WAVE.Geometry.toRectWH;
-          assertTrue( 0 ===      WAVE.Geometry.perimeterViolationArea( rwh(0,0,100,100), rwh(0,0,100,100)) );   
+          assertTrue( 0 ===      WAVE.Geometry.perimeterViolationArea( rwh(0,0,100,100), rwh(0,0,100,100)) );
           assertTrue( 1*100 ===  WAVE.Geometry.perimeterViolationArea( rwh(0,0,100,100), rwh(1,0,100,100)) );
           assertTrue( 1*100 ===  WAVE.Geometry.perimeterViolationArea( rwh(0,0,100,100), rwh(-1,0,100,100)) );
           assertTrue( 20*100 === WAVE.Geometry.perimeterViolationArea( rwh(0,0,100,100), rwh(-10,-10,100,100)) );
@@ -1813,45 +1864,45 @@
 
        run("Geometry", "findRayFromRectangleCenterSideIntersection-1", function(){
           var rwh = WAVE.Geometry.toRectWH;
-          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), 0);   
-          assertTrue( 50 === pnt.x()); 
-          assertTrue( 0 === pnt.y()); 
+          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), 0);
+          assertTrue( 50 === pnt.x());
+          assertTrue( 0 === pnt.y());
        });
 
        run("Geometry", "findRayFromRectangleCenterSideIntersection-2", function(){
           var rwh = WAVE.Geometry.toRectWH;
-          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), WAVE.Geometry.PI / 2);   
+          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), WAVE.Geometry.PI / 2);
           log(pnt);
-          assertTrue( 0 === Math.round(pnt.x())); 
-          assertTrue( 50 === Math.round(pnt.y())); 
+          assertTrue( 0 === Math.round(pnt.x()));
+          assertTrue( 50 === Math.round(pnt.y()));
        });
 
        run("Geometry", "findRayFromRectangleCenterSideIntersection-3", function(){
           var rwh = WAVE.Geometry.toRectWH;
-          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), WAVE.Geometry.PI);   
+          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), WAVE.Geometry.PI);
           log(pnt);
-          assertTrue( -50 === Math.round(pnt.x())); 
-          assertTrue( 0 === Math.round(pnt.y())); 
+          assertTrue( -50 === Math.round(pnt.x()));
+          assertTrue( 0 === Math.round(pnt.y()));
        });
 
        run("Geometry", "findRayFromRectangleCenterSideIntersection-4", function(){
           var rwh = WAVE.Geometry.toRectWH;
-          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), WAVE.Geometry.PI+(WAVE.Geometry.PI / 2));   
+          var pnt = WAVE.Geometry.findRayFromRectangleCenterSideIntersection( rwh(-50,-50,100,100), WAVE.Geometry.PI+(WAVE.Geometry.PI / 2));
           log(pnt);
-          assertTrue( 0 === Math.round(pnt.x())); 
-          assertTrue( -50 === Math.round(pnt.y())); 
+          assertTrue( 0 === Math.round(pnt.x()));
+          assertTrue( -50 === Math.round(pnt.y()));
        });
 
        run("Geometry", "getBBox-no-points", function(){
-          var b = WAVE.Geometry.getBBox();   
+          var b = WAVE.Geometry.getBBox();
           assertTrue(null === b);
 
-          b = WAVE.Geometry.getBBox([]);   
+          b = WAVE.Geometry.getBBox([]);
           assertTrue(null === b);
        });
 
        run("Geometry", "getBBox-single-point", function(){
-          var b = WAVE.Geometry.getBBox([{x: 0, y: 1}]);   
+          var b = WAVE.Geometry.getBBox([{x: 0, y: 1}]);
 
           assertTrue(0 === b.left());
           assertTrue(1 === b.top());
@@ -1860,7 +1911,7 @@
        });
 
        run("Geometry", "getBBox-regular", function(){
-          var b = WAVE.Geometry.getBBox([{x: 0, y: 1}, {x: 20, y: -17}, {x: -15, y: 20.57}]);   
+          var b = WAVE.Geometry.getBBox([{x: 0, y: 1}, {x: 20, y: -17}, {x: -15, y: 20.57}]);
 
           assertTrue(-15 === b.left());
           assertTrue(-17 === b.top());
@@ -1869,15 +1920,15 @@
        });
 
        run("Geometry", "Point", function(){
-          var pnt = new WAVE.Geometry.Point(100, 90);   
+          var pnt = new WAVE.Geometry.Point(100, 90);
           assertTrue( 100 === pnt.x());
           assertTrue( 90 === pnt.y());
           log(pnt);
        });
 
        run("Geometry", "Point-set", function(){
-          var pnt = new WAVE.Geometry.Point(100, 90);   
-          pnt.x(110); 
+          var pnt = new WAVE.Geometry.Point(100, 90);
+          pnt.x(110);
           pnt.y(-98);
           assertTrue( 110 === pnt.x());
           assertTrue( -98 === pnt.y());
@@ -1885,12 +1936,12 @@
        });
 
        run("Geometry", "Point-offset", function(){
-          var pnt = new WAVE.Geometry.Point(100, 90);   
+          var pnt = new WAVE.Geometry.Point(100, 90);
           assertTrue( 100 === pnt.x());
           assertTrue( 90 === pnt.y());
           log(pnt);
           pnt.offset(12, -100);
-          log(pnt);  
+          log(pnt);
           assertTrue( 112 === pnt.x());
           assertTrue( -10 === pnt.y());
        });
@@ -1906,7 +1957,7 @@
        run("Geometry", "Point-toPolarPoint", function(){
           var center = new WAVE.Geometry.Point(0, 0);
           var pnt = new WAVE.Geometry.Point(150, 0);
-          
+
           var pp = pnt.toPolarPoint(center);
           assertTrue( 150 === pp.radius());
           assertTrue( 0 === pp.theta());
@@ -1927,16 +1978,16 @@
 
        run("Geometry", "PolarPoint-radius", function(){
           var pp = new WAVE.Geometry.PolarPoint(100, WAVE.Geometry.PI);
-          assertTrue(100 === pp.radius()); 
+          assertTrue(100 === pp.radius());
           pp.radius(125);
-          assertTrue(125 === pp.radius()); 
+          assertTrue(125 === pp.radius());
        });
 
        run("Geometry", "PolarPoint-theta", function(){
           var pp = new WAVE.Geometry.PolarPoint(100, WAVE.Geometry.PI);
-          assertTrue(314 === Math.floor(100 * pp.theta())); 
+          assertTrue(314 === Math.floor(100 * pp.theta()));
           pp.theta(1.18);
-          assertTrue(118 === Math.floor(100 * pp.theta()));  
+          assertTrue(118 === Math.floor(100 * pp.theta()));
        });
 
        run("Geometry", "PolarPoint-toPoint", function(){
@@ -1961,7 +2012,7 @@
        });
 
        run("Geometry", "Rectangle-1", function(){
-          var rect = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(0,0), new WAVE.Geometry.Point(100,100)); 
+          var rect = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(0,0), new WAVE.Geometry.Point(100,100));
           log( rect );
           assertTrue( 0 === rect.left());
           assertTrue( 0 === rect.top());
@@ -1976,7 +2027,7 @@
        });
 
        run("Geometry", "Rectangle-2", function(){
-          var rect = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(-50,-50), new WAVE.Geometry.Point(50,50)); 
+          var rect = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(-50,-50), new WAVE.Geometry.Point(50,50));
           log( rect );
           assertTrue( -50 === rect.left());
           assertTrue( -50 === rect.top());
@@ -2038,9 +2089,9 @@
        });
 
         run("Geometry", "Rectangle-isEqual", function(){
-          var rect1 = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(0,0), new WAVE.Geometry.Point(100,100)); 
-          var rect2 = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(-50,-50), new WAVE.Geometry.Point(50,50)); 
-          var rect3 = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(100,100), new WAVE.Geometry.Point(0,0)); 
+          var rect1 = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(0,0), new WAVE.Geometry.Point(100,100));
+          var rect2 = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(-50,-50), new WAVE.Geometry.Point(50,50));
+          var rect3 = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(100,100), new WAVE.Geometry.Point(0,0));
           log( rect1 );
           log( rect2 );
           log( rect3 );
@@ -2050,7 +2101,7 @@
 
 
        run("Geometry", "Rectangle-toString", function(){
-          var rect = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(0,0), new WAVE.Geometry.Point(100,100)); 
+          var rect = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(0,0), new WAVE.Geometry.Point(100,100));
           log( rect );
           assertTrue("(0,0 ; 100x100)" === rect.toString());
        });
@@ -2058,7 +2109,7 @@
 
 
        run("Geometry", "vectorizeBalloon", function(){
-          var body = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(-100,-100), new WAVE.Geometry.Point(100,100)); 
+          var body = new WAVE.Geometry.Rectangle( new WAVE.Geometry.Point(-100,-100), new WAVE.Geometry.Point(100,100));
           var target = new WAVE.Geometry.Point(0, 300);
           var legSweep = WAVE.Geometry.PI / 16;
 
@@ -2104,8 +2155,8 @@
 
        run("Geometry", "rotateRectAroundCircle", function() {
           var rc = WAVE.Geometry.rotateRectAroundCircle(0, 0, 1, 4, 2, 0);
-          assertTrue(4 === rc.width() && 2 === rc.height()); 
-          assertTrue(devOk(1, rc.left()) && devOk(-1, rc.top())); 
+          assertTrue(4 === rc.width() && 2 === rc.height());
+          assertTrue(devOk(1, rc.left()) && devOk(-1, rc.top()));
 
           rc = WAVE.Geometry.rotateRectAroundCircle(0, 0, 1, 4, 2, Math.PI / 2);
           assertTrue(devOk(-2, rc.left()) && devOk(1, rc.top()));
@@ -2119,9 +2170,9 @@
 
 
        run("EventManager", "bind", function(){
-          var obj1 = new TestObjectA("Alex"); 
+          var obj1 = new TestObjectA("Alex");
           var obj2 = new TestObjectA("Boris");
-          
+
           eventTrace = "";
 
           obj1.eventBind("before-show", BeforeShow );
@@ -2133,8 +2184,8 @@
           obj2.eventBind("after-show",  AfterShow  );
           obj2.eventBind("before-hide", BeforeHide );
           obj2.eventBind("after-hide",  AfterHide  );
-          
-          
+
+
           obj1.show();
           obj1.show();
           obj1.hide();
@@ -2152,9 +2203,9 @@
        });
 
        run("EventManager", "bind-suspended", function(){
-          var obj1 = new TestObjectA("Alex"); 
+          var obj1 = new TestObjectA("Alex");
           var obj2 = new TestObjectA("Boris");
-          
+
           eventTrace = "";
 
           obj1.eventBind("before-show", BeforeShow );
@@ -2166,7 +2217,7 @@
           obj2.eventBind("after-show",  AfterShow  );
           obj2.eventBind("before-hide", BeforeHide );
           obj2.eventBind("after-hide",  AfterHide  );
-          
+
           obj2.eventInvocationSuspendCount++;
           obj1.show();
           obj1.show();
@@ -2187,9 +2238,9 @@
 
 
        run("EventManager", "bind-unbind", function(){
-          var obj1 = new TestObjectA("Alex"); 
+          var obj1 = new TestObjectA("Alex");
           var obj2 = new TestObjectA("Boris");
-          
+
           eventTrace = "";
 
           obj1.eventBind("before-show", BeforeShow );
@@ -2201,13 +2252,13 @@
           obj2.eventBind("after-show",  AfterShow  );
           obj2.eventBind("before-hide", BeforeHide );
           obj2.eventBind("after-hide",  AfterHide  );
-          
-          
+
+
           obj1.show();
           obj1.eventUnbind("before-show", BeforeShow);
           obj1.show();
 
-          
+
           obj1.hide();
           obj2.show();
           obj1.hide();
@@ -2224,9 +2275,9 @@
 
 
        run("EventManager", "bind-clear-some", function(){
-          var obj1 = new TestObjectA("Alex"); 
+          var obj1 = new TestObjectA("Alex");
           var obj2 = new TestObjectA("Boris");
-          
+
           eventTrace = "";
 
           obj1.eventBind("before-show", BeforeShow );
@@ -2238,14 +2289,14 @@
           obj2.eventBind("after-show",  AfterShow  );
           obj2.eventBind("before-hide", BeforeHide );
           obj2.eventBind("after-hide",  AfterHide  );
-          
-          
+
+
           obj1.show();
           obj1.eventClear("after-show");
           obj1.eventClear("after-hide");
           obj1.show();
 
-          
+
           obj1.hide();
           obj2.show();
           obj1.hide();
@@ -2262,9 +2313,9 @@
 
 
        run("EventManager", "bind-clear-all", function(){
-          var obj1 = new TestObjectA("Alex"); 
+          var obj1 = new TestObjectA("Alex");
           var obj2 = new TestObjectA("Boris");
-          
+
           eventTrace = "";
 
           obj1.eventBind("before-show", BeforeShow );
@@ -2276,13 +2327,13 @@
           obj2.eventBind("after-show",  AfterShow  );
           obj2.eventBind("before-hide", BeforeHide );
           obj2.eventBind("after-hide",  AfterHide  );
-          
-          
+
+
           obj1.show();
           obj1.eventClear();
           obj1.show();
 
-          
+
           obj1.hide();
           obj2.show();
           obj1.hide();
@@ -2299,9 +2350,9 @@
 
 
        run("EventManager", "bind-anyEvent", function(){
-          var obj1 = new TestObjectA("Alex"); 
+          var obj1 = new TestObjectA("Alex");
           var obj2 = new TestObjectA("Boris");
-          
+
           eventTrace = "";
           var anyTrace = "";
 
@@ -2323,11 +2374,11 @@
                                                       {
                                                         anyTrace += etype + sender;
                                                       });
-          
+
           obj1.show();
           obj1.show();
 
-          
+
           obj1.hide();
           obj2.show();
           obj1.hide();
@@ -2354,11 +2405,11 @@
                   this.value2 = function(v){ this.Value = v; this.eventInvoke("value-change", {a: 1, b: "yes!"});};
                   this.value3 = function(v){ this.Value = v; this.eventInvoke("value-change");};
                }
-               
+
 
     run("EventManager", "event-with-var-args-1", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
           obj.eventBind("value-change", function(sender, v, flag1, flag2, intv){
@@ -2373,8 +2424,8 @@
      });
 
      run("EventManager", "event-with-var-args-2", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
           obj.eventBind("value-change", function(sender, obj){
@@ -2389,8 +2440,8 @@
      });
 
      run("EventManager", "event-with-var-args-3", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
           obj.eventBind("value-change", function(sender, obj){
@@ -2406,23 +2457,23 @@
 
 
      run("EventManager", "sinks-bind", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
-          obj.eventSinkBind( { a: 0,              
+          obj.eventSinkBind( { a: 0,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
                                             }
                              });
-          obj.eventSinkBind( { a: 147,              
+          obj.eventSinkBind( { a: 147,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
                                             }
                              });
-          
+
 
 
           obj.value3(123);
@@ -2432,11 +2483,11 @@
      });
 
      run("EventManager", "sinks-bind-unbind", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
-          var sink =  { a: 892,              
+          var sink =  { a: 892,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
@@ -2445,7 +2496,7 @@
 
 
           obj.eventSinkBind( sink);
-          
+
 
 
           obj.value3(123);
@@ -2463,23 +2514,23 @@
 
 
      run("EventManager", "sinks-clear", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
-          obj.eventSinkBind( { a: 0,              
+          obj.eventSinkBind( { a: 0,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
                                             }
                              });
-          obj.eventSinkBind( { a: 147,              
+          obj.eventSinkBind( { a: 147,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
                                             }
                              });
-          
+
 
           obj.eventSinkClear();
 
@@ -2490,23 +2541,23 @@
      });
 
      run("EventManager", "sinks-enumerate", function(){
-          var obj = new TestObjectB("Alex"); 
-          
+          var obj = new TestObjectB("Alex");
+
           eventTrace = "";
 
-          obj.eventSinkBind( { a: 11,              
+          obj.eventSinkBind( { a: 11,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
                                             }
                              });
-          obj.eventSinkBind( { a: 147,              
+          obj.eventSinkBind( { a: 147,
                                    eventNotify: function(etype, sender)
                                             {
                                                 eventTrace += "|"+this.a+":"+etype+sender.Name;
                                             }
                              });
-          
+
           assertTrue( 2 === obj.eventSinks().length );
           assertTrue( 11 === obj.eventSinks()[0].a );
           assertTrue( 147 === obj.eventSinks()[1].a );
@@ -2516,7 +2567,7 @@
 
 
      run("Walker", "walker-common", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
 
@@ -2531,7 +2582,7 @@
      });
 
      run("Walker", "walker-reset", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
 
@@ -2547,7 +2598,7 @@
      });
 
      run("Walker", "wWhere-1", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           aw = aw.wWhere(function(e) { return e > 3; });
@@ -2560,7 +2611,7 @@
      });
 
      run("Walker", "wWhere-2", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wWhere1 = aw.wWhere(function(e) { return e > 3; });
@@ -2577,7 +2628,7 @@
      });
 
      run("Walker", "wWhere-chain", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wWhere1 = aw.wWhere(function(e) { return e > 1; });
@@ -2590,7 +2641,7 @@
      });
 
      run("Walker", "wTake1", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wTake = aw.wTake(3);
@@ -2605,7 +2656,7 @@
      });
 
      run("Walker", "wTake2", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wTake = aw.wTake(3);
@@ -2620,7 +2671,7 @@
      });
 
      run("Walker", "wTakeWhile", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a).wTakeWhile(function(e) { return e < 3; });
 
@@ -2630,7 +2681,7 @@
      });
 
      run("Walker", "wSkip-zero", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wSkip = aw.wSkip(0);
@@ -2642,7 +2693,7 @@
      });
 
      run("Walker", "wSkip-1", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wSkip = aw.wSkip(2);
@@ -2656,7 +2707,7 @@
      });
 
      run("Walker", "wSkip-exceed-length", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wSkip = aw.wSkip(5);
@@ -2667,7 +2718,7 @@
      });
 
      run("Walker", "wSelect", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var wSelect = aw.wSelect(function(e) { return e * 10; });
@@ -2756,7 +2807,7 @@
      });
 
      run("Walker", "wAt", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var at;
@@ -2775,7 +2826,7 @@
      });
 
      run("Walker", "wFirst", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var first;
@@ -2795,7 +2846,7 @@
      });
 
      run("Walker", "wFirstIdx", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var idx;
@@ -2811,7 +2862,7 @@
      });
 
      run("Walker", "wCount", function() {
-          var a = [1, 2, 3, 4, 5]; 
+          var a = [1, 2, 3, 4, 5];
 
           var aw = WAVE.arrayWalkable(a);
           var cnt;
@@ -2828,7 +2879,7 @@
      });
 
      run("Walker", "wDistinct-wo-equal", function() {
-          var a = [1, 2, 2, 3, 5, 4, 2, 4, 3]; 
+          var a = [1, 2, 2, 3, 5, 4, 2, 4, 3];
 
           var aw = WAVE.arrayWalkable(a);
           var distinct = aw.wDistinct();
@@ -2892,7 +2943,7 @@
 
           var aw = WAVE.arrayWalkable(a);
           var bw = WAVE.arrayWalkable(b);
-          
+
           var except = aw.wExcept(bw);
 
           assertTrue(3 === except.wCount());
@@ -2907,7 +2958,7 @@
 
           var aw = WAVE.arrayWalkable(a);
           var bw = WAVE.arrayWalkable(b);
-          
+
           var except = aw.wExcept(bw);
 
           assertTrue(2 === except.wCount());
@@ -2919,7 +2970,7 @@
 
           aw = WAVE.arrayWalkable(a);
           bw = WAVE.arrayWalkable(b);
-          
+
           except = aw.wExcept(bw);
 
           assertTrue(2 === except.wCount());
@@ -2933,7 +2984,7 @@
 
           var aw = WAVE.arrayWalkable(a);
           var bw = WAVE.arrayWalkable(b);
-          
+
           var except = aw.wExcept(bw, function(e0, e1) { return e0.v === e1.v;});
 
           assertTrue(1 === except.wCount());
@@ -2946,7 +2997,7 @@
 
           var aw = WAVE.arrayWalkable(a);
           var bw = WAVE.arrayWalkable(b);
-          
+
           var except = aw.wExcept(bw, function(el0, el1) { return el0 === el1.id; });
 
           assertTrue(2 === except.wCount());
@@ -3011,7 +3062,7 @@
             assertTrue(1 === groupWalkable.wAt(1).v.wAt(0));
             assertTrue(-5 === groupWalkable.wAt(1).v.wAt(1));
      });
-     
+
      run("Walker", "wEach", function() {
           var a = [{x: 0, y: 0}, {x: 1, y: 18}];
 
@@ -3054,7 +3105,7 @@
 
           any = WAVE.arrayWalkable(a).wAny(function(e) { return e === -90; });
           assertTrue(any);
-          
+
           any = WAVE.arrayWalkable(a).wAny(function(e) { return e === 150; });
           assertFalse(any);
      });
@@ -3067,7 +3118,7 @@
 
           all = WAVE.arrayWalkable([1,1,1]).wAll(function(e) { return e === 1; });
           assertTrue(all);
-          
+
           all = WAVE.arrayWalkable([1,1,2]).wAll(function(e) { return e === 1; });
           assertFalse(all);
      });
@@ -3171,13 +3222,13 @@
           ];
 
           var all = WAVE.arrayWalkable(data);
-       
+
           assertTrue( 4 === all.wCount(  function(e){ return e.Sex==="M"; } ) );
           assertTrue( 3 === all.wCount(  function(e){ return e.Sex==="F"; } ) );
           assertTrue( 2 === all.wDistinct( function(a,b){return a.FirstName===b.FirstName;} ).wCount(  function(e){ return e.Sex==="F"; } ) );
 
 
-          all       
+          all
            .wSelect( function(e) { return { Name: e.FirstName, Sex: e.Sex, EOB: WAVE.convertScalarType(false, e.DOB, "date").getFullYear()}; } )
            .wWhere( function(e){ return e.EOB < 1990; } )
            .wGroup( function(e) { return e.Sex; } , function(e) { return {Name: e.Name, EOB: e.EOB}; })
@@ -3188,7 +3239,7 @@
                     grp.v.wOrder( function(a,b){ return a.Name<b.Name ? -1 : a.Name>b.Name ? +1 : 0; })
                           .wEach( function(e){ log(e.Name+"   "+e.EOB); });
                   });
-           
+
      });
 
      run("Walker", "wWMA-no-momentum", function() {
@@ -3242,10 +3293,10 @@
 
           var walker = cs.getWalker();
 
-          walker.moveNext(); 
+          walker.moveNext();
           assertTrue(17.75 === walker.current().a);
 
-          walker.moveNext(); 
+          walker.moveNext();
           assertTrue(17.75 === walker.current().a);
 
           assertFalse(walker.moveNext());
@@ -3339,7 +3390,7 @@
           assertTrue(devOk(0, saw.wAt(19).a)); assertTrue(3 === saw.wAt(3).s);
           assertTrue(devOk(-1, saw.wAt(20).a)); assertTrue(4 === saw.wAt(4).s);
      });
-     
+
      run("Walker", "wSawGen-symmetry-.5", function() {
           var saw = WAVE.signalConstSrc().wSawGen({s: 0.5, r: 4});
 
@@ -3447,7 +3498,7 @@
      run("Walker", "wConstLinearSampling-both-compression-decompression", function() {
           var w = WAVE.arrayWalkable([{s: 0, a: 10}, {s: 1, a: 20}, {s: 2, a: 10}, {s: 10, a: 100}, {s: 20, a: 500}]).wConstLinearSampling(2);
 
-          
+
 
           assertTrue(11 === w.wCount());
 

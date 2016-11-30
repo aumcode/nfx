@@ -16,11 +16,6 @@
 </FILE_LICENSE>*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 
 using NFX;
 using NFX.Environment;
@@ -36,94 +31,82 @@ namespace NFX.Web.Pay
   public abstract class PaySession : DisposableObject, INamed
   {
     #region .ctor
+    protected PaySession(PaySystem paySystem, ConnectionParameters cParams)
+    {
+      if (paySystem == null || cParams == null)
+        throw new PaymentException(StringConsts.ARGUMENT_ERROR + this.GetType().Name + ".ctor(paySystem is not null and cParams is not null)");
 
-      protected PaySession(PaySystem paySystem, PayConnectionParameters cParams)
-      {
-        if (paySystem == null || cParams == null)
-          throw new PaymentException(StringConsts.ARGUMENT_ERROR + this.GetType().Name + ".ctor(paySystem is not null and cParams is not null)");
+      m_PaySystem = paySystem;
 
-        m_PaySystem = paySystem;
+      ConnectionParameters = cParams;
 
-        m_Name = cParams.Name;
+      lock (m_PaySystem.m_Sessions)
+        m_PaySystem.m_Sessions.Add(this);
+    }
 
-        m_User = cParams.User;
-
+    protected override void Destructor()
+    {
+      if (m_PaySystem != null)
         lock (m_PaySystem.m_Sessions)
-          m_PaySystem.m_Sessions.Add(this);
-      }
+          m_PaySystem.m_Sessions.Remove(this);
 
-      protected override void Destructor()
-      {
-        if (m_PaySystem != null)
-          lock (m_PaySystem.m_Sessions)
-            m_PaySystem.m_Sessions.Remove(this);
-
-        base.Destructor();
-      }
-
+      base.Destructor();
+    }
     #endregion
 
     #region Pvt/Prot/Int Fields
-
-      private readonly PaySystem m_PaySystem;
-      private readonly string m_Name;
-      protected readonly User m_User;
-
+    private readonly PaySystem m_PaySystem;
+    protected readonly ConnectionParameters ConnectionParameters;
     #endregion
 
     #region Properties
+    protected PaySystem PaySystem { get { return m_PaySystem; } }
+    public string Name { get { return ConnectionParameters.Name; } }
+    public User User { get { return ConnectionParameters.User; } internal set { ConnectionParameters.User = value; } }
 
-      protected PaySystem PaySystem { get { return m_PaySystem; } }
-      public string Name { get { return m_Name; } }
-      public User User { get { return m_User; } }
-
-      public bool IsValid { get { return m_User != null && m_User != Security.User.Fake; } }
+    public bool IsValid { get { return ConnectionParameters.User != null && ConnectionParameters.User != User.Fake; } }
     #endregion
 
     #region Public
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public PaymentException VerifyPotentialTransaction(ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount)
+    {
+      return m_PaySystem.VerifyPotentialTransaction(this, context, transfer, from, to, amount);
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public PaymentException VerifyPotentialTransaction(ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount)
-      {
-        return m_PaySystem.VerifyPotentialTransaction(this, context, transfer, from, to, amount);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public Transaction Charge(ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
+    {
+      return m_PaySystem.Charge(this, context, from, to, amount, capture, description, extraData);
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public Transaction Charge(ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
-      {
-        return m_PaySystem.Charge(this, context, from, to, amount, capture, description, extraData);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public void Capture(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+    {
+      m_PaySystem.Capture(this, context, ref charge, amount, description, extraData);
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public void Capture(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
-      {
-        m_PaySystem.Capture(this, context, ref charge, amount, description, extraData);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public Transaction Refund(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+    {
+      return m_PaySystem.Refund(this, context, ref charge, amount, description, extraData);
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public Transaction Refund(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
-      {
-        return m_PaySystem.Refund(this, context, ref charge, amount, description, extraData);
-      }
-
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public Transaction Transfer(ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null)
-      {
-        return m_PaySystem.Transfer(this, context, from, to, amount, description, extraData);
-      }
-
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public Transaction Transfer(ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null)
+    {
+      return m_PaySystem.Transfer(this, context, from, to, amount, description, extraData);
+    }
     #endregion
-
   } //PaySession
-
 }

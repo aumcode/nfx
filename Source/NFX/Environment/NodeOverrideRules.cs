@@ -78,6 +78,8 @@ namespace NFX.Environment
         public const string DEFAULT_SECTION_MATCH_ATTR_NAME = "name";
 
         public const string DEFAULT_SECTION_CLEAR_NAME = "_clear";
+        public const string DEFAULT_ATTRIBUTE_CLEAR_NAME = "_clear";
+        public const string DEFAULT_SECTION_DELETE_NAME = "_delete";
        #endregion
 
 
@@ -114,6 +116,8 @@ namespace NFX.Environment
 
             private string m_SectionMatchAttrName;
             private string m_SectionClearName;
+            private string m_AttributeClearName;
+            private string m_SectionDeleteName;
        #endregion
 
 
@@ -213,6 +217,24 @@ namespace NFX.Environment
         {
           get { return m_SectionClearName ?? DEFAULT_SECTION_CLEAR_NAME;}
           set { m_SectionClearName = value; }
+        }
+
+        /// <summary>
+        /// Provides a name for clear section - when present it deletes all existing attributes
+        /// </summary>
+        public string AttributeClearName
+        {
+          get { return m_AttributeClearName ?? DEFAULT_ATTRIBUTE_CLEAR_NAME; }
+          set { m_AttributeClearName = value; }
+        }
+
+        /// <summary>
+        /// Provides a name for clear section - when present it deletes all existing attributes
+        /// </summary>
+        public string SectionDeleteName
+        {
+          get { return m_SectionDeleteName ?? DEFAULT_SECTION_DELETE_NAME; }
+          set { m_SectionDeleteName = value; }
         }
 
        #endregion

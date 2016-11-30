@@ -33,7 +33,13 @@ namespace NFX.Web.Pay.Braintree
   public sealed class BraintreeSystem : PaySystem
   {
     #region CONSTS
-    public const string MERCHANTS_URI = "/merchants/{0}";
+    public const string BRAINTREE_REALM = "braintree";
+
+    public const string URI_API         = "https://api.braintreegateway.com";
+    public const string URI_API_SANDBOX = "https://api.sandbox.braintreegateway.com";
+    public const string URI_MERCHANTS   = "/merchants/{0}";
+
+    public const string DEFAULT_API_URI = URI_API_SANDBOX;
 
     private const string HDR_AUTHORIZATION = "Authorization";
     private const string HDR_AUTHORIZATION_BASIC = "Basic {0}";
@@ -44,30 +50,29 @@ namespace NFX.Web.Pay.Braintree
     private const string HDR_X_API_VERSION = "X-ApiVersion";
     public const string API_VERSION = "4";
 
-    public Uri URI_ClientToken(string merchantID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/client_token"); }
-    public Uri URI_Transactions(string merchantID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions"); }
+    public Uri URI_ClientToken(string merchantID) { return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/client_token"); }
+    public Uri URI_Transactions(string merchantID) { return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions"); }
     public Uri URI_SubmitForSettlement(string merchantID, string id)
     {
-      return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions/{0}/submit_for_settlement".Args(id));
+      return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions/{0}/submit_for_settlement".Args(id));
     }
     public Uri URI_Void(string merchantID, string id)
     {
-      return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/transactions/{0}/void".Args(id));
+      return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions/{0}/void".Args(id));
     }
-    public Uri URI_Customer(string merchantID, string customerID) { return new Uri(m_ApiUri, MERCHANTS_URI.Args(merchantID) + "/customers/" + customerID); }
+    public Uri URI_Customer(string merchantID, string customerID) { return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/customers/" + customerID); }
     #endregion
 
     #region .ctor
     public BraintreeSystem(string name, IConfigSectionNode node) : this((Uri)null, name, node, null) { }
     public BraintreeSystem(string name, IConfigSectionNode node, object director) : this((Uri)null, name, node, director) { }
     public BraintreeSystem(string apiUri, string name, IConfigSectionNode node, object director) : this(apiUri.IsNotNullOrWhiteSpace() ? new Uri(apiUri) : null, name, node, director) {}
-    public BraintreeSystem(Uri apiUri, string name, IConfigSectionNode node, object director) : base(name, node, director)
-    { if (apiUri != null) m_ApiUri = apiUri; }
+    public BraintreeSystem(Uri apiUri, string name, IConfigSectionNode node, object director) : base(name, node, director) { if (apiUri != null) m_ApiUri = apiUri; }
     #endregion
 
     #region fields
     private BraintreeWebTerminal m_WebTerminal;
-    [Config]
+    [Config(Default = DEFAULT_API_URI)]
     private Uri m_ApiUri;
     #endregion
 
@@ -118,7 +123,7 @@ namespace NFX.Web.Pay.Braintree
                             new XElement(isWeb ? "payment-method-nonce" : "payment-method-token", fromActualData.Account.AccountID));
         if (orderContex != null)
         {
-          transaction.Add(new XElement("order-id", orderContex.OrderId));
+          transaction.Add(new XElement("order-id", "{0}:{1}".Args(orderContex.VendorId, orderContex.OrderId)));
           if (isWeb)
           {
             if (orderContex.IsNewCustomer)
@@ -315,14 +320,14 @@ namespace NFX.Web.Pay.Braintree
       throw new NotImplementedException();
     }
 
-    protected override PaySession DoStartSession(PayConnectionParameters cParams = null)
+    protected override PaySession DoStartSession(ConnectionParameters cParams = null)
     {
       return new BraintreeSession(this, (BraintreeConnectionParameters)(cParams ?? DefaultSessionConnectParams));
     }
 
-    protected override PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
+    protected override ConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
     {
-      return PayConnectionParameters.Make<BraintreeConnectionParameters>(paramsSection);
+      return ConnectionParameters.Make<BraintreeConnectionParameters>(paramsSection);
     }
 
     #region .pvt

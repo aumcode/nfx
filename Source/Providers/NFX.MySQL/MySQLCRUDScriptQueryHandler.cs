@@ -30,41 +30,21 @@ namespace NFX.DataAccess.MySQL
     /// <summary>
     /// Executes MySql CRUD script-based queries
     /// </summary>
-    public sealed class MySQLCRUDScriptQueryHandler : ICRUDQueryHandler
+    public sealed class MySQLCRUDScriptQueryHandler : CRUDQueryHandler<MySQLDataStore>
     {
         #region .ctor
-            public MySQLCRUDScriptQueryHandler(MySQLDataStore store, QuerySource source)
-            {
-                m_Store = store;
-                m_Source = source;
-            }
-        #endregion
-
-        #region Fields
-            private MySQLDataStore m_Store;
-            private QuerySource m_Source;
+            public MySQLCRUDScriptQueryHandler(MySQLDataStore store, QuerySource source) : base(store, source) { }
         #endregion
 
         #region ICRUDQueryHandler
-            public string Name
-            {
-                get { return m_Source.Name; }
-            }
-
-            public ICRUDDataStore Store
-            {
-               get { return m_Store;}
-            }
-
-
-            public Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
+            public override Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
                 var target = ctx.DataStore.TargetName;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
-                    cmd.CommandText =  m_Source.StatementSource;
+                    cmd.CommandText =  Source.StatementSource;
 
 
                     PopulateParameters(cmd, query);
@@ -90,19 +70,19 @@ namespace NFX.DataAccess.MySQL
                     using (reader)
                     {
                       Schema.FieldDef[] toLoad;
-                      return GetSchemaForQuery(target, query, reader, m_Source, out toLoad);
+                      return GetSchemaForQuery(target, query, reader, Source, out toLoad);
                     }//using reader
                 }//using command
             }
 
 
-            public Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
             {
               return TaskUtils.AsCompletedTask( () => this.GetSchema(context, query));
             }
 
 
-            public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            public override RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
                 var target = ctx.DataStore.TargetName;
@@ -110,7 +90,7 @@ namespace NFX.DataAccess.MySQL
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
 
-                    cmd.CommandText =  m_Source.StatementSource;
+                    cmd.CommandText =  Source.StatementSource;
 
                     PopulateParameters(cmd, query);
 
@@ -130,17 +110,17 @@ namespace NFX.DataAccess.MySQL
                     }
 
                     using (reader)
-                      return PopulateRowset(ctx, reader, target, query, m_Source, oneRow);
+                      return PopulateRowset(ctx, reader, target, query, Source, oneRow);
                 }//using command
             }
 
-            public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            public override Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
               return TaskUtils.AsCompletedTask( () => this.Execute(context, query, oneRow));
             }
 
 
-            public Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
+            public override Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
             {
               var ctx = (MySQLCRUDQueryExecutionContext)context;
               var target = ctx.DataStore.TargetName;
@@ -152,7 +132,7 @@ namespace NFX.DataAccess.MySQL
               try
               {
 
-                cmd.CommandText =  m_Source.StatementSource;
+                cmd.CommandText =  Source.StatementSource;
 
                 PopulateParameters(cmd, query);
 
@@ -170,7 +150,7 @@ namespace NFX.DataAccess.MySQL
                 }
 
 
-                schema = GetSchemaForQuery(target, query, reader, m_Source, out toLoad);
+                schema = GetSchemaForQuery(target, query, reader, Source, out toLoad);
               }
               catch
               {
@@ -194,20 +174,20 @@ namespace NFX.DataAccess.MySQL
                           }
                       }
 
-            public Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
             {
               return TaskUtils.AsCompletedTask( () => this.OpenCursor(context, query));
             }
 
 
-            public int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
+            public override int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
 
-                    cmd.CommandText =  m_Source.StatementSource;
+                    cmd.CommandText =  Source.StatementSource;
 
                     PopulateParameters(cmd, query);
 
@@ -227,7 +207,7 @@ namespace NFX.DataAccess.MySQL
                 }//using command
             }
 
-            public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
             {
                return TaskUtils.AsCompletedTask( () => this.ExecuteWithoutFetch(context, query));
             }
@@ -313,7 +293,7 @@ namespace NFX.DataAccess.MySQL
                 cmd.CommandText += "\n WHERE \n {0}".Args( where );
                }
 
-               CRUDGenerator.ConvertParameters(m_Store, cmd.Parameters);
+               CRUDGenerator.ConvertParameters(Store, cmd.Parameters);
             }
 
             /// <summary>

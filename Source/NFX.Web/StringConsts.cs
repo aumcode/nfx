@@ -206,15 +206,16 @@ namespace NFX.Web
     public const string SHIPPING_SYSTEM_DUPLICATE_NAME_ERROR = "Can not have shipping system instance of type '{0}' with the name '{1}' as this name is already registered. ";
     public const string SHIPPO_CREATE_LABEL_MESSAGE = "Perform create label: from {0}, to {1}";
     public const string SHIPPO_CREATE_LABEL_ERROR = "Critical error while create shipping label from {0}, to {1}: {2}";
-    public const string SHIPPO_CREATE_RETURN_LABEL_ERROR = "Critical error while create return label from {0}, to {1}, return {2}: {3}";
-    public const string SHIPPO_CREATE_LABEL_FAIL = "Label can not be created";
+    public const string SHIPPO_OPERATION_FAILED = "Operation failed";
     public const string SHIPPO_CAN_NOT_MAP_LABEL_FORMAT = "Unknown label format";
     public const string SHIPPO_GET_RATE_ERROR = "Critical error while fetch label rate";
     public const string SHIPPO_TRACK_SHIPMENT_MESSAGE = "Perform track shipment by number '{0}'";
     public const string SHIPPO_TRACK_SHIPMENT_ERROR = "Critical error while tracking shipment '{0}': {1}";
     public const string SHIPPO_VALIDATE_ADDRESS_MESSAGE = "Perform address validation";
     public const string SHIPPO_VALIDATE_ADDRESS_ERROR = "Critical error while validate address: {0}";
-    public const string SHIPPO_VALIDATE_ADDRESS_INVALID_ERROR = "Address is invalid: {0}";
+    public const string SHIPPO_VALIDATE_ADDRESS_INVALID_ERROR = "The address is invalid: {0}";
+    public const string SHIPPO_ESTIMATE_SHIPPING_COST_MESSAGE = "Perform shipping cost estimation: from {0}, to {1}, method '{2}'";
+    public const string SHIPPO_ESTIMATE_SHIPPING_COST_ERROR = "Critical error while estimate shipping cost from {0}, to {1}, method '{2}': {3}";
 
     public const string TAX_CALCULATOR_DUPLICATE_NAME_ERROR = "Can not have tax calculator instance of type '{0}' with the name '{1}' as this name is already registered. ";
     public const string TAX_TAXJAR_TOADDRESS_ISNT_SUPPLIED_ERROR = "Either retailerAddress or wholesellerAddress must be provided. ";

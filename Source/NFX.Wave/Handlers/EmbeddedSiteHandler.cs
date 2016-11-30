@@ -33,121 +33,105 @@ namespace NFX.Wave.Handlers
   /// </summary>
   public abstract class EmbeddedSiteHandler : WorkHandler
   {
-     #region CONSTS
+    #region CONSTS
+    public const string CONFIG_CACHE_CONTROL_SECTION = "cache-control";
 
-           public const string SITE_ACTION = "site";
-           public const string DEFAULT_SITE_PATH = "Home.htm";
+    public const string SITE_ACTION = "site";
+    public const string DEFAULT_SITE_PATH = "Home.htm";
 
-           public const string VAR_PATH = "path";
+    public const string VAR_PATH = "path";
+    #endregion
 
-           public const int DEFAULT_CACHE_MAX_AGE_SEC = 24  * //hrs
-                                                        60  * //min
-                                                        60;   //sec
-
-     #endregion
-
-     #region Inner Classes
-          /// <summary>
-          /// Represents an action that can be dispatched by a EmbeddedSiteHandler.
-          /// The instance of this interface implementor is shared between requests (must be thread-safe)
-          /// </summary>
-          public interface IAction : INamed
-          {
-            /// <summary>
-            /// Performs the action - by performing action work
-            /// </summary>
-            void Perform(WorkContext context);
-          }
+    #region Inner Classes
+    /// <summary>
+    /// Represents an action that can be dispatched by a EmbeddedSiteHandler.
+    /// The instance of this interface implementor is shared between requests (must be thread-safe)
+    /// </summary>
+    public interface IAction : INamed
+    {
+      /// <summary>
+      /// Performs the action - by performing action work
+      /// </summary>
+      void Perform(WorkContext context);
+    }
+    #endregion
 
 
-     #endregion
+    #region .ctor
+
+    protected EmbeddedSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
+                        : base(dispatcher, name, order, match)
+    {
+        foreach(var action in GetActions()) m_Actions.Register(action);
+    }
+
+    protected EmbeddedSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher, confNode)
+    {
+        ConfigAttribute.Apply(this, confNode);
+        if (confNode != null && confNode.Exists)
+          m_CacheControl = ConfigAttribute.Apply(new CacheControl(), confNode[CONFIG_CACHE_CONTROL_SECTION]);
+        foreach(var action in GetActions()) m_Actions.Register(action);
+    }
+
+    #endregion
+
+    #region Fields
+    private Registry<IAction> m_Actions = new Registry<IAction>();
+    [Config] private string m_VersionSegmentPrefix;
+    private CacheControl m_CacheControl = CacheControl.PublicMaxAgeSec();
+    #endregion
+
+    #region Properties
+
+      /// <summary>
+      /// Returns actions that this site can perform
+      /// </summary>
+      public IRegistry<IAction> Actions { get { return m_Actions;} }
+
+      /// <summary>
+      /// Returns name for action that serves embedded site
+      /// </summary>
+      public virtual string SiteAction { get { return SITE_ACTION;}}
+
+      /// <summary>
+      /// Returns default site path that serves site root
+      /// </summary>
+      public virtual string DefaultSitePath { get { return DEFAULT_SITE_PATH;}}
+
+      /// <summary>
+      /// Returns resource path root, i.e. namespace prefixes where resources reside
+      /// </summary>
+      public abstract string RootResourcePath{ get; }
 
 
-     #region .ctor
-
-      protected EmbeddedSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
-                          : base(dispatcher, name, order, match)
+      /// <summary>
+      /// Override in sites that do not support named environment sub-folders in resource structure.
+      /// True by default
+      /// </summary>
+      public virtual bool SupportsEnvironmentBranching
       {
-         foreach(var action in GetActions()) m_Actions.Register(action);
+        get { return true;}
       }
 
-      protected EmbeddedSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher, confNode)
+      /// <summary>
+      /// When set indicates the case-insensitive prefix of a path segment that should be ignored by the handler path resolver.
+      /// Version prefixes are used for attaching a surrogate path "folder" that makes resource differ based on their content.
+      /// For example when prefix is "@",  path '/embedded/img/@767868768768/picture.png' resolves to actual '/embedded/img/picture.png'
+      /// </summary>
+      public string VersionSegmentPrefix
       {
-         ConfigAttribute.Apply(this, confNode);
-         foreach(var action in GetActions()) m_Actions.Register(action);
+        get { return m_VersionSegmentPrefix;}
+        set { m_VersionSegmentPrefix = value;}
       }
 
-     #endregion
+      public CacheControl CacheControl
+      {
+        get { return m_CacheControl; }
+        set { m_CacheControl = value; }
+      }
+    #endregion
 
-     #region Fields
-
-      private Registry<IAction> m_Actions = new Registry<IAction>();
-
-      [Config(Default=DEFAULT_CACHE_MAX_AGE_SEC)]
-      private int m_CacheMaxAgeSec = DEFAULT_CACHE_MAX_AGE_SEC;
-
-      [Config]
-      private string m_VersionSegmentPrefix;
-
-     #endregion
-
-     #region Properties
-
-        /// <summary>
-        /// Returns actions that this site can perform
-        /// </summary>
-        public IRegistry<IAction> Actions { get { return m_Actions;} }
-
-        /// <summary>
-        /// Returns name for action that serves embedded site
-        /// </summary>
-        public virtual string SiteAction { get { return SITE_ACTION;}}
-
-        /// <summary>
-        /// Returns default site path that serves site root
-        /// </summary>
-        public virtual string DefaultSitePath { get { return DEFAULT_SITE_PATH;}}
-
-        /// <summary>
-        /// Returns resource path root, i.e. namespace prefixes where resources reside
-        /// </summary>
-        public abstract string RootResourcePath{ get; }
-
-
-        /// <summary>
-        /// Override in sites that do not support named environment sub-folders in resource structure.
-        /// True by default
-        /// </summary>
-        public virtual bool SupportsEnvironmentBranching
-        {
-          get { return true;}
-        }
-
-        /// <summary>
-        /// When set indicates the case-insensitive prefix of a path segment that should be ignored by the handler path resolver.
-        /// Version prefixes are used for attaching a surrogate path "folder" that makes resource differ based on their content.
-        /// For example when prefix is "@",  path '/embedded/img/@767868768768/picture.png' resolves to actual '/embedded/img/picture.png'
-        /// </summary>
-        public string VersionSegmentPrefix
-        {
-          get { return m_VersionSegmentPrefix;}
-          set { m_VersionSegmentPrefix = value;}
-        }
-
-        /// <summary>
-        /// Specifies the maximum age in cache in seconds for resource file content. Zero means - do not cache the file
-        /// </summary>
-        public int CacheMaxAgeSec
-        {
-           get {return m_CacheMaxAgeSec;}
-           set {m_CacheMaxAgeSec = value<0 ? 0 : value;}
-        }
-
-     #endregion
-
-
-     #region Protected
-
+    #region Protected
       /// <summary>
       /// Override to declare what actions this site can perform
       /// </summary>
@@ -159,10 +143,7 @@ namespace NFX.Wave.Handlers
       /// </summary>
       protected virtual void SetResourceCacheHeader(WorkContext work, string sitePath, string resName)
       {
-         if (m_CacheMaxAgeSec>0)
-          work.Response.Headers[HttpResponseHeader.CacheControl] = "private, max-age={0}, must-revalidate".Args(m_CacheMaxAgeSec);
-         else
-          work.Response.Headers[HttpResponseHeader.CacheControl] = "no-cache";
+        work.Response.SetCacheControlHeaders(CacheControl);
       }
 
 
@@ -209,8 +190,7 @@ namespace NFX.Wave.Handlers
             {
               if (string.Equals(SiteAction, action, StringComparison.InvariantCultureIgnoreCase))
                 serveSite(work, path);
-               else
-                DispatchNonSiteAction(work, action);
+              else DispatchNonSiteAction(work, action);
             }
 
             /// <summary>
@@ -219,21 +199,17 @@ namespace NFX.Wave.Handlers
             protected virtual void DispatchNonSiteAction(WorkContext context, string action)
             {
               var actionInstance = m_Actions[action];
-              if (actionInstance!=null)
-                   actionInstance.Perform(context);
+              if (actionInstance!=null) actionInstance.Perform(context);
               else
               {
-                   context.Response.StatusCode = WebConsts.STATUS_500;
-                   context.Response.StatusDescription = WebConsts.STATUS_500_DESCRIPTION;
-                   context.Response.Write(StringConsts.DONT_KNOW_ACTION_ERROR + action);
+                context.Response.StatusCode = WebConsts.STATUS_500;
+                context.Response.StatusDescription = WebConsts.STATUS_500_DESCRIPTION;
+                context.Response.Write(StringConsts.DONT_KNOW_ACTION_ERROR + action);
               }
             }
      #endregion
 
-
      #region .pvt
-
-
             private char[] DELIMS = new char[]{'/','\\'};
 
             private void serveSite(WorkContext work, string sitePath)
@@ -248,16 +224,27 @@ namespace NFX.Wave.Handlers
 
               var resName = getResourcePath(sitePath);
 
+              var bi = new BuildInformation(assembly);
+              var lastModified = bi.DateStampUTC.DateTimeToHTTPCookieDateTime();
 
+              var ifModifiedSince = work.Request.Headers[SysConsts.HEADER_IF_MODIFIED_SINCE];
+              if (ifModifiedSince.IsNotNullOrWhiteSpace() && lastModified.EqualsOrdIgnoreCase(ifModifiedSince))
+              {
+                SetResourceCacheHeader(work, sitePath, resName);
+                work.Response.Redirect(null, WebConsts.RedirectCode.NotModified_304);
+                return;
+              }
+              using(var stream = assembly.GetManifestResourceStream(resName))
+              if (stream != null)
+              {
+                work.Response.Headers.Set(HttpResponseHeader.LastModified, lastModified);
+                SetResourceCacheHeader(work, sitePath, resName);
+                work.Response.ContentType = mapContentType(resName);
 
-              using (Stream strm = assembly.GetManifestResourceStream(resName))
-               if (strm!=null)
-               {
-                 work.Response.ContentType = mapContentType(resName);
-                 SetResourceCacheHeader(work, sitePath, resName);
-                 work.Response.WriteStream(strm);
-               }
-               else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);
+                stream.Seek(0, SeekOrigin.Begin);
+                work.Response.WriteStream(stream);
+              }
+              else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);
             }
 
             private string getResourcePath(string sitePath)
@@ -312,7 +299,6 @@ namespace NFX.Wave.Handlers
 
               return ContentType.ExtensionToContentType(ext);
             }
-
      #endregion
 
   }

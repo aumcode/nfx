@@ -370,6 +370,28 @@ namespace NFX.Wave
         m_NetResponse.AppendCookie(cookie);
       }
 
+      public bool SetCacheControlHeaders(CacheControl control, bool force = true, string vary = null)
+      {
+        if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace()) return false;
+        var value = control.HTTPCacheControl;
+        if (value.IsNullOrWhiteSpace()) return false;
+
+        m_NetResponse.Headers[HttpResponseHeader.CacheControl] = value;
+        if (control.Cacheability == CacheControl.Type.NoCache)
+        {
+          m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
+          m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
+          m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
+        } else
+        {
+          //if (control.MaxAgeSec.HasValue)
+          //  m_NetResponse.Headers[HttpRequestHeader.Expires] = App.TimeSource.UTCNow.AddSeconds(control.MaxAgeSec.Value).DateTimeToHTTPCookieDateTime();
+          if (vary.IsNotNullOrWhiteSpace())
+            m_NetResponse.Headers[HttpResponseHeader.Vary] = vary;
+        }
+        return true;
+      }
+
       /// <summary>
       /// Sets headers so all downstream, layers (browsers, proxies) do not cache response.
       /// If Force==true(default) then overrides existing headers with no cache.
@@ -377,25 +399,15 @@ namespace NFX.Wave
       /// </summary>
       public bool SetNoCacheHeaders(bool force = true)
       {
-        if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace())
-          return false;
+        return SetCacheControlHeaders(CacheControl.NoCache, force);
+        //if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace())
+        //  return false;
 
-        m_NetResponse.Headers[HttpResponseHeader.CacheControl] = "no-cache, no-store, must-revalidate";
-        m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
-        m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
-        m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
-        return true;
-      }
-
-      /// <summary>
-      /// Sets max-age private cache header
-      /// </summary>
-      public void SetPrivateMaxAgeCacheHeader(int maxAgeSec, string vary = null)
-      {
-        m_NetResponse.Headers[System.Net.HttpResponseHeader.CacheControl] = "private, max-age="+maxAgeSec+", must-revalidate";
-
-        if (vary.IsNotNullOrWhiteSpace()) //20160602 Opan+Dkh
-          m_NetResponse.Headers[HttpResponseHeader.Vary] = vary;
+        //m_NetResponse.Headers[HttpResponseHeader.CacheControl] = "no-cache, no-store, must-revalidate";
+        //m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
+        //m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
+        //m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
+        //return true;
       }
 
       /// <summary>

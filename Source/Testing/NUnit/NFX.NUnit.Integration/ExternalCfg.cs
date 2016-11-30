@@ -1010,7 +1010,6 @@ namespace NFX.NUnit.Integration
             //initS3V4Consts();
             //initGoogleDriveConsts();
             //initStripeConsts();
-            initPayPalConsts();
     }
 
     private void initTax()
@@ -1202,36 +1201,6 @@ namespace NFX.NUnit.Integration
             "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
               NFX_STRIPE,
               "stripe{ type='NFX.Web.Pay.Stripe.StripeConnParams' secret-key='sk_xxxx_xXxXXxXXXXXXXxxXXxXXXxxx' publishable-key='pk_xxxx_xXXXxxXXXXxxxXxxxxxxxxXx'}"),
-          ex);
-      }
-    }
-
-    private void initPayPalConsts()
-    {
-      try
-      {
-        var payPalEnvironmentString = System.Environment.GetEnvironmentVariable(NFX_PAYPAL);
-        var cfg = Configuration.ProviderLoadFromString(payPalEnvironmentString, Configuration.CONFIG_LACONIC_FORMAT).Root;
-
-        PAYPAL_SERVER_URL = cfg.AttrByName(PAYPAL_SYSTEM.CFG_API_URI).Value;
-        PAYPAL_EMAIL = cfg.AttrByName(PAYPAL_CONN_PARAMS.CFG_EMAIL).Value;
-        PAYPAL_CLIENT_ID = cfg.AttrByName(PAYPAL_CONN_PARAMS.CFG_CLIENT_ID).Value;
-        PAYPAL_CLIENT_SECRET = cfg.AttrByName(PAYPAL_CONN_PARAMS.CFG_CLIENT_SECRET).Value;
-
-        var payPalValidAccount = cfg.AttrByName("user-email").Value;
-
-        LACONF = LACONF.Replace("[PAYPAL_SERVER_URL]", PAYPAL_SERVER_URL)
-                       .Replace("[PAYPAL_EMAIL]", PAYPAL_EMAIL)
-                       .Replace("[PAYPAL_CLIENT_ID]", PAYPAL_CLIENT_ID)
-                       .Replace("[PAYPAL_CLIENT_SECRET]", PAYPAL_CLIENT_SECRET)
-                       .Replace("[PAYPAL_VALID_ACCOUNT]", payPalValidAccount);
-      }
-      catch (Exception ex)
-      {
-        throw new Exception(string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
-              NFX_PAYPAL,
-              "paypal { api-uri='https://api.sandbox.paypal.com' email='your_paypal_test_business_account@mail.com' client-id='YourPayPalSandboxApplID' client-secret='YourPayPalSandboxApplSecret' }"),
           ex);
       }
     }

@@ -95,20 +95,37 @@ static string xml2 = @"
 
 static string xml3 = @"
  <root>
-    <section-c>  
+    <section-c>
        Will cause failure if merged with XML1
     </section-c>
  </root>
 ";
+
+static string xml4 = @"
+ <root>
+    <section-a>
+      <_delete/>
+    </section-a>
+    <section-b _override='attributes' _clear='true'>
+
+    </section-b>
+ </root>
+";
+
+
+
         [TestCase]
         public void BasicMerge()
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+          var conf3 = NFX.Environment.XMLConfiguration.CreateFromXML(xml4);
+
           var conf = new NFX.Environment.MemoryConfiguration();
           conf.CreateFromMerge(conf1.Root, conf2.Root);
-                                                              
+
+          var conf4 = new NFX.Environment.MemoryConfiguration();
+          conf4.CreateFromMerge(conf.Root, conf3.Root);
 
           Assert.AreEqual("Sub Value 1", conf.Root["section-a"]["sub1"].Value);
           Assert.AreEqual("Sub Value 2 ammended", conf.Root["section-a"]["sub2"].Value);
@@ -118,6 +135,8 @@ static string xml3 = @"
           Assert.AreEqual("Clock", conf.Root["section-a"].Children.FirstOrDefault(n=>n.IsSameName("destination") && n.AttrByName("name").Value=="B").AttrByName("type").Value);
           Assert.AreEqual("SMTPMail", conf1.Root["section-a"].Children.FirstOrDefault(n=>n.IsSameName("destination") && n.AttrByName("name").Value=="B").AttrByName("type").Value);
 
+          Assert.IsTrue(conf4.Root["section-b"].AttrCount == 1);
+          Assert.IsTrue(!conf4.Root["section-a"].Exists);
         }
 
         [TestCase]
@@ -126,9 +145,9 @@ static string xml3 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml3);
-          
+
           var conf = new NFX.Environment.MemoryConfiguration();
-          
+
           try
           {
             conf.CreateFromMerge(conf1.Root, conf2.Root);
@@ -147,10 +166,10 @@ static string xml3 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+
           var conf = new NFX.Environment.MemoryConfiguration();
           conf.CreateFromMerge(conf1.Root, conf2.Root);
-                                                              
+
 
           Assert.AreEqual("This can not be overridden and no exception will be thrown", conf.Root["section-d"].Value);
           Assert.AreEqual(1, conf.Root["section-d"].Attributes.Count());
@@ -170,7 +189,7 @@ static string xml3 = @"
           {
             var conf = new NFX.Environment.MemoryConfiguration();
             conf.CreateFromMerge(conf1.Root, conf2.Root);
-          } 
+          }
           clock.Stop();
 
           Console.WriteLine("Config merge performance. Merged {0} times in {1} ms", CNT, clock.ElapsedMilliseconds);

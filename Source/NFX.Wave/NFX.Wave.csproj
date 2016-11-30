@@ -52,6 +52,7 @@
     <Compile Include="Client\Record.cs" />
     <Compile Include="Client\RecordModelGenerator.cs" />
     <Compile Include="Filters\BeforeAfterFilterBase.cs" />
+    <Compile Include="Filters\EffectiveCallerIPEndPointFilter.cs" />
     <Compile Include="Filters\PortalFilter.cs" />
     <Compile Include="Filters\SecurityFilter.cs" />
     <Compile Include="Filters\GeoLookupFilter.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="MVC\ActionResult.cs" />
     <Compile Include="MVC\Attributes.cs" />
     <Compile Include="MVC\Controller.cs" />
+    <Compile Include="MVC\CacheControlAttribute.cs" />
     <Compile Include="MVC\NoCacheAttribute.cs" />
     <Compile Include="MVC\Reflection.cs" />
     <Compile Include="MVC\SessionCSRFCheckAttribute.cs" />
@@ -105,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.selector-chain.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.image-view.test.htm" />
@@ -116,9 +119,9 @@
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Templatization\StockContent\Embedded\script\wv.all.min.js">
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.all.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.braintree.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

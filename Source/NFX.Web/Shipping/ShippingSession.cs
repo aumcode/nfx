@@ -82,27 +82,37 @@ namespace NFX.Web.Shipping
     }
 
     /// <summary>
-    /// Creates return label for existed shipping label
-    /// </summary>
-    public Label CreateReturnLabel(IShippingContext context, Shipment shipment, object labelID)
-    {
-      return m_ShippingSystem.CreateReturnLabel(this, context, shipment, labelID);
-    }
-
-    /// <summary>
     /// Retrieves shipment tracking info
     /// </summary>
-    public TrackInfo TrackShipment(IShippingContext context, string trackingNumber)
+    public TrackInfo TrackShipment(IShippingContext context, string carrierID, string trackingNumber)
     {
-      return m_ShippingSystem.TrackShipment(this, context, trackingNumber);
+      return m_ShippingSystem.TrackShipment(this, context, carrierID, trackingNumber);
     }
 
     /// <summary>
-    /// Validates shipping address
+    /// Validates shipping address.
+    /// Returns new Address instance which may contain corrected address fields ('New Yourk' -> 'New York')
     /// </summary>
-    public Exception ValidateAddress(IShippingContext context, Address address)
+    public Address ValidateAddress(IShippingContext context, Address address, out ValidateShippingAddressException error)
     {
-      return m_ShippingSystem.ValidateAddress(this, context, address);
+      return m_ShippingSystem.ValidateAddress(this, context, address, out error);
     }
+
+    /// <summary>
+    /// Returns all the carriers allowed for the system
+    /// </summary>
+    public IEnumerable<ShippingCarrier> GetShippingCarriers(IShippingContext context)
+    {
+      return m_ShippingSystem.GetShippingCarriers(this, context);
+    }
+
+    /// <summary>
+    /// Estimates shipping label cost
+    /// </summary>
+    public Financial.Amount? EstimateShippingCost(IShippingContext context, Shipment shipment)
+    {
+      return m_ShippingSystem.EstimateShippingCost(this, context, shipment);
+    }
+
   }
 }

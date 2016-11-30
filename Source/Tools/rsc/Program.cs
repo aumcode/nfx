@@ -104,7 +104,7 @@ namespace rsc
             Console.WriteLine("   DomainsSearchPath={0}".Args(((RDBMSCompiler)compiler).DomainSearchPaths) );
           Console.WriteLine("   OutPath={0}".Args(compiler.OutputPath) );
           Console.WriteLine("   OutPrefix={0}".Args(compiler.OutputPrefix) );
-          Console.WriteLine("   CaseSensitive={0}".Args(compiler.CaseSensitiveNames) );
+          Console.WriteLine("   CaseSensitivity={0}".Args(compiler.NameCaseSensitivity) );
 
           compiler.Compile();
 

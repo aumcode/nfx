@@ -84,4 +84,37 @@ namespace NFX.Web.Shipping
 
     #endregion
   }
+
+  public class ValidateShippingAddressException : ShippingException
+  {
+    #region .ctor
+
+      public ValidateShippingAddressException()
+        : base()
+      {
+      }
+
+      public ValidateShippingAddressException(string message, string details)
+        : base(message)
+      {
+        m_Details = details;
+      }
+
+      public ValidateShippingAddressException(string message, string details, Exception inner)
+        : base(message, inner)
+      {
+        m_Details = details;
+      }
+
+      protected ValidateShippingAddressException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+      {
+      }
+
+    #endregion
+
+    private readonly string m_Details;
+
+    public string Details { get { return m_Details; } }
+  }
 }

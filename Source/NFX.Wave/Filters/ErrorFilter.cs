@@ -24,7 +24,7 @@ using NFX.Web;
 using NFX.Serialization.JSON;
 using NFX.Environment;
 using NFX.Wave.Templatization;
-using ErrorPage=NFX.Wave.Templatization.StockContent.Error;
+using ErrorPage = NFX.Wave.Templatization.StockContent.Error;
 
 namespace NFX.Wave.Filters
 {
@@ -68,6 +68,7 @@ namespace NFX.Wave.Filters
       private OrderedRegistry<WorkMatch> m_LogMatches = new OrderedRegistry<WorkMatch>();
 
       private string m_SecurityRedirectURL;
+      private string m_SecurityRedirectTarget;
       private Type m_CustomErrorPageType;
 
     #endregion
@@ -93,6 +94,16 @@ namespace NFX.Wave.Filters
       {
         get{return m_SecurityRedirectURL ?? string.Empty;}
         set{ m_SecurityRedirectURL = value;}
+      }
+
+      /// <summary>
+      /// When set redirects response to the specified URL if security exceptions are thrown
+      /// </summary>
+      [Config]
+      public string SecurityRedirectTarget
+      {
+        get{return m_SecurityRedirectTarget ?? string.Empty;}
+        set{ m_SecurityRedirectTarget = value;}
       }
 
       /// <summary>
@@ -138,6 +149,7 @@ namespace NFX.Wave.Filters
                                          OrderedRegistry<WorkMatch> showDumpMatches,
                                          OrderedRegistry<WorkMatch> logMatches,
                                          string securityRedirectURL = null,
+                                         string scrurityRedirectTarget = null,
                                          Type customPageType = null
                                          )
       {
@@ -192,8 +204,21 @@ namespace NFX.Wave.Filters
           }
           else
           {
-            if (securityRedirectURL.IsNotNullOrWhiteSpace() && securityError)
-              work.Response.RedirectAndAbort(securityRedirectURL);
+            if (securityRedirectURL.IsNotNullOrWhiteSpace() && securityError && !work.IsAuthenticated)
+            {
+              var url = securityRedirectURL;
+              var target = scrurityRedirectTarget;
+              if (target.IsNotNullOrWhiteSpace())
+              {
+                var partsA = url.Split('#');
+                var parts = partsA[0].Split('?');
+                var query = parts.Length > 1 ? parts[0] + "&" : string.Empty;
+                url = "{0}?{1}{2}={3}{4}".Args(parts[0], query,
+                  target, Uri.EscapeDataString(work.Request.Url.PathAndQuery),
+                  partsA.Length > 1 ? "#" + partsA[1] : string.Empty);
+              }
+              work.Response.RedirectAndAbort(url);
+            }
             else
             {
               WaveTemplate errorPage = null;
@@ -263,11 +288,11 @@ namespace NFX.Wave.Filters
         }
         catch(Exception error)
         {
-          HandleException(work, error, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectURL, m_CustomErrorPageType);
+          HandleException(work, error, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectURL, m_SecurityRedirectTarget, m_CustomErrorPageType);
           if (Server.m_InstrumentationEnabled)
-               Interlocked.Increment(ref Server.m_stat_FilterHandleException);
+            Interlocked.Increment(ref Server.m_stat_FilterHandleException);
         }
-       }
+      }
 
     #endregion
   }

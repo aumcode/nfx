@@ -44,6 +44,7 @@ namespace WinFormsTest
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MongoConnectorForm));
       this.btnInsert = new System.Windows.Forms.Button();
       this.btnFetch = new System.Windows.Forms.Button();
       this.btnQuery = new System.Windows.Forms.Button();
@@ -54,6 +55,10 @@ namespace WinFormsTest
       this.btnFetchOrderBy = new System.Windows.Forms.Button();
       this.btnCreateIndex = new System.Windows.Forms.Button();
       this.btnListIndexes = new System.Windows.Forms.Button();
+      this.btnAgregate = new System.Windows.Forms.Button();
+      this.btnInserComplexObjects = new System.Windows.Forms.Button();
+      this.btnAggComplex = new System.Windows.Forms.Button();
+      this.tbQuery = new System.Windows.Forms.TextBox();
       this.SuspendLayout();
       // 
       // btnInsert
@@ -156,11 +161,55 @@ namespace WinFormsTest
       this.btnListIndexes.UseVisualStyleBackColor = true;
       this.btnListIndexes.Click += new System.EventHandler(this.btnListIndexes_Click);
       // 
+      // btnAgregate
+      // 
+      this.btnAgregate.Location = new System.Drawing.Point(129, 70);
+      this.btnAgregate.Name = "btnAgregate";
+      this.btnAgregate.Size = new System.Drawing.Size(75, 23);
+      this.btnAgregate.TabIndex = 10;
+      this.btnAgregate.Text = "Agregate";
+      this.btnAgregate.UseVisualStyleBackColor = true;
+      this.btnAgregate.Click += new System.EventHandler(this.btnAgregate_Click);
+      // 
+      // btnInserComplexObjects
+      // 
+      this.btnInserComplexObjects.Location = new System.Drawing.Point(25, 294);
+      this.btnInserComplexObjects.Name = "btnInserComplexObjects";
+      this.btnInserComplexObjects.Size = new System.Drawing.Size(139, 23);
+      this.btnInserComplexObjects.TabIndex = 11;
+      this.btnInserComplexObjects.Text = "Insert Complex Object";
+      this.btnInserComplexObjects.UseVisualStyleBackColor = true;
+      this.btnInserComplexObjects.Click += new System.EventHandler(this.btnInserComplexObjects_Click);
+      // 
+      // btnAggComplex
+      // 
+      this.btnAggComplex.Location = new System.Drawing.Point(25, 346);
+      this.btnAggComplex.Name = "btnAggComplex";
+      this.btnAggComplex.Size = new System.Drawing.Size(139, 23);
+      this.btnAggComplex.TabIndex = 12;
+      this.btnAggComplex.Text = "Complex Aggregation";
+      this.btnAggComplex.UseVisualStyleBackColor = true;
+      this.btnAggComplex.Click += new System.EventHandler(this.btnAggComplex_Click);
+      // 
+      // tbQuery
+      // 
+      this.tbQuery.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.tbQuery.Location = new System.Drawing.Point(170, 221);
+      this.tbQuery.Multiline = true;
+      this.tbQuery.Name = "tbQuery";
+      this.tbQuery.Size = new System.Drawing.Size(420, 306);
+      this.tbQuery.TabIndex = 13;
+      this.tbQuery.Text = resources.GetString("tbQuery.Text");
+      // 
       // MongoConnectorForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(804, 384);
+      this.ClientSize = new System.Drawing.Size(796, 548);
+      this.Controls.Add(this.tbQuery);
+      this.Controls.Add(this.btnAggComplex);
+      this.Controls.Add(this.btnInserComplexObjects);
+      this.Controls.Add(this.btnAgregate);
       this.Controls.Add(this.btnListIndexes);
       this.Controls.Add(this.btnCreateIndex);
       this.Controls.Add(this.btnFetchOrderBy);
@@ -174,6 +223,7 @@ namespace WinFormsTest
       this.Name = "MongoConnectorForm";
       this.Text = "Mongo Connector";
       this.ResumeLayout(false);
+      this.PerformLayout();
 
     }
 
@@ -189,5 +239,9 @@ namespace WinFormsTest
     private System.Windows.Forms.Button btnFetchOrderBy;
     private System.Windows.Forms.Button btnCreateIndex;
     private System.Windows.Forms.Button btnListIndexes;
+    private System.Windows.Forms.Button btnAgregate;
+    private System.Windows.Forms.Button btnInserComplexObjects;
+    private System.Windows.Forms.Button btnAggComplex;
+    private System.Windows.Forms.TextBox tbQuery;
   }
 }

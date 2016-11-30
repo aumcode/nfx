@@ -45,18 +45,28 @@ namespace NFX.IO.Net.Gate
   /// </summary>
   public struct HTTPIncomingTraffic : ITraffic
   {
-    public HTTPIncomingTraffic(HttpListenerRequest request)
+    public HTTPIncomingTraffic(HttpListenerRequest request, string realRemoteAddressHdr = null)
     {
       m_Request = request;
       m_Items = null;
+      m_RealRemoteAddressHdr = realRemoteAddressHdr;
     }
 
     private HttpListenerRequest m_Request;
     private Dictionary<string,object> m_Items;
+    private string m_RealRemoteAddressHdr;
 
     public TrafficDirection Direction { get{ return TrafficDirection.Incoming;}}
 
-    public string FromAddress{ get{ return m_Request.RemoteEndPoint.Address.ToString();} }
+    public string FromAddress
+    {
+      get
+      {
+         return m_RealRemoteAddressHdr.IsNullOrWhiteSpace() ?
+                      m_Request.RemoteEndPoint.Address.ToString() :
+                      m_Request.Headers[m_RealRemoteAddressHdr] ?? m_Request.RemoteEndPoint.Address.ToString();
+      }
+    }
 
     public string ToAddress{ get{ return m_Request.LocalEndPoint.Address.ToString();} }
 

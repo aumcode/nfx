@@ -53,7 +53,7 @@ namespace NFX.Web.Pay
     IPayWebTerminal WebTerminal { get; }
 
     /// <summary>
-    /// Config node of params used inside <see cref="StartSession(PayConnectionParameters)"/> method
+    /// Config node of params used inside <see cref="StartSession(ConnectionParameters)"/> method
     /// if PayConnectionParameters parameter is null
     /// </summary>
     IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }
@@ -83,7 +83,7 @@ namespace NFX.Web.Pay
     /// Starts new pay session of system-specific type.
     /// If cParams parameter is null <see cref="DefaultSessionConnectParamsCfg"/> is used
     /// </summary>
-    PaySession StartSession(PayConnectionParameters cParams = null);
+    PaySession StartSession(ConnectionParameters cParams = null);
 
     /// <summary>
     /// Preliminarily checks possibility of given transaction.

@@ -101,6 +101,11 @@ var WAVE = (function(){
      return obj === Object(obj) && !published.isFunction(obj);
     };
 
+    //Shortcut for not null and not undefined
+    published.exists = function(obj){
+      return typeof (obj) !== tUNDEFINED && obj !== null;
+    }
+
     //Overrides existing function by wrapping in new one. May call base like so:
     //  object.about = WAVE.overrideFun(object.about, function(){ return this.baseFunction() + "overridden" });
     published.overrideFunction = function(original, fn){
@@ -258,7 +263,7 @@ var WAVE = (function(){
         ok = !isNaN(value) && isFinite(value);
         if (ok) value = value < 0 ? (-Math.floor(-value)) : Math.floor(value);
       } else {
-        ok = WAVE.isFunction(Number.isInteger) ?
+        ok = published.isFunction(Number.isInteger) ?
           Number.isInteger(value) :
           !isNaN(value) && isFinite(value) && (Math.floor(value) === value);
       }
@@ -280,10 +285,20 @@ var WAVE = (function(){
     };
 
     published.formatMoney = function(amount, d, t){
+      var pObject = published.tryParseInt(amount, true);
+
+      if (!pObject.ok)
+        amount = 0;
+
       d = typeof(d)===tUNDEFINED ? '.' : d;
       t = typeof(t)===tUNDEFINED ? ',' : t;
-      amount =  amount < 0 ?(-Math.floor(100 * -amount) / 100).toFixed(2)
-                               :(Math.floor(100 * amount) / 100).toFixed(2);
+
+      // in javascript
+      // 47.87*100=4787, BUT! 37.87*100=3786.9999999999995
+      var a1 = amount * 100;
+      var a2 = Math.round(a1);
+      amount = (Math.abs(a1 - a2) < 0.0000001) ? a2 : (amount < 0 ? -Math.floor(-a1) : Math.floor(a1));
+      amount = (amount / 100).toFixed(2);
 
       if (d!=='.') amount = amount.replace('.', d);
 
@@ -375,6 +390,24 @@ var WAVE = (function(){
            sp = false;
         }
         return result;
+    };
+
+    published.joinPathSegs = function() {
+      if (arguments.length === 0) return '';
+      var s = '';
+      var first = true;
+      for (var i = 0; i < arguments.length; i++) {
+        var seg = arguments[i];
+        if (!seg) continue;
+
+        seg = (first ? WAVE.strLTrim(seg) : seg.replace(/^[\/\\\s]+/, '')).replace(/[\/\\\s]+$/, '');
+        if (WAVE.strEmpty(seg)) continue;
+
+        if (!first) s += '/';
+        s += seg;
+        first = false;
+      }
+      return s;
     };
 
     published.markup = (function () {
@@ -916,7 +949,7 @@ var WAVE = (function(){
 
     //returns true if an element is a direct or indirect child of the specified parent
     published.isParentOf = function(parent, elem){
-      if (WAVE.isFunction(parent.contains)) {
+      if (published.isFunction(parent.contains)) {
         try {return parent.contains(elem);}
         catch(e) {return false;}
       }
@@ -931,7 +964,7 @@ var WAVE = (function(){
 
     //returns computed value of specified css style for given elemen
     published.styleOf = function(elem, cssStyle){
-      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !WAVE.isFunction(window.getComputedStyle))
+      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !published.isFunction(window.getComputedStyle))
         return "";
 
       return window.getComputedStyle(elem, null).getPropertyValue(cssStyle);
@@ -939,7 +972,7 @@ var WAVE = (function(){
 
     //removes html element with given id
     published.removeElem = function(id) {
-      var el = WAVE.id(id);
+      var el = published.id(id);
       if (el !== null){
         el.parentNode.removeChild(el);
         return true;
@@ -958,6 +991,30 @@ var WAVE = (function(){
       if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className) || typeof(elem.className) === tUNDEFINED) return;
 
       elem.className = elem.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', "g") , '' );
+    };
+
+    published.fullHieght = function(elem) {
+      if (typeof(elem) === tUNDEFINED || elem === null) return;
+
+      return elem.clientHeight +
+             parseFloat(published.styleOf(elem, "margin-top")) +
+             parseFloat(published.styleOf(elem, "margin-bottom")) +
+             parseFloat(published.styleOf(elem, "padding-top")) +
+             parseFloat(published.styleOf(elem, "padding-bottom")) +
+             parseFloat(published.styleOf(elem, "border-top-width")) +
+             parseFloat(published.styleOf(elem, "border-bottom-width"));
+    };
+
+    published.fullWidth = function(elem) {
+      if (typeof(elem) === tUNDEFINED || elem === null) return;
+
+      return elem.clientWidth +
+             parseFloat(published.styleOf(elem, "margin-left")) +
+             parseFloat(published.styleOf(elem, "margin-right")) +
+             parseFloat(published.styleOf(elem, "padding-left")) +
+             parseFloat(published.styleOf(elem, "padding-right")) +
+             parseFloat(published.styleOf(elem, "border-left-width")) +
+             parseFloat(published.styleOf(elem, "border-right-width"));
     };
 
     published.addEventHandler = function(object, event, handler) {
@@ -1321,7 +1378,16 @@ var WAVE = (function(){
 
 
     published.id = function(id){
-        return document.getElementById(id);
+      return document.getElementById(id);
+    };
+
+    published.getRadioGroupValue = function(groupName){
+      var group = document.getElementsByName(groupName);
+      for (var i = 0; i < group.length; i++) {
+        if (group[i].checked) {
+          return group[i].value;
+        }
+      }
     };
 
     published.getCookie = function(name) {
@@ -1347,6 +1413,18 @@ var WAVE = (function(){
     published.isStringType = function(tp) { return published.strOneOf(tp, ["str", "string", "char[]", "char", "varchar", "text"]);};
     published.isDateType = function(tp) { return published.strOneOf(tp, ["date", "datetime", "time", "timestamp"]);};
 
+    published.isSimpleKeyStringMap = function (obj) {
+      if (!published.exists(obj) || !published.isObject(obj)) return false;
+      var keys = Object.keys(obj);
+      for (var i in keys) {
+        var key = keys[i];
+        var val = obj[key];
+        if (typeof(val) === tUNDEFINED) return false;
+        if (val !== null && !published.isString(val)) return false;
+      }
+
+      return true;
+    }
 
     //Converts scalar value into the specified type: convertScalarType("12/14/2018", "date", true);
     published.convertScalarType = function(nullable, value, type, dflt){
@@ -3454,6 +3532,10 @@ var WAVE = (function(){
       ajaxCall("GET", url, null, success, error, fail, a);
     };
 
+    published.ajaxGetJSON = function(url, data, success, error, fail) {
+      ajaxCall("GET", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
+    };
+
     published.ajaxPost = function(url, data, success, error, fail, a, ct) {
       ajaxCall("POST", url, data, success, error, fail, a, ct);
     };
@@ -3515,7 +3597,7 @@ WAVE.RecordModel = (function(){
             DefaultValue: null,
             Hint:       null,
             Marked:     false,
-            LookupDict: {},//{key:"description",...}]
+            LookupDict: {}, //{key:"description",...}]
             Lookup:     {}, //complex lookup
             DeferValidation: false
         },
@@ -3545,6 +3627,7 @@ WAVE.RecordModel = (function(){
         CTL_TP_PUZZLE:  "puzzle",
         CTL_TP_ERROR_REC:   "error-rec",
         CTL_TP_ERROR_SUMMARY:  "error-summary",
+        CTL_TP_CHAIN_SELECTOR: "chain-selector",
 
         KIND_TEXT:  'text',
         KIND_SCREENNAME:  'screenname',
@@ -3951,7 +4034,7 @@ WAVE.RecordModel = (function(){
                     return published.CTL_TP_RADIO;
                }
 
-               if (fDef.Size>50)
+               if (fDef.Size>64)
                  return published.CTL_TP_TEXTAREA;
                else
                  return published.CTL_TP_TEXT;
@@ -4009,9 +4092,8 @@ WAVE.RecordModel = (function(){
                   }
 
                   if (fValue!==null &&
-                     !WAVE.strEmpty(fValue.toString()))//20140903 DKh+DLat
+                     !WAVE.strEmpty(fValue.toString()))
                   {
-
                       var min = fDef.MinValue;
                       if (min!==null){
                         try { if (fValue<min) throw 1; }
@@ -4035,7 +4117,8 @@ WAVE.RecordModel = (function(){
                       }
 
                       var keys = Object.keys(fDef.LookupDict);
-                      if (keys.length>0){
+                      var isSimple = WAVE.isSimpleKeyStringMap(fDef.LookupDict);
+                      if (keys.length > 0 && isSimple) {
                         var sval = WAVE.convertScalarType(false, fValue, "string", "<unconvertible>");
                         if (!WAVE.strOneOf(sval, keys)) throw valError("Field '@f@' value '@v@' is not allowed", {f: this.about(), v: sval});
                       }

@@ -188,7 +188,33 @@ namespace NFX
       return source.FirstOrDefault();
     }
 
+    /// <summary>
+    /// Returns a new array that contains source elements with additional elements appended at the end
+    /// </summary>
+    public static T[] AppendToNew<T>(this T[] source, params T[] elements)
+    {
+      if (source == null && elements == null) return new T[0];
+      if (source == null) return (T[])elements.Clone();
+      if (elements == null) return (T[])source.Clone();
 
+      var result = new T[source.Length + elements.Length];
 
+      source.CopyTo(result, 0);
+      elements.CopyTo(result, source.Length);
+
+      return result;
+    }
+
+    public static IEnumerable<TResult> Distinct<TResult, TKey>(this IEnumerable<TResult> source, Func<TResult, TKey> selector)
+    {
+      if (source == null) yield break;
+      if (selector == null)
+        foreach (var item in source) yield return item;
+
+      var hs = new HashSet<TKey>();
+      foreach (TResult item in source)
+        if (hs.Add(selector(item)))
+          yield return item;
+    }
   }
 }

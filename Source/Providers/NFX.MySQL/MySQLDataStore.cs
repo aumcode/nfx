@@ -258,7 +258,7 @@ namespace NFX.DataAccess.MySQL
         }
 
 
-        public ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
+        public CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
         {
             return new MySQLCRUDScriptQueryHandler(this, querySource);
         }

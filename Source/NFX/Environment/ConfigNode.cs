@@ -970,6 +970,7 @@ namespace NFX.Environment
           {
             case OverrideSpec.Stop: return false;
             case OverrideSpec.All:
+                                         if (other[rules.SectionDeleteName].Exists) { this.Delete(); return true; }
                                          MergeAttributes(other, rules);
                                          MergeSections(other, rules);
                                          Value = other.VerbatimValue;
@@ -1009,14 +1010,18 @@ namespace NFX.Environment
           if (rules==null) rules = NodeOverrideRules.Default;
 
           var oattrs = other.Attributes;//thread safe
+          if (other.AttrByName(rules.AttributeClearName).ValueAsBool()) this.DeleteAllAttributes();
           foreach(var oatr in oattrs)
           {
+            if (oatr.IsSameName(rules.AttributeClearName))
+              continue;
+
             var existing = this.AttrByName(oatr.Name);
 
             if (existing.Exists)
-             existing.Value = oatr.VerbatimValue;
+              existing.Value = oatr.VerbatimValue;
             else
-             AddAttributeNode(oatr.Name, oatr.VerbatimValue);
+              AddAttributeNode(oatr.Name, oatr.VerbatimValue);
           }
         }
 
@@ -1034,14 +1039,12 @@ namespace NFX.Environment
 
           var children = this.Children;//thread safe
           var osects = other.Children;//thread safe
+          var clear = other[rules.SectionClearName].Exists;
+          if (clear) this.DeleteAllChildren();
           foreach(var osect in osects)
           {
             if (osect.IsSameName(rules.SectionClearName))
-            {
-              this.DeleteAllChildren();
               continue;
-            }
-
 
             //var matches = children.Where(child => child.IsSameName(osect)).ToList();
             //if (matches.Count>1)

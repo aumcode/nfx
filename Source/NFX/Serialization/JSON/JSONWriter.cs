@@ -476,7 +476,13 @@ namespace NFX.Serialization.JSON
                             foreach(DictionaryEntry entry in data)
                             {
                               //20160324 DKh
-                              if (opt.MapSkipNulls && entry.Value==null) continue;
+                              if (opt.MapSkipNulls)
+                              {
+                                if (entry.Value == null) continue;
+
+                                // 20161009 Dkh, Ogee NLSMap is a special type which is treated as a ref type for perf optimization
+                                if (entry.Value is NLSMap && ((NLSMap)entry.Value).Count == 0) continue;
+                              }
 
                               if (!first)
                                 wri.Write(opt.SpaceSymbols ? ", " : ",");

@@ -180,9 +180,9 @@ namespace NFX.Web.Pay.Mock
 
     #region PaySystem implementation
 
-      protected override PaySession DoStartSession(PayConnectionParameters cParams = null)
+      protected override PaySession DoStartSession(ConnectionParameters cParams = null)
       {
-        PayConnectionParameters sessionParams = cParams ?? DefaultSessionConnectParams;
+        ConnectionParameters sessionParams = cParams ?? DefaultSessionConnectParams;
         return this.StartSession(sessionParams as MockConnectionParameters);
       }
 
@@ -406,9 +406,9 @@ namespace NFX.Web.Pay.Mock
         throw new PaymentException(StringConsts.PAYMENT_INVALID_CARD_NUMBER_ERROR + this.GetType().Name + ".Transfer");
       }
 
-      protected override PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
+      protected override ConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
       {
-        return PayConnectionParameters.Make<MockConnectionParameters>(paramsSection);
+        return ConnectionParameters.Make<MockConnectionParameters>(paramsSection);
       }
 
     #endregion

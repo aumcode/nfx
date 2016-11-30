@@ -95,6 +95,17 @@ namespace NFX.RelationalModel
                 return result.TrimEnd();
             }
 
+
+            public override void TransformEntityName(RDBMSEntity entity)
+            {
+              base.TransformEntityName(entity);
+
+              if (entity.EntityType==RDBMSEntityType.Column)
+              {
+                entity.TransformedName = entity.TransformedName.ToUpperInvariant();
+                entity.TransformedShortName = entity.TransformedShortName.ToUpperInvariant();
+              }
+            }
         #endregion
 
     }

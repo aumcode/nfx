@@ -77,6 +77,7 @@ namespace NFX.Wave
       private bool m_WorkSemaphoreReleased;
 
       private HttpListenerContext m_ListenerContext;
+      internal IPEndPoint m_EffectiveCallerIPEndPoint;//set by filters
       private Response m_Response;
 
       internal Filters.SessionFilter m_SessionFilter;
@@ -112,6 +113,7 @@ namespace NFX.Wave
 
       private GeoEntity m_GeoEntity;
 
+      private bool m_IsAuthenticated;
     #endregion
 
     #region Properties
@@ -141,6 +143,17 @@ namespace NFX.Wave
       /// </summary>
      //todo Wrap in Wave.Request object (just like Response)
       public HttpListenerRequest Request { get { return m_ListenerContext.Request;} }
+
+
+      /// <summary>
+      /// Returns the effective caller endpoint- that is, if the real caller filter is set it will inject the real IP
+      /// as seen before any proxy devices. By default this property returns the Request.RemoteEndPoint
+      /// </summary>
+      public IPEndPoint EffectiveCallerIPEndPoint
+      {
+        get{ return m_EffectiveCallerIPEndPoint ?? Request.RemoteEndPoint;}
+      }
+
 
       /// <summary>
       /// Returns Response object for this context
@@ -320,7 +333,7 @@ namespace NFX.Wave
       {
         get
         {
-          return "Work('{0}'@'{1}' -> {2} '{3}')".Args(Request.UserAgent, Request.RemoteEndPoint, Request.HttpMethod, Request.Url);
+          return "Work('{0}'@'{1}' -> {2} '{3}')".Args(Request.UserAgent, EffectiveCallerIPEndPoint, Request.HttpMethod, Request.Url);
         }
       }
 
@@ -400,7 +413,11 @@ namespace NFX.Wave
       /// </summary>
       public bool IsPATCH { get{ return Request.HttpMethod.EqualsOrdIgnoreCase("PATCH");}}
 
-
+      /// <summary>
+      /// Returns true to indicate that this context is/was authenticated.
+      /// Used to not redirect users to login page on authorization exception
+      /// </summary>
+      public bool IsAuthenticated { get { return m_IsAuthenticated; } }
     #endregion
 
     #region Public
@@ -489,6 +506,14 @@ namespace NFX.Wave
       public override string ToString()
       {
         return About;
+      }
+
+      /// <summary>
+      /// Invoked by applications to signify the presence of authentication
+      /// </summary>
+      public void SetAuthenticated(bool value)
+      {
+        m_IsAuthenticated = value;
       }
     #endregion
 

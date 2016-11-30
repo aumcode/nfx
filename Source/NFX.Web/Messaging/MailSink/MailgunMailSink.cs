@@ -25,6 +25,7 @@ using NFX.Financial;
 using NFX.Instrumentation;
 using NFX.Log;
 using NFX.Serialization.JSON;
+using System.Linq;
 
 namespace NFX.Web.Messaging
 {
@@ -78,108 +79,101 @@ namespace NFX.Web.Messaging
 
     #region Properties
 
-    [Config]
-    public string AuthorizationKey { get; set; }
+    [Config]public string AuthorizationKey { get; set; }
+    [Config]public string Domain { get; set; }
+    [Config]public string DefaultFromAddress { get; set; }
+    [Config]public string DefaultFromName { get; set; }
+    [Config]public bool TestMode { get; set; }
+    [Config]public bool DKIM { get; set; }
 
-    [Config]
-    public string Domain { get; set; }
-
-    [Config]
-    public string DefaultFromAddress { get; set; }
-
-    [Config]
-    public string DefaultFromName { get; set; }
-
-    [Config]
-    public bool TestMode { get; set; }
-
+    public Uri ServiceUrl { get { return new Uri("{0}/{1}/messages".Args(BASE_SERVICE_URL, Domain)); } }
     #endregion
 
     #region Protected
-      protected override void DoConfigure(Environment.IConfigSectionNode node)
+    protected override void DoConfigure(IConfigSectionNode node)
+    {
+      ConfigAttribute.Apply(this, node);
+    }
+
+    /// <summary>
+    /// MessageSink DoSendMsg implementation
+    /// </summary>
+    /// <param name="msg">Message</param>
+    protected override void DoSendMsg(Message msg)
+    {
+      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return;
+
+      var request = new WebClient.RequestParams()
       {
-        ConfigAttribute.Apply(this, node);
-      }
+        Caller = this,
+        Method = HTTPRequestMethod.POST,
+        Uri = ServiceUrl,
+        BodyParameters = new Dictionary<string, string>(),
+        UName = "api",
+        UPwd = AuthorizationKey
+      };
 
-      protected override void DoStart()
-      {
-        base.DoStart();
-      }
+      var fa = msg.FROMAddress;
+      var fn = msg.FROMName;
 
-      /// <summary>
-      /// MessageSink DoSendMsg implementation
-      /// </summary>
-      /// <param name="msg">Message</param>
-      protected override void DoSendMsg(Message msg)
-      {
-        if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return;
+      if (fa.IsNullOrWhiteSpace()) fa = DefaultFromAddress;
+      if (fn.IsNullOrWhiteSpace()) fn = DefaultFromName;
 
-        var request = new WebClient.RequestParams()
-        {
-          Caller = this,
-          Method = HTTPRequestMethod.POST,
-          Uri = new Uri(ServiceUrl),
-          Headers = new Dictionary<string, string>(),
-          BodyParameters = new Dictionary<string, string>(),
-          UName = "api",
-          UPwd = AuthorizationKey
-        };
+      var fromAddress = "{0} <{1}>".Args(fn, fa);
 
-        var fromAddress = "{0} <{1}>".Args(DefaultFromName, DefaultFromAddress);
-        if (msg.FROMAddress.IsNotNullOrWhiteSpace())
-        {
-          fromAddress = "{0} <{1}>".Args(msg.FROMName, msg.FROMAddress);
-        }
-
-        addParameter(request.BodyParameters, MAIL_PARAM_FROM, fromAddress);
-        addParameter(request.BodyParameters, MAIL_PARAM_TO, "{0} <{1}>".Args(msg.TOName, msg.TOAddress));
+      addParameter(request.BodyParameters, MAIL_PARAM_FROM, fromAddress);
+      addParameter(request.BodyParameters, MAIL_PARAM_TO, "{0} <{1}>".Args(msg.TOName, msg.TOAddress));
+      if (msg.CC.IsNotNullOrWhiteSpace())
         addParameter(request.BodyParameters, MAIL_PARAM_CC, msg.CC);
+      if (msg.BCC.IsNotNullOrWhiteSpace())
         addParameter(request.BodyParameters, MAIL_PARAM_BCC, msg.BCC);
+      if (msg.Subject.IsNotNullOrWhiteSpace())
         addParameter(request.BodyParameters, MAIL_PARAM_SUBJECT, msg.Subject);
+      if (msg.Body.IsNotNullOrWhiteSpace())
         addParameter(request.BodyParameters, MAIL_PARAM_TEXT, msg.Body);
+      if (msg.HTMLBody.IsNotNullOrWhiteSpace())
         addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.HTMLBody);
-        // todo: attachments
 
-        if (TestMode)
-          request.BodyParameters.Add(API_PARAM_TESTMODE, "Yes");
-
-        WebClient.GetString(request);
+      if (msg.Attachments != null)
+      {
+        foreach (var attachment in msg.Attachments.Where(a => a.Content != null))
+        {
+          //TODO
+        }
       }
+
+      if (TestMode)
+        request.BodyParameters.Add(API_PARAM_TESTMODE, "yes");
+
+      WebClient.GetString(request);
+    }
     #endregion
 
     #region IWebClientCaller
 
-      [Config(Default = 20000)]
-      public int WebServiceCallTimeoutMs
-      {
-        get { return m_WebServiceCallTimeoutMs; }
-        set { m_WebServiceCallTimeoutMs = value < 0 ? 0 : value; }
-      }
+    [Config(Default = 20000)]
+    public int WebServiceCallTimeoutMs
+    {
+      get { return m_WebServiceCallTimeoutMs; }
+      set { m_WebServiceCallTimeoutMs = value < 0 ? 0 : value; }
+    }
 
-      [Config(Default = false)]
-      public bool KeepAlive { get; set; }
+    [Config(Default = false)]
+    public bool KeepAlive { get; set; }
 
-      [Config(Default = false)]
-      public bool Pipelined { get; set; }
-
-      public string ServiceUrl
-      {
-        get
-        {
-          return "{0}/{1}/messages".Args(BASE_SERVICE_URL, Domain);
-        }
-      }
+    [Config(Default = false)]
+    public bool Pipelined { get; set; }
     #endregion
 
     #region .pvt. impl.
 
-      private void addParameter(IDictionary<string, string> parameters, string name, string value)
-      {
-        if (parameters == null) return;
-        if (name.IsNullOrWhiteSpace() || value.IsNullOrWhiteSpace()) return;
+    private void addParameter(IDictionary<string, string> parameters, string name, string value)
+    {
+      if (parameters == null) return;
+      if (name.IsNullOrWhiteSpace() || value.IsNullOrWhiteSpace()) return;
 
-        parameters.Add(name, Uri.EscapeDataString(value));
-      }
+      parameters.Add(name, Uri.EscapeDataString(value));
+    }
 
     #endregion
   }

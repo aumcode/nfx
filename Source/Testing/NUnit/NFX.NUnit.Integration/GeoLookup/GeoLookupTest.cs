@@ -25,9 +25,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using NFX.ApplicationModel;
-using NFX.Environment;
-using NFX.Log;
-using NFX.Parsing;
+using NFX.Serialization.CSV;
 using NFX.Web.GeoLookup;
 
 namespace NFX.NUnit.Integration.GeoLookup

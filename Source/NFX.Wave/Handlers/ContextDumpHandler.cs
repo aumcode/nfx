@@ -71,6 +71,7 @@ namespace NFX.Wave.Handlers
              Query = collToList(work.Request.QueryString),
              RawURL = work.Request.RawUrl,
              RemoteEndPoint = work.Request.RemoteEndPoint.ToString(),
+             EffectiveCallerRemoteEndPoint = work.EffectiveCallerIPEndPoint.ToString(),
              UserAgent = work.Request.UserAgent,
              UserHostAddress = work.Request.UserHostAddress,
              UserHostName = work.Request.UserHostName,

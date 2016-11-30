@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CookieTest.cs" />
     <Compile Include="Controllers\InheritB.cs" />
     <Compile Include="Controllers\InheritA.cs" />
     <Compile Include="Controllers\InheritBase.cs" />

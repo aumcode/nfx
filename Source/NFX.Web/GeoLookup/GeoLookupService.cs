@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 using NFX.Log;
 using NFX.Environment;
-using NFX.Parsing;
+using NFX.Serialization.CSV;
 using NFX.ServiceModel;
 
 namespace NFX.Web.GeoLookup

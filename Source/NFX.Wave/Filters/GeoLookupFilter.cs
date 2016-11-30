@@ -69,7 +69,7 @@ namespace NFX.Wave.Filters
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
       {
         var needLookup = true;
-        var address = work.Request.RemoteEndPoint.Address;
+        var address = work.EffectiveCallerIPEndPoint.Address;
 
         if (work.GeoEntity!=null)
          needLookup = !string.Equals(work.GeoEntity.Query, address);

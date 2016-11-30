@@ -29,100 +29,109 @@ namespace NFX.DataAccess.MongoDB
     /// <summary>
     /// A base for ICRUDQueryHandler-derivatives for mongo
     /// </summary>
-    public abstract class MongoDBCRUDQueryHandlerBase : ICRUDQueryHandler
+    public abstract class MongoDBCRUDQueryHandlerBase : CRUDQueryHandler<MongoDBDataStore>
     {
         #region .ctor
-            public MongoDBCRUDQueryHandlerBase(MongoDBDataStore store, QuerySource source)
-            {
-                m_Store = store;
-                m_Source = source;
-            }
-        #endregion
-
-        #region Fields
-            protected MongoDBDataStore m_Store;
-            protected QuerySource m_Source;
+            public MongoDBCRUDQueryHandlerBase(MongoDBDataStore store, string name) : base(store, name) { }
+            public MongoDBCRUDQueryHandlerBase(MongoDBDataStore store, QuerySource source) : base(store, source) { }
         #endregion
 
         #region ICRUDQueryHandler
-            public string Name {  get { return m_Source.Name; } }
-            public ICRUDDataStore Store { get { return m_Store;}}
-            public RowConverter Converter { get { return m_Store.Converter;}}
+            public RowConverter Converter { get { return Store.Converter; } }
 
 
-            public virtual Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
+            public override Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
             {
               throw new NotImplementedException();
             }
 
-            public virtual Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
             {
               return TaskUtils.AsCompletedTask( () => this.GetSchema(context, query));
             }
 
 
-            public virtual RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            public override RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
               throw new NotImplementedException();
             }
 
-            public virtual Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            public override Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
               return TaskUtils.AsCompletedTask( () => this.Execute(context, query, oneRow));
             }
 
 
-            public virtual Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
+            public override Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
             {
               throw new NotImplementedException();
             }
 
-            public virtual Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
             {
               return TaskUtils.AsCompletedTask( () => this.OpenCursor(context, query) );
             }
 
-            public virtual int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
+            public override int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
             {
               throw new NotImplementedException();
             }
 
-            public virtual Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
             {
               return TaskUtils.AsCompletedTask( () => this.ExecuteWithoutFetch(context, query));
             }
         #endregion
 
-
         #region protected utility
+          public Connector.Query MakeQuery(Connector.Database db, Query query, QuerySource source, out Connector.Collection collection)
+          {
+            if (source.ModifyTarget.IsNullOrWhiteSpace())
+              throw new MongoDBDataAccessException(StringConsts.QUERY_MODIFY_TARGET_MISSING_ERROR + "\n" + Source.OriginalSource);
 
-            protected  Connector.Query MakeQuery(Connector.Database db, Query query, out Connector.Collection collection)
+            collection = db[source.ModifyTarget];
+
+            return MakeQuery(query, source);
+          }
+
+          public Connector.Query MakeQuery(Query query, QuerySource source)
+          {
+            var args = query.Select(p =>
             {
-              if (m_Source.ModifyTarget.IsNullOrWhiteSpace())
-                 throw new MongoDBDataAccessException(StringConsts.QUERY_MODIFY_TARGET_MISSING_ERROR + "\n" + m_Source.OriginalSource);
+              var elm = Converter.ConvertCLRtoBSON(p.Name, p.Value, Store.TargetName);
+              return new TemplateArg(p.Name, elm.ElementType, elm.ObjectValue);
+            }).ToArray();
 
-              collection = db[m_Source.ModifyTarget];
+            return new Connector.Query(source.StatementSource, true, args);
+          }
 
-              return MakeQuery(query);
-            }
+          protected Rowset MapBSONArrayToRowset(BSONArrayElement rowsetData, Type rtp)
+          {
+            Schema schema = null;
+            if(rtp != null && typeof(TypedRow).IsAssignableFrom(rtp))
+              schema = Schema.GetForTypedRow(rtp);
 
-            protected  Connector.Query MakeQuery(Query query)
+            Rowset result = null;
+            if(schema != null)
+              result = new Rowset(schema);
+
+            for(var i = 0; i < rowsetData.Value.Length; i++)
             {
-              var args = query.Select( p =>
-                                      {
-                                        var elm = m_Store.Converter.ConvertCLRtoBSON(p.Name, p.Value, m_Store.TargetName);
-                                        return new TemplateArg(p.Name, elm.ElementType, elm.ObjectValue);
-                                      }).ToArray();
+              var rowDoc = (rowsetData.Value[i] as BSONDocumentElement);
+              if (rowDoc == null) continue;
 
-              return new Connector.Query(m_Source.StatementSource, true, args);
+              if (schema == null)
+              {
+                schema = Converter.InferSchemaFromBSONDocument(rowDoc.Value);
+                result = new Rowset(schema);
+              }
+
+              var row = Row.MakeRow(schema, rtp);
+              Converter.BSONDocumentToRow(rowDoc.Value, row, Store.TargetName);
+              result.Add(row);
             }
-
+            return result;
+          }
         #endregion
-
     }
-
-
-
-
-
 }
