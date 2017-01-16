@@ -125,7 +125,7 @@ namespace NFX.NUnit.DataAccess
       public void GDID_11()
       {
         var gdid = new GDID(0x01020304, 0xfacaca00aa55aa55);
-          
+
         Assert.IsTrue( "01,02,03,04,fa,ca,ca,00,aa,55,aa,55".AsByteArray().SequenceEqual( gdid.Bytes ) );
       }
 
@@ -188,9 +188,21 @@ namespace NFX.NUnit.DataAccess
         //   ----era---- ------ulong -----------
         Assert.IsTrue( GDID.TryParse("0x00000000100000000000004B", out parsed) );
         Assert.AreEqual( new GDID(0,1,0x4b), parsed);
+        Assert.IsTrue( GDID.TryParse("00000000100000000000004B", out parsed) );
+        Assert.AreEqual( new GDID(0,1,0x4b), parsed);
+        Assert.IsTrue( GDID.TryParse(new GDID(0, 1, 0x4b).ToHexString(), out parsed) );
+        Assert.AreEqual( new GDID(0,1,0x4b), parsed);
 
         GDID? nullable;
-        Assert.IsTrue( GDID.TryParse("0x00000000100000000000004B", out nullable) );
+        Assert.IsTrue( GDID.TryParse("0X00000000100000000000004b", out nullable) );
+        Assert.IsTrue( nullable.HasValue);
+        Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
+
+        Assert.IsTrue( GDID.TryParse("00000000100000000000004b", out nullable) );
+        Assert.IsTrue( nullable.HasValue);
+        Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
+
+        Assert.IsTrue( GDID.TryParse(new GDID(0, 1, 0x4b).ToHexString(), out nullable) );
         Assert.IsTrue( nullable.HasValue);
         Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
 
@@ -217,9 +229,9 @@ namespace NFX.NUnit.DataAccess
         var gdid = new GDID(347827,15,0xaedb3434b);
         var buf = gdid.Bytes;
         var hex = "0x"+buf.ToDumpString(DumpFormat.Hex).Replace(" ","");
-        
+
         Console.WriteLine(hex);
-        
+
         GDID gdid2;
         Assert.IsTrue(GDID.TryParse(hex, out gdid2));
         Assert.AreEqual(gdid, gdid2);

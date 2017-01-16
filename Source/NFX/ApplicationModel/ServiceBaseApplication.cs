@@ -49,12 +49,21 @@ namespace NFX.ApplicationModel
     #region .ctor
 
       /// <summary>
-      /// Takes optional args[] and root configuration. If configuration is null then
+      /// Takes optional application args[] and root configuration.
+      /// The args are parsed into CommandArgsConfiguration.
+      /// </summary>
+      public ServiceBaseApplication(string[] args, ConfigSectionNode rootConfig)
+        : this(null, args == null ? null : new CommandArgsConfiguration(args), rootConfig)
+      {}
+
+      /// <summary>
+      /// Takes optional command-line configuration args and root configuration. If configuration is null then
       ///  application is configured from a file co-located with entry-point assembly and
       ///   called the same name as assembly with '.config' extension, unless args are specified and "/config file"
       ///   switch is used in which case 'file' has to be locatable and readable.
       /// </summary>
-      public ServiceBaseApplication(string[] args, ConfigSectionNode rootConfig)
+      public ServiceBaseApplication(string name, Configuration cmdLineArgs, ConfigSectionNode rootConfig)
+        : base(name)
       {
         lock(typeof(ServiceBaseApplication))
         {
@@ -62,21 +71,12 @@ namespace NFX.ApplicationModel
 
             try
             {
-                  Configuration argsConfig;
-                  if (args != null)
-                    argsConfig = new CommandArgsConfiguration(args);
-                  else
-                    argsConfig = new MemoryConfiguration();
-
-                  m_CommandArgs = argsConfig.Root;
-
-
-                  m_ConfigRoot = rootConfig ?? GetConfiguration().Root;
+                  m_CommandArgs = (cmdLineArgs ?? new MemoryConfiguration()).Root;
+                  m_ConfigRoot  = rootConfig ?? GetConfiguration().Root;
 
                   InitApplication();
 
                   s_Instance = this;
-
             }
             catch
             {
@@ -85,8 +85,6 @@ namespace NFX.ApplicationModel
             }
         }
       }
-
-
 
 
       protected override void Destructor()

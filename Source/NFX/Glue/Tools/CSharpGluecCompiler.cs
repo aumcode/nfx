@@ -240,7 +240,7 @@ namespace NFX.Glue.Tools
                   sb.AppendLine("         ///<summary>");
                   sb.AppendLine("         /// Synchronous invoker for  '"+ tc.FullName + "."+mi.Name+"'.");
                   sb.AppendLine("         /// This is a two-way call per contract specification, meaning - the server sends the result back either");
-                  sb.AppendLine("         ///  returning '"+TypeToStr(mi.ReturnType)+"' or RemoteExceptionData instance.");
+                  sb.AppendLine("         ///  returning '"+TypeToStr(mi.ReturnType)+"' or WrappedExceptionData instance.");
                   sb.AppendLine("         /// ClientCallException is thrown if the call could not be placed in the outgoing queue.");
                   sb.AppendLine("         /// RemoteException is thrown if the server generated exception during method execution.");
                   sb.AppendLine("         ///</summary>");
@@ -255,7 +255,7 @@ namespace NFX.Glue.Tools
                   sb.AppendLine("         ///<summary>");
                   sb.AppendLine("         /// Synchronous invoker for  '"+ tc.FullName + "."+mi.Name+"'.");
                   sb.AppendLine("         /// This is a two-way call per contract specification, meaning - the server sends the result back either");
-                  sb.AppendLine("         ///  returning no exception or RemoteExceptionData instance.");
+                  sb.AppendLine("         ///  returning no exception or WrappedExceptionData instance.");
                   sb.AppendLine("         /// ClientCallException is thrown if the call could not be placed in the outgoing queue.");
                   sb.AppendLine("         /// RemoteException is thrown if the server generated exception during method execution.");
                   sb.AppendLine("         ///</summary>");
@@ -278,7 +278,7 @@ namespace NFX.Glue.Tools
             else
             {
               sb.AppendLine("         /// This is a two-way call per contract specification, meaning - the server sends the result back either");
-              sb.AppendLine("         ///  returning no exception or RemoteExceptionData instance.");
+              sb.AppendLine("         ///  returning no exception or WrappedExceptionData instance.");
             }
 
             if (oneWay)

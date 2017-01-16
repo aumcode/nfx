@@ -341,7 +341,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.SetPersonOfTheDay'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -354,7 +354,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.SetPersonOfTheDay'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_SetPersonOfTheDay(@NFX.@NUnit.@Glue.@PersonData  @person)
@@ -368,7 +368,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetPersonOfTheDay'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@NFX.@NUnit.@Glue.@PersonData' or RemoteExceptionData instance.
+         ///  returning '@NFX.@NUnit.@Glue.@PersonData' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -381,7 +381,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetPersonOfTheDay'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetPersonOfTheDay()
@@ -395,7 +395,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -408,7 +408,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetName()
@@ -422,7 +422,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -435,7 +435,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetName(@System.@Int32  @id)
@@ -450,7 +450,7 @@ namespace NFX.NUnit.Glue
           ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -463,7 +463,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetNameMar(@System.@Int32  @id)
@@ -482,7 +482,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -495,7 +495,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetName'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetName(@System.@Int32  @id, @System.@Nullable<@System.@DateTime>  @startDate)
@@ -509,7 +509,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetPersonalData'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@Collections.@Generic.@List<@NFX.@NUnit.@Glue.@PersonData>' or RemoteExceptionData instance.
+         ///  returning '@System.@Collections.@Generic.@List<@NFX.@NUnit.@Glue.@PersonData>' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -522,7 +522,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetPersonalData'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetPersonalData(@System.@Int32[]  @ids)
@@ -536,7 +536,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetPersonalData'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@Collections.@Generic.@List<@NFX.@NUnit.@Glue.@PersonData>' or RemoteExceptionData instance.
+         ///  returning '@System.@Collections.@Generic.@List<@NFX.@NUnit.@Glue.@PersonData>' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -549,7 +549,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetPersonalData'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetPersonalData(@System.@Int32[]  @ids, @System.@Boolean  @onlyCertified, @System.@Decimal  @maxSalary)
@@ -563,7 +563,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetDailyStatuses'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@Collections.@Generic.@Dictionary<@System.@Nullable<@System.@DateTime>, @System.@Collections.@Generic.@List<@NFX.@NUnit.@Glue.@PersonData>>' or RemoteExceptionData instance.
+         ///  returning '@System.@Collections.@Generic.@Dictionary<@System.@Nullable<@System.@DateTime>, @System.@Collections.@Generic.@List<@NFX.@NUnit.@Glue.@PersonData>>' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -576,7 +576,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.GetDailyStatuses'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_GetDailyStatuses(@System.@Int32  @count)
@@ -590,7 +590,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractB.SummarizeAndFinish'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -603,7 +603,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractB.SummarizeAndFinish'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_SummarizeAndFinish()

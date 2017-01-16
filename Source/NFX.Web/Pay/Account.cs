@@ -30,13 +30,11 @@ namespace NFX.Web.Pay
   [Serializable]
   public struct Account : IEquatable<Account>
   {
-    public const string WEB_TERMINAL_IDENTITY = "~@:Web-terminal-token:@~";
-
     private static Account s_EmptyInstance = new Account(null, null, null);
 
     public static Account EmptyInstance { get { return s_EmptyInstance; } }
 
-    public Account(object identity, object identityID, object accountID) : this()
+    public Account(string identity, object identityID, object accountID) : this()
     {
       Identity = identity;
       IdentityID = identityID;
@@ -44,35 +42,18 @@ namespace NFX.Web.Pay
     }
 
     /// <summary>
-    /// Creates account that represents a temporary token returned by IPayWebTerminal token for PCI compliance
+    /// For example 'customer' - name of table.
     /// </summary>
-    public Account(IPayWebTerminal terminal, object terminalToken) : this()
-    {
-      Identity = WEB_TERMINAL_IDENTITY;
-      IdentityID = terminal;
-      AccountID = terminalToken;
-    }
+    public string Identity { get; private set; }
 
     /// <summary>
-    /// Returns true to indicate that this account instance contains a temporary token provided by IPayWebTerminal
-    /// for PCI Compliance
-    /// </summary>
-    public bool IsWebTerminalToken { get { return Identity.AsString().EqualsOrdSenseCase(WEB_TERMINAL_IDENTITY); } }
-
-    /// <summary>
-    /// For example 'customer' - name of table. Returns WEB_TERMINAL_IDENTITY when IsWebTerminalToken = true
-    /// </summary>
-    public object Identity { get; private set; }
-
-    /// <summary>
-    /// For example '125' - id of customer table row 125. Returns IPayWebTermina when IsWebTerminalToken = true
+    /// For example '125' - id of customer table row 125.
     /// </summary>
     public object IdentityID { get; private set; }
 
     /// <summary>
     /// Account id within identity id domain.
     /// For example '2' - id of method of payment for customer #125.
-    /// Returns IPayWebTerminal specific token when IsWebTerminalToken = true
     /// </summary>
     public object AccountID { get; private set; }
 
@@ -85,9 +66,7 @@ namespace NFX.Web.Pay
       if (IsEmpty)
         return "[EMPTY]";
       else
-        return IsWebTerminalToken ?
-               "WebTermToken({0}, {1})".Args(IdentityID != null ? IdentityID.GetType().Name : "?", AccountID) :
-               "Account({0}, {1}, {2})".Args(Identity, IdentityID, AccountID);
+        return "Account({0}, {1}, {2})".Args(Identity, IdentityID, AccountID);
     }
 
     public override int GetHashCode()

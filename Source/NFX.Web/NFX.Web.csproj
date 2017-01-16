@@ -119,8 +119,8 @@
     <Compile Include="Pay\PayPal\PayPalConnectionParameters.cs" />
     <Compile Include="Pay\PayPal\PayPalCredentials.cs" />
     <Compile Include="Pay\PayPal\PayPalOAuthToken.cs" />
-    <Compile Include="Pay\PayPal\PayPalPaymentException.cs" />
     <Compile Include="Pay\PayPal\PayPalSession.cs" />
+    <Compile Include="Pay\PayPal\PayPalSystem.Innternal.cs" />
     <Compile Include="Pay\PayPal\PayPalSystem.cs" />
     <Compile Include="Pay\Instrumentation\Gauges.cs" />
     <Compile Include="Pay\Mock\MockActualAccountData.cs" />

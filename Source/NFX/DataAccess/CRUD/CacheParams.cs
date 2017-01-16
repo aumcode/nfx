@@ -43,6 +43,15 @@ namespace NFX.DataAccess.CRUD
       get { return new CacheParams{ ReadCacheMaxAgeSec = 0, WriteCacheMaxAgeSec = 0, WriteCachePriority = 0, CacheAbsentData = true}; }
     }
 
+
+    /// <summary>
+    /// CacheParams that uses one minute for sensitive data (i.e. user account-related data)
+    /// </summary>
+    public static CacheParams OneMinute
+    {
+      get { return new CacheParams{ ReadCacheMaxAgeSec = 60, WriteCacheMaxAgeSec = 60, WriteCachePriority = 0, CacheAbsentData = true}; }
+    }
+
     /// <summary>
     /// Cache params with the same read/write interval
     /// </summary>

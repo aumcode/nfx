@@ -95,7 +95,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.Echo'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -108,7 +108,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.Echo'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_Echo(@System.@String  @text)
@@ -122,7 +122,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.UnsecureEcho'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -135,7 +135,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.UnsecureEcho'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_UnsecureEcho(@System.@String  @text)
@@ -149,7 +149,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.UnsecEchoMar'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -162,7 +162,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.UnsecEchoMar'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_UnsecEchoMar(@System.@String  @text)
@@ -179,7 +179,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.SimpleWorkAny'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -192,7 +192,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.SimpleWorkAny'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_SimpleWorkAny(@System.@String  @s, @System.@Int32  @i1, @System.@Int32  @i2, @System.@Boolean  @b, @System.@Double  @d)
@@ -206,7 +206,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.SimpleWorkMar'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -219,7 +219,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.SimpleWorkMar'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_SimpleWorkMar(@System.@String  @s, @System.@Int32  @i1, @System.@Int32  @i2, @System.@Boolean  @b, @System.@Double  @d)
@@ -240,7 +240,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.DBWork'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@Object' or RemoteExceptionData instance.
+         ///  returning '@System.@Object' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -253,7 +253,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.DBWork'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_DBWork(@System.@String  @id, @System.@Int32  @recCount, @System.@Int32  @waitMs)
@@ -294,7 +294,7 @@ namespace BusinessLogic
          ///<summary>
          /// Synchronous invoker for  'BusinessLogic.IJokeContract.ObjectWork'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@Object' or RemoteExceptionData instance.
+         ///  returning '@System.@Object' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -307,7 +307,7 @@ namespace BusinessLogic
          ///<summary>
          /// Asynchronous invoker for  'BusinessLogic.IJokeContract.ObjectWork'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_ObjectWork(@System.@Object  @dummy)

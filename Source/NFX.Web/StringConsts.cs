@@ -157,6 +157,7 @@ namespace NFX.Web
     public const string PAYMENT_INVALID_CVC_ERROR = "Invalid card CVC '{0}'. ";
     public const string PAYMENT_INVALID_ADDR_ERROR = "Invalid card address. ";
     public const string PAYMENT_INVALID_CUSTOMER_ERROR = "Customer name '{0}' couldn't be null or empty. ";
+    public const string PAYMENT_CANNOT_VOID_ERROR = "Payment failed to be voided";
     public const string PAYMENT_CANNOT_CHARGE_PAYMENT_ERROR = "Payment failed to be charged. ";
     public const string PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR = "Captured payment cannot be captured again. ";
     public const string PAYMENT_CANNOT_CREATE_RECIPIENT_ERROR = "Recipient couldn't be created. ";
@@ -189,17 +190,13 @@ namespace NFX.Web
     public const string PAYMENT_PAYPAL_50x_STATUSCODE = "PayPal server error";
     public const string PAYMENT_PAYPAL_UNKNOWN_STATUSCODE = "PayPal unknown error";
 
-    //public const string PAYMENT_BRAINTREE_MERCHANT_ID_REQUIRED = "merchant-id is required in {0}";
-    //public const string PAYMENT_BRAINTREE_CREDENTIALS_REQUIRED = "credentials is required in {0}";
-    public const string PAYMENT_BRAINTREE_SESSION_INVALID = "session not valid in {0}";
-
-    public const string PAYPAL_UNAUTHORIZED_MESSAGE = "Unauthorized payment. Trying to refresh OAuth token.";
-    public const string PAYPAL_REFRESH_TOKEN_MESSAGE = "Refreshing OAuth token";
-    public const string PAYPAL_TOKEN_REFRESHED_MESSAGE = "OAuth token successfully refreshed.";
-    public const string PAYPAL_REFRESH_TOKEN_ERROR = "Critical error while refreshing OAuth token: {0}";
-    public const string PAYPAL_PAYOUT_MESSAGE = "Performing payout (account: {0}, amount: {1}).";
+    public const string PAYPAL_GENERATE_OAUTH_ERROR_MESSAGE = "Error while refreshing OAuth token: {0}";
+    public const string PAYPAL_PAYOUTS_CREATE_ERROR_MESSAGE = "Error while create payouts: {0}";
+    public const string PAYPAL_PAYOUTS_FETCH_ERROR_MESSAGE = "Error while fetch payouts: {0}";
+    public const string PAYPAL_PAYOUT_ITEM_FETCH_ERROR_MESSAGE = "Error while fetch payout item: {0}";
+    public const string PAYPAL_PAYOUT_ITEM_CANCEL_ERROR_MESSAGE = "Error while payout item cancellation: {0}";
     public const string PAYPAL_PAYOUT_ERROR = "Critical error while transaction (account: {0}, amount: {1}) processing: {2}";
-    public const string PAYPAL_PAYOUT_CANCEL_ERROR = "Critical error while transaction cancellation: {0}";
+    public const string PAYPAL_VOID_ERROR_MESSAGE = "Critical error while transaction cancellation: {0}";
     public const string PAYPAL_PAYOUT_NOT_SUCCEEDED_MESSAGE = "Payout was not succeeded. Error: {0}, Message: {1}, Description: {2}";
 
     public const string SHIPPING_SYSTEM_HOST_NULL_ERROR = "Shipping system host is not set";

@@ -3531,6 +3531,7 @@
     checkMarkup('&>;',    '<p>&gt;</p>');
     checkMarkup('&{;',    '<p>&#123;</p>');
     checkMarkup('&};',    '<p>&#125;</p>');
+    checkMarkup('&:;',    '<p>&#58;</p>');
     checkMarkup('<script></script>', '<p>&lt;script&gt;&lt;/script&gt;</p>');
   });
   run("Markup", "markup-p", function () {
@@ -3547,10 +3548,14 @@
     checkMarkup('a\n\n\nb', '<p>a</p><p>b</p>');
   });
   run("Markup", "markup-span", function () {
+    checkMarkup('{',        '<p>{</p>');
     checkMarkup('{}',       '<p></p>');
+    checkMarkup('{}{',      '<p>{</p>');
     checkMarkup('{}\n',     '<p></p>');
     checkMarkup('{}\na',    '<p> a</p>');
     checkMarkup('{}.',      '<p>.</p>');
+    checkMarkup('{}.{',     '<p>.{</p>');
+    checkMarkup('{}.{}',    '<p>.</p>');
     checkMarkup('{}.\n',    '<p>.</p>');
     checkMarkup('{}.\na',   '<p>. a</p>');
     checkMarkup('{}..',     '<p>..</p>');
@@ -3558,6 +3563,7 @@
     checkMarkup('..{}..',   '<p>....</p>');
     checkMarkup('{a}',      '<p>a</p>');
     checkMarkup('{{}',      '<p>{</p>');
+    checkMarkup('{}.{}.a',  '<p>.<span class="wv-markup-a"></span></p>');
     checkMarkup('{}.a',     '<p><span class="wv-markup-a"></span></p>');
     checkMarkup('{{}.a}.b', '<p><span class="wv-markup-b"><span class="wv-markup-a"></span></span></p>');
     checkMarkup('{\n}.a',   '<p><span class="wv-markup-a"> </span></p>');
@@ -3570,6 +3576,18 @@
     checkMarkup('{}.ab.ac', '<p><span class="wv-markup-ab wv-markup-ac"></span></p>');
     checkMarkup('{}.a..b',  '<p><span class="wv-markup-a"></span>..b</p>');
     checkMarkup('{{{}.a',   '<p>{{<span class="wv-markup-a"></span></p>');
+  });
+  run("Markup", "markup-url", function () {
+    checkMarkup('{}:',        '<p>:</p>');
+    checkMarkup('{}:{',       '<p>:{</p>');
+    checkMarkup('{}:{\n',     '<p>:{</p>');
+    checkMarkup('{}:{}',      '<p>:</p>');
+    //checkMarkup('{}:{a}',     '<p><a href="a"></a></p>');
+    //checkMarkup('{}:{a}.',    '<p><a href="a"></a></p>');
+    //checkMarkup('{}:{a}.\n',  '<p><a href="a"></a></p>');
+    //checkMarkup('{}:{a}.\na', '<p><a href="a"></a> a</p>');
+    //checkMarkup('{}:{a}..',   '<p><a href="a"></a>..</p>');
+    //checkMarkup('{}:{a}.a',   '<p><a href="a" class="a"></a></p>');
   });
   run("Markup", "markup-heading", function () {
     checkMarkup('!',           '<p>!</p>');

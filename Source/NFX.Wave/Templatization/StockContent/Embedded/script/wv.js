@@ -104,7 +104,7 @@ var WAVE = (function(){
     //Shortcut for not null and not undefined
     published.exists = function(obj){
       return typeof (obj) !== tUNDEFINED && obj !== null;
-    }
+    };
 
     //Overrides existing function by wrapping in new one. May call base like so:
     //  object.about = WAVE.overrideFun(object.about, function(){ return this.baseFunction() + "overridden" });
@@ -409,6 +409,23 @@ var WAVE = (function(){
       }
       return s;
     };
+
+    published.mapCurrencyISOToSymbol = function(ciso, dflt) {
+      ciso = published.strDefault(ciso, "");
+      ciso = ciso.toUpperCase();
+      switch(ciso) {
+        case "USD":
+          return "$";
+        case "RUB":
+          return "₽";
+        case "EUR":
+          return "€";
+        case "GBP":
+          return "£";
+        default:
+          return published.strDefault("?", dflt);
+      }
+    }
 
     published.markup = (function () {
       var State = {
@@ -1017,22 +1034,22 @@ var WAVE = (function(){
              parseFloat(published.styleOf(elem, "border-right-width"));
     };
 
-    published.addEventHandler = function(object, event, handler) {
+    published.addEventHandler = function(object, event, handler, useCapture) {
       if (typeof(object) === tUNDEFINED || object === null) return;
 
       if (published.isFunction(object.addEventListener))
-        object.addEventListener(event, handler, false);
+        object.addEventListener(event, handler, useCapture === true);
       else if (published.isFunction(object.attachEvent))
         object.attachEvent("on" + event, handler);
       else
         object["on"+event] = handler;
     };
 
-    published.removeEventHandler = function(object, event, handler) {
+    published.removeEventHandler = function(object, event, handler, useCapture) {
       if (typeof(object) === tUNDEFINED || object === null) return;
 
       if (published.isFunction(object.removeEventListener))
-        object.removeEventListener(event, handler, false);
+        object.removeEventListener(event, handler, useCapture === true);
       else if (published.isFunction(object.detachEvent))
         object.detachEvent("on" + event, handler);
       else
@@ -1281,6 +1298,67 @@ var WAVE = (function(){
       return node[val];
     };
 
+    published.DATE_TIME_FORMATS = {
+      LONG_DATE: "LongDate",
+      SHORT_DATE: "ShortDate",
+      LONG_DATE_TIME: "LongDateTime",
+      SHORT_DATE_TIME: "ShortDateTime",
+      TRAN_DATE_TIME: "TranDateTime",
+      SHORT_DAY_MONTH: "ShortDayMonth"
+    };
+
+    var monthNames = ["January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December"];
+
+    var dayNames = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    published.dateTimeToString = function(date, format, langIso) {
+      if (typeof(date) === tUNDEFINED || date === null) return "";
+
+      function addLeadingZero(num) {
+        return ('0' + num.toString()).slice(-2);
+      }
+
+      function getMN(idx) {
+        return published.strLocalize(langIso, "date", "", monthNames[idx]);
+      }
+
+      function gM() { return addLeadingZero(fDate.getMonth() + 1); }
+      function gD() { return addLeadingZero(fDate.getDate()); }
+      function gY() { return fDate.getFullYear(); }
+      function gH() { return addLeadingZero(fDate.getHours()); }
+      function gMin() { return addLeadingZero(fDate.getMinutes()); }
+      function gS() { return addLeadingZero(fDate.getSeconds()); }
+
+      var fFormat = WAVE.strDefault(format, published.DATE_TIME_FORMATS.LONG_DATE);
+      var fDate = WAVE.isString(date) ? new Date(date) : date;
+      switch (fFormat)
+      {
+        case published.DATE_TIME_FORMATS.LONG_DATE:
+          return getMN(fDate.getMonth()) + " " + gD() + ", " + gY();
+        case published.DATE_TIME_FORMATS.SHORT_DATE:
+          return gM() + "/" + gD() + "/" + gY();
+        case published.DATE_TIME_FORMATS.LONG_DATE_TIME:
+          return getMN(fDate.getMonth()) + " " + gD() + ", " + gY() + " " + gH() + ":" + gMin() + ":" + gS();
+        case published.DATE_TIME_FORMATS.SHORT_DATE_TIME:
+          return gM() + "/" + gD() + "/" + gY() + " " + gH() + ":" + gMin();
+        case published.DATE_TIME_FORMATS.TRAN_DATE_TIME:
+          return gM() + "/" + gD() + "/" + gY() + " " + gH() + ":" + gMin() + ":" + gS();
+        case published.DATE_TIME_FORMATS.SHORT_DAY_MONTH:
+          return gM() + "/" + gD();
+      }
+    };
+
 
 
     // Add toISOString support (i.e. "2012-01-01T12:30:15.120Z")
@@ -1424,7 +1502,7 @@ var WAVE = (function(){
       }
 
       return true;
-    }
+    };
 
     //Converts scalar value into the specified type: convertScalarType("12/14/2018", "date", true);
     published.convertScalarType = function(nullable, value, type, dflt){
@@ -3528,6 +3606,10 @@ var WAVE = (function(){
       return xhr;
     }
 
+    published.ajaxCall = function(verb, url, data, success, error, fail, a, ct) {
+      ajaxCall(verb, url, data, success, error, fail, a, ct);
+    };
+
     published.ajaxGet = function(url, success, error, fail, a) {
       ajaxCall("GET", url, null, success, error, fail, a);
     };
@@ -3542,6 +3624,14 @@ var WAVE = (function(){
 
     published.ajaxPostJSON = function(url, data, success, error, fail) {
       ajaxCall("POST", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
+    };
+
+    published.ajaxPatch = function (url, success, error, fail, a) {
+      ajaxCall("PATCH", url, null, success, error, fail, a);
+    };
+
+    published.ajaxPatchJSON = function (url, data, success, error, fail) {
+      ajaxCall("PATCH", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
     };
 
 
@@ -3559,7 +3649,62 @@ var WAVE = (function(){
             func();
         });
       }
-    }
+    };
+
+    published.copyToClipboard = function(value) {
+      if (typeof(value) === tUNDEFINED || value === null) return;
+
+      var txtEl,
+          removeTxt = false;
+      if (published.isString(value)) {
+        if (published.strEmpty(value)) return;
+
+        removeTxt = true;
+        txtEl = document.createElement("p");
+        txtEl.style.border = '0';
+        txtEl.style.padding = '0';
+        txtEl.style.margin = '0';
+        txtEl.style.position = 'absolute';
+        txtEl.style.left = '-9999px';
+        txtEl.style.top = '-9999px';
+        txtEl.setAttribute('readonly', '');
+        txtEl.innerHTML = value;
+        document.body.appendChild(txtEl);
+      } else {
+        txtEl = value;
+      }
+
+      var succeeded;
+      try {
+        published.selectElement(txtEl);
+        succeeded = document.execCommand("copy");
+      }
+      catch (err) {
+        succeeded = false;
+      }
+
+      if (removeTxt)
+        document.body.removeChild(txtEl);
+      txtEl = null;
+      return succeeded;
+    };
+
+    published.selectElement = function(element) {
+      var range,
+          selection;
+
+      if (document.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    };
 
     return published;
 }());//WAVE
@@ -3599,7 +3744,8 @@ WAVE.RecordModel = (function(){
             Marked:     false,
             LookupDict: {}, //{key:"description",...}]
             Lookup:     {}, //complex lookup
-            DeferValidation: false
+            DeferValidation: false,
+            Config:     null
         },
         EVT_VALIDATION_DEFINITION_CHANGE: "validation-definition-change",
         EVT_INTERACTION_CHANGE: "interaction-change",
@@ -3947,7 +4093,6 @@ WAVE.RecordModel = (function(){
             fieldDef.Password   = WAVE.strAsBool(fieldDef.Password, published.FIELDDEF_DEFAULTS.Password);
             fieldDef.Marked     = WAVE.strAsBool(fieldDef.Marked, published.FIELDDEF_DEFAULTS.Marked);
             fieldDef.DeferValidation = WAVE.strAsBool(fieldDef.DeferValidation, published.FIELDDEF_DEFAULTS.DeferValidation);
-
 
 
             var field = this;
@@ -4406,6 +4551,18 @@ WAVE.RecordModel = (function(){
                 if (typeof(val)===tUNDEFINED || val===fDef.Placeholder) return fDef.Placeholder;
                 fDef.Placeholder = val;
                 fireInteractionChange("placeholder", val);
+            };
+
+            this.config = function(val){
+                if (typeof(val)===tUNDEFINED || val===fDef.Config) return fDef.Config;
+
+                if(!WAVE.isObject(val))
+                  throw "RecordView.config(val: must be object)";
+                fDef.Config = val;
+
+                resetValidation();
+                fireValidationDefChange("config", null);
+                fireInteractionChange("config", null);
             };
 
             this.toString = function(){

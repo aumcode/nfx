@@ -35,8 +35,11 @@ namespace NFX.Wave.Filters
   {
     #region CONSTS
       public const string CONFIG_SHOW_DUMP_SECTION = "show-dump";
-      public const string CONFIG_LOG_SECTION = "log";
+      public const string CONFIG_LOG_SECTION       = "log";
+      public const string CONFIG_SECURITY_REDIRECT_SECTION  = "security-redirect";
 
+      public const string VAR_SECURITY_REDIRECT_URL    = "security-redirect-url";
+      public const string VAR_SECURITY_REDIRECT_TARGET = "security-redirect-target";
     #endregion
 
     #region .ctor
@@ -46,7 +49,7 @@ namespace NFX.Wave.Filters
 
       public ErrorFilter(WorkDispatcher dispatcher, IConfigSectionNode confNode): base(dispatcher, confNode)
       {
-        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, GetType().FullName);
+        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectMatches, GetType().FullName);
         ConfigAttribute.Apply(this, confNode);
       }
 
@@ -56,7 +59,7 @@ namespace NFX.Wave.Filters
 
       public ErrorFilter(WorkHandler handler, IConfigSectionNode confNode): base(handler, confNode)
       {
-        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, GetType().FullName);
+        ConfigureMatches(confNode, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectMatches, GetType().FullName);
         ConfigAttribute.Apply(this, confNode);
       }
 
@@ -69,6 +72,8 @@ namespace NFX.Wave.Filters
 
       private string m_SecurityRedirectURL;
       private string m_SecurityRedirectTarget;
+      private OrderedRegistry<WorkMatch> m_SecurityRedirectMatches = new OrderedRegistry<WorkMatch>();
+
       private Type m_CustomErrorPageType;
 
     #endregion
@@ -84,7 +89,6 @@ namespace NFX.Wave.Filters
       /// Returns matches used by the filter to determine whether exception details should be logged
       /// </summary>
       public OrderedRegistry<WorkMatch> LogMatches { get{ return m_LogMatches;}}
-
 
       /// <summary>
       /// When set redirects response to the specified URL if security exceptions are thrown
@@ -105,6 +109,11 @@ namespace NFX.Wave.Filters
         get{return m_SecurityRedirectTarget ?? string.Empty;}
         set{ m_SecurityRedirectTarget = value;}
       }
+
+      /// <summary>
+      /// Returns matches used by the filter to supply custom redirect urls via redirect-url and redirect-target variables
+      /// </summary>
+      public OrderedRegistry<WorkMatch> SecurityRedirectMatches { get{ return m_SecurityRedirectMatches; }}
 
       /// <summary>
       /// Specifies a type for custom error page. Must be WebTemplate-derived type
@@ -149,7 +158,8 @@ namespace NFX.Wave.Filters
                                          OrderedRegistry<WorkMatch> showDumpMatches,
                                          OrderedRegistry<WorkMatch> logMatches,
                                          string securityRedirectURL = null,
-                                         string scrurityRedirectTarget = null,
+                                         string secrurityRedirectTarget = null,
+                                         OrderedRegistry<WorkMatch> securityRedirectMatches = null,
                                          Type customPageType = null
                                          )
       {
@@ -204,10 +214,30 @@ namespace NFX.Wave.Filters
           }
           else
           {
+            if (securityRedirectMatches != null && securityRedirectMatches.Count > 0)
+            {
+              JSONDataMap matched = null;
+              foreach(var match in securityRedirectMatches.OrderedValues)
+              {
+                matched = match.Make(work, actual);
+                if (matched!=null) break;
+              }
+              if (matched!=null)
+              {
+                var url = matched[VAR_SECURITY_REDIRECT_URL].AsString();
+                var target = matched[VAR_SECURITY_REDIRECT_TARGET].AsString();
+
+                if (url.IsNotNullOrWhiteSpace())
+                  securityRedirectURL = url;
+                if (target.IsNotNullOrWhiteSpace())
+                  secrurityRedirectTarget = target;
+              }
+            }
+
             if (securityRedirectURL.IsNotNullOrWhiteSpace() && securityError && !work.IsAuthenticated)
             {
               var url = securityRedirectURL;
-              var target = scrurityRedirectTarget;
+              var target = secrurityRedirectTarget;
               if (target.IsNotNullOrWhiteSpace())
               {
                 var partsA = url.Split('#');
@@ -252,7 +282,7 @@ namespace NFX.Wave.Filters
             JSONDataMap matched = null;
             foreach(var match in logMatches.OrderedValues)
             {
-              matched = match.Make(work);
+              matched = match.Make(work, actual);
               if (matched!=null) break;
             }
             if (matched!=null)
@@ -269,15 +299,23 @@ namespace NFX.Wave.Filters
       internal static void ConfigureMatches(IConfigSectionNode confNode,
                                             OrderedRegistry<WorkMatch> showDumpMatches,
                                             OrderedRegistry<WorkMatch> logMatches,
+                                            OrderedRegistry<WorkMatch> securityRedirectMatches,
                                             string from)
       {
-        foreach(var cn in confNode[CONFIG_SHOW_DUMP_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
-          if(!showDumpMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.ShowDump".Args(from)));
+        if (showDumpMatches != null)
+          foreach(var cn in confNode[CONFIG_SHOW_DUMP_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
+            if(!showDumpMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
+              throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.ShowDump".Args(from)));
+        
+        if (logMatches != null)
+          foreach(var cn in confNode[CONFIG_LOG_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
+            if(!logMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
+              throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.Log".Args(from)));
 
-        foreach(var cn in confNode[CONFIG_LOG_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
-          if(!logMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.Log".Args(from)));
+        if (securityRedirectMatches != null)
+          foreach(var cn in confNode[CONFIG_SECURITY_REDIRECT_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
+            if(!securityRedirectMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
+              throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.SecurityRedirect".Args(from)));
       }
 
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
@@ -288,7 +326,7 @@ namespace NFX.Wave.Filters
         }
         catch(Exception error)
         {
-          HandleException(work, error, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectURL, m_SecurityRedirectTarget, m_CustomErrorPageType);
+          HandleException(work, error, m_ShowDumpMatches, m_LogMatches, m_SecurityRedirectURL, m_SecurityRedirectTarget, m_SecurityRedirectMatches, m_CustomErrorPageType);
           if (Server.m_InstrumentationEnabled)
             Interlocked.Increment(ref Server.m_stat_FilterHandleException);
         }

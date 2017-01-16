@@ -365,5 +365,46 @@ namespace NFX
 
       return tcs.Task;
     }
+
+    /// <summary>
+    /// Returns the count of items in work segment along with the start index of the first item to be processed
+    /// by a particular worker in the worker set
+    /// </summary>
+    /// <param name="totalItemCount">Total item count in the set processed by all workers</param>
+    /// <param name="totalWorkerCount">Total number of workers int the set operating over the totalItemCount</param>
+    /// <param name="thisWorkerIndex">The index of THIS worker in the whole worker set</param>
+    /// <param name="startIndex">Returns the index of the first item in the assigned segment</param>
+    /// <returns>The count of items in the assigned segment</returns>
+    public static int AssignWorkSegment(int totalItemCount,
+                                        int totalWorkerCount,
+                                        int thisWorkerIndex,
+                                        out int startIndex)
+    {
+      if (totalItemCount  <= 0 ||
+          totalWorkerCount<= 0 ||
+          thisWorkerIndex <  0 ||
+          thisWorkerIndex >= totalWorkerCount)
+      {
+        startIndex = -1;
+        return 0;
+      }
+
+      var div = totalItemCount / totalWorkerCount;
+      var mod = totalItemCount % totalWorkerCount;
+
+      if (thisWorkerIndex < mod)
+      {
+        var count = div + 1;
+        startIndex = thisWorkerIndex * count;
+        return count;
+      }
+      else
+      {
+        var count = div;
+        startIndex = (mod * (div + 1))  +  ((thisWorkerIndex - mod) * count);
+        return count;
+      }
+    }
+
   }
 }

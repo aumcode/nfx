@@ -38,31 +38,43 @@ namespace NFX.Web.Pay
   {
     Account Account { get; }
 
+    string Identity { get; }
+
+    bool IsNew { get; }
+    object IdentityID { get; }
+
+    bool IsWebTerminal { get; }
+    object AccountID { get; }
+
     string FirstName { get; }
     string MiddleName { get; }
     string LastName { get; }
 
     string AccountTitle { get; }
 
-    AccountType AccountType { get; set; }
+    AccountType AccountType { get; }
 
     bool HadSuccessfullTransactions { get; }
+
     string IssuerID { get; }
     string IssuerName { get; }
     string IssuerPhone { get; }
     string IssuerEMail { get; }
-    string AccountNumber { get; }
+    string IssuerUri { get; }
+
     string RoutingNumber { get; }
-    int CardExpirationYear { get; }
-    int CardExpirationMonth { get; }
+
+    string CardMaskedName { get; }
+    string CardHolder { get; }
+    DateTime? CardExpirationDate { get; }
     string CardVC { get; }
 
     bool IsCard { get; }
 
-    string PrimaryEMail { get; }
+    string Phone { get; }
+    string EMail { get; }
 
     IAddress BillingAddress { get; }
-
     IAddress ShippingAddress { get; }
   }
 
@@ -136,49 +148,45 @@ namespace NFX.Web.Pay
 
   public class ActualAccountData : IActualAccountData
   {
-    private readonly Lazy<Address> m_BillingAddress = new Lazy<Address>();
+    public ActualAccountData(Account account) { m_Account = account; }
 
-    private readonly Lazy<Address> m_ShippingAddress = new Lazy<Address>();
+    private readonly Account m_Account;
 
-    public Account Account { get; set; }
+    public Account Account { get { return m_Account; } }
+
+    public string Identity { get; set; }
+    public bool IsNew { get; set; }
+    public object IdentityID { get; set; }
+    public bool IsWebTerminal { get; set; }
+    public object AccountID { get; set; }
 
     public string FirstName { get; set; }
     public string MiddleName { get; set; }
     public string LastName { get; set; }
+    public string AccountTitle { get { return string.Join(" ", new string[] { FirstName, MiddleName, LastName }.Where(s => s.IsNotNullOrWhiteSpace())); } }
 
-    public string AccountTitle
-    {
-      get
-      {
-        return string.Join(" ", new string[] { FirstName, MiddleName, LastName }.Where(s => s.IsNotNullOrWhiteSpace()));
-      }
-    }
+    public string Phone { get; set; }
+    public string EMail { get; set; }
+
+    public IAddress BillingAddress { get; set; }
+    public IAddress ShippingAddress { get; set; }
 
     public AccountType AccountType { get; set; }
 
     public bool HadSuccessfullTransactions { get; set; }
+
     public string IssuerID { get; set; }
     public string IssuerName { get; set; }
     public string IssuerPhone { get; set; }
     public string IssuerEMail { get; set; }
-    public string AccountNumber { get; set; }
+    public string IssuerUri { get; set; }
+
     public string RoutingNumber { get; set; }
-    public int CardExpirationYear { get; set; }
-    public int CardExpirationMonth { get; set; }
+
+    public string CardMaskedName { get; set; }
+    public string CardHolder { get; set; }
+    public DateTime? CardExpirationDate { get; set; }
     public string CardVC { get; set; }
-
     public bool IsCard { get { return RoutingNumber.IsNullOrWhiteSpace(); } }
-
-    public string PrimaryEMail { get; set; }
-
-    public IAddress BillingAddress
-    {
-      get { return m_BillingAddress.Value; }
-    }
-
-    public IAddress ShippingAddress
-    {
-      get { return m_ShippingAddress.Value; }
-    }
   }
 }

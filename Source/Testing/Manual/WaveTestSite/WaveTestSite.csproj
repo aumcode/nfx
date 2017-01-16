@@ -35,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -55,6 +56,7 @@
     <Compile Include="Controllers\Tester.cs" />
     <Compile Include="Controllers\IntegrationTester.cs" />
     <Compile Include="Embedded\EmbeddedTestSiteHandler.cs" />
+    <Compile Include="Handlers\SimpleHandler.cs" />
     <Compile Include="Pages\AboutUs.htm.auto.cs">
       <DependentUpon>AboutUs.htm</DependentUpon>
     </Compile>

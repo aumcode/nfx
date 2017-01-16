@@ -49,14 +49,14 @@ namespace WinFormsTest
       //    Application.Run(new LogForm());
 
        //  Application.Run(new SerializerForm());
-          Application.Run(new SerializerForm2());
+       //   Application.Run(new SerializerForm2());
 
 //        Application.Run(new WinFormsTest.Glue.JokeCalculatorClientForm());
          //Application.Run(new SerializerForm());
 //         Application.Run(new SerializerForm2());
 
   //      Application.Run(new GlueForm());
-     //  Application.Run(new ELinkForm());
+       Application.Run(new ELinkForm());
    //     Application.Run(new CacheTest());
 
        // Application.Run(new QRTestForm());

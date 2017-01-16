@@ -138,8 +138,10 @@
     server
     {
        // name="Main Test Server"
-       // parallel-works=2048
-       // parallel-accepts=1024
+  //parallel-works=1282048
+  //parallel-accepts=128024
+  //kernel-http-queue-limit=512000
+  
         environment-name="PROD"
         instrumentation-enabled=true
 
@@ -197,8 +199,14 @@
     // }
  // }
 //}
-
-
+            
+            // handler
+            // {
+                // name="H"
+                // order=0
+                // type="WaveTestSite.Handlers.SimpleHandler, WaveTestSite"
+                // match{ }
+            // }
 
             filter
             {
@@ -413,7 +421,6 @@
                   match{ var{name="redirect-url" default="/pages/Welcome"} }
                 }
             }
-
 
 
         }//dispatcher

@@ -18,8 +18,8 @@ namespace NFX.Web.Pay.Braintree
 {
   public class BraintreeSession : PaySession
   {
-    public BraintreeSession(BraintreeSystem system, BraintreeConnectionParameters cParams)
-      : base(system, cParams)
+    public BraintreeSession(BraintreeSystem system, BraintreeConnectionParameters cParams, IPaySessionContext context = null)
+      : base(system, cParams, context)
     {
     }
 

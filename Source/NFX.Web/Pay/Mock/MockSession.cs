@@ -24,8 +24,8 @@ namespace NFX.Web.Pay.Mock
 {
   public class MockSession: PaySession
   {
-    public MockSession(PaySystem paySystem, MockConnectionParameters cParams)
-      : base(paySystem, cParams) {}
+    public MockSession(PaySystem paySystem, MockConnectionParameters cParams, IPaySessionContext context = null)
+      : base(paySystem, cParams, context) {}
 
     public string Email
     {

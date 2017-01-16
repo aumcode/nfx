@@ -79,7 +79,14 @@ namespace NFX
     {
       if (str==null) return null;
       if (str.Length<=count) return str;
-      return str.Substring(0, count) + (ellipsis ?? string.Empty);
+      ellipsis = ellipsis ?? string.Empty;
+
+      if (count > ellipsis.Length)
+        count -= ellipsis.Length;
+      else
+        return ellipsis.Substring(0, count);
+
+      return str.Substring(0, count) + ellipsis;
     }
 
     /// <summary>
@@ -198,6 +205,14 @@ namespace NFX
     }
 
     /// <summary>
+    /// Tuncate date to specific resolution
+    /// </summary>
+    public static DateTime Truncate(this DateTime now, long tickResolution)
+    {
+      return new DateTime(now.Ticks - now.Ticks % tickResolution, now.Kind);
+    }
+
+    /// <summary>
     /// Writes exception message with exception type
     /// </summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -221,7 +236,7 @@ namespace NFX
       if (stackTrace) result["STrace"] = error.StackTrace;
 
       if (recurse)
-       result["Inner"] = error.InnerException.ToJSONDataMap(recurse);
+        result["Inner"] = error.InnerException.ToJSONDataMap(recurse);
       else
       {
         result["Inner.Type"] = error.InnerException!=null ? error.InnerException.GetType().FullName : null;

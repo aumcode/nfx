@@ -88,6 +88,13 @@ namespace NFX.Web.Pay.Mock
         }
       }
 
+      public string Identity { get; set; }
+
+      public bool IsNew { get; set; }
+      public object IdentityID { get; set; }
+
+      public bool IsWebTerminal { get; set; }
+      public object AccountID { get { return AccountData.AccountNumber; } set { AccountData.AccountNumber = value.ToString(); } }
 
       public string FirstName { get { return AccountData.FirstName; } set { AccountData.FirstName = value; } }
       public string MiddleName { get { return AccountData.MiddleName; } set { AccountData.MiddleName = value; } }
@@ -102,15 +109,32 @@ namespace NFX.Web.Pay.Mock
       public string IssuerName { get { return AccountData.IssuerName; } set { AccountData.IssuerName = value; } }
       public string IssuerPhone { get { return AccountData.IssuerPhone; } set { AccountData.IssuerPhone = value; } }
       public string IssuerEMail { get { return AccountData.IssuerEMail; } set { AccountData.IssuerEMail = value; } }
-      public string AccountNumber { get { return AccountData.AccountNumber; } set { AccountData.AccountNumber = value; } }
+      public string IssuerUri { get { return AccountData.IssuerUri; } set { AccountData.IssuerUri = value; } }
+
       public string RoutingNumber { get { return AccountData.RoutingNumber; } set { AccountData.RoutingNumber = value; } }
-      public int CardExpirationYear { get { return AccountData.CardExpirationYear; } set { AccountData.CardExpirationYear = value; } }
-      public int CardExpirationMonth { get { return AccountData.CardExpirationMonth; } set { AccountData.CardExpirationMonth = value; } }
+
+      public string CardMaskedName { get { return AccountData.CardMaskedName; } set { AccountData.CardMaskedName = value; } }
+      public string CardHolder { get { return AccountData.CardHolder; } set { AccountData.CardHolder = value; } }
+      public DateTime? CardExpirationDate
+      {
+        get
+        {
+          if (!AccountData.CardExpirationYear.HasValue || !AccountData.CardExpirationMonth.HasValue)
+            return null;
+          return new DateTime(AccountData.CardExpirationYear.Value, AccountData.CardExpirationMonth.Value, 1);
+        }
+        set
+        {
+          if (value.HasValue) { AccountData.CardExpirationYear = value.Value.Year; AccountData.CardExpirationMonth = value.Value.Month; }
+          else { AccountData.CardExpirationYear = null; AccountData.CardExpirationMonth = null; }
+        }
+      }
       public string CardVC { get { return AccountData.CardVC; } set { AccountData.CardVC = value; } }
 
       public bool IsCard { get { return AccountData.IsCard; } }
 
-      public string PrimaryEMail { get; set; }
+      public string Phone { get; set; }
+      public string EMail { get; set; }
 
       public IAddress BillingAddress { get { return m_BillingAddress; } }
 
@@ -120,7 +144,7 @@ namespace NFX.Web.Pay.Mock
 
     #region Public methods
 
-      public void Configure(IConfigSectionNode node)
+    public void Configure(IConfigSectionNode node)
       {
         ConfigAttribute.Apply(this, node);
 
@@ -160,10 +184,13 @@ namespace NFX.Web.Pay.Mock
     [Config] public string IssuerName { get; set; }
     [Config] public string IssuerPhone { get; set; }
     [Config] public string IssuerEMail { get; set; }
+    [Config] public string IssuerUri { get; set; }
     [Config] public string AccountNumber { get; set; }
     [Config] public string RoutingNumber { get; set; }
-    [Config] public int CardExpirationYear { get; set; }
-    [Config] public int CardExpirationMonth { get; set; }
+    [Config] public string CardMaskedName { get; set; }
+    [Config] public string CardHolder { get; set; }
+    [Config] public int? CardExpirationYear { get; set; }
+    [Config] public int? CardExpirationMonth { get; set; }
     [Config] public string CardVC { get; set; }
 
     public bool IsCard { get { return RoutingNumber.IsNullOrWhiteSpace(); } }

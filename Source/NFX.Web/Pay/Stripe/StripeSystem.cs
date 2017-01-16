@@ -75,53 +75,71 @@ namespace NFX.Web.Pay.Stripe
     #endregion
 
     public StripeSystem(string name, IConfigSectionNode node) : base(name, node) {}
-
     public StripeSystem(string name, IConfigSectionNode node, object director) : base(name, node, director) {}
-
 
     public override string ComponentCommonName { get { return "stripepay"; }}
 
     #region PaySystem implementation
+      protected override ConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
+      { return ConnectionParameters.Make<StripeConnectionParameters>(paramsSection); }
 
-      public override IPayWebTerminal WebTerminal { get { throw new NotImplementedException(); } }
-
-      protected override PaySession DoStartSession(ConnectionParameters cParams = null)
-      {
-        var sessionParams = cParams ?? DefaultSessionConnectParams;
-        return this.StartSession((StripeConnectionParameters)sessionParams);
-      }
-
-      public StripeSession StartSession(StripeConnectionParameters cParams)
-      {
-        return new StripeSession(this, cParams);
-      }
+      protected override PaySession DoStartSession(ConnectionParameters cParams, IPaySessionContext context = null)
+      { return new StripeSession(this, (StripeConnectionParameters)cParams, context); }
 
       /// <summary>
-      /// The method is not implemented bacause there is no such function in Stripe
+      /// Transfers funds from current Stripe account to user account supplied in "to" parameter
+      /// ("from" parameter is not used in Stripe implementation
       /// </summary>
-      public override PaymentException VerifyPotentialTransaction(PaySession session, ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount)
+      protected internal override Transaction DoTransfer(PaySession session, Account from, Account to, Amount amount, string description = null, object extraData = null)
       {
-        throw new NotImplementedException();
+        var stripeSession = (StripeSession)session;
+
+        var recipientID = createRecipient(stripeSession, to, description);
+        try
+        {
+          var payment = doTransfer(stripeSession, recipientID, to, amount, description, extraData);
+
+          return payment;
+        }
+        finally
+        {
+          deleteRecipient(stripeSession, recipientID);
+        }
       }
 
       /// <summary>
       /// Charges funds from credit card to current stripe account.
       /// Parameter "to" is unused in stripe provider.
       /// </summary>
-      public override Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
-      {
-        var stripeSession = (StripeSession)session;
-        var ta = Charge(stripeSession, context, from, to, amount, capture, description, extraData);
+      protected internal override Transaction DoCharge(PaySession session, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
+      { return doCharge((StripeSession)session, from, to, amount, capture, description, extraData); }
 
-        return ta;
-      }
+      protected internal override bool DoVoid(PaySession session, Transaction charge, string description = null, object extraData = null)
+      { return doVoid((StripeSession)session, charge, description, extraData); }
 
       /// <summary>
-      /// Overload of Charge method with Stripe-typed session parameter
+      /// Captures the payment of this, uncaptured, charge.
+      /// This is the second half og the two-step payment flow, where first you created a charge
+      /// with the capture option set to false.
+      /// Uncaptured payment expires exactly seven days after it is created.
+      /// If a payment is not captured by that pooint of time, it will be marked as refunded and will no longer be capturable.
+      /// If set the amount of capture must be less than or equal to the original amount.
       /// </summary>
-      public Transaction Charge(StripeSession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
+      protected internal override bool DoCapture(PaySession session, Transaction charge, decimal? amount = null, string description = null, object extraData = null)
+      { return doCapture((StripeSession)session, charge, amount, description, extraData); }
+
+      /// <summary>
+      /// If reason/description parameter set, possible values are duplicate, fraudulent, and requested_by_customer
+      /// Developers, don't call this method directly. Call Transaction.Refund instead.
+      /// </summary>
+      protected internal override bool DoRefund(PaySession session, Transaction charge, decimal? amount = null, string description = null, object extraData = null)
+      { return doRefund((StripeSession)session, charge, amount, description, extraData); }
+    #endregion
+
+    #region Pvt. impl.
+      private Transaction doCharge(StripeSession session, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
       {
-        var fromActualData = PaySystemHost.AccountToActualData(context, from);
+        var fromActualData = session.FetchAccountData(from);
 
         try
         {
@@ -134,21 +152,22 @@ namespace NFX.Web.Pay.Stripe
 
           fillBodyParametersFromAccount(bodyPrms, fromActualData);
 
-          var prms = new WebClient.RequestParams() {
-            Uri = new Uri(CHARGE_URI),
-            Caller = this,
-            UName = session.SecretKey,
+          var prms = new WebClient.RequestParams(this) {
+            UserName = session.SecretKey,
             Method = HTTPRequestMethod.POST,
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJsonAsDynamic(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(new Uri(CHARGE_URI), prms);
 
           var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
 
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
+          var taId = session.GenerateTransactionID(TransactionType.Charge);
 
-          var ta = Transaction.Charge(taId, this.Name, obj.AsGDID, from, to, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Charge, TransactionStatus.Success, from, to, this.Name, obj.AsGDID, created, amount, description: description, extraData: extraData);
+
+          if (capture)
+            ta.__Apply(Transaction.Operation.Capture(TransactionStatus.Success, created, token: obj.AsGDID, description: description, amount: amount.Value, extraData: extraData));
 
           StatCharge(amount);
 
@@ -166,7 +185,7 @@ namespace NFX.Web.Pay.Stripe
             if (response != null)
             {
               string errorMessage = this.GetType().Name +
-                ".Charge(money: {0}, card: {1}, amount: '{2}')".Args(amount.Value, fromActualData.AccountNumber, amount);
+                ".Charge(money: {0}, card: {1}, amount: '{2}')".Args(amount.Value, fromActualData.AccountID, amount);
               var stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
               throw stripeEx;
             }
@@ -177,24 +196,63 @@ namespace NFX.Web.Pay.Stripe
         }
       }
 
-      /// <summary>
-      /// Captures the payment of this, uncaptured, charge.
-      /// This is the second half og the two-step payment flow, where first you created a charge
-      /// with the capture option set to false.
-      /// Uncaptured payment expires exactly seven days after it is created.
-      /// If a payment is not captured by that pooint of time, it will be marked as refunded and will no longer be capturable.
-      /// If set the amount of capture must be less than or equal to the original amount.
-      /// Developers, don't call this method directly. Call Transaction.Capture instead.
-      /// </summary>
-      public override Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+      private Transaction doTransfer(StripeSession session, string recipientID, Account customerAccount, Amount amount, string description, object extraData = null)
       {
-        return Capture((StripeSession)session, context, ref charge, amount, description, extraData);
+        var actualAccountData = session.FetchAccountData(customerAccount);
+
+        try
+        {
+          var prms = new WebClient.RequestParams(this)
+          {
+            UserName = session.SecretKey,
+            Method = HTTPRequestMethod.POST,
+            BodyParameters = new Dictionary<string, string>()
+            {
+              {PRM_RECIPIENT, recipientID},
+              {PRM_AMOUNT, ((int)((amount.Value * 100))).ToString()},
+              {PRM_CURRENCY, amount.CurrencyISO.ToLower()},
+              {PRM_DESCRIPTION, description}
+            }
+          };
+
+          dynamic obj = WebClient.GetJsonAsDynamic(new Uri(TRANSFER_URI), prms);
+
+          var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
+
+          var taId = session.GenerateTransactionID(TransactionType.Transfer);
+
+          var ta = new Transaction(taId, TransactionType.Transfer, TransactionStatus.Success, Account.EmptyInstance, customerAccount, this.Name, obj.id, created, amount, description: description, extraData: extraData);
+
+          StatTransfer(amount);
+
+          return ta;
+        }
+        catch (Exception ex)
+        {
+          StatTransferError();
+
+          var wex = ex as System.Net.WebException;
+          if (wex != null)
+          {
+            var response = wex.Response as System.Net.HttpWebResponse;
+            if (response != null)
+            {
+              string errorMessage = this.GetType().Name +
+                        ".doTransfer(recipientID='{0}', customerAccount='{1}', amount='{2}')".Args(recipientID, actualAccountData, amount);
+              PaymentStripeException stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
+              if (stripeEx != null) throw stripeEx;
+            }
+          }
+
+          throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_TRANSFER_ERROR + this.GetType()
+            + " .doTransfer(customerAccout='{0}')".Args(actualAccountData), ex);
+        }
       }
 
-      /// <summary>
-      /// Overload of Capture method with Stripe-typed session parameter
-      /// </summary>
-      public Transaction Capture(StripeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+      private bool doVoid(StripeSession session, Transaction charge, string description = null, object extraData = null)
+      { throw new NotImplementedException(); }
+
+      private bool doCapture(StripeSession session, Transaction charge, decimal? amount = null, string description = null, object extraData = null)
       {
         try
         {
@@ -202,22 +260,20 @@ namespace NFX.Web.Pay.Stripe
 
           if (amount.HasValue)
           {
-            bodyPrms.Add(PRM_AMOUNT, ((int)((amount.Value.Value * 100))).ToString());
+            bodyPrms.Add(PRM_AMOUNT, ((int)((amount.Value * 100))).ToString());
           }
 
-          var prms = new WebClient.RequestParams()
+          var prms = new WebClient.RequestParams(this)
           {
-            Uri = new Uri(CAPTURE_URI.Args(charge.ProcessorToken)),
-            Caller = this,
             Method = HTTPRequestMethod.POST,
-            UName = session.SecretKey,
+            UserName = session.SecretKey,
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJsonAsDynamic(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(new Uri(CAPTURE_URI.Args(charge.Token)), prms);
 
           StatCapture(charge, amount);
-          return charge;
+          return true;
         }
         catch (Exception ex)
         {
@@ -240,57 +296,37 @@ namespace NFX.Web.Pay.Stripe
         }
       }
 
-      /// <summary>
-      /// If reason/description parameter set, possible values are duplicate, fraudulent, and requested_by_customer
-      /// Developers, don't call this method directly. Call Transaction.Refund instead.
-      /// </summary>
-      public override Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
+      private bool doRefund(StripeSession session, Transaction charge, decimal? amount = null, string description = null, object extraData = null)
       {
-        return Refund((StripeSession)session, context, ref charge, amount, description, extraData);
-      }
+        var fromActualData = session.FetchAccountData(charge.From);
 
-      /// <summary>
-      /// Overload of Refund method with Stripe-typed session parameter
-      /// Developers, don't call this method directly. Call Transaction.Refund instead.
-      /// </summary>
-      public Transaction Refund(StripeSession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
-      {
-        var fromActualData = PaySystemHost.AccountToActualData(context, charge.From);
-
-        var refundAmount = amount ?? charge.Amount;
+        var refundAmount = amount ?? charge.Amount.Value;
 
         try
         {
           var bodyPrms = new Dictionary<string, string>() {
-            {PRM_AMOUNT, ((int)((refundAmount.Value * 100))).ToString()}
+            {PRM_AMOUNT, ((int)((refundAmount * 100))).ToString()}
           };
 
           if (description.IsNotNullOrWhiteSpace())
             bodyPrms.Add(PRM_REASON, description);
 
-          var prms = new WebClient.RequestParams()
+          var prms = new WebClient.RequestParams(this)
           {
-            Uri = new Uri(REFUND_URI.Args(charge.ProcessorToken)),
-            Caller = this,
-            UName = session.SecretKey,
+            UserName = session.SecretKey,
             Method = HTTPRequestMethod.POST,
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJsonAsDynamic(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(new Uri(REFUND_URI.Args(charge.Token)), prms);
 
           dynamic lastRefund = ((NFX.Serialization.JSON.JSONDataArray)obj.refunds.Data).First();
 
           var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
 
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Refund);
-
-          var refundTA = Transaction.Refund(taId, this.Name,
-            lastRefund["id"], Account.EmptyInstance, charge.From, refundAmount, created, description, relatedTransactionID: charge.ID);
-
           StatRefund(charge, amount);
 
-          return refundTA;
+          return true;
         }
         catch (Exception ex)
         {
@@ -304,7 +340,7 @@ namespace NFX.Web.Pay.Stripe
             {
               string errorMessage = this.GetType().Name +
                 ".Refund(money: {0}, card: {1}, description: '{2}')"
-                  .Args(charge.Amount, fromActualData.AccountNumber, description);
+                  .Args(charge.Amount, fromActualData.AccountID, description);
               PaymentStripeException stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
               if (stripeEx != null) throw stripeEx;
             }
@@ -315,103 +351,13 @@ namespace NFX.Web.Pay.Stripe
         }
       }
 
-
-      /// <summary>
-      /// Transfers funds from current Stripe account to user account supplied in "to" parameter
-      /// ("from" parameter is not used in Stripe implementation
-      /// </summary>
-      public override Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null)
-      {
-        var stripeSession = (StripeSession)session;
-
-        var recipientID = createRecipient(stripeSession, context, to, description);
-        try
-        {
-          var payment = transfer(stripeSession, context, recipientID, to, amount, description);
-
-          return payment;
-        }
-        finally
-        {
-          deleteRecipient(stripeSession, recipientID);
-        }
-      }
-
-      protected override ConnectionParameters MakeDefaultSessionConnectParams(Environment.IConfigSectionNode paramsSection)
-      {
-        return ConnectionParameters.Make<StripeConnectionParameters>(paramsSection);
-      }
-
-    #endregion
-
-    #region Pvt. impl.
-
-      /// <summary>
-      /// Transfers funds to customerAccount from current stripe account
-      /// (which credentials is supplied in current session)
-      /// </summary>
-      private Transaction transfer(StripeSession stripeSession, ITransactionContext context, string recipientID, Account customerAccount, Amount amount, string description)
-      {
-        var actualAccountData = PaySystemHost.AccountToActualData(context, customerAccount);
-
-        try
-        {
-          var prms = new WebClient.RequestParams()
-          {
-            Uri = new Uri(TRANSFER_URI),
-            Caller = this,
-            UName = stripeSession.SecretKey,
-            Method = HTTPRequestMethod.POST,
-            BodyParameters = new Dictionary<string, string>()
-            {
-              {PRM_RECIPIENT, recipientID},
-              {PRM_AMOUNT, ((int)((amount.Value * 100))).ToString()},
-              {PRM_CURRENCY, amount.CurrencyISO.ToLower()},
-              {PRM_DESCRIPTION, description}
-            }
-          };
-
-          dynamic obj = WebClient.GetJsonAsDynamic(prms);
-
-          var created = ((long)obj.created).FromSecondsSinceUnixEpochStart();
-
-          var taId = PaySystemHost.GenerateTransactionID(stripeSession, context, TransactionType.Transfer);
-
-          var ta = Transaction.Transfer(taId, this.Name, obj.id, Account.EmptyInstance, customerAccount, amount, created, description);
-
-          StatTransfer(amount);
-
-          return ta;
-        }
-        catch (Exception ex)
-        {
-          StatTransferError();
-
-          var wex = ex as System.Net.WebException;
-          if (wex == null)
-          {
-            var response = wex.Response as System.Net.HttpWebResponse;
-            if (response != null)
-            {
-              string errorMessage = this.GetType().Name +
-                        ".transfer(recipientID='{0}', customerAccount='{1}', amount='{2}')".Args(recipientID, actualAccountData, amount);
-              PaymentStripeException stripeEx = PaymentStripeException.Compose(response, errorMessage, wex);
-              if (stripeEx != null) throw stripeEx;
-            }
-          }
-
-          throw new PaymentStripeException(StringConsts.PAYMENT_CANNOT_TRANSFER_ERROR + this.GetType()
-            + " .transfer(customerAccout='{0}')".Args(actualAccountData), ex);
-        }
-      }
-
       /// <summary>
       /// Creates new recipient in Stripe system.
       /// Is used as a temporary entity to substitute recipient parameter in Transfer operation then deleted
       /// </summary>
-      private string createRecipient(StripeSession stripeSession, ITransactionContext context, Account recipientAccount, string description)
+      private string createRecipient(StripeSession session, Account recipientAccount, string description)
       {
-        var recipientActualAccountData = PaySystemHost.AccountToActualData(context, recipientAccount);
+        var recipientActualAccountData = session.FetchAccountData(recipientAccount);
 
         try
         {
@@ -424,16 +370,14 @@ namespace NFX.Web.Pay.Stripe
 
           fillBodyParametersFromAccount(bodyPrms, recipientActualAccountData);
 
-          var prms = new WebClient.RequestParams()
+          var prms = new WebClient.RequestParams(this)
           {
-            Uri = new Uri(RECIPIENT_URI),
-            Caller = this,
-            UName = stripeSession.SecretKey,
+            UserName = session.SecretKey,
             Method = HTTPRequestMethod.POST,
             BodyParameters = bodyPrms
           };
 
-          dynamic obj = WebClient.GetJsonAsDynamic(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(new Uri(RECIPIENT_URI), prms);
 
           return obj.id;
         }
@@ -465,15 +409,13 @@ namespace NFX.Web.Pay.Stripe
       {
         try
         {
-          var prms = new WebClient.RequestParams()
+          var prms = new WebClient.RequestParams(this)
           {
-            Uri = new Uri(RECIPIENT_DELETE_URI.Args(recipientID)),
-            Caller = this,
-            UName = stripeSession.SecretKey,
+            UserName = stripeSession.SecretKey,
             Method = HTTPRequestMethod.DELETE
           };
 
-          dynamic obj = WebClient.GetJsonAsDynamic(prms);
+          dynamic obj = WebClient.GetJsonAsDynamic(new Uri(RECIPIENT_DELETE_URI.Args(recipientID)), prms);
 
           return;
         }
@@ -502,14 +444,14 @@ namespace NFX.Web.Pay.Stripe
         if (!accountData.IsCard) // bank account
         {
           bodyPrms.Add(PRM_COUNTRY, accountData.BillingAddress.Country);
-          bodyPrms.Add(PRM_ACCOUNT_NUMBER, accountData.AccountNumber);
+          bodyPrms.Add(PRM_ACCOUNT_NUMBER, accountData.AccountID.AsString());
           bodyPrms.Add(PRM_ROUTING_NUMBER, accountData.RoutingNumber);
         }
         else
         {
-          bodyPrms.Add(PRM_CARD_NUMBER, accountData.AccountNumber);
-          bodyPrms.Add(PRM_CARD_EXPYEAR, accountData.CardExpirationYear.ToString("####"));
-          bodyPrms.Add(PRM_CARD_EXPMONTH, accountData.CardExpirationMonth.ToString("##"));
+          bodyPrms.Add(PRM_CARD_NUMBER, accountData.AccountID.AsString());
+          bodyPrms.Add(PRM_CARD_EXPYEAR, accountData.CardExpirationDate.Value.Year.ToString("####"));
+          bodyPrms.Add(PRM_CARD_EXPMONTH, accountData.CardExpirationDate.Value.Month.ToString("##"));
 
           if (accountData.CardVC.IsNotNullOrWhiteSpace())
             bodyPrms.Add(PRM_CARD_CVC, accountData.CardVC);
@@ -533,7 +475,6 @@ namespace NFX.Web.Pay.Stripe
             bodyPrms.Add(PRM_CARD_ADDRESS_COUNTRY, accountData.BillingAddress.Country);
         }
       }
-
     #endregion
 
   }

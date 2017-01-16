@@ -103,14 +103,12 @@ namespace NFX.Web.Messaging
     {
       if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return;
 
-      var request = new WebClient.RequestParams()
+      var request = new WebClient.RequestParams(this)
       {
-        Caller = this,
         Method = HTTPRequestMethod.POST,
-        Uri = ServiceUrl,
         BodyParameters = new Dictionary<string, string>(),
-        UName = "api",
-        UPwd = AuthorizationKey
+        UserName = "api",
+        Password = AuthorizationKey
       };
 
       var fa = msg.FROMAddress;
@@ -145,7 +143,7 @@ namespace NFX.Web.Messaging
       if (TestMode)
         request.BodyParameters.Add(API_PARAM_TESTMODE, "yes");
 
-      WebClient.GetString(request);
+      WebClient.GetString(ServiceUrl, request);
     }
     #endregion
 

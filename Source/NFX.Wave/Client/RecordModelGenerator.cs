@@ -82,8 +82,9 @@ namespace NFX.Wave.Client
       public RecordModelGenerator(){ }
       public RecordModelGenerator(IConfigSectionNode conf){ }
 
+      public const string METADATA_CONFIG_FIELD = "Config";
 
-      public static readonly string[] METADATA_FIELDS = {
+      public static readonly HashSet<string> METADATA_FIELDS = new HashSet<string>{
             "Description",
             "Placeholder",
             "Type",
@@ -107,7 +108,9 @@ namespace NFX.Wave.Client
             "LookupDict",
             "Lookup",
             "DeferValidation",
-            "ScriptType"};
+            "ScriptType",
+            METADATA_CONFIG_FIELD};
+
 
 
       /// <summary>
@@ -219,7 +222,7 @@ namespace NFX.Wave.Client
         {
             if (attr.Description!=null) result["Description"] = OnLocalizeString(schema, "Description", attr.Description, isoLang);
             var str =  attr.StoreFlag==StoreFlag.OnlyStore || attr.StoreFlag==StoreFlag.LoadAndStore;
-            if (!str) result["Stored"] = str;
+            if (!str) result["Stored"] = false;
             if (attr.Required) result["Required"] = attr.Required;
             if (!attr.Visible) result["Visible"] = attr.Visible;
             if (attr.Min!=null) result["MinValue"] = attr.Min;
@@ -247,19 +250,26 @@ namespace NFX.Wave.Client
             if (attr.Kind!=DataKind.Text) result["Kind"] = MapCLRKindToJS(attr.Kind);
 
             if (attr.CharCase!=CharCase.AsIs) result["Case"] = MapCLRCharCaseToJS(attr.CharCase);
-        }
 
-        if (attr.Metadata!=null)
-        {
-            foreach(var fn in METADATA_FIELDS)
+            if (attr.Metadata!=null)
             {
-              var mv = attr.Metadata.AttrByName(fn).Value;
-              if (mv.IsNullOrWhiteSpace()) continue;
+                var sect = attr.Metadata[METADATA_CONFIG_FIELD];
+                if(sect.Exists)
+                    result[METADATA_CONFIG_FIELD] = sect.ToConfigurationJSONDataMap();
 
-              if (fn=="Description"||fn=="Placeholder"||fn=="LookupDict"||fn=="Hint")
-                mv = OnLocalizeString(schema, fn, mv, isoLang);
+                foreach(var mAt in attr.Metadata.Attributes)
+                {
+                  var fn = mAt.Name;
+                  if (!METADATA_FIELDS.Contains(fn)) continue;
 
-              result[fn] = mv;
+                  var mv = mAt.Value;
+                  if (mv.IsNullOrWhiteSpace()) continue;
+
+                  if (fn=="Description"||fn=="Placeholder"||fn=="LookupDict"||fn=="Hint")
+                    mv = OnLocalizeString(schema, fn, mv, isoLang);
+
+                  result[fn] = mv;
+                }
             }
         }
 

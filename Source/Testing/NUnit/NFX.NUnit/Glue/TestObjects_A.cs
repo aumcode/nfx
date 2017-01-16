@@ -112,7 +112,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Synchronous invoker for  'NFX.NUnit.Glue.ITestContractA.Method1'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning '@System.@String' or RemoteExceptionData instance.
+         ///  returning '@System.@String' or WrappedExceptionData instance.
          /// ClientCallException is thrown if the call could not be placed in the outgoing queue.
          /// RemoteException is thrown if the server generated exception during method execution.
          ///</summary>
@@ -125,7 +125,7 @@ namespace NFX.NUnit.Glue
          ///<summary>
          /// Asynchronous invoker for  'NFX.NUnit.Glue.ITestContractA.Method1'.
          /// This is a two-way call per contract specification, meaning - the server sends the result back either
-         ///  returning no exception or RemoteExceptionData instance.
+         ///  returning no exception or WrappedExceptionData instance.
          /// CallSlot is returned that can be queried for CallStatus, ResponseMsg and result.
          ///</summary>
          public CallSlot Async_Method1(@System.@Int32  @x)

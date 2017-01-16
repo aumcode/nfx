@@ -39,8 +39,7 @@ namespace NFX.Web.Pay.PayPal
       var clientSecret = node.AttrByName("client-secret").Value;
       if (clientSecret.IsNullOrWhiteSpace()) return;
 
-      var token = new AuthenticationToken(PayPalSystem.PAYPAL_REALM, null); // OAuth token is empty at start
-      User = new User(new PayPalCredentials(clientID, clientSecret), token, string.Empty, Rights.None);
+      User = new User(new PayPalCredentials(clientID, clientSecret), new AuthenticationToken(PayPalSystem.PAYPAL_REALM, null), string.Empty, Rights.None);
     }
   }
 }

@@ -14,26 +14,31 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
+using System;
 using NFX.Security;
+using System.Text;
 
 namespace NFX.Web.Pay.PayPal
 {
-    /// <summary>
-    /// Represents basic PayPal credentials for registered application
-    /// which include Business account email, client ID and client secret.
-    /// </summary>
-    public class PayPalCredentials : Credentials
+  /// <summary>
+  /// Represents basic PayPal credentials for registered application
+  /// which include Business account email, client ID and client secret.
+  /// </summary>
+  public class PayPalCredentials : Credentials
+  {
+    private const string BASIC_AUTH = "Basic {0}";
+    private const string BASIC_AUTH_FORMAT = "{0}:{1}";
+
+    public PayPalCredentials(string clientID, string clientSecret)
     {
-        public PayPalCredentials(string clientID, string clientSecret)
-        {
-            m_ClientID = clientID;
-            m_ClientSecret = clientSecret;
-        }
-
-        private readonly string m_ClientID;
-        private readonly string m_ClientSecret;
-
-        public string ClientID { get { return m_ClientID; } }
-        public string ClientSecret { get { return m_ClientSecret; } }
+      ClientID = clientID;
+      ClientSecret = clientSecret;
     }
+
+    public readonly string ClientID;
+    public readonly string ClientSecret;
+
+    public string AuthorizationHeader
+    { get { return BASIC_AUTH.Args(Convert.ToBase64String(Encoding.UTF8.GetBytes(BASIC_AUTH_FORMAT.Args(ClientID, ClientSecret)))); } }
+  }
 }

@@ -23,30 +23,20 @@
  * Author: Denis Latushkin<dxwizard@gmail.com>
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 
 using NFX;
-using NFX.Environment;
 using NFX.Security;
-using NFX.Web.Pay;
 
 namespace NFX.Web.Pay.Stripe
 {
   public class StripeSession: PaySession
   {
     #region .ctor
-
-      public StripeSession(PaySystem paySystem, StripeConnectionParameters cParams)
-        : base(paySystem, cParams) { }
-
+      public StripeSession(PaySystem paySystem, StripeConnectionParameters cParams, IPaySessionContext context = null)
+        : base(paySystem, cParams, context) { }
     #endregion
 
     #region Properties
-
       public string Email
       {
         get
@@ -68,9 +58,6 @@ namespace NFX.Web.Pay.Stripe
           return cred.SecretKey;
         }
       }
-
     #endregion
-
-  } //StripeSession
-
+  }
 }

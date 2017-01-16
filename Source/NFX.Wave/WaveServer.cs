@@ -462,7 +462,7 @@ namespace NFX.Wave
         if (nDispatcher.Exists)
           m_Dispatcher = FactoryUtils.MakeAndConfigure<WorkDispatcher>(nDispatcher, typeof(WorkDispatcher), args: new object[]{this});
 
-        ErrorFilter.ConfigureMatches(node[CONFIG_DEFAULT_ERROR_HANDLER_SECTION], m_ErrorShowDumpMatches, m_ErrorLogMatches, GetType().FullName);
+        ErrorFilter.ConfigureMatches(node[CONFIG_DEFAULT_ERROR_HANDLER_SECTION], m_ErrorShowDumpMatches, m_ErrorLogMatches, null, GetType().FullName);
       }
 
       protected override void DoStart()

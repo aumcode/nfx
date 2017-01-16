@@ -25,53 +25,31 @@ namespace NFX.Web.Pay.PayPal
   /// </summary>
   public class PayPalOAuthToken
   {
-    private const string APP_ID = "app_id";
-    private const string EXPIRES_IN = "expires_in";
-    private const string TOKEN_TYPE = "token_type";
-    private const string ACCESS_TOKEN = "access_token";
-    private const string SCOPE = "scope";
-    private const string NONCE = "nonce";
-
-    public PayPalOAuthToken(JSONDataMap response, int expirationMargin)
+    public PayPalOAuthToken(string applicationID, int expiresInSec, string tokenType, string accessToken, string scope, string nonce, int expirationMarginSec)
     {
-      m_ObtainTime = App.TimeSource.Now;
-      m_ExpirationMargin = expirationMargin;
-      m_ApplicationID = response[APP_ID].AsString();
-      m_ExpiresInSeconds = response[EXPIRES_IN].AsInt();
-      m_TokenType = response[TOKEN_TYPE].AsString();
-      m_AccessToken = response[ACCESS_TOKEN].AsString();
-      m_Scope = response[SCOPE].AsString();
-      m_Nonce = response[NONCE].AsString();
+      ObtainTime = App.TimeSource.Now;
+      ApplicationID = applicationID;
+      ExpiresInSec = expiresInSec;
+      TokenType = tokenType;
+      AccessToken = accessToken;
+      Scope = scope;
+      Nonce = nonce;
+      ExpirationMarginSec = expirationMarginSec;
     }
 
-    private readonly int m_ExpirationMargin;
-    private DateTime m_ObtainTime;
-    private string m_ApplicationID;
-    private int m_ExpiresInSeconds;
-    private string m_TokenType;
-    private string m_AccessToken;
-    private string m_Scope;
-    private string m_Nonce;
-
-    public int ExpirationMargin { get { return m_ExpirationMargin; } }
-    public DateTime ObtainTime { get { return m_ObtainTime; } }
-    public string ApplicationID { get { return m_ApplicationID; } }
-    public int ExpiresInSeconds { get { return m_ExpiresInSeconds; } }
-    public string TokenType { get { return m_TokenType; } }
-    public string AccessToken { get { return m_AccessToken; } }
-    public string Scope { get { return m_Scope; } }
-    public string Nonce { get { return m_Nonce; } }
+    public readonly int ExpirationMarginSec;
+    public readonly DateTime ObtainTime;
+    public readonly string ApplicationID;
+    public readonly int ExpiresInSec;
+    public readonly string TokenType;
+    public readonly string AccessToken;
+    public readonly string Scope;
+    public readonly string Nonce;
 
     public string AuthorizationHeader { get { return "{0} {1}".Args(TokenType, AccessToken); } }
 
-    public bool IsCloseToExpire()
-    {
-      return (App.TimeSource.Now - m_ObtainTime).TotalSeconds >= m_ExpiresInSeconds - m_ExpirationMargin;
-    }
+    public bool IsCloseToExpire() { return (App.TimeSource.Now - ObtainTime).TotalSeconds >= ExpiresInSec - ExpirationMarginSec; }
 
-    public override string ToString()
-    {
-      return m_AccessToken;
-    }
+    public override string ToString() { return AccessToken; }
   }
 }

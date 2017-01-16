@@ -94,12 +94,12 @@ namespace NFX.Glue.Protocol
        /// <summary>
        /// Returns remote exception data if any
        /// </summary>
-       public RemoteExceptionData ExceptionData { get {return m_ReturnValue as RemoteExceptionData; } }
+       public WrappedExceptionData ExceptionData { get {return m_ReturnValue as WrappedExceptionData; } }
 
        /// <summary>
-       /// Returns true when reponse does not contain remote server exception which is represented by RemoteExceptionData
+       /// Returns true when reponse does not contain remote server exception which is represented by WrappedExceptionData
        /// </summary>
-       public bool OK { get {return !(m_ReturnValue is RemoteExceptionData); }  }
+       public bool OK { get {return !(m_ReturnValue is WrappedExceptionData); }  }
     }
 
 

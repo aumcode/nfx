@@ -163,29 +163,29 @@ namespace NFX.Glue
   [Serializable]
   public class RemoteException : GlueException
   {
-        private RemoteExceptionData m_Remote;
+        private WrappedExceptionData m_Remote;
 
         /// <summary>
         /// Returns remote exception data
         /// </summary>
-        public RemoteExceptionData Remote
+        public WrappedExceptionData Remote
         {
           get { return m_Remote; }
         }
 
 
-        public RemoteException(RemoteExceptionData data) : base(data.ToString())
+        public RemoteException(WrappedExceptionData data) : base(data.ToString())
         {
           m_Remote = data;
         }
 
-        public RemoteException(string message, RemoteExceptionData data)
+        public RemoteException(string message, WrappedExceptionData data)
           : base(message)
         {
           m_Remote = data;
         }
 
-        public RemoteException(string message, RemoteExceptionData data, Exception inner)
+        public RemoteException(string message, WrappedExceptionData data, Exception inner)
           : base(message, inner)
         {
           m_Remote = data;

@@ -29,6 +29,7 @@ namespace NFX.Security
     /// </summary>
     public interface ISecurityManager : IApplicationComponent
     {
+       IPasswordManager PasswordManager { get; }
 
        /// <summary>
        /// Authenticates user by checking the supplied credentials against the

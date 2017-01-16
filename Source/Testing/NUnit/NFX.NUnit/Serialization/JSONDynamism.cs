@@ -31,7 +31,7 @@ namespace NFX.NUnit.Serialization
 {
     [TestFixture]
     public class JSONDynamism
-    { 
+    {
         [TestCase]
         public void Map_GetSet_ByMember()
         {
@@ -120,7 +120,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(2, obj.Count);
             Assert.AreEqual(100, obj[0]);
             Assert.AreEqual(120, obj[1]);
-         
+
         }
 
         [TestCase]
@@ -135,7 +135,7 @@ namespace NFX.NUnit.Serialization
 
             Assert.AreEqual(151, obj.Count);
             Assert.AreEqual(100, obj[150]);
-         
+
         }
 
 
@@ -155,7 +155,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(120, obj[1]);
 
             Assert.IsNull(obj[10001]);
-         
+
         }
 
         [TestCase]
@@ -198,7 +198,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual("hello", ro2.target.image);
             Assert.AreEqual("good", ro2.target.type);
             Assert.AreEqual("Thank You", ro2.target.description);
-         
+
         }
 
         [TestCase]
@@ -333,13 +333,13 @@ namespace NFX.NUnit.Serialization
         {
             var row1 = new MySimpleData
             {
-              Name = "Graf Orlov", 
+              Name = "Graf Orlov",
               DOB = new DateTime(1980,12,11,19,23,11),
               Certified = true,
               ServiceYears = 37,
               Salary = 123455.8712m
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -354,7 +354,7 @@ namespace NFX.NUnit.Serialization
         {
             var row1 = new MySimpleAmorphousData
             {
-              Name = "Graf Orlov", 
+              Name = "Graf Orlov",
               DOB = new DateTime(1980,12,11,19,23,11),
               Certified = true,
               ServiceYears = 37,
@@ -362,7 +362,7 @@ namespace NFX.NUnit.Serialization
             };
             row1.AmorphousData["frage"] = "Was machst du mit dem schwert?";
             row1.AmorphousData["antwort"] = "Ich kämpfe damit";
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -382,7 +382,7 @@ namespace NFX.NUnit.Serialization
             { ID = 12345,
               D1 = new MySimpleData
               {
-                Name = "Graf Orlov", 
+                Name = "Graf Orlov",
                 DOB = new DateTime(1980,12,11,19,23,11),
                 Certified = true,
                 ServiceYears = 37,
@@ -390,14 +390,14 @@ namespace NFX.NUnit.Serialization
               },
               D2 = new MySimpleData
               {
-                Name = "Oleg Popov", 
+                Name = "Oleg Popov",
                 DOB = new DateTime(1981,11,01,14,08,19),
                 Certified = true,
                 ServiceYears = 37,
                 Salary = 123455.8712m
               }
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -414,7 +414,7 @@ namespace NFX.NUnit.Serialization
             { ID = 12345,
               D1 = new MySimpleData
               {
-                Name = "Graf Orlov", 
+                Name = "Graf Orlov",
                 DOB = new DateTime(1980,12,11,19,23,11),
                 Certified = true,
                 ServiceYears = 37,
@@ -422,7 +422,7 @@ namespace NFX.NUnit.Serialization
               },
               D2 = null
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -442,7 +442,7 @@ namespace NFX.NUnit.Serialization
               Data = new MySimpleData[]{
                 new MySimpleData
                 {
-                  Name = "Graf Orlov", 
+                  Name = "Graf Orlov",
                   DOB = new DateTime(1980,12,11,19,23,11),
                   Certified = true,
                   ServiceYears = 37,
@@ -450,7 +450,7 @@ namespace NFX.NUnit.Serialization
                 },
                 new MySimpleData
                 {
-                  Name = "Oleg Popov", 
+                  Name = "Oleg Popov",
                   DOB = new DateTime(1981,11,01,14,08,19),
                   Certified = true,
                   ServiceYears = 37,
@@ -458,7 +458,7 @@ namespace NFX.NUnit.Serialization
                 }
               }
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -476,7 +476,7 @@ namespace NFX.NUnit.Serialization
               Data = new List<MySimpleData>{
                 new MySimpleData
                 {
-                  Name = "Graf Orlov", 
+                  Name = "Graf Orlov",
                   DOB = new DateTime(1980,12,11,19,23,11),
                   Certified = true,
                   ServiceYears = 37,
@@ -484,7 +484,7 @@ namespace NFX.NUnit.Serialization
                 },
                 new MySimpleData
                 {
-                  Name = "Oleg Popov", 
+                  Name = "Oleg Popov",
                   DOB = new DateTime(1981,11,01,14,08,19),
                   Certified = true,
                   ServiceYears = 37,
@@ -492,7 +492,7 @@ namespace NFX.NUnit.Serialization
                 }
               }
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -512,7 +512,7 @@ namespace NFX.NUnit.Serialization
             { ID = 12345,
               Data = new int[]{ 1,7,12,3,8,9,0,2134,43,6,2,5}
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -530,7 +530,7 @@ namespace NFX.NUnit.Serialization
             { ID = 12345,
               Data = new List<int>{ 1,7,12,3,8,9,0,2134,43,6,2,5}
             };
-            
+
             var str = row1.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap);
 
             Console.WriteLine(str);
@@ -764,7 +764,7 @@ namespace NFX.NUnit.Serialization
         }
 
 
-                     
+
 
     }
 }

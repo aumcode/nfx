@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NFX.Environment;
+using NFX.Financial;
 using NFX.Web.Pay;
 using NFX.Web.Pay.Mock;
 
@@ -29,6 +30,8 @@ namespace NFX.NUnit.Integration.Web.Pay
   internal class FakePaySystemHost : PaySystemHost
   {
     #region Consts
+    public const string BRAINTREE_WEB_TERM = "fake-web-terminal";
+
     // Valid nonces
     public const string BRAINTREE_NONCE = "fake-valid-nonce";                                    // A valid nonce that can be used to create a transaction
     public const string BRAINTREE_VISA_NONCE = "fake-valid-visa-nonce";                          // A nonce representing a valid Visa card request
@@ -75,15 +78,15 @@ namespace NFX.NUnit.Integration.Web.Pay
     public readonly static Account CARD_DEBIT_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 1000003);
     public readonly static Account CARD_DEBIT_ACCOUNT_STRIPE_CORRECT_WITH_ADDRESS = new Account("user", 111, 1000004);
     public readonly static Account BANK_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 2000001);
-
-    public readonly static Account PAYPAL_CORRECT_ACCOUNT = new Account("user", 211, 3000001);
-    public readonly static Account PAYPAL_INCORRECT_ACCOUNT = new Account("user", 212, 3000011);
     #endregion
 
     #region Accounts hardcoded
     private static List<Transaction> s_TransactionList = new List<Transaction>();
 
     private static readonly IDictionary<string, AccountData> s_MockAccountDatas = new Dictionary<string, AccountData> {
+        { BRAINTREE_WEB_TERM , new AccountData {
+
+        } },
         { BRAINTREE_NONCE, new AccountData {
           FirstName = "Martin",
           LastName = "Kaleigh",
@@ -96,19 +99,7 @@ namespace NFX.NUnit.Integration.Web.Pay
         } }
       };
 
-    private static List<MockActualAccountData> s_MockActualAccountDatas = new List<MockActualAccountData> {
-        new MockActualAccountData() {
-          Account = PAYPAL_CORRECT_ACCOUNT,
-          AccountData = new AccountData() { FirstName = "Alexia", LastName = "Callahan" },
-          PrimaryEMail = null // is taken from configuration
-        },
-
-        new MockActualAccountData() {
-          Account = PAYPAL_INCORRECT_ACCOUNT,
-          AccountData = new AccountData() { FirstName = "Thaddeus", LastName = "Wiley" },
-          PrimaryEMail = "test@example.com"
-        },
-
+    private static List<IActualAccountData> s_MockActualAccountDatas = new List<IActualAccountData> {
         new MockActualAccountData() {
           Account = CARD_ACCOUNT_STRIPE_CORRECT,
           AccountData = new AccountData()
@@ -286,88 +277,60 @@ namespace NFX.NUnit.Integration.Web.Pay
 
     #region Pvt. fields
     private ICurrencyMarket m_Market = new ConfigBasedCurrencyMarket();
+    private object m_NextTransactionID = null;
+    #endregion
+
+    #region Properties
+    [Config]
+    public string PaypalValidAccount { get; set; }
     #endregion
 
     #region Public
-
-    /// <summary>
-    /// Persists account in memory
-    /// </summary>
-    public static void SaveAccount(Account account)
-    {
-      lock (s_MockActualAccountDatas)
-        s_MockActualAccountDatas.Add(new MockActualAccountData
-        {
-          Account = account,
-          AccountData = s_MockAccountDatas[account.IdentityID.AsString()]
-        });
-    }
-
-    /// <summary>
-    /// Persists transaction in memory
-    /// </summary>
-    public static void SaveTransaction(Transaction ta)
-    {
-      lock (s_TransactionList)
-        s_TransactionList.Add(ta);
-    }
-
+    public void SetNextTransactionID(object id) { m_NextTransactionID = id; }
     #endregion
 
     #region IPaySystemHostImplementation
-
-    public override object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type)
+    protected override Transaction DoFetchTransaction(PaySession session, object id)
     {
-      ulong id = (((ulong)ExternalRandomGenerator.Instance.NextRandomInteger) << 32) + ((ulong)ExternalRandomGenerator.Instance.NextRandomInteger);
-      var eLink = new ELink(id, null);
-      return eLink.Link;
+      return s_TransactionList.SingleOrDefault(ta => ta.ID == id);
     }
 
-    /// <summary>
-    /// In this implementation returns transaction from memory list by id
-    /// </summary>
-    public override Transaction FetchTransaction(ITransactionContext context, object id)
+    protected override IActualAccountData DoFetchAccountData(PaySession session, Account account)
     {
-      return s_TransactionList.FirstOrDefault(ta => ta.ID == id);
-    }
-
-    public override IActualAccountData AccountToActualData(ITransactionContext context, Account account)
-    {
-      if (account.IsWebTerminalToken)
-      {
-        var ctx = context as FakeTransactionContext;
-        if (ctx == null)
-          throw new NFXException("{0}.AccountToActualData(ITransactionContext is null)".Args(GetType().Name));
-
-        return new MockActualAccountData
-        {
-          Account = account,
-          AccountData = s_MockAccountDatas[account.AccountID.AsString()]
-        };
-      }
-
-      return s_MockActualAccountDatas.FirstOrDefault(m => m.Account == account);
-    }
-
-    protected override void DoConfigure(IConfigSectionNode node)
-    {
-      ConfigAttribute.Apply(this, node);
-
-      // get specific pay system information
-      var correctPayPalAccount = s_MockActualAccountDatas.First(a => a.Account == PAYPAL_CORRECT_ACCOUNT);
-      correctPayPalAccount.PrimaryEMail = node.AttrByName("paypal-valid-account").Value;
+      return s_MockActualAccountDatas.SingleOrDefault(m => m.Account == account);
     }
 
     public override ICurrencyMarket CurrencyMarket { get { return m_Market; } }
 
-    #endregion
-  }
+    protected override object DoGenerateTransactionID(PaySession session, TransactionType type)
+    {
+      if (m_NextTransactionID != null)
+      {
+        var id = m_NextTransactionID;
+        m_NextTransactionID = null;
+        return id;
+      }
+      var eLink = new ELink((((ulong)ExternalRandomGenerator.Instance.NextRandomInteger) << 32) + ((ulong)ExternalRandomGenerator.Instance.NextRandomInteger), null);
+      return eLink.Link;
+    }
 
-  internal class FakeTransactionContext : IOrderTransactionContext
-  {
-    public bool IsNewCustomer { get; set; }
-    public object CustomerId { get; set; }
-    public object OrderId { get; set; }
-    public object VendorId { get; set; }
+    protected override void DoStoreTransaction(PaySession session, Transaction tran)
+    {
+      lock (s_TransactionList)
+      {
+        s_TransactionList.RemoveAll(tr => tr.ID.Equals(tran.ID));
+        s_TransactionList.Add(tran);
+      }
+    }
+
+    protected override void DoStoreAccountData(PaySession session, IActualAccountData accoundData)
+    {
+      lock (s_MockActualAccountDatas)
+      {
+        s_MockActualAccountDatas.RemoveAll(ad => ad.Account == accoundData.Account);
+        s_MockActualAccountDatas.Add(accoundData);
+      }
+    }
+    #endregion
   }
 }

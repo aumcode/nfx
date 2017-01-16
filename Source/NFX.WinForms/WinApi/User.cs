@@ -86,12 +86,14 @@ namespace NFX.WinApi
     [DllImport(USER32)]
     public extern static int GetWindowText(IntPtr hWnd, StringBuilder lpString, int cch);
 
+    public const int SW_SCROLLCHILDREN = 0x01;
+    public const int SW_INVALIDATE     = 0x02;
+    public const int SW_ERASE          = 0x04;
+    public const int SW_SMOOTHSCROLL   = 0x10;
 
-
-    public const Int32 SW_SCROLLCHILDREN = 0x01;
-    public const Int32 SW_INVALIDATE = 0x02;
-    public const Int32 SW_ERASE = 0x04;
-    public const Int32 SW_SMOOTHSCROLL = 0x10;
+    public const int WM_SETTEXT        = 0X000C;
+    public const int WM_KEYDOWN        = 0x0100;
+    public const int WM_KEYUP          = 0x0101;
 
     [DllImport(USER32)]
     public static extern int ScrollWindowEx(
@@ -102,7 +104,6 @@ namespace NFX.WinApi
         int hrgnUpdate,
         ref RECT lprcUpdate,
         int fuScroll);
-
 
     [DllImport(USER32)]
     public static extern bool MessageBeep(int uType);
@@ -115,6 +116,9 @@ namespace NFX.WinApi
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
+    [DllImport("user32.dll")]
+    public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
     // Find window by Caption only. Note you must pass IntPtr.Zero as the first parameter.
 
     [DllImport("user32.dll", EntryPoint="FindWindow", SetLastError = true)]
@@ -126,6 +130,13 @@ namespace NFX.WinApi
     [return: MarshalAs(UnmanagedType.Bool)]
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool PostMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(HandleRef hWnd,  uint uMsg, int wParam, string lParam);
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(HandleRef hWnd,  uint uMsg, int wParam, int lParam);
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(HandleRef hWnd,  uint uMsg, IntPtr wParam, IntPtr lParam);
 
     [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Auto)]
     public static extern uint RegisterWindowMessage(string lpString);

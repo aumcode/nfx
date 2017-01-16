@@ -191,23 +191,29 @@ namespace NFX.Web.Social
 
       private string getAccessToken(string code, string redirectURI)
       {
-        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
-          queryParameters:
-          new Dictionary<string, string>() {
+        dynamic responseObj = WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+        {
+          Method = HTTPRequestMethod.GET,
+          QueryParameters = new Dictionary<string, string>() {
             {ACCESSTOKEN_GRANTTYPE_PARAMNAME, ACCESSTOKEN_GRANTTYPE_PARAMVALUE},
             {ACCESSTOKEN_CODE_PARAMNAME, code},
             {ACCESSTOKEN_REDIRECTURL_PARAMNAME, redirectURI},
             {ACCESSTOKEN_CLIENTID_PARAMNAME, ApiKey},
             {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, SecretKey}
-          });
+          }
+        });
 
         return responseObj[ACCESSTOKEN_PARAMNAME];
       }
 
       private void getUserInfo(LinkedInSocialUserInfo liUserInfo)
       {
-        XDocument responseDoc = WebClient.GetXML(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
-          {OAUTH2ACCESSTOKEN_PARAMNAME, liUserInfo.AccessToken}
+        var responseDoc = WebClient.GetXML(GETUSERINFO_BASEURL, new WebClient.RequestParams(this)
+        {
+          Method = HTTPRequestMethod.GET,
+          Headers = new Dictionary<string, string>() {
+            {OAUTH2ACCESSTOKEN_PARAMNAME, liUserInfo.AccessToken}
+          }
         });
 
         XElement person = responseDoc.Element(USERINFO_PERSON_PARAMNAME);
@@ -227,9 +233,11 @@ namespace NFX.Web.Social
       {
         string body = SHAREBODY_TEMPLATE.Args(text);
 
-        XDocument responseDoc = WebClient.GetXML(SHARE_BASEURL, this,
-          new Dictionary<string, string>() {{OAUTH2ACCESSTOKEN_PARAMNAME, accessToken}},
-          body);
+        var responseDoc = WebClient.GetXML(SHARE_BASEURL, new WebClient.RequestParams(this)
+        {
+          Headers = new Dictionary<string, string>() {{OAUTH2ACCESSTOKEN_PARAMNAME, accessToken}},
+          Body = body
+        });
       }
 
     #endregion

@@ -23,14 +23,32 @@ namespace NFX.Web.Pay.PayPal
   /// </summary>
   public class PayPalSession : PaySession
   {
-    public PayPalSession(PayPalSystem paySystem, PayPalConnectionParameters cParams)
-        : base(paySystem, cParams)
+    public PayPalSession(PayPalSystem paySystem, PayPalConnectionParameters cParams, IPaySessionContext context = null)
+        : base(paySystem, cParams, context)
     {
     }
 
     public PayPalOAuthToken AuthorizationToken
     {
-      get { return IsValid ? ConnectionParameters.User.AuthToken.Data as PayPalOAuthToken : null; }
+      get
+      {
+        if (!IsValid) return null;
+
+        var token = User.AuthToken.Data as PayPalOAuthToken;
+
+        if (token == null || token.IsCloseToExpire())
+        {
+          token = ((PayPalSystem)PaySystem).generateOAuthToken((PayPalCredentials)User.Credentials);
+          User = new User(User.Credentials, new AuthenticationToken(PayPalSystem.PAYPAL_REALM, token), User.Name, User.Rights);
+        }
+
+        return token;
+      }
+    }
+
+    public void ResetAuthorizationToken()
+    {
+      User = new User(User.Credentials, new AuthenticationToken(PayPalSystem.PAYPAL_REALM, null), User.Name, User.Rights);
     }
   }
 }

@@ -190,13 +190,16 @@ namespace NFX.Web.Social
 
         private string getAccessToken(string code, string redirectURI)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
-            new Dictionary<string, string>() {
+          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+          {
+            Method = HTTPRequestMethod.GET,
+            Headers = new Dictionary<string, string>() {
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_REDIRECTURL_PARAMNAME, redirectURI},
               {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
               {ACCESSTOKEN_CODE_PARAMNAME, code}
-            });
+            }
+          });
 
           return response[ACCESSTOKEN_PARAMNAME].AsString();
         }
@@ -207,9 +210,13 @@ namespace NFX.Web.Social
             USER_LASTNAME_PARAMNAME, USER_MIDDLENAME_PARAMNAME, USER_GENDER_PARAMNAME, USER_BIRTHDAY_PARAMNAME,
             USER_LOCALE_PARAMNAME, USER_TIMEZONE_PARAMNAME, USER_PICTURE_PARAMNAME);
 
-          dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
-            {ACCESSTOKEN_PARAMNAME, userInfo.AccessToken},
-            {GETUSERINFO_FIELDS_PARAMNAME, fields}
+          dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, new WebClient.RequestParams(this)
+          {
+            Method = HTTPRequestMethod.GET,
+            Headers = new Dictionary<string, string>() {
+              {ACCESSTOKEN_PARAMNAME, userInfo.AccessToken},
+              {GETUSERINFO_FIELDS_PARAMNAME, fields}
+            }
           });
 
           userInfo.LoginState = SocialLoginState.LoggedIn;
@@ -235,19 +242,21 @@ namespace NFX.Web.Social
           userInfo.Locale = responseObj[USER_LOCALE_PARAMNAME];
           userInfo.TimezoneOffset = ((int)responseObj[USER_TIMEZONE_PARAMNAME]) * 60 * 60;
 
-          dynamic picObj = WebClient.GetJsonAsDynamic(GET_USER_PICTURE_URL_PATTERN.Args(userInfo.ID), this, HTTPRequestMethod.GET);
+          dynamic picObj = WebClient.GetJsonAsDynamic(GET_USER_PICTURE_URL_PATTERN.Args(userInfo.ID), new WebClient.RequestParams(this));
           userInfo.PictureLink = picObj[USER_PICTURE_DATA_PARAMNAME][USER_PICTURE_URL_PARAMNAME];
         }
 
         private string getLongTermAccessToken(string accessToken)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
-            new Dictionary<string, string>() {
+          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+          {
+            Headers = new Dictionary<string, string>() {
               {GRANTTYPE_PARAMNAME, GRANTTYPE_FBEXCHANGETOKEN_PARAMVALUE},
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
               {FBEXCHANGETOKEN_PARAMNAME, accessToken}
-            });
+            }
+          });
 
           return response[ACCESSTOKEN_PARAMNAME].AsString();
         }
@@ -257,12 +266,14 @@ namespace NFX.Web.Social
         {
           string url = PUBLISH_BASEURL_PATTERN.Args(userId);
 
-          dynamic responseObj = WebClient.GetJsonAsDynamic(url, this, HTTPRequestMethod.POST,
-            queryParameters: new Dictionary<string, string>() {
+          dynamic responseObj = WebClient.GetJsonAsDynamic(url, new WebClient.RequestParams(this)
+          {
+            Method = HTTPRequestMethod.POST,
+            QueryParameters = new Dictionary<string, string>() {
               {MESSAGE_PARAMNAME, message},
               {ACCESSTOKEN_PARAMNAME, accessToken}
             }
-          );
+          });
         }
 
       #endregion

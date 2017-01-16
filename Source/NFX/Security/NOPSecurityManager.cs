@@ -23,43 +23,39 @@ using NFX.ApplicationModel;
 
 namespace NFX.Security
 {
-    /// <summary>
-    /// Provides security manager implementation that does nothing and always returns fake user instance
-    /// </summary>
-    public sealed class NOPSecurityManager : ApplicationComponent, ISecurityManagerImplementation
+  /// <summary>
+  /// Provides security manager implementation that does nothing and always returns fake user instance
+  /// </summary>
+  public sealed class NOPSecurityManager : ApplicationComponent, ISecurityManagerImplementation
+  {
+    private NOPSecurityManager() : base()
     {
-         private NOPSecurityManager():base() {}
-
-         private static NOPSecurityManager s_Instance = new NOPSecurityManager();
-
-         public static NOPSecurityManager Instance
-         {
-            get { return s_Instance;}
-         }
-
-         public User Authenticate(Credentials credentials)
-         {
-             return User.Fake;
-         }
-
-         public void Configure(Environment.IConfigSectionNode node)
-         {
-
-         }
-
-
-         public User Authenticate(AuthenticationToken token)
-         {
-             return User.Fake;
-         }
-
-         public void Authenticate(User user)
-         {
-         }
-
-         public AccessLevel Authorize(User user, Permission permission)
-         {
-             return new AccessLevel(user, permission, Rights.None.Root);
-         }
+      m_PasswordManager = new DefaultPasswordManager(this);
+      m_PasswordManager.Start();
     }
+
+    protected override void Destructor()
+    {
+      m_PasswordManager.Dispose();
+      base.Destructor();
+    }
+
+    private IPasswordManagerImplementation m_PasswordManager;
+
+    private static NOPSecurityManager s_Instance = new NOPSecurityManager();
+
+    public static NOPSecurityManager Instance { get { return s_Instance; } }
+
+    public IPasswordManager PasswordManager { get { return m_PasswordManager; } }
+
+    public User Authenticate(Credentials credentials) { return User.Fake; }
+
+    public void Configure(Environment.IConfigSectionNode node) {}
+
+    public User Authenticate(AuthenticationToken token) { return User.Fake; }
+
+    public void Authenticate(User user) {}
+
+    public AccessLevel Authorize(User user, Permission permission) { return new AccessLevel(user, permission, Rights.None.Root); }
+  }
 }

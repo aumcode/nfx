@@ -158,13 +158,13 @@ namespace NFX.Web.Social
         getUserInfo(vkUserInfo);
       }
 
-      // dlatushkin 2014/02/06: only standalone apps are supported to wall post
-      //public override void PostMessage(string text, SocialUserInfo userInfo)
-      //{
-      //  VKontakteSocialUserInfo vkUserInfo = userInfo as VKontakteSocialUserInfo;
+    // dlatushkin 2014/02/06: only standalone apps are supported to wall post
+    //public override void PostMessage(string text, SocialUserInfo userInfo)
+    //{
+    //  VKontakteSocialUserInfo vkUserInfo = userInfo as VKontakteSocialUserInfo;
 
-      //  wallPost( vkUserInfo.AccessToken, text);
-      //}
+    //  wallPost( vkUserInfo.AccessToken, text);
+    //}
 
     #endregion
 
@@ -172,21 +172,26 @@ namespace NFX.Web.Social
 
       private dynamic getAccessTokenObj(string code, string redirectURI)
       {
-        return WebClient.GetJsonAsDynamic( ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET,
-          new Dictionary<string, string>() {
+        return WebClient.GetJsonAsDynamic(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+        {
+          Headers = new Dictionary<string, string>() {
             {ACCESSTOKEN_CLIENTID_PARAMNAME, ClientCode},
             {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
             {ACCESSTOKEN_CODE_PARAMNAME, code},
             {ACCESSTOKEN_REDIRECTURL_PARAMNAME, redirectURI}
-          });
+          }
+        });
       }
 
       private void getUserInfo(VKontakteSocialUserInfo vkUserInfo)
       {
-        dynamic responseCommon = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
-          {USERINFO_USERID_PARAMNAME, vkUserInfo.ID.ToString()},
-          {USERINFO_FIELDS_PARAMNAME, USERINFO_FIELDS_PARAMVALUE},
-          {ACCESSTOKEN_PARAMNAME, vkUserInfo.AccessToken}
+        dynamic responseCommon = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, new WebClient.RequestParams(this)
+        {
+          Headers = new Dictionary<string, string>() {
+            {USERINFO_USERID_PARAMNAME, vkUserInfo.ID.ToString()},
+            {USERINFO_FIELDS_PARAMNAME, USERINFO_FIELDS_PARAMVALUE},
+            {ACCESSTOKEN_PARAMNAME, vkUserInfo.AccessToken}
+          }
         });
 
         dynamic responseObj = responseCommon.response[0];
@@ -200,8 +205,11 @@ namespace NFX.Web.Social
 
       private void wallGet(string accessToken)
       {
-        dynamic responseCommon = WebClient.GetJsonAsDynamic(WALL_GET_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
-          {ACCESSTOKEN_PARAMNAME, accessToken}
+        dynamic responseCommon = WebClient.GetJsonAsDynamic(WALL_GET_BASEURL, new WebClient.RequestParams(this)
+        {
+          Headers = new Dictionary<string, string>() {
+            {ACCESSTOKEN_PARAMNAME, accessToken}
+          }
         });
 
         //dynamic responseObj = responseCommon.response[0];
@@ -209,9 +217,12 @@ namespace NFX.Web.Social
 
       private void wallPost(string accessToken, string text)
       {
-        dynamic responseCommon = WebClient.GetJsonAsDynamic(WALL_POST_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
-          {ACCESSTOKEN_PARAMNAME, accessToken},
-          {MESSAGE_PARAMNAME, text}
+        dynamic responseCommon = WebClient.GetJsonAsDynamic(WALL_POST_BASEURL, new WebClient.RequestParams(this)
+        {
+          Headers = new Dictionary<string, string>() {
+            {ACCESSTOKEN_PARAMNAME, accessToken},
+            {MESSAGE_PARAMNAME, text}
+          }
         });
 
         //dynamic responseObj = responseCommon.response[0];

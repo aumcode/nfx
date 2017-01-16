@@ -229,10 +229,8 @@ namespace NFX.Web.Shipping.Shippo
         var cred = (ShippoCredentials)session.User.Credentials;
 
         // label request
-        var request = new WebClient.RequestParams
+        var request = new WebClient.RequestParams(this)
         {
-          Caller = this,
-          Uri = new Uri(URI_API_BASE + URI_TRANSACTIONS),
           Method = HTTPRequestMethod.POST,
           ContentType = ContentType.JSON,
           Headers = new Dictionary<string, string>
@@ -242,7 +240,7 @@ namespace NFX.Web.Shipping.Shippo
           Body = getCreateLabelRequestBody(session, shipment).ToJSON(JSONWritingOptions.Compact)
         };
 
-        var response = WebClient.GetJson(request);
+        var response = WebClient.GetJson(new Uri(URI_API_BASE + URI_TRANSACTIONS), request);
 
         Log(MessageType.Info, "doCreateLabel()", response.ToJSON(), relatedMessageID: logID);
 
@@ -282,10 +280,8 @@ namespace NFX.Web.Shipping.Shippo
 
         var cred = (ShippoCredentials)session.User.Credentials;
 
-        var request = new WebClient.RequestParams
+        var request = new WebClient.RequestParams(this)
         {
-          Caller = this,
-          Uri = new Uri((URI_API_BASE + URI_TRACKING).Args(ccode, trackingNumber)),
           Method = HTTPRequestMethod.GET,
           ContentType = ContentType.JSON,
           Headers = new Dictionary<string, string>
@@ -294,7 +290,7 @@ namespace NFX.Web.Shipping.Shippo
             }
         };
 
-        var response = WebClient.GetJson(request);
+        var response = WebClient.GetJson(new Uri((URI_API_BASE + URI_TRACKING).Args(ccode, trackingNumber)), request);
 
         var result = new TrackInfo();
 
@@ -351,10 +347,8 @@ namespace NFX.Web.Shipping.Shippo
         body["validate"] = true;
 
         // validate address request
-        var request = new WebClient.RequestParams
+        var request = new WebClient.RequestParams(this)
         {
-          Caller = this,
-          Uri = new Uri(URI_API_BASE + URI_ADDRESS),
           Method = HTTPRequestMethod.POST,
           ContentType = ContentType.JSON,
           Headers = new Dictionary<string, string>
@@ -364,7 +358,7 @@ namespace NFX.Web.Shipping.Shippo
           Body = body.ToJSON(JSONWritingOptions.Compact)
         };
 
-        var response = WebClient.GetJson(request);
+        var response = WebClient.GetJson(new Uri(URI_API_BASE + URI_ADDRESS), request);
 
         Log(MessageType.Info, "doValidateAddress()", response.ToJSON(), relatedMessageID: logID);
 
@@ -402,10 +396,8 @@ namespace NFX.Web.Shipping.Shippo
         var sbody = getShipmentBody(shipment);
 
         // get shipping request
-        var request = new WebClient.RequestParams
+        var request = new WebClient.RequestParams(this)
         {
-          Caller = this,
-          Uri = new Uri(URI_API_BASE + URI_SHIPMENTS),
           Method = HTTPRequestMethod.POST,
           ContentType = ContentType.JSON,
           Headers = new Dictionary<string, string>
@@ -415,7 +407,7 @@ namespace NFX.Web.Shipping.Shippo
           Body = sbody.ToJSON(JSONWritingOptions.Compact)
         };
 
-        var response = WebClient.GetJson(request);
+        var response = WebClient.GetJson(new Uri(URI_API_BASE + URI_SHIPMENTS), request);
 
         Log(MessageType.Info, "doEstimateShippingCost()", response.ToJSON(), relatedMessageID: logID);
 
@@ -444,10 +436,8 @@ namespace NFX.Web.Shipping.Shippo
         {
           var cred = (ShippoCredentials)session.User.Credentials;
 
-          var request = new WebClient.RequestParams
+          var request = new WebClient.RequestParams(this)
           {
-            Caller = this,
-            Uri = new Uri((URI_API_BASE + URI_RATES).Args(rateID)),
             Method = HTTPRequestMethod.GET,
             ContentType = ContentType.JSON,
             Headers = new Dictionary<string, string>
@@ -456,7 +446,7 @@ namespace NFX.Web.Shipping.Shippo
               }
           };
 
-          var response = WebClient.GetJson(request);
+          var response = WebClient.GetJson(new Uri((URI_API_BASE + URI_RATES).Args(rateID)), request);
 
           checkResponse(response);
 
@@ -476,15 +466,15 @@ namespace NFX.Web.Shipping.Shippo
         if (map==null) return null;
 
         var result = new Address();
-        result.Name    = map["name"].AsString();
-        result.Line1   = map["street1"].AsString();
-        result.Line2   = map["street2"].AsString();
-        result.City    = map["city"].AsString();
-        result.Region  = map["state"].AsString();
-        result.Postal  = AddressComparator.GetPostalMainPart(map["zip"].AsString());
-        result.Country = NFX.Standards.Countries_ISO3166_1.Normalize3(map["country"].AsString());
-        result.Phone   = map["phone"].AsString();
-        result.EMail   = map["email"].AsString();
+        result.PersonName = map["name"].AsString();
+        result.Line1      = map["street1"].AsString();
+        result.Line2      = map["street2"].AsString();
+        result.City       = map["city"].AsString();
+        result.Region     = map["state"].AsString();
+        result.Postal     = AddressComparator.GetPostalMainPart(map["zip"].AsString());
+        result.Country    = NFX.Standards.Countries_ISO3166_1.Normalize3(map["country"].AsString());
+        result.Phone      = map["phone"].AsString();
+        result.EMail      = map["email"].AsString();
 
         return result;
       }
@@ -535,7 +525,7 @@ namespace NFX.Web.Shipping.Shippo
         var result = new JSONDataMap();
 
         result["object_purpose"] = PURCHASE_PURPOSE;
-        result["name"] = addr.Name;
+        result["name"] = addr.PersonName;
         result["country"] = NFX.Standards.Countries_ISO3166_1.Normalize2(addr.Country);
         result["street1"] = addr.Line1;
         result["street2"] = addr.Line2;

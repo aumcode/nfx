@@ -35,7 +35,7 @@ namespace NFX.NUnit.Integration.Glue
   public class JokeCalculator: JokeTestBase
   {
     [Test]
-    [ExpectedException(typeof(RemoteException))]
+    [ExpectedException(typeof(WrappedException))]
     public void ExceptionBeforeInit()
     {
       using (JokeHelper.MakeApp())
@@ -48,7 +48,7 @@ namespace NFX.NUnit.Integration.Glue
     }
 
     [Test]
-    [ExpectedException(typeof(RemoteException))]
+    [ExpectedException(typeof(WrappedException))]
     public void ExceptionAfterDestructor()
     {
       using (JokeHelper.MakeApp())

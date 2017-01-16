@@ -199,7 +199,7 @@ namespace NFX.NUnit.Integration.Glue
         }
 
         [TestCase]
-        [ExpectedException(typeof(RemoteException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
+        [ExpectedException(typeof(WrappedException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
         public void Sync_JokeContract_Expected_Security_Exception()
         {
           using (JokeHelper.MakeApp())
@@ -211,7 +211,7 @@ namespace NFX.NUnit.Integration.Glue
         }
 
         [TestCase]
-        [ExpectedException(typeof(RemoteException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
+        [ExpectedException(typeof(WrappedException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
         public void MPX_JokeContract_Expected_Security_Exception()
         {
           using (JokeHelper.MakeApp())

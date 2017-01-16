@@ -1,4 +1,3 @@
-
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
 * Copyright 2003-2016 IT Adapter Inc.
@@ -25,20 +24,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Xml.Linq;
+using System.Threading.Tasks;
 using System.Net;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Specialized;
 
 using NFX;
 using NFX.Environment;
 using NFX.Serialization.JSON;
-using System.Xml.Linq;
 
 namespace NFX.Web
 {
-  public enum HTTPRequestMethod { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH};
+  public enum HTTPRequestMethod { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH };
 
   /// <summary>
   /// Stipulates contract for an entity that executes calls via WebClient
@@ -66,342 +63,292 @@ namespace NFX.Web
   /// </summary>
   public static partial class WebClient
   {
-    #region Inner classes
-
-      /// <summary>
-      /// Provides request parameters for making WebClient calls
-      /// </summary>
-      public sealed class RequestParams
+    #region Inner
+    /// <summary>
+    /// Provides request parameters for making WebClient calls
+    /// </summary>
+    public struct RequestParams
+    {
+      public RequestParams(IWebClientCaller caller)
       {
-        #region Pub params
+        Caller = caller;
 
-          public Uri Uri;
-          public HTTPRequestMethod Method = HTTPRequestMethod.GET;
-          public IDictionary<string, string> QueryParameters;
-          public IDictionary<string, string> BodyParameters;
-          public string Body;
-          public IDictionary<string, string> Headers;
-          public string ContentType = NFX.Web.ContentType.FORM_URL_ENCODED;
-          public string AcceptType;
-          public string UName, UPwd;
-          public IWebClientCaller Caller;
-
-          public bool HasCredentials { get { return UName.IsNotNullOrWhiteSpace(); }}
-
-        #endregion
-
-        #region Public
-
-          public void Validate()
-          {
-            if (BodyParameters != null && BodyParameters.Count != 0 && Body != null)
-              throw new NFXException(StringConsts.ARGUMENT_ERROR + this.GetType().Name + ".Validate: BodyParameters<>null and Body<>null");
-          }
-
-        #endregion
+        Method = HTTPRequestMethod.GET;
+        ContentType = Web.ContentType.FORM_URL_ENCODED;
+        QueryParameters = null;
+        BodyParameters = null;
+        Body = null;
+        Headers = null;
+        AcceptType = null;
+        UserName = null;
+        Password = null;
       }
+
+      #region Properties
+      public readonly IWebClientCaller Caller;
+
+      public HTTPRequestMethod Method;
+      public IDictionary<string, string> QueryParameters;
+      public IDictionary<string, string> BodyParameters;
+      public string Body;
+      public IDictionary<string, string> Headers;
+      public string ContentType;
+      public string AcceptType;
+      public string UserName, Password;
+
+      public bool HasCredentials { get { return UserName.IsNotNullOrWhiteSpace(); } }
+      public bool HasBody { get { return Body != null || (BodyParameters != null && BodyParameters.Count > 0); } }
+      #endregion
+
+      #region Public
+      public ICredentials GetCredentials() { return new NetworkCredential(UserName, Password); }
+
+      public WebHeaderCollection GetHeaders()
+      {
+        var result = new WebHeaderCollection();
+        if (Headers != null)
+          Headers.ForEach(kvp => result.Add(kvp.Key, kvp.Value));
+
+        if (ContentType.IsNotNullOrWhiteSpace())
+          result.Add(HttpRequestHeader.ContentType, ContentType);
+        if (AcceptType.IsNotNullOrWhiteSpace())
+          result.Add(HttpRequestHeader.Accept, AcceptType);
+
+        return result;
+      }
+
+      public NameValueCollection GetQueryString()
+      {
+        if (QueryParameters == null)
+          return new NameValueCollection();
+        var queryParams = new NameValueCollection(QueryParameters.Count);
+        foreach (var param in QueryParameters)
+          queryParams.Add(param.Key, param.Value);
+        return queryParams;
+      }
+
+      public string GetBody()
+      {
+        return Body ?? ((BodyParameters != null && BodyParameters.Count > 0) ? string.Join("&", BodyParameters.Select(p => p.Key + "=" + p.Value)) : string.Empty);
+      }
+      #endregion
+    }
 
     #endregion
 
     #region Public
+    public static string GetString(string uri, RequestParams request) { return GetString(new Uri(uri), request); }
 
-      public static string GetString(Uri uri,
-        IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        string body = null,
-        IDictionary<string, string> headers = null)
+    public static string GetString(Uri uri, RequestParams request)
+    {
+      return Uri.UnescapeDataString(DoRequest((client) =>
       {
-        RequestParams request = new RequestParams()
+        if (request.Method == HTTPRequestMethod.GET && !request.HasBody)
+          return client.DownloadString(uri);
+        if (request.Method == HTTPRequestMethod.POST)
+          return client.UploadString(uri, request.GetBody());
+        return client.UploadString(uri, request.Method.ToString(), request.GetBody());
+      }, request));
+    }
+
+    public static Task<string> GetStringAsync(string uri, RequestParams request) { return GetStringAsync(new Uri(uri), request); }
+
+    public static Task<string> GetStringAsync(Uri uri, RequestParams request)
+    {
+      return DoRequest((client) =>
+      {
+        if (request.Method == HTTPRequestMethod.GET && !request.HasBody)
+          return client.DownloadStringTaskAsync(uri);
+        if (request.Method == HTTPRequestMethod.POST)
+          return client.UploadStringTaskAsync(uri, request.GetBody());
+        return client.UploadStringTaskAsync(uri, request.Method.ToString(), request.GetBody());
+      }, request).ContinueWith((antecedent) => Uri.UnescapeDataString(antecedent.Result));
+    }
+
+    public static byte[] GetData(string uri, RequestParams request) { string contentType; return GetData(new Uri(uri), request, out contentType); }
+
+    public static byte[] GetData(string uri, RequestParams request, out string contentType) { return GetData(new Uri(uri), request, out contentType); }
+
+    public static byte[] GetData(Uri uri, RequestParams request) { string contentType; return GetData(uri, request, out contentType); }
+
+    public static byte[] GetData(Uri uri, RequestParams request, out string contentType)
+    {
+      string localContentType = string.Empty;
+      var data = DoRequest((client) =>
+      {
+        var result = client.DownloadData(uri);
+        localContentType = client.ResponseHeaders[HttpResponseHeader.ContentType];
+        return result;
+      }, request);
+      contentType = localContentType;
+      return data;
+    }
+
+    public static Task<byte[]> GetDataAsync(string uri, RequestParams request) { return GetDataAsync(new Uri(uri), request); }
+
+    public static Task<byte[]> GetDataAsync(Uri uri, RequestParams request)
+    {
+      return DoRequest((client) => client.DownloadDataTaskAsync(uri), request);
+    }
+
+    public static Task<Tuple<byte[], string>> GetDataAsyncWithContentType(string uri, RequestParams request) { return GetDataAsyncWithContentType(new Uri(uri), request); }
+
+    public static Task<Tuple<byte[], string>> GetDataAsyncWithContentType(Uri uri, RequestParams request)
+    {
+      return DoRequest((client) =>
+        client.DownloadDataTaskAsync(uri)
+          .ContinueWith((antecedent) => Tuple.Create(antecedent.Result, client.ResponseHeaders[HttpResponseHeader.ContentType])), request);
+    }
+
+
+    public static void GetFile(string uri, RequestParams request, string file) { GetFile(new Uri(uri), request, file); }
+
+    public static void GetFile(Uri uri, RequestParams request, string file)
+    {
+      DoRequest((client) => { client.DownloadFile(uri, file); }, request);
+    }
+
+    public static Task GetFileAsync(string uri, RequestParams request, string file) { return GetFileAsync(new Uri(uri), request, file); }
+
+    public static Task GetFileAsync(Uri uri, RequestParams request, string file)
+    {
+      return DoRequest((client) => client.DownloadFileTaskAsync(uri, file), request);
+    }
+
+    public static JSONDynamicObject GetJsonAsDynamic(string uri, RequestParams request) { return GetJsonAsDynamic(new Uri(uri), request); }
+
+    public static JSONDynamicObject GetJsonAsDynamic(Uri uri, RequestParams request)
+    {
+      string response = GetString(uri, request);
+      return response.IsNotNullOrWhiteSpace() ? response.JSONToDynamic() : null;
+    }
+
+    public static Task<JSONDynamicObject> GetJsonAsDynamicAsync(string uri, RequestParams request) { return GetJsonAsDynamicAsync(new Uri(uri), request); }
+
+    public static Task<JSONDynamicObject> GetJsonAsDynamicAsync(Uri uri, RequestParams request)
+    {
+      return GetStringAsync(uri, request)
+        .ContinueWith((antecedent) => {
+          var response = antecedent.Result;
+          return response.IsNotNullOrWhiteSpace() ? response.JSONToDynamic() as JSONDynamicObject : null;
+        });
+    }
+
+    public static JSONDataMap GetJson(string uri, RequestParams request) { return GetJson(new Uri(uri), request); }
+
+    public static JSONDataMap GetJson(Uri uri, RequestParams request)
+    {
+      string response = GetString(uri, request);
+      return response.IsNotNullOrWhiteSpace() ? response.JSONToDataObject() as JSONDataMap : null;
+    }
+
+    public static Task<JSONDataMap> GetJsonAsync(string uri, RequestParams request) { return GetJsonAsync(new Uri(uri), request); }
+
+    public static Task<JSONDataMap> GetJsonAsync(Uri uri, RequestParams request)
+    {
+      return GetStringAsync(uri, request)
+        .ContinueWith((antecedent) =>
         {
-          Uri = uri,
-          Caller = caller,
-          Method = method,
-          QueryParameters = queryParameters,
-          BodyParameters = bodyParameters,
-          Body = body,
-          Headers = headers
-        };
+          var response = antecedent.Result;
+          return response.IsNotNullOrWhiteSpace() ? response.JSONToDataObject() as JSONDataMap : null;
+        });
+    }
 
-        return GetString(request);
-      }
+    public static JSONDataMap GetValueMap(string uri, RequestParams request) { return GetValueMap(new Uri(uri), request); }
 
-      public static byte[] GetData(Uri uri,
-                                   IWebClientCaller caller, out string contentType,
-                                   IDictionary<string, string> queryParameters = null,
-                                   IDictionary<string, string> headers = null)
-      {
-        byte[] data = null;
-        string localContentType = string.Empty;
-        GetDataObject((c) => {
-          data = c.DownloadData(uri);
-          localContentType = c.ResponseHeaders[HttpResponseHeader.ContentType];
-        }, uri, caller, queryParameters, headers);
-        contentType = localContentType;
-        return data;
-      }
+    public static JSONDataMap GetValueMap(Uri uri, RequestParams request)
+    {
+      string response = GetString(uri, request);
+      return response.IsNotNullOrWhiteSpace() ? JSONDataMap.FromURLEncodedString(response) : null;
+    }
 
-      public static void GetFile(string file,
-                                 Uri uri,
-                                 IWebClientCaller caller,
-                                 IDictionary<string, string> queryParameters = null,
-                                 IDictionary<string, string> headers = null)
-      {
-        GetDataObject((c) => { c.DownloadFile(uri, file); }, uri, caller, queryParameters, headers);
-      }
+    public static Task<JSONDataMap> GetValueMapAsync(string uri, RequestParams request) { return GetValueMapAsync(new Uri(uri), request); }
 
-      public static void GetDataObject(Action<System.Net.WebClient> action,
-                                       Uri uri,
-                                       IWebClientCaller caller,
-                                       IDictionary<string, string> queryParameters = null,
-                                       IDictionary<string, string> headers = null)
-      {
-        NameValueCollection queryParams;
-        if (queryParameters != null)
+    public static Task<JSONDataMap> GetValueMapAsync(Uri uri, RequestParams request)
+    {
+      return GetStringAsync(uri, request)
+        .ContinueWith((antecedent) =>
         {
-          queryParams = new NameValueCollection(queryParameters.Count);
-          queryParameters.ForEach(kvp => queryParams.Add(kvp.Key, kvp.Value));
-        }
-        else
+          var response = antecedent.Result;
+          return response.IsNotNullOrWhiteSpace() ? JSONDataMap.FromURLEncodedString(response) : null;
+        });
+    }
+
+    public static XDocument GetXML(string uri, RequestParams request) { return GetXML(new Uri(uri), request); }
+
+    public static XDocument GetXML(Uri uri, RequestParams request)
+    {
+      string response = GetString(uri, request);
+      return response.IsNotNullOrWhiteSpace() ? XDocument.Parse(response) : null;
+    }
+
+    public static Task<XDocument> GetXMLAsync(string uri, RequestParams request) { return GetXMLAsync(new Uri(uri), request); }
+
+    public static Task<XDocument> GetXMLAsync(Uri uri, RequestParams request)
+    {
+      return GetStringAsync(uri, request)
+        .ContinueWith((antecedent) =>
         {
-          queryParams = new NameValueCollection();
-        }
+          var response = antecedent.Result;
+          return response.IsNotNullOrWhiteSpace() ? XDocument.Parse(response) : null;
+        });
+    }
 
-        var headerParams = new WebHeaderCollection();
-        if (headers != null)
-          headers.ForEach(kvp => headerParams.Add(kvp.Key, kvp.Value));
-
-        using (var client = new WebClientTimeouted(caller))
-        {
-          client.Headers = headerParams;
-          client.QueryString = queryParams;
-          action(client);
-        }
-      }
-
-      public static string GetString(RequestParams request)
+    public static T DoRequest<T>(Func<System.Net.WebClient, T> actor, RequestParams request)
+    {
+      using (var client = new WebClientTimeouted(request.Caller))
       {
-        if (request.Method != HTTPRequestMethod.GET && request.Method != HTTPRequestMethod.POST && request.Method != HTTPRequestMethod.PUT
-           && request.Method != HTTPRequestMethod.DELETE)
-          throw new NFXException(StringConsts.ARGUMENT_ERROR + typeof(WebClient).Name + ".GetString(method=GET|POST)");
+        if (request.HasCredentials)
+          client.Credentials = request.GetCredentials();
 
-        NameValueCollection queryParams;
-        if (request.QueryParameters != null)
-        {
-          queryParams = new NameValueCollection(request.QueryParameters.Count);
-          request.QueryParameters.ForEach(kvp => queryParams.Add(kvp.Key, kvp.Value));
-        }
-        else
-        {
-          queryParams = new NameValueCollection();
-        }
-
-        NameValueCollection bodyParams;
-        if (request.BodyParameters != null)
-        {
-          bodyParams = new NameValueCollection(request.BodyParameters.Count);
-          request.BodyParameters.ForEach(kvp => bodyParams.Add(kvp.Key, kvp.Value));
-        }
-        else
-        {
-          bodyParams = new NameValueCollection();
-        }
-
-        WebHeaderCollection headerParams = prepareRequestHeaders(request);
-
-        string responseStr;
-        using (var client = new WebClientTimeouted(request.Caller))
-        {
-          if (request.HasCredentials)
-            client.Credentials = new NetworkCredential(request.UName, request.UPwd);
-
-          client.Headers = headerParams;
-          client.QueryString = queryParams;
-          if (request.Method == HTTPRequestMethod.GET)
-          {
-            responseStr = Uri.UnescapeDataString(client.DownloadString(request.Uri));
-          }
-          else if (request.Method == HTTPRequestMethod.PUT || request.Method == HTTPRequestMethod.DELETE)
-          {
-            responseStr = Uri.UnescapeDataString(client.UploadString(request.Uri, request.Method.ToString(), request.Body ?? string.Empty));
-          }
-          else
-          {
-            var body = request.Body ??
-                       (request.BodyParameters != null ?
-                        string.Join("&", request.BodyParameters.Select(p => p.Key + "=" + p.Value)) :
-                        string.Empty);
-            responseStr = Uri.UnescapeDataString(client.UploadString(request.Uri, body));
-          }
-        }
-
-        return responseStr;
+        client.Headers = request.GetHeaders();
+        client.QueryString = request.GetQueryString();
+        return actor(client);
       }
+    }
 
-      public static string GetString(string uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
+    public static void DoRequest(Action<System.Net.WebClient> actor, RequestParams request)
+    {
+      using (var client = new WebClientTimeouted(request.Caller))
       {
-        return GetString(new Uri(uri), caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
-      }
+        if (request.HasCredentials)
+          client.Credentials = request.GetCredentials();
 
-      public static JSONDynamicObject GetJsonAsDynamic(Uri uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
+        client.Headers = request.GetHeaders();
+        client.QueryString = request.GetQueryString();
+        actor(client);
+      }
+    }
+
+    public static Task<T> DoRequest<T>(Func<System.Net.WebClient, Task<T>> actor, RequestParams request)
+    {
+      var client = new WebClientTimeouted(request.Caller);
+      if (request.HasCredentials)
+        client.Credentials = request.GetCredentials();
+
+      client.Headers = request.GetHeaders();
+      client.QueryString = request.GetQueryString();
+      return actor(client).ContinueWith((antecedent) =>
       {
-        string responseStr = GetString(uri, caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
+        client.Dispose();
+        return antecedent.Result;
+      });
+    }
 
-        return string.IsNullOrWhiteSpace(responseStr) ? null : responseStr.JSONToDynamic();
-      }
+    public static Task DoRequest(Func<System.Net.WebClient, Task> actor, RequestParams request)
+    {
+      var client = new WebClientTimeouted(request.Caller);
+      if (request.HasCredentials)
+        client.Credentials = request.GetCredentials();
 
-      public static JSONDynamicObject GetJsonAsDynamic(string uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
+      client.Headers = request.GetHeaders();
+      client.QueryString = request.GetQueryString();
+      return actor(client).ContinueWith((antecedent) =>
       {
-        return GetJsonAsDynamic(new Uri(uri), caller, method, queryParameters, bodyParameters, headers);
-      }
-
-      public static JSONDynamicObject GetJsonAsDynamic(Uri uri, IWebClientCaller caller, string body, IDictionary<string, string> headers = null)
-      {
-        string responseStr = GetString(uri, caller, HTTPRequestMethod.POST, body: body, headers: headers);
-
-        return string.IsNullOrWhiteSpace(responseStr) ? null : responseStr.JSONToDynamic();
-      }
-
-      public static JSONDynamicObject GetJsonAsDynamic(string uri, IWebClientCaller caller, string body, IDictionary<string, string> headers = null)
-      {
-        return GetJsonAsDynamic(new Uri(uri), caller, body, headers);
-      }
-
-      public static JSONDynamicObject GetJsonAsDynamic(RequestParams prms)
-      {
-        string responseStr = GetString(prms);
-        return responseStr.IsNotNullOrWhiteSpace() ? responseStr.JSONToDynamic() : null;
-      }
-
-      public static JSONDataMap GetJson(Uri uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
-      {
-        string responseStr = GetString(uri, caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
-
-        return string.IsNullOrWhiteSpace(responseStr) ? null : responseStr.JSONToDataObject() as JSONDataMap;
-      }
-
-      public static JSONDataMap GetJson(string uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
-      {
-        return GetJson(new Uri(uri), caller, method, queryParameters, bodyParameters, headers);
-      }
-
-      public static JSONDataMap GetJson(Uri uri, IWebClientCaller caller, string body, IDictionary<string, string> headers = null)
-      {
-        string responseStr = GetString(uri, caller, HTTPRequestMethod.POST, body: body, headers: headers);
-
-        return string.IsNullOrWhiteSpace(responseStr) ? null : responseStr.JSONToDataObject() as JSONDataMap;
-      }
-
-      public static JSONDataMap GetJson(string uri, IWebClientCaller caller, string body, IDictionary<string, string> headers = null)
-      {
-        return GetJson(new Uri(uri), caller, body, headers);
-      }
-
-      public static JSONDataMap GetJson(RequestParams prms)
-      {
-        string responseStr = GetString(prms);
-        return responseStr.IsNullOrWhiteSpace() ? null : responseStr.JSONToDataObject() as JSONDataMap;
-      }
-
-      public static JSONDataMap GetValueMap(Uri uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
-      {
-        string responseStr = GetString(uri, caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
-        var dict = JSONDataMap.FromURLEncodedString(responseStr);
-        return dict;
-      }
-
-      public static JSONDataMap GetValueMap(string uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
-      {
-        return GetValueMap(new Uri(uri), caller, method, queryParameters, bodyParameters, headers);
-      }
-
-      public static XDocument GetXML(Uri uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
-      {
-        string responseStr = GetString(uri, caller, method, queryParameters: queryParameters, bodyParameters: bodyParameters, headers: headers);
-
-        return string.IsNullOrWhiteSpace(responseStr) ? null : XDocument.Parse(responseStr);
-      }
-
-      public static XDocument GetXML(string uri, IWebClientCaller caller,
-        HTTPRequestMethod method = HTTPRequestMethod.GET,
-        IDictionary<string, string> queryParameters = null,
-        IDictionary<string, string> bodyParameters = null,
-        IDictionary<string, string> headers = null)
-      {
-        return GetXML(new Uri(uri), caller, method, queryParameters, bodyParameters, headers);
-      }
-
-      public static XDocument GetXML(Uri uri, IWebClientCaller caller, IDictionary<string, string> queryParameters, string body)
-      {
-        string responseStr = GetString(uri, caller, HTTPRequestMethod.POST, body: body, queryParameters: queryParameters);
-
-        return string.IsNullOrWhiteSpace(responseStr) ? null : XDocument.Parse(responseStr);
-      }
-
-      public static XDocument GetXML(string uri, IWebClientCaller caller, IDictionary<string, string> queryParameters, string body)
-      {
-        return GetXML(new Uri(uri), caller, queryParameters, body);
-      }
-
-      public static XDocument GetXML(RequestParams prms)
-      {
-        string response = GetString(prms);
-        return response.IsNotNullOrWhiteSpace() ? XDocument.Parse(response) : null;
-      }
-
-      #endregion
-
-      #region .pvt
-
-        private static WebHeaderCollection prepareRequestHeaders(RequestParams request)
-        {
-          var result = new WebHeaderCollection();
-          if (request.Headers != null)
-            request.Headers.ForEach(kvp => result.Add(kvp.Key, kvp.Value));
-
-          if (request.ContentType.IsNotNullOrWhiteSpace())
-              result.Add(HttpRequestHeader.ContentType, request.ContentType);
-          if (request.AcceptType.IsNotNullOrWhiteSpace())
-              result.Add(HttpRequestHeader.Accept, request.AcceptType);
-
-          return result;
-        }
-
-      #endregion
-
-    } //WebClient
-
+        client.Dispose();
+        return antecedent;
+      });
+    }
+    #endregion
+  } //WebClient
 }

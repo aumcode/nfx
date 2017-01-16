@@ -47,13 +47,13 @@ namespace NFX.Web.Pay
   /// </summary>
   public interface IPaySystem: INamed
   {
-    // /// <summary>
-    // /// Returns a pay terminal is this payment provider supports it or null
-    // /// </summary>
+    /// <summary>
+    /// Returns a pay terminal is this payment provider supports it or null
+    /// </summary>
     IPayWebTerminal WebTerminal { get; }
 
     /// <summary>
-    /// Config node of params used inside <see cref="StartSession(ConnectionParameters)"/> method
+    /// Config node of params used inside <see cref="StartSession(ConnectionParameters, IPaySessionContext)"/> method
     /// if PayConnectionParameters parameter is null
     /// </summary>
     IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }
@@ -83,43 +83,7 @@ namespace NFX.Web.Pay
     /// Starts new pay session of system-specific type.
     /// If cParams parameter is null <see cref="DefaultSessionConnectParamsCfg"/> is used
     /// </summary>
-    PaySession StartSession(ConnectionParameters cParams = null);
-
-    /// <summary>
-    /// Preliminarily checks possibility of given transaction.
-    /// Is not implemented in some providers (e.g. Stripe)
-    /// </summary>
-    PaymentException VerifyPotentialTransaction(PaySession session, ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount);
-
-    /// <summary>
-    /// Charges funds from one account to another
-    /// </summary>
-    Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Completely or partialy capture previuosly charged funds
-    /// </summary>
-    Transaction Capture(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Completely or partialy refunds previuosly charged funds
-    /// </summary>
-    Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Transfers funds from one account to another.
-    /// </summary>
-    Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Returns a fee for transaction regardless of its size.
-    /// </summary>
-    Amount GetTransactionFee(string currencyISO, TransactionType type);
-
-    /// <summary>
-    /// Returns transaction percent as N * 10000, e.g. 75% = 750000.
-    /// </summary>
-    int GetTransactionPct(string currencyISO, TransactionType type);
+    PaySession StartSession(ConnectionParameters cParams = null, IPaySessionContext context = null);
   }
 
   /// <summary>

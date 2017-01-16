@@ -202,9 +202,11 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        var responseDictionary = WebClient.GetValueMap(OAUTH_REQUEST_TOKEN_URL, this, HTTPRequestMethod.POST,
-          headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
-        );
+        var responseDictionary = WebClient.GetValueMap(OAUTH_REQUEST_TOKEN_URL, new WebClient.RequestParams(this)
+        {
+          Method = HTTPRequestMethod.POST,
+          Headers = new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr } }
+        });
 
         twUserInfo.OAuthRequestToken = responseDictionary[OAUTH_TOKEN_PARAMNAME].AsString();
         twUserInfo.OAuthRequestTokenSecret = responseDictionary[OAUTH_TOKENSECRET_PARAMNAME].AsString();
@@ -232,10 +234,12 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        var responseDictionary = WebClient.GetValueMap(OAUTH_ACCESS_TOKEN_URL, this, HTTPRequestMethod.POST,
-          bodyParameters: new Dictionary<string, string>() { { OAUTH_VERIFIER_PARAMNAME, twUserInfo.OAuthVerifier} },
-          headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
-        );
+        var responseDictionary = WebClient.GetValueMap(OAUTH_ACCESS_TOKEN_URL, new WebClient.RequestParams(this)
+        {
+          Method = HTTPRequestMethod.POST,
+          BodyParameters = new Dictionary<string, string>() { { OAUTH_VERIFIER_PARAMNAME, twUserInfo.OAuthVerifier } },
+          Headers = new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr } }
+        });
 
         twUserInfo.OAuthAccessToken = responseDictionary[OAUTH_TOKEN_PARAMNAME].AsString();
         twUserInfo.OAuthAccessTokenSecret = responseDictionary[OAUTH_TOKENSECRET_PARAMNAME].AsString();
@@ -279,10 +283,12 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        dynamic response = WebClient.GetJsonAsDynamic(USER_SHOW_URL, this, HTTPRequestMethod.GET,
-          queryParameters: new Dictionary<string, string>() { { USER_ID_PARAMNAME, twUserInfo.ID } },
-          headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr } }
-        );
+        dynamic response = WebClient.GetJsonAsDynamic(USER_SHOW_URL, new WebClient.RequestParams(this)
+        {
+          Method = HTTPRequestMethod.GET,
+          QueryParameters = new Dictionary<string, string>() { { USER_ID_PARAMNAME, twUserInfo.ID } },
+          Headers = new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr } }
+        });
 
         try
         {
@@ -323,10 +329,12 @@ namespace NFX.Web.Social
 
         string oauthHeaderStr = "{0} {1}".Args(OAUTH_HEADER_NAME, GetOAuthHeaderString(oauthHeaderDictionary));
 
-        dynamic response = WebClient.GetJsonAsDynamic(UPDATE_STATUS_INFO_URL, this, HTTPRequestMethod.POST,
-          bodyParameters: new Dictionary<string, string>() { { STATUS_PARAMNAME, RFC3986.Encode( text)}},
-          headers: new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr} }
-        );
+        dynamic response = WebClient.GetJsonAsDynamic(UPDATE_STATUS_INFO_URL, new WebClient.RequestParams(this)
+        {
+          Method = HTTPRequestMethod.POST,
+          BodyParameters = new Dictionary<string, string>() { { STATUS_PARAMNAME, RFC3986.Encode(text) } },
+          Headers = new Dictionary<string, string>() { { HttpRequestHeader.Authorization.ToString(), oauthHeaderStr } }
+        });
 
         try
         {

@@ -17,13 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using NFX;
-using NFX.Environment;
 using NFX.Financial;
-using NFX.ServiceModel;
-using NFX.Log;
 
 namespace NFX.Web.Pay
 {
@@ -39,34 +35,47 @@ namespace NFX.Web.Pay
     Charge,
 
     /// <summary>
-    /// The portion or the whole amount of the original charge has been refunded from system account
-    /// into customer account (i.e. credit card).
-    /// RelatedTransactionID points to the original charge transaction
-    /// </summary>
-    Refund,
-
-    /// <summary>
     /// Funds were transfered between accounts.
     /// This mode is usually used to transfer funds between system-internal accounts (i.e. from sales GL account to bank account)
     /// </summary>
     Transfer
-  };
+  }
+
+  /// <summary>
+  /// Denotes transaction status
+  /// </summary>
+  public enum TransactionStatus
+  {
+    Undefined = 0,
+    /// <summary>
+    /// The transaction was queued for async execution in future. Actual pay system implementation determines whether this status is supported.
+    /// For example this is used for paypal payout where transaction is created instantly in the "promised" status and executed later by a call to Refresh()
+    /// </summary>
+    Promised,
+    Pending,
+    Success,
+    Denied,
+    Failed,
+    Unclaimed,
+    Refunded,
+    Other
+  }
 
   /// <summary>
   /// Denotes processing fee types, such as: included in amount and surcharged.
   /// </summary>
   public enum ProcessingFeeKind
   {
-      /// <summary>
-      /// Fees are included in amount charged from customers.
-      /// Net amount = amount charged - fees.
-      /// </summary>
-      IncludedInAmount,
+    /// <summary>
+    /// Fees are included in amount charged from customers.
+    /// Net amount = amount charged - fees.
+    /// </summary>
+    IncludedInAmount,
 
-      /// <summary>
-      /// Fees are added to amount charged from customers.
-      /// </summary>
-      Surcharged
+    /// <summary>
+    /// Fees are added to amount charged from customers.
+    /// </summary>
+    Surcharged
   }
 
   /// <summary>
@@ -75,380 +84,324 @@ namespace NFX.Web.Pay
   [Serializable]
   public sealed class Transaction
   {
+    #region Inner
+    public enum OperationType
+    {
+      Refresh,
+      Void,
+      Capture,
+      Refund
+    }
 
-    #region static
+    public class Operation
+    {
+      public static Operation Refresh(TransactionStatus status, DateTime? date = null, object token = null, decimal? amount = null, decimal? fee = null, object extraData = null)
+      { return new Operation(OperationType.Refresh, status, date, token: token, amount: amount, fee: fee, extraData: extraData); }
+      public static Operation Void(TransactionStatus status, DateTime date, object token = null, string description = null, decimal? fee = null, object extraData = null)
+      { return new Operation(OperationType.Void, status, date, token: token, description: description, amount: null, fee: fee, extraData: extraData); }
+      public static Operation Capture(TransactionStatus status, DateTime date, object token = null, string description = null, decimal? amount = null, decimal? fee = null, object extraData = null)
+      { return new Operation(OperationType.Capture, status, date, token: token, description: description, amount: amount, fee: fee, extraData: extraData); }
+      public static Operation Refund(TransactionStatus status, DateTime date, object token = null, string description = null, decimal? amount = null, decimal? fee = null, object extraData = null)
+      { return new Operation(OperationType.Refund, status, date, token: token, description: description, amount: amount, fee: fee, extraData: extraData); }
 
-      /// <summary>
-      /// Creates charge transaction
-      /// </summary>
-      /// <param name="id">Trasaction ID</param>
-      /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
-      /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
-      /// <param name="from">Source account</param>
-      /// <param name="to">Destination account</param>
-      /// <param name="amount">Amount of this transaction</param>
-      /// <param name="createDateUTC">Creation date of this trasaction</param>
-      /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
-      /// <param name="amountCaptured">Captured amount (can be less or equals to amount)</param>
-      /// <param name="canCapture">Can be this trasaction be captured at all</param>
-      /// <param name="canRefund">Can be this trasaction be refunded at all</param>
-      /// <param name="extraData">Some extra data if needed</param>
-      public static Transaction Charge(object id,
-                                       string processorName, object processorToken,
-                                       Account from, Account to,
-                                       Amount amount, DateTime createDateUTC, string description,
-                                       Amount? amountCaptured = null, bool canCapture = true,
-                                       bool canRefund = true,
-                                       object extraData = null)
+      public Operation(OperationType type, TransactionStatus status, DateTime? date = null, object token = null, string description = null, decimal? amount = null, decimal? fee = null, object extraData = null)
       {
-        var ta = new Transaction(id, TransactionType.Charge,
-                                 processorName, processorToken, from, to,
-                                 amount, createDateUTC, description, amountCaptured, canCapture, canRefund: canRefund, extraData: extraData);
-        return ta;
+        m_Type = type;
+        m_Status = status;
+        m_Date = date;
+        m_Token = token;
+        m_Description = description;
+        m_Amount = amount;
+        m_Fee = fee;
+        m_ExtraData = extraData;
       }
 
-      /// <summary>
-      /// Creates transfer transaction
-      /// </summary>
-      /// <param name="id">Trasaction ID</param>
-      /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
-      /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
-      /// <param name="from">Source account</param>
-      /// <param name="to">Destination account</param>
-      /// <param name="amount">Amount of this transaction</param>
-      /// <param name="createDateUTC">Creation date of this trasaction</param>
-      /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
-      /// <param name="extraData">Some extra data if needed</param>
-      public static Transaction Transfer(object id,
-                                        string processorName, object processorToken,
-                                        Account from, Account to,
-                                        Amount amount, DateTime createDateUTC, string description,
-                                        object extraData = null)
-      {
-        var ta = new Transaction(id, TransactionType.Transfer,
-                                 processorName, processorToken, from, to,
-                                 amount, createDateUTC, description, extraData: extraData);
-        return ta;
-      }
+      private OperationType m_Type;
+      private TransactionStatus m_Status;
+      private DateTime? m_Date;
+      private object m_Token;
+      private string m_Description;
+      private decimal? m_Amount;
+      private decimal? m_Fee;
+      private object m_ExtraData;
 
-      /// <summary>
-      /// Creates refund transaction
-      /// </summary>
-      /// <param name="id">Trasaction ID</param>
-      /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
-      /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
-      /// <param name="from">Source account</param>
-      /// <param name="to">Destination account</param>
-      /// <param name="amount">Amount of this transaction</param>
-      /// <param name="createDateUTC">Creation date of this trasaction</param>
-      /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
-      /// <param name="relatedTransactionID">ID of trasaction which this transaction belongs to (e.g. refund transaction refers to its charge trasaction)</param>
-      /// <param name="extraData">Some extra data if needed</param>
-      public static Transaction Refund(object id,
-                                       string processorName, object processorToken,
-                                       Account from, Account to,
-                                       Amount amount, DateTime createDateUTC, string description,
-                                       object relatedTransactionID = null, object extraData = null)
-      {
-        var ta = new Transaction(id, TransactionType.Refund,
-                                 processorName, processorToken, from, to,
-                                 amount, createDateUTC, description, canRefund: false,
-                                 relatedTransactionID: relatedTransactionID, extraData: extraData);
-        return ta;
-      }
-
+      public OperationType Type { get { return m_Type; } }
+      public TransactionStatus Status { get { return m_Status; } }
+      public DateTime? Date { get { return m_Date; } }
+      public object Token { get { return m_Token; } }
+      public string Description { get { return m_Description; } }
+      public decimal? Amount { get { return m_Amount; } }
+      public decimal? Fee { get { return m_Fee; } }
+      public object ExtraData { get { return m_ExtraData; } }
+    }
     #endregion
 
-    #region ctor
-
-
+    #region .ctor
     /// <summary>
     /// Framework-only method. Developer shouldn't call it.
     /// </summary>
     /// <param name="id">Trasaction ID</param>
     /// <param name="type">Trasaction type</param>
+    /// <param name="status">Transaction Status</param>
     /// <param name="from">Source account</param>
     /// <param name="to">Destination account</param>
     /// <param name="processorName">Payment processor name which this trasaction belongs to</param>
-    /// <param name="processorToken">Payment processor trasaction of this trasaction</param>
-    /// <param name="amount">Amount of this transaction</param>
+    /// <param name="token">Payment processor trasaction of this trasaction</param>
     /// <param name="createDateUTC">Creation date of this trasaction</param>
+    /// <param name="amount">Amount of this transaction</param>
     /// <param name="description">Description of this transaction (e.g. "Payment for CPU Intel i7 4470 SandyBridge")</param>
-    /// <param name="amountCaptured">Captured amount (can be less or equals to amount)</param>
-    /// <param name="canCapture">Can be this trasaction be captured at all</param>
-    /// <param name="amountRefunded">Refunded amount (can be less or equals to amount)</param>
-    /// <param name="canRefund">Can be this trasaction be refunded at all</param>
-    /// <param name="relatedTransactionID">ID of trasaction which this transaction belongs to (e.g. refund transaction refers to its charge trasaction)</param>
+    /// <param name="fee">Service fee</param>
     /// <param name="extraData">Some extra data if needed</param>
-    internal Transaction(object id, TransactionType type,
-                         string processorName, object processorToken,
-                         Account from, Account to, Amount amount,
-                         DateTime createDateUTC, string description = null,
-                         Amount? amountCaptured = null, bool canCapture = true,
-                         Amount? amountRefunded = null, bool canRefund = true,
-                         object relatedTransactionID = null, object extraData = null)
-                         : this(id, type, processorName, processorToken)
-      {
-        m_From = from;
-        m_To = to;
+    public Transaction(object id, TransactionType type, TransactionStatus status,
+                       Account from, Account to,
+                       string processorName, object token,
+                       DateTime createDateUTC,
+                       Amount amount,
+                       decimal? fee = null,
+                       string description = null,
+                       object extraData = null)
+      : this(id, type, processorName, token)
+    {
+      m_TransactionStatus = status;
 
-        m_Amount = amount;
-        m_CreateDateUTC = createDateUTC;
+      m_From = from;
+      m_To = to;
 
-        m_Description = description;
+      m_Date = createDateUTC;
 
-        m_AmountCaptured = amountCaptured ?? new Amount(amount.CurrencyISO, 0);
-        m_CanCapture = canCapture;
+      m_CurrencyISO = amount.CurrencyISO;
+      m_Amount = amount.Value;
 
-        m_AmountRefunded = amountRefunded ?? new Amount(amount.CurrencyISO, 0);
-        m_CanRefund = canRefund;
+      m_Description = description;
 
-        m_RelatedTransactionID = relatedTransactionID;
+      m_Fee = fee ?? 0.0M;
+      m_ExtraData = extraData;
+    }
 
-        m_ExtraData = extraData;
-      }
+    private Transaction(object id, TransactionType type, string processorName, object processorToken)
+    {
+      if (id == null) throw new PaymentException(StringConsts.ARGUMENT_ERROR + "TX.ctor(id == null)");
+      if (processorName.IsNullOrWhiteSpace()) throw new PaymentException(StringConsts.ARGUMENT_ERROR + "TX.ctor(processorName == null)");
+      if (processorName.IsNullOrWhiteSpace()) throw new PaymentException(StringConsts.ARGUMENT_ERROR + "TX.ctor(processorToken == null)");
 
-      private Transaction(object id, TransactionType type, string processorName, object processorToken)
-      {
-        m_ID = id;
-        m_TransactionType = type;
+      m_ID = id;
+      m_TransactionType = type;
 
-        m_ProcessorName = processorName;
-        m_ProcessorToken = processorToken;
-      }
-
+      m_Processor = processorName;
+      m_Token = processorToken;
+    }
     #endregion
 
     #region Fields
+    private object m_ID;
+    private TransactionType m_TransactionType;
+    private TransactionStatus m_TransactionStatus;
 
-      private object m_ID;
-      private TransactionType m_TransactionType;
+    private Account m_From;
+    private Account m_To;
 
-      private Account m_From;
-      private Account m_To;
+    private string m_Processor;
+    private object m_Token;
+    private DateTime m_Date;
 
-      private string m_ProcessorName;
-      private object m_ProcessorToken;
-      private DateTime m_CreateDateUTC;
-      private string m_Description;
+    private string m_Description;
 
-      private Amount m_Amount;
-      private Amount m_AmountCaptured;
-      private Amount m_AmountRefunded;
+    private string m_CurrencyISO;
+    private decimal m_Amount;
+    private decimal m_Fee;
 
-      private object m_RelatedTransactionID;
+    private object m_ExtraData;
 
-      private object m_ExtraData;
-
-      private bool m_CanCapture; // Can be this trasaction be captured at all
-      private bool m_CanRefund; // Can be this trasaction be refunded at all
-
+    private List<Operation> m_Log;
     #endregion
 
     #region Properties
+    /// <summary>
+    /// Unique ID for this transaction instance
+    /// </summary>
+    public object ID { get { return m_ID; } }
 
-      /// <summary>
-      /// Unique ID for this transaction instance
-      /// </summary>
-      public object ID { get { return m_ID; } }
+    public TransactionType Type { get { return m_TransactionType; } }
+    public TransactionStatus Status
+    {
+      get
+      {
+        if (!Log.Any()) return m_TransactionStatus;
+        return Log.Last().Status;
+      }
+    }
 
-      public TransactionType Type { get { return m_TransactionType; } }
+    public Account From { get { return m_From; } }
+    public Account To { get { return m_To; } }
 
-      public Account From { get { return m_From; } }
-      public Account To { get { return m_To; } }
+    /// <summary>
+    /// The name of pay system implementation system that processes this transaction
+    /// </summary>
+    public string Processor { get { return m_Processor; } }
 
-      /// <summary>
-      /// The name of pay system implementation system that processes this transaction
-      /// </summary>
-      public string ProcessorName { get { return m_ProcessorName ?? string.Empty; } }
+    public IPaySystem PaySystem { get { return Pay.PaySystem.Instances[m_Processor]; } }
 
-      private IPaySystem PaySystem { get { return NFX.Web.Pay.PaySystem.Instances[ProcessorName]; } }
+    /// <summary>
+    /// A value assigned by a particular pay system implementation.
+    /// This value is parsed and understood by issuing system
+    /// </summary>
+    public object Token
+    {
+      get
+      {
+        if (!Log.Any(l => l.Type == OperationType.Refresh)) return m_Token;
+        return Log.Last(l => l.Type == OperationType.Refresh).Token ?? m_Token;
+      }
+    }
 
-      /// <summary>
-      /// A value assigned by a particular pay system implementation.
-      /// This value is parsed and understood by issuing system
-      /// </summary>
-      public object ProcessorToken { get { return m_ProcessorToken; } }
+    /// <summary>
+    /// UTC timestamp of this transaction creation
+    /// </summary>
+    public DateTime Date
+    {
+      get
+      {
+        if (!Log.Any(l => l.Type == OperationType.Refresh)) return m_Date;
+        return Log.Last(l => l.Type == OperationType.Refresh).Date ?? m_Date;
+      }
+    }
 
-      /// <summary>
-      /// UTC timestamp of this transaction creation
-      /// </summary>
-      public DateTime CreateDateUTC { get { return m_CreateDateUTC; } }
+    /// <summary>
+    /// Textual transaction description
+    /// </summary>
+    public string Description { get { return m_Description ?? string.Empty; } }
 
-      /// <summary>
-      /// Textual transaction description
-      /// </summary>
-      public string Description { get { return m_Description ?? string.Empty; } }
+    /// <summary>
+    /// Transaction amount - monetary value and currency code.
+    /// Depending on the transaction type can indicate charged amount, refunded amount, transfer amount
+    /// </summary>
+    public Amount Amount
+    {
+      get
+      {
+        var amount = m_Amount;
+        if (Log.Any(l => l.Type == OperationType.Refresh))
+          amount = Log.Last(l => l.Type == OperationType.Refresh).Amount ?? m_Amount;
+        return new Amount(m_CurrencyISO, amount);
+      }
+    }
 
-      /// <summary>
-      /// Transaction amount - monetary value and currency code.
-      /// Depending on the transaction type can indicate charged amount, refunded amount, transfer amount
-      /// </summary>
-      public Amount Amount { get { return m_Amount; } }
+    public Amount Fee
+    {
+      get
+      {
+        var fee = m_Fee;
+        if (Log.Any(l => l.Type == OperationType.Refresh))
+          fee = Log.Last(l => l.Type == OperationType.Refresh).Fee ?? m_Fee;
+        return new Amount(m_CurrencyISO, fee);
+      }
+    }
 
-      /// <summary>
-      /// Charged amount - monetary value and currency code.
-      /// For charge indicates captured amount in two-step charge scenario.
-      /// Returns zero for uncaptured charges (created with captured flag set to false).
-      /// Returns non-zero amount (typically is equal to original charge amount) for captured amount.
-      /// Returns zero for all other transaction types
-      /// </summary>
-      public Amount AmountCaptured { get { return m_AmountCaptured; } }
+    /// <summary>
+    /// Contains additional data
+    /// </summary>
+    public object ExtraData { get { return m_ExtraData; } }
 
-      /// <summary>
-      /// If this transaction can be captured by value less or equal to its initial amount
-      /// </summary>
-      public bool CanCapture { get { return m_CanCapture && m_TransactionType == TransactionType.Charge && (m_Amount.Value - m_AmountCaptured.Value > 0M); } }
+    /// <summary>
+    /// Contains log of operations performed on this transaction
+    /// </summary>
+    public IEnumerable<Operation> Log { get { return m_Log ?? Enumerable.Empty<Operation>(); } }
 
-      /// <summary>
-      /// Transaction amount - monetary value and currency code.
-      /// Indicates refunded amount for charge transaction.
-      /// Can be reflected in child refund transactions when explicit refund performed
-      /// or can be just reminder of partial capture.
-      /// For transactions types other than charge returns zero
-      /// </summary>
-      public Amount AmountRefunded { get { return m_AmountRefunded; } }
+    /// <summary>
+    /// True if transaction was ever voided
+    /// </summary>
+    public bool IsVoided { get { return m_Log != null && m_Log.Any(l => l.Type == OperationType.Void); } }
 
-      /// <summary>
-      /// If this transaction can be refunded by value less or equal to its initial amount
-      /// </summary>
-      public bool CanRefund { get { return m_CanRefund && m_TransactionType == TransactionType.Charge && (m_Amount.Value - m_AmountRefunded.Value > 0M); } }
+    public bool CanVoid { get { return m_Log == null || (!IsVoided && !m_Log.Any(l => l.Type == OperationType.Capture)); } }
 
-      /// <summary>
-      /// ID of transaction that this trasaction relates/belongs to
-      /// e.g. charge transaction ID for this refund transaction
-      /// </summary>
-      public object ParentTransactionID { get { return m_RelatedTransactionID; } }
+    /// <summary>
+    /// Charged amount - monetary value and currency code.
+    /// For charge indicates captured amount in two-step charge scenario.
+    /// Returns zero for uncaptured charges (created with captured flag set to false).
+    /// Returns non-zero amount (typically is equal to original charge amount) for captured amount.
+    /// Returns zero for all other transaction types
+    /// </summary>
+    public Amount AmountCaptured
+    {
+      get
+      {
+        if (m_Log == null || IsVoided) return new Amount(m_CurrencyISO, 0.0M);
+        return new Amount(m_CurrencyISO, m_Log.Where(l => l.Type == OperationType.Capture).Sum(l => l.Amount ?? 0.0M));
+      }
+    }
 
-      /// <summary>
-      /// Contains additional data
-      /// </summary>
-      public object ExtraData { get { return m_ExtraData; } }
+    /// <summary>
+    /// If this transaction can be captured by value less or equal to its initial amount
+    /// </summary>
+    public bool CanCapture { get { return m_TransactionType == TransactionType.Charge && !IsVoided && (m_Amount - AmountCaptured.Value > 0.0M); } }
 
+    public Amount LeftToCapture { get { return CanCapture ? Amount - AmountCaptured : new Amount(m_CurrencyISO, 0.0M); } }
 
-      /// <summary>
-      /// Returns amount that can be refunded.
-      /// It is calculated as 'this transaction amount' - 'summary amount of all child refund transactions (if present)'
-      /// </summary>
-      public Amount LeftToRefund { get { return m_Amount - m_AmountRefunded; } }
+    /// <summary>
+    /// Transaction amount - monetary value and currency code.
+    /// Indicates refunded amount for charge transaction.
+    /// Can be reflected in child refund transactions when explicit refund performed
+    /// or can be just reminder of partial capture.
+    /// For transactions types other than charge returns zero
+    /// </summary>
+    public Amount AmountRefunded
+    {
+      get
+      {
+        if (m_Log == null || IsVoided) return new Amount(m_CurrencyISO, 0.0M);
+        return new Amount(m_CurrencyISO, m_Log.Where(l => l.Type == OperationType.Refund).Sum(l => l.Amount ?? 0.0M));
+      }
+    }
 
+    /// <summary>
+    /// If this transaction can be refunded by value less or equal to its initial amount
+    /// </summary>
+    public bool CanRefund { get { return m_TransactionType == TransactionType.Charge && !IsVoided && (AmountCaptured.Value - AmountRefunded.Value > 0.0M); } }
+
+    public Amount LeftToRefund { get { return CanCapture ? AmountCaptured - AmountRefunded : new Amount(m_CurrencyISO, 0.0M); } }
     #endregion
 
-    #region Public methods
+    #region Public
+    public bool Refresh(ConnectionParameters cParams = null, IPaySessionContext context = null)
+    {
+      using (var session = PaySystem.StartSession(cParams, context))
+        return session.Refresh(this);
+    }
 
-      /// <summary>
-      /// Performs Capture operation on this transaction if possible.
-      /// If an error occured PaymentException (or inherited) is thrown.
-      /// Developers! Don't call PaySystem.Capture directly - always use this method instead
-      /// </summary>
-      public Transaction Capture(ITransactionContext context, Amount? amount = null, string description = null, object extraData = null)
-      {
-        if (!CanCapture)
-          throw new PaymentException(StringConsts.PAYMENT_CANNOT_CAPTURE_CAPTURED_PAYMENT_ERROR + this.GetType() +
-            ".Capture(transaction='{0}')".Args(this));
+    public bool Void(string description = null, object extraData = null, ConnectionParameters cParams = null, IPaySessionContext context = null)
+    {
+      using (var session = PaySystem.StartSession(cParams, context))
+        return session.Void(this, description, extraData);
+    }
 
-        var self = this;
+    public bool Capture(decimal? amount = null, string description = null, object extraData = null, ConnectionParameters cParams = null, IPaySessionContext context = null)
+    {
+      using (var session = PaySystem.StartSession(cParams, context))
+        return session.Capture(this, amount, description, extraData);
+    }
 
-        using(var pss = this.PaySystem.StartSession())
-          pss.Capture(context, ref self, amount, description, extraData);
+    public bool Refund(decimal? amount = null, string description = null, object extraData = null, ConnectionParameters cParams = null, IPaySessionContext context = null)
+    {
+      using (var session = PaySystem.StartSession(cParams, context))
+        return session.Refund(this, amount, description, extraData);
+    }
 
-        this.m_AmountCaptured += amount ?? (m_Amount - m_AmountCaptured);
-
-        return self;
-      }
-
-      /// <summary>
-      /// Performs Refund operation on this transaction if possible.
-      /// If an error occured PaymentException (or inherited) is thrown.
-      /// Developers! Don't call PaySystem.Refund directly - always use this method instead
-      /// </summary>
-      public Transaction Refund(ITransactionContext context, Amount? amount = null, string description = null, object extraData = null)
-      {
-        if (m_TransactionType != TransactionType.Charge)
-          throw new PaymentException(StringConsts.PAYMENT_REFUND_CANNOT_BE_REFUNDED_ERROR.Args(this) + this.GetType().Name + ".Refund");
-
-        if (m_AmountRefunded.Value >= m_Amount.Value)
-          throw new PaymentException(StringConsts.PAYMENT_REFUND_CANNOT_BE_REFUNDED_ERROR.Args(this) + this.GetType().Name + ".Refund");
-
-        if (amount.HasValue)
-        {
-          var amountToRefund = amount.Value;
-          if (!m_Amount.IsSameCurrencyAs(amountToRefund))
-            throw new PaymentException(StringConsts.PAYMENT_REFUND_CURRENCY_MUST_MATCH_CHARGE_ERROR + this.GetType().Name
-              + ".Refund: charge.Currency='{0}', refund.Currency='{1}'".Args(m_Amount.CurrencyISO, amountToRefund.CurrencyISO));
-
-          if (amountToRefund.Value + m_AmountRefunded.Value > m_Amount.Value)
-            throw new PaymentException(StringConsts.PAYMENT_REFUND_EXCEEDS_CHARGE_ERROR.Args(amountToRefund.Value, m_AmountRefunded.Value, m_Amount.Value) + this.GetType().Name + ".Refund");
-        }
-        else
-        {
-          amount = m_Amount - m_AmountRefunded;
-        }
-
-        var self = this;
-
-        Transaction refundTA = null;
-        using(var pss = this.PaySystem.StartSession())
-          refundTA = pss.Refund(context, ref self, amount, description, extraData);
-
-        refundTA.m_RelatedTransactionID = this.ID;
-
-        m_AmountRefunded += amount.Value;
-
-        return refundTA;
-      }
-
-    #endregion
+    /// <summary>
+    /// Must be call by PaySystem. Developers do not call internal method
+    /// </summary>
+    public void __Apply(Operation operation)
+    {
+      if (m_Log == null) m_Log = new List<Operation>();
+      m_Log.Add(operation);
+    }
 
     #region Object overrides
+    public override string ToString()
+    { return "TX[{0} {1} {2}]({3}, {4}) of {5} '{6}' -> '{7}'".Args(m_Processor, m_TransactionType, m_TransactionStatus, m_ID, Amount, Log.Count(), m_From, m_To); }
 
-      public override string ToString()
-      {
-        return "{0} {1} {2}, {3}, {4} -> {5}".Args(m_ProcessorName, m_TransactionType, m_ID, m_Amount, m_From, m_To);
-      }
-
-      public override int GetHashCode()
-      {
-        return m_ProcessorName.GetHashCode() ^ m_TransactionType.GetHashCode() ^ m_From.GetHashCode() ^ m_To.GetHashCode();
-      }
-
-      public override bool Equals(object obj)
-      {
-        return Equals(obj as Transaction);
-      }
-
-      public bool Equals(Transaction other)
-      {
-        if (other == null) return false;
-        if (object.ReferenceEquals(this, other)) return true;
-
-        return m_ID == other.m_ID && m_TransactionType == other.m_TransactionType
-          && m_From == other.m_From && m_To == other.m_To
-          && m_ProcessorName == other.ProcessorName && m_ProcessorToken == other.ProcessorToken && m_CreateDateUTC == other.m_CreateDateUTC
-          && m_Description == other.m_Description && m_Amount == other.m_Amount
-          && m_RelatedTransactionID == other.m_RelatedTransactionID
-          && m_ExtraData == other.m_ExtraData && m_CanRefund == other.m_CanRefund
-          && m_CanCapture == other.m_CanCapture;
-      }
-
-      public static bool operator==(Transaction tran0, Transaction tran1)
-      {
-        if ((object)tran0 == null)
-        {
-          if ((object)tran1 == null)
-            return true; // null == null
-          else
-            return false; // only left side == null
-        }
-
-        return tran0.Equals(tran1);
-      }
-
-      public static bool operator!=(Transaction tran0, Transaction tran1)
-      {
-        return !(tran0 == tran1);
-      }
-
+    public override int GetHashCode()
+    { return m_ID.GetHashCode(); }
+    #endregion
     #endregion
   }
 }

@@ -78,7 +78,7 @@ namespace NFX.NUnit.Web.Shipping
 
       var result = new Address
       {
-        Name = "Stan Ulam",
+        PersonName = "Stan Ulam",
         Country = country,
         Region = "NM",
         City = "Los Alamos",

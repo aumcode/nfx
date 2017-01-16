@@ -42,7 +42,7 @@ namespace NFX.NUnit.Glue
         public static void TestContractA_TwoWayCall(string CONF_SRC)
         {
             TestServerA.s_Accumulator = 0;
-            
+
             var conf = LaconicConfiguration.CreateFromString(CONF_SRC);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
@@ -57,7 +57,7 @@ namespace NFX.NUnit.Glue
         public static void TASK_TestContractA_TwoWayCall(string CONF_SRC)
         {
             TestServerA.s_Accumulator = 0;
-            
+
             var conf = LaconicConfiguration.CreateFromString(CONF_SRC);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
@@ -65,7 +65,7 @@ namespace NFX.NUnit.Glue
 
                 var call = cl.Async_Method1(12);
                 var task = call.AsTask;
-                                         
+
                 var result = task.Result.GetValue<string>();
 
                 Assert.AreEqual( "12", result);
@@ -76,7 +76,7 @@ namespace NFX.NUnit.Glue
         public static void TASKReturning_TestContractA_TwoWayCall(string CONF_SRC)
         {
             TestServerA.s_Accumulator = 0;
-            
+
             var conf = LaconicConfiguration.CreateFromString(CONF_SRC);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
@@ -84,7 +84,7 @@ namespace NFX.NUnit.Glue
 
                 var call = cl.Async_Method1(12);
                 var task = call.AsTaskReturning<string>();
-                                         
+
                 var result = task.Result;
 
                 Assert.AreEqual( "12", result);
@@ -96,13 +96,13 @@ namespace NFX.NUnit.Glue
         public static void TestContractA_TwoWayCall_Timeout(string CONF_SRC)
         {
             TestServerA.s_Accumulator = 0;
-            
+
             var conf = LaconicConfiguration.CreateFromString(CONF_SRC);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractAClient(App.ConfigRoot.AttrByName("cs").Value);
                 cl.TimeoutMs = 2000;
-                
+
                 try
                 {
                   cl.Sleeper(5000);
@@ -126,13 +126,13 @@ namespace NFX.NUnit.Glue
         public static void TASK_TestContractA_TwoWayCall_Timeout(string CONF_SRC)
         {
             TestServerA.s_Accumulator = 0;
-            
+
             var conf = LaconicConfiguration.CreateFromString(CONF_SRC);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractAClient(App.ConfigRoot.AttrByName("cs").Value);
                 cl.TimeoutMs = 2000;
-                
+
                 System.Threading.Tasks.Task<CallSlot> task = null;
                 try
                 {
@@ -159,18 +159,18 @@ namespace NFX.NUnit.Glue
         public static void TestContractA_OneWayCall(string CONF_SRC)
         {
             TestServerA.s_Accumulator = 0;
-            
+
             var conf = LaconicConfiguration.CreateFromString(CONF_SRC);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractAClient(App.ConfigRoot.AttrByName("cs").Value);
 
                 cl.Method2(93);
-                
+
                 for(var cnt=0; cnt<10 && TestServerA.s_Accumulator!=93 ; cnt++)
                     System.Threading.Thread.Sleep(1000);
 
-                Assert.AreEqual(93,TestServerA.s_Accumulator); 
+                Assert.AreEqual(93,TestServerA.s_Accumulator);
             }
         }
 
@@ -183,11 +183,11 @@ namespace NFX.NUnit.Glue
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
 
                 var person = new PersonData{ID = 10, FirstName="Joe", LastName="Tester" };
-                
+
                 cl.SetPersonOfTheDay( person );
-                
+
                 var ret = cl.GetPersonOfTheDay();
-                                                                 
+
                 Assert.AreEqual( 10, ret.ID);
                 Assert.AreEqual( "Joe", ret.FirstName);
                 Assert.AreEqual( "Tester", ret.LastName);
@@ -206,15 +206,15 @@ namespace NFX.NUnit.Glue
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
 
                 var person = new PersonData{ID = 10, FirstName="Joe", LastName="Tester" };
-                
+
                 var slot = cl.Async_SetPersonOfTheDay( person );
-                
+
                 slot.CheckVoidValue();
 
                 slot = cl.Async_GetPersonOfTheDay();
-                    
-                var ret = slot.GetValue<PersonData>();    
-                                                                 
+
+                var ret = slot.GetValue<PersonData>();
+
                 Assert.AreEqual( 10, ret.ID);
                 Assert.AreEqual( "Joe", ret.FirstName);
                 Assert.AreEqual( "Tester", ret.LastName);
@@ -235,11 +235,11 @@ namespace NFX.NUnit.Glue
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
 
                 var person = new PersonData{ID = 10, FirstName="Joe", LastName="Tester" };
-                
+
                 cl.SetPersonOfTheDay( person );
-                
+
                 var ret = cl.GetPersonOfTheDay();
-                                                                 
+
                 Assert.AreEqual( 10, ret.ID);
                 Assert.AreEqual( "Joe", ret.FirstName);
                 Assert.AreEqual( "Tester", ret.LastName);
@@ -251,7 +251,7 @@ namespace NFX.NUnit.Glue
                 cl.ForgetRemoteInstance();
 
                 Assert.AreEqual("Felix", cl.GetName()); //this will allocate the new isntance
-               
+
                 sum = cl.SummarizeAndFinish(); // this will kill the instance again
                 Assert.AreEqual("That is all! but no person of the day was set", sum);
 
@@ -266,7 +266,7 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                                                                 
+
                 Assert.AreEqual( "Felix", cl.GetName());
 
                 dumpBindingTransports( cl.Binding );
@@ -280,8 +280,8 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                 
-                //Testing overloaded calls                                                 
+
+                //Testing overloaded calls
                 Assert.AreEqual( "Felix", cl.GetName());
                 Assert.AreEqual( "Felix23", cl.GetName(23));
                 Assert.AreEqual( "Felix42", cl.GetName(42));
@@ -298,15 +298,15 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                
+
                 Assert.AreEqual( "Felix", cl.GetName());//alloc first
-                 
-                //Testing overloaded calls via CallSlot                                                
+
+                //Testing overloaded calls via CallSlot
                 Assert.AreEqual( "Felix",   cl.Async_GetName()  .GetValue<string>());
                 Assert.AreEqual( "Felix23", cl.Async_GetName(23).GetValue<string>());
                 Assert.AreEqual( "Felix42", cl.Async_GetName(42).GetValue<string>());
                 Assert.AreEqual( "Felix",   cl.Async_GetName()  .GetValue<string>());
-                
+
                 dumpBindingTransports( cl.Binding );
             }
 
@@ -318,15 +318,15 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                 
+
                 var reactor = new CallReactor(
                                 new Call( cl.Async_GetName(),   (r,c)=> Assert.AreEqual( "Felix", c.CallSlot.GetValue<string>()   ) ),
                                 new Call( cl.Async_GetName(23), (r,c)=> Assert.AreEqual( "Felix23", c.CallSlot.GetValue<string>() ) ),
                                 new Call( cl.Async_GetName(42), (r,c)=> Assert.AreEqual( "Felix42", c.CallSlot.GetValue<string>() ) ),
                                 new Call( cl.Async_GetName(2, DateTime.Now), (r,c)=> Assert.IsTrue( c.CallSlot.GetValue<string>().StartsWith("Felix2") ) )
                               );
-                              
-                reactor.Wait();      
+
+                reactor.Wait();
 
                 dumpBindingTransports( cl.Binding );
                 Assert.IsTrue(reactor.Finished);
@@ -345,23 +345,23 @@ namespace NFX.NUnit.Glue
             {
                 //Use the same client.....
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName(threadSafe?"cs":"cs2").Value);
-                
+
                 Assert.AreEqual( "Felix1223", cl.GetName(1223));//alloc server
 
                 var set = new HashSet<int>();
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                 
+
                 //.....for making many parallel calls
                 System.Threading.Tasks.Parallel.For(0, CNT,
                                               (i, loop)=>
-                                              {       
+                                              {
                                                 var id = System.Threading.Thread.CurrentThread.ManagedThreadId;
 
                                                 lock(set)
                                                  set.Add( id );
-                                                
-                                                //Testing overloaded calls 
-                                                var result = cl.GetName(i);                                                
+
+                                                //Testing overloaded calls
+                                                var result = cl.GetName(i);
                                                 Assert.AreEqual( "Felix{0}".Args(i), result);
                                               });
                 var elps = watch.ElapsedMilliseconds;
@@ -390,23 +390,23 @@ namespace NFX.NUnit.Glue
             {
                 //Use the same client.....
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName(threadSafe?"cs":"cs2").Value);
-                
+
                 Assert.AreEqual( "Felix1223", cl.GetNameMar(1223));//alloc server
 
                 var set = new HashSet<int>();
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                 
+
                 //.....for making many parallel calls
                 System.Threading.Tasks.Parallel.For(0, CNT,
                                               (i, loop)=>
-                                              {       
+                                              {
                                                 var id = System.Threading.Thread.CurrentThread.ManagedThreadId;
 
                                                 lock(set)
                                                  set.Add( id );
-                                                
-                                                //Testing overloaded calls 
-                                                var result = cl.GetNameMar(i);                                                
+
+                                                //Testing overloaded calls
+                                                var result = cl.GetNameMar(i);
                                                 Assert.AreEqual( "Felix{0}".Args(i), result);
                                               });
                 var elps = watch.ElapsedMilliseconds;
@@ -439,23 +439,23 @@ namespace NFX.NUnit.Glue
             {
                 //Use the same client.....
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName(threadSafe?"cs":"cs2").Value);
-                
+
                 Assert.AreEqual( "Felix1223", cl.GetName(1223));//alloc server
 
                 var set = new HashSet<int>();
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                 
+
                 //.....for making many parallel calls
                 System.Threading.Tasks.Parallel.For(0, CNT,
                                               (i, loop)=>
-                                              {       
+                                              {
                                                 var id = System.Threading.Thread.CurrentThread.ManagedThreadId;
 
                                                 lock(set)
                                                  set.Add( id );
-                                                
+
                                                 //Testing overloaded calls USING asTASK property
-                                                var result = cl.Async_GetName(i).AsTask.Result.GetValue<string>();                                                
+                                                var result = cl.Async_GetName(i).AsTask.Result.GetValue<string>();
                                                 Assert.AreEqual( "Felix{0}".Args(i), result);
                                               });
                 var elps = watch.ElapsedMilliseconds;
@@ -501,21 +501,21 @@ namespace NFX.NUnit.Glue
 
                 var set = new HashSet<int>();
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                 
+
                 //.....for making many parallel calls
                 System.Threading.Tasks.Parallel.For(0, CNT,
                                               (i, loop)=>
-                                              {       
+                                              {
                                                 var id = System.Threading.Thread.CurrentThread.ManagedThreadId;
 
                                                 lock(set)
                                                  set.Add( id );
-                                                
+
                                                 var idx = rnd.Next( rndBound );
                                                 if (idx>=clients.Count) idx = clients.Count-1;
                                                 var cl = clients[idx];
-                                                                      
-                                                //Testing overloaded calls                                                 
+
+                                                //Testing overloaded calls
                                                 Assert.AreEqual( "Felix{0}".Args(i), cl.GetName(i));
                                               });
                 var elps = watch.ElapsedMilliseconds;
@@ -544,7 +544,7 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                 
+
                 var ret = cl.GetPersonalData(new int[]{1,23,97});
 
                 Assert.AreEqual( 3, ret.Count);
@@ -576,7 +576,7 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                 
+
                 var ret = cl.GetPersonalData(new int[]{1,23,97}, true, 127000m);
 
                 Assert.AreEqual( 3, ret.Count);
@@ -613,7 +613,7 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                 
+
                 var ret = cl.GetDailyStatuses(7);
 
                 Assert.AreEqual( 7, ret.Count);
@@ -624,7 +624,7 @@ namespace NFX.NUnit.Glue
                 Assert.AreEqual( "Oleg99",   ret[dt][99].FirstName);
                 Assert.AreEqual( "Popov99",  ret[dt][99].LastName);
                 Assert.AreEqual( 99000m,     ret[dt][99].Salary);
-               
+
                 dt = dt.AddSeconds(ret.Count-1);
 
                 Assert.AreEqual( 100,        ret[dt].Count);
@@ -632,7 +632,7 @@ namespace NFX.NUnit.Glue
                 Assert.AreEqual( "Oleg99",   ret[dt][99].FirstName);
                 Assert.AreEqual( "Popov99",  ret[dt][99].LastName);
                 Assert.AreEqual( 99000m,     ret[dt][99].Salary);
-               
+
                 dumpBindingTransports( cl.Binding );
             }
 
@@ -645,7 +645,7 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                 
+
                 var ret = cl.GetDailyStatuses(150);
 
                 Assert.AreEqual( 150, ret.Count);
@@ -656,7 +656,7 @@ namespace NFX.NUnit.Glue
                 Assert.AreEqual( "Oleg99",   ret[dt][99].FirstName);
                 Assert.AreEqual( "Popov99",  ret[dt][99].LastName);
                 Assert.AreEqual( 99000m,     ret[dt][99].Salary);
-               
+
                 dt = dt.AddSeconds(ret.Count-1);
 
                 Assert.AreEqual( 100,        ret[dt].Count);
@@ -664,7 +664,7 @@ namespace NFX.NUnit.Glue
                 Assert.AreEqual( "Oleg99",   ret[dt][99].FirstName);
                 Assert.AreEqual( "Popov99",  ret[dt][99].LastName);
                 Assert.AreEqual( 99000m,     ret[dt][99].Salary);
-               
+
                 dumpBindingTransports( cl.Binding );
             }
 
@@ -678,9 +678,9 @@ namespace NFX.NUnit.Glue
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
                 var cl = new TestContractBClient(App.ConfigRoot.AttrByName("cs").Value);
-                
+
                 Exception err = null;
-                try 
+                try
                 {
                   cl.GetDailyStatuses(1);//this is needed to init type registry for sync binding
                                          //because otherwise it will abort the channel instead of marshalling exception back

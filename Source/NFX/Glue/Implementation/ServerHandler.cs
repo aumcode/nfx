@@ -176,7 +176,7 @@ namespace NFX.Glue.Implementation
             if (oneWay)
                 return null;
 
-            var red = new RemoteExceptionData(failure);
+            var red = new WrappedExceptionData(failure);
             var response = new ResponseMsg(reqID, red);
             response.__SetBindingSpecificContext(bindingSpecCtx);
 
@@ -479,7 +479,7 @@ namespace NFX.Glue.Implementation
                      }
                      else
                      {
-                         var red = new RemoteExceptionData(error);
+                         var red = new WrappedExceptionData(error);
                          var response = new ResponseMsg(request.RequestID, red);
                          response.__SetBindingSpecificContext(request);
                          return response;

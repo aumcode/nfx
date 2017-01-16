@@ -99,8 +99,10 @@ namespace NFX.NUnit.Web.Pay
       Assert.Contains(CURRENCY_RUB, currencies.ToArray());
     }
 
+    #warning Should be rewritten
+    /*
     [Test]
-    [ExpectedException(typeof(PaymentException))]    
+    [ExpectedException(typeof(PaymentException))]
     public void Fee_Flat_UnsupportedCurrency()
     {
       var ps = getPaySystem(NO_CURRENCIES_LACONF);
@@ -161,7 +163,7 @@ namespace NFX.NUnit.Web.Pay
       Assert.AreEqual(1.5, fee.Value);
       Assert.AreEqual(2.5 * 10000, pct);
     }
-
+    */
     [Test]
     public void Fee_TranType_NoSupportedTypes_ByDefault()
     {
@@ -230,7 +232,7 @@ namespace NFX.NUnit.Web.Pay
       var result = ps.IsTransactionTypeSupported(TransactionType.Transfer);
 
       Assert.IsFalse(result);
-    }    
+    }
 
     private PaySystem getPaySystem(string laconf)
     {

@@ -63,6 +63,7 @@ namespace WinFormsTest
       this.button2 = new System.Windows.Forms.Button();
       this.btnPuzzle = new System.Windows.Forms.Button();
       this.pic = new System.Windows.Forms.PictureBox();
+      this.tbJSON = new System.Windows.Forms.TextBox();
       ((System.ComponentModel.ISupportInitialize)(this.pb3)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pb2)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pb1)).BeginInit();
@@ -74,7 +75,7 @@ namespace WinFormsTest
       this.tbELink.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tbELink.Location = new System.Drawing.Point(12, 12);
       this.tbELink.Name = "tbELink";
-      this.tbELink.Size = new System.Drawing.Size(536, 31);
+      this.tbELink.Size = new System.Drawing.Size(536, 37);
       this.tbELink.TabIndex = 0;
       // 
       // sb
@@ -91,7 +92,7 @@ namespace WinFormsTest
       this.tbID.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tbID.Location = new System.Drawing.Point(12, 58);
       this.tbID.Name = "tbID";
-      this.tbID.Size = new System.Drawing.Size(174, 29);
+      this.tbID.Size = new System.Drawing.Size(174, 34);
       this.tbID.TabIndex = 2;
       // 
       // btnCalculate
@@ -119,7 +120,7 @@ namespace WinFormsTest
       this.tbResult.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tbResult.Location = new System.Drawing.Point(702, 12);
       this.tbResult.Name = "tbResult";
-      this.tbResult.Size = new System.Drawing.Size(650, 31);
+      this.tbResult.Size = new System.Drawing.Size(650, 37);
       this.tbResult.TabIndex = 5;
       // 
       // btnDecode
@@ -137,7 +138,7 @@ namespace WinFormsTest
       this.tbPassword.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tbPassword.Location = new System.Drawing.Point(25, 231);
       this.tbPassword.Name = "tbPassword";
-      this.tbPassword.Size = new System.Drawing.Size(536, 31);
+      this.tbPassword.Size = new System.Drawing.Size(536, 37);
       this.tbPassword.TabIndex = 7;
       this.tbPassword.TextChanged += new System.EventHandler(this.tbPassword_TextChanged);
       // 
@@ -178,7 +179,7 @@ namespace WinFormsTest
       this.cb2.AutoSize = true;
       this.cb2.Location = new System.Drawing.Point(777, 440);
       this.cb2.Name = "cb2";
-      this.cb2.Size = new System.Drawing.Size(80, 17);
+      this.cb2.Size = new System.Drawing.Size(89, 19);
       this.cb2.TabIndex = 14;
       this.cb2.Text = "checkBox1";
       this.cb2.UseVisualStyleBackColor = true;
@@ -251,11 +252,21 @@ namespace WinFormsTest
       this.pic.TabIndex = 18;
       this.pic.TabStop = false;
       // 
+      // tbJSON
+      // 
+      this.tbJSON.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.tbJSON.Location = new System.Drawing.Point(816, 556);
+      this.tbJSON.Multiline = true;
+      this.tbJSON.Name = "tbJSON";
+      this.tbJSON.Size = new System.Drawing.Size(536, 202);
+      this.tbJSON.TabIndex = 19;
+      // 
       // ELinkForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1383, 535);
+      this.ClientSize = new System.Drawing.Size(1383, 783);
+      this.Controls.Add(this.tbJSON);
       this.Controls.Add(this.pic);
       this.Controls.Add(this.btnPuzzle);
       this.Controls.Add(this.button2);
@@ -308,5 +319,6 @@ namespace WinFormsTest
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnPuzzle;
         private System.Windows.Forms.PictureBox pic;
-    }
+    private System.Windows.Forms.TextBox tbJSON;
+  }
 }

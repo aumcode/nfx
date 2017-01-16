@@ -174,8 +174,8 @@ WAVE.GUI = (function(){
 
     var fToastCount = 0;
 
-    published.pageWidth = function() { return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; }
-    published.pageHeight = function() { return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; }
+    published.pageWidth = function() { return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; };
+    published.pageHeight = function() { return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; };
 
     published.toast = function(msg, type, duration){
       var self = {};
@@ -238,7 +238,7 @@ WAVE.GUI = (function(){
     }
 
     function tryMakeBodyUnscrollable() {
-      if (fCurtains.length > 0 && !WAVE.Platform.Mobile) {
+      if (fCurtains.length === 1 && !WAVE.Platform.Mobile) {
         window.addEventListener("focus", preventFocusLeak, true);
 
         fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -263,7 +263,7 @@ WAVE.GUI = (function(){
         window.removeEventListener("focus", preventFocusLeak, true);
 
         if (fScrollFixed) {
-        
+
           document.body.style.top = fBodyTop;
           document.body.style.position = fBodyPosition;
           document.body.style.overflowY = fBodyOverflowY;
@@ -285,7 +285,7 @@ WAVE.GUI = (function(){
       var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
       document.body.removeChild(scrollDiv);
       return scrollbarWidth;
-    }
+    };
 
     published.curtainOn = function(cls){
         try{ document.activeElement.blur(); } catch(e){}
@@ -360,7 +360,6 @@ WAVE.GUI = (function(){
 
         var fdivContent = document.createElement("div");
         fdivContent.className = published.CLS_DIALOG_CONTENT;
-        fdivContent.style.position = "absolute";
         fdivBase.appendChild(fdivContent);
 
         var fdivHeader = document.createElement("div");
@@ -379,6 +378,9 @@ WAVE.GUI = (function(){
         fdivContent.appendChild(fdivFooter);
 
         function __adjustBounds(){
+          if (fWidthPct === 0 && fHeightPct === 0)
+            return;
+
           var sw = published.pageWidth();
           var sh = published.pageHeight();
           var cx = sw / 2;
@@ -394,10 +396,10 @@ WAVE.GUI = (function(){
 
           fdivContent.style.top = top + "px";
 
-        //  fdivBase.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
-          //fdivContent.style.height  = fWidthPct===0  ?
-          //                            "auto" :
-          //                            (h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px");//todo This may need to be put as published.OFFSETY that depends on style
+          fdivContent.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
+          fdivContent.style.height  = fWidthPct===0  ?
+                                      "auto" :
+                                      (h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px");//todo This may need to be put as published.OFFSETY that depends on style
         }
 
         var tmr = null;
@@ -449,8 +451,8 @@ WAVE.GUI = (function(){
           __adjustBounds();
         };
 
-        this.baseDIV = function() { return fdivBase; }
-        this.headerDIV = function() { return fdivHeader; }
+        this.baseDIV = function() { return fdivBase; };
+        this.headerDIV = function() { return fdivHeader; };
         this.bodyDIV = function() { return fdivBody; };
         this.footerDIV = function() { return fdivFooter; };
 
@@ -468,7 +470,7 @@ WAVE.GUI = (function(){
           __adjustBounds();
         };
 
-        this.adjustBounds = function() { __adjustBounds(); }
+        this.adjustBounds = function() { __adjustBounds(); };
 
         WAVE.addEventHandler(window, "resize", __resizeEventHandler);
 
@@ -518,7 +520,7 @@ WAVE.GUI = (function(){
 
       var divButtons = '<div class="' + published.CLS_DIALOG_CONFIRM_FOOTER + ' ' + footerCls + '">' +
                          btnYes + btnNo + btnOk + btnCancel +
-                       '</div>'
+                       '</div>';
 
       var dialog = new published.Dialog({
         header: WAVE.strDefault(title, 'Confirmation'),
@@ -3100,8 +3102,8 @@ WAVE.GUI = (function(){
         }
         fTabs.push(tab);
         tab.build(true, false);
-        if (tab.isActive())
-          activate(tab.name());
+        if (tab.isActive() || tabs.tabActive() === null)
+          tabs.tabActive(tab.name());
 
         tabs.eventInvoke(published.EVT_TABS_TAB_ADD, { phase: published.EVT_PHASE_AFTER, tabControl: tabs, tab: tab });
 
@@ -3285,6 +3287,7 @@ WAVE.GUI = (function(){
       hideOnFocus: bool
       hideOnTimer: bool
       hideOnScroll: bool
+      hideOnResize: bool
       timeout: int
     }
   */
@@ -3304,12 +3307,13 @@ WAVE.GUI = (function(){
       var fContent = WAVE.strDefault(init.content);
 
       var fContentUrl = WAVE.strDefault(init.contentUrl);
+      var fContentType = WAVE.strDefault(init.contentType);
       var fLoadCallback = WAVE.isFunction(init.loadCallback) ? init.loadCallback : null;
 
       var fIsTitleHtml = WAVE.strAsBool(init.isTitleHtml, true);
       var fIsContentHtml = WAVE.strAsBool(init.isContentHtml, true);
-      var fModalTitle = WAVE.strDefault(init.modalTitle);
       var fModalCls = WAVE.strDefault(init.modalCls, published.CLS_DETAILS_MODAL);
+      var fModalTitle = "<div class='wvDetailsHeader'>" + WAVE.strDefault(init.modalTitle) + "</div><div class='wvCloseDetails' id='" + fId + "close'></div>";
 
       var fShowOnClick = WAVE.strAsBool(init.showOnClick, true);
       var fShowOnFocus = WAVE.strAsBool(init.showOnFocus, false);
@@ -3318,6 +3322,7 @@ WAVE.GUI = (function(){
       var fHideOnFocus = WAVE.strAsBool(init.hideOnFocus, false);
       var fHideOnTimer = WAVE.strAsBool(init.hideOnTimer, false);
       var fHideOnScroll = WAVE.strAsBool(init.hideOnScroll, false);
+      var fHideOnResize = WAVE.strAsBool(init.hideOnResize, false);
 
       var fMode = WAVE.strDefault(init.mode, "swap");
       var r = WAVE.tryParseInt(init.timeout);
@@ -3348,18 +3353,25 @@ WAVE.GUI = (function(){
         }
         if (fHideOnClick)
           setTimeout(function(){
-            WAVE.addEventHandler(window, "click", outsideClickHandler);
+            WAVE.addEventHandler(window, "click", outsideClickHandler, true);
           }, 1);
         if (fHideOnScroll)
           setTimeout(function(){
             WAVE.addEventHandler(window, "scroll", __hide);
+          }, 1);
+        if (fHideOnResize)
+          setTimeout(function(){
+            WAVE.addEventHandler(window, "resize", __hide);
           }, 1);
       }
 
       function outsideClickHandler(e) {
         var target = e.target;
         var container = ((fMode === "modal") && (fDialog !== null)) ? fDialog.baseDIV() : fContentControl;
-        if (e.target === fDialog.baseDIV() || !WAVE.isParentOf(container, target)) __hide();
+        if ((fDialog !== null && e.target === fDialog.baseDIV()) || !WAVE.isParentOf(container, target)) {
+          e.preventDefault();
+          __hide();
+        };
       }
 
       function outsideMouseMoveHandler(e) {
@@ -3448,15 +3460,17 @@ WAVE.GUI = (function(){
           WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT_HIDDEN);
           WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
         }
-        fHiddenState = true;
         WAVE.removeEventHandler(window, "focus", outsideClickHandler);
-        WAVE.removeEventHandler(window, "click", outsideClickHandler);
+        WAVE.removeEventHandler(window, "click", outsideClickHandler, true);
         WAVE.removeEventHandler(window, "mousemove", outsideMouseMoveHandler);
 
         WAVE.addClass(fTitleControl, published.CLS_DETAILS_TITLE_HIDDEN);
         WAVE.removeClass(fTitleControl, published.CLS_DETAILS_TITLE_SHOWN);
 
-        details.eventInvoke(published.EVT_DETAILS_HIDE, { phase: published.EVT_PHASE_AFTER });
+        setTimeout(function() {
+          fHiddenState = true;
+          details.eventInvoke(published.EVT_DETAILS_HIDE, { phase: published.EVT_PHASE_AFTER });
+        }, 1);
       }
 
       function __show() {
@@ -3481,8 +3495,10 @@ WAVE.GUI = (function(){
 
               if (WAVE.strEmpty(fContentUrl)) return;
 
-              WAVE.ajaxGet(
+              WAVE.ajaxCall(
+                "GET",
                 fContentUrl,
+                null,
                 function(data) {
                   if (fLoadCallback !== null) {
                     var result = fLoadCallback(data);
@@ -3493,16 +3509,15 @@ WAVE.GUI = (function(){
                   }
                 },
                 console.error,
-                console.error
+                console.error,
+                fContentType,
+                fContentType
               );
             },
             header: fModalTitle
           });
           fContentControl = fDialog.bodyDIV();
-          if (WAVE.strEmpty(fModalTitle)) {
-            var t = fDialog.headerDIV();
-            t.style.display = "none";
-          }
+          WAVE.id(fId + "close").onclick = __hide;
         } else {//"swap" - default
           WAVE.removeClass(fContentControl, published.CLS_DETAILS_CONTENT_HIDDEN);
           WAVE.addClass(fContentControl, published.CLS_DETAILS_CONTENT_VISIBLE);
@@ -3798,7 +3813,7 @@ WAVE.GUI = (function(){
       url: $URL_NAME | URL,
       clip: { top: NUMBER, bottom: NUMBER, left: NUMBER, right: NUMBER }
     };
-    Galery = {
+    Gallery = {
       thumbnails: DIV,
       preview: DIV,
       urls: {
@@ -4011,8 +4026,8 @@ WAVE.GUI = (function(){
           prev.className = published.CLS_GALLERY_PREV
             + ((fThumbnails.scrollLeft === 0 && fThumbnails.scrollTop === 0) ? ' ' + published.CLS_GALLERY_DISABLED : '');
           next.className = published.CLS_GALLERY_NEXT
-            + ((fThumbnails.scrollLeft + fThumbnails.offsetWidth === fThumbnails.scrollWidth
-              && fThumbnails.scrollTop + fThumbnails.offsetHeight === fThumbnails.scrollHeight) ? ' ' + published.CLS_GALLERY_DISABLED : '');
+            + ((fThumbnails.scrollLeft + fThumbnails.clientWidth === fThumbnails.scrollWidth
+              && fThumbnails.scrollTop + fThumbnails.clientHeight === fThumbnails.scrollHeight) ? ' ' + published.CLS_GALLERY_DISABLED : '');
         }
       }
 
@@ -4194,7 +4209,7 @@ WAVE.GUI = (function(){
       }
 
       function selectorValueChanged(e) {
-        var elm = e.srcElement.parentNode;
+        var elm = e.target.parentNode;
         var lvl = fCombos.indexOf(elm);
         var newPath = __path().slice(0, lvl+1);
         __navigate(newPath);
@@ -4215,7 +4230,7 @@ WAVE.GUI = (function(){
                                           divComboWrapCls: fClasses.divComboWrapCls,
                                           selectBodyId: sid,
                                           disabled: fDisabled ? "" : "disabled",
-                                          readonly: fReadOnly ? "readonly" : "",
+                                          readonly: fReadOnly ? "readonly" : ""
                                         });
 
         values.wEach(function (v) {
@@ -4292,7 +4307,7 @@ WAVE.GUI = (function(){
             removeComboxes(fCombos.length-i);
             break;
           }
-          var n = values.wFirst(function (v) { return WAVE.strSame(v.id, part) });
+          var n = values.wFirst(function (v) { return WAVE.strSame(v.id, part); });
           if (n === null)
           {
             result = false;
@@ -4376,7 +4391,7 @@ WAVE.GUI = (function(){
                                           divNameId: fControlIds.divNameId,
                                           divNameCls: fClasses.divNameCls,
                                           divDescrId: fControlIds.divDescrId,
-                                          divDescrCls: fClasses.divDescrCls,
+                                          divDescrCls: fClasses.divDescrCls
                                         });
         fDiv.innerHTML = html;
 
@@ -4388,20 +4403,20 @@ WAVE.GUI = (function(){
 
       this.navigate = function(path) {
         return __navigate(path);
-      }
+      };
 
       this.path = function() {
         return __path();
-      }
+      };
 
       this.value = function () {
         return __value();
-      }
+      };
 
       build();
 
       return chain;
-    }//ChainSelector
+    };//ChainSelector
 
     return published;
 }());//WAVE.GUI

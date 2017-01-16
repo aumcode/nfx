@@ -168,7 +168,7 @@ nfx
   }
 
 }
-".Replace("[[0]]", System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("ITA_DEV_HOME"), "NFX", "Output","Debug","UTEZT-1.laconf") );
+".Replace("[[0]]", System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("AGNICORE_HOME"), "NFX", "Output","Debug","UTEZT-1.laconf") );
 
             var conf = conf1.AsLaconicConfig(handling: ConvertErrorHandling.Throw );
 

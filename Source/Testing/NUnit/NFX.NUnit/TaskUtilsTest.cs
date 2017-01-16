@@ -128,5 +128,58 @@ namespace NFX.NUnit
         Assert.IsTrue(c);
       }
     }
+
+
+    [TestCase(0,  10,                 100, 10, 0)]
+    [TestCase(10, 10,                 100, 10, 1)]
+    [TestCase(90, 10,                 100, 10, 9)]
+    //-----------------------------------------------
+    [TestCase(0, 2,                 4, 3, 0)]
+    [TestCase(2, 1,                 4, 3, 1)]
+    [TestCase(3, 1,                 4, 3, 2)]
+    //-----------------------------------------------
+    [TestCase(0,  2,                 100, 51, 0)]
+    [TestCase(2,  2,                 100, 51, 1)]
+    [TestCase(96, 2,                 100, 51, 48)]
+    [TestCase(98, 1,                 100, 51, 49)]
+    [TestCase(99, 1,                 100, 51, 50)]
+    public void AssignWorkSegment(int expectIndex,
+                                  int expectCount,
+                                 //------------------
+                                  int totalItemCount,
+                                  int totalWorkerCount,
+                                  int thisWorkerIndex)
+    {
+      int gotIndex;
+      var gotCount = TaskUtils.AssignWorkSegment(totalItemCount, totalWorkerCount, thisWorkerIndex, out gotIndex);
+
+      Assert.AreEqual(expectCount, gotCount);
+      Assert.AreEqual(expectIndex, gotIndex);
+    }
+
+    [TestCase(100)]
+    public void AssignWorkSegment_2(int TOTAL_ITEMS)
+    {
+      Console.WriteLine("Total Items {0} ", TOTAL_ITEMS );
+      for(var workers = 1; workers <= TOTAL_ITEMS * 2; workers++)
+      {
+       Console.WriteLine("Process {0} items by {1} worker", TOTAL_ITEMS, workers );
+
+       var totalWorkPerformed = 0;
+
+       for(var thisWorker=0; thisWorker<workers; thisWorker++)
+       {
+         int gotIndex;
+         var gotCount = TaskUtils.AssignWorkSegment(TOTAL_ITEMS, workers, thisWorker, out gotIndex);
+
+  //       Console.WriteLine("Worker #{0} at [{1}] proccess {2}", thisWorker, gotIndex, gotCount);
+         totalWorkPerformed += (gotCount);
+       }
+
+       Console.WriteLine("Total work performed {0}", totalWorkPerformed);
+       Assert.AreEqual(TOTAL_ITEMS, totalWorkPerformed);
+      }
+    }
+
   }
 }

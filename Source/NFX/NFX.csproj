@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -352,13 +352,19 @@
     <Compile Include="OS\Instrumentation\Gauges.cs" />
     <Compile Include="OS\ManyReadersOneWriterSynchronizer.cs" />
     <Compile Include="OS\NetworkUtils.cs" />
+    <Compile Include="Security\HashedPassword.cs" />
+    <Compile Include="Security\IPasswordManager.cs" />
+    <Compile Include="Security\MD5PasswordHashingAlgorithm.cs" />
+    <Compile Include="Security\PasswordHashingAlgorithm.cs" />
+    <Compile Include="Security\DefaultPasswordManager.cs" />
+    <Compile Include="Security\PasswordRepresentation.cs" />
+    <Compile Include="Security\SecureBuffer.cs" />
     <Compile Include="Serialization\CSV\CSVParser.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
     <Compile Include="SealedString.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />
-    <Compile Include="Security\PasswordUtils.cs" />
     <Compile Include="Security\SocialNetTokenCredentials.cs" />
     <Compile Include="Serialization\BSON\BinUtils.cs" />
     <Compile Include="Serialization\BSON\BSONDocument.cs" />
@@ -472,7 +478,6 @@
     <Compile Include="Glue\Node.cs" />
     <Compile Include="Glue\NOPGlue.cs" />
     <Compile Include="Glue\Bindings.cs" />
-    <Compile Include="Glue\Protocol\RemoteExceptionData.cs" />
     <Compile Include="Glue\Protocol\RequestMsg.cs" />
     <Compile Include="Glue\CallSlot.cs" />
     <Compile Include="Glue\Protocol\ResponseMsg.cs" />

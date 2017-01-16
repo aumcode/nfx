@@ -68,21 +68,30 @@ namespace NFX.Environment
   {
     #region CONSTS
 
-        public const string ARG_PREFIX1 = "/";
-        public const string ARG_PREFIX2 = "-";
+        public const string ARG_PREFIX_SLASH = "/";
+        public const string ARG_PREFIX_DASH  = "-";
         public const char OPTION_EQ = '=';
         public const string ROOT_NODE_NAME = "args";
 
     #endregion
 
     #region .ctor
+
       /// <summary>
       /// Creates an instance of the new configuration parsed from command line arguments
       /// </summary>
-      public CommandArgsConfiguration(string[] args)
-        : base()
+      public CommandArgsConfiguration(string[] args) : this(args, NFX.OS.Computer.OSFamily != OS.OSFamily.Windows)
+      {
+      }
+
+
+      /// <summary>
+      /// Creates an instance of the new configuration parsed from command line arguments
+      /// </summary>
+      public CommandArgsConfiguration(string[] args, bool inhibitSlashArg) : base()
       {
         m_Args = args;
+        m_InhibitSlashArg = inhibitSlashArg;
         parseArgs();
         m_Loaded = true;
       }
@@ -92,6 +101,7 @@ namespace NFX.Environment
 
     #region Private Fields
 
+      private bool m_InhibitSlashArg;
       private bool m_Loaded = false;
       private string[] m_Args;
 
@@ -106,6 +116,16 @@ namespace NFX.Environment
         {
             get { return m_Loaded; }
         }
+
+
+        /// <summary>
+        /// When true, disregards '/' as an argument delimiter
+        /// </summary>
+        public bool InhibitSlashArg
+        {
+           get{  return m_InhibitSlashArg;}
+        }
+
 
         /// <summary>
         /// Returns arguments array that this configuration was parsed from
@@ -133,7 +153,7 @@ namespace NFX.Environment
       {
         var argument = m_Args[i];
 
-        if (argument.Length > 1 && (argument.StartsWith(ARG_PREFIX1) || argument.StartsWith(ARG_PREFIX2)))
+        if (argument.Length > 1 && ((!m_InhibitSlashArg && argument.StartsWith(ARG_PREFIX_SLASH)) || argument.StartsWith(ARG_PREFIX_DASH)))
         {
           argument = argument.Remove(0, 1);//get rid of prefix
           var argNode = m_Root.AddChildNode(argument, null);
@@ -142,7 +162,7 @@ namespace NFX.Environment
           for (i++; i < m_Args.Length; )//read args's options
           {
             var option = m_Args[i];
-            if (option.StartsWith(ARG_PREFIX1) || option.StartsWith(ARG_PREFIX2)) break;
+            if ((!m_InhibitSlashArg && option.StartsWith(ARG_PREFIX_SLASH)) || option.StartsWith(ARG_PREFIX_DASH)) break;
             i++;
 
             var j = option.IndexOf(OPTION_EQ);

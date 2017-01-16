@@ -67,7 +67,7 @@ namespace NFX.Serialization.Slim
              get
              {
                yield return typeof(Glue.Protocol.Msg);
-               yield return typeof(Glue.Protocol.RemoteExceptionData);
+               yield return typeof(WrappedExceptionData);
                yield return typeof(Glue.Protocol.RequestMsg);
                yield return typeof(Glue.Protocol.RequestAnyMsg);
                yield return typeof(Glue.Protocol.ResponseMsg);

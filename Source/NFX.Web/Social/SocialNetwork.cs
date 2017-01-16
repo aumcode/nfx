@@ -427,7 +427,7 @@ namespace NFX.Web.Social
 
           if (userInfo.PictureLink.IsNullOrWhiteSpace()) return null;
 
-          return WebClient.GetData(new Uri(userInfo.PictureLink), this, out contentType);
+          return WebClient.GetData(userInfo.PictureLink, new WebClient.RequestParams(this), out contentType);
         }
 
         /// <summary>

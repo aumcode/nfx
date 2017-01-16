@@ -397,7 +397,7 @@ namespace NFX.Wave
       /// Decides whether the specified WorkContext makes the match per this instance and if it does, returns the match variables.
       /// Returns null if match was not made
       /// </summary>
-      public virtual JSONDataMap Make(WorkContext work)
+      public virtual JSONDataMap Make(WorkContext work, object context = null)
       {
         if (
             !Check_Methods(work) ||

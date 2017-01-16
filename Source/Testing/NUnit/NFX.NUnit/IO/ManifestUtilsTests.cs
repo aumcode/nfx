@@ -93,7 +93,7 @@ package
         
         public static string Get_TEZT_PATH()
         {
-          return Path.Combine(System.Environment.GetEnvironmentVariable("ITA_DEV_HOME"), "NFX", "Output","Debug","UTEZT_DATA");
+          return Path.Combine(System.Environment.GetEnvironmentVariable("AGNICORE_HOME"), "NFX", "Output","Debug","UTEZT_DATA");
         }
 
         [TestCase]

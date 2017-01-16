@@ -21,189 +21,196 @@ using System.Text;
 
 using NFX.ApplicationModel;
 using NFX.Environment;
+using NFX.ServiceModel;
+using NFX.Serialization.JSON;
 
 namespace NFX.Security
 {
+  /// <summary>
+  /// Provides security manager implementation that authenticates and authorizes users from configuration
+  /// </summary>
+  public class ConfigSecurityManager : ServiceWithInstrumentationBase<object>, ISecurityManagerImplementation
+  {
+    #region CONSTS
+      public const string CONFIG_USERS_SECTION = "users";
+      public const string CONFIG_USER_SECTION = "user";
 
-    /// <summary>
-    /// Provides security manager implementation that authenticates and authorizes users from configuration
-    /// </summary>
-    public class ConfigSecurityManager : ApplicationComponent, ISecurityManagerImplementation
-    {
-        #region CONSTS
+      public const string CONFIG_RIGHTS_SECTION = Rights.CONFIG_ROOT_SECTION;
+      public const string CONFIG_PERMISSION_SECTION = "permission";
+      public const string CONFIG_PASSWORD_MANAGER_SECTION = "password-manager";
 
-           public const string CONFIG_USERS_SECTION = "users";
-           public const string CONFIG_USER_SECTION = "user";
+      public const string CONFIG_DESCRIPTION_ATTR = "description";
+      public const string CONFIG_STATUS_ATTR = "status";
+      public const string CONFIG_ID_ATTR = "id";
+      public const string CONFIG_PASSWORD_ATTR = "password";
+    #endregion
 
-           public const string CONFIG_RIGHTS_SECTION = Rights.CONFIG_ROOT_SECTION;
-           public const string CONFIG_PERMISSION_SECTION = "permission";
+    #region .ctor
+      /// <summary>
+      /// Constructs security manager that authenticates users listed in application configuration
+      /// </summary>
+      public ConfigSecurityManager() : base() { }
 
-           public const string CONFIG_NAME_ATTR = "name";
-           public const string CONFIG_DESCRIPTION_ATTR = "description";
-           public const string CONFIG_STATUS_ATTR = "status";
-           public const string CONFIG_ID_ATTR = "id";
-           public const string CONFIG_PASSWORD_ATTR = "password";
+      /// <summary>
+      /// Constructs security manager that authenticates users listed in the supplied configuration section
+      /// </summary>
+      public ConfigSecurityManager(object director) : base(director) { }
+    #endregion
 
+    #region Fields
+      private IConfigSectionNode m_Config;
+      private IPasswordManagerImplementation m_PasswordManager;
+      private bool m_InstrumentationEnabled;
+    #endregion
 
-        #endregion
+    #region Properties
 
-        #region .ctor
+      [Config(Default = false)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION, CoreConsts.EXT_PARAM_GROUP_PAY)]
+      public override bool InstrumentationEnabled
+      {
+        get { return m_InstrumentationEnabled; }
+        set { m_InstrumentationEnabled = value; }
+      }
 
-             /// <summary>
-             /// Constructs security manager that authenticates users listed in application configuration
-             /// </summary>
-             public ConfigSecurityManager():base()
-             {
+      public override string ComponentCommonName { get { return "secman"; } }
 
-             }
+      /// <summary>
+      /// Returns config node that this instance is configured from.
+      /// If null is returned then manager performs authentication from application configuration
+      /// </summary>
+      public IConfigSectionNode Config { get { return m_Config; } }
 
-             /// <summary>
-             /// Constructs security manager that authenticates users listed in the supplied configuration section
-             /// </summary>
-             public ConfigSecurityManager(IConfigSectionNode config):base()
-             {
-               m_Config = config;
-             }
+      public IPasswordManager PasswordManager { get { return m_PasswordManager; } }
 
+    #endregion
 
+    #region Public
+      public User Authenticate(Credentials credentials)
+      {
+        var sect = m_Config ?? App.ConfigRoot[CommonApplicationLogic.CONFIG_SECURITY_SECTION];
+        if (sect.Exists && credentials is IDPasswordCredentials)
+        {
+          var idpass = (IDPasswordCredentials)credentials;
 
+          var usern = findUserNode(sect, idpass);
 
-        #endregion
+          if (usern.Exists)
+          {
+            var name = usern.AttrByName(CONFIG_NAME_ATTR).ValueAsString(string.Empty);
+            var descr = usern.AttrByName(CONFIG_DESCRIPTION_ATTR).ValueAsString(string.Empty);
+            var status = usern.AttrByName(CONFIG_STATUS_ATTR).ValueAsEnum<UserStatus>(UserStatus.Invalid);
 
-        #region Fields
+            var rights = Rights.None;
 
-            private IConfigSectionNode m_Config;
+            var rightsn = usern[CONFIG_RIGHTS_SECTION];
 
-        #endregion
-
-        #region Properties
-
-            public override string ComponentCommonName { get { return "secman"; }}
-
-            /// <summary>
-            /// Returns config node that this instance is configured from.
-            /// If null is returned then manager performs authentication from application configuration
-            /// </summary>
-            public IConfigSectionNode Config
+            if (rightsn.Exists)
             {
-              get { return m_Config; }
+              var data = new MemoryConfiguration();
+              data.CreateFromNode(rightsn);
+              rights = new Rights(data);
             }
 
-        #endregion
+            return new User(credentials,
+                            credToAuthToken(idpass),
+                            status,
+                            name,
+                            descr,
+                            rights);
+          }
+        }
 
-        #region Public
+        return new User(credentials,
+                        new AuthenticationToken(),
+                        UserStatus.Invalid,
+                        StringConsts.SECURITY_NON_AUTHENTICATED,
+                        StringConsts.SECURITY_NON_AUTHENTICATED,
+                        Rights.None);
+      }
 
-            public User Authenticate(Credentials credentials)
-            {
-              var sect = m_Config ?? App.ConfigRoot[CommonApplicationLogic.CONFIG_SECURITY_SECTION];
-              if (sect.Exists && credentials is IDPasswordCredentials)
-              {
-                  var idpass = (IDPasswordCredentials)credentials;
+      public User Authenticate(AuthenticationToken token)
+      {
+        var idpass = authTokenToCred(token);
+        return Authenticate(idpass);
+      }
 
-                  var usern = findUserNode(sect, idpass);
+      public void Authenticate(User user)
+      {
+        if (user == null) return;
+        var token = user.AuthToken;
+        var reuser = Authenticate(token);
 
-                  if (usern.Exists)
-                  {
-                      var name = usern.AttrByName(CONFIG_NAME_ATTR).ValueAsString(string.Empty);
-                      var descr = usern.AttrByName(CONFIG_DESCRIPTION_ATTR).ValueAsString(string.Empty);
-                      var status = usern.AttrByName(CONFIG_STATUS_ATTR).ValueAsEnum<UserStatus>(UserStatus.Invalid);
+        user.___update_status(reuser.Status, reuser.Name, reuser.Description, reuser.Rights);
+      }
 
-                      var rights = Rights.None;
+      public AccessLevel Authorize(User user, Permission permission)
+      {
+        if (user == null || permission == null)
+          throw new SecurityException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".Authorize(user==null|permission==null)");
 
-                      var rightsn = usern[CONFIG_RIGHTS_SECTION];
+        var node = user.Rights.Root.NavigateSection(permission.FullPath);
+        return new AccessLevel(user, permission, node);
+      }
+    #endregion
 
-                      if (rightsn.Exists)
-                      {
-                        var data = new MemoryConfiguration();
-                        data.CreateFromNode(rightsn);
-                        rights = new Rights(data);
-                      }
+    #region Protected
+      protected override void DoConfigure(IConfigSectionNode node)
+      {
+        base.DoConfigure(node);
+        m_Config = node;
+        m_PasswordManager = FactoryUtils.MakeAndConfigure<IPasswordManagerImplementation>(node[CONFIG_PASSWORD_MANAGER_SECTION], typeof(DefaultPasswordManager), new object[] { this });
+      }
 
-                      return new User(credentials,
-                                      credToAuthToken(idpass),
-                                      status,
-                                      name,
-                                      descr,
-                                      rights);
-                  }
-              }
+      protected override void DoStart()
+      {
+        m_PasswordManager.Start();
+      }
 
-              return new User(credentials,
-                              new AuthenticationToken(),
-                              UserStatus.Invalid,
-                              StringConsts.SECURITY_NON_AUTHENTICATED,
-                              StringConsts.SECURITY_NON_AUTHENTICATED,
-                              Rights.None);
-            }
+      protected override void DoSignalStop()
+      {
+        m_PasswordManager.SignalStop();
+      }
 
+      protected override void DoWaitForCompleteStop()
+      {
+        m_PasswordManager.WaitForCompleteStop();
+      }
+    #endregion
 
-            public User Authenticate(AuthenticationToken token)
-            {
-                var idpass = authTokenToCred(token);
-                return Authenticate(idpass);
-            }
+    #region Private
+      private IConfigSectionNode findUserNode(IConfigSectionNode securityRootNode, IDPasswordCredentials cred)
+      {
+        var users = securityRootNode[CONFIG_USERS_SECTION];
 
+        using (var password = cred.SecurePassword)
+        {
+          bool needRehash = false;
+          return users.Children.FirstOrDefault(cn => cn.IsSameName(CONFIG_USER_SECTION)
+                                                  && string.Equals(cn.AttrByName(CONFIG_ID_ATTR).Value, cred.ID, StringComparison.InvariantCulture)
+                                                  && m_PasswordManager.Verify(password, HashedPassword.FromString(cn.AttrByName(CONFIG_PASSWORD_ATTR).Value), out needRehash)
+                                              ) ?? users.Configuration.EmptySection;
 
-            public void Authenticate(User user)
-            {
-                if (user==null) return;
-                var token = user.AuthToken;
-                var reuser = Authenticate(token);
+        }
+      }
 
-                user.___update_status(reuser.Status, reuser.Name, reuser.Description, reuser.Rights);
-            }
+      private AuthenticationToken credToAuthToken(IDPasswordCredentials cred)
+      {
+        return new AuthenticationToken(this.GetType().FullName, "{0}\n{1}".Args(cred.ID, cred.Password));
+      }
 
+      private IDPasswordCredentials authTokenToCred(AuthenticationToken token)
+      {
+        if (token.Data == null)
+          return new IDPasswordCredentials(string.Empty, string.Empty);
 
-            public AccessLevel Authorize(User user, Permission permission)
-            {
-                if (user==null || permission==null)
-                 throw new SecurityException(StringConsts.ARGUMENT_ERROR+GetType().Name+".Authorize(user==null|permission==null)");
+        var seg = token.Data.ToString().Split('\n');
 
-                var node = user.Rights.Root.NavigateSection(permission.FullPath);
+        if (seg.Length < 2)
+          return new IDPasswordCredentials(string.Empty, string.Empty);
 
-                return new AccessLevel(user, permission, node);
-            }
-
-
-            public void Configure(IConfigSectionNode node)
-            {
-                m_Config = node;
-            }
-
-        #endregion
-
-        #region .pvt
-
-            private IConfigSectionNode findUserNode(IConfigSectionNode securityRootNode, IDPasswordCredentials cred)
-            {
-                var users = securityRootNode[CONFIG_USERS_SECTION];
-
-                return users.Children.FirstOrDefault( cn => cn.IsSameName(CONFIG_USER_SECTION) &&
-                                                     string.Equals(cn.AttrByName(CONFIG_ID_ATTR).Value, cred.ID, StringComparison.InvariantCulture) &&
-                                                     string.Equals(cn.AttrByName(CONFIG_PASSWORD_ATTR).Value, cred.Password.ToMD5String(), StringComparison.InvariantCultureIgnoreCase)
-                                                    ) ?? users.Configuration.EmptySection;
-            }
-
-            private AuthenticationToken credToAuthToken(IDPasswordCredentials cred)
-            {
-                return new AuthenticationToken(this.GetType().FullName, "{0}\n{1}".Args(cred.ID, cred.Password));
-            }
-
-            private IDPasswordCredentials authTokenToCred(AuthenticationToken token)
-            {
-                if (token.Data==null)
-                    return new IDPasswordCredentials(string.Empty, string.Empty);
-
-                var seg = token.Data.ToString().Split('\n');
-
-                if (seg.Length<2)
-                    return new IDPasswordCredentials(string.Empty, string.Empty);
-
-                return new IDPasswordCredentials(seg[0], seg[1]);
-            }
-
-
-
-        #endregion
-    }
+        return new IDPasswordCredentials(seg[0], seg[1]);
+      }
+    #endregion
+  }
 }

@@ -21,7 +21,6 @@ using System.Text;
 
 namespace NFX.Security
 {
-
     /// <summary>
     /// Represents security provider-internal ID that SecurityManager assigns into User object on authentication.
     /// These tokens can be used in place of Credentials to re-authenticate users or to requery user rights.
@@ -30,37 +29,34 @@ namespace NFX.Security
     [Serializable]
     public struct AuthenticationToken
     {
+      public AuthenticationToken(string realm, object data)
+      {
+          m_Realm = realm;
+          m_Data = data;
+      }
 
-        public AuthenticationToken(string realm, object data)
-        {
-           m_Realm = realm;
-           m_Data = data;
-        }
+      private string m_Realm;
+      private object m_Data;
 
-        private string m_Realm;
-        private object m_Data;
+      /// <summary>
+      /// Provides information about back-end security source (realm) that perfomed authentication, i.e. LDAP instance, Database name etc...
+      /// </summary>
+      public string Realm
+      {
+        get {return m_Realm;}
+      }
 
+      /// <summary>
+      /// Provides provider-specific key/id that uniquely identifies the user in the realm
+      /// </summary>
+      public object Data
+      {
+        get { return m_Data; }
+      }
 
-        /// <summary>
-        /// Provides information about back-end security source (realm) that perfomed authentication, i.e. LDAP instance, Database name etc...
-        /// </summary>
-        public string Realm
-        {
-          get {return m_Realm;}
-        }
-
-        /// <summary>
-        /// Provides provider-specific key/id that uniquely identifies the user in the realm
-        /// </summary>
-        public object Data
-        {
-          get { return m_Data; }
-        }
-
-        public override string ToString()
-        {
-          return "AuthToken({0}::{1})".Args(m_Realm, m_Data);
-        }
-
+      public override string ToString()
+      {
+        return "AuthToken({0}::{1})".Args(m_Realm, m_Data);
+      }
     }
 }

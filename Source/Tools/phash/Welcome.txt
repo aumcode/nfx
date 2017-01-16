@@ -1,0 +1,6 @@
+﻿<push><b color=black><f color=white>
+Password Hasher<f color=gray>
+Copyright (c) 2011-2017 D.Khmaladze / IT Adapter Inc.
+Version 2.0 / NFX as of Jan 1 2017
+
+<pop>

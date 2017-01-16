@@ -66,8 +66,13 @@ namespace NFX
       {
         m_Buffer = new int[BUFF_SIZE];
         lock(s_GlobalRandom)
+        {
           for(int i=0; i<BUFF_SIZE; i++)
-            m_Buffer[i] = s_GlobalRandom.Next(Int32.MinValue, Int32.MaxValue);
+            m_Buffer[i] = Guid.NewGuid().GetHashCode();
+
+          for(int i=0; i<BUFF_SIZE; i++)
+            m_Buffer[i] ^= s_GlobalRandom.Next(Int32.MinValue, Int32.MaxValue);
+        }
       }
 
 
@@ -88,8 +93,8 @@ namespace NFX
         get
         {
           if (ts_Random==null)
-           lock(s_GlobalRandom)
-            ts_Random = new Random(s_GlobalRandom.Next());
+            lock(s_GlobalRandom)
+              ts_Random = new Random(s_GlobalRandom.Next());
 
           var position = Interlocked.Increment(ref m_ReadPosition);
           if(position>=BUFF_SIZE)
@@ -106,7 +111,7 @@ namespace NFX
       /// </summary>
       public uint NextRandomUnsignedInteger
       {
-        get { return (uint)NextRandomInteger;}
+        get { return (uint)NextRandomInteger; }
       }
 
       /// <summary>
@@ -114,10 +119,7 @@ namespace NFX
       /// </summary>
       public ulong NextRandomUnsignedLong
       {
-        get
-        {
-          return (((ulong)NextRandomUnsignedInteger) << 32) + (ulong)NextRandomUnsignedInteger;
-        }
+        get { return (((ulong)NextRandomUnsignedInteger) << 32) + (ulong)NextRandomUnsignedInteger; }
       }
 
       /// <summary>
@@ -138,8 +140,6 @@ namespace NFX
         }
       }
 
-
-
       /// <summary>
       /// Returns 0..1 random double
       /// </summary>
@@ -147,7 +147,6 @@ namespace NFX
       {
         get { return ((uint)NextRandomInteger) / ((double)uint.MaxValue); }
       }
-
 
       /// <summary>
       /// Generates random double number in min..max range
@@ -207,7 +206,6 @@ namespace NFX
                     '0','1','2','3','4','5','6','7','8','9','-','_', //12 64
                     'A','Z','T','W','7','3','9', 'q', '-', 'r', 'x', //12 76
                     'j','z','R'                                      //3  79 (prime)
-
                   };
 
                   private static readonly int CHAR_DICT_LEN = CHAR_DICT.Length;
@@ -216,7 +214,7 @@ namespace NFX
       /// <summary>
       /// Generates a random string of chars which are safe for the use on the web -
       ///  a string that only contains "a-z"/"A-Z" and "0-9" and "-"/"_" chars, i.e.: "bo7O0EFasZe-wEty9w0__JiOKk81".
-      ///  The length of the string can not be less than 4 and more than 1024 chars
+      /// The length of the string can not be less than 4 and more than 1024 chars
       /// </summary>
       public string NextRandomWebSafeString(int minLength = 16, int maxLength = 32)
       {
@@ -234,14 +232,95 @@ namespace NFX
         for(var i=0; i<count; i++)
           result.Append( CHAR_DICT[ (this.NextRandomInteger & CoreConsts.ABS_HASH_MASK) % CHAR_DICT_LEN ]);
 
-
         return result.ToString();
       }
 
+      /// <summary>
+      /// Generates a random secure buffer of chars which are safe for the use on the web -
+      ///  a string that only contains "a-z"/"A-Z" and "0-9" and "-"/"_" chars, i.e.: "bo7O0EFasZe-wEty9w0__JiOKk81".
+      /// The length of the string can not be less than 4 and more than 1024 chars
+      /// </summary>
+      public Security.SecureBuffer NextRandomWebSafeSecureBuffer(int minLength = 16, int maxLength = 32)
+      {
+        const int MIN_LEN = 4;
+        const int MAX_LEN = 1024;
 
+        if (minLength<MIN_LEN) minLength = MIN_LEN;
+        if (maxLength>MAX_LEN) maxLength = MAX_LEN;
 
+        var count = minLength;
+        if (maxLength>minLength) count += this.NextScaledRandomInteger(0, maxLength - minLength);
 
+        var result = new Security.SecureBuffer(count);
+
+        for (var i=0; i<count; i++)
+        {
+          var b = (byte)CHAR_DICT[(this.NextRandomInteger & CoreConsts.ABS_HASH_MASK) % CHAR_DICT_LEN];
+          result.Push(b);
+        }
+        result.Seal();
+        return result;
+      }
+
+      /// <summary>
+      /// Generates a random buffer of bytes
+      /// </summary>
+      public byte[] NextRandomBytes(int length) { return NextRandomBytes(length, length); }
+
+      /// <summary>
+      /// Generates a random buffer of bytes
+      /// </summary>
+      public byte[] NextRandomBytes(int minLength, int maxLength)
+      {
+        if (minLength < 0) minLength = 0;
+        var count = minLength;
+        if (maxLength > minLength) count = this.NextScaledRandomInteger(minLength, maxLength);
+
+        var bytes = new byte[count];
+
+        var i = 0;
+        for (; i < (count / 4) * 4; i += 4)
+          bytes.WriteBEInt32(i, this.NextRandomInteger);
+
+        if (i != count)
+        {
+          var last = new byte[4];
+          last.WriteBEInt32(this.NextRandomInteger);
+          for (; i < count; i++)
+            bytes[i] = last[i % 4];
+        }
+
+        return bytes;
+      }
+
+      /// <summary>
+      /// Generates a random secure buffer of bytes
+      /// </summary>
+      public Security.SecureBuffer NextRandomSecureBuffer(int length) { return NextRandomSecureBuffer(length, length); }
+
+      /// <summary>
+      /// Generates a random secure buffer of bytes
+      /// </summary>
+      public Security.SecureBuffer NextRandomSecureBuffer(int minLength, int maxLength)
+      {
+        if (minLength < 0) minLength = 0;
+        var count = minLength;
+        if (maxLength > minLength) count = this.NextScaledRandomInteger(minLength, maxLength);
+
+        var buffer = new Security.SecureBuffer(count);
+
+        var bytes = new byte[4];
+        for (var i = 0; i < count; i += 4)
+        {
+          bytes.WriteBEInt32(this.NextRandomInteger);
+          for (var j = 0; j < 4 && i + j < count; j++)
+          {
+            buffer.Push(bytes[j]);
+            bytes[j] = 0;
+          }
+        }
+        buffer.Seal();
+        return buffer;
+      }
   }
-
-
 }

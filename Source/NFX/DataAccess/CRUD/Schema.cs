@@ -252,7 +252,7 @@ namespace NFX.DataAccess.CRUD
                 }
 
 
-                       private volatile Dictionary<string, FieldAttribute> m_TargetAttrsCache = new Dictionary<string, FieldAttribute>();
+                       private volatile Dictionary<string, FieldAttribute> m_TargetAttrsCache = new Dictionary<string, FieldAttribute>(StringComparer.InvariantCultureIgnoreCase);
 
                 /// <summary>
                 /// Returns a FieldAttribute that matches the supplied targetName, or if one was not defined then
@@ -275,7 +275,7 @@ namespace NFX.DataAccess.CRUD
                         if (result==null)
                           result = m_Attrs.FirstOrDefault(a => TargetedAttribute.ANY_TARGET.EqualsIgnoreCase(a.TargetName) );
 
-                        var dict = new Dictionary<string, FieldAttribute>(m_TargetAttrsCache);
+                        var dict = new Dictionary<string, FieldAttribute>(m_TargetAttrsCache, StringComparer.InvariantCultureIgnoreCase);
                         dict[targetName] = result;
                         m_TargetAttrsCache = dict;//atomic
                       }

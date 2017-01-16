@@ -286,6 +286,11 @@ namespace NFX.Wave
       }
 
       /// <summary>
+      /// Returns default country ISO code for this portal
+      /// </summary>
+      public abstract string DefaultISOCountry { get; }
+
+      /// <summary>
       /// Returns default language ISO code for this portal
       /// </summary>
       public abstract string DefaultLanguageISOCode{ get; }

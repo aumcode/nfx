@@ -25,21 +25,21 @@ namespace NFX.Web.Shipping
 {
   public class Address
   {
-    public string Name    { get; set; }
-    public string Company { get; set; }
-    public string Line1   { get; set; }
-    public string Line2   { get; set; }
-    public string Country { get; set; }
-    public string Region  { get; set; }
-    public string City    { get; set; }
-    public string Postal  { get; set; }
-    public string Phone   { get; set; }
-    public string EMail   { get; set; }
+    public string PersonName { get; set; }
+    public string Company    { get; set; }
+    public string Line1      { get; set; }
+    public string Line2      { get; set; }
+    public string Country    { get; set; }
+    public string Region     { get; set; }
+    public string City       { get; set; }
+    public string Postal     { get; set; }
+    public string Phone      { get; set; }
+    public string EMail      { get; set; }
 
     public override string ToString()
     {
       return "[name: {0}, country: {1}, state: {2}, city: {3}, street1: {4}, zip: {5}]"
-              .Args(Name ?? "-",
+              .Args(PersonName ?? "-",
                     Country ?? "-",
                     Region ?? "-",
                     City ?? "-",
@@ -56,7 +56,7 @@ namespace NFX.Web.Shipping
       if (first==null && second!=null) return false;
       if (first!=null && second==null) return false;
 
-      if (!string.Equals(first.Name, second.Name, StringComparison.InvariantCultureIgnoreCase)) return false;
+      if (!string.Equals(first.PersonName, second.PersonName, StringComparison.InvariantCultureIgnoreCase)) return false;
       if (!string.Equals(first.Company, second.Company, StringComparison.InvariantCultureIgnoreCase)) return false;
       if (!string.Equals(DataEntryUtils.NormalizeUSPhone(first.Phone ?? string.Empty),
                          DataEntryUtils.NormalizeUSPhone(second.Phone ?? string.Empty),

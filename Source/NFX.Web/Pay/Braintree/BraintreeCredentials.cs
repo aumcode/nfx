@@ -15,6 +15,7 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
+using System.Text;
 
 using NFX.Security;
 
@@ -22,6 +23,9 @@ namespace NFX.Web.Pay.Braintree
 {
   public class BraintreeCredentials : Credentials
   {
+    private const string BASIC_AUTH = "Basic {0}";
+    private const string BASIC_AUTH_FORMAT = "{0}:{1}";
+
     public BraintreeCredentials(string merchantId, string publicKey, string privateKey)
     {
       MerchantID = merchantId;
@@ -34,18 +38,8 @@ namespace NFX.Web.Pay.Braintree
     public readonly string PrivateKey;
 
     public override string ToString() { return "[{0} {1}]".Args(MerchantID, PublicKey); }
-  }
 
-  public class BraintreeAuthCredentials : Credentials
-  {
-    public BraintreeAuthCredentials(string merchantId, string accessToken)
-    {
-      MerchantID = merchantId;
-      AccessToken = accessToken;
-    }
-    public readonly string MerchantID;
-    public readonly string AccessToken;
-
-    public override string ToString() { return "[{0} {1}]".Args(MerchantID, AccessToken); }
+    public string AuthorizationHeader
+    { get { return BASIC_AUTH.Args(Convert.ToBase64String(Encoding.UTF8.GetBytes(BASIC_AUTH_FORMAT.Args(PublicKey, PrivateKey)))); } }
   }
 }

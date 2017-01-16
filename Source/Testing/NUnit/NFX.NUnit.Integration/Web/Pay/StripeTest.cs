@@ -127,7 +127,7 @@ namespace NFX.NUnit.Integration.Web.Pay
       }
     }
 
-    // dlatushkin 20141201: 
+    // dlatushkin 20141201:
     //   refund reason
     //   actualaccountdata: +zip
     //   charge: + other address attributes
@@ -238,22 +238,6 @@ namespace NFX.NUnit.Integration.Web.Pay
     }
 
     [Test]
-    [ExpectedException(typeof(PaymentException))]
-    public void RefundDifferentCurrency()
-    {
-      var conf = LACONF.AsLaconicConfig();
-
-      using (new ServiceBaseApplication(null, conf))
-      {
-        var ps = PaySystem.Instances["stripe"];
-        using (var pss = ps.StartSession())
-        {
-          PayTestCommon.RefundDifferentCurrency(pss);
-        }
-      }
-    }
-
-    [Test]
     public void TransferToBank()
     {
       var conf = LACONF.AsLaconicConfig();
@@ -264,7 +248,7 @@ namespace NFX.NUnit.Integration.Web.Pay
         using (var pss = ps.StartSession())
         {
           PayTestCommon.TransferToBank(pss);
-        } 
+        }
       }
     }
 

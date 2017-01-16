@@ -52,8 +52,6 @@ namespace NFX.Security
      {
      }
 
-
-
      public override string ToString()
      {
        return "{0}({1})".Args(GetType().Name, GDID);

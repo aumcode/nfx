@@ -37,17 +37,11 @@ namespace NFX.Web.Pay.Braintree
       var merchantId = node.AttrByName("merchant-id").ValueAsString();
       if (merchantId.IsNullOrWhiteSpace()) return;
 
-      var accessToken = node.AttrByName("access-token").ValueAsString();
-      if (accessToken.IsNotNullOrWhiteSpace())
-        User = new User(new BraintreeAuthCredentials(merchantId, accessToken), new AuthenticationToken(BraintreeSystem.BRAINTREE_REALM, accessToken), merchantId, Rights.None);
-      else
-      {
-        var publicKey = node.AttrByName("public-key").ValueAsString();
-        var privateKey = node.AttrByName("private-key").ValueAsString();
-        if (publicKey.IsNullOrWhiteSpace() || privateKey.IsNullOrWhiteSpace()) return;
+      var publicKey = node.AttrByName("public-key").ValueAsString();
+      var privateKey = node.AttrByName("private-key").ValueAsString();
+      if (publicKey.IsNullOrWhiteSpace() || privateKey.IsNullOrWhiteSpace()) return;
 
-        User = new User(new BraintreeCredentials(merchantId, publicKey, privateKey), new AuthenticationToken(BraintreeSystem.BRAINTREE_REALM, publicKey), merchantId, Rights.None);
-      }
+      User = new User(new BraintreeCredentials(merchantId, publicKey, privateKey), new AuthenticationToken(BraintreeSystem.BRAINTREE_REALM, null), merchantId, Rights.None);
     }
   }
 }

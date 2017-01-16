@@ -152,7 +152,8 @@
                  description="D Kh"
                  status="System"
                  id="dima"
-                 password="0f5b25cd58319cde0e6e33715b66db4c"
+                 //password = thejake
+                 password='{"algo":"MD5","fam":"Text","hash":"\\/jps4fYHDMpfjbJag\\/\\/yhQ==","salt":"EHIMX9k8V0rtPwnLqeBO6eUe"}'
 
                 rights
 				{
@@ -168,7 +169,8 @@
                 description="S Al"
                 status="System"
                 id="serge"
-                password="eb2b0f82d5d1235eb5d5b8524ac3956e"
+                 //password = thejake
+                password='{"algo":"MD5","fam":"Text","hash":"\\/jps4fYHDMpfjbJag\\/\\/yhQ==","salt":"EHIMX9k8V0rtPwnLqeBO6eUe"}'
             }
         }
    }

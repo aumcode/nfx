@@ -48,7 +48,6 @@ namespace NFX.Security
           public static User Fake{ get{ return s_FakeUserInstance; } }
         #endregion
 
-
         #region .ctor
           private User() { } //for quicker serialization
 
@@ -77,8 +76,7 @@ namespace NFX.Security
           }
         #endregion
 
-
-        #region Private Props/Members
+        #region Fields
 
           private DateTime m_StatusTimeStampUTC;
 
@@ -94,7 +92,6 @@ namespace NFX.Security
           private Rights m_Rights;
 
         #endregion
-
 
         #region Properties
 
@@ -132,7 +129,6 @@ namespace NFX.Security
             get { return m_Status; }
           }
 
-
           /// <summary>
           /// Returns data bag that contains user rights. This is a framework-only internal property
           ///  which should not be used by application developers. This bag may get populated fully-or-partially
@@ -154,9 +150,10 @@ namespace NFX.Security
           {
               get { return App.SecurityManager.Authorize(this, permission); }
           }
+
         #endregion
 
-        #region Pub
+        #region Public
 
           /// <summary>
           /// Makes user invalid
@@ -174,21 +171,19 @@ namespace NFX.Security
                         string name,
                         string descr,
                         Rights rights)
-            {
-                if (object.ReferenceEquals(this, s_FakeUserInstance)) return;//Fake user is immutable
-                m_Status = status;
-                m_Name = name;
-                m_Description = descr;
-                m_Rights = rights;
-                m_StatusTimeStampUTC = App.TimeSource.UTCNow;
-            }
-
+          {
+              if (object.ReferenceEquals(this, s_FakeUserInstance)) return;//Fake user is immutable
+              m_Status = status;
+              m_Name = name;
+              m_Description = descr;
+              m_Rights = rights;
+              m_StatusTimeStampUTC = App.TimeSource.UTCNow;
+          }
 
           public override string ToString()
           {
             return "[{0}]{1},{2}".Args(Status, Name, Description);
           }
-
 
         #endregion
 

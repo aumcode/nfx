@@ -30,6 +30,13 @@ namespace WaveTestSite
   {
     static void Main(string[] args)
     {
+       // System.Threading.ThreadPool.SetMaxThreads(3000, 3000);
+       // System.Threading.ThreadPool.SetMinThreads(256, 256);
+
+       int wt, ct;
+       System.Threading.ThreadPool.GetAvailableThreads(out wt, out ct);
+       Console.WriteLine("Worker: {0}  Completion: {1}", wt, ct);
+
         try
         {
            using(new ServiceBaseApplication(args, null))

@@ -15,19 +15,21 @@ namespace NFX.Serialization.CSV
     public static void WriteToFile(RowsetBase rowset,
                                    string fileName,
                                    CSVWritingOptions options = null,
-                                   Encoding encoding = null)
+                                   Encoding encoding = null,
+                                   FieldFilterFunc filter = null)
     {
       using(var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-          Write(rowset, fs, options, encoding);
+          Write(rowset, fs, options, encoding, filter);
     }
 
     public static byte[] WriteToBuffer(RowsetBase rowset,
                                        CSVWritingOptions options = null,
-                                       Encoding encoding = null)
+                                       Encoding encoding = null,
+                                       FieldFilterFunc filter = null)
     {
       using(var ms = new MemoryStream())
       {
-        Write(rowset, ms, options, encoding);
+        Write(rowset, ms, options, encoding, filter);
         return ms.ToArray();
       }
     }
@@ -35,33 +37,37 @@ namespace NFX.Serialization.CSV
     public static void Write(RowsetBase rowset,
                              Stream stream,
                              CSVWritingOptions options = null,
-                             Encoding encoding = null)
+                             Encoding encoding = null,
+                             FieldFilterFunc filter = null)
     {
       using (var wri = new StreamWriter(stream, encoding ?? UTF8Encoding.UTF8))
       {
-        Write(rowset, wri, options);
+        Write(rowset, wri, options, filter);
       }
     }
 
     public static string Write(RowsetBase rowset,
-                               CSVWritingOptions options = null)
+                               CSVWritingOptions options = null,
+                               FieldFilterFunc filter = null)
     {
       var sb = new StringBuilder();
       using(var wri = new StringWriter(sb))
       {
-        Write(rowset, wri, options);
+        Write(rowset, wri, options, filter);
       }
 
       return sb.ToString();
     }
 
-    public static void Write(RowsetBase rowset, TextWriter wri, CSVWritingOptions options = null) 
+    public static void Write(RowsetBase rowset,
+                             TextWriter wri,
+                             CSVWritingOptions options = null,
+                             FieldFilterFunc filter = null)
     {
       if (rowset == null) return;
-
       if (options == null) options = CSVWritingOptions.Default;
 
-      var defs = getAcceptableDefs(rowset.Schema, options.LoadAllFields);
+      var defs = getAcceptableDefs(rowset.Schema, options.LoadAllFields, filter);
 
       if (options.IncludeHeader) writeHeader(defs, wri, options);
 
@@ -77,32 +83,35 @@ namespace NFX.Serialization.CSV
     public static void WriteToFile(Row row,
                                    string fileName,
                                    CSVWritingOptions options = null,
-                                   Encoding encoding = null)
+                                   Encoding encoding = null,
+                                   FieldFilterFunc filter = null)
     {
       using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
       {
-        Write(row, fs, options, encoding);
+        Write(row, fs, options, encoding, filter);
       }
     }
 
     public static byte[] WriteToBuffer(Row row,
                                        CSVWritingOptions options = null,
-                                       Encoding encoding = null)
+                                       Encoding encoding = null,
+                                       FieldFilterFunc filter = null)
     {
       using(var ms = new MemoryStream())
       {
-        Write(row, ms, options, encoding);
+        Write(row, ms, options, encoding, filter);
         return ms.ToArray();
       }
     }
 
     public static string Write(Row row,
-                               CSVWritingOptions options = null)
+                               CSVWritingOptions options = null,
+                               FieldFilterFunc filter = null)
     {
       var sb = new StringBuilder();
       using(var wri = new StringWriter(sb))
       {
-        Write(row, wri, options);
+        Write(row, wri, options, filter);
       }
 
       return sb.ToString();
@@ -111,21 +120,24 @@ namespace NFX.Serialization.CSV
     public static void Write(Row row,
                              Stream stream,
                              CSVWritingOptions options = null,
-                             Encoding encoding = null)
+                             Encoding encoding = null,
+                             FieldFilterFunc filter = null)
     {
       using (var wri = new StreamWriter(stream, encoding ?? Encoding.UTF8))
       {
-        Write(row, wri, options);
+        Write(row, wri, options, filter);
       }
     }
 
-    public static void Write(Row row, TextWriter wri, CSVWritingOptions options = null)
+    public static void Write(Row row,
+                             TextWriter wri,
+                             CSVWritingOptions options = null,
+                             FieldFilterFunc filter = null)
     {
       if (row == null) return;
-
       if (options == null) options = CSVWritingOptions.Default;
 
-      var defs = getAcceptableDefs(row.Schema, options.LoadAllFields);
+      var defs = getAcceptableDefs(row.Schema, options.LoadAllFields, filter);
 
       if (options.IncludeHeader) writeHeader(defs, wri, options);
 
@@ -133,17 +145,21 @@ namespace NFX.Serialization.CSV
     }
 
     #region .pvt
-      private static IEnumerable<Schema.FieldDef> getAcceptableDefs(Schema schema, bool allFields)
+      private static IEnumerable<Schema.FieldDef> getAcceptableDefs(Schema schema, bool allFields, FieldFilterFunc filter)
       {
-        if (schema == null) 
-          throw new NFXSerializationException("CSVWriter.getAcceptableDefs - schema is null");
+        if (schema == null)
+          throw new NFXSerializationException("CSVWriter.getAcceptableDefs(schema=null)");
 
-        if (allFields) return schema.FieldDefs;
+        filter = filter ?? ((r, k, fd) => true);
+        var filteredFields = schema.FieldDefs.Where(fd => filter(null, null, fd));
+
+        if (allFields) return filteredFields;
 
         var res = new List<Schema.FieldDef>();
 
-        foreach(var def in schema.FieldDefs)
+        foreach(var def in filteredFields)
         {
+          if (!filter(null, null, def)) continue;
           if (!isWritable(def)) continue;
           res.Add(def);
         }

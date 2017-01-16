@@ -16,11 +16,17 @@ namespace NFX.NUnit.Serialization
   [TestFixture]
   public class CSVWriterTest
   {
-   private readonly string header =
+   private readonly string m_Header =
 "SimpleStr,IntValue,FloatValue,DateValue,Multiline,Nullable,Quotes,Apostr,Comma\r\n";
 
-   private readonly string data = 
+   private readonly string m_FilteredHeader =
+"SimpleStr,IntValue\r\n";
+
+   private readonly string m_Data =
 "Doctor Aibolit,66,19.66,12/31/1966 19:08:59,\"Avva\r\nChichi\",,\"\"\"Barm\"\"alei\"\"\",Mc'Farlen,\"1,2,3\"\r\n";
+
+   private readonly string m_FilteredData =
+"Doctor Aibolit,66\r\n";
 
     private TeztRow m_Row;
 
@@ -47,7 +53,7 @@ namespace NFX.NUnit.Serialization
     public void Row_Default()
     {
       var res = CSVWriter.Write(m_Row);
-      var str = header + data;
+      var str = m_Header + m_Data;
       Assert.AreEqual(str, res);
     }
 
@@ -65,18 +71,18 @@ namespace NFX.NUnit.Serialization
     public void Row_CustomNull()
     {
       var res = CSVWriter.Write(m_Row, new CSVWritingOptions {NullValue="\0"});
-      var d = 
+      var d =
 "Doctor Aibolit,66,19.66,12/31/1966 19:08:59,\"Avva\r\nChichi\",\0,\"\"\"Barm\"\"alei\"\"\",Mc'Farlen,\"1,2,3\"\r\n";
-      Assert.AreEqual(header + d, res);
+      Assert.AreEqual(m_Header + d, res);
     }
 
     [Test]
     public void Row_AllFields()
     {
       var res = CSVWriter.Write(m_Row,  CSVWritingOptions.AllFields);
-      var h = 
+      var h =
 "SimpleStr,IntValue,FloatValue,DateValue,NonUIValue,Multiline,Nullable,Quotes,Apostr,Comma\r\n";
-      var d = 
+      var d =
 "Doctor Aibolit,66,19.66,12/31/1966 19:08:59,nothing,\"Avva\r\nChichi\",,\"\"\"Barm\"\"alei\"\"\",Mc'Farlen,\"1,2,3\"\r\n";
       Assert.AreEqual(h + d, res);
     }
@@ -85,7 +91,7 @@ namespace NFX.NUnit.Serialization
     public void Row_NoHeader()
     {
       var res = CSVWriter.Write(m_Row, CSVWritingOptions.NoHeader);
-      Assert.AreEqual(data, res);
+      Assert.AreEqual(m_Data, res);
     }
 
     [Test]
@@ -97,7 +103,23 @@ namespace NFX.NUnit.Serialization
       rowset.Add(m_Row);
 
       var res = CSVWriter.Write(rowset);
-      var str = header + data + data;
+      var str = m_Header + m_Data + m_Data;
+      Assert.AreEqual(str, res);
+    }
+
+    [Test]
+    public void Rowset_Filter()
+    {
+      var rowset = new Rowset(m_Row.Schema);
+
+      rowset.Add(m_Row);
+      rowset.Add(m_Row);
+
+      FieldFilterFunc filter = (r, k, fd) => fd.Name.EqualsIgnoreCase("SimpleStr") ||
+                                             fd.Name.EqualsIgnoreCase("IntValue");
+
+      var res = CSVWriter.Write(rowset, filter: filter);
+      var str = m_FilteredHeader + m_FilteredData + m_FilteredData;
       Assert.AreEqual(str, res);
     }
 
@@ -110,7 +132,7 @@ namespace NFX.NUnit.Serialization
       rowset.Add(m_Row);
 
       var res = CSVWriter.Write(rowset, CSVWritingOptions.NoHeader);
-      var str = data + data;
+      var str = m_Data + m_Data;
       Assert.AreEqual(str, res);
     }
 
@@ -120,7 +142,7 @@ namespace NFX.NUnit.Serialization
       var encoding = new UTF8Encoding(false);
       var buffer = CSVWriter.WriteToBuffer(m_Row, encoding: encoding);
 
-      var test = encoding.GetBytes(header + data);
+      var test = encoding.GetBytes(m_Header + m_Data);
 
       Assert.IsTrue(IOMiscUtils.MemBufferEquals(test, buffer));
     }
@@ -133,7 +155,7 @@ namespace NFX.NUnit.Serialization
       CSVWriter.WriteToFile(m_Row, name);
       Assert.IsTrue(File.Exists(name));
 
-      var str = header + data;
+      var str = m_Header + m_Data;
       string res = System.IO.File.ReadAllText(name);
       Assert.AreEqual(str, res);
 
@@ -159,7 +181,7 @@ namespace NFX.NUnit.Serialization
                   FieldB = "B",
                   FieldC = "C"
                 };
-      
+
       var res = CSVWriter.Write(row);
       Assert.IsEmpty(res);
 
@@ -174,7 +196,7 @@ namespace NFX.NUnit.Serialization
       [Field] public int      IntValue       { get; set; }
       [Field] public float    FloatValue     { get; set; }
       [Field] public DateTime DateValue      { get; set; }
-      [Field(nonUI:true)]                    
+      [Field(nonUI:true)]
               public string   NonUIValue     { get; set; }
       [Field] public string   Multiline      { get; set; }
       [Field] public string   Nullable       { get; set; }

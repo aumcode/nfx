@@ -129,6 +129,8 @@ namespace NFX.DataAccess.Distributed
           return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
         }
 
+        public string ToHexString() { return Era.ToString("X8") + ID.ToString("X16"); }
+
         public override int GetHashCode()
         {
  	        return (int)Era ^ (int)ID ^ (int)(ID >> 32);
@@ -245,63 +247,64 @@ namespace NFX.DataAccess.Distributed
         {
           gdid = GDID.Zero;
 
-          var ix = str.IndexOf("0x", StringComparison.OrdinalIgnoreCase);
-          if (ix>-1)//HEX format
+          var ic = str.IndexOf(':');
+          if (ic>-1) //regular Era:Auth:Counter format
           {
-            ix+=2;//skip 0x
-            var buf = new byte[sizeof(uint) + sizeof(ulong)];
-            var j = 0;
-            for(var i=ix; i<str.Length;)
-            {
-              var dh = hexDigit(str[i]); i++;
-              if (dh<0 || i==str.Length) return false;
-              var dl = hexDigit(str[i]); i++;
-              if (dl<0) return false;
+            const int MIN_LEN = 5;// "0:0:0"
+            if (str.IsNullOrWhiteSpace() || str.Length<MIN_LEN) return false;
 
-              if (j==buf.Length) return false;
-              buf[j] = (byte)((dh << 4) + dl);
-              j++;
-            }
-            if (j<buf.Length) return false;
+            string sera, sau, sctr;
+            var i1 = ic;
+            if (i1<=0 || i1==str.Length-1) return false;
 
-            gdid = new GDID(buf);
+            sera = str.Substring(0, i1);
+
+            var i2 = str.IndexOf(':', i1+1);
+            if (i2<0 || i2==str.Length-1 || i2==i1+1) return false;
+
+            sau = str.Substring(i1+1, i2-i1-1);
+
+            sctr = str.Substring(i2+1);
+
+            uint era=0;
+            if (!uint.TryParse(sera, out era)) return false;
+
+            byte au=0;
+            if (!byte.TryParse(sau, out au)) return false;
+
+            ulong ctr;
+            if (!ulong.TryParse(sctr, out ctr)) return false;
+
+            if (au>AUTHORITY_MAX || ctr>COUNTER_MAX) return false;
+
+            gdid = new GDID(era, au, ctr);
             return true;
-          }//HEX format
+          }
 
-          //regular Era:Auth:Counter format
-          const int MIN_LEN = 5;// "0:0:0"
-          if (str.IsNullOrWhiteSpace() || str.Length<MIN_LEN) return false;
+          //HEX format
+          str.Trim();
+          var ix = str.IndexOf("0x", StringComparison.OrdinalIgnoreCase);
+          if (ix == 0) ix += 2;//skip 0x
+          else ix = 0;
 
-          string sera, sau, sctr;
-          var i1 = str.IndexOf(':', 0);
-          if (i1<=0 || i1==str.Length-1) return false;
+          var buf = new byte[sizeof(uint) + sizeof(ulong)];
+          var j = 0;
+          for(var i=ix; i<str.Length;)
+          {
+            var dh = hexDigit(str[i]); i++;
+            if (dh<0 || i==str.Length) return false;
+            var dl = hexDigit(str[i]); i++;
+            if (dl<0) return false;
 
-          sera = str.Substring(0, i1);
+            if (j==buf.Length) return false;
+            buf[j] = (byte)((dh << 4) + dl);
+            j++;
+          }
+          if (j<buf.Length) return false;
 
-          var i2 = str.IndexOf(':', i1+1);
-          if (i2<0 || i2==str.Length-1 || i2==i1+1) return false;
-
-          sau = str.Substring(i1+1, i2-i1-1);
-
-          sctr = str.Substring(i2+1);
-
-
-
-          uint era=0;
-          if (!uint.TryParse(sera, out era)) return false;
-
-          byte au=0;
-          if (!byte.TryParse(sau, out au)) return false;
-
-          ulong ctr;
-          if (!ulong.TryParse(sctr, out ctr)) return false;
-
-          if (au>AUTHORITY_MAX || ctr>COUNTER_MAX) return false;
-
-          gdid = new GDID(era, au, ctr);
+          gdid = new GDID(buf);
           return true;
         }
-
   }
 
 

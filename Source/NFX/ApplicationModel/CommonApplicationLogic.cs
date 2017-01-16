@@ -76,6 +76,11 @@ namespace NFX.ApplicationModel
 
     #region .ctor/.dctor
 
+      protected CommonApplicationLogic(string name)
+      {
+          m_Name = name;
+      }
+
       protected override void Destructor()
       {
           m_ShutdownStarted = true;
@@ -470,12 +475,12 @@ namespace NFX.ApplicationModel
 
 
       protected void WriteLog(MessageType type,
-                            string from,
-                            string msgText,
-                            Exception error = null,
-                            [CallerFilePath]string file = "",
-                            [CallerLineNumber]int line = 0,
-                            object pars = null)
+                              string from,
+                              string msgText,
+                              Exception error = null,
+                              [CallerFilePath]string file = "",
+                              [CallerLineNumber]int line = 0,
+                              object pars = null)
       {
           if (m_Log==null) return;
 

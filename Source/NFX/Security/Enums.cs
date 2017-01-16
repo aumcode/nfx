@@ -28,30 +28,29 @@ namespace NFX.Security
   /// </summary>
   public enum UserStatus
   {
+    /// <summary>
+    /// Invalid user, not authenticated and not authorized
+    /// </summary>
+    Invalid = 0,
 
-        /// <summary>
-        /// Invalid user, not authenticated and not authorized
-        /// </summary>
-        Invalid = 0,
+    /// <summary>
+    /// The lowest level of a user, bound by permissions inside their domain and domain section (such as facility)
+    /// </summary>
+    User = 1,
+    Usr = User,
 
-        /// <summary>
-        /// The lowest level of a user, bound by permissions inside their domain and domain section (such as facility)
-        /// </summary>
-        User = 1,
-        Usr = User,
+    /// <summary>
+    /// Administrators may run administration console, but always bound by their domain
+    /// </summary>
+    Administrator = 1000,
 
-        /// <summary>
-        /// Administrators may run administration console, but always bound by their domain
-        /// </summary>
-        Administrator = 1000,
+    Admin = Administrator,
+    Adm = Administrator,
 
-        Admin = Administrator,
-        Adm = Administrator,
-
-        /// <summary>
-        /// Cross domain user, all restrictions are lifted
-        /// </summary>
-        System = 1000000,
-        Sys = System,
+    /// <summary>
+    /// Cross domain user, all restrictions are lifted
+    /// </summary>
+    System = 1000000,
+    Sys = System,
   }
 }

@@ -409,7 +409,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       // (!!!!!) STATUS_VALID with error in 'messages' with 'code'="Invalid"
       var crazy = new Address
       {
-        Name = "Stan Ulam",
+        PersonName = "Stan Ulam",
         Country = "USA",
         Region = "NM",
         City = "NEW YORK",
@@ -436,7 +436,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       {
         var address = new Address
         {
-          Name = "Stan Ulam",
+          PersonName = "Stan Ulam",
           Country = "USA",
           Region = "IN",
           City = "INDIANAPOLIS",
@@ -462,7 +462,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         address = new Address
         {
-          Name = "Stan Ulam",
+          PersonName = "Stan Ulam",
           Country = "USA",
           Region = "NM",
           City = "LOS ALAMOS",
@@ -499,7 +499,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
     {
       var result = new Address
       {
-        Name = "Stan Ulam",
+        PersonName = "Stan Ulam",
         Country = "USA",
         Region = "NM",
         City = "LOS ALAMOS",
@@ -527,7 +527,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         Template = template,
         FromAddress = new Address
         {
-          Name = "J. London",
+          PersonName = "J. London",
           Country = "US",
           Region = "NY",
           City = "New York",
@@ -538,7 +538,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         },
         ToAddress = new Address
         {
-          Name = "A. Einstein",
+          PersonName = "A. Einstein",
           Country = "US",
           Region = "CA",
           City = "Los Angeles",

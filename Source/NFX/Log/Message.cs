@@ -58,9 +58,7 @@ namespace NFX.Log
       private Exception m_Exception;
     #endregion
 
-
     #region Properties
-
         /// <summary>
         /// Returns global unique identifier for this particular message
         /// </summary>
@@ -163,9 +161,7 @@ namespace NFX.Log
           get { return m_Exception; }
           set { m_Exception = value; }
         }
-
     #endregion
-
 
     public Message()
     {
@@ -182,8 +178,6 @@ namespace NFX.Log
       SetParamsAsObject( FormatCallerParams(pars, file, line) );
       Source = line;
     }
-
-
 
     public override string ToString()
     {
@@ -230,6 +224,23 @@ namespace NFX.Log
       return this;
     }
 
+    public Message Clone()
+    {
+      return new Message
+      {
+        m_Guid = m_Guid,
+        m_RelatedTo = m_RelatedTo,
+        m_Type = m_Type,
+        m_Source = m_Source,
+        m_TimeStamp = m_TimeStamp,
+        m_Host = m_Host,
+        m_From = m_From,
+        m_Topic = m_Topic,
+        m_Text = m_Text,
+        m_Parameters = m_Parameters,
+        m_Exception = m_Exception
+      };
+    }
   }
 
   internal class MessageList : List<Message>

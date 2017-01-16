@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 
 using NFX.Environment;
 using NFX.ServiceModel;
+using NFX.Log;
 
 namespace NFX.Web.Pay
 {
@@ -36,20 +37,14 @@ namespace NFX.Web.Pay
   public interface IPaySystemHost: INamed
   {
     /// <summary>
-    /// Generates new transaction ID for desired pay session and transaction type (Charge, Transfer, Refund).
-    /// Context supplies host specific information about this transation i.e. user id
-    /// </summary>
-    object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type);
-
-    /// <summary>
     /// Returns a transaction with specified ID from storage or null
     /// </summary>
-    Transaction FetchTransaction(ITransactionContext context, object id);
+    Transaction FetchTransaction(object id);
 
     /// <summary>
     /// Returns actual data for supplied account object
     /// </summary>
-    IActualAccountData AccountToActualData(ITransactionContext context, Account account);
+    IActualAccountData FetchAccountData(Account account);
 
     /// <summary>
     /// Currency market
@@ -66,19 +61,14 @@ namespace NFX.Web.Pay
   /// Denotes a context of transaction execution.
   /// Can be used to provide additional information
   /// </summary>
-  public interface ITransactionContext { }
-
-  public interface IOrderTransactionContext : ITransactionContext
-  {
-    object CustomerId { get; }
-    object OrderId { get; }
-    object VendorId { get; }
-    bool IsNewCustomer { get; }
-  }
+  public interface IPaySessionContext { }
 
   public abstract class PaySystemHost : ServiceWithInstrumentationBase<object>, IPaySystemHostImplementation
   {
-
+    #region CONST
+    private const string LOG_TOPIC = "PaySystemHost";
+    private const MessageType DEFAULT_LOG_LEVEL = MessageType.Warning;
+    #endregion
 
     #region .ctor
     protected PaySystemHost(string name, IConfigSectionNode node): this(name, node, null) { }
@@ -94,19 +84,51 @@ namespace NFX.Web.Pay
     /// <summary>
     /// Implements IInstrumentable
     /// </summary>
-    public override bool InstrumentationEnabled
-    {
-      get { return false; }
-      set { }
-    }
+    public override bool InstrumentationEnabled { get { return false; } set { } }
+
+    [Config(Default = DEFAULT_LOG_LEVEL)]
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_PAY)]
+    public MessageType LogLevel { get; set; }
     #endregion
+
+    public Transaction FetchTransaction(object id)
+    { return DoFetchTransaction(null, id); }
+
+    public IActualAccountData FetchAccountData(Account account)
+    { return DoFetchAccountData(null, account); }
 
     public abstract ICurrencyMarket CurrencyMarket { get; }
 
-    public abstract IActualAccountData AccountToActualData(ITransactionContext context, Account account);
+    protected internal virtual IPaySessionContext GetDefaultTransactionContext() { return null; }
 
-    public abstract Transaction FetchTransaction(ITransactionContext context, object id);
+    protected internal abstract object DoGenerateTransactionID(PaySession session, TransactionType type);
 
-    public abstract object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type);
+    protected internal abstract Transaction DoFetchTransaction(PaySession session, object id);
+
+    protected internal abstract IActualAccountData DoFetchAccountData(PaySession session, Account account);
+
+    protected internal abstract void DoStoreTransaction(PaySession session, Transaction tran);
+
+    protected internal abstract void DoStoreAccountData(PaySession session, IActualAccountData accoundData);
+
+    protected internal virtual Guid Log(MessageType type, string from, string message, Exception error = null, Guid? relatedMessageID = null, string parameters = null)
+    {
+      if (type < LogLevel) return Guid.Empty;
+
+      var logMessage = new Message
+      {
+        Topic = LOG_TOPIC,
+        Text = message ?? string.Empty,
+        Type = type,
+        From = "{0}.{1}".Args(this.GetType().Name, from),
+        Exception = error,
+        Parameters = parameters
+      };
+      if (relatedMessageID.HasValue) logMessage.RelatedTo = relatedMessageID.Value;
+
+      App.Log.Write(logMessage);
+
+      return logMessage.Guid;
+    }
   }
 }

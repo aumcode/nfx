@@ -68,22 +68,15 @@ namespace NFX.Security
        get { return m_UserName ?? string.Empty; }
      }
 
-
-
-
      public override void Forget()
      {
        m_Token = string.Empty;
        base.Forget();
      }
 
-
-
      public override string ToString()
      {
        return "{0}({1}:{2})".Args(GetType().Name, NetName, UserName);
      }
-
-
   }
 }

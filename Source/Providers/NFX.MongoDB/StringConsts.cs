@@ -46,11 +46,11 @@ namespace NFX.DataAccess.MongoDB
     public const string CONNECTION_EXISTING_ACQUISITION_ERROR =
         "Could not obtain a connection to '{0}' as the connection limit of {1} is set and {2} ms existing acquisition timeout has passed";
 
-    public const string MODEL_TYPE_NOT_RECORD_ERROR =
-        "Model is not of a 'Record' type. Passed type: {0}. Check provider implementation";
+    //public const string MODEL_TYPE_NOT_RECORD_ERROR =
+    //    "Model is not of a 'Record' type. Passed type: {0}. Check provider implementation";
 
-    public const string RECORD_TABLE_NAME_ERROR =
-        "Record's 'TableName' property is blank. Passed type: '{0}'. Check record implementation";
+    //public const string RECORD_TABLE_NAME_ERROR =
+    //    "Record's 'TableName' property is blank. Passed type: '{0}'. Check record implementation";
 
     public const string COLLECTION_DOES_NOT_EXIST_ERROR =
         "Record's 'TableName' property specifies a collection that does not exist: '{0}'";

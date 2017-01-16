@@ -107,7 +107,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.SVN
             Assert.AreEqual("/trunk/Source", dir.Path);
             Assert.AreEqual("/trunk", dir.ParentPath);
           }
-        } 
+        }
       }
     }
 
@@ -123,7 +123,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.SVN
 
           Assert.IsNotNull(file);
           Assert.AreEqual("/trunk/Source/NFX/LICENSE.txt", file.Path);
-        }  
+        }
       }
     }
 
@@ -138,7 +138,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.SVN
           var file = session["/trunk/Source/NFX/LICENSE.txt"] as FileSystemFile;
 
           Assert.IsTrue(file.ReadAllText().IsNotNullOrEmpty());
-        }  
+        }
       }
     }
 
@@ -156,7 +156,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.SVN
 
           Assert.AreEqual(5, preVersions.Count());
           Assert.AreEqual(preVersions.Last().Name.AsInt() + 1, currentVersion.Name.AsInt());
-        }  
+        }
       }
     }
 
@@ -167,22 +167,22 @@ namespace NFX.NUnit.Integration.IO.FileSystem.SVN
       {
         IList<WebDAV.Version> versions = WebDAV.GetVersions(SVN_ROOT, SVN_UNAME, SVN_UPSW).ToList();
 
-        WebDAV.Version v1530 = versions.First(v => v.Name == "1530");
-        WebDAV.Version v1531 = versions.First(v => v.Name == "1531");
+        WebDAV.Version v192 = versions.First(v => v.Name == "192");
+        WebDAV.Version v110 = versions.First(v => v.Name == "110");
 
         var fs = FS.Instances["NFX-SVN"];
         using (var session = fs.StartSession())
         {
-          session.Version = v1530;
-          var file1530 = session["trunk/Source/NFX.Web/IO/FileSystem/SVN/WebDAV.cs"] as FileSystemFile;
-          string content1530 = file1530.ReadAllText();
+          session.Version = v192;
+          var file192 = session["trunk/Source/NFX.Wave/Templatization/StockContent/Embedded/script/wv.js"] as FileSystemFile;
+          string content1530 = file192.ReadAllText();
 
-          session.Version = v1531;
-          var file1531 = session["trunk/Source/NFX.Web/IO/FileSystem/SVN/WebDAV.cs"] as FileSystemFile;
-          string content1531 = file1531.ReadAllText();
+          session.Version = v110;
+          var file110 = session["trunk/Source/NFX.Wave/Templatization/StockContent/Embedded/script/wv.js"] as FileSystemFile;
+          string content1531 = file110.ReadAllText();
 
           Assert.AreNotEqual(content1530, content1531);
-        }  
+        }
       }
     }
 
@@ -196,7 +196,7 @@ namespace NFX.NUnit.Integration.IO.FileSystem.SVN
         using (var session = fs.StartSession(CONN_PARAMS_TIMEOUT))
         {
           var dir = session[string.Empty] as FileSystemDirectory;
-        } 
+        }
       }
     }
   }

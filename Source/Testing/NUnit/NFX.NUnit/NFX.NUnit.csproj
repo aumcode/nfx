@@ -105,6 +105,7 @@
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
+    <Compile Include="Security\PasswordManagerTests.cs" />
     <Compile Include="Serialization\CSVWriterTest.cs" />
     <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
     <Compile Include="Serialization\CSVParserTest.cs" />

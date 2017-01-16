@@ -25,9 +25,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
 using NFX.Parsing;
-using System.Net;
+using NFX.Security;
+
 
 namespace NFX.IO
 {
@@ -53,7 +55,36 @@ namespace NFX.IO
           Console.Write(substitute);
 
       }
+    }
 
+    /// <summary>
+    /// Reads password from console displaying substitute characters instead of real ones
+    /// into a sealed SecureBuffer
+    /// </summary>
+    public static SecureBuffer ReadPasswordToSecureBuffer(char substitute)
+    {
+      var result = new SecureBuffer();
+
+      while (true)
+      {
+        char c = Console.ReadKey(true).KeyChar;
+        if (Char.IsControl(c))
+        {
+          result.Seal();
+          return result;
+        }
+
+        var buf = Encoding.UTF8.GetBytes(new char[]{ c });
+
+        for(var i=0; i< buf.Length; i++)
+          result.Push(buf[i]);
+
+        Array.Clear(buf, 0, buf.Length);
+
+        if (substitute != (char)0)
+          Console.Write(substitute);
+
+      }
     }
 
 

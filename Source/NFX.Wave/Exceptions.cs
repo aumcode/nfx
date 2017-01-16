@@ -126,12 +126,24 @@ namespace NFX.Wave
   /// <summary>
   /// Thrown by filter pipeline
   /// </summary>
+  [Serializable]
   public class FilterPipelineException : WaveException
   {
-    public readonly WorkFilter Filter;
+    public readonly Type FilterType;
+    public readonly string FilterName;
+    public readonly int FilterOrder;
+    public readonly Type HandlerType;
+    public readonly string HandlerName;
     public FilterPipelineException(WorkFilter filter, Exception inner) : base(inner.Message, inner)
     {
-      Filter = filter;
+      FilterType = filter.GetType();
+      FilterName = filter.Name;
+      FilterOrder = filter.Order;
+      if (filter.Handler != null)
+      {
+        HandlerType = filter.Handler.GetType();
+        HandlerName = filter.Handler.Name;
+      }
     }
 
 
@@ -147,7 +159,7 @@ namespace NFX.Wave
          Exception error = this;//.InnerException;
          while(error is FilterPipelineException)
          {
-            result += "{0} > ".Args(((FilterPipelineException)error).Filter.Name);
+            result += "{0} > ".Args(((FilterPipelineException)error).FilterName);
             error = error.InnerException;
          }
 
