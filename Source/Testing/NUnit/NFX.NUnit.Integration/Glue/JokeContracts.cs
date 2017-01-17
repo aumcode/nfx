@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2016 IT Adapter Inc.
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -145,10 +145,10 @@ namespace NFX.NUnit.Integration.Glue
             {
               var cl = new JokeContractClient(TestServerSyncNode);
                 cl.Headers.Add( new AuthenticationHeader( TestCredentials ) );
-            
+
                 var result = cl.Echo("Gello A!");
 
-                Assert.IsTrue(result.StartsWith("Server echoed Gello A!"));                              
+                Assert.IsTrue(result.StartsWith("Server echoed Gello A!"));
             }
         }
 
@@ -159,10 +159,10 @@ namespace NFX.NUnit.Integration.Glue
             {
               var cl = new JokeContractClient(TestServerMpxNode);
                 cl.Headers.Add( new AuthenticationHeader( TestCredentials ) );
-            
+
                 var result = cl.Echo("Gello A!");
 
-                Assert.IsTrue(result.StartsWith("Server echoed Gello A!"));                              
+                Assert.IsTrue(result.StartsWith("Server echoed Gello A!"));
             }
         }
 
@@ -173,12 +173,12 @@ namespace NFX.NUnit.Integration.Glue
             {
               var cl = new JokeContractClient(TestServerSyncNode);
               cl.Headers.Add(new AuthenticationHeader(TestCredentials));
-            
+
                 var call = cl.Async_Echo("Gello B!");
 
                 var result = call.GetValue<string>();
 
-                Assert.IsTrue(result.StartsWith("Server echoed Gello B!"));               
+                Assert.IsTrue(result.StartsWith("Server echoed Gello B!"));
             }
         }
 
@@ -189,39 +189,39 @@ namespace NFX.NUnit.Integration.Glue
             {
               var cl = new JokeContractClient(TestServerMpxNode);
               cl.Headers.Add(new AuthenticationHeader(TestCredentials));
-            
+
                 var call = cl.Async_Echo("Gello B!");
 
                 var result = call.GetValue<string>();
 
-                Assert.IsTrue(result.StartsWith("Server echoed Gello B!"));               
+                Assert.IsTrue(result.StartsWith("Server echoed Gello B!"));
             }
         }
 
         [TestCase]
-        [ExpectedException(typeof(WrappedException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
+        [ExpectedException(typeof(RemoteException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
         public void Sync_JokeContract_Expected_Security_Exception()
         {
           using (JokeHelper.MakeApp())
             {
                 var cl = new JokeContractClient(TestServerSyncNode);
-                          
+
                 var result = cl.Echo("Blah");//throws sec exception
             }
         }
 
         [TestCase]
-        [ExpectedException(typeof(WrappedException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
+        [ExpectedException(typeof(RemoteException), ExpectedMessage="NFX.Security.AuthorizationException", MatchType=MessageMatch.Contains)]
         public void MPX_JokeContract_Expected_Security_Exception()
         {
           using (JokeHelper.MakeApp())
             {
                 var cl = new JokeContractClient(TestServerMpxNode);
-                          
+
                 var result = cl.Echo("Blah");//throws sec exception
             }
         }
-        
+
 
     }
 }

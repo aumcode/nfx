@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2016 IT Adapter Inc.
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,11 +24,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NFX.Web")]
-[assembly: AssemblyDescription(" Web functionality")]
+[assembly: AssemblyDescription("NFX Web functionality")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IT Adapter Inc")]
 [assembly: AssemblyProduct("NFX.Web")]
-[assembly: AssemblyCopyright("Copyright © ITAdapter Inc 2009-2016")]
+[assembly: AssemblyCopyright("Copyright © ITAdapter Inc 2005-2017")]
 [assembly: AssemblyTrademark("NFX")]
 [assembly: AssemblyCulture("")]
 

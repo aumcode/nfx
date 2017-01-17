@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2016 IT Adapter Inc.
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IT Adapter Inc")]
 [assembly: AssemblyProduct("NFX.Wave")]
-[assembly: AssemblyCopyright("Copyright ©  2003-2016 IT Adapter Inc")]
+[assembly: AssemblyCopyright("Copyright ©  2009-2017 IT Adapter Inc")]
 [assembly: AssemblyTrademark("NFX")]
 [assembly: AssemblyCulture("")]
 

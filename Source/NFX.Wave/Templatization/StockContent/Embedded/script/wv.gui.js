@@ -4418,64 +4418,6 @@ WAVE.GUI = (function(){
       return chain;
     };//ChainSelector
 
-    published.CLS_SELECT_CONTAINER = "wvSelectContainer";
-    published.CLS_SELECT_COMBOBOX = "wvSelectCombobox";
-    published.CLS_SELECT_DROPDOWN = "wvSelectDropdown";
-
-    published.EVT_SELECT_CHANGE = "wv-select-change";
-    published.EVT_SELECT_OPEN = "wv-select-opan";
-    published.EVT_SELECT_CLOSE = "wv-select-close";
-    published.EVT_SELECT_SELECT = "wv-select-select";
-    published.EVT_SELECT_UNSELECT = "wv-select-unselect";
-
-    var fSelectSeed = 0;
-    //{
-    //  DIV: id
-    //}
-    published.Select = function (init) {
-      if (!WAVE.exists(init)) throw "Select.ctor(init=null)";
-      if (WAVE.strEmpty(init.DIV)) throw "Select.ctor(init.DIV=null)";
-
-      var fDIV = WAVE.id(init.DIV);
-      if (fDIV === null) throw "Select.ctor(DIV=null)";
-
-      var select = this,
-          fContainer = null,
-          fCombobox = null,
-          fDropdown = null,
-          fIdSeed = "select_" + fSelectSeed++,
-          fIds = {
-            container : IdFor("container"),
-            combobox: IdFor("combobox"),
-            dropdown: IdFor("dropdown")
-          };
-
-      WAVE.extend(select, WAVE.EventManager);
-
-      function IdFor(what) { return fIdSeed + "_" + what; }
-      function createElemet(tag, id, className) {
-        var element = document.createElement(tag);
-        element.id = id;
-        element.className = className;
-        return element;
-      }
-
-      function build() {
-        fContainer = createElemet("div", fIds.container, published.CLS_SELECT_CONTAINER);
-        fDIV.appendChild(fContainer);
-
-        fCombobox = createElemet("div", fIds.combobox, published.CLS_SELECT_COMBOBOX)
-        fDIV.appendChild(fCombobox);
-
-        fDropdown = createElemet("div", fIds.dropdown, published.CLS_SELECT_DROPDOWN)
-        fDIV.appendChild(fDropdown);
-      }
-
-      build();
-
-      return select;
-    };//Select
-
     return published;
 }());//WAVE.GUI
 

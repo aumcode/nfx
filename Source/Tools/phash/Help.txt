@@ -11,7 +11,7 @@
  Options:
 
  <f color=darkCyan>/h | /help | /?<f color=gray> - displays help message
- <f color=darkCyan>/pp | /prettyf <f color=gray> - pretty prints hashed password
+ <f color=darkCyan>/pp | /pretty <f color=gray> - pretty prints hashed password
  <f color=darkCyan>/ne | /noentropy <f color=gray> - precludes entropy acquisition from user
  <f color=darkCyan>/st | /score  <int><f color=gray> - strength score threshold
 

@@ -96,6 +96,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "closure-compiler", "closure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buildinfo", "Tools\buildinfo\buildinfo.csproj", "{BE7C8F73-99EF-4294-82BF-234409CB093F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFX.Erlang", "NFX.Erlang\NFX.Erlang.csproj", "{F4CC3692-4836-429B-9F43-908D9E99B458}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -206,6 +208,10 @@ Global
 		{BE7C8F73-99EF-4294-82BF-234409CB093F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE7C8F73-99EF-4294-82BF-234409CB093F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE7C8F73-99EF-4294-82BF-234409CB093F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4CC3692-4836-429B-9F43-908D9E99B458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4CC3692-4836-429B-9F43-908D9E99B458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4CC3692-4836-429B-9F43-908D9E99B458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4CC3692-4836-429B-9F43-908D9E99B458}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

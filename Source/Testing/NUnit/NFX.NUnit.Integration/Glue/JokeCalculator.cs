@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2016 IT Adapter Inc.
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace NFX.NUnit.Integration.Glue
   public class JokeCalculator: JokeTestBase
   {
     [Test]
-    [ExpectedException(typeof(WrappedException))]
+    [ExpectedException(typeof(RemoteException))]
     public void ExceptionBeforeInit()
     {
       using (JokeHelper.MakeApp())
@@ -48,7 +48,7 @@ namespace NFX.NUnit.Integration.Glue
     }
 
     [Test]
-    [ExpectedException(typeof(WrappedException))]
+    [ExpectedException(typeof(RemoteException))]
     public void ExceptionAfterDestructor()
     {
       using (JokeHelper.MakeApp())
@@ -77,7 +77,7 @@ namespace NFX.NUnit.Integration.Glue
           cl.Add(10);
           int result = cl.Sub(3);
 
-          Assert.AreEqual(7, result); 
+          Assert.AreEqual(7, result);
         }
       }
     }

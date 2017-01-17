@@ -109,7 +109,6 @@
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.CopyAndSelect.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.select.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.selector-chain.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />

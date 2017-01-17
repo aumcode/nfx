@@ -436,10 +436,10 @@
     {
       user
       {
-        name="Denis"
-        description="Denis dxw"
-        id="dxw"
-        password="5757157e52327643a4d26339bf107b5e"
+        name="Dima"
+        description="Dima"
+        id="dima"
+        password='{"algo":"MD5","fam":"Text","hash":"ZcrDK120Iwj08Qqfzvz95w==","salt":"e0K7BA4Ylby2kWAp3nCR3A9jSw=="}'
         status="User"
         rights
         {

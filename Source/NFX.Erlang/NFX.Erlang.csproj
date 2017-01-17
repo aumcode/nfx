@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4CC3692-4836-429B-9F43-908D9E99B458}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFX.Erlang</RootNamespace>
+    <AssemblyName>NFX.Erlang</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Debug\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connect\ErlAbstractConnection.cs" />
+    <Compile Include="Connect\ErlAbstractNode.cs" />
+    <Compile Include="Connect\ErlConnection.cs" />
+    <Compile Include="Connect\ErlEpmd.cs" />
+    <Compile Include="Connect\ErlLink.cs" />
+    <Compile Include="Connect\ErlLocalNode.cs" />
+    <Compile Include="Connect\ErlMbox.cs" />
+    <Compile Include="Connect\ErlMsg.cs" />
+    <Compile Include="Connect\ErlRemoteNode.cs" />
+    <Compile Include="Connect\ErlTransportTrace.cs" />
+    <Compile Include="Connect\Transport\ErlTcpTransport.cs" />
+    <Compile Include="Connect\Transport\ErlTransportFactory.cs" />
+    <Compile Include="Connect\Transport\ErlTransportPasswordSource.cs" />
+    <Compile Include="Connect\Transport\IErlTransport.cs" />
+    <Compile Include="DataAccess\ErlCRUDMailbox.cs" />
+    <Compile Include="DataAccess\ErlCRUDQueryExecutionContext.cs" />
+    <Compile Include="DataAccess\ErlCRUDScriptQueryHandler.cs" />
+    <Compile Include="DataAccess\ErlCRUDSubscription.cs" />
+    <Compile Include="DataAccess\ErlDataAccessException.cs" />
+    <Compile Include="DataAccess\ErlDataStore.cs" />
+    <Compile Include="DataAccess\ErlSchemaUtils.cs" />
+    <Compile Include="DataAccess\SchemaMap.cs" />
+    <Compile Include="ErlApp.cs" />
+    <Compile Include="ErlException.cs" />
+    <Compile Include="ErlInputStream.cs" />
+    <Compile Include="ErlOutputStream.cs" />
+    <Compile Include="ErlPatternMatcher.cs" />
+    <Compile Include="Internal\AtomTable.cs" />
+    <Compile Include="Internal\ErlAcceptor.cs" />
+    <Compile Include="Internal\ErlBlockingQueue.cs" />
+    <Compile Include="Internal\ErlConstAtoms.cs" />
+    <Compile Include="Internal\ErlConsts.cs" />
+    <Compile Include="Internal\ErlIoServer.cs" />
+    <Compile Include="Internal\ErlMonitors.cs" />
+    <Compile Include="Internal\ErlParser.cs" />
+    <Compile Include="Internal\ErlRpcServer.cs" />
+    <Compile Include="Internal\MboxRegistry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringConsts.cs" />
+    <Compile Include="Types\Enums.cs" />
+    <Compile Include="Types\ErlAtom.cs" />
+    <Compile Include="Types\ErlBinary.cs" />
+    <Compile Include="Types\ErlBoolean.cs" />
+    <Compile Include="Types\ErlByte.cs" />
+    <Compile Include="Types\ErlDouble.cs" />
+    <Compile Include="Types\ErlList.cs" />
+    <Compile Include="Types\ErlLong.cs" />
+    <Compile Include="Types\ErlObject.cs" />
+    <Compile Include="Types\ErlPid.cs" />
+    <Compile Include="Types\ErlPort.cs" />
+    <Compile Include="Types\ErlRef.cs" />
+    <Compile Include="Types\ErlString.cs" />
+    <Compile Include="Types\ErlTrace.cs" />
+    <Compile Include="Types\ErlTuple.cs" />
+    <Compile Include="Types\ErlTupleBase.cs" />
+    <Compile Include="Types\ErlVar.cs" />
+    <Compile Include="Types\ErlVarBind.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NFX\NFX.csproj">
+      <Project>{e6bfa4d5-d2be-4be1-80fe-4536a22f5c45}</Project>
+      <Name>NFX</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

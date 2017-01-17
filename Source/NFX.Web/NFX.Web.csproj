@@ -103,7 +103,6 @@
     <Compile Include="IO\FileSystem\GoogleDrive\V2\GoogleDriveRequestBody.cs" />
     <Compile Include="IO\FileSystem\GoogleDrive\V2\GoogleDriveSession.cs" />
     <Compile Include="IO\FileSystem\GoogleDrive\V2\GoogleDriveStream.cs" />
-    <Compile Include="MultiPartContent.cs" />
     <Compile Include="Multipart.cs" />
     <Compile Include="Pay\Account.cs" />
     <Compile Include="Pay\ActualAccountData.cs" />

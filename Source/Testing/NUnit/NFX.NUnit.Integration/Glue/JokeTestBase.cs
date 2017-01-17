@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2016 IT Adapter Inc.
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace NFX.NUnit.Integration.Glue
 
     public readonly string DEFAULT_TEST_SERVER_MPX_NODE = "mpx://" + DEFAULT_TEST_SERVER_HOST + ":" + DEFAULT_TEST_SERVER_MPX_PORT;
 
-    public readonly Credentials DEFAULT_TEST_CREDENTIALS = new IDPasswordCredentials("dima", "dima");
+    public readonly Credentials DEFAULT_TEST_CREDENTIALS = new IDPasswordCredentials("dima", "thejake");
 
     #region Pvt Fields
 

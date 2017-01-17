@@ -225,6 +225,10 @@
     <Compile Include="Web\WebSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NFX.Erlang\NFX.Erlang.csproj">
+      <Project>{f4cc3692-4836-429b-9f43-908d9e99b458}</Project>
+      <Name>NFX.Erlang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
       <Project>{247f9980-3f58-42bd-b261-e23a75dfc3b5}</Project>
       <Name>NFX.Wave</Name>
