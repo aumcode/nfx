@@ -107,7 +107,7 @@ namespace NFX.RelationalModel
 
             public const string NOW_FUNC = "now()";
 
-            public const string DEFAULT_DOMAIN_SEARCH_PATHS = "NFX.RelationalModel.DataTypes";
+            public const string DEFAULT_DOMAIN_SEARCH_PATHS = "NFX.RelationalModel.DataTypes.*";
 
 
             public const string TABLES_OUTPUT = "tables";

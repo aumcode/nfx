@@ -43,9 +43,9 @@ namespace NFX.NUnit.Integration.Wave
       private const string EXPECTED_400 = "400 expected but wasn't thrown";
       private const string EXPECTED_404 = "404 expected but wasn't thrown";
 
-      private const string USER_ID = "dxw";
+      private const string USER_ID = "dima";
       private const string USER_PWD = "thejake";
-      private const string USER_NAME = "Denis";
+      private const string USER_NAME = "Dima";
       private const string USER_STATUS = "User";
 
     #endregion
@@ -326,7 +326,7 @@ namespace NFX.NUnit.Integration.Wave
             Assert.AreEqual("Test Name", obj.Data["Name"]);
 
             var date = DateTime.Parse(obj.Data["Date"]);
-            Assert.IsTrue( (DateTime.Now - start).TotalSeconds >= 2.0d ); 
+            Assert.IsTrue( (DateTime.Now - start).TotalSeconds >= 2.0d );
             Assert.AreEqual("Ok", obj.Data["Status"]);
 
             var gotTs = TimeSpan.FromTicks((long)(ulong)(obj.Data["Span"]));
@@ -354,7 +354,7 @@ namespace NFX.NUnit.Integration.Wave
           {
             string str = wc.DownloadString(INTEGRATION_HTTP_ADDR + "RowGet");
 
-            
+
             Assert.AreEqual("application/json", wc.ResponseHeaders[HttpResponseHeader.ContentType]);
 
             var map = JSONReader.DeserializeDataObject(str) as JSONDataMap;
@@ -372,14 +372,14 @@ namespace NFX.NUnit.Integration.Wave
           initalRow.Row1 = new TestRow(){ID = 101, Name = "Test Row 1", Date = DateTime.Now};
           initalRow.Row2 = new TestRow(){ID = 102, Name = "Test Row 2", Date = DateTime.Now};
 
-          initalRow.ErrorRows = new TestRow[] { 
+          initalRow.ErrorRows = new TestRow[] {
             new TestRow() {ID = 201, Name = "Err Row 1", Date = DateTime.Now},
             new TestRow() {ID = 202, Name = "Err Row 2", Date = DateTime.Now},
             new TestRow() {ID = 203, Name = "Err Row 3", Date = DateTime.Now}
           };
 
           var str = initalRow.ToJSON(JSONWritingOptions.CompactRowsAsMap);
- 
+
  Console.WriteLine(str);
 
           using (var wc = CreateWebClient())
@@ -482,7 +482,7 @@ namespace NFX.NUnit.Integration.Wave
         //[Test]
         //public void Action_RowDifferentFieldTypes()
         //{
-        //  var initalRow = new TestRow() { 
+        //  var initalRow = new TestRow() {
         //    ID = 0, Name = "Name", Date { get; set; }
 
         //    Status Status { get; set; }

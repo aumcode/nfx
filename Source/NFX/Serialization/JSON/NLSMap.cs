@@ -31,6 +31,38 @@ namespace NFX.Serialization.JSON
     [Serializable] //this type is directly handled by slim writer/reader
     public struct NLSMap : IEnumerable<KeyValuePair<string, NLSMap.NDPair>>, IJSONWritable
     {
+
+      /// <summary>
+      /// Facilitates the population of NLSMap from code
+      /// </summary>
+      public struct Builder
+      {
+        private Dictionary<string, NDPair> m_Data;
+
+        public Builder Add(string langIso, string n, string d)
+        {
+           if (langIso.IsNullOrWhiteSpace()) return this;
+
+           if (m_Data ==null) m_Data = makeDict();
+           m_Data[langIso] = new NDPair(n, d);
+           return this;
+        }
+
+        /// <summary>
+        /// Returns the built map
+        /// </summary>
+        public NLSMap Map
+        {
+          get
+          {
+            var result = new NLSMap(false);
+            result.m_Data = m_Data;
+            return result;
+          }
+        }
+      }
+
+
       /// <summary>
       /// Localized Name:Description pair
       /// </summary>
@@ -127,6 +159,11 @@ namespace NFX.Serialization.JSON
           result.m_Data[kvp.Key] = kvp.Value;
 
         return result;
+      }
+
+      public override string ToString()
+      {
+        return JSONWriter.Write(this, JSONWritingOptions.Compact);
       }
 
       public enum GetParts{ Name, Description, NameOrDescription, DescriptionOrName, NameAndDescription, DescriptionAndName}
