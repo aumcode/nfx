@@ -40,8 +40,6 @@ namespace NFX.NUnit.AppModel.Pile
   [TestFixture]
   public class CacheTest
   {
-    #region Tests
-
       [Test]
       public void T010_MainOperations()
       {
@@ -50,7 +48,7 @@ namespace NFX.NUnit.AppModel.Pile
           var tA = cache.GetOrCreateTable<string>("A");
           var tB = cache.GetOrCreateTable<string>("B");
 
-          Assert.IsNotNull( tA ); 
+          Assert.IsNotNull( tA );
           Assert.IsNotNull( tB );
 
           Assert.AreEqual(2, cache.Tables.Count );
@@ -144,8 +142,8 @@ namespace NFX.NUnit.AppModel.Pile
         cache.Pile = new DefaultPile(cache);
         cache.Configure(null);
         cache.Start();
-                
-        
+
+
         var tA = cache.GetOrCreateTable<string>("A");
         tA.Put("aaa", "avalue");
         Assert.AreEqual("avalue", tA.Get("aaa"));
@@ -172,7 +170,7 @@ namespace NFX.NUnit.AppModel.Pile
         {
           pile.Dispose();
         }
-                
+
       }
 
 
@@ -187,8 +185,8 @@ namespace NFX.NUnit.AppModel.Pile
               cache.Pile = pile;
               cache.Configure(null);
               cache.Start();
-                
-        
+
+
               var tA = cache.GetOrCreateTable<string>("A");
               tA.Put("aaa", "avalue");
               tA.Put("bbb", "bvalue");
@@ -199,10 +197,10 @@ namespace NFX.NUnit.AppModel.Pile
 
               cache.WaitForCompleteStop();
               Assert.AreEqual(NFX.ServiceModel.ControlStatus.Inactive, cache.Status);
-        
+
               Assert.AreEqual(NFX.ServiceModel.ControlStatus.Active, pile.Status);
               Assert.AreEqual(0, pile.ObjectCount);
-       
+
               cache = new LocalCache();
               cache.Pile = pile;
               cache.Configure(null);
@@ -220,12 +218,12 @@ namespace NFX.NUnit.AppModel.Pile
               cache2.Pile = pile;
               cache2.Configure(null);
               cache2.Start();
-                
-        
+
+
               var t2 = cache2.GetOrCreateTable<string>("A");
               t2.Put("aaa", "avalue");
               t2.Put("bbb", "bvalue");
-        
+
               Assert.AreEqual(2, cache2.Count);
               Assert.AreEqual(6, pile.ObjectCount);
 
@@ -257,14 +255,14 @@ namespace NFX.NUnit.AppModel.Pile
 
           const int CNT = 4000;
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var pr = tA.Put(i, "value"+i.ToString(), priority: 10);
            // Console.WriteLine("{0} -> {1}", i, pr);
             Assert.IsTrue( pr == PutResult.Inserted);//no overwrite because table keeps growing
           }
 
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var v = tA.Get(i);
            // Console.WriteLine("{0} -> {1}", i, v);
             Assert.IsTrue( v.Equals("value"+i.ToString()));
@@ -283,7 +281,7 @@ namespace NFX.NUnit.AppModel.Pile
           const int CNT = 4000;
           var lst = new List<PutResult>();
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var pr = tA.Put(i, "value"+i.ToString(), priority: 10);
           //  Console.WriteLine("{0} -> {1}", i, pr);
             Assert.IsTrue( pr == PutResult.Inserted || pr == PutResult.Overwritten);//the table is capped, so some values will be overwritten
@@ -296,7 +294,7 @@ namespace NFX.NUnit.AppModel.Pile
 
 
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var v = tA.Get(i);
           //  Console.WriteLine("{0} -> {1}", i, v);
             Assert.IsTrue( v==null || v.Equals("value"+i.ToString()));
@@ -315,7 +313,7 @@ namespace NFX.NUnit.AppModel.Pile
           const int CNT = 4000;
           var lst = new List<PutResult>();
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var pr = tA.Put(i, "value"+i.ToString(), priority: 10);
           //  Console.WriteLine("{0} -> {1}", i, pr);
             Assert.IsTrue( pr == PutResult.Inserted || pr == PutResult.Overwritten);//the table is capped, so some values will be overwritten
@@ -327,7 +325,7 @@ namespace NFX.NUnit.AppModel.Pile
 
           lst.Clear();
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var pr = tA.Put(i, "value"+i.ToString(), priority: 10);
           //  Console.WriteLine("{0} -> {1}", i, pr);
             Assert.IsTrue( pr == PutResult.Replaced || pr==PutResult.Overwritten  );
@@ -339,7 +337,7 @@ namespace NFX.NUnit.AppModel.Pile
           Assert.IsTrue( lst.Count(r => r==PutResult.Overwritten)>0 );
 
           Assert.IsTrue( lst.Count(r => r==PutResult.Overwritten)>lst.Count(r => r==PutResult.Replaced) );
-          
+
         }
       }
 
@@ -355,7 +353,7 @@ namespace NFX.NUnit.AppModel.Pile
           const int CNT = 4000;
           var lst = new List<PutResult>();
           for(var i=0;i<CNT; i++)
-          { 
+          {
             var pr = tA.Put(i, "value"+i.ToString(), priority: 10);//PRIORITY +10!
           //  Console.WriteLine("{0} -> {1}", i, pr);
             Assert.IsTrue( pr == PutResult.Inserted || pr == PutResult.Overwritten);//the table is capped, so some values will be overwritten
@@ -367,7 +365,7 @@ namespace NFX.NUnit.AppModel.Pile
 
           lst.Clear();
           for(var i=CNT;i<2*CNT; i++)
-          { 
+          {
             var pr = tA.Put(i, "value"+i.ToString(), priority: -10);//only collision, because priority is lowe r than what already exists
           //  Console.WriteLine("{0} -> {1}", i, pr);
             Assert.IsTrue( pr==PutResult.Collision  );
@@ -410,7 +408,7 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       public void T170_Config()
       {
-        var conf1 = 
+        var conf1 =
 @"
 store
 {
@@ -419,12 +417,12 @@ store
           initial-capacity=1000000
           detailed-instrumentation=true
         }
-        
+
         table
         {
-          name='A' 
-          minimum-capacity=800000 
-          maximum-capacity=987654321 
+          name='A'
+          minimum-capacity=800000
+          maximum-capacity=987654321
           initial-capacity=780000
           growth-factor=2.3
           shrink-factor=0.55
@@ -433,14 +431,14 @@ store
           default-max-age-sec=145
           detailed-instrumentation=true
         }
-        
+
         table
-        { 
-          name='B' 
+        {
+          name='B'
           maximum-capacity=256000
           detailed-instrumentation=false
         }
-     
+
 }
 ";
         var c1 = conf1.AsLaconicConfig(handling: ConvertErrorHandling.Throw);
@@ -462,7 +460,7 @@ store
           Assert.AreEqual(0.9d,      topt.LoadFactorHWM);
           Assert.AreEqual(145,       topt.DefaultMaxAgeSec);
           Assert.AreEqual(true,      topt.DetailedInstrumentation);
-          
+
           topt = cache.GetOrCreateTable<int>("A").Options;
           Assert.AreEqual(800000,    topt.MinimumCapacity);
           Assert.AreEqual(987654321, topt.MaximumCapacity);
@@ -511,11 +509,11 @@ store
           v = tA.GetOrPut(1, (t, k, _) => "value "+k.ToString(), null, out pResult);
           Assert.AreEqual( "value 1", v);
           Assert.IsFalse( pResult.HasValue );
-          
+
           Assert.AreEqual(3, tA.Count);
           tA.Put(1, "value 1");
           tA.Put(2, "value 2");
-          tA.Put(122, "value 122"); 
+          tA.Put(122, "value 122");
 
           v = tA.GetOrPut(777, (t, k, _) => "value "+k.ToString(), null, out pResult);
           Assert.AreEqual( "value 777", v);
@@ -559,6 +557,5 @@ store
         PileCacheTestCore.ParalellGetPutRemove(workers, tables, putCount, durationSec);
       }
 
-    #endregion
   }
 }

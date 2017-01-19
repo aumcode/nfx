@@ -90,7 +90,36 @@ namespace NFX
     {
 
     }
+  }
 
+
+  /// <summary>
+  /// Thrown by Aver class to indicate averment failures
+  /// </summary>
+  [Serializable]
+  public sealed class AvermentException : NFXException
+  {
+    private string m_From;
+
+    public string From
+    {
+      get { return m_From ?? string.Empty; }
+    }
+
+    public AvermentException()
+    {
+    }
+
+    public AvermentException(string message, string from = null)
+     : base((from.IsNullOrWhiteSpace() ? "" : "from '{0}' ".Args(from)) + message)
+    {
+       m_From = from;
+    }
+
+    public AvermentException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+
+    }
   }
 
 

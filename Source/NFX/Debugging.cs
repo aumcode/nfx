@@ -34,9 +34,9 @@ namespace NFX
         /// <summary>Default to the value of Debugging.DefaultDebugAction</summary>
         Default = 0,
         /// <summary>Throw exception</summary>
-        Throw,
+        Throw = 1 << 0,
         /// <summary>Write message to log</summary>
-        Log,
+        Log   = 1 << 1,
         /// <summary>Shortcut for throwing exception and writing a message to log</summary>
         ThrowAndLog = Throw | Log
     }

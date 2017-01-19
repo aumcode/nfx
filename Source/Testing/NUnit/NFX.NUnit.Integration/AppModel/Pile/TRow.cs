@@ -41,7 +41,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
     [Field(backendName: "a1")] public string Address1 { get; set; }
     [Field(backendName: "a2")] public string Address2 { get; set; }
 
-    [Field(backendName: "chs")] public Charge[] Charges { get; set; }
+    [Field(backendName: "chs")] public ChargeRow[] Charges { get; set; }
 
     public static CheckoutRow MakeFake(GDID gdid)
     {
@@ -52,31 +52,31 @@ namespace NFX.NUnit.Integration.AppModel.Pile
         Date = DateTime.Now,
         StartOffset = gdid.ID * 20,
         G_Block = gdid,
-        
+
         Address1 = NFX.Parsing.NaturalTextGenerator.Generate(50),
         Address2 = (gdid.ID % 7) == 0 ? NFX.Parsing.NaturalTextGenerator.Generate(50) : null
       };
 
       var chCnt = (int)(gdid.ID % 10);
-      ch.Charges = new Charge[chCnt];
+      ch.Charges = new ChargeRow[chCnt];
 
       for (int i = 0; i < chCnt; i++)
-        ch.Charges[i] = Charge.MakeFake(gdid);
+        ch.Charges[i] = ChargeRow.MakeFake(gdid);
 
       return ch;
     }
   }
 
-  public class Charge: TypedRow
+  public class ChargeRow: TypedRow
   {
     [Field(backendName: "amt")] public Amount Amount { get; set; }
     [Field(backendName: "qty")] public int Qty { get; set; }
     [Field(backendName: "g_p")] public GDID G_Product  { get; set; }
     [Field(backendName: "n")] public string Notes { get; set; }
 
-    public static Charge MakeFake(GDID gdid)
+    public static ChargeRow MakeFake(GDID gdid)
     {
-      var c = new Charge() 
+      var c = new ChargeRow()
       {
         Amount = new Amount("usd", gdid.ID % 1897),
         Qty = (int)(gdid.ID % 29),
@@ -88,48 +88,48 @@ namespace NFX.NUnit.Integration.AppModel.Pile
     }
   }
 
-  public class PurchaseRow: TypedRow
-  {
-    [Field(backendName: "_id")] public GDID ID { get; set; }
+  //public class PurchaseRow: TypedRow
+  //{
+  //  [Field(backendName: "_id")] public GDID ID { get; set; }
 
-    [Field(backendName: "fn")] public string FileName { get; set; }
-    [Field(backendName: "dt")] public DateTime Date { get; set; }
-    [Field(backendName: "of")] public ulong StartOffset { get; set; }
-    [Field(backendName: "g_b")] public GDID G_Block  { get; set; }
+  //  [Field(backendName: "fn")] public string FileName { get; set; }
+  //  [Field(backendName: "dt")] public DateTime Date { get; set; }
+  //  [Field(backendName: "of")] public ulong StartOffset { get; set; }
+  //  [Field(backendName: "g_b")] public GDID G_Block  { get; set; }
 
-    [Field(backendName: "cust")] public PersonRow Customer { get; set; }
-    [Field(backendName: "amt")] public Amount Amount { get; set; }
-    [Field(backendName: "sp")] public PersonRow SalesPerson { get; set; }
-    [Field(backendName: "g_prod")] public GDID G_Product { get; set; }
+  //  [Field(backendName: "cust")] public PersonRow Customer { get; set; }
+  //  [Field(backendName: "amt")] public Amount Amount { get; set; }
+  //  [Field(backendName: "sp")] public PersonRow SalesPerson { get; set; }
+  //  [Field(backendName: "g_prod")] public GDID G_Product { get; set; }
 
-    public static PurchaseRow MakeFake(GDID gdid)
-    {
-      var purch = new PurchaseRow()
-      {
-        ID = gdid,
-        Customer = PersonRow.MakeFake(gdid),
-        Date = DateTime.Now,
-        Amount = new Amount("usd", gdid.ID % 1897),
-        SalesPerson = (gdid.ID % 2) == 0 ? null : PersonRow.MakeFake(gdid),
-        G_Product = new GDID(0, gdid.ID + 157)
-      };
+  //  public static PurchaseRow MakeFake(GDID gdid)
+  //  {
+  //    var purch = new PurchaseRow()
+  //    {
+  //      ID = gdid,
+  //      Customer = PersonRow.MakeFake(gdid),
+  //      Date = DateTime.Now,
+  //      Amount = new Amount("usd", gdid.ID % 1897),
+  //      SalesPerson = (gdid.ID % 2) == 0 ? null : PersonRow.MakeFake(gdid),
+  //      G_Product = new GDID(0, gdid.ID + 157)
+  //    };
 
-      return purch;
-    }
+  //    return purch;
+  //  }
 
-    //public static PurchaseRow MakeFake(GDID gdid)
-    //{
-    //  var purch = new PurchaseRow()
-    //  {
-    //    ID = gdid,
-    //    FileName = "myface_" + gdid.ID.ToString(),
-    //    StartOffset = gdid.ID * 20,
-    //    G_Block = gdid
-    //  };
+  //  //public static PurchaseRow MakeFake(GDID gdid)
+  //  //{
+  //  //  var purch = new PurchaseRow()
+  //  //  {
+  //  //    ID = gdid,
+  //  //    FileName = "myface_" + gdid.ID.ToString(),
+  //  //    StartOffset = gdid.ID * 20,
+  //  //    G_Block = gdid
+  //  //  };
 
-    //  return purch;
-    //}
-  }
+  //  //  return purch;
+  //  //}
+  //}
 
   public class PersonRow: TypedRow
   {

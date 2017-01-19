@@ -592,6 +592,7 @@
     <Compile Include="Templatization\StringRenderingTarget.cs" />
     <Compile Include="Templatization\Template.cs" />
     <Compile Include="Templatization\TextCSTemplateCompiler.cs" />
+    <Compile Include="Aver.cs" />
     <Compile Include="Throttling\NOPThrottle.cs" />
     <Compile Include="Throttling\Intfs.cs" />
     <Compile Include="Throttling\NOPThrottling.cs" />

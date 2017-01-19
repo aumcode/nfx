@@ -32,7 +32,7 @@ namespace NFX.NUnit.AppModel
     [TestFixture]
     public class FinishNotifiablesTests
     {
-       
+
         public static string RESULT;
 
 
@@ -44,11 +44,11 @@ namespace NFX.NUnit.AppModel
             var conf = LaconicConfiguration.CreateFromString(confSource);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
-            
+
             }
-            
+
             Assert.AreEqual("ABCD", RESULT);
-               
+
         }
 
 
@@ -71,7 +71,7 @@ namespace NFX.NUnit.AppModel
 
                 public void ApplicationStartAfterInit(IApplication application)
                 {
-                   FinishNotifiablesTests.RESULT += "B"; 
+                   FinishNotifiablesTests.RESULT += "B";
                    application.RegisterAppFinishNotifiable( new SuperEnder());
                 }
 
@@ -84,7 +84,7 @@ namespace NFX.NUnit.AppModel
                 {
                     get { return "SuperStarter"; }
                 }
-            } 
+            }
 
             public class SuperEnder : IApplicationFinishNotifiable
             {

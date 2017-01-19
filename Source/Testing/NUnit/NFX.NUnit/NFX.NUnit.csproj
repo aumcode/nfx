@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\PileTests2.cs" />
     <Compile Include="AppModel\Pile\KeyStructsTest.cs" />
     <Compile Include="AppModel\Pile\PileCacheTestCore.cs" />
     <Compile Include="AppModel\FinishNotifiablesTests.cs" />
