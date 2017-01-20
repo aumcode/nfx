@@ -575,6 +575,57 @@ namespace NFX
         }
 
 
+        /// <summary>
+        /// Represents an ISO code as 4 byte integer filled with
+        /// up to 3 ASCII chars converted to upper case, the highest byte is free to be used by the application
+        /// </summary>
+        public static int PackISO3CodeToInt(string iso)
+        {
+          if (iso==null)
+           throw new NFXException(StringConsts.ARGUMENT_ERROR+"PackISO3CodeToInt(iso==null)");
+
+          var l = iso.Length;
+
+          if (l==0 || l>3)
+            throw new NFXException(StringConsts.ARGUMENT_ERROR+"PackISO3CodeToInt(iso==0|>3)");
+
+
+          //note: ISO codes are in ASCII plane
+          var isoChar0 = (byte)iso[0];
+          var isoChar1 = l>1 ? (byte)iso[1] : (byte)0x00;
+          var isoChar2 = l>2 ? (byte)iso[2] : (byte)0x00;
+
+          if (isoChar0>0x60) isoChar0 -= 0x20;//convert to upper case
+          if (isoChar1>0x60) isoChar1 -= 0x20;//convert to upper case
+          if (isoChar2>0x60) isoChar2 -= 0x20;//convert to upper case
+
+          var result = (isoChar2 << 16) + (isoChar1 << 8 ) + isoChar0;
+          return result;
+        }
+
+        /// <summary>
+        /// Unpacks an ISO code from int which was packed with PackISO3CodeToInt
+        /// </summary>
+        public static unsafe string UnpackISO3CodeFromInt(int iso)
+        {
+          if (iso==0) return null;
+
+          char* buf = stackalloc char[3];
+          char* pc = buf;
+
+          var c =(char)(iso & 0xff);
+          if (c!=0) *pc++ = c;
+
+          c = (char)((iso>>8) & 0xff);
+          if (c!=0) *pc++ = c;
+
+          c = (char)((iso>>16) & 0xff);
+          if (c!=0) *pc++ = c;
+
+          return new string(buf);
+        }
+
+
        /// <summary>
        /// Scales source image so it fits in the desired image size preserving aspect ratio.
        /// This function is usable for profile picture size/aspect normalization

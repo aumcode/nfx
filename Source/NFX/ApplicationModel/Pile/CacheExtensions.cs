@@ -32,19 +32,22 @@ namespace NFX.ApplicationModel.Pile
   public static class CacheExtensions
   {
     /// <summary>
-    /// Fetches an existing item from cache or null
+    /// Fetches an existing item from cache or null. IsAbsent is true when data was read from cache as an AbsentValue
     /// </summary>
-    public static TResult FetchFrom<TKey, TResult>(this ICache cache, TKey key, string tblCache, ICacheParams caching) where TResult : class
+    public static TResult FetchFrom<TKey, TResult>(this ICache cache, TKey key, string tblCache, ICacheParams caching, out bool isAbsent) where TResult : class
     {
       if (caching==null) caching = CacheParams.DefaultCache;
 
       TResult result = null;
 
+      isAbsent = false;
+
       if (caching.ReadCacheMaxAgeSec>=0)
       {
         ICacheTable<TKey> tbl = cache.GetOrCreateTable<TKey>(tblCache);
         var cached = tbl.Get(key, caching.ReadCacheMaxAgeSec);
-        if (!(cached is AbsentValue))
+        isAbsent = cached is AbsentValue;
+        if (!isAbsent)
           result = cached as TResult;
       }
 

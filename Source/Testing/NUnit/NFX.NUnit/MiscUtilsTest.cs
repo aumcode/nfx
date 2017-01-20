@@ -693,5 +693,64 @@ f
           Assert.True(day.DayOfWeek == dayOfWeek && (TimeSpan.FromDays(0) < dt) && (dt <= TimeSpan.FromDays(7)));
         }
 
+        [Test]
+        public void PackISO3CodeToInt()
+        {
+          var p = IOMiscUtils.PackISO3CodeToInt("abc");
+          Aver.AreEqual(0,   (p & 0xff000000));
+          Aver.AreEqual('C', (p & 0x00ff0000) >> 16);
+          Aver.AreEqual('B', (p & 0x0000ff00) >> 8);
+          Aver.AreEqual('A', (p & 0x000000ff) >> 0);
+
+          p = IOMiscUtils.PackISO3CodeToInt("us");
+          Aver.AreEqual(0,   (p & 0xff000000));
+          Aver.AreEqual(0,   (p & 0x00ff0000));
+          Aver.AreEqual('S', (p & 0x0000ff00) >> 8);
+          Aver.AreEqual('U', (p & 0x000000ff) >> 0);
+
+          p = IOMiscUtils.PackISO3CodeToInt("z");
+          Aver.AreEqual(0,   (p & 0xff000000));
+          Aver.AreEqual(0,   (p & 0x00ff0000));
+          Aver.AreEqual(0,   (p & 0x0000ff00));
+          Aver.AreEqual('Z', (p & 0x000000ff) >> 0);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NFXException), ExpectedMessage = "=null", MatchType = MessageMatch.Contains)]
+        public void PackISO3CodeToInt_Bad1()
+        {
+          IOMiscUtils.PackISO3CodeToInt(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NFXException), ExpectedMessage = "=0|>3", MatchType = MessageMatch.Contains)]
+        public void PackISO3CodeToInt_Bad2()
+        {
+          IOMiscUtils.PackISO3CodeToInt("");
+        }
+
+        [Test]
+        [ExpectedException(typeof(NFXException), ExpectedMessage = "=0|>3", MatchType = MessageMatch.Contains)]
+        public void PackISO3CodeToInt_Bad3()
+        {
+          IOMiscUtils.PackISO3CodeToInt("1234");
+        }
+
+        [Test]
+        public void UnpackISO3CodeFromInt()
+        {
+          var p = 0;
+          Aver.IsNull( IOMiscUtils.UnpackISO3CodeFromInt(p) );
+
+          p = IOMiscUtils.PackISO3CodeToInt("abc");
+          Aver.AreEqual("ABC", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
+
+          p = IOMiscUtils.PackISO3CodeToInt("Us");
+          Aver.AreEqual("US", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
+
+          p = IOMiscUtils.PackISO3CodeToInt("Z");
+          Aver.AreEqual("Z", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
+        }
+
     }
 }

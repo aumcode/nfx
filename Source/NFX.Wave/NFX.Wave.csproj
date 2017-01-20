@@ -108,15 +108,17 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.CopyAndSelect.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.selector-chain.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.image-view.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.markup.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.object-editor.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.CopyAndSelect.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.select.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.selector-chain.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.image-view.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.markup.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.object-editor.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\stl\select.test.css" />
     <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -131,7 +133,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.data.tests.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\payment.providers.test.html" />
+    <None Include="Templatization\StockContent\Embedded\script\payment.providers.test.html" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.data.tests.js" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.tests.js" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.tests.htm" />

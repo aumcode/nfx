@@ -552,7 +552,6 @@ namespace NFX.Wave
           var boundary = Multipart.ParseContentType(ctp);
           var mp = Multipart.ReadFromStream(Request.InputStream, ref boundary, Request.ContentEncoding);
           result =  mp.ToJSONDataMap();
-          // Multipart.ToJSONDataMap(Request.InputStream, ctp,  Request.ContentEncoding);
         }
         else //Form URL encoded
         if (ctp.IndexOf(ContentType.FORM_URL_ENCODED)>=0)

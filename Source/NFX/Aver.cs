@@ -9,7 +9,7 @@ using NFX.DataAccess.Distributed;
 namespace NFX
 {
   /// <summary>
-  /// Provides basic avertions for test construction. May call Aver.Fail(msg) manually
+  /// Provides basic averments for test construction. May call Aver.Fail(msg) manually
   /// </summary>
   public static class Aver
   {

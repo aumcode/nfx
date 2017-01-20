@@ -5,29 +5,98 @@
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../stl/select.test.css">
   <script src="jquery-2.1.4.js"></script>
   <script src="wv.js"></script>
   <script src="wv.gui.js"></script>
-    <title></title>
+  <title></title>
 </head>
 <body>
 
   <div class="tests">
     <div class="test">
       <h2>Simple test</h2>
-      <div id="divSimple"></div>
+      <div id="divSingle"></div>
     </div>
     <div class="test">
       <h2>Multi-select test</h2>
-      <div></div>
+      <div id="divMulti"></div>
     </div>
   </div>
 
   <script>
-    var simple = new WAVE.GUI.Select({DIV: "divSimple"});
-  </script>
-  <style>
+    var states =
+    {
+      "Alaskan/Hawaiian Time Zone" : [
+        {"AK" : "Alaska"}, //{ "Alaska" : ["Anchorage", "Fairbanks", "Juneau", "Sitka"] } },
+        {"HI": "Hawaii"}
+      ],
+      "Pacific Time Zone" : [
+        {"CA" : "California"},
+        {"NV" : "Nevada"},
+        {"OR" : "Oregon"},
+        {"WA" : "Washington"},
+      ],
+      "Mountain Time Zone" : [
+        {"AZ" : "Arizona"},
+        {"CO" : "Colorado"},
+        {"ID" : "Idaho"},
+        {"MT" : "Montana"},
+        {"NE" : "Nebraska"},
+        {"NM" : "New Mexico"},
+        {"ND" : "North Dakota"},
+        {"UT" : "Utah"},
+        {"WY" : "Wyoming"},
+      ],
+      "Central Time Zone" : [
+        {"AL" : "Alabama"},
+        {"AR" : "Arkansas"},
+        {"IL" : "Illinois"},
+        {"IA" : "Iowa"},
+        {"KS" : "Kansas"},
+        {"KY" : "Kentucky"},
+        {"LA" : "Louisiana"},
+        {"MN" : "Minnesota"},
+        {"MS" : "Mississippi"},
+        {"MO" : "Missouri"},
+        {"OK" : "Oklahoma"},
+        {"SD" : "South Dakota"},
+        {"TX" : "Texas"},
+        {"TN" : "Tennessee"},
+        {"WI" : "Wisconsin"},
+      ],
+      "Eastern Time Zone" : [
+        {"CT" : "Connecticut"},
+        {"DE" : "Delaware"},
+        {"FL" : "Florida"},
+        {"GA" : "Georgia"},
+        {"IN" : "Indiana"},
+        {"ME" : "Maine"},
+        {"MD" : "Maryland"},
+        {"MA" : "Massachusetts"},
+        {"MI" : "Michigan"},
+        {"NH" : "New Hampshire"},
+        {"NJ" : "New Jersey"},
+        {"NY" : "New York"},
+        {"NC" : "North Carolina"},
+        {"OH" : "Ohio"},
+        {"PA" : "Pennsylvania"},
+        {"RI" : "Rhode Island"},
+        {"SC" : "South Carolina"},
+        {"VT" : "Vermont"},
+        {"VA" : "Virginia"},
+        {"WV" : "West Virginia"},
+      ]
+    };
 
-  </style>
+    var single = new WAVE.GUI.Select({
+      DIV: "divSingle",
+      data : states,
+      mode: WAVE.GUI.SELECT_MODES.Single,
+      formName: "single"
+    });
+    var multi = new WAVE.GUI.Select({DIV: "divMulti", data : states, mode: WAVE.GUI.SELECT_MODES.Multi});
+
+  </script>
 </body>
 </html>

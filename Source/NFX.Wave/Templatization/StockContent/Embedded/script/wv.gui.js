@@ -3371,7 +3371,7 @@ WAVE.GUI = (function(){
         if ((fDialog !== null && e.target === fDialog.baseDIV()) || !WAVE.isParentOf(container, target)) {
           e.preventDefault();
           __hide();
-        };
+        };;
       }
 
       function outsideMouseMoveHandler(e) {
@@ -4417,6 +4417,483 @@ WAVE.GUI = (function(){
 
       return chain;
     };//ChainSelector
+
+    published.CLS_SELECT_MODE_MULTI = "wvMulti";
+    published.CLS_SELECT_MODE_SINGLE = "wvSingle";
+    published.CLS_SELECT_CONTAINER = "wvSelectContainer";
+    published.CLS_SELECT_COMBOBOX = "wvSelectCombobox";
+    published.CLS_SELECT_DROPDOWN = "wvSelectDropdown";
+    published.CLS_SELECT_DROPDOWN_SHOWN = "wvShown";
+    published.CLS_SELECT_DROPDOWN_HIDDEN = "wvHidden";
+    published.CLS_SELECT_DISPLAY = "wvSelectDisplay";
+    published.CLS_SELECT_ARROW = "wvSelectArrow";
+
+    published.EVT_SELECT_CHANGE = "wv-select-change";
+    published.EVT_SELECT_OPEN = "wv-select-opan";
+    published.EVT_SELECT_CLOSE = "wv-select-close";
+    published.EVT_SELECT_SELECT = "wv-select-select";
+    published.EVT_SELECT_UNSELECT = "wv-select-unselect";
+    published.SELECT_MODES = {"Single": 0, "Multi": 1};
+
+    var fSelectSeed = 0;
+    //{
+    //  DIV: id | node
+    //  data: JSON | {} | []
+    //  mode: 0(single) | 1(multi)
+    //  autocomplete: true | false
+    //  formName: string
+    //}
+    published.Select = function (init, choiceUI) {
+      if (!WAVE.exists(init)) throw "Select.ctor(init=null)";
+      if (WAVE.strEmpty(init.DIV)) throw "Select.ctor(init.DIV=null)";
+
+      var fDIV = WAVE.isString(init.DIV)
+                    ? WAVE.id(init.DIV)
+                    : init.DIV;
+      if (fDIV === null) throw "Select.ctor(DIV=null)";
+
+      var select = this,
+          fChoiceUI = WAVE.isFunction(choiceUI)
+                          ? choiceUI
+                          : published.Choice,
+          fData = null,
+          fFormName = WAVE.strDefault(init.formName),
+          fElemContainer = null,
+          fElemCombobox = null,
+          fElemDisplay = null,
+          fElemArrow = null,
+          fElemDropdown = null,
+          fElemSelection = null,
+          fDropdownShow = false,
+          fAutocomplete = WAVE.strAsBool(init.autocomlete, true),
+          fMode = __parseMode(init.mode),
+          fChoice = null,
+          fSelectedChoices = {},
+          fSelectedIds = [],
+          fIdSeed = "select_" + fSelectSeed++,
+          fIds = {
+            container : __IdFor("container"),
+            combobox: __IdFor("combobox"),
+            display: __IdFor("display"),
+            arrow: __IdFor("select"),
+            dropdown: __IdFor("dropdown"),
+            selection: __IdFor("selection")
+          };
+
+      WAVE.extend(select, WAVE.EventManager);
+
+      function __IdFor(what) { return fIdSeed + "_" + what; }
+
+      function __createElemet(tag, id, className) {
+        var element = document.createElement(tag);
+        element.id = id;
+        if(!WAVE.strEmpty(className))
+          element.className = className;
+        return element;
+      }
+
+      function __parseMode(val) {
+        return published.SELECT_MODES.Multi === val
+                        ? published.SELECT_MODES.Multi
+                        : published.SELECT_MODES.Single;
+      }
+
+      function __ensureInitData() {
+        var data = init.data;
+        if (typeof(data) !== tUNDEFINED && data !== null) {
+          if (WAVE.isString(data)) {
+            var res = WAVE.tryParseJSON(data);
+            if (res.ok)
+              fData = res.obj;
+            else
+              throw "Select.ctor(init.data invalid JSON)";
+          } else
+            fData = init.data;
+          return;
+        }
+      }
+
+      function __choiceSelected(choice) {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: select,
+          abort: false
+        };
+        select.eventInvoke(published.EVT_SELECT_SELECT, args);
+        if (args.abort === true) return;
+
+        if (fMode === published.SELECT_MODES.Single) {
+          if (fSelectedIds.length > 0)
+            fSelectedChoices[fSelectedIds[0]].isSelected(false);
+          fSelectedChoices = {};
+          fSelectedIds = [];
+        }
+
+        fSelectedChoices[choice.id()] = choice;
+        fSelectedIds.push(choice.id());
+        choice.render(fElemDisplay);
+        fElemSelection.value = select.selectedAsString();
+
+        args.result = choice.value();
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        select.eventInvoke(published.EVT_SELECT_SELECT, args);
+      }
+
+      function __choiceUnselected(choice) {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: select,
+          abort: false
+        };
+        select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
+        if (args.abort === true) return;
+
+        if (fMode === published.SELECT_MODES.Single) {
+          fSelectedChoices = {};
+          fSelectedIds = [];
+        } else {
+          delete fSelectedChoices[choice.id()];
+          var idx = fSelectedIds.indexOf(choice.id());
+          if (idx > -1)
+            fSelectedIds.splice(idx, 1);
+        }
+        choice.destroy();
+        fElemSelection.value = select.selectedAsString();
+
+        args.result = choice.value();
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
+      }
+
+      function __dropdownHide() {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: select,
+          abort: false
+        };
+        select.eventInvoke(published.EVT_SELECT_CLOSE, args);
+        if (args.abort === true) return;
+
+        fDropdownShow = false;
+        WAVE.addClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_HIDDEN);
+        WAVE.removeClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_SHOWN);
+
+        args.result = false;
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        select.eventInvoke(published.EVT_SELECT_CLOSE, args);
+      }
+
+      function __dropdownShow() {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: select,
+          abort: false
+        };
+        select.eventInvoke(published.EVT_SELECT_OPEN, args);
+        if (args.abort === true) return;
+
+        fDropdownShow = true;
+        WAVE.addClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_SHOWN);
+        WAVE.removeClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_HIDDEN);
+
+        args.result = true;
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        select.eventInvoke(published.EVT_SELECT_OPEN, args);
+      }
+
+      function __toggleDropdown() {
+        if (fDropdownShow)
+          __dropdownHide();
+        else
+          __dropdownShow();
+      }
+
+      function __build() {
+        var cls = fMode === published.SELECT_MODES.Multi ?
+                  published.CLS_SELECT_MODE_MULTI :
+                  published.CLS_SELECT_MODE_SINGLE;
+
+        fElemContainer = __createElemet("div", fIds.container, published.CLS_SELECT_CONTAINER + " " + cls);
+        fDIV.appendChild(fElemContainer);
+
+        fElemSelection = __createElemet("input", fIds.selection);
+        fElemSelection.type = "hidden";
+        fElemContainer.appendChild(fElemSelection);
+        if (!WAVE.strEmpty(fFormName))
+          fElemSelection.name = fFormName;
+
+        fElemCombobox = __createElemet("div", fIds.combobox, published.CLS_SELECT_COMBOBOX);
+        fElemContainer.appendChild(fElemCombobox);
+
+        fElemDisplay = __createElemet("div", fIds.display, published.CLS_SELECT_DISPLAY);
+        fElemCombobox.appendChild(fElemDisplay);
+
+        var arrow = document.createElement("div");
+        arrow.className = published.CLS_SELECT_ARROW;
+        fElemCombobox.appendChild(arrow);
+        WAVE.addEventHandler(arrow, "click", __toggleDropdown);
+
+        fElemDropdown = __createElemet("div", fIds.dropdown, published.CLS_SELECT_DROPDOWN + " " + published.CLS_SELECT_DROPDOWN_HIDDEN);
+        fElemContainer.appendChild(fElemDropdown);
+
+        if (fData !== null) {
+          fChoice = new fChoiceUI(fData, select, fElemDropdown);
+          fChoice.eventBind(published.EVT_SELECT_CHOICE_SELECTED, function (object, args) {
+            if (args.phase === published.EVT_PHASE_AFTER)
+              __choiceSelected(args.sender);
+          });
+
+          fChoice.eventBind(published.EVT_SELECT_CHOICE_UNSELECTED, function (object, args) {
+            if (args.phase === published.EVT_PHASE_AFTER)
+             __choiceUnselected(args.sender);
+          });
+        }
+      }
+
+      select.mode = function(val) {
+        if (typeof(val) === tUNDEFINED || val === null)
+          return fMode;
+        __parseMode(val);
+      };
+
+      select.selected = function() {
+        return WAVE.clone(fSelectedChoices);
+      };
+
+      select.selectedAsString = function() {
+        var result = "";
+        for(var v in fSelectedChoices)
+          result += fSelectedChoices[v].key() + ";";
+        return result.slice(0, -1);
+      };
+
+      __ensureInitData();
+      __build();
+
+      return select;
+    };//Select
+
+    published.CLS_SELECT_CHOICE = "wvChoice";
+    published.CLS_SELECT_CHOICE_SELECTED = "wvSelected";
+    published.CLS_SELECT_CHOICE_PARENT = "wvChoiceParent";
+    published.CLS_SELECT_CHOICE_PARENT_LABELED = "wvChoiceParentLabeled";
+    published.CLS_SELECT_CHOICE_LABEL = "wvChoiceLabel";
+    published.CLS_SELECT_CHOICE_VALUE_BOX = "wvChoiceValueBox";
+    published.CLS_SELECT_CHOICE_UNSELECT = "wvChoiseUnselect";
+
+    published.EVT_SELECT_CHOICE_SELECTED = "wv-choice-selected";
+    published.EVT_SELECT_CHOICE_UNSELECTED = "wv-choice-unselected";
+
+    var fChoiceSeed = 0;
+    published.Choice = function(choiceData, select, DIV) {
+
+      var choice = this,
+          fChildren = [],
+          fSelectable = null,
+          fIsSelected = false,
+          fElemChoice = null,
+          fData = choiceData,
+          fKey = null,
+          fValue = null,
+          fElemValueBox = null,
+          fElemUnselect = null,
+          fId = "wv_choice_" + fChoiceSeed++,
+          fUnselectId = fId + "_unselect";
+
+      WAVE.extend(choice, WAVE.EventManager);
+
+      function __select() {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: choice,
+          abort: false
+        };
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
+        if (args.abort === true || fIsSelected) return;
+
+        fIsSelected = true;
+        WAVE.addClass(fElemChoice, published.CLS_SELECT_CHOICE_SELECTED);
+
+        args.result = true;
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
+      }
+
+      function __unselect() {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: choice,
+          abort: false
+        };
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
+        if (args.abort === true || !fIsSelected) return;
+
+        fIsSelected = false;
+        WAVE.removeClass(fElemChoice, published.CLS_SELECT_CHOICE_SELECTED);
+
+        args.result = false;
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
+      }
+
+      function __click() {
+        if (fIsSelected && select.mode() === published.SELECT_MODES.Multi)
+          __unselect();
+        else
+          __select();
+      }
+
+      function __createChild(cData, cDiv) {
+        var child = new published.Choice(cData, select, cDiv);
+        child.eventBind(published.EVT_SELECT_CHOICE_SELECTED, function (object, args) {
+          choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
+        });
+        child.eventBind(published.EVT_SELECT_CHOICE_UNSELECTED, function (object, args) {
+          choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
+        });
+        fChildren.push(child);
+      }
+
+      function __buildAsKeyValue(key, value, container) {
+        fElemChoice = document.createElement("div");
+        fElemChoice.id = fId;
+        fElemChoice.className = published.CLS_SELECT_CHOICE;
+        fElemChoice.innerHTML = value;
+        container.appendChild(fElemChoice);
+        fValue = value;
+        fKey = key;
+        WAVE.addEventHandler(fElemChoice, "click", __click);
+      }
+
+      function __buildAsArray(arrValue) {
+        fElemChoice = document.createElement("div");
+        fElemChoice.id = fId;
+        fElemChoice.className = published.CLS_SELECT_CHOICE_PARENT;
+        DIV.appendChild(fElemChoice);
+
+        for(var i = 0; i < arrValue.length; i++) {
+          var value = arrValue[i];
+          fChildren.push(__createChild(value, fElemChoice));
+        }
+      }
+
+      function __buildAsObject(objValue) {
+        var keys = Object.keys(fData),
+            key,
+            value,
+            label;
+
+        if (keys.length === 1) {
+          key = keys[0];
+          value = objValue[key];
+          if (WAVE.isFunction(value))
+            value = value.toString();
+          if (WAVE.isString(value)) {
+            __buildAsKeyValue(key, value, DIV);
+          } else {
+            fElemChoice = document.createElement("div");
+            fElemChoice.id = fId;
+            fElemChoice.className = published.CLS_SELECT_CHOICE_PARENT + " " +
+                                    published.CLS_SELECT_CHOICE_PARENT_LABELED;
+            DIV.appendChild(fElemChoice);
+
+            label = document.createElement("div");
+            label.className = published.CLS_SELECT_CHOICE_LABEL;
+            label.innerHTML = key;
+            fElemChoice.appendChild(label);
+
+            fChildren.push(__createChild(value, fElemChoice));
+          }
+        } else {
+          fElemChoice = document.createElement("div");
+          fElemChoice.id = fId;
+          fElemChoice.className = published.CLS_SELECT_CHOICE_PARENT + " " +
+                                  published.CLS_SELECT_CHOICE_PARENT_LABELED;
+          DIV.appendChild(fElemChoice);
+
+          for(key in objValue) {
+            label = document.createElement("div");
+            label.className = published.CLS_SELECT_CHOICE_LABEL;
+            label.innerHTML = key;
+            fElemChoice.appendChild(label);
+
+            value = objValue[key];
+            fChildren.push(__createChild(value, fElemChoice));
+          }
+        }
+      }
+
+      function __build() {
+        if (WAVE.isFunction(fData))
+          fData = fData.toString();
+        if (WAVE.isString(fData))     __buildAsKeyValue(fData, fData, DIV);
+        else if (WAVE.isArray(fData)) __buildAsArray(fData);
+        else
+          __buildAsObject(fData);
+      }
+
+      choice.selectable = function(val) {
+        if (typeof(val) === tUNDEFINED || val === null) {
+          if (fSelectable === null)
+            fSelectable = fChildren.length > 0;
+          return fSelectable;
+        }
+        fSelectable = WAVE.strAsBool(val, true);
+          //TODO fire selectable change
+        return fSelectable;
+      };
+
+      choice.isSelected = function(val) {
+        if (typeof(val) === tUNDEFINED || val === null)
+          return fIsSelected;
+        if (val)
+          __select();
+        else
+          __unselect();
+      };
+
+      choice.id = function() { return fId; };
+      choice.key = function() { return fKey; };
+      choice.value = function() { return fValue; };
+
+      choice.render = function(div) {
+        if (!fIsSelected ||
+            typeof(div) === tUNDEFINED ||
+            div === null)
+          return;
+
+        var html = "<div>@value@</div>" +
+                   "<div class='@clsUnselect@' id='@idUnselect@'>";
+        var view = WAVE.strHTMLTemplate(html, {
+          value : fValue,
+          clsUnselect : published.CLS_SELECT_CHOICE_UNSELECT,
+          idUnselect : fUnselectId
+        });
+        fElemValueBox = document.createElement("div");
+        fElemValueBox.className = published.CLS_SELECT_CHOICE_VALUE_BOX;
+        fElemValueBox.innerHTML = view;
+        fElemValueBox.id = fId;
+        div.appendChild(fElemValueBox);
+
+        fElemUnselect = WAVE.id(fUnselectId);
+        WAVE.addEventHandler(fElemUnselect, "click", __unselect);
+      };
+
+      choice.destroy = function() {
+        WAVE.removeEventHandler(fElemUnselect, "click", __unselect);
+        WAVE.removeElem(fId);
+      };
+
+      __build();
+
+      return choice;
+    };//Choice
 
     return published;
 }());//WAVE.GUI

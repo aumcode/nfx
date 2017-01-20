@@ -254,6 +254,26 @@ namespace NFX.Web
         });
     }
 
+    public static JSONDataArray GetJsonArray(string uri, RequestParams request) { return GetJsonArray(new Uri(uri), request); }
+
+    public static JSONDataArray GetJsonArray(Uri uri, RequestParams request)
+    {
+      string response = GetString(uri, request);
+      return response.IsNotNullOrWhiteSpace() ? response.JSONToDataObject() as JSONDataArray : null;
+    }
+
+    public static Task<JSONDataArray> GetJsonArrayAsync(string uri, RequestParams request) { return GetJsonArrayAsync(new Uri(uri), request); }
+
+    public static Task<JSONDataArray> GetJsonArrayAsync(Uri uri, RequestParams request)
+    {
+      return GetStringAsync(uri, request)
+        .ContinueWith((antecedent) =>
+        {
+          var response = antecedent.Result;
+          return response.IsNotNullOrWhiteSpace() ? response.JSONToDataObject() as JSONDataArray : null;
+        });
+    }
+
     public static JSONDataMap GetValueMap(string uri, RequestParams request) { return GetValueMap(new Uri(uri), request); }
 
     public static JSONDataMap GetValueMap(Uri uri, RequestParams request)

@@ -34,58 +34,17 @@ namespace NFX.ApplicationModel.Pile
   /// </summary>
   public struct GDIDWithISOKey : IDistributedStableHashProvider, IEquatable<GDIDWithISOKey>
   {
-    internal static int ISOtoInt(string iso)
-    {
-      if (iso==null)
-       throw new NFXException(StringConsts.ARGUMENT_ERROR+"GDIDWithISOKey(iso==null)");
-
-      var l = iso.Length;
-
-      if (l==0 || l>3)
-        throw new NFXException(StringConsts.ARGUMENT_ERROR+"GDIDWithISOKey(iso==0|>3)");
-
-
-      //note: ISO codes are in ASCII plane
-      var isoChar0 = (byte)iso[0];
-      var isoChar1 = l>1 ? (byte)iso[1] : (byte)0x00;
-      var isoChar2 = l>2 ? (byte)iso[2] : (byte)0x00;
-
-      if (isoChar0>0x60) isoChar0 -= 0x20;//convert to upper case
-      if (isoChar1>0x60) isoChar1 -= 0x20;//convert to upper case
-      if (isoChar2>0x60) isoChar2 -= 0x20;//convert to upper case
-
-      var result = (isoChar2 << 16) + (isoChar1 << 8 ) + isoChar0;
-      return result;
-    }
-
-    internal static string INTtoISO(int iso)
-    {
-      var result = string.Empty;
-
-        var c =(char)(iso & 0xff);
-        if (c!=0) result += c;
-
-        c = (char)((iso>>8) & 0xff);
-        if (c!=0) result += c;
-
-        c = (char)((iso>>16) & 0xff);
-        if (c!=0) result += c;
-
-        return result;
-    }
-
-
     public GDIDWithISOKey(GDID gdid, string iso)
     {
       GDID = gdid;
-      ISO = ISOtoInt(iso);
+      ISO = IOMiscUtils.PackISO3CodeToInt(iso);
     }
 
     public readonly GDID GDID;
     public readonly int ISO;
 
 
-    public string ISOCode { get{ return INTtoISO(ISO);} }
+    public string ISOCode { get{ return IOMiscUtils.UnpackISO3CodeFromInt(ISO);} }
 
 
     public ulong GetDistributedStableHash()
@@ -142,7 +101,7 @@ namespace NFX.ApplicationModel.Pile
     public DatedGDIDWithISOKey(DateTime date, GDID gdid, string iso)
     {
       GDID = gdid;
-      ISO = GDIDWithISOKey.ISOtoInt(iso);
+      ISO = IOMiscUtils.PackISO3CodeToInt(iso);
       YMD = DatedGDIDWithISOKey.DateToYMD(date);
     }
 
@@ -151,7 +110,7 @@ namespace NFX.ApplicationModel.Pile
     public readonly int  ISO;
 
 
-    public string ISOCode { get{ return GDIDWithISOKey.INTtoISO(ISO);} }
+    public string ISOCode { get{ return IOMiscUtils.UnpackISO3CodeFromInt(ISO);} }
 
     public DateTime DateTime { get{ return YMDtoDate(YMD);} }
 
@@ -198,7 +157,7 @@ namespace NFX.ApplicationModel.Pile
     {
       GDID1 = gdid1;
       GDID2 = gdid2;
-      ISO = GDIDWithISOKey.ISOtoInt(iso);
+      ISO = IOMiscUtils.PackISO3CodeToInt(iso);
       YMD = DatedGDIDWithISOKey.DateToYMD(date);
     }
 
@@ -208,7 +167,7 @@ namespace NFX.ApplicationModel.Pile
     public readonly int  ISO;
 
 
-    public string ISOCode { get{ return GDIDWithISOKey.INTtoISO(ISO);} }
+    public string ISOCode { get{ return IOMiscUtils.UnpackISO3CodeFromInt(ISO);} }
 
     public DateTime DateTime { get{ return DatedGDIDWithISOKey.YMDtoDate(YMD);} }
 
@@ -258,7 +217,7 @@ namespace NFX.ApplicationModel.Pile
     {
       GDID1 = gdid1;
       GDID2 = gdid2;
-      ISO = GDIDWithISOKey.ISOtoInt(iso);
+      ISO = IOMiscUtils.PackISO3CodeToInt(iso);
     }
 
     public readonly GDID GDID1;
@@ -266,7 +225,7 @@ namespace NFX.ApplicationModel.Pile
     public readonly int  ISO;
 
 
-    public string ISOCode { get{ return GDIDWithISOKey.INTtoISO(ISO);} }
+    public string ISOCode { get{ return IOMiscUtils.UnpackISO3CodeFromInt(ISO);} }
 
 
     public ulong GetDistributedStableHash()
