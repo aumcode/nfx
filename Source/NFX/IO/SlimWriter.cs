@@ -766,16 +766,19 @@ namespace NFX.IO
           {
             if (map.m_Data==null)
             {
-              this.Write((int)0);
+              this.Write((ushort)0);
               return;
             }
 
-            this.Write(map.m_Data.Count);
-            foreach(var kvp in map.m_Data)
+            this.Write((ushort)map.m_Data.Length);
+            for(var i=0; i<map.m_Data.Length; i++)
             {
-              this.Write(kvp.Key);
-              this.Write(kvp.Value.Name);
-              this.Write(kvp.Value.Description);
+              var nd = map.m_Data[i];
+              this.Write((byte)((nd.ISO & 0xff0000)>>16));
+              this.Write((byte)((nd.ISO & 0x00ff00)>>08));
+              this.Write((byte)((nd.ISO & 0xFF)));
+              this.Write(nd.Name);
+              this.Write(nd.Description);
             }
           }
 

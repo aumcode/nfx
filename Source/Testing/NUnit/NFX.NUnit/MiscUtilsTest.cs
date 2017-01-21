@@ -716,21 +716,20 @@ f
         }
 
         [Test]
-        [ExpectedException(typeof(NFXException), ExpectedMessage = "=null", MatchType = MessageMatch.Contains)]
-        public void PackISO3CodeToInt_Bad1()
+        public void PackISO3CodeToInt_Null()
         {
-          IOMiscUtils.PackISO3CodeToInt(null);
+          Aver.AreEqual(0, IOMiscUtils.PackISO3CodeToInt(null));
         }
 
         [Test]
-        [ExpectedException(typeof(NFXException), ExpectedMessage = "=0|>3", MatchType = MessageMatch.Contains)]
-        public void PackISO3CodeToInt_Bad2()
+        public void PackISO3CodeToInt_Empty()
         {
-          IOMiscUtils.PackISO3CodeToInt("");
+          Aver.AreEqual(0, IOMiscUtils.PackISO3CodeToInt(""));
+          Aver.AreEqual(0, IOMiscUtils.PackISO3CodeToInt("                    "));
         }
 
         [Test]
-        [ExpectedException(typeof(NFXException), ExpectedMessage = "=0|>3", MatchType = MessageMatch.Contains)]
+        [ExpectedException(typeof(NFXException), ExpectedMessage = "iso>3", MatchType = MessageMatch.Contains)]
         public void PackISO3CodeToInt_Bad3()
         {
           IOMiscUtils.PackISO3CodeToInt("1234");

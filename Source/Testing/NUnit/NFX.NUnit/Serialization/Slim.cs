@@ -31,16 +31,16 @@ namespace NFX.NUnit.Serialization
 {
     [TestFixture]
     public class Slim
-    { 
+    {
         [TestCase]
         public void Configuration_1()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var conf = "nfx{a=2 b=3 sumka=27 child1{c=4} child2=XXX{c=5} z=999}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-             
+
             s.Serialize(ms, conf);
 
             Console.WriteLine( ms.Position);
@@ -79,16 +79,16 @@ namespace NFX.NUnit.Serialization
         public void Configuration_2_VarResolver()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var conf = "nfx{a=2 b=3 sumka=27 child1{c=$(~SLAVA)} child2=XXX{c=$(~CITY)} z=999}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-            
+
             conf.Configuration.EnvironmentVarResolver = new Vars
             {
                {"Slava", "KPSS"}, {"City","MOCKBA"}
             };
-             
+
             s.Serialize(ms, conf);
 
             Console.WriteLine( ms.Position);
@@ -126,16 +126,16 @@ namespace NFX.NUnit.Serialization
         public void Configuration_3_DefaultMacroRunner()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var conf = "nfx{a=2 b=3 sumka=27 child{c='So, it is $(~FLAG::as-bool)!'} }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-            
+
             conf.Configuration.EnvironmentVarResolver = new Vars
             {
                {"FLAG", "1"}
             };
-             
+
             s.Serialize(ms, conf);
 
             Console.WriteLine( ms.Position);
@@ -147,7 +147,7 @@ namespace NFX.NUnit.Serialization
             Console.WriteLine( deser.ToString(), deser.GetType().FullName);
 
             var conf2 = deser as ConfigSectionNode;
-                                                                           
+
 
             Assert.AreEqual("So, it is True!", conf2["child"].AttrByName("c").Value);
           }
@@ -166,11 +166,11 @@ namespace NFX.NUnit.Serialization
         public void Configuration_4_CUSTOMMacroRunner()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var conf = "nfx{child{c='So, it is $(~FLAG::as-bool)!' g='Dear $(~MEMBER), we have zhabified you into $(~MEMBER::zhabify)'} }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-            
+
             conf.Configuration.EnvironmentVarResolver = new Vars
             {
                {"FLAG", "1"},
@@ -178,7 +178,7 @@ namespace NFX.NUnit.Serialization
             };
 
             conf.Configuration.MacroRunner = new TeztZhabifyMacroRunner();
-             
+
             s.Serialize(ms, conf);
 
             Console.WriteLine( ms.Position);
@@ -190,22 +190,22 @@ namespace NFX.NUnit.Serialization
             Console.WriteLine( deser.ToString(), deser.GetType().FullName);
 
             var conf2 = deser as ConfigSectionNode;
-                                                                           
+
 
             Assert.AreEqual("So, it is True!", conf2["child"].AttrByName("c").Value);
             Assert.AreEqual("Dear Xitro, we have zhabified you into Xitrozhabenko", conf2["child"].AttrByName("g").Value);
           }
         }
 
-       
+
 
        [TestCase]
         public void JSONDataMap_1_CaseSensitive()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var map = new NFX.Serialization.JSON.JSONDataMap(true)
             {
                {"flag", "1"},
@@ -238,9 +238,9 @@ namespace NFX.NUnit.Serialization
         public void JSONDataMap_2_CaseInSensitive()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var map = new NFX.Serialization.JSON.JSONDataMap(false)
             {
                {"FLAG", "22"},
@@ -259,7 +259,7 @@ namespace NFX.NUnit.Serialization
             Assert.IsTrue(deser is NFX.Serialization.JSON.JSONDataMap);
 
             var map2 = deser as NFX.Serialization.JSON.JSONDataMap;
-                                                                           
+
 
             Assert.AreEqual("22", map2["flag"]);
             Assert.AreEqual("22", map2["FLAG"]);
@@ -275,9 +275,9 @@ namespace NFX.NUnit.Serialization
         public void RootSimpleTypes()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, 125);
             s.Serialize(ms, true);
             s.Serialize(ms, TimeSpan.FromHours(45.11));
@@ -309,9 +309,9 @@ namespace NFX.NUnit.Serialization
         public void RootEnums()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, SomeCategory.CatA);
             s.Serialize(ms, SomeCategory.CatB);
             s.Serialize(ms, SomeCategory.CatC);
@@ -332,17 +332,17 @@ namespace NFX.NUnit.Serialization
         public void RootType()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, typeof(int));
-           
+
             Console.WriteLine(ms.GetBuffer().ToDumpString(DumpFormat.Printable, 0, (int)ms.Length));
-           
+
             s.Serialize(ms, typeof(bool));
             s.Serialize(ms, GetType());
 
-           
+
 
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -366,9 +366,9 @@ namespace NFX.NUnit.Serialization
         public void ObjectArrayEnumsAndTypes()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var o1 = new object[]{ 1, SomeCategory.CatA, typeof(int), SomeCategory.CatC, typeof(bool)};
 
             s.Serialize(ms, o1);
@@ -405,15 +405,15 @@ namespace NFX.NUnit.Serialization
         public void ClassTypeFields()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            var o1 = new ClassWithTypeFieldsAndInts{ T1 = typeof(int), T2 = typeof(string), Text = "Hello"  }; 
+            var o1 = new ClassWithTypeFieldsAndInts{ T1 = typeof(int), T2 = typeof(string), Text = "Hello"  };
             s.Serialize(ms, o1);
 
             ms.Seek(0, SeekOrigin.Begin);
 
             var o2 = s.Deserialize(ms) as ClassWithTypeFieldsAndInts;
-           
+
             Assert.AreEqual(typeof(int), o2.T1);
             Assert.AreEqual(typeof(string), o2.T2);
             Assert.AreEqual("Hello", o2.Text);
@@ -425,17 +425,17 @@ namespace NFX.NUnit.Serialization
         public void IntCompressionEdgeCases_MinValues()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            var o1 = new ClassWithTypeFieldsAndInts{ INT = Int32.MinValue, UINT = UInt32.MinValue, 
+            var o1 = new ClassWithTypeFieldsAndInts{ INT = Int32.MinValue, UINT = UInt32.MinValue,
                                                      SHORT = Int16.MinValue, USHORT = UInt16.MinValue,
-                                                     LONG = Int64.MinValue, ULONG = UInt64.MinValue  }; 
+                                                     LONG = Int64.MinValue, ULONG = UInt64.MinValue  };
             s.Serialize(ms, o1);
 
             ms.Seek(0, SeekOrigin.Begin);
 
             var o2 = s.Deserialize(ms) as ClassWithTypeFieldsAndInts;
-           
+
             Assert.AreEqual(Int32.MinValue, o2.INT);
             Assert.AreEqual(UInt32.MinValue, o2.UINT);
             Assert.AreEqual(Int16.MinValue, o2.SHORT);
@@ -449,17 +449,17 @@ namespace NFX.NUnit.Serialization
         public void IntCompressionEdgeCases_MaxValues()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            var o1 = new ClassWithTypeFieldsAndInts{ INT = Int32.MaxValue, UINT = UInt32.MaxValue, 
+            var o1 = new ClassWithTypeFieldsAndInts{ INT = Int32.MaxValue, UINT = UInt32.MaxValue,
                                                      SHORT = Int16.MaxValue, USHORT = UInt16.MaxValue,
-                                                     LONG = Int64.MaxValue, ULONG = UInt64.MaxValue  }; 
+                                                     LONG = Int64.MaxValue, ULONG = UInt64.MaxValue  };
             s.Serialize(ms, o1);
 
             ms.Seek(0, SeekOrigin.Begin);
 
             var o2 = s.Deserialize(ms) as ClassWithTypeFieldsAndInts;
-           
+
             Assert.AreEqual(Int32.MaxValue, o2.INT);
             Assert.AreEqual(UInt32.MaxValue, o2.UINT);
             Assert.AreEqual(Int16.MaxValue, o2.SHORT);
@@ -475,32 +475,32 @@ namespace NFX.NUnit.Serialization
         public void GenericTupleWithReadonlyFields()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, new Tuple<int, string>(5, "yez"));
-            
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var tuple = (Tuple<int, string>)s.Deserialize(ms);
 
             Assert.AreEqual(5, tuple.Item1);
             Assert.AreEqual("yez", tuple.Item2);
-            
+
           }
         }
 
 
 
 
-    
+
         [TestCase]
         public void SingleObjectWithAllSupportedTypes()
         {
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var obj1 = new DataObject();
             obj1.Populate();
 
@@ -508,7 +508,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var obj2 = s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(obj1, obj2);
           }
@@ -521,7 +521,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var obj1A = new DataObject();
             obj1A.Populate();
             s.Serialize(ms, obj1A);
@@ -535,7 +535,7 @@ namespace NFX.NUnit.Serialization
 
             var obj2A = s.Deserialize(ms);
             var obj2B = s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(obj1A, obj2A);
             Assert.AreEqual(obj1B, obj2B);
@@ -550,7 +550,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var str1 = new DataStruct();
             str1.fInt = 89098;
             str1.fString = "hahaha!";
@@ -560,7 +560,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var str2 = (DataStruct)s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(str1.fInt, str2.fInt);
             Assert.AreEqual(str1.fString, str2.fString);
@@ -574,7 +574,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var str1 = new DataStruct();
             str1.fInt = 89098;
             str1.fString = "hahaha!";
@@ -584,7 +584,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var str2 = (DataStruct)s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(str1.fInt, str2.fInt);
             Assert.AreEqual(str1.fString, str2.fString);
@@ -599,7 +599,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var str1 = new DataStruct();
             str1.fString = "hahaha!";
             str1.fObjectArray1D = new object[300];
@@ -612,7 +612,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var str2 = (DataStruct)s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(str1.fString, str2.fString);
             Assert.AreEqual(300, str2.fObjectArray1D.Length);
@@ -629,7 +629,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var str1 = new DataStruct();
             str1.fString = "hahaha!";
             str1.fObjectArray2D = new object[300,2];
@@ -642,7 +642,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var str2 = (DataStruct)s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(str1.fString, str2.fString);
             Assert.AreEqual(300 * 2, str2.fObjectArray2D.Length);
@@ -661,13 +661,13 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var ar1 = new DataObject[10];
             for(int i=0; i<ar1.Length; i++)
             {
                ar1[i] = new DataObject();
                ar1[i].Populate();
-               ar1[i].fString = "My number is "+ i.ToString(); 
+               ar1[i].fString = "My number is "+ i.ToString();
             }
 
             s.Serialize(ms, ar1);
@@ -686,14 +686,14 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var ar1 = new DataObject[5, 10];
             for(int i=0; i<5; i++)
              for(int j=0; j<10; j++)
                 {
                    ar1[i,j] = new DataObject();
                    ar1[i,j].Populate();
-                   ar1[i,j].fString = "My number is "+ i.ToString() + ":" + j.ToString(); 
+                   ar1[i,j].fString = "My number is "+ i.ToString() + ":" + j.ToString();
                 }
 
             s.Serialize(ms, ar1);
@@ -716,13 +716,13 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var lst1 = new List<DataObject>();
             for(int i=0; i<10; i++)
             {
                var obj = new DataObject();
                obj.Populate();
-               obj.fString = "My number is "+ i.ToString(); 
+               obj.fString = "My number is "+ i.ToString();
                lst1.Add(obj);
             }
 
@@ -741,7 +741,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var obj1 = new DataObjectWithList();
             obj1.Populate();
             obj1.OtherObjects.Add( new DataObject().Populate());
@@ -750,7 +750,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var obj2 = s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(obj1, obj2);
           }
@@ -764,7 +764,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var root = new DataNode();
             root.fValue = "I am root";
             root.fChildren = new DataNode[12];
@@ -779,7 +779,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var obj2 = (DataNode)s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(root, obj2);
             foreach(var n in obj2.fChildren)
@@ -794,7 +794,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var root = new DataNode();
             root.fValue = "I am root";
             root.fChildren = new DataNode[2];
@@ -804,7 +804,7 @@ namespace NFX.NUnit.Serialization
             root.fChildren[1] = new DataNode();
             root.fChildren[1].fParent = root;
             root.fChildren[1].fValue = "I am child 2";
-                                                   
+
             root.fLeft = new DataNode{fValue="I am left child of root", fParent = root};
             root.fRight = new DataNode{fValue="I am right child of root", fParent = root, fLeft = root};//cycle
 
@@ -813,7 +813,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var root2 = (DataNode)s.Deserialize(ms);
-            
+
             Assert.AreEqual("I am root", root2.fValue);
             Assert.AreEqual(null, root2.fParent);
             Assert.AreEqual(2, root2.fChildren.Length);
@@ -824,7 +824,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(root2, root2.fLeft.fParent);
             Assert.AreEqual(root2, root2.fRight.fParent);
             Assert.AreEqual(root2, root2.fRight.fLeft);//cycle
-            
+
           }
         }
 
@@ -834,7 +834,7 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var arr = new DataNode[25];
             for(int z=0; z<arr.Length; z++)
             {
@@ -854,7 +854,7 @@ namespace NFX.NUnit.Serialization
             ms.Seek(0, SeekOrigin.Begin);
 
             var obj2 = s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(arr, obj2);
           }
@@ -867,18 +867,18 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var d1 = new Dictionary<string, object>();
 
             d1["A"] = 1;
             d1["B"] = "dva";
 
             s.Serialize(ms, d1);
-            
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var d2 = (Dictionary<string, object>)s.Deserialize(ms);
-            
+
             Assert.AreEqual(1, d2["A"]);
             Assert.AreEqual("dva", d2["B"]);
           }
@@ -890,18 +890,18 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var d1 = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
 
             d1["A"] = 1;
             d1["B"] = "dva";
 
             s.Serialize(ms, d1);
-            
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var d2 = (Dictionary<string, object>)s.Deserialize(ms);
-            
+
             Assert.AreEqual(1, d2["A"]);
             Assert.AreEqual("dva", d2["B"]);
           }
@@ -912,7 +912,7 @@ namespace NFX.NUnit.Serialization
               public class TeztDictDerived : Dictionary<string, object>
               {
                 public TeztDictDerived():base(StringComparer.InvariantCultureIgnoreCase){}
-                protected TeztDictDerived(System.Runtime.Serialization.SerializationInfo info, 
+                protected TeztDictDerived(System.Runtime.Serialization.SerializationInfo info,
                                           System.Runtime.Serialization.StreamingContext context) : base(info, context)
                 {
 
@@ -926,18 +926,18 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var d1 = new TeztDictDerived();
 
             d1["A"] = 1;
             d1["B"] = "dva";
 
             s.Serialize(ms, d1);
-            
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var d2 = (TeztDictDerived)s.Deserialize(ms);
-            
+
             Assert.AreEqual(1, d2["A"]);
             Assert.AreEqual("dva", d2["B"]);
           }
@@ -952,8 +952,8 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
-           
+
+
             var d = new System.Collections.Concurrent.ConcurrentDictionary<string, object>();
             d.TryAdd("a", 1);
             d.TryAdd("b", true);
@@ -978,10 +978,10 @@ namespace NFX.NUnit.Serialization
             var treg = new TypeRegistry(TypeRegistry.CommonCollectionTypes,
                                         TypeRegistry.BoxedCommonTypes,
                                         TypeRegistry.BoxedCommonNullableTypes);
-            
+
             var s = new SlimSerializer(SlimFormat.Instance, treg);
-             
-           
+
+
             var d = new System.Collections.Concurrent.ConcurrentDictionary<string, object>();
             d.TryAdd("a", 1);
             d.TryAdd("b", true);
@@ -1005,10 +1005,10 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
-           
+
+
             var session = new BaseSession( Guid.NewGuid());
-            
+
             session.Items["a"] = 1;
             session.Items["b"] = true;
 
@@ -1033,12 +1033,12 @@ namespace NFX.NUnit.Serialization
             var treg = new TypeRegistry(TypeRegistry.CommonCollectionTypes,
                                         TypeRegistry.BoxedCommonTypes,
                                         TypeRegistry.BoxedCommonNullableTypes);
-            
+
             var s = new SlimSerializer(SlimFormat.Instance, treg);
-             
-           
+
+
             var session = new BaseSession( Guid.NewGuid());
-            
+
             session.Items["a"] = 1;
             session.Items["b"] = true;
 
@@ -1062,17 +1062,17 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var arr1 = new int[8];
             arr1[0]=-100;
             arr1[5]=987;
             arr1[7]=1000;
-            
+
             s.Serialize(ms, arr1);
             ms.Seek(0, SeekOrigin.Begin);
 
             var arr2 = (int[])s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(arr1.Length, arr2.Length);
             Assert.AreEqual(-100,        arr2[0]);
@@ -1087,17 +1087,17 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var arr1 = new int[8,2];
             arr1[0,0]=-100;
             arr1[5,1]=987;
             arr1[7,1]=1000;
-            
+
             s.Serialize(ms, arr1);
             ms.Seek(0, SeekOrigin.Begin);
 
             var arr2 = (int[,])s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(arr1.Length, arr2.Length);
             Assert.AreEqual(16,          arr2.Length);
@@ -1107,24 +1107,24 @@ namespace NFX.NUnit.Serialization
           }
         }
 
-        
+
         [TestCase]
         public void Arrays_3D_int()
         {
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var arr1 = new int[8,2,4];
             arr1[0,0,0]=-100;
             arr1[5,1,2]=987;
             arr1[7,1,3]=1000;
-            
+
             s.Serialize(ms, arr1);
             ms.Seek(0, SeekOrigin.Begin);
 
             var arr2 = (int[,,])s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(arr1.Length, arr2.Length);
             Assert.AreEqual(64,          arr2.Length);
@@ -1141,17 +1141,17 @@ namespace NFX.NUnit.Serialization
           using(var ms = new MemoryStream())
           {
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             var arr1 = new object[8,2,4];
             arr1[0,0,0]=-100;
             arr1[5,1,2]="its good";
             arr1[7,1,3]=new DateTime(1990, 2, 12);
-            
+
             s.Serialize(ms, arr1);
             ms.Seek(0, SeekOrigin.Begin);
 
             var arr2 = (object[,,])s.Deserialize(ms);
-            
+
 
             Assert.AreEqual(arr1.Length, arr2.Length);
             Assert.AreEqual(64,          arr2.Length);
@@ -1167,11 +1167,11 @@ namespace NFX.NUnit.Serialization
         public void WaveSession()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var session = new NFX.Wave.WaveSession(Guid.NewGuid());
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, session);
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -1187,12 +1187,12 @@ namespace NFX.NUnit.Serialization
         public void CtorChaining()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var obj1 = new ClassB();
             obj1.Age = 789000;
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, obj1);
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -1208,8 +1208,8 @@ namespace NFX.NUnit.Serialization
 
                      public class WithoutCTORSkip
                      {
-                     
-                        public WithoutCTORSkip() 
+
+                        public WithoutCTORSkip()
                         {
                           MSG = "Was CALLED";
                         }
@@ -1223,7 +1223,7 @@ namespace NFX.NUnit.Serialization
                         [SlimDeserializationCtorSkip]
                         public WithCTORSkip() : base()
                         {
-                          
+
                         }
                      }
 
@@ -1232,18 +1232,18 @@ namespace NFX.NUnit.Serialization
         public void CtorSkip()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var without = new WithoutCTORSkip();
             var with = new WithCTORSkip();
-            
+
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, with);
             s.Serialize(ms, without);
             ms.Seek(0, SeekOrigin.Begin);
 
-            
+
             var with2 = s.Deserialize(ms) as WithCTORSkip;
             var without2 = s.Deserialize(ms) as WithoutCTORSkip;
 
@@ -1262,14 +1262,14 @@ namespace NFX.NUnit.Serialization
         public void WithInterfaceFields_1()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new ClassWithInterfaceFieldsA();
             objA.ID = 9890;
             objA.Data1 = new SomeDataA();
             objA.Data2 = new SomeDataB();
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objA);
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -1286,7 +1286,7 @@ namespace NFX.NUnit.Serialization
         public void WithInterfaceFields_2()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objB = new ClassWithInterfaceFieldsB();
             objB.ID = 19890;
             objB.Data1 = new SomeDataA(){Data = "hahaha!"};
@@ -1294,7 +1294,7 @@ namespace NFX.NUnit.Serialization
             objB.Data3 = new SomeDataB(){Data = "hohoho!"};
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objB);
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -1313,13 +1313,13 @@ namespace NFX.NUnit.Serialization
         public void ObjectField_ByteArray()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new OneObjectField();
             objA.Data = new byte[2]{10,20};
 
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objA);
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -1336,17 +1336,17 @@ namespace NFX.NUnit.Serialization
         public void ObjectField_StringArray()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new OneObjectField();
             objA.Data = new string[6]{"a","b","c","d","e","f"};
 
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objA);
 
             Console.WriteLine(ms.GetBuffer().ToDumpString(DumpFormat.Printable));
-         
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var objB = s.Deserialize(ms) as OneObjectField;
@@ -1363,7 +1363,7 @@ namespace NFX.NUnit.Serialization
         public void TwoStreamerSupportedRefFields_SameReference()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new TwoByteArrayRefFields();
             objA.Data1 = new byte[2]{1, 2};
             objA.Data2 = objA.Data1;
@@ -1371,11 +1371,11 @@ namespace NFX.NUnit.Serialization
             Assert.IsTrue(object.ReferenceEquals( objA.Data1, objA.Data2));
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objA);
 
             Console.WriteLine(ms.GetBuffer().ToDumpString(DumpFormat.Printable));
-         
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var objB = s.Deserialize(ms) as TwoByteArrayRefFields;
@@ -1392,7 +1392,7 @@ namespace NFX.NUnit.Serialization
         public void TwoObjectArrayRefFields_SameReference()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new TwoObjectArrayRefFields();
             objA.Data1 = new object[2]{1, true};
             objA.Data2 = objA.Data1;
@@ -1400,11 +1400,11 @@ namespace NFX.NUnit.Serialization
             Assert.IsTrue(object.ReferenceEquals( objA.Data1, objA.Data2));
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objA);
 
             Console.WriteLine(ms.GetBuffer().ToDumpString(DumpFormat.Printable));
-         
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var objB = s.Deserialize(ms) as TwoObjectArrayRefFields;
@@ -1422,7 +1422,7 @@ namespace NFX.NUnit.Serialization
         public void ByteArrayArray_SameReference()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new ByteArrayArray();
             objA.Data1 = new byte[][]{ new byte[]{1,2}, new byte[]{129}, new byte[]{250,240,100} };
             objA.Data2 = objA.Data1;
@@ -1433,15 +1433,15 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(3, objA.Data1[2].Length);
 
             var s = new SlimSerializer(SlimFormat.Instance);
-             
+
             s.Serialize(ms, objA);
 
           //  Console.WriteLine(ms.GetBuffer().ToDumpString(DumpFormat.Printable));
-         
+
             ms.Seek(0, SeekOrigin.Begin);
 
             var objB = s.Deserialize(ms) as ByteArrayArray;
-                                   
+
             Assert.IsNotNull( objB );
 
             Assert.IsTrue(objB.Data1 is byte[][]);
@@ -1449,7 +1449,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(3, objB.Data1.Length);
             Assert.AreEqual(3, ((byte[][])objB.Data2).Length);
             Assert.IsTrue(object.ReferenceEquals( objB.Data1, objB.Data2));
-           
+
             Assert.AreEqual(2, objB.Data1[0].Length);
             Assert.AreEqual(1, objB.Data1[1].Length);
             Assert.AreEqual(3, objB.Data1[2].Length);
@@ -1461,7 +1461,7 @@ namespace NFX.NUnit.Serialization
         public void SequentialManyWritesReads_1()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new ByteArrayArray();
             objA.Data1 = new byte[][]{ new byte[]{1,2}, new byte[]{129}, new byte[]{250,240,100} };
             objA.Data2 = objA.Data1;
@@ -1472,8 +1472,8 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(3, objA.Data1[2].Length);
 
             var s = new SlimSerializer(SlimFormat.Instance);
-          
-   //NOTICE MANY serializes into the same stream          
+
+   //NOTICE MANY serializes into the same stream
             s.Serialize(ms, new OneObjectField{ Data = "Yes, I am here"});
             s.Serialize(ms, new OneObjectField{ Data = 124567891});
             s.Serialize(ms, objA);
@@ -1486,9 +1486,9 @@ namespace NFX.NUnit.Serialization
     //NOTICE MANY deserializes into the same stream
             Assert.AreEqual("Yes, I am here", (string)((s.Deserialize(ms) as OneObjectField).Data));
             Assert.AreEqual(124567891, (int)((s.Deserialize(ms) as OneObjectField).Data));
-            
+
             var objB = s.Deserialize(ms) as ByteArrayArray;
-                                   
+
             Assert.IsNotNull( objB );
 
             Assert.IsTrue(objB.Data1 is byte[][]);
@@ -1496,7 +1496,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(3, objB.Data1.Length);
             Assert.AreEqual(3, ((byte[][])objB.Data2).Length);
             Assert.IsTrue(object.ReferenceEquals( objB.Data1, objB.Data2));
-           
+
             Assert.AreEqual(2, objB.Data1[0].Length);
             Assert.AreEqual(1, objB.Data1[1].Length);
             Assert.AreEqual(3, objB.Data1[2].Length);
@@ -1517,7 +1517,7 @@ namespace NFX.NUnit.Serialization
         public void SequentialManyWritesReads_2_ROOTPrimitives()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var objA = new ByteArrayArray();
             objA.Data1 = new byte[][]{ new byte[]{1,2}, new byte[]{129}, new byte[]{250,240,100} };
             objA.Data2 = objA.Data1;
@@ -1528,8 +1528,8 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(3, objA.Data1[2].Length);
 
             var s = new SlimSerializer(SlimFormat.Instance);
-          
-   //NOTICE MANY serializes into the same stream          
+
+   //NOTICE MANY serializes into the same stream
             s.Serialize(ms, "Yes, I am here");  //Notice ROOT primitives
             s.Serialize(ms, 124567891);
             s.Serialize(ms, objA);
@@ -1542,9 +1542,9 @@ namespace NFX.NUnit.Serialization
     //NOTICE MANY deserializes into the same stream
             Assert.AreEqual("Yes, I am here", s.Deserialize(ms) as string);
             Assert.AreEqual(124567891, (int)s.Deserialize(ms));
-            
+
             var objB = s.Deserialize(ms) as ByteArrayArray;
-                                   
+
             Assert.IsNotNull( objB );
 
             Assert.IsTrue(objB.Data1 is byte[][]);
@@ -1552,7 +1552,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(3, objB.Data1.Length);
             Assert.AreEqual(3, ((byte[][])objB.Data2).Length);
             Assert.IsTrue(object.ReferenceEquals( objB.Data1, objB.Data2));
-           
+
             Assert.AreEqual(2, objB.Data1[0].Length);
             Assert.AreEqual(1, objB.Data1[1].Length);
             Assert.AreEqual(3, objB.Data1[2].Length);
@@ -1578,14 +1578,14 @@ namespace NFX.NUnit.Serialization
                         }
 
 
-       
+
         [TestCase]
         public void ClassWithSelfReference_1()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var o1 = new ClassWithSelfReference
             {
                S1 = "Some Data"
@@ -1601,7 +1601,7 @@ namespace NFX.NUnit.Serialization
 
             var o2 = s.Deserialize(ms) as ClassWithSelfReference;
 
-                                                                          
+
 
             Assert.AreEqual("Some Data", o2.S1);
             Assert.IsTrue( object.ReferenceEquals(o2, o2.Ref1) );
@@ -1612,9 +1612,9 @@ namespace NFX.NUnit.Serialization
         public void ClassWithSelfReference_2_Arrays()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var o1 = new ClassWithSelfReference
             {
                S1 = "Some Data"
@@ -1666,7 +1666,7 @@ namespace NFX.NUnit.Serialization
            }
 
            using(var ms = new MemoryStream())
-           {  
+           {
              var s = new SlimSerializer();
 
              s.Serialize(ms, data);
@@ -1695,9 +1695,9 @@ namespace NFX.NUnit.Serialization
         public void RootByteArrayEfficiency()
         {
           using(var ms = new MemoryStream())
-          {           
+          {
             var s = new SlimSerializer(SlimFormat.Instance);
-            
+
             var ar1 = new byte[32000];
 
             const int CNT = 1000;
@@ -1736,15 +1736,15 @@ namespace NFX.NUnit.Serialization
               Assert.AreEqual(wo1.bin.Length, wo2.bin.Length);
             }
             var e2 = sw.ElapsedMilliseconds;
-            
+
             Console.WriteLine("Did {0}  byte[] root: {1}ms ({2}ops/sec);  wrap obj: {3}ms({4} ops/sec)", CNT, e1, CNT / (e1/1000d), e2, CNT / (e2/1000d));
-            
+
             Assert.IsTrue( e1 < 60 );
             Assert.IsTrue( e2 < 60 );
-               
+
             var ratio = e1 / (double)e2;
             Assert.IsTrue(  ratio > 0.33d && ratio < 3.0d);
-                                          
+
           }
         }
 
@@ -1828,14 +1828,14 @@ namespace NFX.NUnit.Serialization
       public string Data { get; set; }
     }
 
-    public class ClassWithInterfaceFieldsA 
+    public class ClassWithInterfaceFieldsA
     {
       public int ID;
       public ISomeData Data1;
       public ISomeData Data2;
     }
 
-    public class ClassWithInterfaceFieldsB : ClassWithInterfaceFieldsA 
+    public class ClassWithInterfaceFieldsB : ClassWithInterfaceFieldsA
     {
       public ClassWithInterfaceFieldsB()
       {
@@ -1844,7 +1844,7 @@ namespace NFX.NUnit.Serialization
 
       public int Age;
       public ISomeData Data3;
-      
+
       [NonSerialized]
       public bool WasCtor;
     }

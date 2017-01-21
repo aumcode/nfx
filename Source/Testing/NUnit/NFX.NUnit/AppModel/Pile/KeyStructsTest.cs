@@ -45,20 +45,6 @@ namespace NFX.NUnit.AppModel.Pile
       [ExpectedException(typeof(NFXException))]
       public void GDIDWithISOKey_BadCtor_1()
       {
-        var k = new GDIDWithISOKey(new GDID(10, 20), null);
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void GDIDWithISOKey_BadCtor_2()
-      {
-        var k = new GDIDWithISOKey(new GDID(10, 20), "");
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void GDIDWithISOKey_BadCtor_3()
-      {
         var k = new GDIDWithISOKey(new GDID(10, 20), "ertewrtewrte");
       }
 
@@ -205,20 +191,6 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       [ExpectedException(typeof(NFXException))]
       public void DatedGDIDWithISOKey_BadCtor_1()
-      {
-        var k = new DatedGDIDWithISOKey(DateTime.Now, new GDID(10, 20), null);
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void DatedGDIDWithISOKey_BadCtor_2()
-      {
-        var k = new DatedGDIDWithISOKey(DateTime.Now, new GDID(10, 20), "");
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void DatedGDIDWithISOKey_BadCtor_3()
       {
         var k = new DatedGDIDWithISOKey(DateTime.Now, new GDID(10, 20), "ertewrtewrte");
       }
@@ -413,20 +385,6 @@ namespace NFX.NUnit.AppModel.Pile
       [Test]
       [ExpectedException(typeof(NFXException))]
       public void Dated2GDIDWithISOKey_BadCtor_1()
-      {
-        var k = new Dated2GDIDWithISOKey(DateTime.Now, new GDID(10, 20), new GDID(10, 30), null);
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void Dated2GDIDWithISOKey_BadCtor_2()
-      {
-        var k = new Dated2GDIDWithISOKey(DateTime.Now, new GDID(10, 20), new GDID(10,30), "");
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void Dated2GDIDWithISOKey_BadCtor_3()
       {
         var k = new Dated2GDIDWithISOKey(DateTime.Now, new GDID(10, 20), new GDID(10,30), "ertewrtewrte");
       }
@@ -643,27 +601,9 @@ namespace NFX.NUnit.AppModel.Pile
 
 
 
-
-
-
-
       [Test]
       [ExpectedException(typeof(NFXException))]
       public void TwoGDIDWithISOKey_BadCtor_1()
-      {
-        var k = new TwoGDIDWithISOKey(new GDID(10, 20), new GDID(10, 30), null);
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void TwoGDIDWithISOKey_BadCtor_2()
-      {
-        var k = new TwoGDIDWithISOKey(new GDID(10, 20), new GDID(10,30), "");
-      }
-
-      [Test]
-      [ExpectedException(typeof(NFXException))]
-      public void TwoGDIDWithISOKey_BadCtor_3()
       {
         var k = new TwoGDIDWithISOKey(new GDID(10, 20), new GDID(10,30), "ertewrtewrte");
       }

@@ -758,20 +758,23 @@ namespace NFX.IO
 
           public override NLSMap ReadNLSMap()
           {
-            var cnt = this.ReadInt();
-            var result = new NLSMap(cnt>0);
-            if (cnt<=0) return result;
+            var cnt = this.ReadUShort();
+            if (cnt<=0) return new NLSMap();
+            if (cnt>NLSMap.MAX_ISO_COUNT) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "Exceeded NLSMap.MAX_ISO_COUNT");
+
+            var data = new NLSMap.NDPair[cnt];
             for(var i=0; i<cnt; i++)
             {
-              var key = this.ReadString();
-              if (key==null)
-                throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadNLSMap(): key==null");
+              var iso0 = this.ReadByte();
+              var iso1 = this.ReadByte();
+              var iso2 = this.ReadByte();
+              var iso = (iso0<<16) + (iso1<<8) + (iso2);
               var name = this.ReadString();
               var descr = this.ReadString();
-              result.m_Data[key] = new NLSMap.NDPair(name, descr);
+              data[i] = new NLSMap.NDPair(iso, name, descr);
             }
 
-            return result;
+            return new NLSMap(data);
           }
 
               public override NLSMap? ReadNullableNLSMap()

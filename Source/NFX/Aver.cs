@@ -51,12 +51,22 @@ namespace NFX
       }
 
 
-      public static void AreEqual(string expect, string got, StringComparison comparison = StringComparison.InvariantCulture, string from = null)
+      public static void AreEqual(string expect, string got, string from = null)
+      {
+        AreEqual(expect, got, StringComparison.InvariantCulture, from);
+      }
+
+      public static void AreEqual(string expect, string got, StringComparison comparison, string from = null)
       {
         if (!string.Equals(expect, got, comparison)) Fail("AreEqual({0}, {1}, {2})".args(expect, got, comparison), from);
       }
 
-      public static void AreNotEqual(string expect, string got, StringComparison comparison = StringComparison.InvariantCulture, string from = null)
+      public static void AreNotEqual(string expect, string got, string from = null)
+      {
+        AreNotEqual(expect, got, StringComparison.InvariantCulture, from);
+      }
+
+      public static void AreNotEqual(string expect, string got, StringComparison comparison, string from = null)
       {
         if (string.Equals(expect, got, comparison)) Fail("AreNotEqual({0}, {1}, {2})".args(expect, got, comparison), from);
       }

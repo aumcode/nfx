@@ -33,18 +33,18 @@ namespace NFX.NUnit.Glue
 {
     [TestFixture]
     public class InProcTests
-    {                              
+    {
    const string CONF_SRC_INPROC =@"
  nfx
  {
   cs='inproc://'
-  
+
   object-store
   {
     guid='B05D3038-A821-4BE0-96AA-E6D24DFA746F'
     provider {name='nop' type='NFX.ApplicationModel.Volatile.NOPObjectStoreProvider, NFX'}
   }
-  
+
   glue
   {
      bindings
@@ -58,7 +58,7 @@ namespace NFX.NUnit.Glue
      }
   }
  }
- "; 
+ ";
         [TestCase]
         public void Inproc_A_TwoWayCall()
         {

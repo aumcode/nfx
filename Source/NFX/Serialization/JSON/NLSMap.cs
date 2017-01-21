@@ -31,20 +31,24 @@ namespace NFX.Serialization.JSON
     [Serializable] //this type is directly handled by slim writer/reader
     public struct NLSMap : IEnumerable<KeyValuePair<string, NLSMap.NDPair>>, IJSONWritable
     {
+      //There are roughly 6,500 spoken languages in the world today.
+      //However, about 2,000 of those languages have fewer than 1,000 speakers
+      public const int MAX_ISO_COUNT = 10000;//safeguard for serialization and abuse
 
       /// <summary>
       /// Facilitates the population of NLSMap from code
       /// </summary>
       public struct Builder
       {
-        private Dictionary<string, NDPair> m_Data;
+        private List<NDPair> m_Data;
 
         public Builder Add(string langIso, string n, string d)
         {
            if (langIso.IsNullOrWhiteSpace()) return this;
 
-           if (m_Data ==null) m_Data = makeDict();
-           m_Data[langIso] = new NDPair(n, d);
+           if (m_Data ==null) m_Data = new List<NDPair>();
+           if (m_Data.Count==MAX_ISO_COUNT) throw new NFXException("Exceeded NLSMap.MAX_ISO_COUNT");
+           m_Data.Add( new NDPair(IOMiscUtils.PackISO3CodeToInt(langIso), n, d) );
            return this;
         }
 
@@ -55,8 +59,7 @@ namespace NFX.Serialization.JSON
         {
           get
           {
-            var result = new NLSMap(false);
-            result.m_Data = m_Data;
+            var result = new NLSMap(m_Data==null ? null : m_Data.ToArray());
             return result;
           }
         }
@@ -68,14 +71,15 @@ namespace NFX.Serialization.JSON
       /// </summary>
       public struct NDPair : IJSONWritable
       {
-        internal NDPair(string name, string descr){ Name = name; Description = descr;}
+        internal NDPair(int iso, string name, string descr){ISO = iso; Name = name; Description = descr;}
 
-        public bool IsAssigned{ get{ return Name.IsNotNullOrWhiteSpace() || Description.IsNotNullOrWhiteSpace(); }}
+        public bool IsAssigned{ get{ return ISO!=0; } }
 
+        public readonly int ISO;
         public readonly string Name;
         public readonly string Description;
 
-        public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
+        void IJSONWritable.WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options)
         {
           JSONWriter.WriteMap(wri, nestingLevel, options, new System.Collections.DictionaryEntry("n", Name),
                                                           new System.Collections.DictionaryEntry("d", Description));
@@ -83,19 +87,19 @@ namespace NFX.Serialization.JSON
       }
 
       //used by ser
-      internal NLSMap(bool hasValue)
+      internal NLSMap(NDPair[] data)
       {
-        m_Data = hasValue ? makeDict() : null;
+        m_Data = data;
       }
 
       /// <summary>
-      /// Makes NLSMap out of JSON config string: {eng: {n: 'Cucumber',d: 'It is green'}, deu: {n='Gurke',d='Es ist grün'}}
+      /// Makes NLSMap out of JSON string: {eng: {n: 'Cucumber',d: 'It is green'}, deu: {n='Gurke',d='Es ist grün'}}
       /// </summary>
       public NLSMap(string nlsConf)
       {
-        m_Data = makeDict();
+        m_Data = null;
         if (nlsConf.IsNullOrWhiteSpace()) return;
-        var nlsNode = nlsConf.AsJSONConfig(handling: ConvertErrorHandling.Throw);
+        var nlsNode = ("{r:"+nlsConf+"}").AsJSONConfig(wrapRootName: null, handling: ConvertErrorHandling.Throw);
         ctor(nlsNode);
       }
 
@@ -104,35 +108,45 @@ namespace NFX.Serialization.JSON
       /// </summary>
       public NLSMap(IConfigSectionNode nlsNode)
       {
-        m_Data = makeDict();
+        m_Data = null;
         if (nlsNode==null || !nlsNode.Exists) return;
         ctor(nlsNode);
       }
 
-      private static Dictionary<string, NDPair> makeDict()
-      {
-        return new Dictionary<string, NDPair>(StringComparer.InvariantCultureIgnoreCase);
-      }
-
       private void ctor(IConfigSectionNode nlsNode)
       {
-        if (nlsNode.HasChildren)
-          foreach(var ison in nlsNode.Children)
-            m_Data[ison.Name] = new NDPair(ison.AttrByName("n").Value, ison.AttrByName("d").Value);
-        else
-          m_Data[nlsNode.Name] = new NDPair(nlsNode.AttrByName("n").Value, nlsNode.AttrByName("d").Value);
+        if (!nlsNode.HasChildren) return;
+
+        var cnt = nlsNode.ChildCount;
+        if (cnt>MAX_ISO_COUNT) throw new NFXException("Exceeded NLSMap.MAX_ISO_COUNT");
+        m_Data = new NDPair[cnt];
+        for(var i=0; i<cnt; i++)
+        {
+          var node = nlsNode[i];
+          m_Data[i] = new NDPair( IOMiscUtils.PackISO3CodeToInt(node.Name), node.AttrByName("n").Value, node.AttrByName("d").Value );
+        }
       }
 
-      internal Dictionary<string, NDPair> m_Data;
+      internal NDPair[] m_Data;
 
       public NDPair this[string langIso]
       {
         get
         {
+          return m_Data!=null
+                  ? this[IOMiscUtils.PackISO3CodeToInt(langIso)]
+                  : new NDPair();
+        }
+      }
+
+      public NDPair this[int iso]
+      {
+        get
+        {
           if (m_Data!=null)
           {
-            NDPair result;
-            if (m_Data.TryGetValue(langIso, out result)) return result;
+            for(var i=0; i<m_Data.Length; i++)
+              if (m_Data[i].ISO==iso) return m_Data[i];
           }
 
           return new NDPair();
@@ -142,7 +156,7 @@ namespace NFX.Serialization.JSON
 
       public int Count
       {
-        get { return m_Data==null ? 0 : m_Data.Count; }
+        get { return m_Data==null ? 0 : m_Data.Length; }
       }
 
 
@@ -151,14 +165,28 @@ namespace NFX.Serialization.JSON
       /// </summary>
       public NLSMap OverrideBy(NLSMap other)
       {
-        var result = new NLSMap(true);
+        if (m_Data==null) return other;
+        if (other.m_Data==null) return this;
 
-        foreach (var kvp in this)
-          result.m_Data[kvp.Key] = kvp.Value;
-        foreach (var kvp in other)
-          result.m_Data[kvp.Key] = kvp.Value;
+        var lst = new List<NDPair>(m_Data);
 
-        return result;
+        for(var j=0; j<other.m_Data.Length; j++)
+        {
+          var found = false;
+          for(var i=0; i<lst.Count; i++)
+          {
+            if (lst[i].ISO==other.m_Data[j].ISO)
+            {
+              lst[i] = other.m_Data[j];
+              found = true;
+              break;
+            }
+          }
+          if (!found)
+           lst.Add(other.m_Data[j]);
+        }
+        if (lst.Count>MAX_ISO_COUNT) throw new NFXException("Exceeded NLSMap.MAX_ISO_COUNT");
+        return new NLSMap( lst.ToArray() );
       }
 
       public override string ToString()
@@ -268,7 +296,12 @@ namespace NFX.Serialization.JSON
             options.Purpose==JSONSerializationPurpose.Marshalling ||
             options.NLSMapLanguageISO.IsNullOrWhiteSpace())
         {
-          JSONWriter.WriteMap(wri, m_Data, nestingLevel, options);
+          JSONWriter.WriteMap(wri, nestingLevel, options,
+                              m_Data.Select
+                              (
+                                e => new System.Collections.DictionaryEntry(IOMiscUtils.UnpackISO3CodeFromInt(e.ISO), e)
+                              ).ToArray() );
+
           return;
         }
 
@@ -287,12 +320,14 @@ namespace NFX.Serialization.JSON
 
       public IEnumerator<KeyValuePair<string, NLSMap.NDPair>> GetEnumerator()
       {
-        return m_Data!=null ? m_Data.GetEnumerator() : Enumerable.Empty<KeyValuePair<string, NLSMap.NDPair>>().GetEnumerator();
+        return m_Data==null ? Enumerable.Empty<KeyValuePair<string, NLSMap.NDPair>>().GetEnumerator()
+                            : m_Data.Select( nd => new KeyValuePair<string, NLSMap.NDPair>( IOMiscUtils.UnpackISO3CodeFromInt(nd.ISO), nd)).GetEnumerator()
+        ;
       }
 
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       {
-        return m_Data!=null ? m_Data.GetEnumerator() : Enumerable.Empty<KeyValuePair<string, NLSMap.NDPair>>().GetEnumerator();
+        return this.GetEnumerator();
       }
     }
 }

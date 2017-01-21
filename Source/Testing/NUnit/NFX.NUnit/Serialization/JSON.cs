@@ -33,14 +33,14 @@ namespace NFX.NUnit.Serialization
 {
     [TestFixture]
     public class JSON
-    { 
+    {
         [TestCase]
         public void ReadSimple()
         {
             var obj = "{a: 2}".JSONToDynamic();
 
             Assert.AreEqual(2, obj.a);
-         
+
         }
 
         [TestCase]
@@ -52,7 +52,7 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual(true, obj.b);
             Assert.AreEqual(false, obj.c);
             Assert.AreEqual("hello", obj.d);
-         
+
         }
 
         [TestCase]
@@ -127,42 +127,42 @@ namespace NFX.NUnit.Serialization
           Assert.AreEqual(0, JSONDataMap.FromURLEncodedString("\r \n").Count);
           Assert.AreEqual(0, JSONDataMap.FromURLEncodedString("\t \t ").Count);
         }
-        
+
         [Test]
         public void JSONDataMapFromURLEncoded_WOAmKey()
         {
           var dict = JSONDataMap.FromURLEncodedString("a");
-        
+
           Assert.AreEqual(1, dict.Count);
           Assert.AreEqual(null, dict["a"]);
         }
-        
+
         [Test]
         public void JSONDataMapFromURLEncoded_WOAmpKeyVal()
         {
           var dict = JSONDataMap.FromURLEncodedString("a=1");
-        
+
           Assert.AreEqual(1, dict.Count);
           Assert.AreEqual("1", dict["a"]);
         }
-        
+
         [Test]
         public void JSONDataMapFromURLEncoded_WOAmpVal()
         {
           var dict = JSONDataMap.FromURLEncodedString("=1");
-        
+
           Assert.AreEqual(0, dict.Count);
         }
-        
+
         [Test]
         public void JSONDataMapFromURLEncoded_DoubleEq()
         {
           var dict = JSONDataMap.FromURLEncodedString("a==1");
-        
+
           Assert.AreEqual(1, dict.Count);
           Assert.AreEqual("=1", dict["a"]);
         }
-        
+
         [TestCase("a=1&b=rrt")]
         [TestCase("a=1&b=rrt&")]
         [TestCase("&a=1&b=rrt&")]
@@ -170,39 +170,39 @@ namespace NFX.NUnit.Serialization
         public void JSONDataMapFromURLEncoded_KeyVal(string query)
         {
           var dict = JSONDataMap.FromURLEncodedString(query);
-        
+
           Assert.AreEqual(2, dict.Count);
           Assert.AreEqual("1", dict["a"]);
           Assert.AreEqual("rrt", dict["b"]);
         }
-        
+
         [Test]
         public void JSONDataMapFromURLEncoded_KeyEmptyEqNormal()
         {
           var dict = JSONDataMap.FromURLEncodedString("a=&b&&=&=14&c=3459");
-        
+
           Assert.AreEqual(3, dict.Count);
           Assert.AreEqual(string.Empty, dict["a"]);
           Assert.AreEqual(null, dict["b"]);
           Assert.AreEqual("3459", dict["c"]);
         }
-        
+
         [Test]
         public void JSONDataMapFromURLEncoded_Esc()
         {
           string[] strs = { " ", "!", "=", "&", "\"zele/m\\h()an\"" };
-        
+
           foreach (var str in strs)
           {
             var query = "a=" + Uri.EscapeDataString(str);
-        
+
             var dict = JSONDataMap.FromURLEncodedString(query);
-        
+
             Assert.AreEqual(1, dict.Count);
             Assert.AreEqual(str, dict["a"]);
           }
         }
- 
+
 
         [TestCase]
         public void ReadRootComplexObject()
@@ -212,11 +212,11 @@ namespace NFX.NUnit.Serialization
   'LastName': ""Ogurtsov"",
   ""Middle Name"": 'V.',
   ""Crazy\nName"": 'Shamanov',
-  LuckyNumbers: [4,5,6,7,8,9], 
+  LuckyNumbers: [4,5,6,7,8,9],
   /* comments
   do not break stuff */
   |* in this JSON superset *|
-  History: 
+  History:
   [
     #HOT_TOPIC    //ability to use directive pragmas
     {Date: '05/14/1905', What: 'Tsushima'},
@@ -239,7 +239,7 @@ this \r\n is not escape'
             Assert.AreEqual(6, obj.LuckyNumbers.List.Count);
             Assert.AreEqual(7, obj.LuckyNumbers[3]);
             Assert.AreEqual("USSR", obj.History[1].Who[1]);
-         
+
         }
 
          [TestCase]
@@ -251,11 +251,11 @@ this \r\n is not escape'
   'LastName': ""Ogurtsov"",
   ""Middle Name"": 'V.',
   ""Crazy\nName"": 'Shamanov',
-  LuckyNumbers: [4,5,6,7,8,9], 
+  LuckyNumbers: [4,5,6,7,8,9],
   /* comments
   do not break stuff */
   |* in this JSON superset *|
-  History: 
+  History:
   [
     #HOT_TOPIC    //ability to use directive pragmas
     {Date: '05/14/1905', What: 'Tsushima'},
@@ -306,9 +306,26 @@ this \r\n is not escape'
 
 
         [TestCase]
-        public void NLSMap_Basic1()
+        public void NLSMap_Basic1_String()
         {
             var content="{eng: {n: 'Cucumber',d: 'It is green'}}";
+
+            var nls = new NLSMap(content);
+
+            Assert.IsTrue (nls["eng"].IsAssigned);
+            Assert.IsFalse(nls["rus"].IsAssigned);
+
+            Assert.AreEqual("Cucumber", nls["eng"].Name);
+            Assert.AreEqual(null, nls["rus"].Name);
+
+            Assert.AreEqual("It is green", nls["eng"].Description);
+            Assert.AreEqual(null, nls["rus"].Description);
+        }
+
+        [TestCase]
+        public void NLSMap_Basic1_Config()
+        {
+            var content="nls{ eng{n='Cucumber' d='It is green'}}".AsLaconicConfig();
 
             var nls = new NLSMap(content);
 
@@ -342,39 +359,54 @@ this \r\n is not escape'
         }
 
         [TestCase]
-        public void NLSMap_Basic1_WithRoot()
+        public void NLSMap_OverrideBy()
         {
-            var content=@"{""nls"": {""eng"": {""n"": ""Cucumber"",""d"": ""It is green""}}}";
+            var content1="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
+            var nls1 = new NLSMap(content1);
 
-            var nls = new NLSMap(content);
+            var content2="{eng: {n: 'Cacamber',d: 'It is brown'}, rus: {n: 'Ogurez', d: 'On zeleniy'}}";
+            var nls2 = new NLSMap(content2);
 
-            Assert.IsTrue (nls["eng"].IsAssigned);
-            Assert.IsFalse(nls["rus"].IsAssigned);
+            var nls = nls1.OverrideBy(nls2);
 
-            Assert.AreEqual("Cucumber", nls["eng"].Name);
-            Assert.AreEqual(null, nls["rus"].Name);
-
-            Assert.AreEqual("It is green", nls["eng"].Description);
-            Assert.AreEqual(null, nls["rus"].Description);
+            Aver.AreEqual(3, nls.Count);
+            Aver.AreEqual("Cacamber", nls["eng"].Name);
+            Aver.AreEqual("Gurke", nls["deu"].Name);
+            Aver.AreEqual("Ogurez", nls["rus"].Name);
         }
 
         [TestCase]
-        public void NLSMap_Basic2_WithRoot()
+        public void NLSMap_OverrideByEmpty1()
         {
-            var content=@"{""nls"": {""eng"": {""n"": ""Cucumber"",""d"": ""It is green""}, ""deu"": {""n"": ""Gurke"", ""d"": ""Es ist grün""}}}";
+            var nls1 = new NLSMap();
 
-            var nls = new NLSMap(content);
+            var content2="{eng: {n: 'Cacamber',d: 'It is brown'}, rus: {n: 'Ogurez', d: 'On zeleniy'}}";
+            var nls2 = new NLSMap(content2);
 
-            Assert.IsTrue (nls["eng"].IsAssigned);
-            Assert.IsTrue (nls["deu"].IsAssigned);
-            Assert.IsFalse(nls["rus"].IsAssigned);
+            var nls = nls1.OverrideBy(nls2);
 
-            Assert.AreEqual("Cucumber", nls["eng"].Name);
-            Assert.AreEqual("Gurke", nls["deu"].Name);
-
-            Assert.AreEqual("It is green", nls["eng"].Description);
-            Assert.AreEqual("Es ist grün", nls["deu"].Description);
+            Aver.AreEqual(2, nls.Count);
+            Aver.AreEqual("Cacamber", nls["eng"].Name);
+            Aver.AreEqual(null, nls["deu"].Name);
+            Aver.AreEqual("Ogurez", nls["rus"].Name);
         }
+
+        [TestCase]
+        public void NLSMap_OverrideByEmpty2()
+        {
+             var content1="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
+            var nls1 = new NLSMap(content1);
+
+            var nls2 = new NLSMap();
+
+            var nls = nls1.OverrideBy(nls2);
+
+            Aver.AreEqual(2, nls.Count);
+            Aver.AreEqual("Cucumber", nls["eng"].Name);
+            Aver.AreEqual("Gurke", nls["deu"].Name);
+            Aver.AreEqual(null, nls["rus"].Name);
+        }
+
 
         [TestCase]
         public void NLSMap_SerializeAll()
@@ -389,8 +421,8 @@ this \r\n is not escape'
             dynamic read = json.JSONToDynamic();
             Assert.IsNotNull(read);
 
-            Assert.AreEqual("Cucumber", read.eng.n);
-            Assert.AreEqual("Gurke", read.deu.n);
+            Assert.AreEqual("Cucumber", read.ENG.n);
+            Assert.AreEqual("Gurke", read.DEU.n);
         }
 
         [TestCase]
@@ -430,6 +462,27 @@ this \r\n is not escape'
             Assert.AreEqual("Cucumber", read.n);
             Assert.AreEqual("It is green", read.d);
         }
+
+
+         [TestCase]
+        public void NLSMap_JSONSerializationRoundtrip()
+        {
+            var content="{eng: {n: 'Cucumber',d: 'It is green'}, deu: {n: 'Gurke', d: 'Es ist grün'}}";
+
+            var nls = new NLSMap(content);
+
+
+            var json = nls.ToJSON();
+            Console.WriteLine(json);
+
+            var nls2 = new NLSMap(json);
+
+            Aver.AreEqual(2, nls2.Count);
+            Aver.AreEqual("Cucumber", nls2["eng"].Name);
+            Aver.AreEqual("Gurke", nls2["deu"].Name);
+            Aver.AreEqual(null, nls["rus"].Name);
+        }
+
 
         [TestCase]
         public void NLSMap_Get_Name()

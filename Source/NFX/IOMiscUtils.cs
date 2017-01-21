@@ -581,13 +581,12 @@ namespace NFX
         /// </summary>
         public static int PackISO3CodeToInt(string iso)
         {
-          if (iso==null)
-           throw new NFXException(StringConsts.ARGUMENT_ERROR+"PackISO3CodeToInt(iso==null)");
+          if (iso.IsNullOrWhiteSpace()) return 0;
 
           var l = iso.Length;
 
-          if (l==0 || l>3)
-            throw new NFXException(StringConsts.ARGUMENT_ERROR+"PackISO3CodeToInt(iso==0|>3)");
+          if (l>3)
+            throw new NFXException(StringConsts.ARGUMENT_ERROR+"PackISO3CodeToInt(iso>3)");
 
 
           //note: ISO codes are in ASCII plane
