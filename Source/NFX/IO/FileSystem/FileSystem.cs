@@ -178,6 +178,9 @@ namespace NFX.IO.FileSystem
           public virtual string CombinePaths(string first, params string[] others)
           {
             var result = (first ?? string.Empty).TrimEnd();
+
+            if (others == null) return result;
+
             for(var i=0; i<others.Length; i++)
             {
                 var other = others[i];

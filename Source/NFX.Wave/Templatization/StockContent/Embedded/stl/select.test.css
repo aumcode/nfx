@@ -1,25 +1,30 @@
 ﻿* {
   box-sizing: border-box;
+  line-height: 1.5;
 }
 body {
   background-color: #fef8ff;
   font-size: 16px;
+  padding: 20px 20px 40px;
 }
 
 .tests {
-  width: 800px;
+  width: 300px;
   margin: 0 auto;
 }
 
 .wvSelectContainer {
-  width: 400px;
+  width: 300px;
 }
 
 .wvSelectDropdown {
   background-color: #fff;
   border: 1px solid #404040;
-  max-height: 300px;
+  max-height: 250px;
   overflow: auto;
+  margin-bottom: 20px;
+  position: absolute;
+  width: 300px;
 }
 
 .wvSelectDropdown.wvHidden {
@@ -28,30 +33,31 @@ body {
 
 .wvSelectCombobox {
   background-color: #999;
-  min-height: 34px;
+  min-height: calc(1.5 * 16px + 4px);
   padding: 2px;
   position: relative;
 }
 
-.wvSelectContainer.wvSingle {
-  padding-right: 33px;
+.wvSelectContainer.wvSingle .wvSelectDisplay {
+  padding-right: calc(1.5 * 16px + 2px);
 }
 
 .wvSelectContainer.wvSingle .wvSelectArrow {
-  background-color: #ff4530;
-  height: 30px;
+  background-color: #0094ff;
+  height: calc(1.5 * 16px);
   right: 2px;
   position: absolute;
   top: 2px;
-  width: 30px;
+  width: calc(1.5 * 16px);
 }
 .wvSelectContainer.wvMulti .wvSelectArrow {
   display: none;
 }
 
 .wvChoice {
-  padding: 5px 10px;
   cursor: pointer;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 
@@ -70,7 +76,7 @@ body {
 .wvChoiceLabel {
   background-color: #404040;
   color: #f0f0f0;
-  padding: 5px 10px;
+  padding: 3px 6px;
 }
 
 .wvChoiceParentLabeled {
@@ -79,23 +85,45 @@ body {
 
 .wvChoiceValueBox {
   background-color: #f0f0f0;
-  border: 1px solid #404040;
-  padding: 5px 40px 5px 10px;
+  padding-left: 3px;
+  padding-right: calc(1.5 * 16px);
   position: relative;
 }
 .wvChoiceValueBox > div {
   padding-right: 10px;
 }
 .wvChoiceValueBox .wvChoiseUnselect {
-  background-color: #fff;
+  background-color: salmon;
   cursor: pointer;
-  height: 28px;
-  right: 0;
+  height: calc(1.5 * 16px - 4px);
+  right: 2px;
   position: absolute;
-  top: 0;
-  width: 30px;
+  top: 2px;
+  width: calc(1.5 * 16px - 4px);
 }
 
 .wvSelectContainer.wvMulti .wvChoiceValueBox {
-  display: inline-block;
+  margin: 1.5px;
+}
+
+.wvSelectContainer.wvMulti .wvSelectDisplay {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wvSelectAutocomplete {
+  border: none;
+  height: 25px;
+  padding: 0 2px;
+  width: 100%;
+}
+.wvSelectContainer.wvMulti .wvSelectDisplay .wvChoiceValueBox,
+.wvSelectContainer.wvMulti .wvSelectDisplay .wvSelectAutocomplete {
+
+}
+
+#divChoice {
+  border: 1px solid #404040;
+  height: 300px;
+  overflow: auto;
 }

@@ -3371,7 +3371,7 @@ WAVE.GUI = (function(){
         if ((fDialog !== null && e.target === fDialog.baseDIV()) || !WAVE.isParentOf(container, target)) {
           e.preventDefault();
           __hide();
-        };;
+        }
       }
 
       function outsideMouseMoveHandler(e) {
@@ -4427,6 +4427,9 @@ WAVE.GUI = (function(){
     published.CLS_SELECT_DROPDOWN_HIDDEN = "wvHidden";
     published.CLS_SELECT_DISPLAY = "wvSelectDisplay";
     published.CLS_SELECT_ARROW = "wvSelectArrow";
+    published.CLS_SELECT_AUTOCOMPETE = "wvSelectAutocomplete";
+    published.CLS_SELECT_AUTO_CONTAINER = "wvSelectAutoContainer";
+    published.CLS_SELECT_CHOICES_CONTAINER = "wvSelectChoicesContainer";
 
     published.EVT_SELECT_CHANGE = "wv-select-change";
     published.EVT_SELECT_OPEN = "wv-select-opan";
@@ -4456,28 +4459,40 @@ WAVE.GUI = (function(){
           fChoiceUI = WAVE.isFunction(choiceUI)
                           ? choiceUI
                           : published.Choice,
+          fChoiceBuilder = WAVE.isFunction(init.choiceBuilder) ? init.choiceBuilder : null,
           fData = null,
           fFormName = WAVE.strDefault(init.formName),
           fElemContainer = null,
           fElemCombobox = null,
           fElemDisplay = null,
           fElemArrow = null,
+          fElemAutocomplete = null,
           fElemDropdown = null,
           fElemSelection = null,
+          fElemAutocompleteContainer = null,
+          fElemChoicesContainer = null,
           fDropdownShow = false,
           fAutocomplete = WAVE.strAsBool(init.autocomlete, true),
+          fFilterTimer = null,
+          fDisable = WAVE.strAsBool(init.disable),
           fMode = __parseMode(init.mode),
           fChoice = null,
           fSelectedChoices = {},
           fSelectedIds = [],
+          fMatch = WAVE.isFunction(init.match) ? init.match : __match,
+          fFilter = WAVE.isFunction(init.filter) ? init.filter : __filter,
+          fButtonsNotFireFilter = [9, 16, 17, 18, 19, 20, 27, 37, 38, 39, 40],
           fIdSeed = "select_" + fSelectSeed++,
           fIds = {
             container : __IdFor("container"),
             combobox: __IdFor("combobox"),
             display: __IdFor("display"),
             arrow: __IdFor("select"),
+            autocomlete: __IdFor("autocomplete"),
             dropdown: __IdFor("dropdown"),
-            selection: __IdFor("selection")
+            selection: __IdFor("selection"),
+            autoContainer: __IdFor("autoContainer"),
+            choicesContainer: __IdFor("choicesContainer"),
           };
 
       WAVE.extend(select, WAVE.EventManager);
@@ -4498,6 +4513,13 @@ WAVE.GUI = (function(){
                         : published.SELECT_MODES.Single;
       }
 
+      function __resetTimer() {
+        if (fFilterTimer !== null) {
+          clearTimeout(fFilterTimer);
+          fFilterTimer === null;
+        }
+      }
+
       function __ensureInitData() {
         var data = init.data;
         if (typeof(data) !== tUNDEFINED && data !== null) {
@@ -4513,60 +4535,6 @@ WAVE.GUI = (function(){
         }
       }
 
-      function __choiceSelected(choice) {
-        var args = {
-          phase: published.EVT_PHASE_BEFORE,
-          sender: select,
-          abort: false
-        };
-        select.eventInvoke(published.EVT_SELECT_SELECT, args);
-        if (args.abort === true) return;
-
-        if (fMode === published.SELECT_MODES.Single) {
-          if (fSelectedIds.length > 0)
-            fSelectedChoices[fSelectedIds[0]].isSelected(false);
-          fSelectedChoices = {};
-          fSelectedIds = [];
-        }
-
-        fSelectedChoices[choice.id()] = choice;
-        fSelectedIds.push(choice.id());
-        choice.render(fElemDisplay);
-        fElemSelection.value = select.selectedAsString();
-
-        args.result = choice.value();
-        args.phase = published.EVT_PHASE_AFTER;
-        delete args.abort;
-        select.eventInvoke(published.EVT_SELECT_SELECT, args);
-      }
-
-      function __choiceUnselected(choice) {
-        var args = {
-          phase: published.EVT_PHASE_BEFORE,
-          sender: select,
-          abort: false
-        };
-        select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
-        if (args.abort === true) return;
-
-        if (fMode === published.SELECT_MODES.Single) {
-          fSelectedChoices = {};
-          fSelectedIds = [];
-        } else {
-          delete fSelectedChoices[choice.id()];
-          var idx = fSelectedIds.indexOf(choice.id());
-          if (idx > -1)
-            fSelectedIds.splice(idx, 1);
-        }
-        choice.destroy();
-        fElemSelection.value = select.selectedAsString();
-
-        args.result = choice.value();
-        args.phase = published.EVT_PHASE_AFTER;
-        delete args.abort;
-        select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
-      }
-
       function __dropdownHide() {
         var args = {
           phase: published.EVT_PHASE_BEFORE,
@@ -4576,9 +4544,14 @@ WAVE.GUI = (function(){
         select.eventInvoke(published.EVT_SELECT_CLOSE, args);
         if (args.abort === true) return;
 
+        __resetTimer();
+        __filter([fChoice], "");
+
         fDropdownShow = false;
         WAVE.addClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_HIDDEN);
         WAVE.removeClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_SHOWN);
+        fElemAutocomplete.value = "";
+        WAVE.removeEventHandler(window, "click", __outsideClickHandler);
 
         args.result = false;
         args.phase = published.EVT_PHASE_AFTER;
@@ -4598,6 +4571,7 @@ WAVE.GUI = (function(){
         fDropdownShow = true;
         WAVE.addClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_SHOWN);
         WAVE.removeClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_HIDDEN);
+        WAVE.addEventHandler(window, "click", __outsideClickHandler);
 
         args.result = true;
         args.phase = published.EVT_PHASE_AFTER;
@@ -4605,11 +4579,142 @@ WAVE.GUI = (function(){
         select.eventInvoke(published.EVT_SELECT_OPEN, args);
       }
 
-      function __toggleDropdown() {
-        if (fDropdownShow)
-          __dropdownHide();
-        else
+      function __toggleDropdown(val) {
+        if(typeof(val) === tUNDEFINED || val === null)
+          val = !fDropdownShow;
+
+        if (val === true)
           __dropdownShow();
+        else
+          __dropdownHide();
+      }
+
+      function __outsideClickHandler(e) {
+        var target = e.target;
+        if (!WAVE.isParentOf(fElemContainer, target)) {
+          __dropdownHide();
+        }
+      }
+
+      function __match(choice, term) {
+        if (choice.value().toUpperCase().indexOf(term.toUpperCase()) > -1)
+          return true;
+        else
+          return false;
+      }
+
+      function __filter(choices, term) {
+        var arr = choices;
+        for(var i = 0; i < arr.length; i++) {
+          var choice = arr[i];
+          if (choice === null) continue;
+          var children = choice.children();
+
+          if (children.length === 0 && choice.value() === null) continue;
+
+          if (children.length > 0)
+            __filter(children, term);
+          else
+            choice.visible(__match(choice, term));
+        }
+      }
+
+      function __choiceUnselected(choice) {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: select,
+          abort: false
+        };
+        select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
+        if (args.abort === true) return;
+
+        if (!choice.isSelected(false)) return;
+
+        if (fMode === published.SELECT_MODES.Single) {
+          fSelectedChoices = {};
+          fSelectedIds = [];
+        } else {
+          delete fSelectedChoices[choice.id()];
+          var idx = fSelectedIds.indexOf(choice.id());
+          if (idx > -1)
+            fSelectedIds.splice(idx, 1);
+        }
+        choice.destroyView();
+        fElemSelection.value = select.value();
+
+        args.result = fElemSelection.value;
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
+      }
+
+      function __choiceSelected(choice) {
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: select,
+          abort: false
+        };
+        select.eventInvoke(published.EVT_SELECT_SELECT, args);
+        if (args.abort === true) return;
+
+        if (!choice.isSelected(true)) return;
+
+        if (fMode === published.SELECT_MODES.Single) {
+          if (fSelectedIds.length > 0) {
+            var prev = fSelectedChoices[fSelectedIds[0]];
+            prev.isSelected(false);
+            prev.destroyView();
+          }
+          fSelectedChoices = {};
+          fSelectedIds = [];
+        }
+
+        fSelectedChoices[choice.id()] = choice;
+        fSelectedIds.push(choice.id());
+        choice.renderSelection(fElemDisplay, __choiceUnselected);
+        fElemSelection.value = select.value();
+
+        args.result = fElemSelection.value;
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        select.eventInvoke(published.EVT_SELECT_SELECT, args);
+      }
+
+      function __choiceClickHandler(object, args) {
+        if (args.phase === published.EVT_PHASE_BEFORE) return;
+
+        var selected = args.sender.isSelected();
+        if (fMode === published.SELECT_MODES.Single)
+        {
+          if (!selected) {
+            __toggleDropdown();
+            __choiceSelected(args.sender);
+          }
+        } else {
+          if (selected)
+            __choiceUnselected(args.sender);
+          else
+            __choiceSelected(args.sender);
+        }
+      }
+
+      function __destroyChoice() {
+        fChoice.eventUnbind(published.EVT_SELECT_CHOICE_CLICK, __choiceClickHandler);
+        fChoice.destroy();
+      }
+
+      function __updateData() {
+        if (fData === null && fChoice !== null) {
+          fChoice.destroy();
+          fChoice = null;
+          return;
+        }
+
+        if (fChoice !== null)
+          __destroyChoice();
+
+        fChoice = new fChoiceUI({data: fData, DIV: fElemChoicesContainer, builder: fChoiceBuilder, disable: fDisable});
+        fChoice.eventBind(published.EVT_SELECT_CHOICE_CLICK, __choiceClickHandler);
       }
 
       function __build() {
@@ -4632,43 +4737,78 @@ WAVE.GUI = (function(){
         fElemDisplay = __createElemet("div", fIds.display, published.CLS_SELECT_DISPLAY);
         fElemCombobox.appendChild(fElemDisplay);
 
-        var arrow = document.createElement("div");
-        arrow.className = published.CLS_SELECT_ARROW;
-        fElemCombobox.appendChild(arrow);
-        WAVE.addEventHandler(arrow, "click", __toggleDropdown);
+        fElemArrow = document.createElement("div");
+        fElemArrow.className = published.CLS_SELECT_ARROW;
+        fElemCombobox.appendChild(fElemArrow);
+        WAVE.addEventHandler(fElemArrow, "click", function() { __toggleDropdown(); });
 
         fElemDropdown = __createElemet("div", fIds.dropdown, published.CLS_SELECT_DROPDOWN + " " + published.CLS_SELECT_DROPDOWN_HIDDEN);
+        fElemDropdown.style.zIndex = CURTAIN_ZORDER + fCurtains.length + 1;
         fElemContainer.appendChild(fElemDropdown);
 
-        if (fData !== null) {
-          fChoice = new fChoiceUI(fData, select, fElemDropdown);
-          fChoice.eventBind(published.EVT_SELECT_CHOICE_SELECTED, function (object, args) {
-            if (args.phase === published.EVT_PHASE_AFTER)
-              __choiceSelected(args.sender);
-          });
+        fElemAutocompleteContainer = __createElemet("div", fIds.autoContainer, published.CLS_SELECT_AUTO_CONTAINER);
+        fElemDropdown.appendChild(fElemAutocompleteContainer);
 
-          fChoice.eventBind(published.EVT_SELECT_CHOICE_UNSELECTED, function (object, args) {
-            if (args.phase === published.EVT_PHASE_AFTER)
-             __choiceUnselected(args.sender);
+        fElemChoicesContainer = __createElemet("div", fIds.choicesContainer, published.CLS_SELECT_CHOICES_CONTAINER);
+        fElemDropdown.appendChild(fElemChoicesContainer);
+
+        if (fAutocomplete) {
+          fElemAutocomplete = __createElemet("input", fIds.autocomlete, published.CLS_SELECT_AUTOCOMPETE);
+          fElemAutocomplete.placeholder = "Start enter..";
+          if (fMode === published.SELECT_MODES.Single)
+            fElemAutocompleteContainer.appendChild(fElemAutocomplete);
+          else
+            fElemCombobox.appendChild(fElemAutocomplete);
+
+          WAVE.addEventHandler(fElemAutocomplete, "keyup", function(e) {
+            if (fButtonsNotFireFilter.indexOf(e.keyCode) > -1)
+              return;
+
+            __resetTimer();
+            fFilterTimer = setTimeout(function() {
+              __filter([fChoice], fElemAutocomplete.value);
+              if (!fDropdownShow)
+                __dropdownShow();
+            }, 400);
           });
+          WAVE.addEventHandler(fElemAutocomplete, "click", __dropdownShow);
         }
+        __updateData();
       }
 
-      select.mode = function(val) {
-        if (typeof(val) === tUNDEFINED || val === null)
-          return fMode;
-        __parseMode(val);
-      };
-
       select.selected = function() {
-        return WAVE.clone(fSelectedChoices);
+        return fSelectedChoices;
       };
 
-      select.selectedAsString = function() {
-        var result = "";
-        for(var v in fSelectedChoices)
-          result += fSelectedChoices[v].key() + ";";
-        return result.slice(0, -1);
+      function __ensureValue(val) {
+        //for(var )
+      }
+
+      function __setValue(vals) {
+        //for(var i = 0; i < )
+        //__ensureValue
+        //if (fMode === published.SELECT_MODES.Single)
+        // return;
+      }
+
+      select.value = function(val) {
+        if(typeof(val) === tUNDEFINED) {
+          var result = "";
+          for(var v in fSelectedChoices)
+            result += fSelectedChoices[v].key() + ";";
+          return result.slice(0, -1);
+        } else {
+          val = val.toString();
+          __setValue(val);
+        }
+      };
+
+      select.data = function(val) {
+        if (typeof(val) === tUNDEFINED)
+          return val;
+
+        fData = val;
+        __updateData();
       };
 
       __ensureInitData();
@@ -4678,6 +4818,7 @@ WAVE.GUI = (function(){
     };//Select
 
     published.CLS_SELECT_CHOICE = "wvChoice";
+    published.CLS_SELECT_CHOICE_DISABLED = "wvChoiceDisabled";
     published.CLS_SELECT_CHOICE_SELECTED = "wvSelected";
     published.CLS_SELECT_CHOICE_PARENT = "wvChoiceParent";
     published.CLS_SELECT_CHOICE_PARENT_LABELED = "wvChoiceParentLabeled";
@@ -4687,33 +4828,45 @@ WAVE.GUI = (function(){
 
     published.EVT_SELECT_CHOICE_SELECTED = "wv-choice-selected";
     published.EVT_SELECT_CHOICE_UNSELECTED = "wv-choice-unselected";
+    published.EVT_SELECT_CHOICE_CLICK = "wv-choise-choice-click";
 
     var fChoiceSeed = 0;
-    published.Choice = function(choiceData, select, DIV) {
+    published.Choice = function(init) {
 
       var choice = this,
+          fDIV = init.DIV,
           fChildren = [],
-          fSelectable = null,
+          fDisable = WAVE.strAsBool(init.disable, false),
+          fVisible = true,
           fIsSelected = false,
-          fElemChoice = null,
-          fData = choiceData,
-          fKey = null,
-          fValue = null,
+          fData = init.data,
+          fKey = WAVE.strEmpty(init.key) ? null : init.key,
+          fValue = WAVE.strEmpty(init.value) ? null : init.value,
           fElemValueBox = null,
+          fElemChoice = null,
           fElemUnselect = null,
+          fStlDisplay = null,
+          fCLS = WAVE.strDefault(init.cls),
+          fOnCloseClick = null,
+          fBuilder = init.builder,
           fId = "wv_choice_" + fChoiceSeed++,
-          fUnselectId = fId + "_unselect";
+          fIds = {
+            unselect: fId + "_unselect",
+            valueBox: fId + "_value"
+          };
 
       WAVE.extend(choice, WAVE.EventManager);
 
       function __select() {
+        if (fIsSelected) return false;
+
         var args = {
           phase: published.EVT_PHASE_BEFORE,
           sender: choice,
           abort: false
         };
         choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
-        if (args.abort === true || fIsSelected) return;
+        if (args.abort === true) return false;
 
         fIsSelected = true;
         WAVE.addClass(fElemChoice, published.CLS_SELECT_CHOICE_SELECTED);
@@ -4722,16 +4875,20 @@ WAVE.GUI = (function(){
         args.phase = published.EVT_PHASE_AFTER;
         delete args.abort;
         choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
+
+        return true;
       }
 
       function __unselect() {
+        if (!fIsSelected) return false;
+
         var args = {
           phase: published.EVT_PHASE_BEFORE,
           sender: choice,
           abort: false
         };
         choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
-        if (args.abort === true || !fIsSelected) return;
+        if (args.abort === true) return false;
 
         fIsSelected = false;
         WAVE.removeClass(fElemChoice, published.CLS_SELECT_CHOICE_SELECTED);
@@ -4740,51 +4897,121 @@ WAVE.GUI = (function(){
         args.phase = published.EVT_PHASE_AFTER;
         delete args.abort;
         choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
+
+        return true;
+      }
+
+      function __toggleSelection(val) {
+        if (typeof(val) === tUNDEFINED || val === null)
+          val = !fIsSelected;
+
+        if (val === true)
+          return __unselect();
+        else
+          return __select();
       }
 
       function __click() {
-        if (fIsSelected && select.mode() === published.SELECT_MODES.Multi)
-          __unselect();
-        else
-          __select();
+        if (fDisable === true)
+          return;
+
+        var args = {
+          phase: published.EVT_PHASE_BEFORE,
+          sender: choice,
+          abort: false
+        };
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_CLICK, args);
+        if (args.abort === true) return;
+
+        args.phase = published.EVT_PHASE_AFTER;
+        delete args.abort;
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_CLICK, args);
       }
 
-      function __createChild(cData, cDiv) {
-        var child = new published.Choice(cData, select, cDiv);
-        child.eventBind(published.EVT_SELECT_CHOICE_SELECTED, function (object, args) {
-          choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
-        });
-        child.eventBind(published.EVT_SELECT_CHOICE_UNSELECTED, function (object, args) {
-          choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
-        });
+      function __hide() {
+        if (!fVisible) return;
+
+        fVisible = false;
+        if (fStlDisplay === null)
+          fStlDisplay = WAVE.styleOf(fElemChoice, "display");
+        fElemChoice.style.display = "none";
+      }
+
+      function __show() {
+        if (fVisible) return;
+
+        fVisible = true;
+        fElemChoice.style.display = fStlDisplay === null ? "block" : fStlDisplay;
+      }
+
+      function __toggleVisibility(val) {
+        if (typeof(val) === tUNDEFINED || val === null)
+          val = !fVisible;
+
+        if (val === true)
+          return __show();
+        else
+          return __hide();
+      }
+
+      function __selectedEventHandler(object, args) {
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
+      }
+
+      function __unselectedEventHandler(object, args) {
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_UNSELECTED, args);
+      }
+
+      function __clickEventHandler(object, args) {
+        choice.eventInvoke(published.EVT_SELECT_CHOICE_CLICK, args);
+      }
+
+      function __addChild(child) {
+        child.eventBind(published.EVT_SELECT_CHOICE_SELECTED, __selectedEventHandler);
+        child.eventBind(published.EVT_SELECT_CHOICE_UNSELECTED, __unselectedEventHandler);
+        child.eventBind(published.EVT_SELECT_CHOICE_CLICK, __clickEventHandler);
         fChildren.push(child);
       }
 
-      function __buildAsKeyValue(key, value, container) {
+      function __createChild(cData, cDiv) {
+        var child = new published.Choice({data: cData, DIV: cDiv, builder: fBuilder});
+        __addChild(child);
+      }
+
+      function __initElemChoice() {
         fElemChoice = document.createElement("div");
         fElemChoice.id = fId;
-        fElemChoice.className = published.CLS_SELECT_CHOICE;
+        fDIV.appendChild(fElemChoice);
+        if (!fDisable) {
+          fElemChoice.className = published.CLS_SELECT_CHOICE;
+          WAVE.addEventHandler(fElemChoice, "click", __click);
+        } else
+          fElemChoice.className = published.CLS_SELECT_CHOICE_DISABLED;
+        if (fCLS !== null)
+          WAVE.addClass(fElemChoice, fCLS);
+      }
+
+      function __buildAsKeyValue(key, value) {
+        __initElemChoice();
         fElemChoice.innerHTML = value;
-        container.appendChild(fElemChoice);
         fValue = value;
         fKey = key;
-        WAVE.addEventHandler(fElemChoice, "click", __click);
       }
 
       function __buildAsArray(arrValue) {
         fElemChoice = document.createElement("div");
         fElemChoice.id = fId;
         fElemChoice.className = published.CLS_SELECT_CHOICE_PARENT;
-        DIV.appendChild(fElemChoice);
+        fDIV.appendChild(fElemChoice);
 
         for(var i = 0; i < arrValue.length; i++) {
           var value = arrValue[i];
-          fChildren.push(__createChild(value, fElemChoice));
+          __createChild(value, fElemChoice);
         }
       }
 
       function __buildAsObject(objValue) {
-        var keys = Object.keys(fData),
+        var keys = Object.keys(objValue),
             key,
             value,
             label;
@@ -4792,30 +5019,28 @@ WAVE.GUI = (function(){
         if (keys.length === 1) {
           key = keys[0];
           value = objValue[key];
-          if (WAVE.isFunction(value))
-            value = value.toString();
-          if (WAVE.isString(value)) {
-            __buildAsKeyValue(key, value, DIV);
+          if (WAVE.isString(value) || !WAVE.isMapOrArray(value)) {
+            __buildAsKeyValue(key, value.toString());
           } else {
             fElemChoice = document.createElement("div");
             fElemChoice.id = fId;
             fElemChoice.className = published.CLS_SELECT_CHOICE_PARENT + " " +
                                     published.CLS_SELECT_CHOICE_PARENT_LABELED;
-            DIV.appendChild(fElemChoice);
+            fDIV.appendChild(fElemChoice);
 
             label = document.createElement("div");
             label.className = published.CLS_SELECT_CHOICE_LABEL;
             label.innerHTML = key;
             fElemChoice.appendChild(label);
 
-            fChildren.push(__createChild(value, fElemChoice));
+            __createChild(value, fElemChoice);
           }
         } else {
           fElemChoice = document.createElement("div");
           fElemChoice.id = fId;
           fElemChoice.className = published.CLS_SELECT_CHOICE_PARENT + " " +
                                   published.CLS_SELECT_CHOICE_PARENT_LABELED;
-          DIV.appendChild(fElemChoice);
+          fDIV.appendChild(fElemChoice);
 
           for(key in objValue) {
             label = document.createElement("div");
@@ -4824,45 +5049,75 @@ WAVE.GUI = (function(){
             fElemChoice.appendChild(label);
 
             value = objValue[key];
-            fChildren.push(__createChild(value, fElemChoice));
+            __createChild(value, fElemChoice);
           }
         }
       }
 
-      function __build() {
-        if (WAVE.isFunction(fData))
-          fData = fData.toString();
-        if (WAVE.isString(fData))     __buildAsKeyValue(fData, fData, DIV);
-        else if (WAVE.isArray(fData)) __buildAsArray(fData);
-        else
-          __buildAsObject(fData);
+      function __build(data, DIV) {
+        if (typeof(data) === tUNDEFINED || data === null)
+          return;
+
+        if (WAVE.isString(data))      __buildAsKeyValue(data, data);
+        else if (WAVE.isArray(data))  __buildAsArray(data);
+        else if (WAVE.isObject(data)) __buildAsObject(data);
+        else __buildAsKeyValue(data.toString(), data.toString());
       }
 
-      choice.selectable = function(val) {
+      function __destroyView() {
+        WAVE.removeEventHandler(fElemUnselect, "click", fOnCloseClick);
+        WAVE.removeElem(fIds.unselect);
+        WAVE.removeElem(fIds.valueBox);
+        fOnCloseClick = null;
+      }
+
+      function __destroy() {
+        WAVE.removeEventHandler(fElemChoice, "click", __click);
+        WAVE.removeElem(fId);
+        choice.eventUnbind(published.EVT_SELECT_CHOICE_SELECTED, __selectedEventHandler);
+        choice.eventUnbind(published.EVT_SELECT_CHOICE_UNSELECTED, __unselectedEventHandler);
+        choice.eventUnbind(published.EVT_SELECT_CHOICE_CLICK, __clickEventHandler);
+        for(var i = 0; i < fChildren.length; i++)
+          fChildren[i].destroy();
+      }
+
+      choice.disable = function(val) {
         if (typeof(val) === tUNDEFINED || val === null) {
-          if (fSelectable === null)
-            fSelectable = fChildren.length > 0;
-          return fSelectable;
+          if (fDisable === null)
+            fDisable = fChildren.length > 0;
+          return fDisable;
         }
-        fSelectable = WAVE.strAsBool(val, true);
+        fDisable = WAVE.strAsBool(val, true);
           //TODO fire selectable change
-        return fSelectable;
       };
 
       choice.isSelected = function(val) {
         if (typeof(val) === tUNDEFINED || val === null)
           return fIsSelected;
-        if (val)
-          __select();
-        else
-          __unselect();
+        return __toggleSelection(!val);
+      };
+
+      choice.visible = function(val) {
+        if (typeof(val) === tUNDEFINED || val === null)
+          return fVisible;
+
+        return __toggleVisibility(val);
+      };
+
+      choice.disable = function() {
       };
 
       choice.id = function() { return fId; };
       choice.key = function() { return fKey; };
       choice.value = function() { return fValue; };
+      choice.children = function() { return fChildren; };
+      choice.elem = function() { return fElemChoice; };
 
-      choice.render = function(div) {
+      choice.addChild = function(child) {
+        __addChild(child);
+      };
+
+      choice.renderSelection = function(div, onCloseClick) {
         if (!fIsSelected ||
             typeof(div) === tUNDEFINED ||
             div === null)
@@ -4873,24 +5128,35 @@ WAVE.GUI = (function(){
         var view = WAVE.strHTMLTemplate(html, {
           value : fValue,
           clsUnselect : published.CLS_SELECT_CHOICE_UNSELECT,
-          idUnselect : fUnselectId
+          idUnselect : fIds.unselect
         });
         fElemValueBox = document.createElement("div");
         fElemValueBox.className = published.CLS_SELECT_CHOICE_VALUE_BOX;
         fElemValueBox.innerHTML = view;
-        fElemValueBox.id = fId;
+        fElemValueBox.id = fIds.valueBox;
+
         div.appendChild(fElemValueBox);
 
-        fElemUnselect = WAVE.id(fUnselectId);
-        WAVE.addEventHandler(fElemUnselect, "click", __unselect);
+        fElemUnselect = WAVE.id(fIds.unselect);
+        fOnCloseClick = function() { onCloseClick(choice); };
+        WAVE.addEventHandler(fElemUnselect, "click", fOnCloseClick);
+      };
+
+      choice.destroyView = function() {
+        __destroyView();
       };
 
       choice.destroy = function() {
-        WAVE.removeEventHandler(fElemUnselect, "click", __unselect);
-        WAVE.removeElem(fId);
+        __destroyView();
+        __destroy();
       };
 
-      __build();
+      if (WAVE.isFunction(fBuilder)) {
+        __initElemChoice();
+        fBuilder(choice, fData, fElemChoice);
+      }
+      else
+        __build(fData, fDIV);
 
       return choice;
     };//Choice

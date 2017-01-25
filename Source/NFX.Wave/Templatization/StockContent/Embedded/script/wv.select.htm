@@ -15,20 +15,34 @@
 
   <div class="tests">
     <div class="test">
-      <h2>Simple test</h2>
+      <h2>Single test</h2>
       <div id="divSingle"></div>
     </div>
     <div class="test">
       <h2>Multi-select test</h2>
       <div id="divMulti"></div>
     </div>
+    <div class="test">
+      <h2>Update data test</h2>
+      <div id="divUpdate"></div>
+      <input type="button" value="Change Select Data" onclick="swapData()" />
+    </div>
+    <div class="test">
+      <h2>Empty data test</h2>
+      <div id="divEmpty"></div>
+    </div>
+    <div class="test">
+      <h2>Choice without select</h2>
+      <div id="divChoice"></div>
+    </div>
   </div>
 
   <script>
+
     var states =
     {
       "Alaskan/Hawaiian Time Zone" : [
-        {"AK" : "Alaska"}, //{ "Alaska" : ["Anchorage", "Fairbanks", "Juneau", "Sitka"] } },
+        {"AK" : "Alaska"},
         {"HI": "Hawaii"}
       ],
       "Pacific Time Zone" : [
@@ -89,13 +103,56 @@
       ]
     };
 
-    var single = new WAVE.GUI.Select({
+    var cities = [
+      "Sydney",
+      "Albury",
+      "Armidale",
+      "Bathurst",
+      "Blue Mountains",
+      "Broken Hill",
+      "Campbelltown",
+      "Cessnock",
+      "Dubbo",
+      "Goulburn",
+      "Grafton",
+      "Lithgow",
+      "Liverpool",
+      "Newcastle",
+      "Orange",
+      "Parramatta",
+      "Penrith",
+      "Queanbeyan",
+      "Tamworth",
+      "Wagga Wagga",
+      "Wollongong",
+    ];
+
+    var singleCbo = new WAVE.GUI.Select({
       DIV: "divSingle",
       data : states,
       mode: WAVE.GUI.SELECT_MODES.Single,
-      formName: "single"
+      formName: "single",
+      autocomlete: true
     });
-    var multi = new WAVE.GUI.Select({DIV: "divMulti", data : states, mode: WAVE.GUI.SELECT_MODES.Multi});
+
+    var multiCbo = new WAVE.GUI.Select({DIV: "divMulti", data : states, mode: WAVE.GUI.SELECT_MODES.Multi});
+
+    var updateCbo = new WAVE.GUI.Select({DIV: "divUpdate", data : states, mode: WAVE.GUI.SELECT_MODES.Single});
+
+    var curd = 0;
+    function swapData() {
+      if (curd === 0) {
+        updateCbo.data(cities);
+        curd = 1;
+      } else {
+        updateCbo.data(states);
+        curd = 0;
+      }
+    }
+
+    var updateCbo = new WAVE.GUI.Select({DIV: "divEmpty", data : [], mode: WAVE.GUI.SELECT_MODES.Single});
+
+    var justChoices = new WAVE.GUI.Choice({data:states, DIV:WAVE.id("divChoice")});
 
   </script>
 </body>
