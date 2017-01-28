@@ -12,7 +12,7 @@
 </head>
 <body>
    <h1>WAVE Form Test</h1>
-  
+
     <form data-wv-rid="V1">
         <div class="fView" data-wv-fname="FirstName"></div>
         <div class="fView" data-wv-fname="MiddleName"></div>
@@ -31,7 +31,7 @@
         <div class="fView" data-wv-fname="Various" data-wv-ctl="radio"></div>
         <div class="fView" data-wv-fname="Consent"></div>
         <div class="fView" data-wv-fname="Notes"></div>
-        
+
         Record-level errors:
          <div class="fView" data-wv-fname="#"></div>
         All error summary:
@@ -126,8 +126,9 @@
                     header: 'This is a test dialog',
                     body: 'Lenin loved mushrooms<br>He gathered them in the forest<br>'+
                              'Another line<br>'+
-                             '<button onclick="WAVE.GUI.currentDialog().cancel()">Dismiss</button>'
-                    });
+                             '<button onclick="WAVE.GUI.currentDialog().cancel()">Dismiss</button>',
+                    closeOnClickOutside: true
+                  });
            setTimeout(function(){dlg.cancel();}, 300000);
         }
 
@@ -154,16 +155,16 @@
                     cls: "dlgGreen"
                     });
 
-        }  
+        }
 
         function showConfirmationDialog(){
             WAVE.GUI.showConfirmationDialog(
-                'Action confirmation', 
+                'Action confirmation',
                 'Are you <strong>very</strong> sure?',
                 [WAVE.GUI.DLG_YES, WAVE.GUI.DLG_NO, WAVE.GUI.DLG_CANCEL],
                 function(sender, result) {
                    alert('You chose: ' + result);
-                   return true; 
+                   return true;
                 });
         }
 

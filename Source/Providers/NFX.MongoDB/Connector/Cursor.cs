@@ -30,7 +30,7 @@ namespace NFX.DataAccess.MongoDB.Connector
   /// </summary>
   public sealed class Cursor : DisposableObject, IEnumerable<BSONDocument>, IEnumerator<BSONDocument>
   {
-    public const int DEFAULT_FETCH_BY = 32; 
+    public const int DEFAULT_FETCH_BY = 32;
 
     internal Cursor(Int64 id, Collection collection, Query query, BSONDocument selector, BSONDocument[] initialData)
     {
@@ -42,7 +42,7 @@ namespace NFX.DataAccess.MongoDB.Connector
       m_Buffered = initialData;
       m_Index = -1;
       m_EOF = initialData==null || initialData.Length==0;
-      
+
       //register cursor so it can get auto-closed on dispose
       if (!m_EOF)
         collection.Server.RegisterCursor(this);
@@ -70,7 +70,7 @@ namespace NFX.DataAccess.MongoDB.Connector
     /// Server-supplied cursor ID
     /// </summary>
     public Int64 ID { get{ return m_ID;}}
-    
+
     /// <summary>
     /// Collection that cursor is open against
     /// </summary>
@@ -138,9 +138,9 @@ namespace NFX.DataAccess.MongoDB.Connector
                     throw new MongoDBConnectorException(StringConsts.CURSOR_ENUM_ALREADY_STARTED_ERROR);
                   }
                 #endregion
-     
+
      #region .pvt
-      
+
       private void fetchNextChunk()
       {
           EnsureObjectNotDisposed();

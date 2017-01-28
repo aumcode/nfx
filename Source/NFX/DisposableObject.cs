@@ -22,12 +22,10 @@
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 
 namespace NFX
 {
-
   /// <summary>
   /// General-purpose base class for objects that need to be disposed
   /// </summary>
@@ -37,17 +35,19 @@ namespace NFX
 
     #region STATIC
 
-       /// <summary>
-       /// Checks to see if the IDisposable reference is not null and calls Dispose() then setting it to null.
-       /// Returns false if it is already null
-       /// </summary>
-       public static bool DisposeAndNull<T>(ref T obj) where T : class, IDisposable
-       {
-         if (obj==null) return false;
-         obj.Dispose();
-         obj = null;
-         return true;
-       }
+      /// <summary>
+      /// Checks to see if the IDisposable reference is not null and sets it to null in a thread-safe way then calls Dispose().
+      /// Returns false if it is already null or not the original reference
+      /// </summary>
+      public static bool DisposeAndNull<T>(ref T obj) where T : class, IDisposable
+      {
+        var original = obj;
+        var was = Interlocked.CompareExchange(ref obj, null, original);
+        if (was==null || !object.ReferenceEquals(was, original)) return false;
+
+        was.Dispose();
+        return true;
+      }
 
     #endregion
 
@@ -56,9 +56,8 @@ namespace NFX
 
       ~DisposableObject()
       {
-        if (!m_Disposed)
+        if (0 == Interlocked.CompareExchange(ref m_DisposeStarted, 1, 0))
         {
-          m_DisposeStarted = true;
           try
           {
             Destructor();
@@ -73,7 +72,7 @@ namespace NFX
     #endregion
 
     #region Private Fields
-      private volatile bool m_DisposeStarted;
+      private int m_DisposeStarted;
       private volatile bool m_Disposed;
     #endregion
 
@@ -84,7 +83,7 @@ namespace NFX
       /// </summary>
       public bool DisposeStarted
       {
-        get { return m_DisposeStarted; }
+        get { return m_DisposeStarted != 0; }
       }
 
       /// <summary>
@@ -111,7 +110,7 @@ namespace NFX
     /// </summary>
     public void EnsureObjectNotDisposed()
     {
-      if (m_DisposeStarted || m_Disposed)
+      if (m_DisposeStarted != 0 || m_Disposed)
         throw new DisposedObjectException(StringConsts.OBJECT_DISPOSED_ERROR+" {0}".Args(this.GetType().FullName));
     }
 
@@ -120,14 +119,12 @@ namespace NFX
     #region IDisposable Members
 
         /// <summary>
-        /// Deterministically disposes object. DO NOT OVERRIDE this method, override Destructor() instead UNLESS
-        ///  you need to achive special thread-safe dispose behavior
+        /// Deterministically disposes object. DO NOT OVERRIDE this method, override Destructor() instead
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (!m_Disposed)
+            if (0 == Interlocked.CompareExchange(ref m_DisposeStarted, 1, 0))
             {
-                m_DisposeStarted = true;
                 try
                 {
                     Destructor();

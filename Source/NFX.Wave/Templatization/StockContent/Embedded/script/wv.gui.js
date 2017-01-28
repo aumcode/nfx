@@ -338,6 +338,7 @@ WAVE.GUI = (function(){
 
         var fOnShow = WAVE.isFunction(init.onShow) ? init.onShow : function(){};
         var fOnClose = WAVE.isFunction(init.onClose) ? init.onClose : function(){ return true;};
+        var fCloseOnClickOutside = WAVE.strAsBool(init.closeOnClickOutside, false);
 
         var dialog = this;
         WAVE.extend(dialog, WAVE.EventManager);
@@ -402,6 +403,19 @@ WAVE.GUI = (function(){
                                       (h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px");//todo This may need to be put as published.OFFSETY that depends on style
         }
 
+        function outsideClickHandler(e) {
+          var target = e.target;
+          if (!WAVE.isParentOf(fdivContent, target)) {
+            dialog.close();
+          }
+        }
+
+        function show() {
+          if (fCloseOnClickOutside)
+            setTimeout(function() {WAVE.addEventHandler(window, "click", outsideClickHandler)}, 1);
+          fOnShow(dialog);
+        }
+
         var tmr = null;
         function __resizeEventHandler() {
           if (tmr) clearTimeout(tmr);//prevent unnecessary adjustments when too many resizes happen
@@ -415,6 +429,8 @@ WAVE.GUI = (function(){
 
         //closes dialog with the specified result and returns the result
         this.close = function(result){
+          if (fCloseOnClickOutside)
+            WAVE.removeEventHandler(window, "click", outsideClickHandler);
           if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
           if (fResult!==published.DLG_UNDEFINED) return fResult;
 
@@ -473,8 +489,7 @@ WAVE.GUI = (function(){
         this.adjustBounds = function() { __adjustBounds(); };
 
         WAVE.addEventHandler(window, "resize", __resizeEventHandler);
-
-        fOnShow(this);
+        show();
 
         __adjustBounds();
         tryMakeBodyUnscrollable();
@@ -4481,6 +4496,7 @@ WAVE.GUI = (function(){
           fSelectedIds = [],
           fMatch = WAVE.isFunction(init.match) ? init.match : __match,
           fFilter = WAVE.isFunction(init.filter) ? init.filter : __filter,
+          fUpdateData = WAVE.isFunction(init.updateData) ? init.updateData : __resetData,
           fButtonsNotFireFilter = [9, 16, 17, 18, 19, 20, 27, 37, 38, 39, 40],
           fIdSeed = "select_" + fSelectSeed++,
           fIds = {
@@ -4492,7 +4508,7 @@ WAVE.GUI = (function(){
             dropdown: __IdFor("dropdown"),
             selection: __IdFor("selection"),
             autoContainer: __IdFor("autoContainer"),
-            choicesContainer: __IdFor("choicesContainer"),
+            choicesContainer: __IdFor("choicesContainer")
           };
 
       WAVE.extend(select, WAVE.EventManager);
@@ -4539,18 +4555,22 @@ WAVE.GUI = (function(){
         var args = {
           phase: published.EVT_PHASE_BEFORE,
           sender: select,
-          abort: false
+          abort: false,
+          refresh: true
         };
         select.eventInvoke(published.EVT_SELECT_CLOSE, args);
         if (args.abort === true) return;
 
         __resetTimer();
-        __filter([fChoice], "");
+
+        if (args.refresh === true) {
+          fFilter([fChoice], "");
+          fElemAutocomplete.value = "";
+        }
 
         fDropdownShow = false;
         WAVE.addClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_HIDDEN);
         WAVE.removeClass(fElemDropdown, published.CLS_SELECT_DROPDOWN_SHOWN);
-        fElemAutocomplete.value = "";
         WAVE.removeEventHandler(window, "click", __outsideClickHandler);
 
         args.result = false;
@@ -4628,8 +4648,6 @@ WAVE.GUI = (function(){
         select.eventInvoke(published.EVT_SELECT_UNSELECT, args);
         if (args.abort === true) return;
 
-        if (!choice.isSelected(false)) return;
-
         if (fMode === published.SELECT_MODES.Single) {
           fSelectedChoices = {};
           fSelectedIds = [];
@@ -4657,21 +4675,22 @@ WAVE.GUI = (function(){
         select.eventInvoke(published.EVT_SELECT_SELECT, args);
         if (args.abort === true) return;
 
-        if (!choice.isSelected(true)) return;
-
         if (fMode === published.SELECT_MODES.Single) {
-          if (fSelectedIds.length > 0) {
+          if (fSelectedIds.length > 0 && fSelectedIds[0] !== choice.id()) {
             var prev = fSelectedChoices[fSelectedIds[0]];
             prev.isSelected(false);
             prev.destroyView();
+            fSelectedChoices = {};
+            fSelectedIds = [];
           }
-          fSelectedChoices = {};
-          fSelectedIds = [];
         }
 
         fSelectedChoices[choice.id()] = choice;
         fSelectedIds.push(choice.id());
-        choice.renderSelection(fElemDisplay, __choiceUnselected);
+        choice.renderSelection(fElemDisplay, function() {
+          choice.isSelected(false);
+          __choiceUnselected(choice);
+        });
         fElemSelection.value = select.value();
 
         args.result = fElemSelection.value;
@@ -4687,34 +4706,84 @@ WAVE.GUI = (function(){
         if (fMode === published.SELECT_MODES.Single)
         {
           if (!selected) {
+            if (!args.sender.isSelected(true)) return;
             __toggleDropdown();
             __choiceSelected(args.sender);
           }
         } else {
-          if (selected)
-            __choiceUnselected(args.sender);
+          if (selected) {
+            if (args.sender.isSelected(false))
+              __choiceUnselected(args.sender);
+          }
           else
-            __choiceSelected(args.sender);
+            if (args.sender.isSelected(true))
+              __choiceSelected(args.sender);
         }
       }
 
       function __destroyChoice() {
         fChoice.eventUnbind(published.EVT_SELECT_CHOICE_CLICK, __choiceClickHandler);
         fChoice.destroy();
+        fChoice = null;
       }
 
-      function __updateData() {
-        if (fData === null && fChoice !== null) {
-          fChoice.destroy();
-          fChoice = null;
+      function __resetData(data) {
+        var empty = typeof(data) === tUNDEFINED || data === null;
+        if (empty && fChoice !== null) {
+          __destroyChoice();
           return;
         }
+
+        fSelectedIds = [];
+        fSelectedChoices = {};
 
         if (fChoice !== null)
           __destroyChoice();
 
-        fChoice = new fChoiceUI({data: fData, DIV: fElemChoicesContainer, builder: fChoiceBuilder, disable: fDisable});
-        fChoice.eventBind(published.EVT_SELECT_CHOICE_CLICK, __choiceClickHandler);
+        if (!empty) {
+          fChoice = new fChoiceUI({data: data, DIV: fElemChoicesContainer, builder: fChoiceBuilder, disable: fDisable});
+          fChoice.eventBind(published.EVT_SELECT_CHOICE_CLICK, __choiceClickHandler);
+        }
+      }
+
+      function __tv(choice, val) {
+        var ch = choice.children(),
+            l = ch.length;
+        if (l === 0) {
+          if (choice.trySetValue(val)) {
+            __choiceSelected(choice);
+            return true;
+          }
+        } else {
+          var result = false;
+          for(var i = 0; i < l; i++) {
+            var s = __tv(ch[i], val);
+            result = result && s;
+          }
+          return result;
+        }
+      }
+
+      function __setValue(val) {
+        if (fChoice === null) return false;
+
+        fChoice.resetSelection();
+        for(var j = 0, k = fSelectedIds.length; j < k; j++) {
+           fSelectedChoices[fSelectedIds[j]].destroyView();
+        }
+        fSelectedIds = [];
+        fSelectedChoices = {};
+        if (fMode === published.SELECT_MODES.Single) {
+          return __tv(fChoice, val);
+        } else {
+          var vs = val.split(';');
+          var res = false, tr;
+          for(var i = 0, l = vs.length; i < l; i++) {
+            tr = __tv(fChoice, vs[i]);
+            res = res && tr;
+          }
+          return res;
+        }
       }
 
       function __build() {
@@ -4766,30 +4835,21 @@ WAVE.GUI = (function(){
 
             __resetTimer();
             fFilterTimer = setTimeout(function() {
-              __filter([fChoice], fElemAutocomplete.value);
+              fFilter([fChoice], fElemAutocomplete.value);
               if (!fDropdownShow)
                 __dropdownShow();
-            }, 400);
+            }, 800);
           });
           WAVE.addEventHandler(fElemAutocomplete, "click", __dropdownShow);
         }
-        __updateData();
+        __resetData(fData);
       }
 
       select.selected = function() {
         return fSelectedChoices;
       };
 
-      function __ensureValue(val) {
-        //for(var )
-      }
-
-      function __setValue(vals) {
-        //for(var i = 0; i < )
-        //__ensureValue
-        //if (fMode === published.SELECT_MODES.Single)
-        // return;
-      }
+      select.mode = function() { return fMode; }
 
       select.value = function(val) {
         if(typeof(val) === tUNDEFINED) {
@@ -4797,10 +4857,8 @@ WAVE.GUI = (function(){
           for(var v in fSelectedChoices)
             result += fSelectedChoices[v].key() + ";";
           return result.slice(0, -1);
-        } else {
-          val = val.toString();
-          __setValue(val);
-        }
+        } else
+          __setValue(val.toString());
       };
 
       select.data = function(val) {
@@ -4808,7 +4866,22 @@ WAVE.GUI = (function(){
           return val;
 
         fData = val;
-        __updateData();
+        __resetData(fData);
+      };
+
+      select.updateData = function(val) {
+        fUpdateData(val);
+      };
+
+      select.filter = function(term) {
+        fFilter([fChoice], typeof(term) === tUNDEFINED ? fElemAutocomplete.value : term);
+      };
+
+      select.hasChoice = function() { return fChoice !== null; };
+
+      select.latchAllEvents = function(delta) {
+        select.eventInvocationSuspendCount += delta;
+        if(fChoice !== null) fChoice.latchAllEvents(delta);
       };
 
       __ensureInitData();
@@ -4839,6 +4912,7 @@ WAVE.GUI = (function(){
           fDisable = WAVE.strAsBool(init.disable, false),
           fVisible = true,
           fIsSelected = false,
+          fRendered = false,
           fData = init.data,
           fKey = WAVE.strEmpty(init.key) ? null : init.key,
           fValue = WAVE.strEmpty(init.value) ? null : init.value,
@@ -4848,6 +4922,7 @@ WAVE.GUI = (function(){
           fStlDisplay = null,
           fCLS = WAVE.strDefault(init.cls),
           fOnCloseClick = null,
+          fOnClick = WAVE.isFunction(init.onclick) ? init.onclick : __click,
           fBuilder = init.builder,
           fId = "wv_choice_" + fChoiceSeed++,
           fIds = {
@@ -4857,7 +4932,7 @@ WAVE.GUI = (function(){
 
       WAVE.extend(choice, WAVE.EventManager);
 
-      function __select() {
+      function __select(tryValue) {
         if (fIsSelected) return false;
 
         var args = {
@@ -4868,15 +4943,16 @@ WAVE.GUI = (function(){
         choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
         if (args.abort === true) return false;
 
-        fIsSelected = true;
-        WAVE.addClass(fElemChoice, published.CLS_SELECT_CHOICE_SELECTED);
+        fIsSelected = typeof(tryValue) === tUNDEFINED ? true : fKey === tryValue;
+        if (fIsSelected)
+          WAVE.addClass(fElemChoice, published.CLS_SELECT_CHOICE_SELECTED);
 
-        args.result = true;
+        args.result = fIsSelected;
         args.phase = published.EVT_PHASE_AFTER;
         delete args.abort;
         choice.eventInvoke(published.EVT_SELECT_CHOICE_SELECTED, args);
 
-        return true;
+        return fIsSelected;
       }
 
       function __unselect() {
@@ -4901,17 +4977,26 @@ WAVE.GUI = (function(){
         return true;
       }
 
-      function __toggleSelection(val) {
-        if (typeof(val) === tUNDEFINED || val === null)
-          val = !fIsSelected;
-
-        if (val === true)
-          return __unselect();
-        else
-          return __select();
+      function __toggleSelection(val, tryValue) {
+        var result;
+        if (fChildren.length > 0) {
+          for(var i = 0, l = fChildren.length; i < l; i++) {
+            if (!WAVE.strEmpty(tryValue))
+              result = result || fChildren[i].trySetValue(tryValue);
+            else
+              result = result && fChildren[i].isSelected(val);
+          }
+          return result;
+        }
+        else {
+          if (val === true || !WAVE.strEmpty(tryValue))
+            return __select(tryValue);
+          else
+            return __unselect();
+        }
       }
 
-      function __click() {
+      function __click(e, o) {
         if (fDisable === true)
           return;
 
@@ -4978,14 +5063,16 @@ WAVE.GUI = (function(){
         __addChild(child);
       }
 
+      function __onClickInvoke(e) { fOnClick(e, choice); }
+
       function __initElemChoice() {
         fElemChoice = document.createElement("div");
         fElemChoice.id = fId;
         fDIV.appendChild(fElemChoice);
-        if (!fDisable) {
+        WAVE.addEventHandler(fElemChoice, "click", __onClickInvoke);
+        if (!fDisable)
           fElemChoice.className = published.CLS_SELECT_CHOICE;
-          WAVE.addEventHandler(fElemChoice, "click", __click);
-        } else
+        else
           fElemChoice.className = published.CLS_SELECT_CHOICE_DISABLED;
         if (fCLS !== null)
           WAVE.addClass(fElemChoice, fCLS);
@@ -5069,10 +5156,11 @@ WAVE.GUI = (function(){
         WAVE.removeElem(fIds.unselect);
         WAVE.removeElem(fIds.valueBox);
         fOnCloseClick = null;
+        fRendered = false;
       }
 
       function __destroy() {
-        WAVE.removeEventHandler(fElemChoice, "click", __click);
+        WAVE.removeEventHandler(fElemChoice, "click", __onClickInvoke);
         WAVE.removeElem(fId);
         choice.eventUnbind(published.EVT_SELECT_CHOICE_SELECTED, __selectedEventHandler);
         choice.eventUnbind(published.EVT_SELECT_CHOICE_UNSELECTED, __unselectedEventHandler);
@@ -5094,8 +5182,22 @@ WAVE.GUI = (function(){
       choice.isSelected = function(val) {
         if (typeof(val) === tUNDEFINED || val === null)
           return fIsSelected;
-        return __toggleSelection(!val);
+        return __toggleSelection(val);
       };
+
+      choice.trySetValue = function(val) {
+        if (typeof(val) === tUNDEFINED || val === null) return false;
+
+        return __toggleSelection(null, val);
+      }
+
+      choice.resetSelection = function() {//TODO add val
+        if (fChildren.length === 0)
+          __toggleSelection(false);
+        else
+          for(var i = 0, l = fChildren.length; i < l; i++)
+            fChildren[i].resetSelection();
+      }
 
       choice.visible = function(val) {
         if (typeof(val) === tUNDEFINED || val === null)
@@ -5104,8 +5206,7 @@ WAVE.GUI = (function(){
         return __toggleVisibility(val);
       };
 
-      choice.disable = function() {
-      };
+      choice.disable = function() { };
 
       choice.id = function() { return fId; };
       choice.key = function() { return fKey; };
@@ -5119,6 +5220,7 @@ WAVE.GUI = (function(){
 
       choice.renderSelection = function(div, onCloseClick) {
         if (!fIsSelected ||
+            fRendered === true ||
             typeof(div) === tUNDEFINED ||
             div === null)
           return;
@@ -5139,6 +5241,7 @@ WAVE.GUI = (function(){
 
         fElemUnselect = WAVE.id(fIds.unselect);
         fOnCloseClick = function() { onCloseClick(choice); };
+        fRendered = true;
         WAVE.addEventHandler(fElemUnselect, "click", fOnCloseClick);
       };
 
@@ -5149,6 +5252,12 @@ WAVE.GUI = (function(){
       choice.destroy = function() {
         __destroyView();
         __destroy();
+      };
+
+      choice.latchAllEvents = function(delta) {
+        choice.eventInvocationSuspendCount += delta;
+        for(var i = 0, l = fChildren.length; i < l; i++)
+          fChildren[i].eventInvocationSuspendCount += delta
       };
 
       if (WAVE.isFunction(fBuilder)) {

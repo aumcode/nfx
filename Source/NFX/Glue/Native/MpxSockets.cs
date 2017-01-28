@@ -59,13 +59,6 @@ namespace NFX.Glue.Native
         m_ReceiveChunk = ((IMpxTransport)transport).Binding.MakeOrReuseChunk();
       }
 
-             private object ____disposeLock = new object();
-
-      public override void Dispose() //override needed because multiple threads may want to Dispose() in parallel
-      {
-        lock(____disposeLock) base.Dispose();
-      }
-
       protected override void Destructor()
       {
         m_Disposing = true;
