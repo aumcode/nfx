@@ -97,10 +97,12 @@ namespace NFX.Time
 
       public Event(IEventTimer timer, IConfigSectionNode config) : this(timer, null, config: config) {}
 
-      public Event(IEventTimer timer, string name = null, TimerEvent body = null, TimeSpan? interval = null, IConfigSectionNode config = null, EventBodyAsyncModel bodyAsyncModel = EventBodyAsyncModel.AsyncTask) : base(timer)
+      public Event(IEventTimer timer, string name = null, TimerEvent body = null, TimeSpan? interval = null, IConfigSectionNode config = null, EventBodyAsyncModel bodyAsyncModel = EventBodyAsyncModel.AsyncTask, bool enabled = true) : base(timer)
       {
          if ((timer as IEventTimerImplementation) == null)
           throw new TimeException(StringConsts.ARGUMENT_ERROR + "Event.ctor(timer=null | timer!=IEventTimerImplementation)");
+
+         m_Enabled = enabled;
 
          m_Timer = timer;
 
@@ -153,7 +155,7 @@ namespace NFX.Time
       private TimeLocation m_TimeLocation;
       private EventStatus m_Status = EventStatus.NotStarted;
 
-      private bool m_Enabled = true;
+      private bool m_Enabled;
 
       private DateTime?   m_StartDate;
       private DateTime?   m_EndDate;

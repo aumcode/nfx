@@ -1031,6 +1031,58 @@ namespace NFX.NUnit.Serialization
 
     #endregion
 
+
+    #region WriteRead
+
+    [TestCase]
+    public void WriteReadStream()
+    {
+      using (var stream = new MemoryStream())
+      {
+        var doc1 = new BSONDocument();
+
+        doc1.Set( new BSONStringElement("a", "abcd"));
+        doc1.Set( new BSONInt32Element("b", 234));
+        doc1.Set( new BSONNullElement("c"));
+
+        doc1.WriteAsBSON(stream);
+        stream.Position = 0;
+
+        var doc2 = new BSONDocument(stream);
+
+        Aver.AreEqual(3, doc2.Count);
+        Aver.AreEqual("abcd", ((BSONStringElement)doc2["a"]).Value);
+        Aver.AreEqual(234, ((BSONInt32Element)doc2["b"]).Value);
+        Aver.IsNull(((BSONNullElement)doc2["c"]).ObjectValue);
+      }
+    }
+
+    [TestCase]
+    public void WriteReadBuffer()
+    {
+      var doc1 = new BSONDocument();
+
+      doc1.Set( new BSONStringElement("a", "abcd"));
+      doc1.Set( new BSONInt32Element("b", 234));
+      doc1.Set( new BSONNullElement("c"));
+
+      var buf =  doc1.WriteAsBSONToNewArray();
+
+      using (var stream = new MemoryStream(buf))
+      {
+        var doc2 = new BSONDocument(stream);
+
+        Aver.AreEqual(3, doc2.Count);
+        Aver.AreEqual("abcd", ((BSONStringElement)doc2["a"]).Value);
+        Aver.AreEqual(234, ((BSONInt32Element)doc2["b"]).Value);
+        Aver.IsNull(((BSONNullElement)doc2["c"]).ObjectValue);
+      }
+    }
+
+
+    #endregion
+
+
     #region Deserialization
 
     /// <summary>

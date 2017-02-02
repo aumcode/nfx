@@ -83,6 +83,18 @@ namespace NFX.Serialization.BSON
       }
 
       /// <summary>
+      /// Creates document from array containing BSON-encoded data
+      /// </summary>
+      public static BSONDocument FromArray(byte[] content)
+      {
+        if (content==null)
+           throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONDocument.ctor(content==null)");
+
+        using(var ms = new MemoryStream(content))
+          return new BSONDocument(ms);
+      }
+
+      /// <summary>
       /// Deserializes BSON document from stream containing BSON-encoded data
       /// </summary>
       public BSONDocument(Stream stream)
@@ -290,6 +302,19 @@ namespace NFX.Serialization.BSON
         GetByteSize(true);//this will throw in case of cyclical document graph starting from root level
         WriteAsBSONCore(stream);
       }
+
+      /// <summary>
+      /// Serializes BSON document to byte[]
+      /// </summary>
+      public byte[] WriteAsBSONToNewArray()
+      {
+        var sz = GetByteSize(true);
+        var result = new byte[sz];
+        using(var ms = new MemoryStream(result))
+          WriteAsBSONCore(ms);
+        return result;
+      }
+
 
       internal void WriteAsBSONCore(Stream stream)
       {
