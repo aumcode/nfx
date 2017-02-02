@@ -926,6 +926,10 @@
            assertTrue("     " === WAVE.strDefault("     ", "zina"));
        });
 
+       run("Strings", "strDefault Numeric", function () {
+         assertTrue("2" === WAVE.strDefault(2, "0"));
+       });
+
        run("Strings", "strEmptyDefault", function(){
            assertTrue("zina" === WAVE.strEmptyDefault("     ", "zina"), 1);
            assertTrue("zina" === WAVE.strEmptyDefault(undefined, "zina"), 2);

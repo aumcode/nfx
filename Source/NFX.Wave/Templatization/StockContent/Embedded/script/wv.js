@@ -316,11 +316,11 @@ var WAVE = (function(){
 
 
     published.strDefault = function(str, dflt){
-     return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str;
+      return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str.toString();
     };
 
     published.strEmptyDefault = function(str, dflt){
-     return published.strEmpty(str) ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str;
+      return published.strEmpty(str) ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str.toString();
     };
 
     published.nlsNameDefault = function(nls, dflt){
@@ -425,7 +425,13 @@ var WAVE = (function(){
         default:
           return published.strDefault("?", dflt);
       }
-    }
+    };
+
+    published.content = function (str) {
+      if (published.strStartsWith(str, "###WV")) return published.markup(str.slice("###WV".length));
+      if (published.strStartsWith(str, "###HTML")) return str.slice("###HTML".length);
+      return published.strEscapeHTML(str);
+    };
 
     published.markup = (function () {
       var State = {
@@ -1066,30 +1072,30 @@ var WAVE = (function(){
         };
 
     published.strEscapeHTML = function(content) {
-        return String(content).replace(/[&<>"'\/]/g, function (esc) { return htmlEscapes[esc]; });
+      return String(content).replace(/[&<>"'\/]/g, function (esc) { return htmlEscapes[esc]; });
     };
 
 
     //Turns content like ' <td>@name@</td> ' -> '<td> Alex &amp; Boris </td>' provided that a = 'Alex & Boris'. Data is HTML escaped
     published.strHTMLTemplate = function(tpl, args) {
       return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return published.strEscapeHTML(args[key]); });
-  };
+    };
 
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex & Boris"}' provided that a = 'Alex & Boris'. Data is not HTML escaped
     published.strTemplate = function(tpl, args) {
       return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) { return args[key]; });
-  };
+    };
 
 
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex"}' provided that f = function(s, k){ return "Alex"}). Data is HTML escaped
     published.strHTMLTemplateFun = function(tpl, f) {
       return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, function(s, key) {return published.strEscapeHTML(f(s, key)); });
-  };
+    };
 
     //Turns content like ' {a: "@name@"} ' -> '{a: "Alex"}' provided that f = function(s, k){ return "Alex"}). Data is not HTML escaped
     published.strTemplateFun = function(tpl, f) {
       return tpl.replace(/@([\-\.0-9a-zA-Z]+)@/g, f);
-  };
+    };
 
     //True if str contains valid email per: a@bc.de
     published.strIsEMail = function(str){

@@ -119,6 +119,7 @@
     <None Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
     <None Include="Templatization\StockContent\Embedded\stl\select.test.css" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.html.test.htm" />
     <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
