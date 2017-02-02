@@ -32,6 +32,8 @@ using System.Collections.Specialized;
 using NFX;
 using NFX.Environment;
 using NFX.Serialization.JSON;
+using System.Drawing;
+using System.IO;
 
 namespace NFX.Web
 {
@@ -200,6 +202,27 @@ namespace NFX.Web
           .ContinueWith((antecedent) => Tuple.Create(antecedent.Result, client.ResponseHeaders[HttpResponseHeader.ContentType])), request);
     }
 
+    public static Image GetImage(string uri, RequestParams request) { return GetImage(new Uri(uri), request); }
+
+    public static Image GetImage(Uri uri, RequestParams request)
+    {
+      var data = GetData(uri, request);
+
+      using (var stream = new MemoryStream(data))
+        return Image.FromStream(stream);
+    }
+
+    public static Task<Image> GetImageAsync(string uri, RequestParams request) { return GetImageAsync(new Uri(uri), request); }
+
+    public static Task<Image> GetImageAsync(Uri uri, RequestParams request)
+    {
+      return GetDataAsync(uri, request)
+        .ContinueWith((antecedent) =>
+        {
+          using (var stream = new MemoryStream(antecedent.Result))
+            return Image.FromStream(stream);
+        });
+    }
 
     public static void GetFile(string uri, RequestParams request, string file) { GetFile(new Uri(uri), request, file); }
 
