@@ -99,7 +99,23 @@ namespace NFX.Serialization.BSON
 
     #endregion
 
-    #region .ctor
+    #region .ctor / static
+
+        private static RowConverter s_DefaultInstance;
+
+        /// <summary>
+        /// Returns the default instance
+        /// </summary>
+        public static RowConverter DefaultInstance
+        {
+          get
+          {
+            if (s_DefaultInstance==null) //does not have to be thread-safe as the instance is stateless and lighweight 2nd copy is ok
+              s_DefaultInstance = new RowConverter();
+
+            return s_DefaultInstance;
+          }
+        }
 
         public RowConverter()
         {
@@ -107,7 +123,7 @@ namespace NFX.Serialization.BSON
           m_BSONtoCLR = new Dictionary<Type,Func<BSONElement,object>>(s_BSONtoCLR);
         }
 
-      #endregion
+    #endregion
 
     #region Fields
 
