@@ -24,6 +24,7 @@ var WAVE = (function(){
     var published = {
       TUNDEFINED: tUNDEFINED,
       CONTENT_TYPE_JSON: "application/json",
+      CONTENT_TYPE_JSON_UTF8: "application/json;charset=utf-8",
       CONTENT_TYPE_MULTIPART: "multipart/form-data"
     };
 
@@ -3604,8 +3605,12 @@ var WAVE = (function(){
       };
       if (!published.strEmpty(a)) xhr.setRequestHeader('Accept', a);
       if (!published.strEmpty(ct)) xhr.setRequestHeader('Content-Type', ct);
-      if (data !== null)
+
+      if (data !== null) {
+        if (published.isObject(data) && !published.strEmpty(ct) && ct.indexOf("application/json") !== -1)
+          data = JSON.stringify(data);
         xhr.send(data);
+      }
       else
         xhr.send();
 
@@ -3621,7 +3626,7 @@ var WAVE = (function(){
     };
 
     published.ajaxGetJSON = function(url, data, success, error, fail) {
-      ajaxCall("GET", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
+      ajaxCall("GET", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
     };
 
     published.ajaxPost = function(url, data, success, error, fail, a, ct) {
@@ -3629,7 +3634,7 @@ var WAVE = (function(){
     };
 
     published.ajaxPostJSON = function(url, data, success, error, fail) {
-      ajaxCall("POST", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
+      ajaxCall("POST", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
     };
 
     published.ajaxPatch = function (url, success, error, fail, a) {
@@ -3637,7 +3642,7 @@ var WAVE = (function(){
     };
 
     published.ajaxPatchJSON = function (url, data, success, error, fail) {
-      ajaxCall("PATCH", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON);
+      ajaxCall("PATCH", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
     };
 
 

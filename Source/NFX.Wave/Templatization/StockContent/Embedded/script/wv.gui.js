@@ -331,49 +331,53 @@ WAVE.GUI = (function(){
     };
 
     //Dialog window:
-    //   {title: 'html markup', content: 'html markup', footer: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
+    //   {header: 'html markup', body: 'html markup', footer: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
     published.Dialog = function(init)
     {
         if (!WAVE.isObject(init)) init = {};
 
-        var fOnShow = WAVE.isFunction(init.onShow) ? init.onShow : function(){};
-        var fOnClose = WAVE.isFunction(init.onClose) ? init.onClose : function(){ return true;};
-        var fCloseOnClickOutside = WAVE.strAsBool(init.closeOnClickOutside, false);
+        var dialog = this,
+            fOnShow = WAVE.isFunction(init.onShow) ? init.onShow : function(){},
+            fOnClose = WAVE.isFunction(init.onClose) ? init.onClose : function(){ return true;},
+            fCloseOnClickOutside = WAVE.strAsBool(init.closeOnClickOutside, false),
+            fWidthPct = WAVE.intValidPositive(init.widthpct) ? init.widthpct : 0,
+            fHeightPct = WAVE.intValidPositive(init.heightpct) ? init.heightpct : 0,
+            fdivBase = null,
+            fdivContent = null,
+            fdivHeader = null,
+            fdivBody = null,
+            fdivFooter = null;
 
-        var dialog = this;
         WAVE.extend(dialog, WAVE.EventManager);
 
-        var fdivBase = document.createElement("div");
+        if (fWidthPct>100) fWidthPct = 100;
+        if (fHeightPct>100) fHeightPct = 100;
+
+        fdivBase = document.createElement("div");
         fdivBase.__DIALOG = this;
         fdivBase.className = published.CLS_DIALOG_BASE + ' ' + WAVE.strDefault(init['cls']);
         fdivBase.style.position = "fixed";
         fdivBase.style.zIndex = CURTAIN_ZORDER + fCurtains.length;
 
-        var fWidthPct = WAVE.intValidPositive(init.widthpct) ? init.widthpct : 0;
-        var fHeightPct = WAVE.intValidPositive(init.heightpct) ? init.heightpct : 0;
-
-        if (fWidthPct>100) fWidthPct = 100;
-        if (fHeightPct>100) fHeightPct = 100;
-
         document.body.appendChild(fdivBase);
 
         fCurtains.push(fdivBase);
 
-        var fdivContent = document.createElement("div");
+        fdivContent = document.createElement("div");
         fdivContent.className = published.CLS_DIALOG_CONTENT;
         fdivBase.appendChild(fdivContent);
 
-        var fdivHeader = document.createElement("div");
+        fdivHeader = document.createElement("div");
         fdivHeader.className = published.CLS_DIALOG_HEADER;
         fdivHeader.innerHTML = WAVE.strDefault(init['header'], 'Dialog');
         fdivContent.appendChild(fdivHeader);
 
-        var fdivBody = document.createElement("div");
+        fdivBody = document.createElement("div");
         fdivBody.className = published.CLS_DIALOG_BODY;
         fdivBody.innerHTML = WAVE.strDefault(init['body'], '&nbsp;');
         fdivContent.appendChild(fdivBody);
 
-        var fdivFooter = document.createElement("div");
+        fdivFooter = document.createElement("div");
         fdivFooter.className = published.CLS_DIALOG_FOOTER;
         fdivFooter.innerHTML = WAVE.strDefault(init['footer'], '');
         fdivContent.appendChild(fdivFooter);
@@ -444,6 +448,17 @@ WAVE.GUI = (function(){
           tryRetrunScrollingToBody();
 
           this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
+
+          fdivBase.__DIALOG = null;
+          fdivBase = null,
+          fdivContent = null;
+          fdivHeader = null;
+          fdivBody = null;
+          fdivFooter = null;
+          fOnClose = null;
+          fOnShow = null;
+          dialog = null;
+
           return result;
         };
 

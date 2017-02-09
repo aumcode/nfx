@@ -90,6 +90,14 @@ namespace NFX
     }
 
     /// <summary>
+    /// Strip simple html from string
+    /// </summary>
+    public static string StripSimpleHtml(this string str)
+    {
+      return WebUtility.HtmlDecode(Regex.Replace(str, @"<[^>]+>|&nbsp;", "").Trim());
+    }
+
+    /// <summary>
     /// Encodes string with standart UTF8 encoder
     /// </summary>
     public static byte[] ToUTF8Bytes(this string str)
