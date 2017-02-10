@@ -13,7 +13,7 @@ The majority of the achievements are possible because of two key things:
 
 promoting:
 
-* Stateful WEB programming
+* Stateful WEB programming (not mandatory)
 * Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems 
 * Serving 50,000+ BUSINESS web requests a second (with logic) on a 4 core 3.0 GHz machine 
   looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache)
