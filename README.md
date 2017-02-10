@@ -3,7 +3,26 @@ Server UNISTACK framework.
 
 License: Apache 2.0
 
-This framework is written in C# from scratch and runs on Windows and Linux/Mono servers.
+NFX is written in C# and runs on a CLR machine, however it has very little to do with .NET.
+This framework contains truly unique intellectual assets and allows for unconventional things
+that significantly boost performance and simplify the development (such as stateful web). 
+The majority of the achievements are possible because of two key things:
+
+* Unification of design - all components are written in the same way
+* Sophisticated serialization mechanism aka "teleportation"
+
+promoting:
+
+* Stateful WEB programming
+* Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems 
+* Serving 50,000+ BUSINESS web requests a second (with logic) on a 4 core 3.0 GHz machine 
+  looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache)
+
+The concepts have been well tested and used. In the past 7 years, *teleportation mechanism has 
+moved trillions of various CLR object instances* (including non-trivial CLR cases like: structs with
+ read-only fields, arrays of structs of structs, custom streamers like Dictionary<> with comparers etc.)
+
+
 
 **GUIDES**:
 NEW 20160117, we are adding:
@@ -17,17 +36,61 @@ NEW 20160117, we are adding:
 **Various Demo Projects**:
  https://github.com/aumcode/nfx-demos
 
+NFX Provides:
+
+* Unified App Container
+  - Unified app models: console, web, service, all have: user, session, security, volatile state
+  - Configuration: file, memory, db, vars, macros, structural merges, overrides, scripting
+  - Dep injection: inject dependencies
+  - Logger: async file, debug, db destinations with graphs, SLA rules, filtering and routing
+  - Security: declr and/or imperative permission model, strong password manager, virtual credentials 
+  
+* Big Memory Model 
+  - Pile memory manager: keeps hundreds of millions of CLR objects in memory without GC pauses
+  - Distributed Pile (objects stored on cluster nodes)
+  - Pile Cache: materialize 2,000,000 CLR objects/sec in-memory on a 4 core machine
+  
+* Full Web Stack
+  - Web server
+  - Rule-based network Gate (business firewall)
+  - MVC: filters, attributes, complex model binding, security, web API, MVVM binding
+  - Template
+  - Client JS lib + MVVM
+  
+* Hybrid data access layer
+  - RDBMS (we use: MySQL, MsSQL)
+  - NoSQL (we use: MongoDB, Elastic search, Erlang OTP)
+  - Native ultra-fast MongoDB driver (socket based)
+  
+* Full Instrumentation Suite
+  - Gauges and Events keyed on business enities
+  - Instrumentation buffers
+  - Injectable instrumentation sinks (i.e. telemetry receiver)
+  - Cluster real-time map:reduce on zones and regions
+    
+* High-level service oriented stack "Glue"
+  - Contract based design with security
+  - Injectable bindings: i.e. "Async TCP"
+  - 150,000 ops/sec two-way calls using *business objects* (not byte array) on a 4 core machine
+  - Unistack payload teleportation (no need to decorate various classes, teleport as-is)
+  
+* Serialization Suite
+  - Slim: the *fastest general purpose* CLR serializer, very well tested and proven processing 
+  - Teleportation: moving *CLR objects as-is without any extra metadata* between processes
+  - BSON: an efficient BSON implementation
+  - JSON: includes multi-language selective serialization of large graphs
+  
+* Erlang Support: including types, serialization and full OTP node
+* Virtual File Systems: Amazon S3, SVN, Local, (Google Drive and DropBox created by others)
+* Virtual payment processing: Braintree, Stripe, PayPal
+* Code Analysis (building lexers/parsers)
+* Type Conversion Accessors (i.e. object.AsInt(dflt)....)
+
+
 **IMPORTANT!**
 
-This is NOT a typical .NET system.
-Actually, the NFX framework has very little to do with Microsoft software stack, and the purpose
-of this project is to provide an alternative unified stack of software that uses core CLR functions
-and very base classes (such as list, array, dictionary). NFX is a BaseClassLibrary for Aum 
-programming language that we are working on. For now, we have used C# and very-BCL from .NET framework.
-
-
-NFX does not use any 3rd party components but for some DB-access (MongoDB and MySQL are primary targets).
-NFX uses very BCL:
+NFX does not use any 3rd party components but for some DB-access (i.e. MySQL and MsSQL).
+NFX uses very Base-Class-Lib:
 * Basic/primitive types: string, ints, doubles, decimal, dates, +Math
 * Parallel task library: 25% of features - create, run, wait for completion,
   Task, Parallel.For/Each
@@ -37,58 +100,3 @@ NFX uses very BCL:
 * Some ADO references (Reader/SQLStatement) in segregated data-access components
 * Reflection API
 * Drawing 2D (Graphics)
-
-NFX Does NOT use/avoids:
-* Windows-specific functions like kernel, user, gdi (there are some <10, we are getting rid of them)
-* Windows-specific technologies (IIS, MS SQL Server, Active Directory, Windows Cluster, COM, Azure)
-* .NET Specific tools: NCover, MsTest, all sorts of VS plugins - 
-  any developer must be able to start developing in < 30 minutes after getting the code. No setup time/installs to run
-* ASP.NET
-* MVC
-* WCF
-* Silverlight, WPF, Phone
-* Entity / LINQ to * (NFX concentrates on hybrid data stores with scaffolding and virtual commands, not only SQL)
-* System.Configuration.*
-* ASYNC / AWAIT - avoided on purpose
-* Any Ms-serialization(BinaryFormatter/DataContractSerializer/JSON)
-* 100s of "heavy" .NET "typical" classes (DataSet/DataTable/Unity etc.)
-* References typical to many .NET projects:
-    log4net, nLog, EntLib, Castle, NSpring, ServiceStack, Newtonsoft etc.
-* No NuGet dependencies within NFX, the whole idea of "packages" is contrary to Unistack 
-
-UNISTACK = all base components needed to create solutions/applications.
-
-NFX UNISTACK includes:
-* Application Container + Dependency Injection facilities
-* Configuration engine
-* Local/Distributed piles/heaps (**BigMemory**), ability to store hundreds of millions of objects
-  resident in memory for long times without killing GC
-* Logging with 8+ destinations/sinks(text, email, flood filter etc.)
-* Distributed contact-oriented communication framework NFX.Glue (replaces WCF)
-* Security with users, credentials, roles, permissions
-* JSON parsing, ser/deser support
-* Ultra efficient Binary serialization support
-* Erlang CLR support with native types: tuples, lists, pattern matching
-    - [Overview blog](http://blog.aumcode.com/2013/10/nfx-native-interoperability-of-net-with.html)
-    - [Interop with Erlang/Mnesia and RPC abstraction](https://www.youtube.com/watch?v=o9utCAMLydA)
-* Text lexing/parsing and processing pipeline: C# lexer, JSON lexer/Parser
-* RelationalSchema language compiler - generate DDL for different targets
-* Templatization engine (for web, emails and not only textual content)
-* NFX.WAVE - Web Server with hybrid injectable threading model (replaces IIS + ASP.NET)
-* NFX.WAVE.Mvc - MVC framework for web pages
-* WV.js - a web component library auto-bindable to server MVC/MVVM
-* Database access layer with virtual commands/queries/transactions
-* ID generation - GlobalDistributed IDS (GDID), FID - fast process-wide ID
-* Virtual Social Network - Twitter/Facebook/Google+ et al
-* Virtual Payment Processing - Stripe,PayPal providers
-* Virtual File Systems - AmazonS3, SVN, Local
-* QR Code Creation
-* In progress: Virtual document model with rendering to PDF, HTML and other formats
-* In Progress: PDF DOM model + rendering
-
-
-
-
-
-
-
