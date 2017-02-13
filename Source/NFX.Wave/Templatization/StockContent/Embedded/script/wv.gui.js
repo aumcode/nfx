@@ -215,7 +215,6 @@ WAVE.GUI = (function(){
 
 
     var fCurtains = [];
-    var fCurtainDIV = null;
 
     var fBodyScrollTop = 0,
         fBodyPosition = null,
@@ -238,7 +237,7 @@ WAVE.GUI = (function(){
     }
 
     function tryMakeBodyUnscrollable() {
-      if (fCurtains.length === 1 && !WAVE.Platform.Mobile) {
+      if (!fScrollFixed && !WAVE.Platform.Mobile) {
         window.addEventListener("focus", preventFocusLeak, true);
 
         fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -259,17 +258,15 @@ WAVE.GUI = (function(){
     }
 
     function tryRetrunScrollingToBody() {
-      if (fCurtains.length === 0 && !WAVE.Platform.Mobile) {
+      if (fScrollFixed && !WAVE.Platform.Mobile) {
         window.removeEventListener("focus", preventFocusLeak, true);
 
-        if (fScrollFixed) {
-
-          document.body.style.top = fBodyTop;
-          document.body.style.position = fBodyPosition;
-          document.body.style.overflowY = fBodyOverflowY;
-          document.body.style.paddingRight = fBodyPaddingRight;
-          document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
-        }
+        document.body.style.top = fBodyTop;
+        document.body.style.position = fBodyPosition;
+        document.body.style.overflowY = fBodyOverflowY;
+        document.body.style.paddingRight = fBodyPaddingRight;
+        document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
+        fScrollFixed = false;
       }
     }
 
@@ -287,10 +284,11 @@ WAVE.GUI = (function(){
       return scrollbarWidth;
     };
 
-    published.curtainOn = function(cls){
-        try{ document.activeElement.blur(); } catch(e){}
+    published.curtainOn = function(cls, makeBodyUnscrollable, notBlur){
+        if (!notBlur) try{ document.activeElement.blur(); } catch(e){}
 
-        var div = document.createElement("div");
+        var div = document.createElement("div"),
+            mbu = WAVE.strAsBool(makeBodyUnscrollable, true);
         div.style.backgroundColor = "rgba(127,127,127,0.45)";
         div.className = published.CLS_CURTAIN;
         if (!WAVE.strEmpty(cls))
@@ -301,11 +299,12 @@ WAVE.GUI = (function(){
         div.style.width = "100%";
         div.style.height = "100%";
         div.style.zIndex = CURTAIN_ZORDER + fCurtains.length;
+        div.mbu = mbu;
         document.body.appendChild(div);
-        fCurtainDIV = div;
 
         fCurtains.push(div);
-        tryMakeBodyUnscrollable();
+        if (mbu) tryMakeBodyUnscrollable();
+        return div;
     };
 
     published.curtainOff = function(){
@@ -318,10 +317,10 @@ WAVE.GUI = (function(){
 
         document.body.removeChild(div);
         WAVE.arrayDelete(fCurtains, div);
-        tryRetrunScrollingToBody();
+        if (div.mbu === true) tryRetrunScrollingToBody();
     };
 
-    published.isCurtain = function(){ return fCurtains.length>0;};
+    published.isCurtain = function(){ return fCurtains.length>0; };
 
     //Returns currently active dialog or null
     published.currentDialog = function(){
