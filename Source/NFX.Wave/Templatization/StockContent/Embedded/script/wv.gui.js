@@ -341,6 +341,7 @@ WAVE.GUI = (function(){
             fCloseOnClickOutside = WAVE.strAsBool(init.closeOnClickOutside, false),
             fWidthPct = WAVE.intValidPositive(init.widthpct) ? init.widthpct : 0,
             fHeightPct = WAVE.intValidPositive(init.heightpct) ? init.heightpct : 0,
+            fPreventScroll = WAVE.strAsBool(init.preventScroll, true),
             fdivBase = null,
             fdivContent = null,
             fdivHeader = null,
@@ -444,7 +445,8 @@ WAVE.GUI = (function(){
           document.body.removeChild(fdivBase);
           WAVE.arrayDelete(fCurtains, fdivBase);
           WAVE.removeEventHandler(window, "resize", __resizeEventHandler);
-          tryRetrunScrollingToBody();
+          if (fPreventScroll)
+            tryRetrunScrollingToBody();
 
           this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
 
@@ -506,7 +508,8 @@ WAVE.GUI = (function(){
         show();
 
         __adjustBounds();
-        tryMakeBodyUnscrollable();
+        if (fPreventScroll)
+          tryMakeBodyUnscrollable();
 
         return dialog;
     };//dialog
