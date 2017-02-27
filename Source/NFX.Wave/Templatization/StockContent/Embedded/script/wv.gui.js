@@ -339,6 +339,7 @@ WAVE.GUI = (function(){
             fOnShow = WAVE.isFunction(init.onShow) ? init.onShow : function(){},
             fOnClose = WAVE.isFunction(init.onClose) ? init.onClose : function(){ return true;},
             fCloseOnClickOutside = WAVE.strAsBool(init.closeOnClickOutside, false),
+            fCloseOnEscape = WAVE.strAsBool(init.closeOnEscape, true),
             fWidthPct = WAVE.intValidPositive(init.widthpct) ? init.widthpct : 0,
             fHeightPct = WAVE.intValidPositive(init.heightpct) ? init.heightpct : 0,
             fPreventScroll = WAVE.strAsBool(init.preventScroll, true),
@@ -409,14 +410,21 @@ WAVE.GUI = (function(){
 
         function outsideClickHandler(e) {
           var target = e.target;
-          if (!WAVE.isParentOf(fdivContent, target)) {
+          if (!WAVE.isParentOf(fdivContent, target))
             dialog.close();
-          }
+        }
+
+        function buttonPressed(e) {
+          var keyCode = e.keyCode;
+          if (keyCode === 27)
+            dialog.close();
         }
 
         function show() {
           if (fCloseOnClickOutside)
             setTimeout(function() {WAVE.addEventHandler(window, "click", outsideClickHandler)}, 1);
+          if (fCloseOnEscape)
+            WAVE.addEventHandler(window, "keyup", buttonPressed);
           fOnShow(dialog);
         }
 
@@ -433,11 +441,8 @@ WAVE.GUI = (function(){
 
         //closes dialog with the specified result and returns the result
         this.close = function(result){
-          if (fCloseOnClickOutside)
-            WAVE.removeEventHandler(window, "click", outsideClickHandler);
           if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
           if (fResult!==published.DLG_UNDEFINED) return fResult;
-
           if (!fOnClose(this, result)) return published.DLG_UNDEFINED;//aka CloseQuery
 
           fResult = result;
@@ -448,7 +453,10 @@ WAVE.GUI = (function(){
           if (fPreventScroll)
             tryRetrunScrollingToBody();
 
-          this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
+          if (fCloseOnClickOutside)
+            WAVE.removeEventHandler(window, "click", outsideClickHandler);
+          if (fCloseOnEscape)
+            WAVE.removeEventHandler(window, "keyup", buttonPressed);
 
           fdivBase.__DIALOG = null;
           fdivBase = null,
@@ -459,6 +467,8 @@ WAVE.GUI = (function(){
           fOnClose = null;
           fOnShow = null;
           dialog = null;
+
+          this.eventInvoke(published.EVT_DIALOG_CLOSE, result);
 
           return result;
         };
