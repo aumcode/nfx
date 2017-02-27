@@ -26,9 +26,12 @@ moved trillions of various CLR object instances* (including non-trivial CLR case
 
 **GUIDES**:
 NEW 20160117, we are adding:
+
  [NFX Documentation/Guides are here](Guides/README.md)
+ 
  [XML Documentation from Code](https://aumcode.github.io/documentation)
 
+ 
 **NUGET**:
  https://www.nuget.org/packages/NFX/
  
