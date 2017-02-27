@@ -85,6 +85,11 @@ namespace NFX.IO
 
           public abstract double[] ReadDoubleArray();
 
+          public abstract float[] ReadFloatArray();
+
+          public abstract decimal[] ReadDecimalArray();
+
+
 
           public abstract char ReadChar();
 
@@ -225,6 +230,10 @@ namespace NFX.IO
          public abstract NLSMap ReadNLSMap();
 
              public abstract NLSMap? ReadNullableNLSMap();
+
+         public abstract Financial.Amount ReadAmount();
+
+             public abstract Financial.Amount? ReadNullableAmount();
 
 
          public abstract Collections.StringMap  ReadStringMap();

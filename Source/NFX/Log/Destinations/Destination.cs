@@ -560,26 +560,6 @@ namespace NFX.Log.Destinations
            }
         }
 
-
-
-        /// <summary>
-        /// Notifies destination about pivotal time change (i.e. every 12 hrs).
-        /// Implementors may choose to create a different log file or catalog etc.
-        /// </summary>
-        public virtual void TimeChanged()
-        {
-
-        }
-
-        /// <summary>
-        /// Notifies destination about fundamental settings change that may need to create a differently named file,
-        ///  database or other storage medium
-        /// </summary>
-        public virtual void SettingsChanged()
-        {
-
-        }
-
         /// <summary>
         /// Parses levels into a tuple list of level ranges
         /// </summary>
@@ -648,6 +628,8 @@ namespace NFX.Log.Destinations
         /// </summary>
         protected virtual void DoConfigure(IConfigSectionNode node)
         {
+          ConfigAttribute.Apply(this, node);
+
           var expr = node.AttrByName(CONFIG_FILTER_ATTR).Value;
           if (!string.IsNullOrWhiteSpace(expr))
            m_Filter = new MessageFilterExpression(expr);

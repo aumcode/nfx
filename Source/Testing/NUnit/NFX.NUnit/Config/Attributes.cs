@@ -30,7 +30,7 @@ using System.Globalization;
 
 namespace NFX.NUnit.Config
 {
-    #pragma warning disable 0649,0169                    
+    #pragma warning disable 0649,0169
 
 
 
@@ -39,13 +39,13 @@ namespace NFX.NUnit.Config
         [Config("MyClass/data")]
         public class MyClass
         {
-           
+
            [Config("$pvt-int")]
            private int m_PrivateInt;         public int getPrivateInt(){ return m_PrivateInt;}
-           
-           
+
+
            private int m_privateProperty;
-           
+
            [Config("$pvt-property")]
            private int privateProperty
            {
@@ -54,13 +54,13 @@ namespace NFX.NUnit.Config
            }   public int getPrivateProperty(){ return privateProperty; }
 
 
-           
+
            [Config("$pvt-name")]
            private string m_PrivateName;         public string getPrivateName(){ return m_PrivateName;}
-           
+
            [Config("$prot-name")]
            protected string m_ProtectedName;     public string getProtectedName(){ return m_ProtectedName;}
-           
+
            [Config("$pub-name")]
            public string m_PublicName;
 
@@ -81,7 +81,7 @@ namespace NFX.NUnit.Config
 
            [Config("extra/$when")]
            public DateTime When{ get; set; }
-           
+
            [Config("extra/fuzzy")]
            public bool? Fuzzy{ get; set; }
 
@@ -115,29 +115,29 @@ namespace NFX.NUnit.Config
            [Config("$pub-format|!$NON-EXISTENT-format")]
            public string FormatThatIsRequired;
         }
-       
+
         public class MyClassExtended : MyClass
         {
-           
+
            [Config("$pvt-int-extended")]
            private int m_PrivateInt;         public int getPrivateIntExtended(){ return m_PrivateInt;}
-           
-           
+
+
            private int m_privateProperty;
-           
+
            [Config("$pvt-property-extended")]
            private int privateProperty
            {
              get { return m_privateProperty;}
              set { m_privateProperty = value; }
            }   public int getPrivatePropertyExtended(){ return privateProperty; }
-           
-           
+
+
            //notice no attributes on this level, they will get inherited here
            [Config("abrakabadra", "So what?")]
            public string NoneAnotherString{ get; set; }
         }
-       
+
         [Config("MyClassExtended2/data")]
         public class MyClassExtended2 : MyClass
         {
@@ -156,7 +156,7 @@ namespace NFX.NUnit.Config
                             }
 
                             [Config]
-                            public string Text; 
+                            public string Text;
 
 
                             public TimeLocation TimeLocation
@@ -185,25 +185,25 @@ namespace NFX.NUnit.Config
                                 Text = node.AttrByName("text").Value;
                             }
 
-                                                        
+
                         }
 
 
 
 
-    [TestFixture]   
+    [TestFixture]
     public class Attributes
     {
-        static string xml = 
+        static string xml =
 @"<root>
 
-   <injected type='NFX.NUnit.Config.SomeFatClassWithContext, NFX.NUnit' 
+   <injected type='NFX.NUnit.Config.SomeFatClassWithContext, NFX.NUnit'
              text='$(::now fmt=yyyyMMdd-HHmmss)'
    />
 
 
 
-   <MyClass> 
+   <MyClass>
     <data pvt-name='private'
           prot-name='protected'
           pub-name='public'
@@ -212,14 +212,14 @@ namespace NFX.NUnit.Config
           age2='890'
           the-new-age='1890'
           bytes='0,1 ,2 ,3 ,  4,5,6,7,8,9,a,b,c,d,e,f'
-          
+
           pvt-int='-892'
           pvt-property='23567'
-          
-          
+
+
           pvt-int-extended='892'
           pvt-property-extended='-23567'
-          
+
           >
 
           <extra
@@ -228,7 +228,7 @@ namespace NFX.NUnit.Config
 
             <fuzzy>true</fuzzy>
             <jazzy></jazzy>
-          
+
             <options>
                 <hello a='1'>YES!</hello>
             </options>
@@ -239,7 +239,7 @@ namespace NFX.NUnit.Config
     </data>
   </MyClass>
 
-  <MyClassExtended2> 
+  <MyClassExtended2>
     <data prot-name='protected'
           pub-name='public'
           age='199'>
@@ -250,7 +250,7 @@ namespace NFX.NUnit.Config
 
             <fuzzy>false</fuzzy>
             <jazzy></jazzy>
-          
+
           </extra>
 
 
@@ -258,9 +258,9 @@ namespace NFX.NUnit.Config
   </MyClassExtended2>
  </root>
 ";
-        
-        
-        
+
+
+
         [TestCase]
         public void ConfigAttributeApply()
         {
@@ -358,7 +358,7 @@ namespace NFX.NUnit.Config
           var cl = new MyClass();
           ConfigAttribute.Apply(cl, conf.Root);
 
-         
+
            Assert.AreEqual("YES!", cl.OptionsProp["hello"].Value);
            Assert.AreEqual(1, cl.OptionsProp["hello"].AttrByName("a").ValueAsInt());
 
@@ -437,8 +437,8 @@ namespace NFX.NUnit.Config
 
           var node = conf.Root["injected"];
           var obj = FactoryUtils.Make<SomeFatClassWithContext>(node);
-           
-          ConfigAttribute.Apply(obj, node); 
+
+          ConfigAttribute.Apply(obj, node);
 
           Assert.AreEqual("20000102-183000", obj.Text);
         }
@@ -450,14 +450,29 @@ namespace NFX.NUnit.Config
 
           var node = conf.Root["injected"];
           var obj = FactoryUtils.MakeAndConfigure<SomeFatClassWithContext>(node);
-           
+
           Assert.AreEqual("20000102-183000", obj.Text);
         }
 
 
+        private class TeztClazz
+        {
+          [Config(Verbatim=true)]   public string Verbatim{ get; set;}
+          [Config]                  public string Evaluated{ get; set;}
+        }
+
+        [Test]
+        public void ConfigAttrApplyVerbatimAndEvaluated()
+        {
+          var conf = "r{  a=234   b=$($a)  verbatim=$(sub/$d) evaluated=$(sub/$d) sub{ d=$(/$b)} }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          var obj = new TeztClazz();
+          ConfigAttribute.Apply(obj, conf);
+
+          Aver.AreEqual( "$(sub/$d)" , obj.Verbatim );
+          Aver.AreEqual( "234" ,       obj.Evaluated );
+        }
     }
-
-
 }
 
 

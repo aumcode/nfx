@@ -11,11 +11,10 @@
     name="Logger"
     destination
     {
-       type=$(/$log-csv)
-	   name="IntegrationTestServer.Log"
-	   path=$(/$log-root)
-       name-time-format='yyyyMMdd'
-       generate-failover-msg=false
+      type=$(/$log-csv)
+      name="IntegrationTestServer.Log"
+      path="$(/$log-root)"
+      file-name="{0:yyyyMMdd}-$($name).csv.log"
     }
   }
 

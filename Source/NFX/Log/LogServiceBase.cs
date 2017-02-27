@@ -280,19 +280,6 @@ namespace NFX.Log
             }
 
             /// <summary>
-            /// Notifies log that time changed and log destinations should be notified.
-            /// Usually this causes log file close/open under different name
-            /// </summary>
-            public void TimeChanged()
-            {
-                lock (m_Destinations)
-                {
-                    foreach (Destination d in m_Destinations)
-                        d.TimeChanged();
-                }
-            }
-
-            /// <summary>
             /// Returns instrumentation buffer if instrumentation enabled
             /// </summary>
             public IEnumerable<Message> GetInstrumentationBuffer(bool asc)
@@ -408,7 +395,7 @@ namespace NFX.Log
                             var emsg = new Message();
                             emsg.Type = MessageType.Error;
                             emsg.From = destination.Name;
-                            emsg.Topic = CoreConsts.LOGSVC_FAILOVER_TOPIC;
+                            emsg.Topic = CoreConsts.LOG_TOPIC;
                             emsg.Text = string.Format(
                                    StringConsts.LOGSVC_FAILOVER_MSG_TEXT,
                                    msg.Guid,

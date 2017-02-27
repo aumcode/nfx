@@ -188,7 +188,8 @@ namespace NFX.DataAccess.CRUD
                         bool nonUI = false,
                         string formatRegExp = null,
                         string formatDescr  = null,
-                        string displayFormat = null
+                        string displayFormat = null,
+                        bool isArow         = false
                     ) : base(targetName, metadata)
         {
               StoreFlag = storeFlag;
@@ -210,6 +211,7 @@ namespace NFX.DataAccess.CRUD
               FormatRegExp = formatRegExp;
               FormatDescription = formatDescr;
               DisplayFormat = displayFormat;
+              IsArow = isArow;
         }
 
         /// <summary>
@@ -299,7 +301,8 @@ namespace NFX.DataAccess.CRUD
                         object nonUI        = null,
                         string formatRegExp = null,
                         string formatDescr  = null,
-                        string displayFormat = null
+                        string displayFormat = null,
+                        object isArow        = null
                     ) : base(targetName, null)
         {
             if (protoType==null || protoFieldName.IsNullOrWhiteSpace()) throw new CRUDException(StringConsts.ARGUMENT_ERROR+"FieldAttr.ctor(protoType|protoFieldName=null|empty)");
@@ -340,7 +343,8 @@ namespace NFX.DataAccess.CRUD
                 NonUI            = nonUI        == null? protoAttr.NonUI       : (bool)nonUI;
                 FormatRegExp     = formatRegExp == null? protoAttr.FormatRegExp: formatRegExp;
                 FormatDescription= formatDescr  == null? protoAttr.FormatDescription: formatDescr;
-                DisplayFormat    = displayFormat== null? protoAttr.DisplayFormat    : displayFormat;
+                DisplayFormat    = displayFormat== null? protoAttr.DisplayFormat : displayFormat;
+                IsArow           = isArow       == null? protoAttr.IsArow        : (bool)isArow;
 
 
 
@@ -530,6 +534,14 @@ namespace NFX.DataAccess.CRUD
         public readonly bool NonUI;
 
 
+        // This is moved here for convenience not to repeat volumnous field attributes for Arow serialization as field def already contains all data,
+        // see NFX.Serialization.Arow
+        /// <summary>
+        /// True if this field definition is used by Arow serializer
+        /// </summary>
+        public readonly bool IsArow;
+
+
         public override int GetHashCode()
         {
             return TargetName.GetHashCodeOrdSenseCase();
@@ -574,6 +586,7 @@ namespace NFX.DataAccess.CRUD
                 this.FormatRegExp.EqualsOrdSenseCase(other.FormatRegExp) &&
                 this.FormatDescription.EqualsOrdSenseCase(other.FormatDescription)&&
                 this.DisplayFormat.EqualsOrdSenseCase(other.DisplayFormat) &&
+                this.IsArow == other.IsArow &&
                 (
                    (!m_CacheValueListPresetInCtor)||
                    (this.m_CacheValueList_Sensitive==null && other.m_CacheValueList_Sensitive==null) ||

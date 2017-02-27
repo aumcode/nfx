@@ -108,6 +108,9 @@
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
     <Compile Include="Security\PasswordManagerTests.cs" />
+    <Compile Include="Serialization\ARowBenchmarking.cs" />
+    <Compile Include="Serialization\ARow.TestCores.cs" />
+    <Compile Include="Serialization\ARow.Rows.cs" />
     <Compile Include="Serialization\CSVWriterTest.cs" />
     <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
     <Compile Include="Serialization\CSVParserTest.cs" />

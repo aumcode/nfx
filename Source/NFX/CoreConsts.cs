@@ -56,7 +56,6 @@ namespace NFX
 
 
       public const string APPLICATION_TOPIC = "App";
-      public const string RECORD_TOPIC = "NFX.RecordModel.Record";
 
       public const string DATA_CATEGORY = "Data";
       public const string PRESENTATION_CATEGORY = "Presentation";
@@ -66,7 +65,7 @@ namespace NFX
 
       public const string CHANGE_EVENTS_CATEGORY = "Change";
 
-      public const string LOGSVC_FAILOVER_TOPIC = "lgsvc.failover";
+      public const string LOG_TOPIC = "Log";
 
       public const string LOG_NET_TOPIC = "NET";
 

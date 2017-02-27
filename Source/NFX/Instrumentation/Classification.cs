@@ -154,6 +154,19 @@ namespace NFX.Instrumentation
             public interface ISchedulingInstrument : IOperationClass { }
 
 
+            /// <summary>
+            /// Queue-related operations
+            /// </summary>
+            [InstrumentViewGroup]
+            public interface IQueueInstrument : IOperationClass { }
+
+            /// <summary>
+            /// Worker-related operations i.e. Todo queue
+            /// </summary>
+            [InstrumentViewGroup]
+            public interface IWorkerInstrument : IOperationClass { }
+
+
 
 
             /// <summary>

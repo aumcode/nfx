@@ -13,26 +13,25 @@
     <log name="Logger">
         <destination type="$(/$log-csv)"
              name="$(/$app-name)"
-             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
-             create-dir="true"
+             path="$(/$log-root)"
+             file-name="{0:yyyyMMdd}-$($name).csv.log"
              min-level="Info"
         />
 
         <destination  type="$(/$log-csv)"
              name="$(/$app-name)-perf"
-             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
-             create-dir="true"
+             path="$(/$log-root)"
+             file-name="{0:yyyyMMdd}-$($name).csv.log"
              min-level="PerformanceInstrumentation"
              max-level="PerformanceInstrumentation"
         />
 
         <destination type="$(/$log-debug)"
              name="$(/$app-name)-debug"
-             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
-             log-time-format="HH:mm:ss.fff"
-             Zmax-level="TraceZ"
+             path="$(/$log-root)"
+             file-name="{0:yyyyMMdd}-$($name).csv.log"
              levels="-TraceZ | Warning-"
-             Zfilter="arg.Type &lt; MessageType.TraceZ || arg.Type &gt; MessageType.Warning" 
+             XXXfilter="arg.Type &lt; MessageType.TraceZ || arg.Type &gt; MessageType.Warning"
         />
     </log>
 

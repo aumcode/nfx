@@ -230,31 +230,31 @@ namespace NFX.Log
 
         private void write()
         {
-            lock (m_Destinations) //the lock on destinations here is on purpose, so while write takes place no other thread can remove destinations
+          lock (m_Destinations) //the lock on destinations here is on purpose, so while write takes place no other thread can remove destinations
+          {
+            Message msg;
+            while (m_Queue.TryDequeue(out msg))
             {
-                Message msg;
-                while (m_Queue.TryDequeue(out msg))
+                if (m_InstrumentationEnabled)
                 {
-                    if (m_InstrumentationEnabled)
-                    {
-                      _stat s;
-                      if (!m_Stats.TryGetValue(msg.Type, out s))
-                      {
-                       s = new _stat();
-                       m_Stats[msg.Type] = s;
-                      }
-                      s.V++;
-                    }
+                  _stat s;
+                  if (!m_Stats.TryGetValue(msg.Type, out s))
+                  {
+                    s = new _stat();
+                    m_Stats[msg.Type] = s;
+                  }
+                  s.V++;
+                }
 
-                    foreach (var destination in m_Destinations)
-                    {
-                        //20130318 DKh
-                        if (!m_Reliable && !this.Running)
-                            return;
-                        destination.Send(msg);
-                    }
+                foreach (var destination in m_Destinations)
+                {
+                    //20130318 DKh
+                    if (!m_Reliable && !this.Running)
+                        return;
+                    destination.Send(msg);
                 }
             }
+          }
         }
 
         private void dumpStats()

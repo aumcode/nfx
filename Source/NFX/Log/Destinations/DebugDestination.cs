@@ -34,53 +34,36 @@ namespace NFX.Log.Destinations
     /// </summary>
     public class DebugDestination : TextFileDestination
     {
-        #region CONSTS
+      private const char SEPARATOR = '|';
 
-            private const char SEPARATOR = '|';
+      public DebugDestination() : this(null) { }
+      public DebugDestination(string name = null) : base(name)
+      {
+      }
 
-        #endregion
+      protected override string DoFormatMessage(Message msg)
+      {
+        StringBuilder line = new StringBuilder();
 
-        #region .ctor
+        DateTime now = msg.TimeStamp;
+        line.Append(now.ToString("yyyyMMdd-HHmmss")); line.Append(SEPARATOR);
+        line.Append(msg.RelatedTo == Guid.Empty ? string.Empty : msg.RelatedTo.ToString());
+        line.Append(SEPARATOR);
+        line.Append(msg.Type.ToString()); line.Append(SEPARATOR);
+        line.Append(msg.Text); line.Append(SEPARATOR);
+        if (!msg.Topic.Equals(msg.Type)) line.Append(msg.Topic);
+        line.Append(SEPARATOR);
+        line.Append(msg.Source.ToString()); line.Append(SEPARATOR);
+        line.Append(msg.From);
 
-            public DebugDestination() : base(null, null, null) {}
+        if (msg.Exception != null)
+        {
+            line.Append(SEPARATOR);
+            line.AppendFormat("\n  --- Exception in {0} ---\n", msg.Exception.TargetSite);
+            line.Append(msg.Exception.StackTrace);
+        }
 
-            /// <summary>
-            /// Creates a new instance of destination
-            /// </summary>
-            public DebugDestination(string name = null, string filename = null, string path = null)
-                : base(name, filename, path)
-            {
-            }
-
-        #endregion
-
-        #region Protected
-
-            protected override string DoFormatMessage(Message msg)
-            {
-                StringBuilder line = new StringBuilder();
-
-                DateTime now = msg.TimeStamp;
-                line.Append(now.ToString(LogTimeFormat)); line.Append(SEPARATOR);
-                line.Append(msg.RelatedTo == Guid.Empty ? string.Empty : msg.RelatedTo.ToString());
-                line.Append(SEPARATOR);
-                line.Append(msg.Type.ToString()); line.Append(SEPARATOR);
-                line.Append(msg.Text); line.Append(SEPARATOR);
-                if (!msg.Topic.Equals(msg.Type)) line.Append(msg.Topic);
-                line.Append(SEPARATOR);
-                line.Append(msg.Source.ToString()); line.Append(SEPARATOR);
-                line.Append(msg.From);
-
-                if (msg.Exception != null)
-                {
-                    line.Append(SEPARATOR);
-                    line.AppendFormat("\n  --- Exception in {0} ---\n", msg.Exception.TargetSite);
-                    line.Append(msg.Exception.StackTrace);
-                }
-
-                return line.ToString();
-            }
-
-        #endregion
+        return line.ToString();
+      }
     }
 }

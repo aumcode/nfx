@@ -87,6 +87,12 @@ namespace NFX.Environment
 
 
        /// <summary>
+       /// Takes verbatim value if true
+       /// </summary>
+       public bool Verbatim { get; set;}
+
+
+       /// <summary>
        /// Applies config values to fields/properties as specified by config attributes
        /// </summary>
        public static T Apply<T>(T entity, IConfigSectionNode node)
@@ -167,7 +173,7 @@ namespace NFX.Environment
                          throw new ConfigException(string.Format(StringConsts.CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR, etp.FullName, finf.Name));
 
                        if (mnode.Exists && mnode.VerbatimValue!=null)
-                        finf.SetValue(entity, getVal(mnode, finf.FieldType, etp.FullName, finf.Name));
+                        finf.SetValue(entity, getVal(mnode, finf.FieldType, etp.FullName, finf.Name, mattr.Verbatim));
                        else
                         if (mattr.Default!=null) finf.SetValue(entity, mattr.Default);
 
@@ -205,7 +211,7 @@ namespace NFX.Environment
                          throw new ConfigException(string.Format(StringConsts.CONFIGURATION_ATTRIBUTE_MEMBER_READONLY_ERROR, etp.FullName, pinf.Name));
 
                        if (mnode.Exists && mnode.VerbatimValue!=null)
-                        pinf.SetValue(entity, getVal(mnode,  pinf.PropertyType, etp.FullName, pinf.Name), null);
+                        pinf.SetValue(entity, getVal(mnode,  pinf.PropertyType, etp.FullName, pinf.Name, mattr.Verbatim), null);
                        else
                         if (mattr.Default!=null) pinf.SetValue(entity, mattr.Default, null);
                  }
@@ -276,11 +282,11 @@ namespace NFX.Environment
          return result;
        }
 
-       private static object getVal(IConfigNode node, Type type, string tname, string mname)
+       private static object getVal(IConfigNode node, Type type, string tname, string mname, bool verbatim)
        {
          try
          {
-            return node.ValueAsType(type);
+           return node.ValueAsType(type, verbatim);
          }
          catch(Exception error)
          {

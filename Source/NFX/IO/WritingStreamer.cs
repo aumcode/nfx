@@ -69,6 +69,10 @@ namespace NFX.IO
 
           public abstract void Write(double[] value);
 
+          public abstract void Write(float[] value);
+
+          public abstract void Write(decimal[] value);
+
 
           public abstract void Write(char ch);
 
@@ -207,6 +211,10 @@ namespace NFX.IO
            public abstract void Write(NLSMap map);
 
               public abstract void Write(NLSMap? map);
+
+           public abstract void Write(Financial.Amount value);
+
+              public abstract void Write(Financial.Amount? value);
 
            public abstract void Write(Collections.StringMap map);
 

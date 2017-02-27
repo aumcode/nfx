@@ -46,7 +46,7 @@ namespace WinFormsTest
 
       // Application.Run(new Form2());
       //    Application.Run(new MongoDBForm());
-      //    Application.Run(new LogForm());
+          Application.Run(new LogForm());
 
        //  Application.Run(new SerializerForm());
        //   Application.Run(new SerializerForm2());

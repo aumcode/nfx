@@ -41,6 +41,10 @@ namespace NFX.IO
 
        public const int MAX_DOUBLE_ARRAY_LEN =  MAX_BYTE_ARRAY_LEN / 8;
 
+       public const int MAX_FLOAT_ARRAY_LEN =  MAX_BYTE_ARRAY_LEN / 4;
+
+       public const int MAX_DECIMAL_ARRAY_LEN =  MAX_BYTE_ARRAY_LEN / 13;
+
        public const int MAX_STRING_ARRAY_CNT =  MAX_BYTE_ARRAY_LEN / 48;
 
 

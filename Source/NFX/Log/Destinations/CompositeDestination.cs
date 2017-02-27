@@ -32,18 +32,19 @@ namespace NFX.Log.Destinations
     {
        #region .ctor
 
-            public CompositeDestination()
+            public CompositeDestination() : base()
             {
             }
 
-            public CompositeDestination(params Destination[] inner)
+            public CompositeDestination(params Destination[] inner) : this(null, inner)
             {
-              m_Destinations.AddRange(inner);
             }
 
             public CompositeDestination(string name, params Destination[] inner) : base (name)
             {
-              m_Destinations.AddRange(inner);
+              if (inner==null) return;
+              foreach(var d in inner)
+                RegisterDestination(d);
             }
 
             protected override void Destructor()
@@ -90,21 +91,6 @@ namespace NFX.Log.Destinations
                     dest.Close();
                 base.Close();
             }
-
-            public override void TimeChanged()
-            {
-               lock(m_Destinations)
-                 foreach(var dest in m_Destinations)
-                    dest.TimeChanged();
-            }
-
-            public override void SettingsChanged()
-            {
-                lock(m_Destinations)
-                 foreach(var dest in m_Destinations)
-                    dest.SettingsChanged();
-            }
-
 
             /// <summary>
             /// Adds a destination to this wrapper

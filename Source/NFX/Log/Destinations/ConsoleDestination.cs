@@ -26,95 +26,55 @@ using NFX.IO;
 
 namespace NFX.Log.Destinations
 {
+  /// <summary>
+  /// Logs messages in stdio.console
+  /// </summary>
+  public class ConsoleDestination : Destination
+  {
+    private const string DEF_LOG_TIME_FORMAT = "HH:mm:ss";
+
+
+    public ConsoleDestination() : this(null) { }
+    public ConsoleDestination(string name) : base (name) { }
+
+    [Config]
+    public bool Colored { get; set;}
+
     /// <summary>
-    /// Logs messages in stdio.console
+    /// Time format for log line entries
     /// </summary>
-    public class ConsoleDestination : Destination
+    [Config]
+    public string LogTimeFormat{ get; set;}
+
+
+    protected internal override void DoSend(Message msg)
     {
-        #region CONSTS
-            private const string DEF_LOG_TIME_FORMAT = "HH:mm:ss";
-        #endregion
+      var txt = fmt(msg);
 
-        #region .ctor
-
-        public ConsoleDestination ()
-            {
-            }
-
-            public ConsoleDestination (string name) : base (name)
-            {
-
-            }
-
-            protected override void Destructor()
-            {
-              base.Destructor();
-            }
-
-       #endregion
-
-       #region Pvt/Protected Fields
-
-            private bool m_Colored;
-            private string m_LogTimeFormat = DEF_LOG_TIME_FORMAT;
-
-       #endregion
-
-
-       #region Properties
-
-           [Config("$colored")]
-           public bool Colored
-           {
-               get { return m_Colored; }
-               set { m_Colored = value; }
-           }
-
-           /// <summary>
-           /// Time format for log line entries
-           /// </summary>
-           [Config("$" + FileDestination.CONFIG_LOGTIMEFORMAT_ATTR)]
-           public string LogTimeFormat
-           {
-               get { return m_LogTimeFormat; }
-               set
-               {
-                   m_LogTimeFormat = string.IsNullOrWhiteSpace(value) ? DEF_LOG_TIME_FORMAT : value;
-               }
-           }
-
-       #endregion
-
-      #region Protected /.pvt
-
-            protected internal override void DoSend(Message msg)
-            {
-                var txt = fmt(msg);
-
-                if (m_Colored)
-                {
-                    if (msg.Type<MessageType.Warning) ConsoleUtils.Info(txt);
-                    else
-                    if (msg.Type<MessageType.Error) ConsoleUtils.Warning(txt);
-                    else
-                      ConsoleUtils.Error(txt);
-                }
-                else
-                {
-                    Console.WriteLine(txt);
-                }
-            }
-
-            private string fmt(Message msg)
-            {
-               return string.Format("{0}|{1}|{2}|{3}| {4}",
-                              msg.TimeStamp.ToString(m_LogTimeFormat),
-                              msg.Type,
-                              msg.Source,
-                              msg.From,
-                              msg.Text);
-            }
-      #endregion
-
+      if (Colored)
+      {
+        if (msg.Type<MessageType.Warning) ConsoleUtils.Info(txt);
+        else
+        if (msg.Type<MessageType.Error) ConsoleUtils.Warning(txt);
+        else
+          ConsoleUtils.Error(txt);
+      }
+      else
+        Console.WriteLine(txt);
     }
+
+    private string fmt(Message msg)
+    {
+      var tf = LogTimeFormat;
+      if (tf.IsNullOrWhiteSpace()) tf = DEF_LOG_TIME_FORMAT;
+
+      return string.Format("{0}|{1}|{2}|{3}| {4}",
+                    msg.TimeStamp.ToString(tf),
+                    msg.Type,
+                    msg.Source,
+                    msg.From,
+                    msg.Text);
+    }
+
+  }
 }

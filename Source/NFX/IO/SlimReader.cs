@@ -179,6 +179,43 @@ namespace NFX.IO
           }
 
 
+          public override float[] ReadFloatArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var len = this.ReadInt();
+            if (len>SlimFormat.MAX_FLOAT_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "floats", SlimFormat.MAX_FLOAT_ARRAY_LEN));
+
+            var result = new float[len];
+
+
+            for(int i=0; i<len; i++)
+              result[i] = this.ReadFloat();
+
+            return result;
+          }
+
+          public override decimal[] ReadDecimalArray()
+          {
+            var has = this.ReadBool();
+            if (!has) return null;
+
+            var len = this.ReadInt();
+            if (len>SlimFormat.MAX_DECIMAL_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_READ_X_ARRAY_MAX_SIZE_ERROR.Args(len, "decimals", SlimFormat.MAX_DECIMAL_ARRAY_LEN));
+
+            var result = new decimal[len];
+
+
+            for(int i=0; i<len; i++)
+              result[i] = this.ReadDecimal();
+
+            return result;
+          }
+
+
 
 
 
@@ -785,6 +822,25 @@ namespace NFX.IO
 
                 return null;
               }
+
+          public override Financial.Amount ReadAmount()
+          {
+            var iso = ReadString();
+            var val = ReadDecimal();
+
+            return new Financial.Amount(iso, val);
+          }
+
+              public override Financial.Amount? ReadNullableAmount()
+              {
+                var has = this.ReadBool();
+
+                if (has) return this.ReadAmount();
+
+                return null;
+              }
+
+
 
           public override Collections.StringMap ReadStringMap()
           {

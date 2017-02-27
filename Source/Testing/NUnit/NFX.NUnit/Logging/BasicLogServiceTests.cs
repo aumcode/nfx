@@ -36,424 +36,429 @@ using System.Reflection;
 
 namespace NFX.NUnit.Logging
 {
-    [TestFixture]   
-    public class BasicLogServiceTests
+    [TestFixture]
+    public class BasicsvcTests
     {
-        public const string TEST_DIR = @"c:\NFX"; // TODO: Don't hard-code - get from environment
+      public const string TEST_DIR = @"c:\NFX"; // TODO: Don't hard-code - get from environment
 
-        [Test]
-        public void CSVFileDestinationStartByCode()
+      [Test]
+      public void CSVFileDestinationStartByCode()
+      {
+        var TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".csv.log";
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        using (var svc = new LSVC())
+        using (Scope.OnExit(() => File.Delete(fname)))
         {
-         string TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
-         string FNAME = TNAME + ".csv.log";
+          svc.RegisterDestination(
+            new CSVFileDestination(TNAME) { Path = TEST_DIR, FileName = FNAME });
 
-         var svc = new LSVC(null);
+          svc.Start();
 
-         var fname = Path.Combine(TEST_DIR, FNAME);
+          svc.Write(new Message{Text = "1 message"});
+          svc.Write(new Message{Text = "2 message"});
+          svc.Write(new Message{Text = "3 message"});
+          svc.Write(new Message{Text = "4 message"});
 
-         if (File.Exists(fname)) File.Delete(fname);  
+          svc.WaitForCompleteStop();
 
-         using (Scope.OnExit(() => File.Delete(fname)))
-         {
-           svc.RegisterDestination(
-               new CSVFileDestination(TNAME, TEST_DIR){
-                    CreateDir = true
-               });
-  
-           svc.Start();      
-  
-               svc.Write(new Message{Text = "1 message"});
-               svc.Write(new Message{Text = "2 message"});
-               svc.Write(new Message{Text = "3 message"});
-               svc.Write(new Message{Text = "4 message"});
-  
-  
-           svc.WaitForCompleteStop();
-  
-           Assert.AreEqual(true, File.Exists(fname));
-           Assert.AreEqual(4, File.ReadAllLines(fname).Length);
-         }
+          Aver.IsTrue(File.Exists(fname));
+          Aver.AreEqual(4, File.ReadAllLines(fname).Length);
         }
+      }
 
-        [Test]
-        public void CSVFileDestinationStartByConfig1()
+      [Test]
+      public void CSVFileDestinationStartByConfig1()
+      {
+        var TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".csv.log";
+        const string DATE = "20131012";
+
+        var xml= @"<log>
+                      <destination type='NFX.Log.Destinations.CSVFileDestination, NFX'
+                                   name='{0}'
+                                   path='$(@~path)'
+                                   filename='$(::now fmt=yyyyMMdd value={1})-$($name).csv.log'/>
+                   </log>".Args(TNAME, DATE);
+
+        var fname = Path.Combine(TEST_DIR, DATE + "-" + FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        using (var svc = new LSVC())
+        using (Scope.OnExit(() => File.Delete(fname)))
         {
-         string TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
-         string FNAME = TNAME + ".csv.log";
-         const string DATE = "20131012";
+          var cfg = XMLConfiguration.CreateFromXML(xml);
+          cfg.EnvironmentVarResolver = new Vars { { "path", TEST_DIR } };
+          svc.Configure(cfg.Root);
 
-         var xml= @"<log>
+          svc.Start();
+
+          svc.Write(new Message{Text = "1 message"});
+          svc.Write(new Message{Text = "2 message"});
+          svc.Write(new Message{Text = "3 message"});
+
+          svc.WaitForCompleteStop();
+
+          Aver.IsTrue(File.Exists(fname));
+          Aver.AreEqual(3, File.ReadAllLines(fname).Length);
+        }
+      }
+
+      [Test]
+      public void CSVFileDestinationStartByConfig2()
+      {
+        var TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".csv.log";
+        var xml= @"<log>
+                      <destination  type='NFX.Log.Destinations.CSVFileDestination, NFX'
+                                    name='{0}' path='{1}' file-name='$($name).csv.log'
+                      />
+                   </log>".Args(TNAME, TEST_DIR);
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        using (var svc = new LSVC())
+        using (Scope.OnExit(() => File.Delete(fname)))
+        {
+          svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
+
+          svc.Start();
+
+          svc.Write(new Message{Text = "1 message"});
+          svc.Write(new Message{Text = "2 message"});
+          svc.Write(new Message{Text = "3 message"});
+
+          svc.WaitForCompleteStop();
+
+          Aver.IsTrue(File.Exists(fname));
+          Aver.AreEqual(3, File.ReadAllLines(fname).Length);
+        }
+      }
+
+      [Test]
+      public void CSVFileDestinationStartByLaConfig()
+      {
+        var TNAME = "UnitTest-" + MethodInfo.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".csv.log";
+        const string DATE = "20131012";
+
+        var laStr = @"log
+                      {{
+                        destination
+                        {{
+                          type='NFX.Log.Destinations.CSVFileDestination, NFX'
+                          name='{0}'
+                          path='$(@~path)'
+                          file-name='$(::now fmt=yyyyMMdd value={1})-$($name).csv.log'
+                        }}
+                      }}".Args(TNAME, DATE);
+
+        var cnf = LaconicConfiguration.CreateFromString(laStr);
+        cnf.EnvironmentVarResolver = new Vars() { { "path", TEST_DIR}};
+
+        var fname = Path.Combine(TEST_DIR, DATE + "-" + FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        using (var svc = new LSVC())
+        using (Scope.OnExit(() => File.Delete(fname)))
+        {
+          svc.Configure(cnf.Root);
+
+          svc.Start();
+
+          svc.Write(new Message() { Text = "Msg 1"});
+          svc.Write(new Message() { Text = "Msg 2" });
+          svc.Write(new Message() { Text = "Msg 3" });
+
+          svc.WaitForCompleteStop();
+
+          Aver.IsTrue(File.Exists(fname));
+          Aver.AreEqual(3, File.ReadAllLines(fname).Length);
+        }
+      }
+
+      [Test]
+      public void FloodFilter()
+      {
+        var TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".csv.log";
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        var svc = new LSVC();
+        try
+        {
+          svc.RegisterDestination(
+            new FloodFilter(new CSVFileDestination(TNAME) {Path = TEST_DIR, FileName = FNAME })
+            {
+              IntervalSec = 10,
+              MaxCount = 1000,
+              MaxTextLength = 1024
+            }
+          );
+
+          svc.Start();
+
+          for (var i=0; i < 100000; i++)
+            svc.Write(new Message{Text = i.ToString() +" message"});
+
+          svc.WaitForCompleteStop();
+
+          Aver.IsTrue(File.Exists(fname));
+          Aver.AreEqual(1, File.ReadAllLines(fname).Length);
+          Aver.IsTrue(new FileInfo(fname).Length < 1500);
+        }
+        finally
+        {
+          File.Delete(fname);
+        }
+      }
+
+      [Test]
+      public void CSVDestinationFilenameDefaultTest()
+      {
+        var TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".csv";
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(fname)))
+        {
+          svc.RegisterDestination(
+            new CSVFileDestination(TNAME) { Path = TEST_DIR, FileName = FNAME });
+          svc.Start();
+
+          Aver.IsTrue(File.Exists(fname));
+
+          svc.WaitForCompleteStop();
+        }
+      }
+
+      [Test]
+      public void CSVDestinationFilenameConfigTest()
+      {
+        DateTime now = App.LocalizedTime;
+
+        var TNAME = "TestDest" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = "{0}-{1:yyyyMMdd}{2}".Args(TNAME, now, ".csv");
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        var xml= @"<log>
                         <destination type='NFX.Log.Destinations.CSVFileDestination, NFX'
-                                     name='{0}'
-                                     filename='$(@~path)$(::now fmt=yyyyMMdd value={1})-$($name).csv.log'
-                                     create-dir='true'
-                        />
-                 </log>".Args(TNAME, DATE);
+                          name='{0}' path='{1}' file-name='{2}'/>
+                    </log>".Args(TNAME, TEST_DIR, FNAME);
 
-         var svc = new LSVC(null);
-
-         var fname = Path.Combine(TEST_DIR, DATE + "-" + FNAME);
-
-         if (File.Exists(fname)) File.Delete(fname);  
-
-         using (Scope.OnExit(() => File.Delete(fname)))
-         {
-           var cfg = XMLConfiguration.CreateFromXML(xml);
-           cfg.EnvironmentVarResolver = new Vars { { "path", TEST_DIR } };
-           svc.Configure(cfg.Root);
-
-           svc.Start();
-
-               svc.Write(new Message{Text = "1 message"});
-               svc.Write(new Message{Text = "2 message"});
-               svc.Write(new Message{Text = "3 message"});
-
-
-           svc.WaitForCompleteStop();
-
-           Assert.IsTrue(File.Exists(fname));
-           Assert.AreEqual(3, File.ReadAllLines(fname).Length);
-         }
-        }
-
-        [Test]
-        public void CSVFileDestinationStartByConfig2()
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(fname)))
         {
-         string TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
-         string FNAME = TNAME + ".csv.log";
-         var xml= @"<log>
-                        <destination  type='NFX.Log.Destinations.CSVFileDestination, NFX'
-                                      name='{0}' path='{1}' create-dir='true' name-time-format=''
-                        />
-                 </log>".Args(TNAME, TEST_DIR);
+          svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
+          svc.Start();
 
-         var svc = new LSVC(null);
+          Aver.IsTrue(File.Exists(fname));
 
-         var fname = Path.Combine(TEST_DIR, FNAME);
-
-         if (File.Exists(fname)) File.Delete(fname);  
-
-         using (Scope.OnExit(() => File.Delete(fname)))
-         {
-           svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
-
-           svc.Start();
-
-
-           svc.Start();
-
-               svc.Write(new Message{Text = "1 message"});
-               svc.Write(new Message{Text = "2 message"});
-               svc.Write(new Message{Text = "3 message"});
-
-
-           svc.WaitForCompleteStop();
-
-           Assert.AreEqual(true, File.Exists(fname));
-           Assert.AreEqual(3, File.ReadAllLines(fname).Length);
-         }
+          svc.WaitForCompleteStop();
         }
+      }
 
-        [Test]
-        public void CSVFileDestinationStartByLaConfig()
+      [Test]
+      public void DebugDestinationFilenameDefaultTest()
+      {
+        var TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = Path.Combine(TEST_DIR, TNAME + ".log");
+
+        IOMiscUtils.EnsureFileEventuallyDeleted(FNAME);
+
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(FNAME)))
         {
-          string TNAME = "UnitTest-" + MethodInfo.GetCurrentMethod().Name;
-          string FNAME = TNAME + ".csv.log";
-          const string DATE = "20131012";
+          svc.RegisterDestination(new DebugDestination(TNAME) { FileName = FNAME });
+          svc.Start();
 
-          var laStr = @"log 
-                        {{ 
-                          destination 
-                          {{ 
-                            type='NFX.Log.Destinations.CSVFileDestination, NFX' 
-                            name='{0}'
-                            filename='$(@~path)$(::now fmt=yyyyMMdd value={1})-$($name).csv.log'
-                          }} 
-                        }}".Args(TNAME, DATE);
+          Aver.IsTrue(File.Exists(FNAME));
 
-          var cnf = LaconicConfiguration.CreateFromString(laStr);
-          cnf.EnvironmentVarResolver = new Vars() { { "path", TEST_DIR}};
+          svc.WaitForCompleteStop();
+        }
+      }
 
-          string fname = Path.Combine(TEST_DIR, DATE + "-" + FNAME);
-          IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+      [Test]
+      public void FileDestinationFilenameConfigTest()
+      {
+        DateTime now = App.LocalizedTime;
 
-          var logService = new LSVC(null);
+        var TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = "{0:yyyyMMdd}-{1}.log".Args(now, TNAME);
 
-          using (Scope.OnExit(() => File.Delete(fname)))
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        var xml= @"<log>
+                     <destination type='NFX.Log.Destinations.DebugDestination, NFX'
+                                  name='{0}'
+                                  path='{1}'
+                                  filename='{2}'/>
+                   </log>".Args(TNAME, TEST_DIR, FNAME);
+
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(fname)))
+        {
+          svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
+          svc.Start();
+
+          Aver.IsTrue(File.Exists(fname));
+
+          svc.WaitForCompleteStop();
+        }
+      }
+
+      [Test]
+      public void CSVDestinationDefaultFilenameTest()
+      {
+        var FNAME = "{0:yyyyMMdd}.log.csv".Args(App.LocalizedTime);
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(fname);
+
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(fname)))
+        {
+          svc.RegisterDestination(
+            new CSVFileDestination() {Path = TEST_DIR});
+          svc.Start();
+
+          Aver.IsTrue(File.Exists(fname));
+
+          svc.WaitForCompleteStop();
+        }
+      }
+
+      [Test]
+      public void DebugDestinationWriteTest()
+      {
+        var TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = TNAME + ".log";
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(FNAME);
+
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(fname)))
+        {
+          svc.RegisterDestination(
+            new DebugDestination(TNAME) { FileName = FNAME, Path = TEST_DIR });
+          svc.Start();
+
+          DateTime now = new DateTime(2013, 1, 2, 3, 4, 5);
+
+          for (var i=0; i < 10; i++)
+            svc.Write(new Message { Text = i.ToString(), TimeStamp = now });
+
+          svc.WaitForCompleteStop();
+
+          Aver.IsTrue(File.Exists(fname));
+          string[] lines = File.ReadAllLines(fname);
+
+          Aver.AreEqual(10, lines.Length);
+          lines.Select((s, i) =>
           {
-            logService.Configure(cnf.Root);
-
-            logService.Start();
-
-            logService.Write(new Message() { Text = "Msg 1"});
-            logService.Write(new Message() { Text = "Msg 2" });
-            logService.Write(new Message() { Text = "Msg 3" });
-
-            logService.WaitForCompleteStop();
-
-            Assert.IsTrue(File.Exists(fname));
-            Assert.AreEqual(3, File.ReadAllLines(fname).Length);
-          }
+            Aver.AreEqual(
+              "20130102-030405.000000|   {0}||Debug|{1}||0|".Args(Thread.CurrentThread.ManagedThreadId, i),
+              s);
+            return 0;
+          });
         }
+      }
 
-        [Test]
-        public void FloodFilter()
+      [Test]
+      public void LogLevelsTest()
+      {
+        DateTime now  = App.LocalizedTime;
+        DateTime time = new DateTime(now.Year, now.Month, now.Day, 3, 4, 5);
+
+        var TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
+        var FNAME = "{0:yyyyMMdd}-{1}.log".Args(now, TNAME);
+
+        var fname = Path.Combine(TEST_DIR, FNAME);
+        IOMiscUtils.EnsureFileEventuallyDeleted(FNAME);
+
+        var xml= @"<log>
+                        <destination type='NFX.Log.Destinations.DebugDestination, NFX'
+                            name='{0}' path='{1}' file-name='{2}'
+                            levels='DebugB-DebugC,InfoB-InfoD,Warning,Emergency'/>
+                    </log>".Args(TNAME, TEST_DIR, FNAME);
+
+        using (var svc = new TSLS())
+        using (Scope.OnExit(() => File.Delete(fname)))
         {
-         string TNAME = "UnitTest-" + MethodBase.GetCurrentMethod().Name;
-         string FNAME = TNAME + ".csv.log";
-         var svc = new LSVC(null);
+          svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
+          svc.Start();
 
-         var fname = Path.Combine(TEST_DIR, FNAME);
+          Aver.IsTrue(File.Exists(fname));
 
-         if (File.Exists(fname)) File.Delete(fname);  
+          Array mts = Enum.GetValues(typeof(MessageType));
 
-         try
-         {
-           svc.RegisterDestination(
-               new FloodFilter(new CSVFileDestination(TNAME, TEST_DIR){ CreateDir = true })
-                   { 
-                       Interval = TimeSpan.FromSeconds(10),
-                       MaxCount = 1000,
-                       MaxTextLength = 1024
-                   }
-           );
-  
-           svc.Start();
-  
-               for (var i=0; i < 100000; i++)
-                 svc.Write(new Message{Text = i.ToString() +" message"});
-  
-  
-           svc.WaitForCompleteStop();
-  
-           Assert.AreEqual(true, File.Exists(fname));
-           Assert.AreEqual(1, File.ReadAllLines(fname).Length);
-           Assert.IsTrue( new FileInfo(fname).Length < 1500);
-         }
-         finally
-         {
-           File.Delete(fname);
-         }
+          foreach (var mt in mts)
+            svc.Write(new Message
+                      {
+                        Type = (MessageType)mt,
+                        Text = ((int)mt).ToString(),
+                        TimeStamp = now
+                      });
+
+          svc.WaitForCompleteStop();
+
+          string[] lines = File.ReadAllLines(fname);
+
+          Aver.AreEqual(7, lines.Length);
+
+          lines.Select((s,i) =>
+          {
+            var sa = s.Split('|');
+            MessageType mt;
+
+            Aver.IsTrue(Enum.TryParse(sa[3], out mt));
+            Aver.AreEqual(
+              "{0:yyyyMMdd}-030405.000000|   {1}||Debug|{2}||0|".Args(now, Thread.CurrentThread.ManagedThreadId, (int)mt),
+              s);
+            return 0;
+          });
         }
 
-        [Test]
-        public void CSVDestinationFilenameDefaultTest()
-        {
-            string TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
-            string FNAME = Path.Combine(TEST_DIR, TNAME + CSVFileDestination.DEFAULT_EXTENSION);
+        Aver.IsTrue(
+          (new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.DebugA, MessageType.DebugZ) }).SequenceEqual(
+            Destination.ParseLevels("DebugA-DebugZ")));
 
-            File.Delete(FNAME);
+        Aver.IsTrue(
+          (new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Debug, MessageType.Info) }).SequenceEqual(
+            Destination.ParseLevels("-Info")));
 
-            //var log = new TestMemoryLog();
-            //using (var app = new TestApplication { Log = log })
-            using (var svc = new TSLS())
-            using (Scope.OnExit(() => File.Delete(FNAME)))
-            {
-                svc.RegisterDestination(new CSVFileDestination(TNAME, TEST_DIR));
-                svc.Start();
+        Aver.IsTrue(
+          (new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.CatastrophicError) }).SequenceEqual(
+            Destination.ParseLevels("Info-")));
 
-                Assert.IsTrue(File.Exists(FNAME));
+        Aver.IsTrue(
+          (new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Trace, MessageType.TraceZ),
+                                        new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.CatastrophicError) }).SequenceEqual(
+            Destination.ParseLevels("Trace - TraceZ, Info-")));
 
-                svc.WaitForCompleteStop();
-            }
-        }
+        Aver.IsTrue(
+          (new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Trace, MessageType.Trace),
+                                        new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.Info),
+                                        new Tuple<MessageType, MessageType>(MessageType.Warning, MessageType.Warning) }).SequenceEqual(
+            Destination.ParseLevels("Trace | Info | Warning")));
 
-        [Test]
-        public void CSVDestinationFilenameConfigTest()
-        {
-            DateTime now = App.LocalizedTime;
-
-            string TNAME = "TestDest" + MethodBase.GetCurrentMethod().Name;
-            string FNAME = Path.Combine(TEST_DIR, "{0}-{1:yyyyMMdd}{2}".Args(TNAME, now, CSVFileDestination.DEFAULT_EXTENSION));
-
-            File.Delete(FNAME);
-
-            var xml= @"<log>
-                            <destination type='NFX.Log.Destinations.CSVFileDestination, NFX'
-                             name='{0}' path='{1}' create-dir='true' name-time-format='yyyyMMdd'/>
-                       </log>".Args(TNAME, TEST_DIR);
-
-            //var log = new TestMemoryLog();
-            //using (var app = new TestApplication { Log = log })
-            using (var svc = new TSLS())
-            using (Scope.OnExit(() => File.Delete(FNAME)))
-            {
-                svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
-                svc.Start();
-
-                Assert.IsTrue(File.Exists(FNAME));
-
-                svc.WaitForCompleteStop();
-            }
-        }
-
-        [Test]
-        public void DebugDestinationFilenameDefaultTest()
-        {
-            string TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
-            string FNAME = Path.Combine(TEST_DIR, TNAME + ".log");
-
-            File.Delete(FNAME);
-
-            //var log = new TestMemoryLog();
-            //using (var app = new TestApplication { Log = log })
-            using (var svc = new TSLS())
-            using (Scope.OnExit(() => File.Delete(FNAME)))
-            {
-                svc.RegisterDestination(new DebugDestination(TNAME, FNAME));
-                svc.Start();
-
-                Assert.IsTrue(File.Exists(FNAME));
-
-                svc.WaitForCompleteStop();
-            }
-        }
-
-        [Test]
-        public void FileDestinationFilenameConfigTest()
-        {
-            DateTime now = App.LocalizedTime;
-
-            string TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
-            string FNAME = Path.Combine(TEST_DIR, "{0:yyyyMMdd}-{1}.log".Args(now, TNAME));
-
-            File.Delete(FNAME);
-
-            var xml= @"<log>
-                            <destination type='NFX.Log.Destinations.DebugDestination, NFX' name='{0}' path='{1}'/>
-                       </log>".Args(TNAME, TEST_DIR);
-
-            //var log = new TestMemoryLog();
-            //using (var app = new TestApplication { Log = log })
-            using (var svc = new TSLS())
-            using (Scope.OnExit(() => File.Delete(FNAME)))
-            {
-                svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
-                svc.Start();
-
-                Assert.IsTrue(File.Exists(FNAME));
-
-                svc.WaitForCompleteStop();
-            }
-        }
-
-        [Test]
-        public void DebugDestinationWriteTest()
-        {
-            string TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
-            string FNAME = Path.Combine(TEST_DIR, TNAME + ".log");
-
-            File.Delete(FNAME);
-
-            //var log = new TestMemoryLog();
-            //using (var app = new TestApplication { Log = log })
-            using (var svc = new TSLS())
-            using (Scope.OnExit(() => File.Delete(FNAME)))
-            {
-                svc.RegisterDestination(new DebugDestination(TNAME, TNAME + ".log", TEST_DIR));
-                svc.Start();
-
-                DateTime now = new DateTime(2013, 1, 2, 3, 4, 5);
-
-                for (var i=0; i < 10; i++)
-                    svc.Write(new Message { Text = i.ToString(), TimeStamp = now });
-
-                svc.WaitForCompleteStop();
-
-                string[] lines = File.ReadAllLines(FNAME);
-
-                Assert.AreEqual(10, lines.Length);
-                lines.Select((s, i) =>
-                {
-                    Assert.AreEqual(
-                        "20130102-030405.000000|   {0}||Debug|{1}||0|".Args(Thread.CurrentThread.ManagedThreadId, i),
-                        s);
-                    return 0;
-                });
-            }
-        }
-
-        [Test]
-        public void LogLevelsTest()
-        {
-            DateTime now  = App.LocalizedTime;
-            DateTime time = new DateTime(now.Year, now.Month, now.Day, 3,4,5);
-
-            string TNAME = "TestDest-" + MethodBase.GetCurrentMethod().Name;
-            string FNAME = Path.Combine(TEST_DIR, "{0:yyyyMMdd}-{1}.log".Args(now, TNAME));
-
-            File.Delete(FNAME);
-
-            var xml= @"<log>
-                            <destination type='NFX.Log.Destinations.DebugDestination, NFX'
-                                name='{0}' path='{1}'
-                                levels='DebugB-DebugC,InfoB-InfoD,Warning,Emergency'/>
-                       </log>".Args(TNAME, TEST_DIR);
-
-            //var log = new TestMemoryLog();
-            //using (var app = new TestApplication { Log = log })
-            using (var svc = new TSLS())
-            using (Scope.OnExit(() => File.Delete(FNAME)))
-            {
-                svc.Configure(XMLConfiguration.CreateFromXML(xml).Root);
-                svc.Start();
-
-                Assert.IsTrue(File.Exists(FNAME));
-
-                Array mts = Enum.GetValues(typeof(MessageType));
-
-                foreach (var mt in mts)
-                    svc.Write(new Message { Type = (MessageType)mt, Text = ((int)mt).ToString(), TimeStamp = now });
-
-                svc.WaitForCompleteStop();
-
-                string[] lines = File.ReadAllLines(FNAME);
-
-                Assert.AreEqual(7, lines.Length);
-
-                lines.Select((s,i) =>
-                {
-                    var sa = s.Split('|');
-                    MessageType mt;
-                    
-                    Assert.IsTrue(Enum.TryParse(sa[3], out mt));
-                    Assert.AreEqual(
-                        "{0:yyyyMMdd}-030405.000000|   {1}||Debug|{2}||0|".Args(now, Thread.CurrentThread.ManagedThreadId, (int)mt),
-                        s);
-                    return 0;
-                });
-            }
-
-            Assert.AreEqual(
-                new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.DebugA, MessageType.DebugZ) },
-                Destination.ParseLevels("DebugA-DebugZ"));
-
-            Assert.AreEqual(
-                new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Debug, MessageType.Info) },
-                Destination.ParseLevels("-Info"));
-
-            Assert.AreEqual(
-                new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.CatastrophicError) },
-                Destination.ParseLevels("Info-"));
-
-            Assert.AreEqual(
-                new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Trace, MessageType.TraceZ),
-                                             new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.CatastrophicError) },
-                Destination.ParseLevels("Trace - TraceZ, Info-"));
-
-            Assert.AreEqual(
-                new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Trace, MessageType.Trace),
-                                             new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.Info),
-                                             new Tuple<MessageType, MessageType>(MessageType.Warning, MessageType.Warning) },
-                Destination.ParseLevels("Trace | Info | Warning"));
-
-            Assert.AreEqual(
-                new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Trace, MessageType.Trace),
-                                             new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.Info) },
-                Destination.ParseLevels("Trace; Info"));
-        }
-
-
-
+        Aver.IsTrue(
+          (new Destination.LevelsList { new Tuple<MessageType, MessageType>(MessageType.Trace, MessageType.Trace),
+                                         new Tuple<MessageType, MessageType>(MessageType.Info, MessageType.Info) }).SequenceEqual(
+            Destination.ParseLevels("Trace; Info")));
+      }
     }
 }

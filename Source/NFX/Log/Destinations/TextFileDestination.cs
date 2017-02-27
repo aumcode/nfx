@@ -29,80 +29,46 @@ using System.IO;
 
 namespace NFX.Log.Destinations
 {
-    /// <summary>
-    /// Provides a file storage destination implementation
-    /// </summary>
-    public abstract class TextFileDestination : FileDestination
+  /// <summary>
+  /// Provides a file storage destination implementation
+  /// </summary>
+  public abstract class TextFileDestination : FileDestination
+  {
+
+    protected TextFileDestination(string name) : base(name) { }
+
+
+    private StreamWriter m_Writer;
+
+    protected override void DoOpenStream()
     {
-        #region .ctor
-
-            /// <summary>
-            /// Creates a new instance of destination
-            /// </summary>
-            public TextFileDestination(string name = null) : base(name) { }
-
-            /// <summary>
-            /// Creates a new instance of destination
-            /// </summary>
-            public TextFileDestination(string name, string filename, string path = null)
-                : base(name, filename, path)
-            {}
-
-        #endregion
-
-
-        #region Pvt Fields
-
-            private StreamWriter m_Writer;
-
-        #endregion
-
-        #region Public
-
-            protected override void DoOnOpenStream()
-            {
-                m_Writer = new StreamWriter(Stream);
-            }
-
-            protected override void DoOnCloseStream()
-            {
-                if (m_Writer != null)
-                {
-                    m_Writer.Flush();
-                    m_Writer.Close();
-                    m_Writer.Dispose();
-                    m_Writer = null;
-                }
-            }
-
-        #endregion
-
-
-        #region Protected
-
-            protected override void DoConfigure(IConfigSectionNode node)
-            {
-                base.DoConfigure(node);
-                ConfigAttribute.Apply(this, node);
-            }
-
-            /// <summary>
-            /// Warning: don't override this method in derived destinations, use
-            /// DoFormatMessage() instead!
-            /// </summary>
-            protected override void DoWriteMessage(Message msg)
-            {
-                m_Writer.WriteLine(DoFormatMessage(msg));
-                m_Writer.Flush();
-            }
-
-            /// <summary>
-            /// Called when message is to be written to stream
-            /// </summary>
-            protected abstract string DoFormatMessage(Message msg);
-
-        #endregion
-
-
+      m_Writer = new StreamWriter(m_Stream);
     }
+
+    protected override void DoCloseStream()
+    {
+      DisposableObject.DisposeAndNull(ref m_Writer);
+    }
+
+    /// <summary>
+    /// Warning: don't override this method in derived destinations, use
+    /// DoFormatMessage() instead!
+    /// </summary>
+    protected override void DoWriteMessage(Message msg)
+    {
+      var txtMsg = DoFormatMessage(msg);
+      m_Writer.WriteLine( txtMsg );
+    }
+
+    protected internal override void DoPulse()
+    {
+      base.DoPulse();
+      m_Writer.Flush();
+    }
+
+    /// <summary>
+    /// Called when message is to be written to stream
+    /// </summary>
+    protected abstract string DoFormatMessage(Message msg);
+  }
 }

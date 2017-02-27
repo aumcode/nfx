@@ -304,6 +304,12 @@
     <Compile Include="Security\DefaultPasswordManager.cs" />
     <Compile Include="Security\PasswordRepresentation.cs" />
     <Compile Include="Security\SecureBuffer.cs" />
+    <Compile Include="Serialization\Arow\ArowAttribute.cs" />
+    <Compile Include="Serialization\Arow\ArowSerializer.cs" />
+    <Compile Include="Serialization\Arow\CodeGenerator.cs" />
+    <Compile Include="Serialization\Arow\Reader.cs" />
+    <Compile Include="Serialization\Arow\Exceptions.cs" />
+    <Compile Include="Serialization\Arow\Writer.cs" />
     <Compile Include="Serialization\CSV\CSVParser.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
@@ -557,6 +563,7 @@
     <Compile Include="Serialization\POD\MetaTypes.cs" />
     <Compile Include="Serialization\POD\PortableObjectDocument.cs" />
     <Compile Include="Serialization\CSV\CSVWriter.cs" />
+    <Compile Include="Serialization\Arow\DataTypes.cs" />
     <Compile Include="Serialization\SerializationUtils.cs" />
     <Compile Include="Serialization\Slim\Arrays.cs" />
     <Compile Include="Serialization\Slim\Attributes.cs" />

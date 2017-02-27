@@ -38,22 +38,22 @@
 
       <destination  type="$(/$log-csv)"
            name="$(/$log-name)"
-           filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
-           create-dir="true"
-
+           path="$(/$log-root)"
+           file-name="{0:yyyyMMdd}-$($name).csv.log"
         />
 
       <destination  type="$(/$log-csv)"
            name="$(/$log-name)-perf"
-           filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
-           create-dir="true"
+           path="$(/$log-root)"
+           file-name="{0:yyyyMMdd}-$($name).csv.log"
            min-level="PerformanceInstrumentation"
            max-level="PerformanceInstrumentation"
         />
 
       <destination type="$(/$log-debug)"
            name="$(/$log-name)-debug"
-           filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
+           path="$(/$log-root)"
+           file-name="{0:yyyyMMdd}-$($name).dbg.log"
            max-level="Trace"
         />
 
@@ -125,7 +125,7 @@
     />
 
     <destination type="NFX.Log.Destinations.FloodFilter, NFX"
-                 interval="0:0:10"
+                 interval-sec="10"
                  max-count="10"
                  max-text-length="128000"
                  name="destFailures"

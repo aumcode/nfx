@@ -373,7 +373,19 @@ namespace NFX.Web.Pay.Braintree
     {
       if (description.IsNullOrWhiteSpace()) return null;
       if (issuerName.IsNullOrWhiteSpace()) issuerName = "NFX";
-      return issuerName.TakeFirstChars(3).PadRight(3, 'A') + "*" + description.TakeFirstChars(18, "...");
+
+      var sb = new StringBuilder();
+      foreach (var ch in description)
+      {
+        if ( (ch >= '0' && ch <= '9')
+          || (ch >= 'A' && ch <= 'Z')
+          || (ch >= 'a' && ch <= 'z')
+          || ch == ' ' || ch == '.'
+          || ch == '-' || ch == '+')
+          sb.Append(ch);
+      }
+
+      return issuerName.TakeFirstChars(3).PadRight(3, ' ') + "*" + sb.ToString().TakeFirstChars(18, "...");
     }
 
     private XDocument getResponse(BraintreeSession session, Uri uri, XDocument body = null, HTTPRequestMethod method = HTTPRequestMethod.POST)

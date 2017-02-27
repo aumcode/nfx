@@ -29,14 +29,14 @@ namespace ConsoleTest
 {
     static class ConsoleLog
     {
-      
+
       public static void Run()
       {
         var svc = new LogService(null);
         var dest = new ConsoleDestination("konzol");
         dest.Colored = true;
 
-        var filter = new FloodFilter(dest) { Interval = TimeSpan.FromSeconds(3d) };
+        var filter = new FloodFilter(dest) { IntervalSec = 3 };
 
         //filter.MinLevel = MessageType.Error;
         //filter.MaxLevel = MessageType.Info;
@@ -47,12 +47,12 @@ namespace ConsoleTest
 
 
         svc.Write(new Message{ Type = MessageType.Info, Text = "This is info", From = "Tukhis" });
-        
+
      System.Threading.Thread.Sleep(4000);
-       
+
         svc.Write(new Message{ Type = MessageType.Warning, Text = "Warning text goes here", From = "Beitzhen" });
-     
-     System.Threading.Thread.Sleep(3500);   
+
+     System.Threading.Thread.Sleep(3500);
         svc.Write(new Message{ Type = MessageType.Error, Text = "This is error line", From = "Moisha" });
 
         for(var i=0; i<1000000; i++)

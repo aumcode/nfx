@@ -1172,6 +1172,147 @@ namespace NFX.NUnit.IO
         }
 
 
+        [TestCase]
+        public void IntArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new int[]{1, 280, 4564};
+            var arr2 = new int[]{};
+            int[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadIntArray();
+            var r2 = r.ReadIntArray();
+            var r3 = r.ReadIntArray();
+
+            Aver.AreEqual(1, r1[0]);
+            Aver.AreEqual(4564, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+        [TestCase]
+        public void FloatArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new float[]{1f, 280f, 4564.34f};
+            var arr2 = new float[]{};
+            float[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadFloatArray();
+            var r2 = r.ReadFloatArray();
+            var r3 = r.ReadFloatArray();
+
+            Aver.AreEqual(1f, r1[0]);
+            Aver.AreEqual(4564.34f, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+        [TestCase]
+        public void DoubleArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new double[]{1d, 280d, 4564.34d};
+            var arr2 = new double[]{};
+            float[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadDoubleArray();
+            var r2 = r.ReadDoubleArray();
+            var r3 = r.ReadDoubleArray();
+
+            Aver.AreEqual(1d, r1[0]);
+            Aver.AreEqual(4564.34d, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+        [TestCase]
+        public void DecimalArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new decimal[]{1m, 280m, 4564.34m};
+            var arr2 = new decimal[]{};
+            float[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadDecimalArray();
+            var r2 = r.ReadDecimalArray();
+            var r3 = r.ReadDecimalArray();
+
+            Aver.AreEqual(1m, r1[0]);
+            Aver.AreEqual(4564.34m, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+
                     [TestCase]
                     public void TypeSpec()
                     {
@@ -1439,6 +1580,51 @@ namespace NFX.NUnit.IO
                         Assert.AreEqual("Chuck", mapI2["c"]);
                     }
                 }
+
+
+        [TestCase]
+        public void Amount()
+        {
+            using(var ms = new MemoryStream())
+            {
+                var r = SlimFormat.Instance.MakeReadingStreamer();
+                var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                r.BindStream(ms);
+                w.BindStream(ms);
+
+                var a1 = new NFX.Financial.Amount("usd", 23672209.243m);
+
+                w.Write(a1);
+
+                ms.Seek(0, SeekOrigin.Begin);
+
+                Aver.AreEqual(a1, r.ReadAmount());
+            }
+        }
+
+        [TestCase]
+        public void NullableAmount()
+        {
+            using(var ms = new MemoryStream())
+            {
+                var r = SlimFormat.Instance.MakeReadingStreamer();
+                var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                r.BindStream(ms);
+                w.BindStream(ms);
+
+                var a1 = new NFX.Financial.Amount("usd", 23672209.243m);
+
+                w.Write((NFX.Financial.Amount?)null);
+                w.Write((NFX.Financial.Amount?)a1);
+
+                ms.Seek(0, SeekOrigin.Begin);
+
+                Aver.IsFalse( r.ReadNullableAmount().HasValue );
+                Aver.AreEqual(a1, r.ReadNullableAmount());
+            }
+        }
 
     }
 }

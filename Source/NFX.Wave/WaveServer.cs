@@ -799,7 +799,7 @@ namespace NFX.Wave
         i.Record( new Instrumentation.GeoLookup                          (Name, m_stat_GeoLookup                          ));
         i.Record( new Instrumentation.GeoLookupHit                       (Name, m_stat_GeoLookupHit                       ));
 
-        foreach(var kvp in m_stat_PortalRequest.AllLongs)
+        foreach(var kvp in m_stat_PortalRequest.SnapshotAllLongs(0))
             i.Record( new Instrumentation.ServerPortalRequest(Name+"."+kvp.Key, kvp.Value) );
 
         var sample = (int)m_stat_WorkContextBufferedResponseBytes;

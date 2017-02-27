@@ -1,0 +1,21 @@
+﻿<push>
+<f color=magenta>
+ Usage:
+<f color=white>
+   arow <f color=green>assembly<f color=yellow> out-path <f color=darkCyan>[/h | /? | /help]
+              [/c | /code  FilePerNamespace|FilePerType|AllInOne]
+
+ <f color=green>assembly<f color=gray> - source assembly file (with path)
+ <f color=yellow>out-path<f color=gray> - directory path where to create files  - must exist
+
+<f color=magenta>
+ Options:
+
+ <f color=darkCyan>/c | /code<f color=gray> - how to organize gen code in files
+
+<f color=magenta>
+ Examples:
+
+<f color=yellow>
+  arow "mytypes.dll" "..\source\ArowSer\"
+<pop>

@@ -66,20 +66,46 @@ namespace NFX.Collections
       }
 
       /// <summary>
-      /// Enumerates all named integers. This operation is thread-safe, and returns a snapshot of the instance taken at the time of the first call
+      /// Enumerates all named integers. This operation is thread-safe, and returns a snapshot of the instance taken at the time of the first call.
+      /// If exchange is specified, atomicaly flips the value of every slot
       /// </summary>
-      public IEnumerable<KeyValuePair<string, long>> AllLongs
+      public IEnumerable<KeyValuePair<string, long>> SnapshotAllLongs(long? exchange = null)
       {
-        get { return m_Data.Select(s => new KeyValuePair<string, long>(s.Name, s.Long)); }
+        if (exchange.HasValue)
+          return m_Data.Select(s => new KeyValuePair<string, long>(s.Name, Interlocked.Exchange(ref s.Long, exchange.Value)));
+
+        return m_Data.Select(s => new KeyValuePair<string, long>(s.Name, s.Long));
       }
 
       /// <summary>
-      /// Enumerates all named integers. This operation is thread-safe, and returns a snapshot of the instance taken at the time of the first call
+      /// Enumerates all named amounts. This operation is thread-safe, and returns a snapshot of the instance taken at the time of the first call
+      /// If exchange is specified, atomicaly flips the value of every slot
       /// </summary>
-      public IEnumerable<KeyValuePair<string, Amount>> AllAmounts
+      public IEnumerable<KeyValuePair<string, Amount>> SnapshotAllAmounts(decimal? exchange = null)
       {
-        get { return m_Data.Select(s => new KeyValuePair<string, Amount>(s.Name, new Amount(s.Name, convertLongToDecimal(s.Long)))); }
+        if (exchange.HasValue)
+        {
+          var xchg = convertDecimalToLong(exchange.Value);
+          return m_Data.Select(s => new KeyValuePair<string, Amount>(s.Name,  new Amount(s.Name, convertLongToDecimal(Interlocked.Exchange(ref s.Long, xchg)))) );
+        }
+
+        return m_Data.Select(s => new KeyValuePair<string, Amount>(s.Name, new Amount(s.Name, convertLongToDecimal(s.Long))));
       }
+
+      /// <summary>
+      /// Records a snapshot of all longs converted into TDatum. The TDatum must have a public .ctor(string, long) or runtime exception is thrown
+      /// (this is because C# does not have a contract/constraint for parameterized cosntructors)
+      /// </summary>
+      public void SnapshotAllLongsInto<TDatum>(long? exchange = null, Instrumentation.IInstrumentation instrumentation = null) where TDatum : Instrumentation.Datum
+      {
+        if (instrumentation==null) instrumentation = App.Instrumentation;
+        foreach(var slot in SnapshotAllLongs(exchange))
+        {
+          var datum = (Instrumentation.Datum)Activator.CreateInstance(typeof(TDatum), slot.Key, slot.Value);
+          instrumentation.Record( datum );
+        }
+      }
+
 
       /// <summary>
       /// Deletes all state for all slots
@@ -131,12 +157,16 @@ namespace NFX.Collections
         return new Amount(arg.CurrencyISO, Interlocked.Add(ref slot.Long, convertDecimalToLong(arg.Value)));
       }
 
-      public void Add(NamedInterlocked source, bool clearSource = false)
+      /// <summary>
+      /// Adds slot snapshot from another source.
+      /// Pass exchange to flip the existing slots to the exchanged value
+      /// </summary>
+      public void Add(NamedInterlocked source, long? exchangeSource = null)
       {
         if (source == null) return;
-        var longs = source.AllLongs;
-        if (clearSource) source.Clear();
-        foreach (var item in source.AllLongs) AddLong(item.Key, item.Value);
+        var longs = source.SnapshotAllLongs(exchangeSource);
+        foreach (var item in longs)
+          AddLong(item.Key, item.Value);
       }
 
       /// <summary>

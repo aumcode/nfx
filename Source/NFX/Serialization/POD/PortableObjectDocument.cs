@@ -297,8 +297,5 @@ namespace NFX.Serialization.POD
 
 
         #endregion
-
-
-
     }
 }

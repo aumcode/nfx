@@ -178,6 +178,40 @@ namespace NFX.IO
               this.Write(value[i]);
           }
 
+          public override void Write(float[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_FLOAT_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "floats", SlimFormat.MAX_FLOAT_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]);
+          }
+
+          public override void Write(decimal[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_DECIMAL_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "decimals", SlimFormat.MAX_DECIMAL_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]);
+          }
+
 
           public override void Write(char ch)
           {
@@ -783,6 +817,23 @@ namespace NFX.IO
           }
 
               public override void Write(NLSMap? value)
+              {
+                if (value.HasValue)
+                {
+                  this.Write(true);
+                  Write(value.Value);
+                  return;
+                }
+                this.Write(false);
+              }
+
+          public override void Write(Financial.Amount value)
+          {
+            this.Write(value.CurrencyISO);
+            this.Write(value.Value);
+          }
+
+              public override void Write(Financial.Amount? value)
               {
                 if (value.HasValue)
                 {

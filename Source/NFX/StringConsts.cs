@@ -64,6 +64,10 @@ namespace NFX
         public const string LOGSVC_DESTINATION_EXCEEDS_MAX_PROCESSING_TIME_ERROR =
             "Destination '{0}' exceeded allowed max processing time. Allowed {1} ms, took {2} ms";
 
+        public const string LOGSVC_FILE_DESTINATION_FILENAME_ERROR =
+            "Destination '{0}'.'file-name' pattern '{1}' is incorrect: {2}";
+
+
         public const string LOGSVC_DESTINATION_IS_OFFLINE_ERROR =
             "Destination '{0}' is offline due to prior failure and RestartProcessingAfterMs timespan has not expired yet";
 
@@ -1130,5 +1134,15 @@ namespace NFX
 
     public const string SEALED_STRING_OUT_OF_SPACE_ERROR =  "SealedString has allocated a maximum of {0} segments";
     public const string SEALED_STRING_TOO_BIG_ERROR =  "SealedString value of {0} bytes is too big";
+
+
+    public const string AROW_INVALID_FIELD_NAME_ERROR =  "Field name '{0}'is not suitable for Arow serialization as it is either too long or contains invalid chars. Max length is {2} ASCII chars";
+    public const string AROW_MEMBER_TYPE_NOT_SUPPORTED_ERROR =  "Members of type '{0}' are not supported";
+    public const string AROW_TYPE_NOT_SUPPORTED_ERROR =  "ArowSerializer does not have a ITypeSerializationCore registered for type '{0}'";
+    public const string AROW_GENERATOR_PATH_DOESNOT_EXIST_ERROR =  "Arow code generator: path '{0}' does not exist";
+
+    public const string AROW_HEADER_CORRUPT_ERROR =  "Arow header is corrupt";
+    public const string AROW_DESER_CORRUPT_ERROR =  "Arow deserialization is corrupt";
+    public const string AROW_MAX_ARRAY_LEN_ERROR =  "Array max length of {0} exceeded by Arow deserialization";
   }
 }
