@@ -43,6 +43,14 @@ namespace NFX.NUnit.Serialization
     [Field(backendName: "slr",  isArow: true)]public double Salary{ get;set;}
   }
 
+  [Arow]
+  public class SimplePersonWithEnumRow : SimplePersonRow
+  {
+    public enum MaritalStatus{Single, Married, Divorced, Alien}
+
+    [Field(backendName: "mar",   isArow: true)]public MaritalStatus Married{get; set;}
+  }
+
 
   [Arow]
   public class FamilyRow : TypedRow

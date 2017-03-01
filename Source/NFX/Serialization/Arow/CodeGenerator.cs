@@ -241,6 +241,9 @@ namespace NFX.Serialization.Arow
       string expr;
       if (!Writer.SER_TYPE_MAP.TryGetValue(t, out expr))
       {
+        if (t.IsEnum)
+         source.AppendLine("      Writer.Write(streamer, {0}, (int)row.{1});".Args(name, propertyName));
+        else
         if (typeof(TypedRow).IsAssignableFrom(t))
          source.AppendLine("      Writer.WriteRow(streamer, {0}, row.{1});".Args(name, propertyName));
         else
@@ -252,7 +255,8 @@ namespace NFX.Serialization.Arow
         else
         throw new ArowException(StringConsts.AROW_MEMBER_TYPE_NOT_SUPPORTED_ERROR.Args(t.Name));
 
-        source.AppendLine("      else AW.WriteNull(streamer, {0});".Args(name));
+        if (isNullable || !isValueType)
+          source.AppendLine("      else AW.WriteNull(streamer, {0});".Args(name));
         return;
       }
 
@@ -311,17 +315,28 @@ namespace NFX.Serialization.Arow
     {
       var t = fdef.Type;
       var isNullable = t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
+      var isValueType = t.IsValueType;
       var isArray = t.IsArray;
       var isList = t.IsGenericType && t.GetGenericTypeDefinition() == typeof(List<>);
       var prop = fdef.MemberInfo.Name;
+
+      var tcName = t.FullNameWithExpandedGenericArgs().Replace('+','.');
 
       //Specialized handling via dict
       string code;
       if (!Reader.DESER_TYPE_MAP.TryGetValue(t, out code))
       {
-        source.AppendLine("           if (dt==DataType.Null) {{ row.{0} = null; continue;}} ".Args(prop));
+        if (isNullable || !isValueType)
+          source.AppendLine("           if (dt==DataType.Null) {{ row.{0} = null; continue;}} ".Args(prop));
 
-        if (typeof(TypedRow).IsAssignableFrom(t))
+        if (t.IsEnum)
+        {
+          source.AppendLine("           if (dt!=DataType.Int32) break;");
+          source.AppendLine("           var ev = ({0})Reader.ReadInt32(streamer);".Args(tcName));
+          source.AppendLine("           row.{0} = ev;".Args(prop));
+          source.AppendLine("           continue;");
+          return;
+        } else if (typeof(TypedRow).IsAssignableFrom(t))
         {
           source.AppendLine("           if (dt!=DataType.Row) break;");
           source.AppendLine("           var vrow = new {0}();".Args(t.FullName));

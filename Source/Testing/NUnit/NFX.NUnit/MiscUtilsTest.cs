@@ -271,6 +271,36 @@ f
             Assert.AreEqual("@System.@DateTime", t.FullNameWithExpandedGenericArgs());
         }
 
+        internal class ClazzA
+        {
+          public struct StructB{}
+          public class ClB{}
+        }
+
+
+        [TestCase]
+        public void Type_FullNameWithExpandedGenericArgs5()
+        {
+            Aver.AreEqual("NFX.NUnit.MiscUtilsTest.ClazzA.StructB", typeof(ClazzA.StructB).FullNameWithExpandedGenericArgs(false));
+            Aver.AreEqual("@NFX.@NUnit.@MiscUtilsTest.@ClazzA.@StructB", typeof(ClazzA.StructB).FullNameWithExpandedGenericArgs(true));
+
+            Aver.AreEqual("NFX.NUnit.MiscUtilsTest.ClazzA.ClB", typeof(ClazzA.ClB).FullNameWithExpandedGenericArgs(false));
+            Aver.AreEqual("@NFX.@NUnit.@MiscUtilsTest.@ClazzA.@ClB", typeof(ClazzA.ClB).FullNameWithExpandedGenericArgs(true));
+        }
+
+        [TestCase]
+        public void Type_FullNestedTypeName()
+        {
+            Aver.AreEqual("MiscUtilsTest", typeof(MiscUtilsTest).FullNestedTypeName(false));
+            Aver.AreEqual("@MiscUtilsTest", typeof(MiscUtilsTest).FullNestedTypeName(true));
+            Aver.AreEqual("MiscUtilsTest.ClazzA", typeof(ClazzA).FullNestedTypeName(false));
+            Aver.AreEqual("@MiscUtilsTest.@ClazzA", typeof(ClazzA).FullNestedTypeName(true));
+            Aver.AreEqual("MiscUtilsTest.ClazzA.StructB", typeof(ClazzA.StructB).FullNestedTypeName(false));
+            Aver.AreEqual("@MiscUtilsTest.@ClazzA.@StructB", typeof(ClazzA.StructB).FullNestedTypeName(true));
+        }
+
+
+
 
         [TestCase]
         public void Type_DisplayNameWithExpandedGenericArgs1()

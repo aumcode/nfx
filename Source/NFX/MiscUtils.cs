@@ -255,6 +255,17 @@ namespace NFX
       return result;
     }
 
+
+    /// <summary>
+    /// Returns full name of the nested type, for example: System.Namespace.Type+Sub -> Type.Sub
+    /// </summary>
+    public static string FullNestedTypeName(this Type type, bool verbatimPrefix = true)
+    {
+      if (type.DeclaringType==null) return verbatimPrefix ? '@'+type.Name : type.Name;
+
+      return type.DeclaringType.FullNestedTypeName(verbatimPrefix) + '.' + (verbatimPrefix ? '@'+type.Name : type.Name);
+    }
+
     /// <summary>
     /// Returns the full name of the type optionally prefixed with verbatim id specifier '@'.
     /// The generic arguments ar expanded into their full names i.e.
@@ -275,7 +286,7 @@ namespace NFX
 
         if (gargs.Length==0)
         {
-         return verbatimPrefix ? "@{0}.@{1}".Args( ns, type.Name) : type.FullName;
+         return verbatimPrefix ? "@{0}.{1}".Args( ns, type.FullNestedTypeName(true)) : (type.Namespace+'.'+type.FullNestedTypeName(false));
         }
 
         var sb = new StringBuilder();
@@ -286,13 +297,13 @@ namespace NFX
             sb.Append( gargs[i].FullNameWithExpandedGenericArgs(verbatimPrefix) );
         }
 
-        var nm = type.Name;
+        var nm = type.FullNestedTypeName(verbatimPrefix);
         var idx = nm.IndexOf('`');
         if(idx>=0)
             nm = nm.Substring(0, idx);
 
 
-        return verbatimPrefix ? "@{0}.@{1}<{2}>".Args(ns, nm, sb.ToString()) :
+        return verbatimPrefix ? "@{0}.{1}<{2}>".Args(ns, nm, sb.ToString()) :
                                 "{0}.{1}<{2}>".Args(ns, nm, sb.ToString());
     }
 

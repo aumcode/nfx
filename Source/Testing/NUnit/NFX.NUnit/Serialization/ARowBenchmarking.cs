@@ -65,7 +65,7 @@ namespace NFX.NUnit.Serialization
 
 
       [Test]
-      public void Benchmark_SimplePerson_Arow()
+      public void Serialize_SimplePerson_Arow()
       {
         const int CNT = 250000;
 
@@ -90,7 +90,7 @@ namespace NFX.NUnit.Serialization
       }
 
       [Test]
-      public void Benchmark_SimplePerson_Slim()
+      public void Serialize_SimplePerson_Slim()
       {
         const int CNT = 250000;
 
@@ -118,7 +118,7 @@ namespace NFX.NUnit.Serialization
       }
 
       [Test]
-      public void Benchmark_Family_Arow()
+      public void Serialize_Family_Arow()
       {
         const int CNT = 250000;
 
@@ -143,7 +143,7 @@ namespace NFX.NUnit.Serialization
       }
 
       [Test]
-      public void Benchmark_Family_Slim()
+      public void Serialize_Family_Slim()
       {
         const int CNT = 250000;
 

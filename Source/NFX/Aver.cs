@@ -192,7 +192,7 @@ namespace NFX
 
       private static string argToStr(object arg)
       {
-         const int MAX_LEN = 32;
+         const int MAX_LEN = 96;
 
          if (arg==null) return StringConsts.NULL_STRING;
 
