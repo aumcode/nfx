@@ -182,6 +182,7 @@
     <Compile Include="Glue\Native\WireData.cs" />
     <Compile Include="Glue\Tools\GluecCompiler.cs" />
     <Compile Include="Glue\Tools\CSharpGluecCompiler.cs" />
+    <Compile Include="GuidTypeResolver.cs" />
     <Compile Include="IEndableInstance.cs" />
     <Compile Include="Instrumentation\BaseGauges.cs" />
     <Compile Include="Instrumentation\SelfInstruments.cs" />

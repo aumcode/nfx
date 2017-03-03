@@ -57,7 +57,7 @@ namespace NFX.Serialization.Arow
           core.Serialize(row, streamer);
 
       //3 EORow
-      if (header) Writer.WriteEORow(streamer);
+      Writer.WriteEORow(streamer);
     }
 
 

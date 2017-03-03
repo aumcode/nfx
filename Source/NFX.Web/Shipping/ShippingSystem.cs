@@ -31,6 +31,11 @@ namespace NFX.Web.Shipping
   {
     #region CONSTS
 
+      public const string USPS_CARRIER_ID        = "USPS";
+      public const string DHL_EXPRESS_CARRIER_ID = "DHL_EXPRESS";
+      public const string FEDEX_CARRIER_ID       = "FEDEX";
+      public const string UPS_CARRIER_ID         = "UPS";
+
       public const string CONFIG_CARRIERS_SECTION = "carriers";
       public const string CONFIG_CARRIER_SECTION = "carrier";
 
@@ -173,7 +178,7 @@ namespace NFX.Web.Shipping
 
       private readonly List<ShippingSession> m_Sessions;
 
-      private IEnumerable<ShippingCarrier> m_PreconfiguredShippingCarriers;
+      private IRegistry<ShippingCarrier> m_PreconfiguredShippingCarriers;
 
       private bool m_InstrumentationEnabled;
       private Time.Event m_InstrumentationEvent;
@@ -225,6 +230,8 @@ namespace NFX.Web.Shipping
         }
       }
 
+      public IRegistry<ShippingCarrier> PreconfiguredShippingCarriers { get { return m_PreconfiguredShippingCarriers; } }
+
       internal List<ShippingSession> Sessions { get { return m_Sessions; } }
 
     #endregion
@@ -248,6 +255,8 @@ namespace NFX.Web.Shipping
 
     #region Public
 
+      public abstract IShippingSystemCapabilities Capabilities { get; }
+
       public ShippingSession StartSession(ShippingConnectionParameters cParams = null)
       {
         return DoStartSession(cParams);
@@ -256,6 +265,17 @@ namespace NFX.Web.Shipping
       public abstract Label CreateLabel(ShippingSession session, IShippingContext context, Shipment shipment);
 
       public abstract TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber);
+
+      public virtual string GetTrackingURL(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)
+      {
+        var carrier = GetShippingCarriers(session, context).FirstOrDefault(c => c.Name.EqualsIgnoreCase(carrierID));
+        if (carrier != null &&
+            carrier.TrackingURL.IsNotNullOrWhiteSpace() &&
+            trackingNumber.IsNotNullOrWhiteSpace())
+          return carrier.TrackingURL.Args(trackingNumber);
+
+        return null;
+      }
 
       public abstract Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error);
 
@@ -300,13 +320,13 @@ namespace NFX.Web.Shipping
 
         ConfigAttribute.Apply(this, node);
 
-        var carriers = new List<ShippingCarrier>();
+        var carriers = new Registry<ShippingCarrier>();
 
         var snodes = node[CONFIG_CARRIERS_SECTION].Children.Where(n=>n.IsSameName(CONFIG_CARRIER_SECTION));
         foreach(var snode in snodes)
         {
             var carrier = FactoryUtils.MakeAndConfigure<ShippingCarrier>(snode, typeof(ShippingCarrier), new object[] { this });
-            carriers.Add(carrier);
+            carriers.Register(carrier);
         }
         m_PreconfiguredShippingCarriers = carriers;
       }

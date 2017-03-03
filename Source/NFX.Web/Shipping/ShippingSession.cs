@@ -78,6 +78,9 @@ namespace NFX.Web.Shipping
     /// </summary>
     public Label CreateLabel(IShippingContext context, Shipment shipment)
     {
+      if (!m_ShippingSystem.Capabilities.SupportsLabelCreation)
+        throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("CreateLabel"));
+
       return m_ShippingSystem.CreateLabel(this, context, shipment);
     }
 
@@ -86,7 +89,21 @@ namespace NFX.Web.Shipping
     /// </summary>
     public TrackInfo TrackShipment(IShippingContext context, string carrierID, string trackingNumber)
     {
+      if (!m_ShippingSystem.Capabilities.SupportsShipmentTracking)
+        throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("TrackShipment"));
+
       return m_ShippingSystem.TrackShipment(this, context, carrierID, trackingNumber);
+    }
+
+    /// <summary>
+    /// Retrieves tracking URL by carrier and number
+    /// </summary>
+    public string GetTrackingURL(IShippingContext context, string carrierID, string trackingNumber)
+    {
+      if (!m_ShippingSystem.Capabilities.SupportsShipmentTracking)
+        throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("GetTrackingURL"));
+
+      return m_ShippingSystem.GetTrackingURL(this, context, carrierID, trackingNumber);
     }
 
     /// <summary>
@@ -95,6 +112,9 @@ namespace NFX.Web.Shipping
     /// </summary>
     public Address ValidateAddress(IShippingContext context, Address address, out ValidateShippingAddressException error)
     {
+      if (!m_ShippingSystem.Capabilities.SupportsAddressValidation)
+        throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("ValidateAddress"));
+
       return m_ShippingSystem.ValidateAddress(this, context, address, out error);
     }
 
@@ -103,6 +123,9 @@ namespace NFX.Web.Shipping
     /// </summary>
     public IEnumerable<ShippingCarrier> GetShippingCarriers(IShippingContext context)
     {
+      if (!m_ShippingSystem.Capabilities.SupportsCarrierServices)
+        throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("GetShippingCarriers"));
+
       return m_ShippingSystem.GetShippingCarriers(this, context);
     }
 
@@ -111,6 +134,9 @@ namespace NFX.Web.Shipping
     /// </summary>
     public Financial.Amount? EstimateShippingCost(IShippingContext context, Shipment shipment)
     {
+      if (!m_ShippingSystem.Capabilities.SupportsShippingCostEstimation)
+        throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("EstimateShippingCost"));
+
       return m_ShippingSystem.EstimateShippingCost(this, context, shipment);
     }
 

@@ -169,6 +169,11 @@
     <Compile Include="Shipping\Instrumentation\Gauges.cs" />
     <Compile Include="Shipping\Intfs.cs" />
     <Compile Include="Shipping\Label.cs" />
+    <Compile Include="Shipping\Manual\ManualCapabilities.cs" />
+    <Compile Include="Shipping\Manual\ManualConnectionParameters.cs" />
+    <Compile Include="Shipping\Manual\ManualCredentials.cs" />
+    <Compile Include="Shipping\Manual\ManualSession.cs" />
+    <Compile Include="Shipping\Manual\ManualSystem.cs" />
     <Compile Include="Shipping\Shipment.cs" />
     <Compile Include="Shipping\ShippingConnectionParameters.cs" />
     <Compile Include="Shipping\ShippingException.cs" />
@@ -176,11 +181,11 @@
     <Compile Include="Shipping\ShippingSystem.cs" />
     <Compile Include="Shipping\ShippingSystemHost.cs" />
     <Compile Include="Shipping\ShippingSystemStarter.cs" />
+    <Compile Include="Shipping\Shippo\ShippoCapabilities.cs" />
     <Compile Include="Shipping\Shippo\ShippoConnectionParameters.cs" />
     <Compile Include="Shipping\Shippo\ShippoCredentials.cs" />
     <Compile Include="Shipping\Shippo\ShippoSession.cs" />
     <Compile Include="Shipping\Shippo\ShippoSystem.cs" />
-    <Compile Include="Shipping\TrackInfo.cs" />
     <Compile Include="Social\Facebook.cs" />
     <Compile Include="Social\GooglePlus.cs" />
     <Compile Include="Social\Instrumentation\Gauges.cs" />

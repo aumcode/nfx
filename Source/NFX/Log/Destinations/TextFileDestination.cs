@@ -47,7 +47,12 @@ namespace NFX.Log.Destinations
 
     protected override void DoCloseStream()
     {
-      DisposableObject.DisposeAndNull(ref m_Writer);
+      if (m_Writer!=null)
+      {
+        m_Writer.Flush();
+        m_Writer.Close();
+        DisposableObject.DisposeAndNull(ref m_Writer);
+      }
     }
 
     /// <summary>

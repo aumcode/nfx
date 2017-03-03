@@ -1144,5 +1144,9 @@ namespace NFX
     public const string AROW_HEADER_CORRUPT_ERROR =  "Arow header is corrupt";
     public const string AROW_DESER_CORRUPT_ERROR =  "Arow deserialization is corrupt";
     public const string AROW_MAX_ARRAY_LEN_ERROR =  "Array max length of {0} exceeded by Arow deserialization";
+
+    public const string GUID_TYPE_RESOLVER_ERROR = "Type id '{0}' does not map to any {1} type";
+    public const string GUID_TYPE_RESOLVER_DUPLICATE_ATTRIBUTE_ERROR = "Type '{0}' specifies duplicate Guid '{1}' already used by '{2}'";
+    public const string GUID_TYPE_RESOLVER_MISSING_ATTRIBUTE_ERROR = "Type '{0}' does not specify the required [{1}(...)] attribute in its declaration";
   }
 }

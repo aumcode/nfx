@@ -25,11 +25,11 @@ namespace NFX.Serialization.Arow
          else if (dt==DataType.ByteArray) row.{0} = streamer.ReadByteArray();
          else if (dt!=DataType.Array) break;
          else
-         {
+         {{
            atp = Reader.ReadDataType(streamer);
            if (atp!=DataType.Byte) break;
            row.{0} = Reader.ReadByteArray(streamer);
-         }
+         }}
          continue;"
       },
 
@@ -38,11 +38,11 @@ namespace NFX.Serialization.Arow
          else if (dt==DataType.ByteArray) row.{0} = new List<byte>(streamer.ReadByteArray());
          else if (dt!=DataType.Array) break;
          else
-         {
+         {{
            atp = Reader.ReadDataType(streamer);
            if (atp!=DataType.Byte) break;
            row.{0} = new List<byte>(Reader.ReadByteArray(streamer));
-         }
+         }}
          continue;"
       },
 
@@ -108,9 +108,9 @@ namespace NFX.Serialization.Arow
       {typeof(char[]),       null},
       {typeof(List<char>),   null},
 
-      {typeof(string),         null},
-      {typeof(string[]),       null},
-      {typeof(List<string>),   null},
+      {typeof(string),        null},
+      {typeof(string[]),      null},
+      {typeof(List<string>),  null},
 
       {typeof(Financial.Amount?),         null},
       {typeof(Financial.Amount),         null},

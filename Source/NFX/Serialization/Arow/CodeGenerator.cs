@@ -410,7 +410,7 @@ namespace NFX.Serialization.Arow
         source.AppendLine("              row.{0} = lst;".Args(prop));
         source.AppendLine("           }");
         source.AppendLine("           continue;");
-      } else if (isNullable)
+      } else if (isNullable || t==typeof(string))
       {
         var tn = fdef.NonNullableType.Name;
         source.AppendLine("           if (dt==DataType.Null) row.{0} = null;".Args(prop));

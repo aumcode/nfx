@@ -24,6 +24,7 @@ using NFX;
 using NFX.Environment;
 using NFX.Log;
 using NFX.Serialization.JSON;
+using NFX.Standards;
 
 namespace NFX.Web.Shipping.Shippo
 {
@@ -34,23 +35,24 @@ namespace NFX.Web.Shipping.Shippo
       public const string SHIPPO_REALM = "shippo";
 
       public const string PURCHASE_PURPOSE = "PURCHASE";
-      public const string QUOTE_PURPOSE = "QUOTE";
-      public const string STATUS_SUCCESS = "SUCCESS";
-      public const string STATUS_ERROR = "ERROR";
-      public const string STATUS_VALID = "VALID";
-      public const string STATUS_INVALID = "INVALID";
-      public const string CODE_INVALID = "Invalid";
+      public const string QUOTE_PURPOSE    = "QUOTE";
+      public const string STATUS_SUCCESS   = "SUCCESS";
+      public const string STATUS_ERROR     = "ERROR";
+      public const string STATUS_VALID     = "VALID";
+      public const string STATUS_INVALID   = "INVALID";
+      public const string CODE_INVALID     = "Invalid";
 
-      public const string HDR_AUTHORIZATION = "Authorization";
+      public const string HDR_AUTHORIZATION       = "Authorization";
       public const string HDR_AUTHORIZATION_TOKEN = "ShippoToken {0}";
 
-      public const string URI_TRACKING_FORM = "http://tracking.goshippo.com/";
-      public const string URI_API_BASE = "https://api.goshippo.com";
-      public const string URI_TRANSACTIONS = "/v1/transactions";
-      public const string URI_RATES = "/v1/rates/{0}";
-      public const string URI_TRACKING = "/v1/tracks/{0}/{1}";
-      public const string URI_ADDRESS = "/v1/addresses";
-      public const string URI_SHIPMENTS = "/v1/shipments";
+      public const string URI_TRACKING_FORM   = "http://tracking.goshippo.com/";
+      public const string URI_API_BASE        = "https://api.goshippo.com";
+      public const string URI_TRACKING_BY_NUM = URI_TRACKING_FORM+"{0}/{1}";
+      public const string URI_TRANSACTIONS    = "/v1/transactions";
+      public const string URI_RATES           = "/v1/rates/{0}";
+      public const string URI_TRACKING        = "/v1/tracks/{0}/{1}";
+      public const string URI_ADDRESS         = "/v1/addresses";
+      public const string URI_SHIPMENTS       = "/v1/shipments";
 
       public static readonly Dictionary<LabelFormat, string> FORMATS = new Dictionary<LabelFormat, string>
       {
@@ -60,39 +62,39 @@ namespace NFX.Web.Shipping.Shippo
         { LabelFormat.ZPLII, "ZPLII" }
       };
 
-      public static readonly Dictionary<DistanceUnit, string> DIST_UNITS = new Dictionary<DistanceUnit, string>
+      public static readonly Dictionary<Distance.UnitType, string> DIST_UNITS = new Dictionary<Distance.UnitType, string>
       {
-        { DistanceUnit.Cm, "cm" },
-        { DistanceUnit.In, "in" },
-        { DistanceUnit.Ft, "ft" },
-        { DistanceUnit.Mm, "mm" },
-        { DistanceUnit.M, "m" },
-        { DistanceUnit.Yd, "yd" }
+        { Distance.UnitType.Cm, "cm" },
+        { Distance.UnitType.In, "in" },
+        { Distance.UnitType.Ft, "ft" },
+        { Distance.UnitType.Mm, "mm" },
+        { Distance.UnitType.M,  "m"  },
+        { Distance.UnitType.Yd, "yd" }
       };
 
-      public static readonly Dictionary<MassUnit, string> MASS_UNITS = new Dictionary<MassUnit, string>
+      public static readonly Dictionary<Weight.UnitType, string> WEIGHT_UNITS = new Dictionary<Weight.UnitType, string>
       {
-        { MassUnit.G, "g" },
-        { MassUnit.Oz, "oz" },
-        { MassUnit.Lb, "lb" },
-        { MassUnit.Kg, "kg" }
+        { Weight.UnitType.G,  "g"  },
+        { Weight.UnitType.Oz, "oz" },
+        { Weight.UnitType.Lb, "lb" },
+        { Weight.UnitType.Kg, "kg" }
       };
 
       public static readonly Dictionary<string, string> CARRIERS = new Dictionary<string, string>
       {
-        { "USPS", "usps" },
-        { "DHL_EXPRESS", "dhl_express" },
-        { "FEDEX", "fedex" },
-        { "UPS", "ups" }
+        { USPS_CARRIER_ID,        "usps" },
+        { DHL_EXPRESS_CARRIER_ID, "dhl_express" },
+        { FEDEX_CARRIER_ID,       "fedex" },
+        { UPS_CARRIER_ID,         "ups" }
       };
 
       public static readonly Dictionary<string, TrackStatus> TRACK_STATUSES = new Dictionary<string, TrackStatus>
       {
-        { "UNKNOWN", TrackStatus.Unknown },
-        { "DELIVERED",TrackStatus.Delivered },
-        { "TRANSIT", TrackStatus.Transit },
-        { "FAILURE", TrackStatus.Failure },
-        { "RETURNED", TrackStatus.Returned }
+        { "UNKNOWN",   TrackStatus.Unknown },
+        { "DELIVERED", TrackStatus.Delivered },
+        { "TRANSIT",   TrackStatus.Transit },
+        { "FAILURE",   TrackStatus.Failure },
+        { "RETURNED",  TrackStatus.Returned }
       };
 
     #endregion
@@ -110,6 +112,11 @@ namespace NFX.Web.Shipping.Shippo
     #endregion
 
     #region IShippingSystem impl
+
+      public override IShippingSystemCapabilities Capabilities
+      {
+        get { return ShippoCapabilities.Instance; }
+      }
 
       protected override ShippingSession DoStartSession(ShippingConnectionParameters cParams = null)
       {
@@ -158,7 +165,12 @@ namespace NFX.Web.Shipping.Shippo
 
         try
         {
-          return doTrackShipment(session, context, carrierID, trackingNumber, logID);
+          var result = doTrackShipment(session, context, carrierID, trackingNumber, logID);
+          result.TrackingNumber = trackingNumber;
+          result.TrackingURL = GetTrackingURL(session, context, carrierID, trackingNumber);
+          result.CarrierID = carrierID;
+
+          return result;
         }
         catch (Exception ex)
         {
@@ -170,6 +182,25 @@ namespace NFX.Web.Shipping.Shippo
 
           throw error;
         }
+      }
+
+      public override string GetTrackingURL(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)
+      {
+        return GetTrackingURL((ShippoSession)session, context, carrierID, trackingNumber);
+      }
+
+      public string GetTrackingURL(ShippoSession session, IShippingContext context, string carrierID, string trackingNumber)
+      {
+        var url = base.GetTrackingURL(session, context, carrierID, trackingNumber);
+
+        if (url.IsNullOrWhiteSpace() &&
+            carrierID.IsNotNullOrWhiteSpace() &&
+            trackingNumber.IsNotNullOrWhiteSpace())
+        {
+            return URI_TRACKING_BY_NUM.Args(carrierID, trackingNumber);
+        }
+
+        return null;
       }
 
       public override Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error)
@@ -202,7 +233,7 @@ namespace NFX.Web.Shipping.Shippo
 
       public Financial.Amount? EstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment)
       {
-        var logID = Log(MessageType.Info, "EstimateShippingCost()", StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_MESSAGE.Args(shipment.FromAddress, shipment.ToAddress, shipment.Method.InnerID));
+        var logID = Log(MessageType.Info, "EstimateShippingCost()", StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_MESSAGE.Args(shipment.FromAddress, shipment.ToAddress, shipment.Method.Name));
 
         try
         {
@@ -212,7 +243,7 @@ namespace NFX.Web.Shipping.Shippo
         {
           StatEstimateShippingCostErrorCount();
 
-          var header = StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_ERROR.Args(shipment.FromAddress, shipment.ToAddress, shipment.Method.InnerID, ex.ToMessageWithType());
+          var header = StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_ERROR.Args(shipment.FromAddress, shipment.ToAddress, shipment.Method.Name, ex.ToMessageWithType());
           Log(MessageType.Error, "EstimateShippingCost()", header, ex, logID);
           var error = ShippingException.ComposeError(ex.Message, ex);
 
@@ -307,11 +338,10 @@ namespace NFX.Web.Shipping.Shippo
           result.Date = date;
 
         result.Details = status["status_details"].AsString();
-        result.Location = getAddressFromJSON(status["location"] as JSONDataMap);
+        result.CurrentLocation = getAddressFromJSON(status["location"] as JSONDataMap);
 
         var service = response["servicelevel"] as JSONDataMap;
-        if (service != null) result.Service = service["name"].AsString();
-        result.TrackingNumber = trackingNumber;
+        if (service != null) result.MethodID = service["name"].AsString();
         result.FromAddress = getAddressFromJSON(response["address_from"] as JSONDataMap);
         result.ToAddress = getAddressFromJSON(response["address_to"] as JSONDataMap);
 
@@ -330,7 +360,7 @@ namespace NFX.Web.Shipping.Shippo
             if (hitem["status_date"] != null && DateTime.TryParse(hitem["status_date"].AsString(), out date))
               hi.Date = date;
 
-            hi.Location = getAddressFromJSON(hitem["location"] as JSONDataMap);
+            hi.CurrentLocation = getAddressFromJSON(hitem["location"] as JSONDataMap);
 
             result.History.Add(hi);
           }
@@ -420,8 +450,8 @@ namespace NFX.Web.Shipping.Shippo
         {
           var carrierID = rate["carrier_account"].AsString();
           if (carrierID.IsNotNullOrWhiteSpace() &&
-              string.Equals(carrierID, shipment.Carrier.OuterID, StringComparison.InvariantCultureIgnoreCase) &&
-              string.Equals(rate["servicelevel_token"].AsString(), shipment.Method.OuterID, StringComparison.InvariantCultureIgnoreCase))
+              string.Equals(carrierID, shipment.Carrier.Name, StringComparison.InvariantCultureIgnoreCase) &&
+              string.Equals(rate["servicelevel_token"].AsString(), shipment.Method.Name, StringComparison.InvariantCultureIgnoreCase))
             return new Financial.Amount(rate["currency_local"].AsString(), rate["amount_local"].AsDecimal());
 
             // todo: where is Template?! minimize cost among all mathced rates?
@@ -484,8 +514,8 @@ namespace NFX.Web.Shipping.Shippo
         var isReturn = shipment.LabelIDForReturn.IsNotNullOrWhiteSpace();
 
         var body = new JSONDataMap();
-        body["carrier_account"] = shipment.Carrier.OuterID;
-        body["servicelevel_token"] = shipment.Method.OuterID;
+        body["carrier_account"] = shipment.Carrier.Name;
+        body["servicelevel_token"] = shipment.Method.Name;
         body["label_file_type"] = FORMATS[shipment.LabelFormat];
         body["async"] = false;
 
@@ -507,14 +537,14 @@ namespace NFX.Web.Shipping.Shippo
       private JSONDataMap getParcelBody(Shipment shipment)
       {
         var parcel = new JSONDataMap();
-        if (shipment.Template != null)
-          parcel["template"] = shipment.Template.OuterID;
+        if (shipment.Package != null)
+          parcel["template"] = shipment.Package.Name;
 
         parcel["distance_unit"] = DIST_UNITS[shipment.DistanceUnit];
         parcel["length"] = shipment.Length.ToString(CultureInfo.InvariantCulture);
         parcel["width"] = shipment.Width.ToString(CultureInfo.InvariantCulture);
         parcel["height"] = shipment.Height.ToString(CultureInfo.InvariantCulture);
-        parcel["mass_unit"] = MASS_UNITS[shipment.MassUnit];
+        parcel["mass_unit"] = WEIGHT_UNITS[shipment.WeightUnit];
         parcel["weight"] = shipment.Weight.ToString(CultureInfo.InvariantCulture);
 
         return parcel;

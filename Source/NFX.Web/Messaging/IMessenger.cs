@@ -20,8 +20,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using NFX.Environment;
 using NFX.ApplicationModel;
+using NFX.DataAccess.CRUD;
+using NFX.Environment;
+using NFX.Serialization.Arow;
 using NFX.ServiceModel;
 
 namespace NFX.Web.Messaging
@@ -62,20 +64,21 @@ namespace NFX.Web.Messaging
   /// <summary>
   /// Represents an email msg that needs to be sent
   /// </summary>
-  [Serializable]
-  public class Message
+  [Serializable, Arow]
+  public class Message : TypedRow
   {
-    public struct Attachment
+    [Serializable, Arow]
+    public class Attachment : TypedRow
     {
-       public Attachment(string name, byte[] content, string contentType)
-       {
-         Name = name;
-         Content = content;
-         ContentType = contentType ?? NFX.Web.ContentType.BINARY;
-       }
-       public readonly string Name;
-       public readonly byte[] Content;
-       public readonly string ContentType;
+      public Attachment(string name, byte[] content, string contentType)
+      {
+        Name = name;
+        Content = content;
+        ContentType = contentType ?? NFX.Web.ContentType.BINARY;
+      }
+      [Field(backendName: "nm", isArow: true)] public string Name { get; set; }
+      [Field(backendName: "ct", isArow: true)] public byte[] Content { get; set; }
+      [Field(backendName: "tp", isArow: true)] public string ContentType { get; set; }
     }
 
     private Message(){ }
@@ -86,32 +89,30 @@ namespace NFX.Web.Messaging
       Priority = MsgPriority.Normal;
     }
 
-    public Guid GUID { get; private set;}
+    [Field(backendName: "guid", isArow: true)] public Guid GUID { get; private set;}
 
-    public MsgPriority   Priority   { get; set;}
-    public MsgImportance Importance { get; set;}
-    public MsgChannels   Channels   { get; set;}
-    public string FROMAddress{get;set;}
-    public string FROMName{get;set;}
+    [Field(backendName: "pr", isArow: true)] public MsgPriority   Priority   { get; set;}
+    [Field(backendName: "im", isArow: true)] public MsgImportance Importance { get; set;}
+    [Field(backendName: "ch", isArow: true)] public MsgChannels   Channels   { get; set;}
+    [Field(backendName: "fa", isArow: true)] public string FROMAddress{get;set;}
+    [Field(backendName: "fn", isArow: true)] public string FROMName{get;set;}
 
-    public string TOAddress{get;set;}
-    public string TOName{get;set;}
-    public string CC{get;set;}
-    public string BCC{get;set;}
+    [Field(backendName: "ta", isArow: true)] public string TOAddress{get;set;}
+    [Field(backendName: "tn", isArow: true)] public string TOName{get;set;}
+    [Field(backendName: "cc", isArow: true)] public string CC{get;set;}
+    [Field(backendName: "bcc", isArow: true)] public string BCC{get;set;}
 
-    public string Subject{get;set;}
-
+    [Field(backendName: "sb", isArow: true)] public string Subject{get;set;}
     /// <summary>
     /// Plain/text body
     /// </summary>
-    public string Body{get;set;}
-
+    [Field(backendName: "txt", isArow: true)] public string Body{get;set;}
     /// <summary>
     /// HTML-formatted body
     /// </summary>
-    public string HTMLBody{get; set;}
+    [Field(backendName: "html", isArow: true)] public string HTMLBody{get; set;}
 
-    public Attachment[] Attachments;
+    [Field(backendName: "ats", isArow: true)] public Attachment[] Attachments { get; set; }
   }
 
 }

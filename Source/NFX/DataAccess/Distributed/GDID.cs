@@ -124,8 +124,12 @@ namespace NFX.DataAccess.Distributed
           get{ return Era==0 && ID==0;}
         }
 
-        public override string  ToString()
+        /// <summary>
+        /// Returns the guaranted parsable stable string representation of GDID in the form 'Era:Authority:Counter'
+        /// </summary>
+        public override string ToString()
         {
+          // WARNING!!! returned string representation must be parsable in the original form 'Era:Authority:Counter' and must not change
           return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
         }
 

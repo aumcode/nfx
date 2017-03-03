@@ -548,8 +548,8 @@ namespace NFX.ApplicationModel
             catch(Exception error)
             {
               error = new NFXException(StringConsts.APP_STARTER_AFTER_ERROR.Args(name, error.ToMessageWithType()), error);
-              if (breakOnError) throw error;
               WriteLog(MessageType.CatastrophicError, "InitApplication().After", error.ToMessageWithType(), error);
+              if (breakOnError) throw error;
             }
 
         if (exceptions.Count>0)

@@ -44,10 +44,46 @@ namespace NFX.Web.Shipping
   public interface IShippingContext { }
 
   /// <summary>
+  /// Denotes capabilities of the shipping system
+  /// </summary>
+  public interface IShippingSystemCapabilities
+  {
+    /// <summary>
+    /// Indicates whether a shipping system supports shipping label creation
+    /// </summary>
+    bool SupportsLabelCreation { get; }
+
+    /// <summary>
+    /// Indicates whethe a shipping system provides detailed tracking information about shipments
+    /// </summary>
+    bool SupportsShipmentTracking { get; }
+
+    /// <summary>
+    /// Indicates whether a shipping system supports shipping address validation
+    /// </summary>
+    bool SupportsAddressValidation { get; }
+
+    /// <summary>
+    /// Indicates whether a shipping system provides any services directly from some shipping carriers
+    /// </summary>
+    bool SupportsCarrierServices { get; }
+
+    /// <summary>
+    /// Indicates whether a shipping system provides any (at least approximate) shipping cost calculation
+    /// </summary>
+    bool SupportsShippingCostEstimation { get; }
+  }
+
+  /// <summary>
   /// Represents entity that can perform shipping fuctions like labels creation, tracking etc.
   /// </summary>
   public interface IShippingSystem
   {
+    /// <summary>
+    /// Returns capabilities for this shipping system
+    /// </summary>
+    IShippingSystemCapabilities Capabilities { get; }
+
     /// <summary>
     /// Starts shipping session with given or default connection parameters
     /// </summary>
@@ -62,6 +98,11 @@ namespace NFX.Web.Shipping
     /// Retrieves shipment tracking info
     /// </summary>
     TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber);
+
+    /// <summary>
+    /// Retrieves tracking URL by carrier and number
+    /// </summary>
+    string GetTrackingURL(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber);
 
     /// <summary>
     /// Validates shipping address.

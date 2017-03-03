@@ -184,7 +184,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
         var method = usps.Methods["USPS_PRIORITY"];
-        var template = usps.Templates["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
+        var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
         var label = session.CreateLabel(null, shipment);
@@ -225,7 +225,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
         var method = usps.Methods["USPS_PRIORITY"];
-        var template = usps.Templates["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
+        var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
         shipment.ReturnAddress = getDefaultAddress();
@@ -274,7 +274,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
         var method = usps.Methods["USPS_PRIORITY"];
-        var template = usps.Templates["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
+        var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
         var amount = session.EstimateShippingCost(null, shipment);
@@ -512,19 +512,19 @@ namespace NFX.NUnit.Integration.Web.Shipping
       return result;
     }
 
-    private Shipment getDefaultShipment(ShippingCarrier carrier, ShippingCarrier.Method method, ShippingCarrier.Template template = null)
+    private Shipment getDefaultShipment(ShippingCarrier carrier, ShippingCarrier.Method method, ShippingCarrier.Package template = null)
     {
       var result = new Shipment
       {
         Length = 0.5M,
         Width = 0.5M,
         Height = 0.5M,
-        DistanceUnit = DistanceUnit.In,
+        DistanceUnit = NFX.Standards.Distance.UnitType.In,
         Weight = 0.3M,
-        MassUnit = MassUnit.Lb,
+        WeightUnit = NFX.Standards.Weight.UnitType.Lb,
         Carrier = carrier,
         Method = method,
-        Template = template,
+        Package = template,
         FromAddress = new Address
         {
           PersonName = "J. London",

@@ -828,7 +828,7 @@ namespace NFX.IO
             var iso = ReadString();
             var val = ReadDecimal();
 
-            return new Financial.Amount(iso, val);
+            return Financial.Amount.Deserialize(iso, val);
           }
 
               public override Financial.Amount? ReadNullableAmount()

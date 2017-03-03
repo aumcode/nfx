@@ -90,6 +90,38 @@ namespace NFX.NUnit.Serialization
       }
 
       [Test]
+      public void Deserialize_SimplePerson_Arow()
+      {
+        const int CNT = 250000;
+
+        var row = getSimplePerson();
+
+        var writer = SlimFormat.Instance.GetWritingStreamer();
+        var reader = SlimFormat.Instance.GetReadingStreamer();
+
+        using(var ms = new MemoryStream())
+        {
+          writer.BindStream(ms);
+          ArowSerializer.Serialize(row, writer);
+          writer.UnbindStream();
+
+          reader.BindStream(ms);
+
+          var sw = Stopwatch.StartNew();
+          for(var i=0; i<CNT; i++)
+          {
+            ms.Position = 0;
+            var row2 = new SimplePersonRow();
+            ArowSerializer.Deserialize(row2, reader);
+            Aver.AreEqual(row.ID, row2.ID);
+          }
+
+          var el = sw.ElapsedMilliseconds;
+          Console.WriteLine("Arow did {0:n0} in {1:n0} ms at {2:n0} ops/sec. Stream Size is: {3:n0} bytes".Args( CNT, el, CNT / (el/1000d), ms.Length ));
+        }
+      }
+
+      [Test]
       public void Serialize_SimplePerson_Slim()
       {
         const int CNT = 250000;
@@ -110,6 +142,36 @@ namespace NFX.NUnit.Serialization
           {
             ms.Position = 0;
             slim.Serialize(ms, row);
+          }
+
+          var el = sw.ElapsedMilliseconds;
+          Console.WriteLine("Slim did {0:n0} in {1:n0} ms at {2:n0} ops/sec. Stream Size is: {3:n0} bytes".Args( CNT, el, CNT / (el/1000d), ms.Length ));
+        }
+      }
+
+
+      [Test]
+      public void Deserialize_SimplePerson_Slim()
+      {
+        const int CNT = 250000;
+
+        var row = getSimplePerson();
+
+        var slim = new NFX.Serialization.Slim.SlimSerializer( NFX.Serialization.Slim.TypeRegistry.BoxedCommonNullableTypes,
+                                                              NFX.Serialization.Slim.TypeRegistry.BoxedCommonTypes,
+                                                              new []{ typeof(SimplePersonRow) });
+
+        slim.TypeMode = NFX.Serialization.Slim.TypeRegistryMode.Batch;//give slim all possible preferences
+
+        using(var ms = new MemoryStream())
+        {
+          slim.Serialize(ms, row);//warmup
+          var sw = Stopwatch.StartNew();
+          for(var i=0; i<CNT; i++)
+          {
+            ms.Position = 0;
+            var row2 = slim.Deserialize(ms) as SimplePersonRow;
+            Aver.AreEqual(row.ID, row2.ID);
           }
 
           var el = sw.ElapsedMilliseconds;
@@ -143,6 +205,37 @@ namespace NFX.NUnit.Serialization
       }
 
       [Test]
+      public void Deserialize_Family_Arow()
+      {
+        const int CNT = 250000;
+
+        var row = getFamily();
+
+        var writer = SlimFormat.Instance.GetWritingStreamer();
+        var reader = SlimFormat.Instance.GetReadingStreamer();
+
+        using(var ms = new MemoryStream())
+        {
+          writer.BindStream(ms);
+          ArowSerializer.Serialize(row, writer);
+          writer.UnbindStream();
+          reader.BindStream(ms);
+
+          var sw = Stopwatch.StartNew();
+          for(var i=0; i<CNT; i++)
+          {
+            ms.Position = 0;
+            var row2 = new FamilyRow();
+            ArowSerializer.Deserialize(row2, reader);
+            Aver.AreEqual(row.ID, row2.ID);
+          }
+
+          var el = sw.ElapsedMilliseconds;
+          Console.WriteLine("Arow did {0:n0} in {1:n0} ms at {2:n0} ops/sec. Stream Size is: {3:n0} bytes".Args( CNT, el, CNT / (el/1000d), ms.Length ));
+        }
+      }
+
+      [Test]
       public void Serialize_Family_Slim()
       {
         const int CNT = 250000;
@@ -163,6 +256,36 @@ namespace NFX.NUnit.Serialization
           {
             ms.Position = 0;
             slim.Serialize(ms, row);
+          }
+
+          var el = sw.ElapsedMilliseconds;
+          Console.WriteLine("Slim did {0:n0} in {1:n0} ms at {2:n0} ops/sec. Stream Size is: {3:n0} bytes".Args( CNT, el, CNT / (el/1000d), ms.Length ));
+        }
+      }
+
+
+      [Test]
+      public void Deserialize_Family_Slim()
+      {
+        const int CNT = 250000;
+
+        var row = getFamily();
+
+        var slim = new NFX.Serialization.Slim.SlimSerializer( NFX.Serialization.Slim.TypeRegistry.BoxedCommonNullableTypes,
+                                                              NFX.Serialization.Slim.TypeRegistry.BoxedCommonTypes,
+                                                              new []{ typeof(SimplePersonRow),typeof(SimplePersonRow[]), typeof(List<SimplePersonRow>), typeof(FamilyRow) });
+
+        slim.TypeMode = NFX.Serialization.Slim.TypeRegistryMode.Batch;//give slim all possible preferences
+
+        using(var ms = new MemoryStream())
+        {
+          slim.Serialize(ms, row);//warmup
+          var sw = Stopwatch.StartNew();
+          for(var i=0; i<CNT; i++)
+          {
+            ms.Position = 0;
+            var row2 = slim.Deserialize(ms) as FamilyRow;
+            Aver.AreEqual(row.ID, row2.ID);
           }
 
           var el = sw.ElapsedMilliseconds;

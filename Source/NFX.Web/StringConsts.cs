@@ -199,6 +199,8 @@ namespace NFX.Web
     public const string PAYPAL_VOID_ERROR_MESSAGE = "Critical error while transaction cancellation: {0}";
     public const string PAYPAL_PAYOUT_NOT_SUCCEEDED_MESSAGE = "Payout was not succeeded. Error: {0}, Message: {1}, Description: {2}";
 
+    public const string SHIPPING_SYSTEM_UNSUPPORTED_ACTION = "Action {0} is not supported by the shipping system";
+
     public const string SHIPPING_SYSTEM_HOST_NULL_ERROR = "Shipping system host is not set";
     public const string SHIPPING_SYSTEM_DUPLICATE_NAME_ERROR = "Can not have shipping system instance of type '{0}' with the name '{1}' as this name is already registered. ";
     public const string SHIPPO_CREATE_LABEL_MESSAGE = "Perform create label: from {0}, to {1}";
