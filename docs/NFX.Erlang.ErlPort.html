@@ -1,0 +1,1577 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct ErlPort
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct ErlPort
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Erlang_ErlPort" data-uid="NFX.Erlang.ErlPort">Struct ErlPort
+              </h1>
+              <div class="markdown level0 summary"><p>Provides a C# representation of Erlang integer types</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Erlang</h6>
+              <h6><strong>Assembly</strong>:NFX.Erlang.dll</h6>
+              <h5 id="NFX_Erlang_ErlPort_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public struct ErlPort : IErlObject&lt;ErlPort&gt;, IErlObject, IComparable, IComparable&lt;IErlObject&gt;, IEquatable&lt;IErlObject&gt;, ICloneable</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlPort__ctor_" data-uid="NFX.Erlang.ErlPort.#ctor*"></a>
+              <h4 id="NFX_Erlang_ErlPort__ctor_NFX_Erlang_ErlAtom_System_Int32_System_Int32_" data-uid="NFX.Erlang.ErlPort.#ctor(NFX.Erlang.ErlAtom,System.Int32,System.Int32)">ErlPort(ErlAtom, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Create an Erlang port from the given values</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlPort(ErlAtom node, int id, int creation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">creation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlPort__ctor_" data-uid="NFX.Erlang.ErlPort.#ctor*"></a>
+              <h4 id="NFX_Erlang_ErlPort__ctor_System_String_System_Int32_System_Int32_" data-uid="NFX.Erlang.ErlPort.#ctor(System.String,System.Int32,System.Int32)">ErlPort(String, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Create an Erlang port from the given values</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlPort(string node, int id, int creation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">creation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Erlang_ErlPort_Creation" data-uid="NFX.Erlang.ErlPort.Creation">Creation</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public readonly int Creation</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Erlang_ErlPort_Id" data-uid="NFX.Erlang.ErlPort.Id">Id</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public readonly int Id</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Erlang_ErlPort_Node" data-uid="NFX.Erlang.ErlPort.Node">Node</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public readonly ErlAtom Node</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Erlang_ErlPort_Null" data-uid="NFX.Erlang.ErlPort.Null">Null</h4>
+              <div class="markdown level1 summary"><p>Special value non-existing Port used for &quot;null&quot; pid comparison</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlPort Null</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Empty_" data-uid="NFX.Erlang.ErlPort.Empty*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Empty" data-uid="NFX.Erlang.ErlPort.Empty">Empty</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Empty { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlPort_IsScalar_" data-uid="NFX.Erlang.ErlPort.IsScalar*"></a>
+              <h4 id="NFX_Erlang_ErlPort_IsScalar" data-uid="NFX.Erlang.ErlPort.IsScalar">IsScalar</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsScalar { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_IsScalar">IErlObject.IsScalar</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_TypeOrder_" data-uid="NFX.Erlang.ErlPort.TypeOrder*"></a>
+              <h4 id="NFX_Erlang_ErlPort_TypeOrder" data-uid="NFX.Erlang.ErlPort.TypeOrder">TypeOrder</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlTypeOrder TypeOrder { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlTypeOrder.html">ErlTypeOrder</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_TypeOrder">IErlObject.TypeOrder</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Value_" data-uid="NFX.Erlang.ErlPort.Value*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Value" data-uid="NFX.Erlang.ErlPort.Value">Value</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlPort Value { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject-1.html#NFX_Erlang_IErlObject_1_Value">IErlObject&lt;T&gt;.Value</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsBool_" data-uid="NFX.Erlang.ErlPort.ValueAsBool*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsBool" data-uid="NFX.Erlang.ErlPort.ValueAsBool">ValueAsBool</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ValueAsBool { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsBool">IErlObject.ValueAsBool</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsByteArray_" data-uid="NFX.Erlang.ErlPort.ValueAsByteArray*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsByteArray" data-uid="NFX.Erlang.ErlPort.ValueAsByteArray">ValueAsByteArray</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public byte[] ValueAsByteArray { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsByteArray">IErlObject.ValueAsByteArray</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsChar_" data-uid="NFX.Erlang.ErlPort.ValueAsChar*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsChar" data-uid="NFX.Erlang.ErlPort.ValueAsChar">ValueAsChar</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public char ValueAsChar { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsChar">IErlObject.ValueAsChar</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsDateTime_" data-uid="NFX.Erlang.ErlPort.ValueAsDateTime*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsDateTime" data-uid="NFX.Erlang.ErlPort.ValueAsDateTime">ValueAsDateTime</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime ValueAsDateTime { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsDateTime">IErlObject.ValueAsDateTime</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsDecimal_" data-uid="NFX.Erlang.ErlPort.ValueAsDecimal*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsDecimal" data-uid="NFX.Erlang.ErlPort.ValueAsDecimal">ValueAsDecimal</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public decimal ValueAsDecimal { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsDecimal">IErlObject.ValueAsDecimal</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsDouble_" data-uid="NFX.Erlang.ErlPort.ValueAsDouble*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsDouble" data-uid="NFX.Erlang.ErlPort.ValueAsDouble">ValueAsDouble</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public double ValueAsDouble { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsDouble">IErlObject.ValueAsDouble</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsInt_" data-uid="NFX.Erlang.ErlPort.ValueAsInt*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsInt" data-uid="NFX.Erlang.ErlPort.ValueAsInt">ValueAsInt</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int ValueAsInt { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsInt">IErlObject.ValueAsInt</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsLong_" data-uid="NFX.Erlang.ErlPort.ValueAsLong*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsLong" data-uid="NFX.Erlang.ErlPort.ValueAsLong">ValueAsLong</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public long ValueAsLong { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsLong">IErlObject.ValueAsLong</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsObject_" data-uid="NFX.Erlang.ErlPort.ValueAsObject*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsObject" data-uid="NFX.Erlang.ErlPort.ValueAsObject">ValueAsObject</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public object ValueAsObject { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsObject">IErlObject.ValueAsObject</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsString_" data-uid="NFX.Erlang.ErlPort.ValueAsString*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsString" data-uid="NFX.Erlang.ErlPort.ValueAsString">ValueAsString</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ValueAsString { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsString">IErlObject.ValueAsString</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ValueAsTimeSpan_" data-uid="NFX.Erlang.ErlPort.ValueAsTimeSpan*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ValueAsTimeSpan" data-uid="NFX.Erlang.ErlPort.ValueAsTimeSpan">ValueAsTimeSpan</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TimeSpan ValueAsTimeSpan { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.TimeSpan</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_ValueAsTimeSpan">IErlObject.ValueAsTimeSpan</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Clone_" data-uid="NFX.Erlang.ErlPort.Clone*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Clone" data-uid="NFX.Erlang.ErlPort.Clone">Clone()</h4>
+              <div class="markdown level1 summary"><p>Clone an instance of the object (non-scalar immutable objects are copied by reference)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject Clone()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_Clone">IErlObject.Clone()</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_CompareTo_" data-uid="NFX.Erlang.ErlPort.CompareTo*"></a>
+              <h4 id="NFX_Erlang_ErlPort_CompareTo_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlPort.CompareTo(NFX.Erlang.IErlObject)">CompareTo(IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Compare this instance to the IErlObject.
+Negative value means that the value is less than obj, positive - greater than the obj</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int CompareTo(IErlObject obj)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">obj</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.IComparable&lt;T&gt;.CompareTo(T)</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_CompareTo_" data-uid="NFX.Erlang.ErlPort.CompareTo*"></a>
+              <h4 id="NFX_Erlang_ErlPort_CompareTo_System_Object_" data-uid="NFX.Erlang.ErlPort.CompareTo(System.Object)">CompareTo(Object)</h4>
+              <div class="markdown level1 summary"><p>Compare this instance to the object.
+Negative value means that the value is less than obj, positive - greater than the obj</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int CompareTo(object obj)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">obj</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.IComparable.CompareTo(System.Object)</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Equals_" data-uid="NFX.Erlang.ErlPort.Equals*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Equals_NFX_Erlang_ErlPort_" data-uid="NFX.Erlang.ErlPort.Equals(NFX.Erlang.ErlPort)">Equals(ErlPort)</h4>
+              <div class="markdown level1 summary"><p>Determine if two instances are equal</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Equals(ErlPort port)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td><span class="parametername">port</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Equals_" data-uid="NFX.Erlang.ErlPort.Equals*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Equals_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlPort.Equals(NFX.Erlang.IErlObject)">Equals(IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Determine if two instances are equal</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Equals(IErlObject o)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.IEquatable&lt;T&gt;.Equals(T)</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Equals_" data-uid="NFX.Erlang.ErlPort.Equals*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Equals_System_Object_" data-uid="NFX.Erlang.ErlPort.Equals(System.Object)">Equals(Object)</h4>
+              <div class="markdown level1 summary"><p>Determine if this instance equals to the object</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool Equals(object o)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_GetHashCode_" data-uid="NFX.Erlang.ErlPort.GetHashCode*"></a>
+              <h4 id="NFX_Erlang_ErlPort_GetHashCode" data-uid="NFX.Erlang.ErlPort.GetHashCode">GetHashCode()</h4>
+              <div class="markdown level1 summary"><p>Get internal hash code</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Match_" data-uid="NFX.Erlang.ErlPort.Match*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Match_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlPort.Match(NFX.Erlang.IErlObject)">Match(IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Perform pattern match on this Erlang term returning null if match fails
+or a dictionary of matched variables bound in the pattern</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlVarBind Match(IErlObject pattern)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">pattern</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlVarBind.html">ErlVarBind</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_Match_NFX_Erlang_IErlObject_">IErlObject.Match(IErlObject)</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Match_" data-uid="NFX.Erlang.ErlPort.Match*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Match_NFX_Erlang_IErlObject_NFX_Erlang_ErlVarBind_" data-uid="NFX.Erlang.ErlPort.Match(NFX.Erlang.IErlObject,NFX.Erlang.ErlVarBind)">Match(IErlObject, ErlVarBind)</h4>
+              <div class="markdown level1 summary"><p>Perform pattern match on this Erlang term, storing matched variables
+found in the pattern into the binding.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Match(IErlObject pattern, ErlVarBind binding)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">pattern</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlVarBind.html">ErlVarBind</a></td>
+                    <td><span class="parametername">binding</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_Match_NFX_Erlang_IErlObject_NFX_Erlang_ErlVarBind_">IErlObject.Match(IErlObject, ErlVarBind)</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Matches_" data-uid="NFX.Erlang.ErlPort.Matches*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Matches_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlPort.Matches(NFX.Erlang.IErlObject)">Matches(IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Perform pattern match on this Erlang term without binding any variables</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Matches(IErlObject pattern)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">pattern</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_Matches_NFX_Erlang_IErlObject_">IErlObject.Matches(IErlObject)</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Subst_" data-uid="NFX.Erlang.ErlPort.Subst*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Subst_NFX_Erlang_IErlObject__NFX_Erlang_ErlVarBind_" data-uid="NFX.Erlang.ErlPort.Subst(NFX.Erlang.IErlObject@,NFX.Erlang.ErlVarBind)">Subst(ref IErlObject, ErlVarBind)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Subst(ref IErlObject term, ErlVarBind binding)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">term</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlVarBind.html">ErlVarBind</a></td>
+                    <td><span class="parametername">binding</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_Subst_NFX_Erlang_IErlObject__NFX_Erlang_ErlVarBind_">IErlObject.Subst(ref IErlObject, ErlVarBind)</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_ToString_" data-uid="NFX.Erlang.ErlPort.ToString*"></a>
+              <h4 id="NFX_Erlang_ErlPort_ToString" data-uid="NFX.Erlang.ErlPort.ToString">ToString()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.ValueType.ToString()</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlPort_Visit_" data-uid="NFX.Erlang.ErlPort.Visit*"></a>
+              <h4 id="NFX_Erlang_ErlPort_Visit__1___0_System_Func___0_NFX_Erlang_IErlObject___0__" data-uid="NFX.Erlang.ErlPort.Visit``1(``0,System.Func{``0,NFX.Erlang.IErlObject,``0})">Visit&lt;TAccumulate&gt;(TAccumulate, Func&lt;TAccumulate, IErlObject, TAccumulate&gt;)</h4>
+              <div class="markdown level1 summary"><p>Execute fun for every nested term</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TAccumulate Visit&lt;TAccumulate&gt;(TAccumulate acc, Func&lt;TAccumulate, IErlObject, TAccumulate&gt; fun)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TAccumulate</span></td>
+                    <td><span class="parametername">acc</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TAccumulate, <a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a>, TAccumulate&gt;</td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TAccumulate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TAccumulate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Erlang.IErlObject.html#NFX_Erlang_IErlObject_Visit__1___0_System_Func___0_NFX_Erlang_IErlObject___0__">IErlObject.Visit&lt;TAccumulate&gt;(TAccumulate, Func&lt;TAccumulate, IErlObject, TAccumulate&gt;)</a></div>
+              <h3 id="operators">Operators
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlPort_op_Equality_" data-uid="NFX.Erlang.ErlPort.op_Equality*"></a>
+              <h4 id="NFX_Erlang_ErlPort_op_Equality_NFX_Erlang_ErlPort_NFX_Erlang_ErlPort_" data-uid="NFX.Erlang.ErlPort.op_Equality(NFX.Erlang.ErlPort,NFX.Erlang.ErlPort)">Equality(ErlPort, ErlPort)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool operator ==(ErlPort lhs, ErlPort rhs)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td><span class="parametername">lhs</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td><span class="parametername">rhs</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlPort_op_Inequality_" data-uid="NFX.Erlang.ErlPort.op_Inequality*"></a>
+              <h4 id="NFX_Erlang_ErlPort_op_Inequality_NFX_Erlang_ErlPort_NFX_Erlang_ErlPort_" data-uid="NFX.Erlang.ErlPort.op_Inequality(NFX.Erlang.ErlPort,NFX.Erlang.ErlPort)">Inequality(ErlPort, ErlPort)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool operator !=(ErlPort lhs, ErlPort rhs)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td><span class="parametername">lhs</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPort.html">ErlPort</a></td>
+                    <td><span class="parametername">rhs</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlPort_System_ICloneable_Clone_" data-uid="NFX.Erlang.ErlPort.System#ICloneable#Clone*"></a>
+              <h4 id="NFX_Erlang_ErlPort_System_ICloneable_Clone" data-uid="NFX.Erlang.ErlPort.System#ICloneable#Clone">ICloneable.Clone()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">object ICloneable.Clone()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.ICloneable.Clone()</span></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_IsNull_NFX_Erlang_IErlObject_">ErlObject.IsNull(IErlObject)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_IsInt_NFX_Erlang_IErlObject_">ErlObject.IsInt(IErlObject)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_Subst_NFX_Erlang_IErlObject_NFX_Erlang_ErlVarBind_">ErlObject.Subst(IErlObject, ErlVarBind)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_Visit__1_NFX_Erlang_IErlObject___0_System_Func___0_NFX_Erlang_IErlObject___0__">ErlObject.Visit&lt;TAccumulate&gt;(IErlObject, TAccumulate, Func&lt;TAccumulate, IErlObject, TAccumulate&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_AsType_NFX_Erlang_IErlObject_System_Type_">ErlObject.AsType(IErlObject, Type)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

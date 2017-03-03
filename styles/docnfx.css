@@ -1,0 +1,22 @@
+
+.nfx-navbar-inverse {
+  color: #000000;
+  background-color: #404040;
+  border-color: #ff4530;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+  color: #000000;
+}
+
+.nfx-navbar-inverse .navbar-nav>.active>a {
+  color: #000000;
+  background-color: #cc3726;
+}
+
+.nfx-navbar-inverse .navbar-nav>.active>a:hover,
+.nfx-navbar-inverse .navbar-nav>li>a:hover
+ {
+  color: #000000;
+  background-color: #ff6a59;
+}

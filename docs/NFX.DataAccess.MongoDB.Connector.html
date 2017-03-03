@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.DataAccess.MongoDB.Connector
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.DataAccess.MongoDB.Connector
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_DataAccess_MongoDB_Connector" data-uid="NFX.DataAccess.MongoDB.Connector">Namespace NFX.DataAccess.MongoDB.Connector
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.Collection.html">Collection</a></h4>
+                  <section><p>Represents MongoDB collections which allows to execute queries and perform CRUD operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.Connection.html">Connection</a></h4>
+                  <section><p>Represent a connection to MongoDB server. Normally developers should not work with this class directly
+as connections are managed by the Client.
+This class is not thread safe and must be Acquired first before sending data</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.Cursor.html">Cursor</a></h4>
+                  <section><p>Represents a UNIDIRECTIONAL SINGLE-pass (no buffering) cursor returned by the Find(query) command.
+The cursor needs to be closed by calling Dispose() if the eof has not been reached OR
+it will auto-close on EOF. The cursor may be enumerated only once. It is NOT thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.Database.html">Database</a></h4>
+                  <section><p>Represents an instance of MongoDB database</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.MongoClient.html">MongoClient</a></h4>
+                  <section><p>The central facade for working with MongoDB. The technology was tested against Mongo DB 3.0.6.
+The NFX MongoDB connector is purposely created for specific needs. It does not support: Mongo security, sharding and replication</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.MongoDBConnectorException.html">MongoDBConnectorException</a></h4>
+                  <section><p>Thrown by MongoDB data access classes</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.MongoDBConnectorProtocolException.html">MongoDBConnectorProtocolException</a></h4>
+                  <section><p>Thrown by MongoDB data access classes related to protocol</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.MongoDBConnectorServerException.html">MongoDBConnectorServerException</a></h4>
+                  <section><p>Thrown by MongoDB data access classes related to server errors</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.MongoDBQueryException.html">MongoDBQueryException</a></h4>
+                  <section><p>Thrown in case of query compile error</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.Query.html">Query</a></h4>
+                  <section><p>Represents a query document sent to MongoDB</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.ServerNode.html">ServerNode</a></h4>
+                  <section><p>Manages connections to the same server</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.Update.html">Update</a></h4>
+                  <section><p>Represents an update document sent to MongoDB</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.CRUDResult.html">CRUDResult</a></h4>
+                  <section><p>Returned by CRUD operations from the server, contains information about total docs affected and write errors.
+The caller needs to inspect the TotalDocumentsAffected and WriteErrors to handle error conditions</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.CRUDUpsertInfo.html">CRUDUpsertInfo</a></h4>
+                  <section><p>Provides information about an upserted document</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.CRUDWriteError.html">CRUDWriteError</a></h4>
+                  <section><p>Provides information about document write error</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.DeleteEntry.html">DeleteEntry</a></h4>
+                  <section><p>Pairs necessary information for deletes: query + limit flag</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.UpdateEntry.html">UpdateEntry</a></h4>
+                  <section><p>Pairs necessary information for updates: query, update documents along with upsert and multi flags</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.DeleteLimit.html">DeleteLimit</a></h4>
+                  <section><p>Denotes limits for deletion: None=Everything or One</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.MongoDB.Connector.WriteConcern.html">WriteConcern</a></h4>
+                  <section><p>Defines data safety modes <a href="http://docs.mongodb.org/manual/core/write-concern/">http://docs.mongodb.org/manual/core/write-concern/</a></p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

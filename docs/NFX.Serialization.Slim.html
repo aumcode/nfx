@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Serialization.Slim
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Serialization.Slim
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Serialization_Slim" data-uid="NFX.Serialization.Slim">Namespace NFX.Serialization.Slim
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.PODSlimSerializer.html">PODSlimSerializer</a></h4>
+                  <section><p>Serializes CLR object graphs using PortableObjectDocument container and Slim binary serialization algorithm.
+This class is far less performant than SlimSerializer, however it serializes types using document model that
+allows to transform/change data during serialization/deserialization.
+This class is needed for upgrades, when object metadata may change but need to be read (maybe partially) back into the new type structure</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimDeserializationCtorSkipAttribute.html">SlimDeserializationCtorSkipAttribute</a></h4>
+                  <section><p>When set on a parameterless constructor, instructs the Slim serializer not to invoke
+the ctor() on deserialization</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimDeserializationException.html">SlimDeserializationException</a></h4>
+                  <section><p>Base exception thrown by the Slim when deserializing objects</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimException.html">SlimException</a></h4>
+                  <section><p>Base exception thrown by the Slim serialization format</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimInvalidTypeHandleException.html">SlimInvalidTypeHandleException</a></h4>
+                  <section><p>Thrown by type registry when supplied type handle is invalid/not found</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimSerializationException.html">SlimSerializationException</a></h4>
+                  <section><p>Base exception thrown by the Slim when serializing objects</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimSerializationProhibitedAttribute.html">SlimSerializationProhibitedAttribute</a></h4>
+                  <section><p>When set fails an attempt to serialize the decorated type</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimSerializationProhibitedException.html">SlimSerializationProhibitedException</a></h4>
+                  <section><p>Thrown when a type is decoreted with SlimSerializationProhibitedAttribute</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.SlimSerializer.html">SlimSerializer</a></h4>
+                  <section><p>Implements Slim serialization algorithm that relies on an injectable SlimFormat-derivative (through .ctor) paremeter.
+This class was designed for highly-efficient serialization of types without versioning.
+SlimSerializer supports a concept of &quot;known types&quot; that save space by not emitting their names into stream.
+Performance note:
+This serializer yields on average 1/4 serialization and 1/2 deserialization times while compared to BinaryFormatter.
+Serialization of Record-instances usually takes 1/6 of BinaryFormatter time.
+Format takes 1/10 space for records and 1/2 for general object graphs.
+Such performance is achieved because of dynamic compilation of type-specific serialization/deserialization methods.
+This type is thread-safe for serializations/deserializations when TypeMode is set to &quot;PerCall&quot;</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.TypeRegistry.html">TypeRegistry</a></h4>
+                  <section><p>Provides a registry of types, types that do not need to be described in a serialization stream</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.ISlimSerializer.html">ISlimSerializer</a></h4>
+                  <section><p>Marker interface for formats based on Slim algorithm family</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Serialization.Slim.TypeRegistryMode.html">TypeRegistryMode</a></h4>
+                  <section><p>Denotes modes of handling type registry by Slim serializer</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

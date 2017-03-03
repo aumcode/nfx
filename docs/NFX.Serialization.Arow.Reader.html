@@ -1,0 +1,1546 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Reader
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Reader
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Serialization_Arow_Reader" data-uid="NFX.Serialization.Arow.Reader">Class Reader
+              </h1>
+              <div class="markdown level0 summary"><p>Provides low-level Arow format reading</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">Reader</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Serialization.Arow</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Serialization_Arow_Reader_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class Reader</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Serialization_Arow_Reader_DESER_TYPE_MAP" data-uid="NFX.Serialization.Arow.Reader.DESER_TYPE_MAP">DESER_TYPE_MAP</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly Dictionary&lt;Type, string&gt; DESER_TYPE_MAP</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.Type</span>, <span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ConsumeUnmatched_" data-uid="NFX.Serialization.Arow.Reader.ConsumeUnmatched*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ConsumeUnmatched_NFX_DataAccess_CRUD_TypedRow_NFX_IO_ReadingStreamer_System_String_NFX_Serialization_Arow_DataType_System_Nullable_NFX_Serialization_Arow_DataType__" data-uid="NFX.Serialization.Arow.Reader.ConsumeUnmatched(NFX.DataAccess.CRUD.TypedRow,NFX.IO.ReadingStreamer,System.String,NFX.Serialization.Arow.DataType,System.Nullable{NFX.Serialization.Arow.DataType})">ConsumeUnmatched(TypedRow, ReadingStreamer, String, DataType, Nullable&lt;DataType&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static object ConsumeUnmatched(TypedRow row, ReadingStreamer streamer, string name, DataType dt, DataType? atp)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.Arow.DataType.html">DataType</a></td>
+                    <td><span class="parametername">dt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Serialization.Arow.DataType.html">DataType</a>&gt;</td>
+                    <td><span class="parametername">atp</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadAmount_" data-uid="NFX.Serialization.Arow.Reader.ReadAmount*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadAmount_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadAmount(NFX.IO.ReadingStreamer)">ReadAmount(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Amount ReadAmount(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadArrayLength_" data-uid="NFX.Serialization.Arow.Reader.ReadArrayLength*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadArrayLength_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadArrayLength(NFX.IO.ReadingStreamer)">ReadArrayLength(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int ReadArrayLength(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadBoolean_" data-uid="NFX.Serialization.Arow.Reader.ReadBoolean*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadBoolean_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadBoolean(NFX.IO.ReadingStreamer)">ReadBoolean(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool ReadBoolean(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadByte_" data-uid="NFX.Serialization.Arow.Reader.ReadByte*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadByte_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadByte(NFX.IO.ReadingStreamer)">ReadByte(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte ReadByte(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadByteArray_" data-uid="NFX.Serialization.Arow.Reader.ReadByteArray*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadByteArray_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadByteArray(NFX.IO.ReadingStreamer)">ReadByteArray(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] ReadByteArray(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadChar_" data-uid="NFX.Serialization.Arow.Reader.ReadChar*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadChar_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadChar(NFX.IO.ReadingStreamer)">ReadChar(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static char ReadChar(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadDataType_" data-uid="NFX.Serialization.Arow.Reader.ReadDataType*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadDataType_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadDataType(NFX.IO.ReadingStreamer)">ReadDataType(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static DataType ReadDataType(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.Arow.DataType.html">DataType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadDateTime_" data-uid="NFX.Serialization.Arow.Reader.ReadDateTime*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadDateTime_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadDateTime(NFX.IO.ReadingStreamer)">ReadDateTime(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static DateTime ReadDateTime(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadDecimal_" data-uid="NFX.Serialization.Arow.Reader.ReadDecimal*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadDecimal_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadDecimal(NFX.IO.ReadingStreamer)">ReadDecimal(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static decimal ReadDecimal(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadDouble_" data-uid="NFX.Serialization.Arow.Reader.ReadDouble*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadDouble_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadDouble(NFX.IO.ReadingStreamer)">ReadDouble(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double ReadDouble(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadFID_" data-uid="NFX.Serialization.Arow.Reader.ReadFID*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadFID_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadFID(NFX.IO.ReadingStreamer)">ReadFID(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FID ReadFID(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.FID.html">FID</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadGDID_" data-uid="NFX.Serialization.Arow.Reader.ReadGDID*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadGDID_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadGDID(NFX.IO.ReadingStreamer)">ReadGDID(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static GDID ReadGDID(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadGuid_" data-uid="NFX.Serialization.Arow.Reader.ReadGuid*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadGuid_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadGuid(NFX.IO.ReadingStreamer)">ReadGuid(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Guid ReadGuid(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadHeader_" data-uid="NFX.Serialization.Arow.Reader.ReadHeader*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadHeader_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadHeader(NFX.IO.ReadingStreamer)">ReadHeader(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void ReadHeader(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadInt16_" data-uid="NFX.Serialization.Arow.Reader.ReadInt16*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadInt16_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadInt16(NFX.IO.ReadingStreamer)">ReadInt16(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static short ReadInt16(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadInt32_" data-uid="NFX.Serialization.Arow.Reader.ReadInt32*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadInt32_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadInt32(NFX.IO.ReadingStreamer)">ReadInt32(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int ReadInt32(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadInt64_" data-uid="NFX.Serialization.Arow.Reader.ReadInt64*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadInt64_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadInt64(NFX.IO.ReadingStreamer)">ReadInt64(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static long ReadInt64(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadName_" data-uid="NFX.Serialization.Arow.Reader.ReadName*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadName_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadName(NFX.IO.ReadingStreamer)">ReadName(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ulong ReadName(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadNLSMap_" data-uid="NFX.Serialization.Arow.Reader.ReadNLSMap*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadNLSMap_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadNLSMap(NFX.IO.ReadingStreamer)">ReadNLSMap(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static NLSMap ReadNLSMap(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadPilePointer_" data-uid="NFX.Serialization.Arow.Reader.ReadPilePointer*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadPilePointer_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadPilePointer(NFX.IO.ReadingStreamer)">ReadPilePointer(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static PilePointer ReadPilePointer(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadRowArray_" data-uid="NFX.Serialization.Arow.Reader.ReadRowArray*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadRowArray__1_NFX_DataAccess_CRUD_TypedRow_NFX_IO_ReadingStreamer_System_String_" data-uid="NFX.Serialization.Arow.Reader.ReadRowArray``1(NFX.DataAccess.CRUD.TypedRow,NFX.IO.ReadingStreamer,System.String)">ReadRowArray&lt;TRow&gt;(TypedRow, ReadingStreamer, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TRow[] ReadRowArray&lt;TRow&gt;(TypedRow rowScope, ReadingStreamer streamer, string name)where TRow : TypedRow, new ()</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td><span class="parametername">rowScope</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>TRow[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadRowList_" data-uid="NFX.Serialization.Arow.Reader.ReadRowList*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadRowList__1_NFX_DataAccess_CRUD_TypedRow_NFX_IO_ReadingStreamer_System_String_" data-uid="NFX.Serialization.Arow.Reader.ReadRowList``1(NFX.DataAccess.CRUD.TypedRow,NFX.IO.ReadingStreamer,System.String)">ReadRowList&lt;TRow&gt;(TypedRow, ReadingStreamer, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static List&lt;TRow&gt; ReadRowList&lt;TRow&gt;(TypedRow rowScope, ReadingStreamer streamer, string name)where TRow : TypedRow, new ()</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td><span class="parametername">rowScope</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;TRow&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadSByte_" data-uid="NFX.Serialization.Arow.Reader.ReadSByte*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadSByte_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadSByte(NFX.IO.ReadingStreamer)">ReadSByte(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static sbyte ReadSByte(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.SByte</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadSingle_" data-uid="NFX.Serialization.Arow.Reader.ReadSingle*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadSingle_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadSingle(NFX.IO.ReadingStreamer)">ReadSingle(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static float ReadSingle(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadString_" data-uid="NFX.Serialization.Arow.Reader.ReadString*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadString_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadString(NFX.IO.ReadingStreamer)">ReadString(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string ReadString(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadTimeSpan_" data-uid="NFX.Serialization.Arow.Reader.ReadTimeSpan*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadTimeSpan_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadTimeSpan(NFX.IO.ReadingStreamer)">ReadTimeSpan(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TimeSpan ReadTimeSpan(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.TimeSpan</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadUInt16_" data-uid="NFX.Serialization.Arow.Reader.ReadUInt16*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadUInt16_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadUInt16(NFX.IO.ReadingStreamer)">ReadUInt16(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ushort ReadUInt16(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadUInt32_" data-uid="NFX.Serialization.Arow.Reader.ReadUInt32*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadUInt32_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadUInt32(NFX.IO.ReadingStreamer)">ReadUInt32(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static uint ReadUInt32(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_ReadUInt64_" data-uid="NFX.Serialization.Arow.Reader.ReadUInt64*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_ReadUInt64_NFX_IO_ReadingStreamer_" data-uid="NFX.Serialization.Arow.Reader.ReadUInt64(NFX.IO.ReadingStreamer)">ReadUInt64(ReadingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ulong ReadUInt64(ReadingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Reader_TryReadRow_" data-uid="NFX.Serialization.Arow.Reader.TryReadRow*"></a>
+              <h4 id="NFX_Serialization_Arow_Reader_TryReadRow_NFX_DataAccess_CRUD_TypedRow_NFX_DataAccess_CRUD_TypedRow_NFX_IO_ReadingStreamer_System_String_" data-uid="NFX.Serialization.Arow.Reader.TryReadRow(NFX.DataAccess.CRUD.TypedRow,NFX.DataAccess.CRUD.TypedRow,NFX.IO.ReadingStreamer,System.String)">TryReadRow(TypedRow, TypedRow, ReadingStreamer, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool TryReadRow(TypedRow rowScope, TypedRow newRow, ReadingStreamer streamer, string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td><span class="parametername">rowScope</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td><span class="parametername">newRow</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

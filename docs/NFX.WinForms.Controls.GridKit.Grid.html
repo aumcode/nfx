@@ -1,0 +1,3340 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Grid
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Grid
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_WinForms_Controls_GridKit_Grid" data-uid="NFX.WinForms.Controls.GridKit.Grid">Class Grid
+              </h1>
+              <div class="markdown level0 summary"><p>Implements a Grid control base. DataRowSource is a list of row objects - if it changes in separate thread then it is row&#39;s responsibility to synchronize
+accessors as this grid makes no assumptions about thread safety</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+                  <div class="level2"><span class="xref">System.ComponentModel.Component</span></div>
+                  <div class="level3"><span class="xref">System.Windows.Forms.Control</span></div>
+                  <div class="level4"><span class="xref">Grid</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetAccessibilityObjectById(System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetAutoSizeMode(System.Windows.Forms.AutoSizeMode)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetAutoSizeMode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetPreferredSize(System.Drawing.Size)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityNotifyClients(System.Windows.Forms.AccessibleEvents, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityNotifyClients(System.Windows.Forms.AccessibleEvents, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BeginInvoke(System.Delegate)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BeginInvoke(System.Delegate, System.Object[])</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BringToFront()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Contains(System.Windows.Forms.Control)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateAccessibilityInstance()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateControlsInstance()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateGraphics()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefWndProc(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DestroyHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoDragDrop(System.Object, System.Windows.Forms.DragDropEffects)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DrawToBitmap(System.Drawing.Bitmap, System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.EndInvoke(System.IAsyncResult)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FindForm()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetTopLevel()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseKeyEvent(System.Object, System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseMouseEvent(System.Object, System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Focus()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FromChildHandle(System.IntPtr)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FromHandle(System.IntPtr)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetChildAtPoint(System.Drawing.Point, System.Windows.Forms.GetChildAtPointSkip)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetChildAtPoint(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetContainerControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetScaledBounds(System.Drawing.Rectangle, System.Drawing.SizeF, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetNextControl(System.Windows.Forms.Control, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetStyle(System.Windows.Forms.ControlStyles)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Hide()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InitLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Region)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Region, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Rectangle, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invoke(System.Delegate)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invoke(System.Delegate, System.Object[])</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokePaint(System.Windows.Forms.Control, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokePaintBackground(System.Windows.Forms.Control, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsKeyLocked(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsInputChar(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsInputKey(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsMnemonic(System.Char, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.NotifyInvalidate(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeOnClick(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnAutoSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackgroundImageChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackgroundImageLayoutChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBindingContextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCausesValidationChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnContextMenuChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCursorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDockChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnEnabledChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnFontChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnForeColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnRightToLeftChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnNotifyMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBackColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBackgroundImageChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBindingContextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentCursorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentEnabledChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentFontChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentForeColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentRightToLeftChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentVisibleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPrint(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTabIndexChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTabStopChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnVisibleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnClick(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnClientSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnControlAdded(System.Windows.Forms.ControlEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnControlRemoved(System.Windows.Forms.ControlEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCreateControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHandleCreated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLocationChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHandleDestroyed(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDoubleClick(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragEnter(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragOver(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragDrop(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnEnter(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeGotFocus(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnGotFocus(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHelpRequested(System.Windows.Forms.HelpEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnInvalidated(System.Windows.Forms.InvalidateEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyDown(System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyUp(System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLayout(System.Windows.Forms.LayoutEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeLostFocus(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLostFocus(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMarginChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseDoubleClick(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseClick(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseCaptureChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseDown(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseEnter(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseHover(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseMove(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseUp(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMove(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPaint(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPaintBackground(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnRegionChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnResize(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPreviewKeyDown(System.Windows.Forms.PreviewKeyDownEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnChangeUICues(System.Windows.Forms.UICuesEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnStyleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnSystemColorsChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnValidating(System.ComponentModel.CancelEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnValidated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PerformLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PerformLayout(System.Windows.Forms.Control, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PointToClient(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PointToScreen(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreProcessMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreProcessControlMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessCmdKey(System.Windows.Forms.Message, System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessDialogChar(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyEventArgs(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyPreview(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessMnemonic(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseDragEvent(System.Object, System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaisePaintEvent(System.Object, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RecreateHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RectangleToClient(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RectangleToScreen(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ReflectMessage(System.IntPtr, System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Refresh()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResetMouseEventArgs()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResetText()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResumeLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResumeLayout(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Scale(System.Drawing.SizeF)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ScaleControl(System.Drawing.SizeF, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Select()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Select(System.Boolean, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SelectNextControl(System.Windows.Forms.Control, System.Boolean, System.Boolean, System.Boolean, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SendToBack()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetBounds(System.Int32, System.Int32, System.Int32, System.Int32, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetClientSizeCore(System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SizeFromClientSize(System.Drawing.Size)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetStyle(System.Windows.Forms.ControlStyles, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetTopLevel(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetVisibleCore(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Windows.Forms.HorizontalAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Windows.Forms.LeftRightAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Drawing.ContentAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateHorizontal(System.Windows.Forms.HorizontalAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateLeftRight(System.Windows.Forms.LeftRightAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateContent(System.Drawing.ContentAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Show()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SuspendLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Update()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateZOrder()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateStyles()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.WndProc(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragEnter(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragOver(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragDrop(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnImeModeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityObject</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleDefaultActionDescription</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleDescription</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleRole</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AllowDrop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Anchor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AutoScrollOffset</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LayoutEngine</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImage</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageLayout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BindingContext</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Bottom</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Bounds</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanRaiseEvents</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanSelect</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Capture</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CausesValidation</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientRectangle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CompanyName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContainsFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenu</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuStrip</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Controls</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Created</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateParams</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Cursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DataBindings</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultBackColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultCursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultFont</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultForeColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMargin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMaximumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMinimumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultPadding</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DisplayRectangle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsDisposed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Disposing</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Dock</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoubleBuffered</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Enabled</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Focused</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Font</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FontHeight</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Handle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HasChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Height</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsHandleCreated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeRequired</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsAccessible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsMirrored</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Left</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Location</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Margin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MaximumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MinimumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ModifierKeys</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseButtons</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MousePosition</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Name</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Parent</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProductName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProductVersion</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RecreatingHandle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Region</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RenderRightToLeft</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResizeRedraw</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Right</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RightToLeft</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ScaleChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Site</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Size</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabIndex</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabStop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Tag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Text</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Top</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TopLevelControl</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ShowKeyboardCues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ShowFocusCues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UseWaitCursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Visible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Width</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreferredSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Padding</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanEnableIme</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeModeBase</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PropagatingImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackColorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageLayoutChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BindingContextChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CausesValidationChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientSizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuStripChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CursorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DockChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.EnabledChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FontChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ForeColorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LocationChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MarginChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RegionChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RightToLeftChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabIndexChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabStopChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TextChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.VisibleChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Click</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ControlAdded</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ControlRemoved</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragDrop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragEnter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragOver</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragLeave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GiveFeedback</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HandleCreated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HandleDestroyed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HelpRequested</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PaddingChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Paint</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.QueryContinueDrag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.QueryAccessibilityHelp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoubleClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Enter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GotFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyPress</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyUp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Layout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Leave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LostFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseDoubleClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseCaptureChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseEnter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseLeave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseHover</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseMove</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseUp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseWheel</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Move</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreviewKeyDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Resize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ChangeUICues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.StyleChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SystemColorsChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Validating</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Validated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ParentChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeModeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Dispose()</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.GetService(System.Type)</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Events</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Container</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.DesignMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Disposed</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.CreateObjRef(System.Type)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.WinForms.Controls.GridKit</h6>
+              <h6><strong>Assembly</strong>:NFX.WinForms.dll</h6>
+              <h5 id="NFX_WinForms_Controls_GridKit_Grid_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class Grid : Control, IDropTarget, ISynchronizeInvoke, IWin32Window, IArrangedElement, IBindableComponent, IComponent, IDisposable, IConfigurable, IConfigurationPersistent</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid__ctor_" data-uid="NFX.WinForms.Controls.GridKit.Grid.#ctor*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid__ctor" data-uid="NFX.WinForms.Controls.GridKit.Grid.#ctor">Grid()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Grid()</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CONFIG_COLUMN_SECTION" data-uid="NFX.WinForms.Controls.GridKit.Grid.CONFIG_COLUMN_SECTION">CONFIG_COLUMN_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_COLUMN_SECTION = &quot;column&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CONFIG_GRID_SECTION" data-uid="NFX.WinForms.Controls.GridKit.Grid.CONFIG_GRID_SECTION">CONFIG_GRID_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_GRID_SECTION = &quot;grid&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CONFIG_ID_ATTR" data-uid="NFX.WinForms.Controls.GridKit.Grid.CONFIG_ID_ATTR">CONFIG_ID_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_ID_ATTR = &quot;id&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_DEFAULT_ROW_HEIGHT" data-uid="NFX.WinForms.Controls.GridKit.Grid.DEFAULT_ROW_HEIGHT">DEFAULT_ROW_HEIGHT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int DEFAULT_ROW_HEIGHT = 22</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_MIN_ROW_HEIGHT" data-uid="NFX.WinForms.Controls.GridKit.Grid.MIN_ROW_HEIGHT">MIN_ROW_HEIGHT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int MIN_ROW_HEIGHT = 1</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_REBUILD_TIMEOUT_MS" data-uid="NFX.WinForms.Controls.GridKit.Grid.REBUILD_TIMEOUT_MS">REBUILD_TIMEOUT_MS</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int REBUILD_TIMEOUT_MS = 100</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_CellSelectionAllowed_" data-uid="NFX.WinForms.Controls.GridKit.Grid.CellSelectionAllowed*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CellSelectionAllowed" data-uid="NFX.WinForms.Controls.GridKit.Grid.CellSelectionAllowed">CellSelectionAllowed</h4>
+              <div class="markdown level1 summary"><p>Determines whether grid supports cell selection. Cell selection only works when Multiselect=false</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool CellSelectionAllowed { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_CellView_" data-uid="NFX.WinForms.Controls.GridKit.Grid.CellView*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CellView" data-uid="NFX.WinForms.Controls.GridKit.Grid.CellView">CellView</h4>
+              <div class="markdown level1 summary"><p>Returns reference to cellview - an area where cells are displayed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Browsable(false)]
+public CellView CellView { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.CellView.html">CellView</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ColumnHidingAllowed_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnHidingAllowed*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ColumnHidingAllowed" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnHidingAllowed">ColumnHidingAllowed</h4>
+              <div class="markdown level1 summary"><p>Determines whether user can hide columns</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ColumnHidingAllowed { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ColumnRepositionAllowed_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnRepositionAllowed*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ColumnRepositionAllowed" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnRepositionAllowed">ColumnRepositionAllowed</h4>
+              <div class="markdown level1 summary"><p>Determines whether user can reposition columns</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ColumnRepositionAllowed { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ColumnResizeAllowed_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnResizeAllowed*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ColumnResizeAllowed" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnResizeAllowed">ColumnResizeAllowed</h4>
+              <div class="markdown level1 summary"><p>Determines whether user can resize columns</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ColumnResizeAllowed { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_Columns_" data-uid="NFX.WinForms.Controls.GridKit.Grid.Columns*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_Columns" data-uid="NFX.WinForms.Controls.GridKit.Grid.Columns">Columns</h4>
+              <div class="markdown level1 summary"><p>Accesses columns</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IList&lt;Column&gt; Columns { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_DataRowHeight_" data-uid="NFX.WinForms.Controls.GridKit.Grid.DataRowHeight*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_DataRowHeight" data-uid="NFX.WinForms.Controls.GridKit.Grid.DataRowHeight">DataRowHeight</h4>
+              <div class="markdown level1 summary"><p>Provides default height for all data rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int DataRowHeight { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_DataRowSource_" data-uid="NFX.WinForms.Controls.GridKit.Grid.DataRowSource*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_DataRowSource" data-uid="NFX.WinForms.Controls.GridKit.Grid.DataRowSource">DataRowSource</h4>
+              <div class="markdown level1 summary"><p>Binds grid to a source of rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Browsable(false)]
+public IList DataRowSource { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.IList</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ForeColor_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ForeColor*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ForeColor" data-uid="NFX.WinForms.Controls.GridKit.Grid.ForeColor">ForeColor</h4>
+              <div class="markdown level1 summary"><p>Gets/sets the text color of the grid.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Color ForeColor { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Color</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_HeaderRowHeight_" data-uid="NFX.WinForms.Controls.GridKit.Grid.HeaderRowHeight*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_HeaderRowHeight" data-uid="NFX.WinForms.Controls.GridKit.Grid.HeaderRowHeight">HeaderRowHeight</h4>
+              <div class="markdown level1 summary"><p>Provides default height for header row (column captions)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int HeaderRowHeight { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_HeaderStyle_" data-uid="NFX.WinForms.Controls.GridKit.Grid.HeaderStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_HeaderStyle" data-uid="NFX.WinForms.Controls.GridKit.Grid.HeaderStyle">HeaderStyle</h4>
+              <div class="markdown level1 summary"><p>Returns a style object for all header cells in the grid</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style HeaderStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ID_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ID*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ID" data-uid="NFX.WinForms.Controls.GridKit.Grid.ID">ID</h4>
+              <div class="markdown level1 summary"><p>Specifies ID for this grid instance. IDs are needed for grid config persistence</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ID { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_MultiSelect_" data-uid="NFX.WinForms.Controls.GridKit.Grid.MultiSelect*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_MultiSelect" data-uid="NFX.WinForms.Controls.GridKit.Grid.MultiSelect">MultiSelect</h4>
+              <div class="markdown level1 summary"><p>Determines whether grid supports selection of more than one row</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool MultiSelect { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_MultiSelectWithCtrl_" data-uid="NFX.WinForms.Controls.GridKit.Grid.MultiSelectWithCtrl*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_MultiSelectWithCtrl" data-uid="NFX.WinForms.Controls.GridKit.Grid.MultiSelectWithCtrl">MultiSelectWithCtrl</h4>
+              <div class="markdown level1 summary"><p>Determines whether grid requires control to be pressed for multi-select</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool MultiSelectWithCtrl { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ReadOnly_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ReadOnly*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ReadOnly" data-uid="NFX.WinForms.Controls.GridKit.Grid.ReadOnly">ReadOnly</h4>
+              <div class="markdown level1 summary"><p>Determines whether grid data can be modified</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ReadOnly { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_RepositioningColumn_" data-uid="NFX.WinForms.Controls.GridKit.Grid.RepositioningColumn*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_RepositioningColumn" data-uid="NFX.WinForms.Controls.GridKit.Grid.RepositioningColumn">RepositioningColumn</h4>
+              <div class="markdown level1 summary"><p>Returns a column being repositioned</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Column RepositioningColumn { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ResizingColumn_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ResizingColumn*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ResizingColumn" data-uid="NFX.WinForms.Controls.GridKit.Grid.ResizingColumn">ResizingColumn</h4>
+              <div class="markdown level1 summary"><p>Returns a column being resized</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Column ResizingColumn { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SelectAllRowsAllowed_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectAllRowsAllowed*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SelectAllRowsAllowed" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectAllRowsAllowed">SelectAllRowsAllowed</h4>
+              <div class="markdown level1 summary"><p>When true Ctrl+A key will select all rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool SelectAllRowsAllowed { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SelectedCell_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectedCell*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SelectedCell" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectedCell">SelectedCell</h4>
+              <div class="markdown level1 summary"><p>Returns the last cell that was selected in the grid  </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Browsable(false)]
+public CellElement SelectedCell { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.CellElement.html">CellElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SelectedRows_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectedRows*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SelectedRows" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectedRows">SelectedRows</h4>
+              <div class="markdown level1 summary"><p>Enumerates selected rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Browsable(false)]
+public IEnumerable&lt;object&gt; SelectedRows { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SelectedStyle_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectedStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SelectedStyle" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectedStyle">SelectedStyle</h4>
+              <div class="markdown level1 summary"><p>Returns a style object for all data cells in the grid which are in selected rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style SelectedStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SortingAllowed_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SortingAllowed*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SortingAllowed" data-uid="NFX.WinForms.Controls.GridKit.Grid.SortingAllowed">SortingAllowed</h4>
+              <div class="markdown level1 summary"><p>Determines whether user can sort data by clicking on column headers</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool SortingAllowed { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_Style_" data-uid="NFX.WinForms.Controls.GridKit.Grid.Style*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_Style" data-uid="NFX.WinForms.Controls.GridKit.Grid.Style">Style</h4>
+              <div class="markdown level1 summary"><p>Returns a style object for all data cells in the grid </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style Style { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_UserChangingLayout_" data-uid="NFX.WinForms.Controls.GridKit.Grid.UserChangingLayout*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_UserChangingLayout" data-uid="NFX.WinForms.Controls.GridKit.Grid.UserChangingLayout">UserChangingLayout</h4>
+              <div class="markdown level1 summary"><p>Indicates whether user is changing layout of columns or rows such as size or column positions</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool UserChangingLayout { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_BeginBatchChange_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BeginBatchChange*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_BeginBatchChange" data-uid="NFX.WinForms.Controls.GridKit.Grid.BeginBatchChange">BeginBatchChange()</h4>
+              <div class="markdown level1 summary"><p>Marks the beginning of the series of changes that are going to be performed on the grid so
+the grid does not have to be rebuild unnecessarily many times.
+The complementary method is EndBatchChange() that does rebuild the grid IF it is needed.
+These methods respect call nesting, so only the last call to EndBatchChange() would result in rebuild</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void BeginBatchChange()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_BuildDefaultHeaderStyle_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BuildDefaultHeaderStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_BuildDefaultHeaderStyle_NFX_WinForms_Controls_Style_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BuildDefaultHeaderStyle(NFX.WinForms.Controls.Style)">BuildDefaultHeaderStyle(Style)</h4>
+              <div class="markdown level1 summary"><p>Builds default style for header row cells - column titles</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void BuildDefaultHeaderStyle(Style style)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_BuildDefaultSelectedStyle_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BuildDefaultSelectedStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_BuildDefaultSelectedStyle_NFX_WinForms_Controls_Style_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BuildDefaultSelectedStyle(NFX.WinForms.Controls.Style)">BuildDefaultSelectedStyle(Style)</h4>
+              <div class="markdown level1 summary"><p>Builds default style for data cells in selected rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void BuildDefaultSelectedStyle(Style style)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_BuildDefaultStyle_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BuildDefaultStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_BuildDefaultStyle_NFX_WinForms_Controls_Style_" data-uid="NFX.WinForms.Controls.GridKit.Grid.BuildDefaultStyle(NFX.WinForms.Controls.Style)">BuildDefaultStyle(Style)</h4>
+              <div class="markdown level1 summary"><p>Builds default style for data cells in non-selected rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void BuildDefaultStyle(Style style)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_Configure_" data-uid="NFX.WinForms.Controls.GridKit.Grid.Configure*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_Configure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.WinForms.Controls.GridKit.Grid.Configure(NFX.Environment.IConfigSectionNode)">Configure(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Reads column configuration from config node that should contain [grid] sub elemnt/s. The id attribute should either match or be absent</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Configure(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigurable.html#NFX_Environment_IConfigurable_Configure_NFX_Environment_IConfigSectionNode_">IConfigurable.Configure(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ContextMenuOpening_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ContextMenuOpening*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ContextMenuOpening_System_Object_System_ComponentModel_CancelEventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ContextMenuOpening(System.Object,System.ComponentModel.CancelEventArgs)">ContextMenuOpening(Object, CancelEventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void ContextMenuOpening(object sender, CancelEventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">sender</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.ComponentModel.CancelEventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_CopyToClipboard_" data-uid="NFX.WinForms.Controls.GridKit.Grid.CopyToClipboard*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CopyToClipboard" data-uid="NFX.WinForms.Controls.GridKit.Grid.CopyToClipboard">CopyToClipboard()</h4>
+              <div class="markdown level1 summary"><p>Copies selection to clipboard</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void CopyToClipboard()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_DispatchCellSelection_" data-uid="NFX.WinForms.Controls.GridKit.Grid.DispatchCellSelection*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_DispatchCellSelection_NFX_WinForms_Controls_GridKit_CellElement_" data-uid="NFX.WinForms.Controls.GridKit.Grid.DispatchCellSelection(NFX.WinForms.Controls.GridKit.CellElement)">DispatchCellSelection(CellElement)</h4>
+              <div class="markdown level1 summary"><p>Dispatches appropriate events and performs row selection in the grid</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void DispatchCellSelection(CellElement cell)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.CellElement.html">CellElement</a></td>
+                    <td><span class="parametername">cell</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_Dispose_" data-uid="NFX.WinForms.Controls.GridKit.Grid.Dispose*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_Dispose_System_Boolean_" data-uid="NFX.WinForms.Controls.GridKit.Grid.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">disposing</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.Dispose(System.Boolean)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_EndBatchChange_" data-uid="NFX.WinForms.Controls.GridKit.Grid.EndBatchChange*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_EndBatchChange" data-uid="NFX.WinForms.Controls.GridKit.Grid.EndBatchChange">EndBatchChange()</h4>
+              <div class="markdown level1 summary"><p>Complementary method for BeginBatchChange()</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void EndBatchChange()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_GetRowHeight_" data-uid="NFX.WinForms.Controls.GridKit.Grid.GetRowHeight*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_GetRowHeight_System_Object_" data-uid="NFX.WinForms.Controls.GridKit.Grid.GetRowHeight(System.Object)">GetRowHeight(Object)</h4>
+              <div class="markdown level1 summary"><p>Returns height for a row, if row==null then header row assumed (where column titles are displayed).
+This implementation returns Data/Header RowHeight properties. Override to do conditional row measurements depending on row instance </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int GetRowHeight(object row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_IsRowSelected_" data-uid="NFX.WinForms.Controls.GridKit.Grid.IsRowSelected*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_IsRowSelected_System_Object_" data-uid="NFX.WinForms.Controls.GridKit.Grid.IsRowSelected(System.Object)">IsRowSelected(Object)</h4>
+              <div class="markdown level1 summary"><p>Returns true if row is selected in grid</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsRowSelected(object row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_LayoutSubControls_" data-uid="NFX.WinForms.Controls.GridKit.Grid.LayoutSubControls*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_LayoutSubControls" data-uid="NFX.WinForms.Controls.GridKit.Grid.LayoutSubControls">LayoutSubControls()</h4>
+              <div class="markdown level1 summary"><p>Performs layout of sub controls, such as element host, scroll bars etc.. </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void LayoutSubControls()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnCellSelection_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnCellSelection*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnCellSelection_NFX_WinForms_Controls_GridKit_CellElement_NFX_WinForms_Controls_GridKit_CellElement_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnCellSelection(NFX.WinForms.Controls.GridKit.CellElement,NFX.WinForms.Controls.GridKit.CellElement)">OnCellSelection(CellElement, CellElement)</h4>
+              <div class="markdown level1 summary"><p>Invokes cell selection  event</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnCellSelection(CellElement oldCell, CellElement newCell)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.CellElement.html">CellElement</a></td>
+                    <td><span class="parametername">oldCell</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.CellElement.html">CellElement</a></td>
+                    <td><span class="parametername">newCell</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnColumnAttributesChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnColumnAttributesChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnColumnAttributesChanged_NFX_WinForms_Controls_GridKit_Column_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnColumnAttributesChanged(NFX.WinForms.Controls.GridKit.Column)">OnColumnAttributesChanged(Column)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnColumnAttributesChanged(Column column)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td><span class="parametername">column</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnColumnsChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnColumnsChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnColumnsChanged_System_EventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnColumnsChanged(System.EventArgs)">OnColumnsChanged(EventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnColumnsChanged(EventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnColumnSortChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnColumnSortChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnColumnSortChanged_NFX_WinForms_Controls_GridKit_Column_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnColumnSortChanged(NFX.WinForms.Controls.GridKit.Column)">OnColumnSortChanged(Column)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnColumnSortChanged(Column column)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td><span class="parametername">column</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnContextMenuStripChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnContextMenuStripChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnContextMenuStripChanged_System_EventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnContextMenuStripChanged(System.EventArgs)">OnContextMenuStripChanged(EventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void OnContextMenuStripChanged(EventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.OnContextMenuStripChanged(System.EventArgs)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnDataRowSourceChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnDataRowSourceChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnDataRowSourceChanged_System_EventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnDataRowSourceChanged(System.EventArgs)">OnDataRowSourceChanged(EventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnDataRowSourceChanged(EventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnMouseWheel_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnMouseWheel*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnMouseWheel_System_Windows_Forms_MouseEventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnMouseWheel(System.Windows.Forms.MouseEventArgs)">OnMouseWheel(MouseEventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void OnMouseWheel(MouseEventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.MouseEventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.OnMouseWheel(System.Windows.Forms.MouseEventArgs)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnNotifyDataSourceChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnNotifyDataSourceChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnNotifyDataSourceChanged_NFX_WinForms_Controls_GridKit_NotifyDataSourceChangedEventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnNotifyDataSourceChanged(NFX.WinForms.Controls.GridKit.NotifyDataSourceChangedEventArgs)">OnNotifyDataSourceChanged(NotifyDataSourceChangedEventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnNotifyDataSourceChanged(NotifyDataSourceChangedEventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.NotifyDataSourceChangedEventArgs.html">NotifyDataSourceChangedEventArgs</a></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnPaddingChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnPaddingChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnPaddingChanged_System_EventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnPaddingChanged(System.EventArgs)">OnPaddingChanged(EventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void OnPaddingChanged(EventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.OnPaddingChanged(System.EventArgs)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_OnRowSelectionChanged_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnRowSelectionChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_OnRowSelectionChanged_System_EventArgs_" data-uid="NFX.WinForms.Controls.GridKit.Grid.OnRowSelectionChanged(System.EventArgs)">OnRowSelectionChanged(EventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnRowSelectionChanged(EventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_PersistConfiguration_" data-uid="NFX.WinForms.Controls.GridKit.Grid.PersistConfiguration*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_PersistConfiguration_NFX_Environment_ConfigSectionNode_" data-uid="NFX.WinForms.Controls.GridKit.Grid.PersistConfiguration(NFX.Environment.ConfigSectionNode)">PersistConfiguration(ConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Persists column configuration to config node. [grid] subnode will be created under specified node pr reused if one already exists</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void PersistConfiguration(ConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigurationPersistent.html#NFX_Environment_IConfigurationPersistent_PersistConfiguration_NFX_Environment_ConfigSectionNode_">IConfigurationPersistent.PersistConfiguration(ConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ProcessDialogKey_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ProcessDialogKey*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ProcessDialogKey_System_Windows_Forms_Keys_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ProcessDialogKey(System.Windows.Forms.Keys)">ProcessDialogKey(Keys)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override bool ProcessDialogKey(Keys keyData)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.Keys</span></td>
+                    <td><span class="parametername">keyData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.ProcessDialogKey(System.Windows.Forms.Keys)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_RepositionColumn_" data-uid="NFX.WinForms.Controls.GridKit.Grid.RepositionColumn*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_RepositionColumn_NFX_WinForms_Controls_GridKit_Column_NFX_WinForms_Controls_GridKit_Column_" data-uid="NFX.WinForms.Controls.GridKit.Grid.RepositionColumn(NFX.WinForms.Controls.GridKit.Column,NFX.WinForms.Controls.GridKit.Column)">RepositionColumn(Column, Column)</h4>
+              <div class="markdown level1 summary"><p>Repositions one column to the position of another</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void RepositionColumn(Column column, Column other)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td><span class="parametername">column</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_ResetRowHeight_" data-uid="NFX.WinForms.Controls.GridKit.Grid.ResetRowHeight*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ResetRowHeight" data-uid="NFX.WinForms.Controls.GridKit.Grid.ResetRowHeight">ResetRowHeight()</h4>
+              <div class="markdown level1 summary"><p>Reset data row hight to its original value it had prior to changing with assignment to DataRowHeight</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ResetRowHeight()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SelectAllRows_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectAllRows*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SelectAllRows" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectAllRows">SelectAllRows()</h4>
+              <div class="markdown level1 summary"><p>Selects all rows.
+The method will not select any rows if SelectAllRowsAllowed is false.</p>
+<returns>Number of rows selected</returns>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int SelectAllRows()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SelectRow_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectRow*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SelectRow_System_Object_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SelectRow(System.Object)">SelectRow(Object)</h4>
+              <div class="markdown level1 summary"><p>Adds row to selection. If row is not in grid&#39;s source rowset then it will never be highlighted in grid (because it never shows in grid then)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SelectRow(object row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SendDataSourceChangedNotification_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SendDataSourceChangedNotification*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SendDataSourceChangedNotification_System_Object_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SendDataSourceChangedNotification(System.Object)">SendDataSourceChangedNotification(Object)</h4>
+              <div class="markdown level1 summary"><p>Notifies grid that data/metadata(such as comment) has changed for specified row, and row has to be redrawn if it is visible. 
+If row is null the grid is rebuilt. Pass null when rows where added or deleted to/from grid data source
+Returns true if grid was rebuilt when row was visible or null.
+This method is NOT THREAD SAFE and runs in GUI thread.
+This method does call aggregation, that is - when this method is called many times within timespan it will rebuild grid only once at the end.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool SendDataSourceChangedNotification(object row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_SetBoundsCore_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SetBoundsCore*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_SetBoundsCore_System_Int32_System_Int32_System_Int32_System_Int32_System_Windows_Forms_BoundsSpecified_" data-uid="NFX.WinForms.Controls.GridKit.Grid.SetBoundsCore(System.Int32,System.Int32,System.Int32,System.Int32,System.Windows.Forms.BoundsSpecified)">SetBoundsCore(Int32, Int32, Int32, Int32, BoundsSpecified)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">width</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">height</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.BoundsSpecified</span></td>
+                    <td><span class="parametername">specified</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.SetBoundsCore(System.Int32, System.Int32, System.Int32, System.Int32, System.Windows.Forms.BoundsSpecified)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_TryFindColumnByID_" data-uid="NFX.WinForms.Controls.GridKit.Grid.TryFindColumnByID*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_TryFindColumnByID_System_String_" data-uid="NFX.WinForms.Controls.GridKit.Grid.TryFindColumnByID(System.String)">TryFindColumnByID(String)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a column by its&#39; id or returns null</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Column TryFindColumnByID(string id)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.Column.html">Column</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_UnSelectAllRows_" data-uid="NFX.WinForms.Controls.GridKit.Grid.UnSelectAllRows*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_UnSelectAllRows" data-uid="NFX.WinForms.Controls.GridKit.Grid.UnSelectAllRows">UnSelectAllRows()</h4>
+              <div class="markdown level1 summary"><p>Unselects all rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void UnSelectAllRows()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_GridKit_Grid_UnSelectRow_" data-uid="NFX.WinForms.Controls.GridKit.Grid.UnSelectRow*"></a>
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_UnSelectRow_System_Object_" data-uid="NFX.WinForms.Controls.GridKit.Grid.UnSelectRow(System.Object)">UnSelectRow(Object)</h4>
+              <div class="markdown level1 summary"><p>Deletes row from selection. Returns true if row was selected</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool UnSelectRow(object row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="events">Events
+              </h3>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_CellSelection" data-uid="NFX.WinForms.Controls.GridKit.Grid.CellSelection">CellSelection</h4>
+              <div class="markdown level1 summary"><p>Occurs when user selects the cell</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event CellSelectionEventHandler CellSelection</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.CellSelectionEventHandler.html">CellSelectionEventHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ColumnAttributesChanged" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnAttributesChanged">ColumnAttributesChanged</h4>
+              <div class="markdown level1 summary"><p>Occurs after columns attributes changed such as visibility,width, titile etc..</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event ColumnAttributesChangedEventHandler ColumnAttributesChanged</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.ColumnAttributesChangedEventHandler.html">ColumnAttributesChangedEventHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ColumnsChanged" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnsChanged">ColumnsChanged</h4>
+              <div class="markdown level1 summary"><p>Occurs after columns have been added/deleted</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler ColumnsChanged</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventHandler</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_ColumnSortChanged" data-uid="NFX.WinForms.Controls.GridKit.Grid.ColumnSortChanged">ColumnSortChanged</h4>
+              <div class="markdown level1 summary"><p>Occurs after columns sort changed </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event ColumnAttributesChangedEventHandler ColumnSortChanged</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.ColumnAttributesChangedEventHandler.html">ColumnAttributesChangedEventHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_DataRowSourceChanged" data-uid="NFX.WinForms.Controls.GridKit.Grid.DataRowSourceChanged">DataRowSourceChanged</h4>
+              <div class="markdown level1 summary"><p>Occurs after data row source has changed and grid displays whole different dataset</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler DataRowSourceChanged</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventHandler</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_NotifyDataSourceChanged" data-uid="NFX.WinForms.Controls.GridKit.Grid.NotifyDataSourceChanged">NotifyDataSourceChanged</h4>
+              <div class="markdown level1 summary"><p>Occurs when external data source changes and notifies the grid</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event NotifyDataSourceChangedEventHandler NotifyDataSourceChanged</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.GridKit.NotifyDataSourceChangedEventHandler.html">NotifyDataSourceChangedEventHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_WinForms_Controls_GridKit_Grid_RowSelectionChanged" data-uid="NFX.WinForms.Controls.GridKit.Grid.RowSelectionChanged">RowSelectionChanged</h4>
+              <div class="markdown level1 summary"><p>Occurs after rows have been selected/unselected</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler RowSelectionChanged</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventHandler</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

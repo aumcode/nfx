@@ -1,0 +1,1945 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WritingStreamer
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WritingStreamer
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_IO_WritingStreamer" data-uid="NFX.IO.WritingStreamer">Class WritingStreamer
+              </h1>
+              <div class="markdown level0 summary"><p>Writes primitives to stream</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.IO.Streamer.html">Streamer</a></div>
+                  <div class="level2"><span class="xref">WritingStreamer</span></div>
+                  <div class="level3"><a class="xref" href="NFX.IO.SlimWriter.html">SlimWriter</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_UTF8Encoding">Streamer.UTF8Encoding</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_m_Buff32">Streamer.m_Buff32</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_m_Stream">Streamer.m_Stream</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_m_Encoding">Streamer.m_Encoding</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_Format">Streamer.Format</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_Stream">Streamer.Stream</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_Encoding">Streamer.Encoding</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_BindStream_System_IO_Stream_">Streamer.BindStream(Stream)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_UnbindStream">Streamer.UnbindStream()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.IO</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_IO_WritingStreamer_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract class WritingStreamer : Streamer</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_IO_WritingStreamer__ctor_" data-uid="NFX.IO.WritingStreamer.#ctor*"></a>
+              <h4 id="NFX_IO_WritingStreamer__ctor_System_Text_Encoding_" data-uid="NFX.IO.WritingStreamer.#ctor(System.Text.Encoding)">WritingStreamer(Encoding)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected WritingStreamer(Encoding encoding = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Flush_" data-uid="NFX.IO.WritingStreamer.Flush*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Flush" data-uid="NFX.IO.WritingStreamer.Flush">Flush()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Flush()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_ApplicationModel_Pile_PilePointer_" data-uid="NFX.IO.WritingStreamer.Write(NFX.ApplicationModel.Pile.PilePointer)">Write(PilePointer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(PilePointer value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_Collections_StringMap_" data-uid="NFX.IO.WritingStreamer.Write(NFX.Collections.StringMap)">Write(StringMap)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(StringMap map)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Collections.StringMap.html">StringMap</a></td>
+                    <td><span class="parametername">map</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_DataAccess_Distributed_GDID_" data-uid="NFX.IO.WritingStreamer.Write(NFX.DataAccess.Distributed.GDID)">Write(GDID)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(GDID value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_FID_" data-uid="NFX.IO.WritingStreamer.Write(NFX.FID)">Write(FID)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(FID value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.FID.html">FID</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_Financial_Amount_" data-uid="NFX.IO.WritingStreamer.Write(NFX.Financial.Amount)">Write(Amount)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(Amount value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_Glue_Protocol_MethodSpec_" data-uid="NFX.IO.WritingStreamer.Write(NFX.Glue.Protocol.MethodSpec)">Write(MethodSpec)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(MethodSpec spec)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.MethodSpec.html">MethodSpec</a></td>
+                    <td><span class="parametername">spec</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_Glue_Protocol_TypeSpec_" data-uid="NFX.IO.WritingStreamer.Write(NFX.Glue.Protocol.TypeSpec)">Write(TypeSpec)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(TypeSpec spec)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.TypeSpec.html">TypeSpec</a></td>
+                    <td><span class="parametername">spec</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_IO_MetaHandle_" data-uid="NFX.IO.WritingStreamer.Write(NFX.IO.MetaHandle)">Write(MetaHandle)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(MetaHandle value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.MetaHandle.html">MetaHandle</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_IO_VarIntStr_" data-uid="NFX.IO.WritingStreamer.Write(NFX.IO.VarIntStr)">Write(VarIntStr)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(VarIntStr value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.VarIntStr.html">VarIntStr</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_NFX_Serialization_JSON_NLSMap_" data-uid="NFX.IO.WritingStreamer.Write(NFX.Serialization.JSON.NLSMap)">Write(NLSMap)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(NLSMap map)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a></td>
+                    <td><span class="parametername">map</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Boolean_" data-uid="NFX.IO.WritingStreamer.Write(System.Boolean)">Write(Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(bool value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Byte_" data-uid="NFX.IO.WritingStreamer.Write(System.Byte)">Write(Byte)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(byte value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Byte___" data-uid="NFX.IO.WritingStreamer.Write(System.Byte[])">Write(Byte[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(byte[] buffer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buffer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Char_" data-uid="NFX.IO.WritingStreamer.Write(System.Char)">Write(Char)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(char ch)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td><span class="parametername">ch</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Char___" data-uid="NFX.IO.WritingStreamer.Write(System.Char[])">Write(Char[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(char[] buffer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span>[]</td>
+                    <td><span class="parametername">buffer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_DateTime_" data-uid="NFX.IO.WritingStreamer.Write(System.DateTime)">Write(DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(DateTime value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Decimal_" data-uid="NFX.IO.WritingStreamer.Write(System.Decimal)">Write(Decimal)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(decimal value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Decimal___" data-uid="NFX.IO.WritingStreamer.Write(System.Decimal[])">Write(Decimal[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(decimal[] value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span>[]</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Double_" data-uid="NFX.IO.WritingStreamer.Write(System.Double)">Write(Double)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(double value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Double___" data-uid="NFX.IO.WritingStreamer.Write(System.Double[])">Write(Double[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(double[] value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span>[]</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Guid_" data-uid="NFX.IO.WritingStreamer.Write(System.Guid)">Write(Guid)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(Guid value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Int16_" data-uid="NFX.IO.WritingStreamer.Write(System.Int16)">Write(Int16)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(short value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Int32_" data-uid="NFX.IO.WritingStreamer.Write(System.Int32)">Write(Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(int value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Int32___" data-uid="NFX.IO.WritingStreamer.Write(System.Int32[])">Write(Int32[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(int[] value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Int64_" data-uid="NFX.IO.WritingStreamer.Write(System.Int64)">Write(Int64)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(long value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Int64___" data-uid="NFX.IO.WritingStreamer.Write(System.Int64[])">Write(Int64[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(long[] value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span>[]</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_ApplicationModel_Pile_PilePointer__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.ApplicationModel.Pile.PilePointer})">Write(Nullable&lt;PilePointer&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(PilePointer? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_DataAccess_Distributed_GDID__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.DataAccess.Distributed.GDID})">Write(Nullable&lt;GDID&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(GDID? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_FID__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.FID})">Write(Nullable&lt;FID&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(FID? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.FID.html">FID</a>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_Financial_Amount__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.Financial.Amount})">Write(Nullable&lt;Amount&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(Amount? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Financial.Amount.html">Amount</a>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_IO_MetaHandle__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.IO.MetaHandle})">Write(Nullable&lt;MetaHandle&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(MetaHandle? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.IO.MetaHandle.html">MetaHandle</a>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_IO_VarIntStr__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.IO.VarIntStr})">Write(Nullable&lt;VarIntStr&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(VarIntStr? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.IO.VarIntStr.html">VarIntStr</a>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_NFX_Serialization_JSON_NLSMap__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{NFX.Serialization.JSON.NLSMap})">Write(Nullable&lt;NLSMap&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(NLSMap? map)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a>&gt;</td>
+                    <td><span class="parametername">map</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Boolean__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Boolean})">Write(Nullable&lt;Boolean&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(bool ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Byte__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Byte})">Write(Nullable&lt;Byte&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(byte ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Char__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Char})">Write(Nullable&lt;Char&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(char ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_DateTime__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.DateTime})">Write(Nullable&lt;DateTime&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(DateTime? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Decimal__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Decimal})">Write(Nullable&lt;Decimal&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(decimal ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Double__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Double})">Write(Nullable&lt;Double&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(double ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Guid__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Guid})">Write(Nullable&lt;Guid&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(Guid? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Int16__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Int16})">Write(Nullable&lt;Int16&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(short ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int16</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Int32__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Int32})">Write(Nullable&lt;Int32&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(int ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Int64__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Int64})">Write(Nullable&lt;Int64&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(long ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_SByte__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.SByte})">Write(Nullable&lt;SByte&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(sbyte ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.SByte</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_Single__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.Single})">Write(Nullable&lt;Single&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(float ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Single</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_TimeSpan__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.TimeSpan})">Write(Nullable&lt;TimeSpan&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(TimeSpan? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_UInt16__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.UInt16})">Write(Nullable&lt;UInt16&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(ushort ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt16</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_UInt32__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.UInt32})">Write(Nullable&lt;UInt32&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(uint ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt32</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Nullable_System_UInt64__" data-uid="NFX.IO.WritingStreamer.Write(System.Nullable{System.UInt64})">Write(Nullable&lt;UInt64&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(ulong ? value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_SByte_" data-uid="NFX.IO.WritingStreamer.Write(System.SByte)">Write(SByte)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(sbyte value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.SByte</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Single_" data-uid="NFX.IO.WritingStreamer.Write(System.Single)">Write(Single)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(float value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_Single___" data-uid="NFX.IO.WritingStreamer.Write(System.Single[])">Write(Single[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(float[] value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span>[]</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_String_" data-uid="NFX.IO.WritingStreamer.Write(System.String)">Write(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(string value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_String___" data-uid="NFX.IO.WritingStreamer.Write(System.String[])">Write(String[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(string[] array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_TimeSpan_" data-uid="NFX.IO.WritingStreamer.Write(System.TimeSpan)">Write(TimeSpan)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(TimeSpan value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.TimeSpan</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_UInt16_" data-uid="NFX.IO.WritingStreamer.Write(System.UInt16)">Write(UInt16)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(ushort value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_UInt32_" data-uid="NFX.IO.WritingStreamer.Write(System.UInt32)">Write(UInt32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(uint value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_WritingStreamer_Write_" data-uid="NFX.IO.WritingStreamer.Write*"></a>
+              <h4 id="NFX_IO_WritingStreamer_Write_System_UInt64_" data-uid="NFX.IO.WritingStreamer.Write(System.UInt64)">Write(UInt64)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract void Write(ulong value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

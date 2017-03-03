@@ -1,0 +1,2476 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CommonApplicationLogic
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CommonApplicationLogic
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_ApplicationModel_CommonApplicationLogic" data-uid="NFX.ApplicationModel.CommonApplicationLogic">Class CommonApplicationLogic
+              </h1>
+              <div class="markdown level0 summary"><p>Provides base implementation of IApplication for various application kinds</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><span class="xref">CommonApplicationLogic</span></div>
+                  <div class="level3"><a class="xref" href="NFX.ApplicationModel.ServiceBaseApplication.html">ServiceBaseApplication</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.ApplicationModel</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_ApplicationModel_CommonApplicationLogic_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[ConfigMacroContext]
+public abstract class CommonApplicationLogic : DisposableObject, IDisposable, IApplication, INamed, ILocalizedTimeProvider</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic__ctor_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.#ctor*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic__ctor_System_String_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.#ctor(System.String)">CommonApplicationLogic(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected CommonApplicationLogic(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_APP_NAME_ATTR" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_APP_NAME_ATTR">CONFIG_APP_NAME_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_APP_NAME_ATTR = &quot;application-name&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_ASSEMBLY_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_ASSEMBLY_SECTION">CONFIG_ASSEMBLY_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_ASSEMBLY_SECTION = &quot;assembly&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_DATA_STORE_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_DATA_STORE_SECTION">CONFIG_DATA_STORE_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_DATA_STORE_SECTION = &quot;data-store&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_ENABLED_ATTR" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_ENABLED_ATTR">CONFIG_ENABLED_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_ENABLED_ATTR = &quot;enabled&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_EVENT_TIMER_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_EVENT_TIMER_SECTION">CONFIG_EVENT_TIMER_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_EVENT_TIMER_SECTION = &quot;event-timer&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_GLUE_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_GLUE_SECTION">CONFIG_GLUE_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_GLUE_SECTION = &quot;glue&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_INSTRUMENTATION_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_INSTRUMENTATION_SECTION">CONFIG_INSTRUMENTATION_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_INSTRUMENTATION_SECTION = &quot;instrumentation&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_LOG_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_LOG_SECTION">CONFIG_LOG_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_LOG_SECTION = &quot;log&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_MEMORY_MANAGEMENT_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_MEMORY_MANAGEMENT_SECTION">CONFIG_MEMORY_MANAGEMENT_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_MEMORY_MANAGEMENT_SECTION = &quot;memory-management&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_OBJECT_STORE_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_OBJECT_STORE_SECTION">CONFIG_OBJECT_STORE_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_OBJECT_STORE_SECTION = &quot;object-store&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_PATH_ATTR" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_PATH_ATTR">CONFIG_PATH_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_PATH_ATTR = &quot;path&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_PRELOAD_ASSEMBLIES_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_PRELOAD_ASSEMBLIES_SECTION">CONFIG_PRELOAD_ASSEMBLIES_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_PRELOAD_ASSEMBLIES_SECTION = &quot;preload-assemblies&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_SECURITY_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_SECURITY_SECTION">CONFIG_SECURITY_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_SECURITY_SECTION = &quot;security&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_STARTER_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_STARTER_SECTION">CONFIG_STARTER_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_STARTER_SECTION = &quot;starter&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_STARTERS_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_STARTERS_SECTION">CONFIG_STARTERS_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_STARTERS_SECTION = &quot;starters&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_SWITCH" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_SWITCH">CONFIG_SWITCH</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_SWITCH = &quot;config&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_THROTTLING_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_THROTTLING_SECTION">CONFIG_THROTTLING_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_THROTTLING_SECTION = &quot;throttling&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_TIMESOURCE_SECTION" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_TIMESOURCE_SECTION">CONFIG_TIMESOURCE_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_TIMESOURCE_SECTION = &quot;time-source&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CONFIG_UNIT_TEST_ATTR" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CONFIG_UNIT_TEST_ATTR">CONFIG_UNIT_TEST_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_UNIT_TEST_ATTR = &quot;unit-test&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_ConfigRoot" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_ConfigRoot">m_ConfigRoot</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected ConfigSectionNode m_ConfigRoot</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_ConfigSettings" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_ConfigSettings">m_ConfigSettings</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected List&lt;IConfigSettings&gt; m_ConfigSettings</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.Environment.IConfigSettings.html">IConfigSettings</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_DataStore" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_DataStore">m_DataStore</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IDataStoreImplementation m_DataStore</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreImplementation.html">IDataStoreImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_EventTimer" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_EventTimer">m_EventTimer</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IEventTimerImplementation m_EventTimer</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.IEventTimerImplementation.html">IEventTimerImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_FinishNotifiables" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_FinishNotifiables">m_FinishNotifiables</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected List&lt;IApplicationFinishNotifiable&gt; m_FinishNotifiables</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.ApplicationModel.IApplicationFinishNotifiable.html">IApplicationFinishNotifiable</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_Glue" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_Glue">m_Glue</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IGlueImplementation m_Glue</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.IGlueImplementation.html">IGlueImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_Instrumentation" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_Instrumentation">m_Instrumentation</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IInstrumentationImplementation m_Instrumentation</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Instrumentation.IInstrumentationImplementation.html">IInstrumentationImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_Log" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_Log">m_Log</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected ILogImplementation m_Log</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.ILogImplementation.html">ILogImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_ObjectStore" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_ObjectStore">m_ObjectStore</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IObjectStoreImplementation m_ObjectStore</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Volatile.IObjectStoreImplementation.html">IObjectStoreImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_SecurityManager" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_SecurityManager">m_SecurityManager</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected ISecurityManagerImplementation m_SecurityManager</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Security.ISecurityManagerImplementation.html">ISecurityManagerImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_Throttling" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_Throttling">m_Throttling</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IThrottlingImplementation m_Throttling</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Throttling.IThrottlingImplementation.html">IThrottlingImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_m_TimeSource" data-uid="NFX.ApplicationModel.CommonApplicationLogic.m_TimeSource">m_TimeSource</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected ITimeSourceImplementation m_TimeSource</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.ITimeSourceImplementation.html">ITimeSourceImplementation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Active_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Active*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Active" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Active">Active</h4>
+              <div class="markdown level1 summary"><p>Returns true when application instance is active and working. This property returns false as soon as application finalization starts on shutdown
+Use to exit long-running loops and such</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Active { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Active">IApplication.Active</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_ConfigRoot_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.ConfigRoot*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_ConfigRoot" data-uid="NFX.ApplicationModel.CommonApplicationLogic.ConfigRoot">ConfigRoot</h4>
+              <div class="markdown level1 summary"><p>Provides access to configuration root for the whole application</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode ConfigRoot { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_ConfigRoot">IApplication.ConfigRoot</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_DataStore_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.DataStore*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_DataStore" data-uid="NFX.ApplicationModel.CommonApplicationLogic.DataStore">DataStore</h4>
+              <div class="markdown level1 summary"><p>References application data store</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IDataStore DataStore { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStore.html">IDataStore</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_DataStore">IApplication.DataStore</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_EventTimer_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.EventTimer*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_EventTimer" data-uid="NFX.ApplicationModel.CommonApplicationLogic.EventTimer">EventTimer</h4>
+              <div class="markdown level1 summary"><p>References event timer which maintains and runs scheduled Event instances</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEventTimer EventTimer { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.IEventTimer.html">IEventTimer</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_EventTimer">IApplication.EventTimer</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Glue_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Glue*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Glue" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Glue">Glue</h4>
+              <div class="markdown level1 summary"><p>References glue that can be used to interconnect remote instances</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IGlue Glue { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.IGlue.html">IGlue</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Glue">IApplication.Glue</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_InstanceID_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.InstanceID*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_InstanceID" data-uid="NFX.ApplicationModel.CommonApplicationLogic.InstanceID">InstanceID</h4>
+              <div class="markdown level1 summary"><p>Returns unique identifier of this running instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Guid InstanceID { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_InstanceID">IApplication.InstanceID</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Instrumentation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Instrumentation*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Instrumentation" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Instrumentation">Instrumentation</h4>
+              <div class="markdown level1 summary"><p>References application instrumentation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IInstrumentation Instrumentation { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Instrumentation.IInstrumentation.html">IInstrumentation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Instrumentation">IApplication.Instrumentation</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_IsUnitTest_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.IsUnitTest*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_IsUnitTest" data-uid="NFX.ApplicationModel.CommonApplicationLogic.IsUnitTest">IsUnitTest</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsUnitTest { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_IsUnitTest">IApplication.IsUnitTest</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_LocalizedTime_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.LocalizedTime*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_LocalizedTime" data-uid="NFX.ApplicationModel.CommonApplicationLogic.LocalizedTime">LocalizedTime</h4>
+              <div class="markdown level1 summary"><p>Returns current time localized per TimeLocation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime LocalizedTime { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Time.ILocalizedTimeProvider.html#NFX_Time_ILocalizedTimeProvider_LocalizedTime">ILocalizedTimeProvider.LocalizedTime</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Log_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Log*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Log" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Log">Log</h4>
+              <div class="markdown level1 summary"><p>References application logger</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ILog Log { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.ILog.html">ILog</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Log">IApplication.Log</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Name_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Name*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Name" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Name">Name</h4>
+              <div class="markdown level1 summary"><p>Returns the name of this application</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.INamed.html#NFX_INamed_Name">INamed.Name</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_ObjectStore_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.ObjectStore*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_ObjectStore" data-uid="NFX.ApplicationModel.CommonApplicationLogic.ObjectStore">ObjectStore</h4>
+              <div class="markdown level1 summary"><p>References application object store. Objects will survive application termination</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IObjectStore ObjectStore { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Volatile.IObjectStore.html">IObjectStore</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_ObjectStore">IApplication.ObjectStore</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_SecurityManager_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.SecurityManager*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_SecurityManager" data-uid="NFX.ApplicationModel.CommonApplicationLogic.SecurityManager">SecurityManager</h4>
+              <div class="markdown level1 summary"><p>References security manager that performs user authentication based on passed credentials and other security-related global tasks</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ISecurityManager SecurityManager { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Security.ISecurityManager.html">ISecurityManager</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_SecurityManager">IApplication.SecurityManager</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_ShutdownStarted_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.ShutdownStarted*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_ShutdownStarted" data-uid="NFX.ApplicationModel.CommonApplicationLogic.ShutdownStarted">ShutdownStarted</h4>
+              <div class="markdown level1 summary"><p>Returns true to indicate that Dispose() has been called and shutdown has started</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ShutdownStarted { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_ShutdownStarted">IApplication.ShutdownStarted</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_StartTime_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.StartTime*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_StartTime" data-uid="NFX.ApplicationModel.CommonApplicationLogic.StartTime">StartTime</h4>
+              <div class="markdown level1 summary"><p>Returns timestamp when application started as localized app time</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime StartTime { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_StartTime">IApplication.StartTime</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Stopping_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Stopping*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Stopping" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Stopping">Stopping</h4>
+              <div class="markdown level1 summary"><p>Returns true to indicate that Stop() was called</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Stopping { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Stopping">IApplication.Stopping</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Throttling_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Throttling*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Throttling" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Throttling">Throttling</h4>
+              <div class="markdown level1 summary"><p>References application throttling</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IThrottling Throttling { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Throttling.IThrottling.html">IThrottling</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Throttling">IApplication.Throttling</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_TimeLocation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.TimeLocation*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_TimeLocation" data-uid="NFX.ApplicationModel.CommonApplicationLogic.TimeLocation">TimeLocation</h4>
+              <div class="markdown level1 summary"><p>Returns time location of this LocalizedTimeProvider implementation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TimeLocation TimeLocation { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.TimeLocation.html">TimeLocation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Time.ILocalizedTimeProvider.html#NFX_Time_ILocalizedTimeProvider_TimeLocation">ILocalizedTimeProvider.TimeLocation</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_TimeSource_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.TimeSource*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_TimeSource" data-uid="NFX.ApplicationModel.CommonApplicationLogic.TimeSource">TimeSource</h4>
+              <div class="markdown level1 summary"><p>References time source - an entity that supplies local and UTC times. The concrete implementation
+may elect to get accurate times from the network or other external precision time sources (i.e. NASA atomic clock)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ITimeSource TimeSource { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.ITimeSource.html">ITimeSource</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_TimeSource">IApplication.TimeSource</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeDataStoreStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeDataStoreStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeDataStoreStart_NFX_DataAccess_IDataStoreImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeDataStoreStart(NFX.DataAccess.IDataStoreImplementation)">BeforeDataStoreStart(IDataStoreImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep data store implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeDataStoreStart(IDataStoreImplementation datastoreImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreImplementation.html">IDataStoreImplementation</a></td>
+                    <td><span class="parametername">datastoreImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeEventTimerStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeEventTimerStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeEventTimerStart_NFX_Time_IEventTimerImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeEventTimerStart(NFX.Time.IEventTimerImplementation)">BeforeEventTimerStart(IEventTimerImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep event timer implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeEventTimerStart(IEventTimerImplementation eventTimerImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.IEventTimerImplementation.html">IEventTimerImplementation</a></td>
+                    <td><span class="parametername">eventTimerImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeGlueStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeGlueStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeGlueStart_NFX_Glue_IGlueImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeGlueStart(NFX.Glue.IGlueImplementation)">BeforeGlueStart(IGlueImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep glue implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeGlueStart(IGlueImplementation glueImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.IGlueImplementation.html">IGlueImplementation</a></td>
+                    <td><span class="parametername">glueImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeInstrumentationStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeInstrumentationStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeInstrumentationStart_NFX_Instrumentation_IInstrumentationImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeInstrumentationStart(NFX.Instrumentation.IInstrumentationImplementation)">BeforeInstrumentationStart(IInstrumentationImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep instr implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeInstrumentationStart(IInstrumentationImplementation instrumentationImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Instrumentation.IInstrumentationImplementation.html">IInstrumentationImplementation</a></td>
+                    <td><span class="parametername">instrumentationImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeLogStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeLogStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeLogStart_NFX_Log_ILogImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeLogStart(NFX.Log.ILogImplementation)">BeforeLogStart(ILogImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep log implementation i.e. inject log destinations programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeLogStart(ILogImplementation logImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.ILogImplementation.html">ILogImplementation</a></td>
+                    <td><span class="parametername">logImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeObjectStoreStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeObjectStoreStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeObjectStoreStart_NFX_ApplicationModel_Volatile_IObjectStoreImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeObjectStoreStart(NFX.ApplicationModel.Volatile.IObjectStoreImplementation)">BeforeObjectStoreStart(IObjectStoreImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep object store implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeObjectStoreStart(IObjectStoreImplementation objectstoreImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Volatile.IObjectStoreImplementation.html">IObjectStoreImplementation</a></td>
+                    <td><span class="parametername">objectstoreImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeSecurityManagerStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeSecurityManagerStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeSecurityManagerStart_NFX_Security_ISecurityManagerImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeSecurityManagerStart(NFX.Security.ISecurityManagerImplementation)">BeforeSecurityManagerStart(ISecurityManagerImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep security manager implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeSecurityManagerStart(ISecurityManagerImplementation securitymanagerImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Security.ISecurityManagerImplementation.html">ISecurityManagerImplementation</a></td>
+                    <td><span class="parametername">securitymanagerImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeThrottlingStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeThrottlingStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeThrottlingStart_NFX_Throttling_IThrottlingImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeThrottlingStart(NFX.Throttling.IThrottlingImplementation)">BeforeThrottlingStart(IThrottlingImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep throttling implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeThrottlingStart(IThrottlingImplementation throttlingImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Throttling.IThrottlingImplementation.html">IThrottlingImplementation</a></td>
+                    <td><span class="parametername">throttlingImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_BeforeTimeSourceStart_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeTimeSourceStart*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_BeforeTimeSourceStart_NFX_Time_ITimeSourceImplementation_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.BeforeTimeSourceStart(NFX.Time.ITimeSourceImplementation)">BeforeTimeSourceStart(ITimeSourceImplementation)</h4>
+              <div class="markdown level1 summary"><p>Override to prep time source implementation i.e. inject something programmaticaly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BeforeTimeSourceStart(ITimeSourceImplementation timesourceImplementation)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.ITimeSourceImplementation.html">ITimeSourceImplementation</a></td>
+                    <td><span class="parametername">timesourceImplementation</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_CleanupApplication_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CleanupApplication*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_CleanupApplication" data-uid="NFX.ApplicationModel.CommonApplicationLogic.CleanupApplication">CleanupApplication()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void CleanupApplication()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Destructor_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Destructor*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Destructor" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Destructor">DisposableObject.Destructor()</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_DoCleanupApplication_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.DoCleanupApplication*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_DoCleanupApplication" data-uid="NFX.ApplicationModel.CommonApplicationLogic.DoCleanupApplication">DoCleanupApplication()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void DoCleanupApplication()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_DoInitApplication_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.DoInitApplication*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_DoInitApplication" data-uid="NFX.ApplicationModel.CommonApplicationLogic.DoInitApplication">DoInitApplication()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void DoInitApplication()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_GetDefaultConfigFileName_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.GetDefaultConfigFileName*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_GetDefaultConfigFileName" data-uid="NFX.ApplicationModel.CommonApplicationLogic.GetDefaultConfigFileName">GetDefaultConfigFileName()</h4>
+              <div class="markdown level1 summary"><p>Tries to find a configuration file name looping through various supported estensions</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected string GetDefaultConfigFileName()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><p>File name that exists or empty string</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_GetStarters_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.GetStarters*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_GetStarters" data-uid="NFX.ApplicationModel.CommonApplicationLogic.GetStarters">GetStarters()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IEnumerable&lt;IApplicationStarter&gt; GetStarters()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.ApplicationModel.IApplicationStarter.html">IApplicationStarter</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_InitApplication_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.InitApplication*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_InitApplication" data-uid="NFX.ApplicationModel.CommonApplicationLogic.InitApplication">InitApplication()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void InitApplication()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_LocalizedTimeToUniversalTime_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.LocalizedTimeToUniversalTime*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_LocalizedTimeToUniversalTime_System_DateTime_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.LocalizedTimeToUniversalTime(System.DateTime)">LocalizedTimeToUniversalTime(DateTime)</h4>
+              <div class="markdown level1 summary"><p>Converts localized time to UTC time as of TimeLocation property</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime LocalizedTimeToUniversalTime(DateTime local)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">local</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Time.ILocalizedTimeProvider.html#NFX_Time_ILocalizedTimeProvider_LocalizedTimeToUniversalTime_System_DateTime_">ILocalizedTimeProvider.LocalizedTimeToUniversalTime(DateTime)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_MakeNewSessionInstance_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.MakeNewSessionInstance*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_MakeNewSessionInstance_System_Guid_NFX_Security_User_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.MakeNewSessionInstance(System.Guid,NFX.Security.User)">MakeNewSessionInstance(Guid, User)</h4>
+              <div class="markdown level1 summary"><p>Makes BaseSession instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual ISession MakeNewSessionInstance(Guid sessionID, User user = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td><span class="parametername">sessionID</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Security.User.html">User</a></td>
+                    <td><span class="parametername">user</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ISession.html">ISession</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_MakeNewSessionInstance_System_Guid_NFX_Security_User_">IApplication.MakeNewSessionInstance(Guid, User)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_NotifyAllConfigSettingsAboutChange_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.NotifyAllConfigSettingsAboutChange*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_NotifyAllConfigSettingsAboutChange" data-uid="NFX.ApplicationModel.CommonApplicationLogic.NotifyAllConfigSettingsAboutChange">NotifyAllConfigSettingsAboutChange()</h4>
+              <div class="markdown level1 summary"><p>Forces notification of all registered IConfigSettings-implementers about configuration change</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void NotifyAllConfigSettingsAboutChange()</code></pre>
+              </div>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_NotifyAllConfigSettingsAboutChange">IApplication.NotifyAllConfigSettingsAboutChange()</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_NotifyAllConfigSettingsAboutChange_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.NotifyAllConfigSettingsAboutChange*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_NotifyAllConfigSettingsAboutChange_NFX_Environment_IConfigSectionNode_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.NotifyAllConfigSettingsAboutChange(NFX.Environment.IConfigSectionNode)">NotifyAllConfigSettingsAboutChange(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Forces notification of all registered IConfigSettings-implementers about configuration change</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void NotifyAllConfigSettingsAboutChange(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_PreloadAssemblies_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.PreloadAssemblies*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_PreloadAssemblies_System_Boolean_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.PreloadAssemblies(System.Boolean)">PreloadAssemblies(Boolean)</h4>
+              <div class="markdown level1 summary"><p>RESERVED for future use. Loads assemblies specified in &#39;preload-assemblies&#39; section from disk optionally checking the &#39;enabled&#39; flag.
+This method is called on application startup by the framework</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool PreloadAssemblies(bool checkFlag = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">checkFlag</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_RegisterAppFinishNotifiable_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.RegisterAppFinishNotifiable*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_RegisterAppFinishNotifiable_NFX_ApplicationModel_IApplicationFinishNotifiable_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.RegisterAppFinishNotifiable(NFX.ApplicationModel.IApplicationFinishNotifiable)">RegisterAppFinishNotifiable(IApplicationFinishNotifiable)</h4>
+              <div class="markdown level1 summary"><p>Registers an instance of IApplicationFinishNotifiable with application container to receive a call when
+underlying application instance will finish its lifecycle</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool RegisterAppFinishNotifiable(IApplicationFinishNotifiable notifiable)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.IApplicationFinishNotifiable.html">IApplicationFinishNotifiable</a></td>
+                    <td><span class="parametername">notifiable</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True if notifiable instance was not found and was added</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_RegisterAppFinishNotifiable_NFX_ApplicationModel_IApplicationFinishNotifiable_">IApplication.RegisterAppFinishNotifiable(IApplicationFinishNotifiable)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_RegisterConfigSettings_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.RegisterConfigSettings*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_RegisterConfigSettings_NFX_Environment_IConfigSettings_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.RegisterConfigSettings(NFX.Environment.IConfigSettings)">RegisterConfigSettings(IConfigSettings)</h4>
+              <div class="markdown level1 summary"><p>Registers an instance of IConfigSettings with application container to receive a call when
+underlying app configuration changes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool RegisterConfigSettings(IConfigSettings settings)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSettings.html">IConfigSettings</a></td>
+                    <td><span class="parametername">settings</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True if settings instance was not found and was added</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_RegisterConfigSettings_NFX_Environment_IConfigSettings_">IApplication.RegisterConfigSettings(IConfigSettings)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_Stop_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Stop*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_Stop" data-uid="NFX.ApplicationModel.CommonApplicationLogic.Stop">Stop()</h4>
+              <div class="markdown level1 summary"><p>Initiates the stop of the application by setting its Stopping to true and Active to false so dependent services may start to terminate</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Stop()</code></pre>
+              </div>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_Stop">IApplication.Stop()</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_UniversalTimeToLocalizedTime_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.UniversalTimeToLocalizedTime*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_UniversalTimeToLocalizedTime_System_DateTime_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.UniversalTimeToLocalizedTime(System.DateTime)">UniversalTimeToLocalizedTime(DateTime)</h4>
+              <div class="markdown level1 summary"><p>Converts universal time to local time as of TimeLocation property</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime UniversalTimeToLocalizedTime(DateTime utc)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">utc</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Time.ILocalizedTimeProvider.html#NFX_Time_ILocalizedTimeProvider_UniversalTimeToLocalizedTime_System_DateTime_">ILocalizedTimeProvider.UniversalTimeToLocalizedTime(DateTime)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_UnregisterAppFinishNotifiable_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.UnregisterAppFinishNotifiable*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_UnregisterAppFinishNotifiable_NFX_ApplicationModel_IApplicationFinishNotifiable_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.UnregisterAppFinishNotifiable(NFX.ApplicationModel.IApplicationFinishNotifiable)">UnregisterAppFinishNotifiable(IApplicationFinishNotifiable)</h4>
+              <div class="markdown level1 summary"><p>Removes the registration of IConfigSettings from application container</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool UnregisterAppFinishNotifiable(IApplicationFinishNotifiable notifiable)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.IApplicationFinishNotifiable.html">IApplicationFinishNotifiable</a></td>
+                    <td><span class="parametername">notifiable</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True if notifiable instance was found and removed</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_UnregisterAppFinishNotifiable_NFX_ApplicationModel_IApplicationFinishNotifiable_">IApplication.UnregisterAppFinishNotifiable(IApplicationFinishNotifiable)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_UnregisterConfigSettings_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.UnregisterConfigSettings*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_UnregisterConfigSettings_NFX_Environment_IConfigSettings_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.UnregisterConfigSettings(NFX.Environment.IConfigSettings)">UnregisterConfigSettings(IConfigSettings)</h4>
+              <div class="markdown level1 summary"><p>Removes the registration of IConfigSettings from application container</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool UnregisterConfigSettings(IConfigSettings settings)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSettings.html">IConfigSettings</a></td>
+                    <td><span class="parametername">settings</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True if settings instance was found and removed</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.IApplication.html#NFX_ApplicationModel_IApplication_UnregisterConfigSettings_NFX_Environment_IConfigSettings_">IApplication.UnregisterConfigSettings(IConfigSettings)</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_CommonApplicationLogic_WriteLog_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.WriteLog*"></a>
+              <h4 id="NFX_ApplicationModel_CommonApplicationLogic_WriteLog_NFX_Log_MessageType_System_String_System_String_System_Exception_System_String_System_Int32_System_Object_" data-uid="NFX.ApplicationModel.CommonApplicationLogic.WriteLog(NFX.Log.MessageType,System.String,System.String,System.Exception,System.String,System.Int32,System.Object)">WriteLog(MessageType, String, String, Exception, String, Int32, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void WriteLog(MessageType type, string from, string msgText, Exception error = null, string file = &quot;&quot;, int line = 0, object pars = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">msgText</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Exception</span></td>
+                    <td><span class="parametername">error</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">line</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">pars</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

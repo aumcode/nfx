@@ -1,0 +1,1038 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CartesianUtils
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CartesianUtils
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Geometry_CartesianUtils" data-uid="NFX.Geometry.CartesianUtils">Class CartesianUtils
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">CartesianUtils</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Geometry</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Geometry_CartesianUtils_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class CartesianUtils</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Geometry_CartesianUtils_PI_DEGREES" data-uid="NFX.Geometry.CartesianUtils.PI_DEGREES">PI_DEGREES</h4>
+              <div class="markdown level1 summary"><p>Represents count of degrees in PI</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const double PI_DEGREES = 180</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Geometry_CartesianUtils_PI_HALF" data-uid="NFX.Geometry.CartesianUtils.PI_HALF">PI_HALF</h4>
+              <div class="markdown level1 summary"><p>Pi/2 constant</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const double PI_HALF = 1.5707963267948966</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Geometry_CartesianUtils_PI2" data-uid="NFX.Geometry.CartesianUtils.PI2">PI2</h4>
+              <div class="markdown level1 summary"><p>Pi*2 constant</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const double PI2 = 6.2831853071795862</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_AngleToMapDirection_" data-uid="NFX.Geometry.CartesianUtils.AngleToMapDirection*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_AngleToMapDirection_System_Double_" data-uid="NFX.Geometry.CartesianUtils.AngleToMapDirection(System.Double)">AngleToMapDirection(Double)</h4>
+              <div class="markdown level1 summary"><p>Converts a radian angular coordinate into map direction</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static MapDirection AngleToMapDirection(double angle)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">angle</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Geometry.MapDirection.html">MapDirection</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_AzimuthDeg_" data-uid="NFX.Geometry.CartesianUtils.AzimuthDeg*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_AzimuthDeg_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.Geometry.CartesianUtils.AzimuthDeg(System.Int32,System.Int32,System.Int32,System.Int32)">AzimuthDeg(Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Calculates azimuth for vector in degrees</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double AzimuthDeg(int centerX, int centerY, int pointX, int pointY)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointY</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_AzimuthOfRadix_" data-uid="NFX.Geometry.CartesianUtils.AzimuthOfRadix*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_AzimuthOfRadix_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.Geometry.CartesianUtils.AzimuthOfRadix(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">AzimuthOfRadix(Int32, Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Calculates azimuth for vector in degrees</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int AzimuthOfRadix(int centerX, int centerY, int pointX, int pointY, int radix)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">radix</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_AzimuthRad_" data-uid="NFX.Geometry.CartesianUtils.AzimuthRad*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_AzimuthRad_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.Geometry.CartesianUtils.AzimuthRad(System.Int32,System.Int32,System.Int32,System.Int32)">AzimuthRad(Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Calculates azimuth for vector in rads</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double AzimuthRad(int centerX, int centerY, int pointX, int pointY)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointY</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_CalculatePerimeterViolationArea_" data-uid="NFX.Geometry.CartesianUtils.CalculatePerimeterViolationArea*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_CalculatePerimeterViolationArea_System_Drawing_Rectangle_System_Drawing_Rectangle_" data-uid="NFX.Geometry.CartesianUtils.CalculatePerimeterViolationArea(System.Drawing.Rectangle,System.Drawing.Rectangle)">CalculatePerimeterViolationArea(Rectangle, Rectangle)</h4>
+              <div class="markdown level1 summary"><p>Calculates an area of an inner rectangle that violates outside perimeter</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int CalculatePerimeterViolationArea(Rectangle perimeter, Rectangle inner)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Rectangle</span></td>
+                    <td><span class="parametername">perimeter</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Rectangle</span></td>
+                    <td><span class="parametername">inner</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_Distance_" data-uid="NFX.Geometry.CartesianUtils.Distance*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_Distance_System_Drawing_Point_System_Drawing_Point_" data-uid="NFX.Geometry.CartesianUtils.Distance(System.Drawing.Point,System.Drawing.Point)">Distance(Point, Point)</h4>
+              <div class="markdown level1 summary"><p>Calculates distance between two points</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int Distance(Point p1, Point p2)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Point</span></td>
+                    <td><span class="parametername">p1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Point</span></td>
+                    <td><span class="parametername">p2</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_Distance_" data-uid="NFX.Geometry.CartesianUtils.Distance*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_Distance_System_Drawing_PointF_System_Drawing_PointF_" data-uid="NFX.Geometry.CartesianUtils.Distance(System.Drawing.PointF,System.Drawing.PointF)">Distance(PointF, PointF)</h4>
+              <div class="markdown level1 summary"><p>Calculates distance between two points</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static float Distance(PointF p1, PointF p2)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.PointF</span></td>
+                    <td><span class="parametername">p1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Drawing.PointF</span></td>
+                    <td><span class="parametername">p2</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_Distance_" data-uid="NFX.Geometry.CartesianUtils.Distance*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_Distance_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.Geometry.CartesianUtils.Distance(System.Int32,System.Int32,System.Int32,System.Int32)">Distance(Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Calculates distance between two points</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int Distance(int x1, int y1, int x2, int y2)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_Distance_" data-uid="NFX.Geometry.CartesianUtils.Distance*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_Distance_System_Single_System_Single_System_Single_System_Single_" data-uid="NFX.Geometry.CartesianUtils.Distance(System.Single,System.Single,System.Single,System.Single)">Distance(Single, Single, Single, Single)</h4>
+              <div class="markdown level1 summary"><p>Calculates distance between two points</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static float Distance(float x1, float y1, float x2, float y2)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_FindRayFromRectangleCenterSideIntersection_" data-uid="NFX.Geometry.CartesianUtils.FindRayFromRectangleCenterSideIntersection*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_FindRayFromRectangleCenterSideIntersection_System_Drawing_Rectangle_System_Double_" data-uid="NFX.Geometry.CartesianUtils.FindRayFromRectangleCenterSideIntersection(System.Drawing.Rectangle,System.Double)">FindRayFromRectangleCenterSideIntersection(Rectangle, Double)</h4>
+              <div class="markdown level1 summary"><p>Returns a point of intersection between a ray cast from the center of a rectangle
+under certain polar coordinate angle and a rectangle side</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Point FindRayFromRectangleCenterSideIntersection(Rectangle rect, double theta)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Rectangle</span></td>
+                    <td><span class="parametername">rect</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">theta</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Point</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_MapDirectionToAngle_" data-uid="NFX.Geometry.CartesianUtils.MapDirectionToAngle*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_MapDirectionToAngle_NFX_Geometry_MapDirection_" data-uid="NFX.Geometry.CartesianUtils.MapDirectionToAngle(NFX.Geometry.MapDirection)">MapDirectionToAngle(MapDirection)</h4>
+              <div class="markdown level1 summary"><p>Converts map direction to angular coordinate in radians</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double MapDirectionToAngle(MapDirection direction)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Geometry.MapDirection.html">MapDirection</a></td>
+                    <td><span class="parametername">direction</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_PointToPolarPoint_" data-uid="NFX.Geometry.CartesianUtils.PointToPolarPoint*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_PointToPolarPoint_System_Drawing_Point_System_Drawing_Point_" data-uid="NFX.Geometry.CartesianUtils.PointToPolarPoint(System.Drawing.Point,System.Drawing.Point)">PointToPolarPoint(Point, Point)</h4>
+              <div class="markdown level1 summary"><p>Converts Point to polar coordinate point</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static PolarPoint PointToPolarPoint(Point center, Point point)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Point</span></td>
+                    <td><span class="parametername">center</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Point</span></td>
+                    <td><span class="parametername">point</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Geometry.PolarPoint.html">PolarPoint</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_ToDeg_" data-uid="NFX.Geometry.CartesianUtils.ToDeg*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_ToDeg_System_Double_" data-uid="NFX.Geometry.CartesianUtils.ToDeg(System.Double)">ToDeg(Double)</h4>
+              <div class="markdown level1 summary"><p>Converts radians into degrees</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double ToDeg(this double radians)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">radians</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_ToRad_" data-uid="NFX.Geometry.CartesianUtils.ToRad*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_ToRad_System_Double_" data-uid="NFX.Geometry.CartesianUtils.ToRad(System.Double)">ToRad(Double)</h4>
+              <div class="markdown level1 summary"><p>Converts degrees into radians</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double ToRad(this double degrees)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">degrees</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_VectorToPolarPoint_" data-uid="NFX.Geometry.CartesianUtils.VectorToPolarPoint*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_VectorToPolarPoint_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.Geometry.CartesianUtils.VectorToPolarPoint(System.Int32,System.Int32,System.Int32,System.Int32)">VectorToPolarPoint(Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Converts vector in &#39;x1, y1, x2, y2&#39; representation to polar coordinate point</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static PolarPoint VectorToPolarPoint(int centerX, int centerY, int pointX, int pointY)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">pointY</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Geometry.PolarPoint.html">PolarPoint</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Geometry_CartesianUtils_WrapAngle_" data-uid="NFX.Geometry.CartesianUtils.WrapAngle*"></a>
+              <h4 id="NFX_Geometry_CartesianUtils_WrapAngle_System_Double_System_Double_" data-uid="NFX.Geometry.CartesianUtils.WrapAngle(System.Double,System.Double)">WrapAngle(Double, Double)</h4>
+              <div class="markdown level1 summary"><p>Modifies an angle by delta value ensuring that resulting angle is always between 0 and 2Pi</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static double WrapAngle(double angle, double delta)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">angle</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">delta</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1968 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PdfPage
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PdfPage
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Media_PDF_DocumentModel_PdfPage" data-uid="NFX.Media.PDF.DocumentModel.PdfPage">Class PdfPage
+              </h1>
+              <div class="markdown level0 summary"><p>PDF Page</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.Media.PDF.DocumentModel.PdfObject.html">PdfObject</a></div>
+                  <div class="level2"><span class="xref">PdfPage</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.Media.PDF.DocumentModel.PdfObject.html#NFX_Media_PDF_DocumentModel_PdfObject_ObjectId">PdfObject.ObjectId</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Media.PDF.DocumentModel.PdfObject.html#NFX_Media_PDF_DocumentModel_PdfObject_GetReference">PdfObject.GetReference()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Media.PDF.DocumentModel</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Media_PDF_DocumentModel_PdfPage_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class PdfPage : PdfObject, IPdfObject</code></pre>
+              </div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_Elements_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Elements*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_Elements" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Elements">Elements</h4>
+              <div class="markdown level1 summary"><p>Page elements</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public List&lt;PdfElement&gt; Elements { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.Media.PDF.Elements.PdfElement.html">PdfElement</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_Height_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Height*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_Height" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Height">Height</h4>
+              <div class="markdown level1 summary"><p>Page&#39;s height</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public float Height { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_UserUnit_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.UserUnit*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_UserUnit" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.UserUnit">UserUnit</h4>
+              <div class="markdown level1 summary"><p>User space units
+(the default user space unit is 1/72 inch)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public float UserUnit { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_Width_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Width*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_Width" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Width">Width</h4>
+              <div class="markdown level1 summary"><p>Page&#39;s width</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public float Width { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_Add_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Add*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_Add_NFX_Media_PDF_Elements_PdfElement_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.Add(NFX.Media.PDF.Elements.PdfElement)">Add(PdfElement)</h4>
+              <div class="markdown level1 summary"><p>Adds PDF element to page&#39;s elements collection</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Add(PdfElement element)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PdfElement.html">PdfElement</a></td>
+                    <td><span class="parametername">element</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor)">AddCircle(Single, Single, Single, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add circle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">r</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,System.Single)">AddCircle(Single, Single, Single, PdfColor, Single)</h4>
+              <div class="markdown level1 summary"><p>Add circle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, float borderThickness)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">r</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">borderThickness</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_System_Single_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,System.Single,NFX.Media.PDF.Styling.PdfColor)">AddCircle(Single, Single, Single, PdfColor, Single, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add circle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, float borderThickness, PdfColor borderColor)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">r</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">borderThickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">borderColor</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_System_Single_NFX_Media_PDF_Styling_PdfColor_NFX_Media_PDF_Styling_PdfLineType_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,System.Single,NFX.Media.PDF.Styling.PdfColor,NFX.Media.PDF.Styling.PdfLineType)">AddCircle(Single, Single, Single, PdfColor, Single, PdfColor, PdfLineType)</h4>
+              <div class="markdown level1 summary"><p>Add circle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, float borderThickness, PdfColor borderColor, PdfLineType borderType)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">r</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">borderThickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">borderColor</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfLineType.html">PdfLineType</a></td>
+                    <td><span class="parametername">borderType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddCircle_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfDrawStyle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddCircle(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfDrawStyle)">AddCircle(Single, Single, Single, PdfDrawStyle)</h4>
+              <div class="markdown level1 summary"><p>Add circle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddCircle(float centerX, float centerY, float r, PdfDrawStyle borderStyle)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerX</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">centerY</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">r</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfDrawStyle.html">PdfDrawStyle</a></td>
+                    <td><span class="parametername">borderStyle</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddImage_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddImage*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddImage_System_String_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddImage(System.String)">AddImage(String)</h4>
+              <div class="markdown level1 summary"><p>Add image to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ImageElement AddImage(string filePath)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">filePath</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.ImageElement.html">ImageElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddImage_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddImage*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddImage_System_String_System_Single_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddImage(System.String,System.Single,System.Single)">AddImage(String, Single, Single)</h4>
+              <div class="markdown level1 summary"><p>Add image to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ImageElement AddImage(string filePath, float width, float height)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">filePath</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">width</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">height</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.ImageElement.html">ImageElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_System_Single_System_Single_System_Single_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine(System.Single,System.Single,System.Single,System.Single)">AddLine(Single, Single, Single, Single)</h4>
+              <div class="markdown level1 summary"><p>Add line primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddLine(float x1, float y1, float x2, float y2)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfDrawStyle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine(System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfDrawStyle)">AddLine(Single, Single, Single, Single, PdfDrawStyle)</h4>
+              <div class="markdown level1 summary"><p>Add line primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddLine(float x1, float y1, float x2, float y2, PdfDrawStyle style)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfDrawStyle.html">PdfDrawStyle</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_System_Single_System_Single_System_Single_System_Single_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine(System.Single,System.Single,System.Single,System.Single,System.Single)">AddLine(Single, Single, Single, Single, Single)</h4>
+              <div class="markdown level1 summary"><p>Add line primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddLine(float x1, float y1, float x2, float y2, float thickness)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">thickness</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_System_Single_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine(System.Single,System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor)">AddLine(Single, Single, Single, Single, Single, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add line primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">thickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">color</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddLine_System_Single_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_NFX_Media_PDF_Styling_PdfLineType_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddLine(System.Single,System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,NFX.Media.PDF.Styling.PdfLineType)">AddLine(Single, Single, Single, Single, Single, PdfColor, PdfLineType)</h4>
+              <div class="markdown level1 summary"><p>Add line primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color, PdfLineType type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">thickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">color</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfLineType.html">PdfLineType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_System_Single_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath(System.Single,System.Single)">AddPath(Single, Single)</h4>
+              <div class="markdown level1 summary"><p>Add path to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddPath(float x, float y)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_System_Single_System_Single_NFX_Media_PDF_Styling_PdfDrawStyle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath(System.Single,System.Single,NFX.Media.PDF.Styling.PdfDrawStyle)">AddPath(Single, Single, PdfDrawStyle)</h4>
+              <div class="markdown level1 summary"><p>Add path to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddPath(float x, float y, PdfDrawStyle style)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfDrawStyle.html">PdfDrawStyle</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_System_Single_System_Single_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath(System.Single,System.Single,System.Single)">AddPath(Single, Single, Single)</h4>
+              <div class="markdown level1 summary"><p>Add path to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddPath(float x, float y, float thickness)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">thickness</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor)">AddPath(Single, Single, Single, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add path to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddPath(float x, float y, float thickness, PdfColor color)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">thickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">color</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddPath_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_NFX_Media_PDF_Styling_PdfLineType_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddPath(System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,NFX.Media.PDF.Styling.PdfLineType)">AddPath(Single, Single, Single, PdfColor, PdfLineType)</h4>
+              <div class="markdown level1 summary"><p>Add path to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PathElement AddPath(float x, float y, float thickness, PdfColor color, PdfLineType type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">thickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">color</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfLineType.html">PdfLineType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.PathElement.html">PathElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle(System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor)">AddRectangle(Single, Single, Single, Single, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add rectangle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.RectangleElement.html">RectangleElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_System_Single_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle(System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,System.Single)">AddRectangle(Single, Single, Single, Single, PdfColor, Single)</h4>
+              <div class="markdown level1 summary"><p>Add rectangle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">borderThickness</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.RectangleElement.html">RectangleElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_System_Single_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle(System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,System.Single,NFX.Media.PDF.Styling.PdfColor)">AddRectangle(Single, Single, Single, Single, PdfColor, Single, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add rectangle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness, PdfColor borderColor)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">borderThickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">borderColor</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.RectangleElement.html">RectangleElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfColor_System_Single_NFX_Media_PDF_Styling_PdfColor_NFX_Media_PDF_Styling_PdfLineType_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle(System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfColor,System.Single,NFX.Media.PDF.Styling.PdfColor,NFX.Media.PDF.Styling.PdfLineType)">AddRectangle(Single, Single, Single, Single, PdfColor, Single, PdfColor, PdfLineType)</h4>
+              <div class="markdown level1 summary"><p>Add rectangle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness, PdfColor borderColor, PdfLineType borderType)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">fill</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">borderThickness</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">borderColor</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfLineType.html">PdfLineType</a></td>
+                    <td><span class="parametername">borderType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.RectangleElement.html">RectangleElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddRectangle_System_Single_System_Single_System_Single_System_Single_NFX_Media_PDF_Styling_PdfDrawStyle_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddRectangle(System.Single,System.Single,System.Single,System.Single,NFX.Media.PDF.Styling.PdfDrawStyle)">AddRectangle(Single, Single, Single, Single, PdfDrawStyle)</h4>
+              <div class="markdown level1 summary"><p>Add rectangle primitive to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfDrawStyle style)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">x2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">y2</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfDrawStyle.html">PdfDrawStyle</a></td>
+                    <td><span class="parametername">style</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.RectangleElement.html">RectangleElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddText_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddText*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddText_System_String_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddText(System.String)">AddText(String)</h4>
+              <div class="markdown level1 summary"><p>Add raw text to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TextElement AddText(string text)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">text</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.TextElement.html">TextElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddText_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddText*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddText_System_String_System_Single_NFX_Media_PDF_DocumentModel_PdfFont_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddText(System.String,System.Single,NFX.Media.PDF.DocumentModel.PdfFont)">AddText(String, Single, PdfFont)</h4>
+              <div class="markdown level1 summary"><p>Add raw text to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TextElement AddText(string text, float fontSize, PdfFont font)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">text</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">fontSize</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.DocumentModel.PdfFont.html">PdfFont</a></td>
+                    <td><span class="parametername">font</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.TextElement.html">TextElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Media_PDF_DocumentModel_PdfPage_AddText_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddText*"></a>
+              <h4 id="NFX_Media_PDF_DocumentModel_PdfPage_AddText_System_String_System_Single_NFX_Media_PDF_DocumentModel_PdfFont_NFX_Media_PDF_Styling_PdfColor_" data-uid="NFX.Media.PDF.DocumentModel.PdfPage.AddText(System.String,System.Single,NFX.Media.PDF.DocumentModel.PdfFont,NFX.Media.PDF.Styling.PdfColor)">AddText(String, Single, PdfFont, PdfColor)</h4>
+              <div class="markdown level1 summary"><p>Add raw text to the page</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TextElement AddText(string text, float fontSize, PdfFont font, PdfColor foreground)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">text</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">fontSize</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.DocumentModel.PdfFont.html">PdfFont</a></td>
+                    <td><span class="parametername">font</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Styling.PdfColor.html">PdfColor</a></td>
+                    <td><span class="parametername">foreground</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Media.PDF.Elements.TextElement.html">TextElement</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

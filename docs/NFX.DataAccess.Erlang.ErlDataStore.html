@@ -1,0 +1,2755 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ErlDataStore
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ErlDataStore
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_DataAccess_Erlang_ErlDataStore" data-uid="NFX.DataAccess.Erlang.ErlDataStore">Class ErlDataStore
+              </h1>
+              <div class="markdown level0 summary"><p>Represents a CRUD data store that uses Erlang backend</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html">ApplicationComponent</a></div>
+                  <div class="level3"><a class="xref" href="NFX.ServiceModel.Service.html">Service</a></div>
+                  <div class="level4"><a class="xref" href="NFX.ServiceModel.Service-1.html">Service</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+                  <div class="level5"><a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html">ServiceWithInstrumentationBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+                  <div class="level6"><span class="xref">ErlDataStore</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalParameters">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalParameters</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalParametersForGroups_System_String___">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalParametersForGroups(String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalGetParameter_System_String_System_Object__System_String___">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalGetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalSetParameter_System_String_System_Object_System_String___">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalSetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service-1.html#NFX_ServiceModel_Service_1_ComponentDirector">Service&lt;Object&gt;.ComponentDirector</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CONFIG_NAME_ATTR">Service.CONFIG_NAME_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_ApplicationDontAutoStartService">Service.ApplicationDontAutoStartService</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Status">Service.Status</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Running">Service.Running</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Name">Service.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_TimeLocation">Service.TimeLocation</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_LocalizedTime">Service.LocalizedTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Configure_NFX_Environment_IConfigSectionNode_">Service.Configure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Start">Service.Start()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_SignalStop">Service.SignalStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckForCompleteStop">Service.CheckForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_WaitForCompleteStop">Service.WaitForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_AcceptManagerVisit_System_Object_System_DateTime_">Service.AcceptManagerVisit(Object, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_UniversalTimeToLocalizedTime_System_DateTime_">Service.UniversalTimeToLocalizedTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_LocalizedTimeToUniversalTime_System_DateTime_">Service.LocalizedTimeToUniversalTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_AbortStart">Service.AbortStart()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoCheckForCompleteStop">Service.DoCheckForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoConfigure_NFX_Environment_IConfigSectionNode_">Service.DoConfigure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceInactive">Service.CheckServiceInactive()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActive">Service.CheckServiceActive()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActiveOrStarting">Service.CheckServiceActiveOrStarting()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoAcceptManagerVisit_System_Object_System_DateTime_">Service.DoAcceptManagerVisit(Object, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_____ObtainPrivateServiceStatusLockObject">Service.____ObtainPrivateServiceStatusLockObject()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_AllComponents">ApplicationComponent.AllComponents</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentBySID_System_UInt64_">ApplicationComponent.GetAppComponentBySID(UInt64)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentByCommonName_System_String_">ApplicationComponent.GetAppComponentByCommonName(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentSID">ApplicationComponent.ComponentSID</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentStartTime">ApplicationComponent.ComponentStartTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentCommonName">ApplicationComponent.ComponentCommonName</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.DataAccess.Erlang</h6>
+              <h6><strong>Assembly</strong>:NFX.Erlang.dll</h6>
+              <h5 id="NFX_DataAccess_Erlang_ErlDataStore_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class ErlDataStore : ServiceWithInstrumentationBase&lt;object&gt;, IService, INamed, ILocalizedTimeProvider, ICRUDDataStoreImplementation, ICRUDDataStore, ICRUDOperations, ICRUDTransactionOperations, ICRUDSubscriptionStoreImplementation, ICRUDSubscriptionStore, IDataStoreImplementation, IDataStore, IApplicationComponent, IDisposable, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore__ctor_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.#ctor*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore__ctor" data-uid="NFX.DataAccess.Erlang.ErlDataStore.#ctor">ErlDataStore()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlDataStore()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore__ctor_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.#ctor*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore__ctor_System_Object_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.#ctor(System.Object)">ErlDataStore(Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlDataStore(object director)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">director</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_AFFECTED" data-uid="NFX.DataAccess.Erlang.ErlDataStore.AFFECTED">AFFECTED</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom AFFECTED</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_BONJOUR_OK_PATTERN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.BONJOUR_OK_PATTERN">BONJOUR_OK_PATTERN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly IErlObject BONJOUR_OK_PATTERN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_CRUD_WRITE_OK_PATTERN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.CRUD_WRITE_OK_PATTERN">CRUD_WRITE_OK_PATTERN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly IErlObject CRUD_WRITE_OK_PATTERN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DEFAULT_RPC_TIMEOUT_MS" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DEFAULT_RPC_TIMEOUT_MS">DEFAULT_RPC_TIMEOUT_MS</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int DEFAULT_RPC_TIMEOUT_MS = 20000</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DEFAULT_TARGET_NAME" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DEFAULT_TARGET_NAME">DEFAULT_TARGET_NAME</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string DEFAULT_TARGET_NAME = &quot;ERLANG&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_ENCODING" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ENCODING">ENCODING</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom ENCODING</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_ERL_FILE_SUFFIX" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ERL_FILE_SUFFIX">ERL_FILE_SUFFIX</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string ERL_FILE_SUFFIX = &quot;.erl.qry&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NFX_BONJOUR_FUN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NFX_BONJOUR_FUN">NFX_BONJOUR_FUN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom NFX_BONJOUR_FUN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NFX_CRUD_MOD" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NFX_CRUD_MOD">NFX_CRUD_MOD</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom NFX_CRUD_MOD</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NFX_DELETE_FUN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NFX_DELETE_FUN">NFX_DELETE_FUN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom NFX_DELETE_FUN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NFX_RPC_FUN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NFX_RPC_FUN">NFX_RPC_FUN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom NFX_RPC_FUN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NFX_SUBSCRIBE_FUN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NFX_SUBSCRIBE_FUN">NFX_SUBSCRIBE_FUN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom NFX_SUBSCRIBE_FUN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NFX_WRITE_FUN" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NFX_WRITE_FUN">NFX_WRITE_FUN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom NFX_WRITE_FUN</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_SCHEMA_CONTENT" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SCHEMA_CONTENT">SCHEMA_CONTENT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly ErlAtom SCHEMA_CONTENT</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_CallTimeoutMs_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.CallTimeoutMs*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_CallTimeoutMs" data-uid="NFX.DataAccess.Erlang.ErlDataStore.CallTimeoutMs">CallTimeoutMs</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public int CallTimeoutMs { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_InstrumentationEnabled_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.InstrumentationEnabled*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_InstrumentationEnabled" data-uid="NFX.DataAccess.Erlang.ErlDataStore.InstrumentationEnabled">InstrumentationEnabled</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = false)]
+[ExternalParameter(new string[]{&quot;data&quot;, &quot;instrumentation&quot;})]
+public override bool InstrumentationEnabled { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">NFX.ServiceModel.ServiceWithInstrumentationBase&lt;System.Object&gt;.InstrumentationEnabled</span></div>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Instrumentation.IInstrumentable.html#NFX_Instrumentation_IInstrumentable_InstrumentationEnabled">IInstrumentable.InstrumentationEnabled</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LocalName_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LocalName*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LocalName" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LocalName">LocalName</h4>
+              <div class="markdown level1 summary"><p>Shortcut to ErlApp.Node name</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string LocalName { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LogLevel_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LogLevel*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LogLevel" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public StoreLogLevel LogLevel { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.StoreLogLevel.html">StoreLogLevel</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.IDataStoreImplementation.html#NFX_DataAccess_IDataStoreImplementation_LogLevel">IDataStoreImplementation.LogLevel</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Mailboxes_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Mailboxes*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Mailboxes" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Mailboxes">Mailboxes</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IRegistry&lt;Mailbox&gt; Mailboxes { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IRegistry-1.html">IRegistry</a>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.Mailbox.html">Mailbox</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.ICRUDSubscriptionStore.html#NFX_DataAccess_CRUD_Subscriptions_ICRUDSubscriptionStore_Mailboxes">ICRUDSubscriptionStore.Mailboxes</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Map_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Map*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Map" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Map">Map</h4>
+              <div class="markdown level1 summary"><p>Returns the map lazily obtaining it when needed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected SchemaMap Map { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Erlang.SchemaMap.html">SchemaMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_NextRequestID_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NextRequestID*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_NextRequestID" data-uid="NFX.DataAccess.Erlang.ErlDataStore.NextRequestID">NextRequestID</h4>
+              <div class="markdown level1 summary"><p>Generates nest sequential request ID</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected int NextRequestID { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_QueryResolver_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.QueryResolver*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_QueryResolver" data-uid="NFX.DataAccess.Erlang.ErlDataStore.QueryResolver">QueryResolver</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ICRUDQueryResolver QueryResolver { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.ICRUDQueryResolver.html">ICRUDQueryResolver</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDDataStore.html#NFX_DataAccess_CRUD_ICRUDDataStore_QueryResolver">ICRUDDataStore.QueryResolver</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_RemoteCookie_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.RemoteCookie*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_RemoteCookie" data-uid="NFX.DataAccess.Erlang.ErlDataStore.RemoteCookie">RemoteCookie</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public string RemoteCookie { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_RemoteName_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.RemoteName*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_RemoteName" data-uid="NFX.DataAccess.Erlang.ErlDataStore.RemoteName">RemoteName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public string RemoteName { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_ScriptFileSuffix_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ScriptFileSuffix*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_ScriptFileSuffix" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ScriptFileSuffix">ScriptFileSuffix</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ScriptFileSuffix { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDDataStore.html#NFX_DataAccess_CRUD_ICRUDDataStore_ScriptFileSuffix">ICRUDDataStore.ScriptFileSuffix</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_StoreType_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.StoreType*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_StoreType" data-uid="NFX.DataAccess.Erlang.ErlDataStore.StoreType">StoreType</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public CRUDDataStoreType StoreType { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.CRUDDataStoreType.html">CRUDDataStoreType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDDataStore.html#NFX_DataAccess_CRUD_ICRUDDataStore_StoreType">ICRUDDataStore.StoreType</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Subscriptions_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Subscriptions*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Subscriptions" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Subscriptions">Subscriptions</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IRegistry&lt;Subscription&gt; Subscriptions { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IRegistry-1.html">IRegistry</a>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.Subscription.html">Subscription</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.ICRUDSubscriptionStore.html#NFX_DataAccess_CRUD_Subscriptions_ICRUDSubscriptionStore_Subscriptions">ICRUDSubscriptionStore.Subscriptions</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_SupportsTransactions_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SupportsTransactions*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_SupportsTransactions" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SupportsTransactions">SupportsTransactions</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool SupportsTransactions { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDTransactionOperations.html#NFX_DataAccess_CRUD_ICRUDTransactionOperations_SupportsTransactions">ICRUDTransactionOperations.SupportsTransactions</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_SupportsTrueAsynchrony_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SupportsTrueAsynchrony*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_SupportsTrueAsynchrony" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SupportsTrueAsynchrony">SupportsTrueAsynchrony</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool SupportsTrueAsynchrony { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_SupportsTrueAsynchrony">ICRUDOperations.SupportsTrueAsynchrony</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_TargetName_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.TargetName*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_TargetName" data-uid="NFX.DataAccess.Erlang.ErlDataStore.TargetName">TargetName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public string TargetName { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.IDataStore.html#NFX_DataAccess_IDataStore_TargetName">IDataStore.TargetName</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_BeginTransaction_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.BeginTransaction*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_BeginTransaction_System_Data_IsolationLevel_NFX_DataAccess_CRUD_TransactionDisposeBehavior_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.BeginTransaction(System.Data.IsolationLevel,NFX.DataAccess.CRUD.TransactionDisposeBehavior)">BeginTransaction(IsolationLevel, TransactionDisposeBehavior)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Data.IsolationLevel</span></td>
+                    <td><span class="parametername">iso</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TransactionDisposeBehavior.html">TransactionDisposeBehavior</a></td>
+                    <td><span class="parametername">behavior</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.CRUDTransaction.html">CRUDTransaction</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDTransactionOperations.html#NFX_DataAccess_CRUD_ICRUDTransactionOperations_BeginTransaction_System_Data_IsolationLevel_NFX_DataAccess_CRUD_TransactionDisposeBehavior_">ICRUDTransactionOperations.BeginTransaction(IsolationLevel, TransactionDisposeBehavior)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_BeginTransactionAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.BeginTransactionAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_BeginTransactionAsync_System_Data_IsolationLevel_NFX_DataAccess_CRUD_TransactionDisposeBehavior_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.BeginTransactionAsync(System.Data.IsolationLevel,NFX.DataAccess.CRUD.TransactionDisposeBehavior)">BeginTransactionAsync(IsolationLevel, TransactionDisposeBehavior)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;CRUDTransaction&gt; BeginTransactionAsync(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Data.IsolationLevel</span></td>
+                    <td><span class="parametername">iso</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TransactionDisposeBehavior.html">TransactionDisposeBehavior</a></td>
+                    <td><span class="parametername">behavior</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.CRUDTransaction.html">CRUDTransaction</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDTransactionOperations.html#NFX_DataAccess_CRUD_ICRUDTransactionOperations_BeginTransactionAsync_System_Data_IsolationLevel_NFX_DataAccess_CRUD_TransactionDisposeBehavior_">ICRUDTransactionOperations.BeginTransactionAsync(IsolationLevel, TransactionDisposeBehavior)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_CRUDWrite_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.CRUDWrite*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_CRUDWrite_NFX_DataAccess_CRUD_Row_System_Boolean_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.CRUDWrite(NFX.DataAccess.CRUD.Row,System.Boolean)">CRUDWrite(Row, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual int CRUDWrite(Row row, bool delete = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">delete</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_DecompressBytes_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DecompressBytes*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DecompressBytes_System_Byte___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DecompressBytes(System.Byte[])">DecompressBytes(Byte[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected byte[] DecompressBytes(byte[] data)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">data</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_DecompressString_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DecompressString*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DecompressString_System_Byte___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DecompressString(System.Byte[])">DecompressString(Byte[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected string DecompressString(byte[] data)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">data</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Delete_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Delete*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Delete_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Delete(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey)">Delete(Row, IDataStoreKey)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int Delete(Row row, IDataStoreKey key = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_Delete_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_">ICRUDOperations.Delete(Row, IDataStoreKey)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_DeleteAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DeleteAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DeleteAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DeleteAsync(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey)">DeleteAsync(Row, IDataStoreKey)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;int&gt; DeleteAsync(Row row, IDataStoreKey key = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_DeleteAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_">ICRUDOperations.DeleteAsync(Row, IDataStoreKey)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Destructor_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Destructor*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Destructor" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Destructor">Service.Destructor()</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_DoSignalStop_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DoSignalStop*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DoSignalStop" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DoSignalStop">DoSignalStop()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoSignalStop()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoSignalStop">Service.DoSignalStop()</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_DoStart_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DoStart*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DoStart" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DoStart">DoStart()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoStart()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoStart">Service.DoStart()</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_DoWaitForCompleteStop_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DoWaitForCompleteStop*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_DoWaitForCompleteStop" data-uid="NFX.DataAccess.Erlang.ErlDataStore.DoWaitForCompleteStop">DoWaitForCompleteStop()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoWaitForCompleteStop()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoWaitForCompleteStop">Service.DoWaitForCompleteStop()</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_ExecuteRPC_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ExecuteRPC*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_ExecuteRPC_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_NFX_Erlang_ErlMbox_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ExecuteRPC(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList,NFX.Erlang.ErlMbox)">ExecuteRPC(ErlAtom, ErlAtom, ErlList, ErlMbox)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IErlObject ExecuteRPC(ErlAtom module, ErlAtom func, ErlList args, ErlMbox mbox = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">module</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">func</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlMbox.html">ErlMbox</a></td>
+                    <td><span class="parametername">mbox</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_ExecuteWithoutFetch_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ExecuteWithoutFetch*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_ExecuteWithoutFetch_NFX_DataAccess_CRUD_Query___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ExecuteWithoutFetch(NFX.DataAccess.CRUD.Query[])">ExecuteWithoutFetch(Query[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int ExecuteWithoutFetch(params Query[] queries)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a>[]</td>
+                    <td><span class="parametername">queries</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_ExecuteWithoutFetch_NFX_DataAccess_CRUD_Query___">ICRUDOperations.ExecuteWithoutFetch(Query[])</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_ExecuteWithoutFetchAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ExecuteWithoutFetchAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_ExecuteWithoutFetchAsync_NFX_DataAccess_CRUD_Query___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.ExecuteWithoutFetchAsync(NFX.DataAccess.CRUD.Query[])">ExecuteWithoutFetchAsync(Query[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;int&gt; ExecuteWithoutFetchAsync(params Query[] queries)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a>[]</td>
+                    <td><span class="parametername">queries</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_ExecuteWithoutFetchAsync_NFX_DataAccess_CRUD_Query___">ICRUDOperations.ExecuteWithoutFetchAsync(Query[])</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_GetSchema_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.GetSchema*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_GetSchema_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.GetSchema(NFX.DataAccess.CRUD.Query)">GetSchema(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Schema GetSchema(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Schema.html">Schema</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_GetSchema_NFX_DataAccess_CRUD_Query_">ICRUDOperations.GetSchema(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_GetSchemaAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.GetSchemaAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_GetSchemaAsync_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.GetSchemaAsync(NFX.DataAccess.CRUD.Query)">GetSchemaAsync(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;Schema&gt; GetSchemaAsync(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Schema.html">Schema</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_GetSchemaAsync_NFX_DataAccess_CRUD_Query_">ICRUDOperations.GetSchemaAsync(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Insert_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Insert*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Insert_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Insert(NFX.DataAccess.CRUD.Row,NFX.DataAccess.CRUD.FieldFilterFunc)">Insert(Row, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int Insert(Row row, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_Insert_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_">ICRUDOperations.Insert(Row, FieldFilterFunc)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_InsertAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.InsertAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_InsertAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.InsertAsync(NFX.DataAccess.CRUD.Row,NFX.DataAccess.CRUD.FieldFilterFunc)">InsertAsync(Row, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;int&gt; InsertAsync(Row row, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_InsertAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_">ICRUDOperations.InsertAsync(Row, FieldFilterFunc)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Load_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Load*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Load_NFX_DataAccess_CRUD_Query___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Load(NFX.DataAccess.CRUD.Query[])">Load(Query[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual List&lt;RowsetBase&gt; Load(params Query[] queries)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a>[]</td>
+                    <td><span class="parametername">queries</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_Load_NFX_DataAccess_CRUD_Query___">ICRUDOperations.Load(Query[])</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LoadAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LoadAsync_NFX_DataAccess_CRUD_Query___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadAsync(NFX.DataAccess.CRUD.Query[])">LoadAsync(Query[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;List&lt;RowsetBase&gt;&gt; LoadAsync(params Query[] queries)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a>[]</td>
+                    <td><span class="parametername">queries</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_LoadAsync_NFX_DataAccess_CRUD_Query___">ICRUDOperations.LoadAsync(Query[])</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRow_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRow*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRow_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRow(NFX.DataAccess.CRUD.Query)">LoadOneRow(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Row LoadOneRow(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_LoadOneRow_NFX_DataAccess_CRUD_Query_">ICRUDOperations.LoadOneRow(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRowAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRowAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRowAsync_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRowAsync(NFX.DataAccess.CRUD.Query)">LoadOneRowAsync(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;Row&gt; LoadOneRowAsync(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_LoadOneRowAsync_NFX_DataAccess_CRUD_Query_">ICRUDOperations.LoadOneRowAsync(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRowset_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRowset*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRowset_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRowset(NFX.DataAccess.CRUD.Query)">LoadOneRowset(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual RowsetBase LoadOneRowset(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_LoadOneRowset_NFX_DataAccess_CRUD_Query_">ICRUDOperations.LoadOneRowset(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRowsetAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRowsetAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_LoadOneRowsetAsync_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.LoadOneRowsetAsync(NFX.DataAccess.CRUD.Query)">LoadOneRowsetAsync(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;RowsetBase&gt; LoadOneRowsetAsync(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_LoadOneRowsetAsync_NFX_DataAccess_CRUD_Query_">ICRUDOperations.LoadOneRowsetAsync(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_MakeScriptQueryHandler_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.MakeScriptQueryHandler*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_MakeScriptQueryHandler_NFX_DataAccess_CRUD_QuerySource_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.MakeScriptQueryHandler(NFX.DataAccess.CRUD.QuerySource)">MakeScriptQueryHandler(QuerySource)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.QuerySource.html">QuerySource</a></td>
+                    <td><span class="parametername">querySource</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.CRUDQueryHandler.html">CRUDQueryHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDDataStoreImplementation.html#NFX_DataAccess_CRUD_ICRUDDataStoreImplementation_MakeScriptQueryHandler_NFX_DataAccess_CRUD_QuerySource_">ICRUDDataStoreImplementation.MakeScriptQueryHandler(QuerySource)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_OpenCursor_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.OpenCursor*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_OpenCursor_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.OpenCursor(NFX.DataAccess.CRUD.Query)">OpenCursor(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Cursor OpenCursor(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Cursor.html">Cursor</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_OpenCursor_NFX_DataAccess_CRUD_Query_">ICRUDOperations.OpenCursor(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_OpenCursorAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.OpenCursorAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_OpenCursorAsync_NFX_DataAccess_CRUD_Query_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.OpenCursorAsync(NFX.DataAccess.CRUD.Query)">OpenCursorAsync(Query)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;Cursor&gt; OpenCursorAsync(Query query)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Cursor.html">Cursor</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_OpenCursorAsync_NFX_DataAccess_CRUD_Query_">ICRUDOperations.OpenCursorAsync(Query)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_OpenMailbox_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.OpenMailbox*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_OpenMailbox_System_String_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.OpenMailbox(System.String)">OpenMailbox(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Mailbox OpenMailbox(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.Mailbox.html">Mailbox</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.ICRUDSubscriptionStore.html#NFX_DataAccess_CRUD_Subscriptions_ICRUDSubscriptionStore_OpenMailbox_System_String_">ICRUDSubscriptionStore.OpenMailbox(String)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Save_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Save*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Save_NFX_DataAccess_CRUD_RowsetBase___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Save(NFX.DataAccess.CRUD.RowsetBase[])">Save(RowsetBase[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int Save(params RowsetBase[] rowsets)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a>[]</td>
+                    <td><span class="parametername">rowsets</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_Save_NFX_DataAccess_CRUD_RowsetBase___">ICRUDOperations.Save(RowsetBase[])</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_SaveAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SaveAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_SaveAsync_NFX_DataAccess_CRUD_RowsetBase___" data-uid="NFX.DataAccess.Erlang.ErlDataStore.SaveAsync(NFX.DataAccess.CRUD.RowsetBase[])">SaveAsync(RowsetBase[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;int&gt; SaveAsync(params RowsetBase[] rowsets)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a>[]</td>
+                    <td><span class="parametername">rowsets</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_SaveAsync_NFX_DataAccess_CRUD_RowsetBase___">ICRUDOperations.SaveAsync(RowsetBase[])</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Subscribe_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Subscribe*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Subscribe_System_String_NFX_DataAccess_CRUD_Query_NFX_DataAccess_CRUD_Subscriptions_Mailbox_System_Object_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Subscribe(System.String,NFX.DataAccess.CRUD.Query,NFX.DataAccess.CRUD.Subscriptions.Mailbox,System.Object)">Subscribe(String, Query, Mailbox, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Subscription Subscribe(string name, Query query, Mailbox recipient, object correlate = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.Mailbox.html">Mailbox</a></td>
+                    <td><span class="parametername">recipient</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">correlate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.Subscription.html">Subscription</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.Subscriptions.ICRUDSubscriptionStore.html#NFX_DataAccess_CRUD_Subscriptions_ICRUDSubscriptionStore_Subscribe_System_String_NFX_DataAccess_CRUD_Query_NFX_DataAccess_CRUD_Subscriptions_Mailbox_System_Object_">ICRUDSubscriptionStore.Subscribe(String, Query, Mailbox, Object)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_TestConnection_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.TestConnection*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_TestConnection" data-uid="NFX.DataAccess.Erlang.ErlDataStore.TestConnection">TestConnection()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void TestConnection()</code></pre>
+              </div>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.IDataStore.html#NFX_DataAccess_IDataStore_TestConnection">IDataStore.TestConnection()</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Update_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Update*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Update_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Update(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey,NFX.DataAccess.CRUD.FieldFilterFunc)">Update(Row, IDataStoreKey, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int Update(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_Update_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_NFX_DataAccess_CRUD_FieldFilterFunc_">ICRUDOperations.Update(Row, IDataStoreKey, FieldFilterFunc)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_UpdateAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.UpdateAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_UpdateAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.UpdateAsync(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey,NFX.DataAccess.CRUD.FieldFilterFunc)">UpdateAsync(Row, IDataStoreKey, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;int&gt; UpdateAsync(Row row, IDataStoreKey key = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_UpdateAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_NFX_DataAccess_CRUD_FieldFilterFunc_">ICRUDOperations.UpdateAsync(Row, IDataStoreKey, FieldFilterFunc)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_Upsert_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Upsert*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_Upsert_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.Upsert(NFX.DataAccess.CRUD.Row,NFX.DataAccess.CRUD.FieldFilterFunc)">Upsert(Row, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int Upsert(Row row, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_Upsert_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_">ICRUDOperations.Upsert(Row, FieldFilterFunc)</a></div>
+              
+              
+              <a id="NFX_DataAccess_Erlang_ErlDataStore_UpsertAsync_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.UpsertAsync*"></a>
+              <h4 id="NFX_DataAccess_Erlang_ErlDataStore_UpsertAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.DataAccess.Erlang.ErlDataStore.UpsertAsync(NFX.DataAccess.CRUD.Row,NFX.DataAccess.CRUD.FieldFilterFunc)">UpsertAsync(Row, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;int&gt; UpsertAsync(Row row, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html#NFX_DataAccess_CRUD_ICRUDOperations_UpsertAsync_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_FieldFilterFunc_">ICRUDOperations.UpsertAsync(Row, FieldFilterFunc)</a></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

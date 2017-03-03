@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ExecutionContext
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ExecutionContext
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_ApplicationModel_ExecutionContext" data-uid="NFX.ApplicationModel.ExecutionContext">Class ExecutionContext
+              </h1>
+              <div class="markdown level0 summary"><p>Provides access to execution context - an entity that groups Request, Response and Session object.
+This class has nothing to do with Web. Execution contexts are supported as easily in console, service, web,  and Windows forms apps.
+All objects may be either application-global or thread level. This class is useful for technology-agnostic implementations
+of Record Models i.e. in a Record class one may write:  &quot; if (ExecutionContext.Session.User.Kind==UserKind.Administrator)...&quot;</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">ExecutionContext</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.ApplicationModel</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_ApplicationModel_ExecutionContext_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class ExecutionContext</code></pre>
+              </div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext_Application_" data-uid="NFX.ApplicationModel.ExecutionContext.Application*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext_Application" data-uid="NFX.ApplicationModel.ExecutionContext.Application">Application</h4>
+              <div class="markdown level1 summary"><p>Returns global application context</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IApplication Application { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.IApplication.html">IApplication</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext_HasThreadContextSession_" data-uid="NFX.ApplicationModel.ExecutionContext.HasThreadContextSession*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext_HasThreadContextSession" data-uid="NFX.ApplicationModel.ExecutionContext.HasThreadContextSession">HasThreadContextSession</h4>
+              <div class="markdown level1 summary"><p>Returns true when thread-level session object is available and not a NOPSession instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool HasThreadContextSession { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext_Request_" data-uid="NFX.ApplicationModel.ExecutionContext.Request*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext_Request" data-uid="NFX.ApplicationModel.ExecutionContext.Request">Request</h4>
+              <div class="markdown level1 summary"><p>Returns Request object for current thread, or if it is null, app-global-level object is returned</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static object Request { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext_Response_" data-uid="NFX.ApplicationModel.ExecutionContext.Response*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext_Response" data-uid="NFX.ApplicationModel.ExecutionContext.Response">Response</h4>
+              <div class="markdown level1 summary"><p>Returns Response object for current thread, or if it is null, app-global-level object is returned</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static object Response { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext_Session_" data-uid="NFX.ApplicationModel.ExecutionContext.Session*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext_Session" data-uid="NFX.ApplicationModel.ExecutionContext.Session">Session</h4>
+              <div class="markdown level1 summary"><p>Returns Session object for current thread, or if it is null, app-global-level object is returned</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ISession Session { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ISession.html">ISession</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext___SetApplicationLevelContext_" data-uid="NFX.ApplicationModel.ExecutionContext.__SetApplicationLevelContext*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext___SetApplicationLevelContext_NFX_ApplicationModel_IApplication_System_Object_System_Object_NFX_ApplicationModel_ISession_" data-uid="NFX.ApplicationModel.ExecutionContext.__SetApplicationLevelContext(NFX.ApplicationModel.IApplication,System.Object,System.Object,NFX.ApplicationModel.ISession)">__SetApplicationLevelContext(IApplication, Object, Object, ISession)</h4>
+              <div class="markdown level1 summary"><p>Internal framework-only method to bind application-level context</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void __SetApplicationLevelContext(IApplication application, object request, object response, ISession session)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.IApplication.html">IApplication</a></td>
+                    <td><span class="parametername">application</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">response</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ISession.html">ISession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext___SetThreadLevelContext_" data-uid="NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext___SetThreadLevelContext_System_Object_System_Object_NFX_ApplicationModel_ISession_" data-uid="NFX.ApplicationModel.ExecutionContext.__SetThreadLevelContext(System.Object,System.Object,NFX.ApplicationModel.ISession)">__SetThreadLevelContext(Object, Object, ISession)</h4>
+              <div class="markdown level1 summary"><p>Internal framework-only method to bind thread-level context</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void __SetThreadLevelContext(object request, object response, ISession session)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">response</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ISession.html">ISession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ExecutionContext___SetThreadLevelSessionContext_" data-uid="NFX.ApplicationModel.ExecutionContext.__SetThreadLevelSessionContext*"></a>
+              <h4 id="NFX_ApplicationModel_ExecutionContext___SetThreadLevelSessionContext_NFX_ApplicationModel_ISession_" data-uid="NFX.ApplicationModel.ExecutionContext.__SetThreadLevelSessionContext(NFX.ApplicationModel.ISession)">__SetThreadLevelSessionContext(ISession)</h4>
+              <div class="markdown level1 summary"><p>Internal framework-only method to bind thread-level context</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void __SetThreadLevelSessionContext(ISession session)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ISession.html">ISession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

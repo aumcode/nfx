@@ -1,0 +1,1815 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ErlMbox
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ErlMbox
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Erlang_ErlMbox" data-uid="NFX.Erlang.ErlMbox">Class ErlMbox
+              </h1>
+              <div class="markdown level0 summary"><p>Provides a simple mechanism for exchanging messages with Erlang
+processes or other instances of this class</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><span class="xref">ErlMbox</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Erlang</h6>
+              <h6><strong>Assembly</strong>:NFX.Erlang.dll</h6>
+              <h5 id="NFX_Erlang_ErlMbox_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class ErlMbox : DisposableObject, IDisposable</code></pre>
+              </div>
+              <h5 id="NFX_Erlang_ErlMbox_remarks"><strong>Remarks</strong></h5>
+              <div class="markdown level0 remarks"><p>Each mailbox is associated with a unique <a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a>
+that contains information necessary for delivery of messages.
+When sending messages to named processes or mailboxes, the sender
+pid is made available to the recipient of the message. When sending
+messages to other mailboxes, the recipient can only respond if the
+sender includes the pid as part of the message contents. The sender
+can determine his own pid by calling <a class="xref" href="NFX.Erlang.ErlMbox.html#NFX_Erlang_ErlMbox_Self">Self</a>.</p>
+<p>Mailboxes can be named, either at creation or later. Messages
+can be sent to named mailboxes and named Erlang processes without
+knowing the <a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a> that identifies the mailbox.
+This is neccessary in order to set up initial communication between
+parts of an application. Each mailbox can have at most one name.</p>
+<p>Messages to remote nodes are externalized for transmission, and
+as a result the recipient receives a <strong>copy</strong> of the original
+C# object. To ensure consistent behaviour when messages are sent
+between local mailboxes, such messages are cloned before delivery.</p>
+<p>Additionally, mailboxes can be linked in much the same way as
+Erlang processes. If a link is active when a mailbox is closed
+any linked Erlang processes or ErlMbox&#39;s will be
+sent an exit signal. As well, exit signals will be (eventually)
+sent if a mailbox goes out of scope and its Dispose method called.
+However due to the nature of
+finalization (i.e. C# makes no guarantees about when Dispose
+will be called) it is recommended that you
+always explicitly close mailboxes if you are using links instead of
+relying on finalization to notify other parties in a timely manner.</p>
+<p>When retrieving messages from a mailbox that has received an exit
+signal, an <span class="xref">NFX.Erlang.ErlExit</span> exception will be
+raised. Note that the exception is queued in the mailbox along with
+other messages, and will not be raised until it reaches the head of
+the queue and is about to be retrieved</p>
+</div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Empty_" data-uid="NFX.Erlang.ErlMbox.Empty*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Empty" data-uid="NFX.Erlang.ErlMbox.Empty">Empty</h4>
+              <div class="markdown level1 summary"><p>Return true if there are no messages waiting in the receive queue
+of this connection</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Empty { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Handle_" data-uid="NFX.Erlang.ErlMbox.Handle*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Handle" data-uid="NFX.Erlang.ErlMbox.Handle">Handle</h4>
+              <div class="markdown level1 summary"><p>Queue not empty status notification handle</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public WaitHandle Handle { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.WaitHandle</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_MsgCount_" data-uid="NFX.Erlang.ErlMbox.MsgCount*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_MsgCount" data-uid="NFX.Erlang.ErlMbox.MsgCount">MsgCount</h4>
+              <div class="markdown level1 summary"><p>Return the number of messages currently waiting in the receive
+queue of this connection</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int MsgCount { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Name_" data-uid="NFX.Erlang.ErlMbox.Name*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Name" data-uid="NFX.Erlang.ErlMbox.Name">Name</h4>
+              <div class="markdown level1 summary"><p>Get the registered name of this mailbox, or string.Empty if the
+mailbox doesn&#39;t have a registered name</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlAtom Name { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Node_" data-uid="NFX.Erlang.ErlMbox.Node*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Node" data-uid="NFX.Erlang.ErlMbox.Node">Node</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlLocalNode Node { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlLocalNode.html">ErlLocalNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_QueueActive_" data-uid="NFX.Erlang.ErlMbox.QueueActive*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_QueueActive" data-uid="NFX.Erlang.ErlMbox.QueueActive">QueueActive</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool QueueActive { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Self_" data-uid="NFX.Erlang.ErlMbox.Self*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Self" data-uid="NFX.Erlang.ErlMbox.Self">Self</h4>
+              <div class="markdown level1 summary"><p>Get the Pid identifying associated with this mailbox</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlPid Self { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_AsyncRPC_" data-uid="NFX.Erlang.ErlMbox.AsyncRPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_AsyncRPC_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_NFX_Erlang_IErlObject_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.AsyncRPC(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList,NFX.Erlang.IErlObject,System.Nullable{NFX.Erlang.ErlAtom})">AsyncRPC(ErlAtom, ErlAtom, ErlAtom, ErlList, IErlObject, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"><p>Send RPC call to a given node.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void AsyncRPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, IErlObject ioServer, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td><p>Destination node for this RPC call</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td><p>Module name to call</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td><p>Function name to call</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td><p>Function arguments</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">ioServer</span></td>
+                    <td><p>Either a PID or an Atom containing registered I/O server&#39;s name.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td><p>Remote cookie</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_AsyncRPC_" data-uid="NFX.Erlang.ErlMbox.AsyncRPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_AsyncRPC_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.AsyncRPC(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList,System.Nullable{NFX.Erlang.ErlAtom})">AsyncRPC(ErlAtom, ErlAtom, ErlAtom, ErlList, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void AsyncRPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_AsyncRPC_" data-uid="NFX.Erlang.ErlMbox.AsyncRPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_AsyncRPC_NFX_Erlang_ErlAtom_System_String_System_String_NFX_Erlang_ErlList_NFX_Erlang_ErlPid_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.AsyncRPC(NFX.Erlang.ErlAtom,System.String,System.String,NFX.Erlang.ErlList,NFX.Erlang.ErlPid,System.Nullable{NFX.Erlang.ErlAtom})">AsyncRPC(ErlAtom, String, String, ErlList, ErlPid, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void AsyncRPC(ErlAtom node, string mod, string fun, ErlList args, ErlPid ioServer, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a></td>
+                    <td><span class="parametername">ioServer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_AsyncRPC_" data-uid="NFX.Erlang.ErlMbox.AsyncRPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_AsyncRPC_NFX_Erlang_ErlAtom_System_String_System_String_NFX_Erlang_ErlList_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.AsyncRPC(NFX.Erlang.ErlAtom,System.String,System.String,NFX.Erlang.ErlList,System.Nullable{NFX.Erlang.ErlAtom})">AsyncRPC(ErlAtom, String, String, ErlList, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void AsyncRPC(ErlAtom node, string mod, string fun, ErlList args, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Clear_" data-uid="NFX.Erlang.ErlMbox.Clear*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Clear" data-uid="NFX.Erlang.ErlMbox.Clear">Clear()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Dequeue_" data-uid="NFX.Erlang.ErlMbox.Dequeue*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Dequeue_System_Int32_" data-uid="NFX.Erlang.ErlMbox.Dequeue(System.Int32)">Dequeue(Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IQueable Dequeue(int timeout = -1)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IQueable.html">IQueable</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Destructor_" data-uid="NFX.Erlang.ErlMbox.Destructor*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Destructor" data-uid="NFX.Erlang.ErlMbox.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Destructor">DisposableObject.Destructor()</a></div>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Down_" data-uid="NFX.Erlang.ErlMbox.Down*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Down_NFX_Erlang_ErlRef_NFX_Erlang_ErlPid_NFX_Erlang_ErlAtom_" data-uid="NFX.Erlang.ErlMbox.Down(NFX.Erlang.ErlRef,NFX.Erlang.ErlPid,NFX.Erlang.ErlAtom)">Down(ErlRef, ErlPid, ErlAtom)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Down(ErlRef eref, ErlPid pid, ErlAtom reason)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlRef.html">ErlRef</a></td>
+                    <td><span class="parametername">eref</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a></td>
+                    <td><span class="parametername">pid</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">reason</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Enqueue_" data-uid="NFX.Erlang.ErlMbox.Enqueue*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Enqueue_NFX_Erlang_IQueable_" data-uid="NFX.Erlang.ErlMbox.Enqueue(NFX.Erlang.IQueable)">Enqueue(IQueable)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void Enqueue(IQueable data)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IQueable.html">IQueable</a></td>
+                    <td><span class="parametername">data</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Equals_" data-uid="NFX.Erlang.ErlMbox.Equals*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Equals_System_Object_" data-uid="NFX.Erlang.ErlMbox.Equals(System.Object)">Equals(Object)</h4>
+              <div class="markdown level1 summary"><p>Determine if two mailboxes are equal</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool Equals(object o)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Object.Equals(System.Object)</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_GetHashCode_" data-uid="NFX.Erlang.ErlMbox.GetHashCode*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_GetHashCode" data-uid="NFX.Erlang.ErlMbox.GetHashCode">GetHashCode()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Object.GetHashCode()</span></div>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Link_" data-uid="NFX.Erlang.ErlMbox.Link*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Link_NFX_Erlang_ErlPid_" data-uid="NFX.Erlang.ErlMbox.Link(NFX.Erlang.ErlPid)">Link(ErlPid)</h4>
+              <div class="markdown level1 summary"><p>Link to a remote mailbox or Erlang process. Links are
+idempotent, calling this method multiple times will not result in
+more than one link being created</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Link(ErlPid to)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a></td>
+                    <td><span class="parametername">to</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Erlang_ErlMbox_Link_NFX_Erlang_ErlPid__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>If the remote process subsequently exits or the mailbox is
+closed, a subsequent attempt to retrieve a message through this
+mailbox will cause an {@link Exit Exit}
+exception to be raised. Similarly, if the sending mailbox is
+closed, the linked mailbox or process will receive an exit
+signal.</p>
+<p>If the remote process cannot be reached in order to set the
+link, the exception is raised immediately.</p>
+</div>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_OnMailboxMessage_" data-uid="NFX.Erlang.ErlMbox.OnMailboxMessage*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_OnMailboxMessage_NFX_Erlang_IQueable_" data-uid="NFX.Erlang.ErlMbox.OnMailboxMessage(NFX.Erlang.IQueable)">OnMailboxMessage(IQueable)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual bool OnMailboxMessage(IQueable msg)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IQueable.html">IQueable</a></td>
+                    <td><span class="parametername">msg</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Receive_" data-uid="NFX.Erlang.ErlMbox.Receive*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Receive_System_Int32_" data-uid="NFX.Erlang.ErlMbox.Receive(System.Int32)">Receive(Int32)</h4>
+              <div class="markdown level1 summary"><p>Wait for a message to arrive for this mailbox. On timeout return null</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject Receive(int timeout = -1)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td><p>Timeout time in milliseconds</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_receiveBuf_" data-uid="NFX.Erlang.ErlMbox.receiveBuf*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_receiveBuf_System_Int32_" data-uid="NFX.Erlang.ErlMbox.receiveBuf(System.Int32)">receiveBuf(Int32)</h4>
+              <div class="markdown level1 summary"><p>Wait for a message to arrive for this mailbox</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ErlInputStream receiveBuf(int timeout)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td><p>time in milliseconds</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlInputStream.html">ErlInputStream</a></td>
+                    <td><p>a stream representing the still-encoded body of the next
+message waiting in this mailbox, or null on timeout</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_ReceiveMatch_" data-uid="NFX.Erlang.ErlMbox.ReceiveMatch*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_ReceiveMatch_NFX_Erlang_ErlPatternMatcher_System_Int32_" data-uid="NFX.Erlang.ErlMbox.ReceiveMatch(NFX.Erlang.ErlPatternMatcher,System.Int32)">ReceiveMatch(ErlPatternMatcher, Int32)</h4>
+              <div class="markdown level1 summary"><p>Receive a message and match it against a given pattern</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Tuple&lt;IErlObject, int&gt; ReceiveMatch(ErlPatternMatcher pm, int timeoutMsec = -1)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPatternMatcher.html">ErlPatternMatcher</a></td>
+                    <td><span class="parametername">pm</span></td>
+                    <td><p>Patterns to match the message against</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeoutMsec</span></td>
+                    <td><p>Timeout in milliseconds</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Tuple</span>&lt;<a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a>, <span class="xref">System.Int32</span>&gt;</td>
+                    <td><p>Return a tuple containing the received message and index of the
+pattern in the pm instance that was successfully matched.
+On timeout the 2nd element of the tuple is -2 and 1st element of the tuple is null.
+On unsuccessful match the second element of the tuple is -1</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_ReceiveMatch_" data-uid="NFX.Erlang.ErlMbox.ReceiveMatch*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_ReceiveMatch_NFX_Erlang_IErlObject_System_Int32_" data-uid="NFX.Erlang.ErlMbox.ReceiveMatch(NFX.Erlang.IErlObject,System.Int32)">ReceiveMatch(IErlObject, Int32)</h4>
+              <div class="markdown level1 summary"><p>Receive a message and match it against a given pattern</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Tuple&lt;IErlObject, ErlVarBind&gt; ReceiveMatch(IErlObject pattern, int timeoutMsec = -1)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">pattern</span></td>
+                    <td><p>Pattern to match the message against</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeoutMsec</span></td>
+                    <td><p>Timeout in milliseconds</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Tuple</span>&lt;<a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a>, <a class="xref" href="NFX.Erlang.ErlVarBind.html">ErlVarBind</a>&gt;</td>
+                    <td><p>Return a tuple containing the received message and variable
+binding object. On timeout the first element of the tuple is null.
+On unsuccessful match the second element of the tuple is null</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_ReceiveRPC_" data-uid="NFX.Erlang.ErlMbox.ReceiveRPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_ReceiveRPC_System_Int32_" data-uid="NFX.Erlang.ErlMbox.ReceiveRPC(System.Int32)">ReceiveRPC(Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject ReceiveRPC(int timeout = -1)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Register_" data-uid="NFX.Erlang.ErlMbox.Register*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Register_NFX_Erlang_ErlAtom_" data-uid="NFX.Erlang.ErlMbox.Register(NFX.Erlang.ErlAtom)">Register(ErlAtom)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Register(ErlAtom name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Register_" data-uid="NFX.Erlang.ErlMbox.Register*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Register_System_String_" data-uid="NFX.Erlang.ErlMbox.Register(System.String)">Register(String)</h4>
+              <div class="markdown level1 summary"><p>Register a name for this mailbox. Registering a
+name for a mailbox enables others to send messages without
+knowing the <a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a> of the mailbox. A mailbox
+can have at most one name; if the mailbox already had a name,
+calling this method will supercede that name</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Register(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>true if the name was available, or false otherwise</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_RPC_" data-uid="NFX.Erlang.ErlMbox.RPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_RPC_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_System_Int32_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.RPC(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList,System.Int32,System.Nullable{NFX.Erlang.ErlAtom})">RPC(ErlAtom, ErlAtom, ErlAtom, ErlList, Int32, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, int timeout, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_RPC_" data-uid="NFX.Erlang.ErlMbox.RPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_RPC_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.RPC(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList,System.Nullable{NFX.Erlang.ErlAtom})">RPC(ErlAtom, ErlAtom, ErlAtom, ErlList, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject RPC(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_RPC_" data-uid="NFX.Erlang.ErlMbox.RPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_RPC_NFX_Erlang_ErlAtom_System_String_System_String_NFX_Erlang_ErlList_System_Int32_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.RPC(NFX.Erlang.ErlAtom,System.String,System.String,NFX.Erlang.ErlList,System.Int32,System.Nullable{NFX.Erlang.ErlAtom})">RPC(ErlAtom, String, String, ErlList, Int32, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject RPC(ErlAtom node, string mod, string fun, ErlList args, int timeout, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_RPC_" data-uid="NFX.Erlang.ErlMbox.RPC*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_RPC_NFX_Erlang_ErlAtom_System_String_System_String_NFX_Erlang_ErlList_System_Nullable_NFX_Erlang_ErlAtom__" data-uid="NFX.Erlang.ErlMbox.RPC(NFX.Erlang.ErlAtom,System.String,System.String,NFX.Erlang.ErlList,System.Nullable{NFX.Erlang.ErlAtom})">RPC(ErlAtom, String, String, ErlList, Nullable&lt;ErlAtom&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IErlObject RPC(ErlAtom node, string mod, string fun, ErlList args, ErlAtom? remoteCookie = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>&gt;</td>
+                    <td><span class="parametername">remoteCookie</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_RPCcast_" data-uid="NFX.Erlang.ErlMbox.RPCcast*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_RPCcast_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_" data-uid="NFX.Erlang.ErlMbox.RPCcast(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList)">RPCcast(ErlAtom, ErlAtom, ErlAtom, ErlList)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void RPCcast(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_RPCcast_" data-uid="NFX.Erlang.ErlMbox.RPCcast*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_RPCcast_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_ErlList_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlMbox.RPCcast(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.ErlList,NFX.Erlang.IErlObject)">RPCcast(ErlAtom, ErlAtom, ErlAtom, ErlList, IErlObject)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void RPCcast(ErlAtom node, ErlAtom mod, ErlAtom fun, ErlList args, IErlObject ioServer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">mod</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">ioServer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Send_" data-uid="NFX.Erlang.ErlMbox.Send*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Send_NFX_Erlang_ErlAtom_NFX_Erlang_ErlAtom_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlMbox.Send(NFX.Erlang.ErlAtom,NFX.Erlang.ErlAtom,NFX.Erlang.IErlObject)">Send(ErlAtom, ErlAtom, IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Send a message to a named mailbox created from another node</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Send(ErlAtom node, ErlAtom name, IErlObject msg)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">msg</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlMbox_Unlink_" data-uid="NFX.Erlang.ErlMbox.Unlink*"></a>
+              <h4 id="NFX_Erlang_ErlMbox_Unlink_NFX_Erlang_ErlPid_" data-uid="NFX.Erlang.ErlMbox.Unlink(NFX.Erlang.ErlPid)">Unlink(ErlPid)</h4>
+              <div class="markdown level1 summary"><p>Remove a link to a remote mailbox or Erlang process. This
+method removes a link created with <a class="xref" href="NFX.Erlang.ErlLink.html">ErlLink</a>
+Links are idempotent; calling this method once will remove all
+links between this mailbox and the remote <a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Unlink(ErlPid to)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlPid.html">ErlPid</a></td>
+                    <td><span class="parametername">to</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="events">Events
+              </h3>
+              
+              
+              <h4 id="NFX_Erlang_ErlMbox_MailboxMessage" data-uid="NFX.Erlang.ErlMbox.MailboxMessage">MailboxMessage</h4>
+              <div class="markdown level1 summary"><p>If this event is assigned, it will be called on arrival of a message, but
+the messages will not be put in the queue</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event MailboxMsgEventHandler MailboxMessage</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.MailboxMsgEventHandler.html">MailboxMsgEventHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

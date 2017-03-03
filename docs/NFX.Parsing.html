@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Parsing
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Parsing
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Parsing" data-uid="NFX.Parsing">Namespace NFX.Parsing
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Parsing.CompilingExpressionEvaluator-3.html">CompilingExpressionEvaluator&lt;TContext, TResult, TArg&gt;</a></h4>
+                  <section><p>Implements an evaluator that compiles all expressions represented by instances of this class in a certain scope into dynamic assemblies.
+Every unique scope name creates a separate assembly.
+The compilation of scope is triggered either by a call to Compile() or first attempt to call Evaluate() on any instance within a scope.
+Once a scope has been compiled, no further allocations in this scoped are allowed, this is because CLR does not allow to unload assemblies dynamically.
+Within an expression context is passed as &quot;ctx&quot; and argument as &quot;arg&quot;.
+This class is thread-safe.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.DataEntryUtils.html">DataEntryUtils</a></h4>
+                  <section><p>Provides misc data-entry parsing routines</p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.Evaluator.html">Evaluator</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Parsing.Evaluator.Node.html">Evaluator.Node</a></h4>
+                  <section><p>Node class represents evaluation b-tree element</p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.NaturalTextGenerator.html">NaturalTextGenerator</a></h4>
+                  <section><p>Generates human-readable English text for tests</p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.TokenParser.html">TokenParser</a></h4>
+                  <section><p>TokenParser class translates tokenized content string to an array list of parsed tokens with attributes</p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.TokenParser.Token.html">TokenParser.Token</a></h4>
+                  <section><p>Token class holds parsed token info along with an array of attributes </p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.TokenParser.Token.Attribute.html">TokenParser.Token.Attribute</a></h4>
+                  <section><p>Attribute class represents token&#39;s attribute</p>
+</section>
+                  <h4><a class="xref" href="NFX.Parsing.Utils.html">Utils</a></h4>
+                  <section></section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Parsing.CharCodes.html">CharCodes</a></h4>
+                  <section><p>Declares common char codes</p>
+</section>
+                <h3 id="delegates">Delegates
+              </h3>
+                  <h4><a class="xref" href="NFX.Parsing.IdentifierLookup.html">IdentifierLookup</a></h4>
+                  <section><p>Evaluator class performs math and logical expression parsing and evaluation without allocating .NET compilers</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

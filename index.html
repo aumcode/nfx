@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NFX </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NFX ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="index.html">
+                <img id="nfx-logo" src="images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx">NFX</h1>
+              
+<p>Server UNISTACK framework.</p>
+<p>License: Apache 2.0</p>
+<p>NFX is written in C# and runs on a CLR machine, however it has very little to do with .NET.
+This framework contains truly unique intellectual assets and allows for unconventional things
+that significantly boost performance and simplify the development (such as stateful web). 
+The majority of the achievements are possible because of two key things:</p>
+<ul>
+<li>Unification of design - all components are written in the same way</li>
+<li>Sophisticated serialization mechanism aka &quot;teleportation&quot;</li>
+</ul>
+<p>promoting:</p>
+<ul>
+<li>Stateful WEB programming (not mandatory)</li>
+<li>Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems </li>
+<li>Serving 50,000+ BUSINESS web requests a second (with logic) on a 4 core 3.0 GHz machine 
+looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache)</li>
+</ul>
+<p>The concepts have been well tested and used. In the past 7 years, <em>teleportation mechanism has 
+moved trillions of various CLR object instances</em> (including non-trivial CLR cases like: structs with
+ read-only fields, arrays of structs of structs, custom streamers like Dictionary&lt;&gt; with comparers etc.)</p>
+<p><strong>GUIDES</strong>:
+NEW 20160117, we are adding:</p>
+<p> <a href="https://github.com/aumcode/nfx/blob/master/Guides/README.md">NFX Documentation/Guides are here</a></p>
+<p> <a href="https://aumcode.github.io/documentation">XML Documentation from Code</a></p>
+<p><strong>NUGET</strong>:
+ <a href="https://www.nuget.org/packages/NFX/">https://www.nuget.org/packages/NFX/</a></p>
+<p> <code>pm&gt; install-package NFX</code></p>
+<p><strong>Various Demo Projects</strong>:
+ <a href="https://github.com/aumcode/nfx-demos">https://github.com/aumcode/nfx-demos</a></p>
+<p>NFX Provides:</p>
+<ul>
+<li><p>Unified App Container</p>
+<ul>
+<li>Unified app models: console, web, service, all have: user, session, security, volatile state</li>
+<li>Configuration: file, memory, db, vars, macros, structural merges, overrides, scripting</li>
+<li>Dep injection: inject dependencies</li>
+<li>Logger: async file, debug, db destinations with graphs, SLA rules, filtering and routing</li>
+<li>Security: declr and/or imperative permission model, strong password manager, virtual credentials </li>
+</ul>
+</li>
+<li><p>Big Memory Model </p>
+<ul>
+<li>Pile memory manager: keeps hundreds of millions of CLR objects in memory without GC pauses</li>
+<li>Distributed Pile (objects stored on cluster nodes)</li>
+<li>Pile Cache: materialize 2,000,000 CLR objects/sec in-memory on a 4 core machine</li>
+</ul>
+</li>
+<li><p>Full Web Stack</p>
+<ul>
+<li>Web server</li>
+<li>Rule-based network Gate (business firewall)</li>
+<li>MVC: filters, attributes, complex model binding, security, web API, MVVM binding</li>
+<li>Template</li>
+<li>Client JS lib + MVVM</li>
+</ul>
+</li>
+<li><p>Hybrid data access layer</p>
+<ul>
+<li>RDBMS (we use: MySQL, MsSQL)</li>
+<li>NoSQL (we use: MongoDB, Elastic search, Erlang OTP)</li>
+<li>Native ultra-fast MongoDB driver (socket based)</li>
+</ul>
+</li>
+<li><p>Full Instrumentation Suite</p>
+<ul>
+<li>Gauges and Events keyed on business enities</li>
+<li>Instrumentation buffers</li>
+<li>Injectable instrumentation sinks (i.e. telemetry receiver)</li>
+<li>Cluster real-time map:reduce on zones and regions</li>
+</ul>
+</li>
+<li><p>High-level service oriented stack &quot;Glue&quot;</p>
+<ul>
+<li>Contract based design with security</li>
+<li>Injectable bindings: i.e. &quot;Async TCP&quot;</li>
+<li>150,000 ops/sec two-way calls using <em>business objects</em> (not byte array) on a 4 core machine</li>
+<li>Unistack payload teleportation (no need to decorate various classes, teleport as-is)</li>
+</ul>
+</li>
+<li><p>Serialization Suite</p>
+<ul>
+<li>Slim: the <em>fastest general purpose</em> CLR serializer, very well tested and proven processing </li>
+<li>Teleportation: moving <em>CLR objects as-is without any extra metadata</em> between processes</li>
+<li>BSON: an efficient BSON implementation</li>
+<li>JSON: includes multi-language selective serialization of large graphs</li>
+</ul>
+</li>
+<li><p>Erlang Support: including types, serialization and full OTP node</p>
+</li>
+<li>Virtual File Systems: Amazon S3, SVN, Local, (Google Drive and DropBox created by others)</li>
+<li>Virtual payment processing: Braintree, Stripe, PayPal</li>
+<li>Code Analysis (building lexers/parsers)</li>
+<li>Type Conversion Accessors (i.e. object.AsInt(dflt)....)</li>
+</ul>
+<p><strong>IMPORTANT!</strong></p>
+<p>NFX does not use any 3rd party components but for some DB-access (i.e. MySQL and MsSQL).
+NFX uses very Base-Class-Lib:</p>
+<ul>
+<li>Basic/primitive types: string, ints, doubles, decimal, dates, +Math</li>
+<li>Parallel task library: 25% of features - create, run, wait for completion,
+Task, Parallel.For/Each</li>
+<li>Collections: List, Dictionary, ConcurrentDictionary, HashSet, Queue</li>
+<li>Threading: Thread, lock()/Monitor, Interlocked*, AutoresetEvent</li>
+<li>Various: Stopwatch, Console, WinForms is used for SOME interactive tests(not needed for operation)</li>
+<li>Some ADO references (Reader/SQLStatement) in segregated data-access components</li>
+<li>Reflection API</li>
+<li>Drawing 2D (Graphics)</li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

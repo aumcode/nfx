@@ -1,0 +1,664 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class FileConfiguration
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class FileConfiguration
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Environment_FileConfiguration" data-uid="NFX.Environment.FileConfiguration">Class FileConfiguration
+              </h1>
+              <div class="markdown level0 summary"><p>Provides file-based configuration base object used for concrete implementations such as XML or INI file base configurations</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.Environment.Configuration.html">Configuration</a></div>
+                  <div class="level2"><span class="xref">FileConfiguration</span></div>
+                  <div class="level3"><a class="xref" href="NFX.Environment.JSONConfiguration.html">JSONConfiguration</a></div>
+                  <div class="level3"><a class="xref" href="NFX.Environment.LaconicConfiguration.html">LaconicConfiguration</a></div>
+                  <div class="level3"><a class="xref" href="NFX.Environment.XMLConfiguration.html">XMLConfiguration</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_CONFIG_INCLUDE_PRAGMA">Configuration.DEFAULT_CONFIG_INCLUDE_PRAGMA</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION">Configuration.CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_INCLUDE_PRAGMA_FS_SECTION">Configuration.CONFIG_INCLUDE_PRAGMA_FS_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_INCLUDE_PRAGMA_SESSION_SECTION">Configuration.CONFIG_INCLUDE_PRAGMA_SESSION_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_INCLUDE_PRAGMA_FILE_ATTR">Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_INCLUDE_PRAGMA_REQUIRED_ATTR">Configuration.CONFIG_INCLUDE_PRAGMA_REQUIRED_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_VAR_ESCAPE">Configuration.DEFAULT_VAR_ESCAPE</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_VAR_START">Configuration.DEFAULT_VAR_START</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_VAR_END">Configuration.DEFAULT_VAR_END</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_VAR_PATH_MOD">Configuration.DEFAULT_VAR_PATH_MOD</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_VAR_ENV_MOD">Configuration.DEFAULT_VAR_ENV_MOD</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_DEFAULT_VAR_MACRO_START">Configuration.DEFAULT_VAR_MACRO_START</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_NAME_ATTR">Configuration.CONFIG_NAME_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_ORDER_ATTR">Configuration.CONFIG_ORDER_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CONFIG_LACONIC_FORMAT">Configuration.CONFIG_LACONIC_FORMAT</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_NewEmptyRoot_System_String_">Configuration.NewEmptyRoot(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_AllSupportedFormats">Configuration.AllSupportedFormats</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ProviderLoadFromFile_System_String_">Configuration.ProviderLoadFromFile(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ProviderLoadFromAnySupportedFormatFile_System_String_">Configuration.ProviderLoadFromAnySupportedFormatFile(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ProviderLoadFromString_System_String_System_String_">Configuration.ProviderLoadFromString(String, String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ProcesswideEnvironmentVarResolver">Configuration.ProcesswideEnvironmentVarResolver</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ProcesswideConfigNodeProviderType">Configuration.ProcesswideConfigNodeProviderType</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_m_Root">Configuration.m_Root</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_m_EmptySectionNode">Configuration.m_EmptySectionNode</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_m_EmptyAttrNode">Configuration.m_EmptyAttrNode</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Root">Configuration.Root</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_StrictNames">Configuration.StrictNames</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_EnvironmentVarResolver">Configuration.EnvironmentVarResolver</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_MacroRunner">Configuration.MacroRunner</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_MacroRunnerContext">Configuration.MacroRunnerContext</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_EmptySection">Configuration.EmptySection</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_EmptyAttr">Configuration.EmptyAttr</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Variable_ESCAPE">Configuration.Variable_ESCAPE</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Variable_START">Configuration.Variable_START</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Variable_END">Configuration.Variable_END</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Variable_PATH_MOD">Configuration.Variable_PATH_MOD</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Variable_ENV_MOD">Configuration.Variable_ENV_MOD</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Variable_MACRO_START">Configuration.Variable_MACRO_START</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ContentView">Configuration.ContentView</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Create_System_String_">Configuration.Create(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CreateFromMerge_NFX_Environment_ConfigSectionNode_NFX_Environment_ConfigSectionNode_NFX_Environment_NodeOverrideRules_">Configuration.CreateFromMerge(ConfigSectionNode, ConfigSectionNode, NodeOverrideRules)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CreateFromNode_NFX_Environment_IConfigSectionNode_">Configuration.CreateFromNode(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Destroy">Configuration.Destroy()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Refresh">Configuration.Refresh()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Save">Configuration.Save()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_CheckAndAdjustNodeName_System_String_">Configuration.CheckAndAdjustNodeName(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ResolveEnvironmentVar_System_String_NFX_Environment_IEnvironmentVariableResolver_">Configuration.ResolveEnvironmentVar(String, IEnvironmentVariableResolver)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_RunMacro_NFX_Environment_IConfigSectionNode_System_String_System_String_NFX_Environment_IConfigSectionNode_NFX_Environment_IMacroRunner_System_Object_">Configuration.RunMacro(IConfigSectionNode, String, String, IConfigSectionNode, IMacroRunner, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Clone__1">Configuration.Clone&lt;T&gt;()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Clone_NFX_Environment_Configuration_">Configuration.Clone(Configuration)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Clone">Configuration.Clone()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_Include_NFX_Environment_ConfigSectionNode_NFX_Environment_ConfigSectionNode_">Configuration.Include(ConfigSectionNode, ConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ToLaconicString_NFX_CodeAnalysis_Laconfig_LaconfigWritingOptions_">Configuration.ToLaconicString(LaconfigWritingOptions)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ToLaconicStream_System_IO_Stream_NFX_CodeAnalysis_Laconfig_LaconfigWritingOptions_System_Text_Encoding_">Configuration.ToLaconicStream(Stream, LaconfigWritingOptions, Encoding)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ToLaconicFile_System_String_NFX_CodeAnalysis_Laconfig_LaconfigWritingOptions_System_Text_Encoding_">Configuration.ToLaconicFile(String, LaconfigWritingOptions, Encoding)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_ToConfigurationJSONDataMap">Configuration.ToConfigurationJSONDataMap()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_AdjustNodeName_System_String_">Configuration.AdjustNodeName(String)</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Environment</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Environment_FileConfiguration_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class FileConfiguration : Configuration, ICloneable</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_Environment_FileConfiguration__ctor_" data-uid="NFX.Environment.FileConfiguration.#ctor*"></a>
+              <h4 id="NFX_Environment_FileConfiguration__ctor" data-uid="NFX.Environment.FileConfiguration.#ctor">FileConfiguration()</h4>
+              <div class="markdown level1 summary"><p>Creates an instance of a new configuration not bound to any file</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected FileConfiguration()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Environment_FileConfiguration__ctor_" data-uid="NFX.Environment.FileConfiguration.#ctor*"></a>
+              <h4 id="NFX_Environment_FileConfiguration__ctor_System_String_" data-uid="NFX.Environment.FileConfiguration.#ctor(System.String)">FileConfiguration(String)</h4>
+              <div class="markdown level1 summary"><p>Creates an isntance of configuration and reads contents from the file</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected FileConfiguration(string filename)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">filename</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Environment_FileConfiguration_m_FileName" data-uid="NFX.Environment.FileConfiguration.m_FileName">m_FileName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected string m_FileName</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Environment_FileConfiguration_FileName_" data-uid="NFX.Environment.FileConfiguration.FileName*"></a>
+              <h4 id="NFX_Environment_FileConfiguration_FileName" data-uid="NFX.Environment.FileConfiguration.FileName">FileName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string FileName { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_FileConfiguration_IsReadOnly_" data-uid="NFX.Environment.FileConfiguration.IsReadOnly*"></a>
+              <h4 id="NFX_Environment_FileConfiguration_IsReadOnly" data-uid="NFX.Environment.FileConfiguration.IsReadOnly">IsReadOnly</h4>
+              <div class="markdown level1 summary"><p>Indicates whether configuration is readonly or may be modified and saved</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool IsReadOnly { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Environment.Configuration.html#NFX_Environment_Configuration_IsReadOnly">Configuration.IsReadOnly</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Environment_FileConfiguration_SaveAs_" data-uid="NFX.Environment.FileConfiguration.SaveAs*"></a>
+              <h4 id="NFX_Environment_FileConfiguration_SaveAs_System_String_" data-uid="NFX.Environment.FileConfiguration.SaveAs(System.String)">SaveAs(String)</h4>
+              <div class="markdown level1 summary"><p>Saves configuration into specified file</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void SaveAs(string filename)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">filename</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_FileConfiguration_SetReadOnly_" data-uid="NFX.Environment.FileConfiguration.SetReadOnly*"></a>
+              <h4 id="NFX_Environment_FileConfiguration_SetReadOnly_System_Boolean_" data-uid="NFX.Environment.FileConfiguration.SetReadOnly(System.Boolean)">SetReadOnly(Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SetReadOnly(bool val)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">val</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

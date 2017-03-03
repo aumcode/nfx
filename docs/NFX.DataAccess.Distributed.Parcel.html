@@ -1,0 +1,1480 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Parcel
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Parcel
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_DataAccess_Distributed_Parcel" data-uid="NFX.DataAccess.Distributed.Parcel">Class Parcel
+              </h1>
+              <div class="markdown level0 summary"><p>Describes a data parcel - a piece of logically-grouped data that gets fetched from/comitted into a distributed backend system.
+Parcels represent an atomic unit of change, a changeset that gets replicated between failover hosts.
+Every parcel has a Payload property that stores business data of interest that the parcel contains.
+This class is not thread-safe. Use DeepClone() to create 100% copies for working in multiple threads.
+This particular class serves as a very base for all Parcel implementations</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><span class="xref">Parcel</span></div>
+                  <div class="level3"><a class="xref" href="NFX.DataAccess.Distributed.Parcel-1.html">Parcel&lt;TPayload&gt;</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Destructor">DisposableObject.Destructor()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.DataAccess.Distributed</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_DataAccess_Distributed_Parcel_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class Parcel : DisposableObject, IDisposable, IReplicatable, ICachePolicy, IDistributedStableHashProvider, IShardingPointerProvider</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel__ctor_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel__ctor" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor">Parcel()</h4>
+              <div class="markdown level1 summary"><p>Used for serialization</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Parcel()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel__ctor_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel__ctor_NFX_DataAccess_Distributed_GDID_System_Object_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor(NFX.DataAccess.Distributed.GDID,System.Object)">Parcel(GDID, Object)</h4>
+              <div class="markdown level1 summary"><p>Called when creating new Parcel instances by the original author.
+The new instance is in &#39;ParcelState.Creating&#39; state</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Parcel(GDID id, object payload)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">payload</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel__ctor_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel__ctor_NFX_DataAccess_Distributed_GDID_System_Object_NFX_DataAccess_Distributed_IReplicationVersionInfo_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor(NFX.DataAccess.Distributed.GDID,System.Object,NFX.DataAccess.Distributed.IReplicationVersionInfo)">Parcel(GDID, Object, IReplicationVersionInfo)</h4>
+              <div class="markdown level1 summary"><p>Called by device to load parcel from storage.
+The new instance is in &#39;ParcelState.Sealed&#39; state.
+Business logic devs - do not call</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Parcel(GDID id, object payload, IReplicationVersionInfo versInfo)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">payload</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.IReplicationVersionInfo.html">IReplicationVersionInfo</a></td>
+                    <td><span class="parametername">versInfo</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel__ctor_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel__ctor_System_Object_" data-uid="NFX.DataAccess.Distributed.Parcel.#ctor(System.Object)">Parcel(Object)</h4>
+              <div class="markdown level1 summary"><p>This ctor is never public, used with __ctor__injectID</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Parcel(object payload)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">payload</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_DataAccess_Distributed_Parcel_DEFAULT_REPLICATION_PRIORITY" data-uid="NFX.DataAccess.Distributed.Parcel.DEFAULT_REPLICATION_PRIORITY">DEFAULT_REPLICATION_PRIORITY</h4>
+              <div class="markdown level1 summary"><p>Default priority of replication</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int DEFAULT_REPLICATION_PRIORITY</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Distributed_Parcel_m_ValidationExceptions" data-uid="NFX.DataAccess.Distributed.Parcel.m_ValidationExceptions">m_ValidationExceptions</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NonSerialized]
+protected List&lt;Exception&gt; m_ValidationExceptions</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_DataAccess_Distributed_Parcel_STANDARD_KNOWN_SERIALIZER_TYPES" data-uid="NFX.DataAccess.Distributed.Parcel.STANDARD_KNOWN_SERIALIZER_TYPES">STANDARD_KNOWN_SERIALIZER_TYPES</h4>
+              <div class="markdown level1 summary"><p>Defines well-known frequently used types for slim serializer compression</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly TypeRegistry STANDARD_KNOWN_SERIALIZER_TYPES</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.Slim.TypeRegistry.html">TypeRegistry</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_CacheAbsoluteExpirationUTC_" data-uid="NFX.DataAccess.Distributed.Parcel.CacheAbsoluteExpirationUTC*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_CacheAbsoluteExpirationUTC" data-uid="NFX.DataAccess.Distributed.Parcel.CacheAbsoluteExpirationUTC">CacheAbsoluteExpirationUTC</h4>
+              <div class="markdown level1 summary"><p>Implements IParcelCachePolicy contract.
+The default implementation returns null.
+Override to supply a different absolute cache expiration UTC timestamp for this parcel
+that may depend on particular parcel payload state (i.e. field values).</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime? CacheAbsoluteExpirationUTC { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html#NFX_DataAccess_Distributed_ICachePolicy_CacheAbsoluteExpirationUTC">ICachePolicy.CacheAbsoluteExpirationUTC</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_CachePriority_" data-uid="NFX.DataAccess.Distributed.Parcel.CachePriority*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_CachePriority" data-uid="NFX.DataAccess.Distributed.Parcel.CachePriority">CachePriority</h4>
+              <div class="markdown level1 summary"><p>Implements IParcelCachePolicy contract.
+The default implementation returns null.
+Override to supply a relative cache priority of this parcel
+that may depend on particular parcel payload state (i.e. field values).</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int ? CachePriority { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html#NFX_DataAccess_Distributed_ICachePolicy_CachePriority">ICachePolicy.CachePriority</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_CacheReadMaxAgeSec_" data-uid="NFX.DataAccess.Distributed.Parcel.CacheReadMaxAgeSec*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_CacheReadMaxAgeSec" data-uid="NFX.DataAccess.Distributed.Parcel.CacheReadMaxAgeSec">CacheReadMaxAgeSec</h4>
+              <div class="markdown level1 summary"><p>Implements IParcelCachePolicy contract.
+The default implementation returns null.
+Override to supply a value for maximum validity span of cached parcel
+that may depend on particular parcel payload state (i.e. field values).
+This property may be used to obtain a value before parcel is re-read from the store</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int ? CacheReadMaxAgeSec { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html#NFX_DataAccess_Distributed_ICachePolicy_CacheReadMaxAgeSec">ICachePolicy.CacheReadMaxAgeSec</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_CacheWriteMaxAgeSec_" data-uid="NFX.DataAccess.Distributed.Parcel.CacheWriteMaxAgeSec*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_CacheWriteMaxAgeSec" data-uid="NFX.DataAccess.Distributed.Parcel.CacheWriteMaxAgeSec">CacheWriteMaxAgeSec</h4>
+              <div class="markdown level1 summary"><p>Implements IParcelCachePolicy contract.
+The default implementation returns null.
+Override to supply a value for maximum length of this isntance stay in cache
+that may depend on particular parcel payload state (i.e. field values)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int ? CacheWriteMaxAgeSec { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html#NFX_DataAccess_Distributed_ICachePolicy_CacheWriteMaxAgeSec">ICachePolicy.CacheWriteMaxAgeSec</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_EffectiveCachePolicy_" data-uid="NFX.DataAccess.Distributed.Parcel.EffectiveCachePolicy*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_EffectiveCachePolicy" data-uid="NFX.DataAccess.Distributed.Parcel.EffectiveCachePolicy">EffectiveCachePolicy</h4>
+              <div class="markdown level1 summary"><p>Returns effective cache policy the one that is calculated from attribute and overidden by the instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ICachePolicy EffectiveCachePolicy { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html">ICachePolicy</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_GDID_" data-uid="NFX.DataAccess.Distributed.Parcel.GDID*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_GDID" data-uid="NFX.DataAccess.Distributed.Parcel.GDID">GDID</h4>
+              <div class="markdown level1 summary"><p>Returns GDID for data that this parcel represents</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public GDID GDID { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_MetadataAttribute_" data-uid="NFX.DataAccess.Distributed.Parcel.MetadataAttribute*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_MetadataAttribute" data-uid="NFX.DataAccess.Distributed.Parcel.MetadataAttribute">MetadataAttribute</h4>
+              <div class="markdown level1 summary"><p>Returns DataParcelAttribute that describes this parcel. Every parcel MUST be decorated by the DataParcel attribute</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DataParcelAttribute MetadataAttribute { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.DataParcelAttribute.html">DataParcelAttribute</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_NewlySealed_" data-uid="NFX.DataAccess.Distributed.Parcel.NewlySealed*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_NewlySealed" data-uid="NFX.DataAccess.Distributed.Parcel.NewlySealed">NewlySealed</h4>
+              <div class="markdown level1 summary"><p>Returns true when parcel was just sealed after a call to Open or .ctor/create.
+Datastore may check this flag and disallow saving of parcel instances that have not changed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool NewlySealed { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_Payload_" data-uid="NFX.DataAccess.Distributed.Parcel.Payload*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_Payload" data-uid="NFX.DataAccess.Distributed.Parcel.Payload">Payload</h4>
+              <div class="markdown level1 summary"><p>Returns payload of this parcel. This may be null for deleted parcels (VersionDeleted).
+WARNING!!! Although parcels do not allow to set Payload property if they are sealed, one can still mutate/modify the payload object graph
+even on a sealed parcel instance, i.e. one may write:
+<pre><code>mySealedParcel.Payload.DueDates.Add(DateTime.Now) (given DueDates of type List(DateTime))</code></pre>.
+This case is considered to be a bug in the calling-code. The framework has no way of preventing such an inadvertent behavior as there is no
+way to intercept a mutation via transitive or direct references/functors in an object graph referenced by Payload property because payload type
+does not impose (and should not) any constraints on what can be a payload.
+In Aum language we will use static type checker that will detect possible property access via Payload BEFORE calling Open()</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public object Payload { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ReadOnly_" data-uid="NFX.DataAccess.Distributed.Parcel.ReadOnly*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ReadOnly" data-uid="NFX.DataAccess.Distributed.Parcel.ReadOnly">ReadOnly</h4>
+              <div class="markdown level1 summary"><p>Indicates whether the data may be altered.
+ReadOnly parcels can not be Opened after that have been Sealed by their creator</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract bool ReadOnly { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ReplicationPriority_" data-uid="NFX.DataAccess.Distributed.Parcel.ReplicationPriority*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ReplicationPriority" data-uid="NFX.DataAccess.Distributed.Parcel.ReplicationPriority">ReplicationPriority</h4>
+              <div class="markdown level1 summary"><p>Returns replication priority, override to make replication priority dependent on instance, i.e. a user profile data for
+a celebrity user may need to have higher replication rate. The lower value indicates the higher priority</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual int ReplicationPriority { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.IReplicatable.html#NFX_DataAccess_Distributed_IReplicatable_ReplicationPriority">IReplicatable.ReplicationPriority</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ReplicationVersionInfo_" data-uid="NFX.DataAccess.Distributed.Parcel.ReplicationVersionInfo*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ReplicationVersionInfo" data-uid="NFX.DataAccess.Distributed.Parcel.ReplicationVersionInfo">ReplicationVersionInfo</h4>
+              <div class="markdown level1 summary"><p>Implements IReplicatable interface</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IReplicationVersionInfo ReplicationVersionInfo { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.IReplicationVersionInfo.html">IReplicationVersionInfo</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.IReplicatable.html#NFX_DataAccess_Distributed_IReplicatable_ReplicationVersionInfo">IReplicatable.ReplicationVersionInfo</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ShardingID_" data-uid="NFX.DataAccess.Distributed.Parcel.ShardingID*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ShardingID" data-uid="NFX.DataAccess.Distributed.Parcel.ShardingID">ShardingID</h4>
+              <div class="markdown level1 summary"><p>Returns the ShardingID used for sharding, default implementation returns this parcel type and GDID.
+Override to return another sharding key, i.e. a social comment msg may use parent item (that the msg relates to) ID
+as the shard key so msgs are co-located with related items. Use CompositeShardingID to return multiple values.
+IMPORTANT!!! ShardingID must return an immutable value, the one that CAN NOT be changed during parcel payload life</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual object ShardingID { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ShardingPointer_" data-uid="NFX.DataAccess.Distributed.Parcel.ShardingPointer*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ShardingPointer" data-uid="NFX.DataAccess.Distributed.Parcel.ShardingPointer">ShardingPointer</h4>
+              <div class="markdown level1 summary"><p>Returns the ShardingPointer(type:ID) used for sharding, default implementation returns this parcel type and GDID.
+Override ShardingID property to return another sharding key, i.e. a social comment msg may use parent item (that the msg relates to) ID
+as the shard key so msgs are co-located with related items. Use CompositeShardingID to return multiple values.
+IMPORTANT!!! ShardingPointer must return an immutable value, the one that CAN NOT be changed during parcel payload life</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ShardingPointer ShardingPointer { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.ShardingPointer.html">ShardingPointer</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.IShardingPointerProvider.html#NFX_DataAccess_Distributed_IShardingPointerProvider_ShardingPointer">IShardingPointerProvider.ShardingPointer</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_State_" data-uid="NFX.DataAccess.Distributed.Parcel.State*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_State" data-uid="NFX.DataAccess.Distributed.Parcel.State">State</h4>
+              <div class="markdown level1 summary"><p>Returns the state of the parcel: Creating|Modifying|Sealed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ParcelState State { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.ParcelState.html">ParcelState</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ValidationExceptions_" data-uid="NFX.DataAccess.Distributed.Parcel.ValidationExceptions*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ValidationExceptions" data-uid="NFX.DataAccess.Distributed.Parcel.ValidationExceptions">ValidationExceptions</h4>
+              <div class="markdown level1 summary"><p>Returns validation exceptions - populated by a call to Validate</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;Exception&gt; ValidationExceptions { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel___ctor__injectID_" data-uid="NFX.DataAccess.Distributed.Parcel.__ctor__injectID*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel___ctor__injectID_NFX_DataAccess_Distributed_GDID_" data-uid="NFX.DataAccess.Distributed.Parcel.__ctor__injectID(NFX.DataAccess.Distributed.GDID)">__ctor__injectID(GDID)</h4>
+              <div class="markdown level1 summary"><p>Internal framework method, developers: never call</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void __ctor__injectID(GDID id)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_DeepClone_" data-uid="NFX.DataAccess.Distributed.Parcel.DeepClone*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_DeepClone" data-uid="NFX.DataAccess.Distributed.Parcel.DeepClone">DeepClone()</h4>
+              <div class="markdown level1 summary"><p>Duplicates this parcel by doing a complete deep-clone of its state via serialization.
+This method is useful for making copies of the same parcel for different threads as it is thread-safe while no other thread mutates the instance,
+however Parcel instances are NOT THREAD-SAFE for parallel changes.
+The existing parcel MUST be SEALED (otherwise it can not be serialized).
+This method is also used before a call to Open() if parcel needs to be &quot;un-opened&quot; the cloned instance may be reverted to</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Parcel DeepClone()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.Parcel.html">Parcel</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_DoMerge_" data-uid="NFX.DataAccess.Distributed.Parcel.DoMerge*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_DoMerge_System_Collections_Generic_IEnumerable_NFX_DataAccess_Distributed_Parcel__" data-uid="NFX.DataAccess.Distributed.Parcel.DoMerge(System.Collections.Generic.IEnumerable{NFX.DataAccess.Distributed.Parcel})">DoMerge(IEnumerable&lt;Parcel&gt;)</h4>
+              <div class="markdown level1 summary"><p>Override to merge other parcels into this one. Return true if merge changed the payload. See Merge().
+This implementation throws an exception</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual bool DoMerge(IEnumerable&lt;Parcel&gt; others)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.DataAccess.Distributed.Parcel.html">Parcel</a>&gt;</td>
+                    <td><span class="parametername">others</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_DoOpen_" data-uid="NFX.DataAccess.Distributed.Parcel.DoOpen*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_DoOpen" data-uid="NFX.DataAccess.Distributed.Parcel.DoOpen">DoOpen()</h4>
+              <div class="markdown level1 summary"><p>Override to perform actions when parcel is unsealed (opened) for modification</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void DoOpen()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_DoSeal_" data-uid="NFX.DataAccess.Distributed.Parcel.DoSeal*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_DoSeal_NFX_DataAccess_Distributed_IBank_" data-uid="NFX.DataAccess.Distributed.Parcel.DoSeal(NFX.DataAccess.Distributed.IBank)">DoSeal(IBank)</h4>
+              <div class="markdown level1 summary"><p>Override to seal the parcel instance, i.e. generate some calculated fields.
+The version information is already generated by the time this method is called</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void DoSeal(IBank bank)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.IBank.html">IBank</a></td>
+                    <td><span class="parametername">bank</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_DoValidate_" data-uid="NFX.DataAccess.Distributed.Parcel.DoValidate*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_DoValidate_NFX_DataAccess_Distributed_IBank_" data-uid="NFX.DataAccess.Distributed.Parcel.DoValidate(NFX.DataAccess.Distributed.IBank)">DoValidate(IBank)</h4>
+              <div class="markdown level1 summary"><p>Override to perform parcel/payload validation after modification. Add validation exceptions into m_ValidationExceptions field.
+Use bank for cross-checks (i.e. may run queries to check consistency)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract void DoValidate(IBank bank)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.IBank.html">IBank</a></td>
+                    <td><span class="parametername">bank</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_Equals_" data-uid="NFX.DataAccess.Distributed.Parcel.Equals*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_Equals_System_Object_" data-uid="NFX.DataAccess.Distributed.Parcel.Equals(System.Object)">Equals(Object)</h4>
+              <div class="markdown level1 summary"><p>Tests for parcel equality based on the same type and GDID value</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">obj</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Object.Equals(System.Object)</span></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_GetDistributedStableHash_" data-uid="NFX.DataAccess.Distributed.Parcel.GetDistributedStableHash*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_GetDistributedStableHash" data-uid="NFX.DataAccess.Distributed.Parcel.GetDistributedStableHash">GetDistributedStableHash()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ulong GetDistributedStableHash()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.IDistributedStableHashProvider.html#NFX_DataAccess_Distributed_IDistributedStableHashProvider_GetDistributedStableHash">IDistributedStableHashProvider.GetDistributedStableHash()</a></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_GetHashCode_" data-uid="NFX.DataAccess.Distributed.Parcel.GetHashCode*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_GetHashCode" data-uid="NFX.DataAccess.Distributed.Parcel.GetHashCode">GetHashCode()</h4>
+              <div class="markdown level1 summary"><p>Generates hash code based on parcel type and GDID value</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Object.GetHashCode()</span></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_GetParcelCacheTableName_" data-uid="NFX.DataAccess.Distributed.Parcel.GetParcelCacheTableName*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_GetParcelCacheTableName_System_Type_" data-uid="NFX.DataAccess.Distributed.Parcel.GetParcelCacheTableName(System.Type)">GetParcelCacheTableName(Type)</h4>
+              <div class="markdown level1 summary"><p>Obtains parcel cache name from either it&#39;s associated DataParcelAttribute or
+if not defined, from parcel type full name</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string GetParcelCacheTableName(Type tparcel)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">tparcel</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_Merge_" data-uid="NFX.DataAccess.Distributed.Parcel.Merge*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_Merge_System_Collections_Generic_IEnumerable_NFX_DataAccess_Distributed_Parcel__" data-uid="NFX.DataAccess.Distributed.Parcel.Merge(System.Collections.Generic.IEnumerable{NFX.DataAccess.Distributed.Parcel})">Merge(IEnumerable&lt;Parcel&gt;)</h4>
+              <div class="markdown level1 summary"><p>Merges other parcel instances into this one.
+A parcel type may support merging (when DataParcel attribute SupportsMerge is set to true) of data from other parcels/versions into this instance.
+This parcel must not be sealed as merge may change the payload in which case TRUE is returned. The parcel needs to be sealed again after the change.
+If a call to this method returns false, then nothing was changed as this instance already contains the latest data/could not be merged.
+Merging is used for version conflict resolution: servers check if the type of the updated parcel instance SupportsMerge, then if it does, Opens parcel
+and calls this method passing other versions in question to this method. The framework does not impose a limit on the supplied parcel types, however
+most of the parcel types support merge only with the same-typed parcel instances.
+IMPORTANT: The ordering of parcel versions is not guaranteed.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Merge(IEnumerable&lt;Parcel&gt; others)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.DataAccess.Distributed.Parcel.html">Parcel</a>&gt;</td>
+                    <td><span class="parametername">others</span></td>
+                    <td><p>Other parcel versions/data</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True if Merge() generated newer version/changed payload. False when Merge did not/could not change existing parcel</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_Open_" data-uid="NFX.DataAccess.Distributed.Parcel.Open*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_Open" data-uid="NFX.DataAccess.Distributed.Parcel.Open">Open()</h4>
+              <div class="markdown level1 summary"><p>Opens parcel for modification. Parcel must be in the Sealed state for this call and must not be ReadOnly.
+Once open for modification, a parcel can not be &quot;UnOpened&quot;, only Seal()-ed. This is because there is no way to track
+whether some part of payload object has changed by the calling code. Use DeepClone() before calling Open to retain a copy of Sealed parcel
+to revert to the cloned instance instead</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Open()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_Seal_" data-uid="NFX.DataAccess.Distributed.Parcel.Seal*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_Seal_NFX_DataAccess_Distributed_IBank_" data-uid="NFX.DataAccess.Distributed.Parcel.Seal(NFX.DataAccess.Distributed.IBank)">Seal(IBank)</h4>
+              <div class="markdown level1 summary"><p>Seal parcel after modification
+May call this method on parcels in either Creating or Modifying states.
+Bank is used to create the ReplicationVersionInfo which is depends on store/bank implementation.
+Parcels can replicate only within stores/technologies that have sealed them</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Seal(IBank bank)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.IBank.html">IBank</a></td>
+                    <td><span class="parametername">bank</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_ToString_" data-uid="NFX.DataAccess.Distributed.Parcel.ToString*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_ToString" data-uid="NFX.DataAccess.Distributed.Parcel.ToString">ToString()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Object.ToString()</span></div>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_Validate_" data-uid="NFX.DataAccess.Distributed.Parcel.Validate*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_Validate_NFX_DataAccess_Distributed_IBank_" data-uid="NFX.DataAccess.Distributed.Parcel.Validate(NFX.DataAccess.Distributed.IBank)">Validate(IBank)</h4>
+              <div class="markdown level1 summary"><p>Performs validation of the data. Does not throw but populates validation exceptions if data is not valid.
+Bank context may be used to run sub-queries during consistency/crosschecks
+May call this method on parcels in either Creating or Modifying states</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Validate(IBank bank)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.IBank.html">IBank</a></td>
+                    <td><span class="parametername">bank</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_Distributed_Parcel_NFX_DataAccess_Distributed_ICachePolicy_CacheTableName_" data-uid="NFX.DataAccess.Distributed.Parcel.NFX#DataAccess#Distributed#ICachePolicy#CacheTableName*"></a>
+              <h4 id="NFX_DataAccess_Distributed_Parcel_NFX_DataAccess_Distributed_ICachePolicy_CacheTableName" data-uid="NFX.DataAccess.Distributed.Parcel.NFX#DataAccess#Distributed#ICachePolicy#CacheTableName">ICachePolicy.CacheTableName</h4>
+              <div class="markdown level1 summary"><p>Implements IParcelCachePolicy contract.
+The implementation returns null for parcel.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">string ICachePolicy.CacheTableName { get; }</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html#NFX_DataAccess_Distributed_ICachePolicy_CacheTableName">ICachePolicy.CacheTableName</a></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

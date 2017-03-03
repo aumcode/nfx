@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Web.Pay
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Web.Pay
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Web_Pay" data-uid="NFX.Web.Pay">Namespace NFX.Web.Pay
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Web.Pay.ActualAccountData.html">ActualAccountData</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Web.Pay.Address.html">Address</a></h4>
+                  <section><p>Primitive (maybe temporary) implementation of IAddress</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.ConfigBasedCurrencyMarket.html">ConfigBasedCurrencyMarket</a></h4>
+                  <section><p>Provides rate conversion services based on an APP config file</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.ConnectionParameters.html">ConnectionParameters</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PaymentException.html">PaymentException</a></h4>
+                  <section><p>General NFX payment system specific exception</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></h4>
+                  <section><p>Represents session of PaySystem.
+All PaySystem operation requires session as mandatory parameter</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PaySystem.html">PaySystem</a></h4>
+                  <section><p>Base class for IPaySystemImplementation implementation.
+Instances of descendants of this class is typically created and configured in PaySystemStarter class.
+Then particular pay system can be obtained from PaySystem.Instances[PAY_SYSTEM_NAME] indexer</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PaySystemHost.html">PaySystemHost</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PaySystemStarter.html">PaySystemStarter</a></h4>
+                  <section><p>Represents a starter that launches payment systems on startup</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PaySystemWithStaticFees.html">PaySystemWithStaticFees</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Web.Pay.PayWebTerminal.html">PayWebTerminal</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></h4>
+                  <section><p>Represents an abstraction of financial operation performed with pay system</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.Transaction.Operation.html">Transaction.Operation</a></h4>
+                  <section></section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></h4>
+                  <section><p>Represents an account data vector that is -
+type of account identity (i.e. &#39;customer&#39;), identity id (i.e. customer number &#39;125&#39;) and
+account id within this identity (i.e. ref to customer #125 card &#39;223322.....&#39;).
+May also represent temporary web terminal token generated by IWebPayTerminal in which case IsWebTerminalToken = true</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Web.Pay.IActualAccountData.html">IActualAccountData</a></h4>
+                  <section><p>Represents actual data for supplied account object.
+Data represented by this interface is ALWAYS TRANSITIVE in memory as
+some fields are either never stored permanently (i.e. CVC) or ciphered in the store (account number)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IAddress.html">IAddress</a></h4>
+                  <section><p>Represents address</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.ICurrencyMarket.html">ICurrencyMarket</a></h4>
+                  <section><p>Represents a market that can convert buy/sell currencies</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IPaySessionContext.html">IPaySessionContext</a></h4>
+                  <section><p>Denotes a context of transaction execution.
+Can be used to provide additional information</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IPaySystem.html">IPaySystem</a></h4>
+                  <section><p>Describes an entity that can perform pay functions (i.e. charge, transfer)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IPaySystemHost.html">IPaySystemHost</a></h4>
+                  <section><p>Represents a process-global entity that resolves account handle into actual account data
+and fetches existing transactions.
+This design provides an indirection level between pay systems (like Stripe, PayPal, Bank etc.) and
+particular application data store implementation as it decouples system-internal formats of transaction and
+account storage from provider-internal data (i.e. PayPal payment token string).
+The instance of implementor is a singleton accessible via PaySystem.PaySystemHost</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IPaySystemHostImplementation.html">IPaySystemHostImplementation</a></h4>
+                  <section><p>Denotes an implementation of IPaySystemHost</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IPaySystemImplementation.html">IPaySystemImplementation</a></h4>
+                  <section><p>Describes an entity that can perform pay functions with several usefull interfaces in NFX style</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.IPayWebTerminal.html">IPayWebTerminal</a></h4>
+                  <section><p>Represents a web terminal for pay systems that tokenize sensitive CC data via a call to provider
+so that actual CC numbers never touch our servers in a plain form, instead tokens/nonces are supplied
+back by the provider tokenizer. This is needed for PCI compliance.</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Web.Pay.AccountType.html">AccountType</a></h4>
+                  <section><p>Represents account type because some pay services (i.e. Stripe) requires this info</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.ProcessingFeeKind.html">ProcessingFeeKind</a></h4>
+                  <section><p>Denotes processing fee types, such as: included in amount and surcharged.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.Transaction.OperationType.html">Transaction.OperationType</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Web.Pay.TransactionStatus.html">TransactionStatus</a></h4>
+                  <section><p>Denotes transaction status</p>
+</section>
+                  <h4><a class="xref" href="NFX.Web.Pay.TransactionType.html">TransactionType</a></h4>
+                  <section><p>Denotes transaction types, such as: charges, refunds, transfers</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,503 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SerializationUtils
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SerializationUtils
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Serialization_SerializationUtils" data-uid="NFX.Serialization.SerializationUtils">Class SerializationUtils
+              </h1>
+              <div class="markdown level0 summary"><p>Provides misc serialization-related functions that are really low-level and not intended to be used by developers.
+Methods are thread-safe</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">SerializationUtils</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Serialization</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Serialization_SerializationUtils_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class SerializationUtils</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_FindSerializationAttributedMethods_" data-uid="NFX.Serialization.SerializationUtils.FindSerializationAttributedMethods*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_FindSerializationAttributedMethods_System_Type_System_Type_" data-uid="NFX.Serialization.SerializationUtils.FindSerializationAttributedMethods(System.Type,System.Type)">FindSerializationAttributedMethods(Type, Type)</h4>
+              <div class="markdown level1 summary"><p>Finds methods decorated by [On(De)Seriali(zing/zed)]</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static List&lt;MethodInfo&gt; FindSerializationAttributedMethods(Type t, Type atype)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">t</span></td>
+                    <td><p>A type whose methods to search</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">atype</span></td>
+                    <td><p>Attribute type to search</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Reflection.MethodInfo</span>&gt;</td>
+                    <td><p>List(MethodInfo) that qualifies or NULL if none found</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_GetISerializableCtorInfo_" data-uid="NFX.Serialization.SerializationUtils.GetISerializableCtorInfo*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_GetISerializableCtorInfo_System_Type_" data-uid="NFX.Serialization.SerializationUtils.GetISerializableCtorInfo(System.Type)">GetISerializableCtorInfo(Type)</h4>
+              <div class="markdown level1 summary"><p>Returns .ctor(SerializationInfo, StreamingContext) that complies with ISerializable concept, or null.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ConstructorInfo GetISerializableCtorInfo(Type type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Reflection.ConstructorInfo</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_GetNodeByPath_" data-uid="NFX.Serialization.SerializationUtils.GetNodeByPath*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_GetNodeByPath_NFX_Serialization_JSON_JSONDataMap_System_String___" data-uid="NFX.Serialization.SerializationUtils.GetNodeByPath(NFX.Serialization.JSON.JSONDataMap,System.String[])">GetNodeByPath(JSONDataMap, String[])</h4>
+              <div class="markdown level1 summary"><p>Navigates through JSON datamap by subsequent node names.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static object GetNodeByPath(this JSONDataMap json, params string[] nodeNames)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">json</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">nodeNames</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><p>null if navigation path is not exists.
+JSONDataMap if navigation ends up with non-leaf node.
+object if navigation ends up with leaf node.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_GetSerializableFields_" data-uid="NFX.Serialization.SerializationUtils.GetSerializableFields*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_GetSerializableFields_System_Type_" data-uid="NFX.Serialization.SerializationUtils.GetSerializableFields(System.Type)">GetSerializableFields(Type)</h4>
+              <div class="markdown level1 summary"><p>Gets all serializable fields for type in parent-&gt;child declaraion order, sub-ordered by case
+within the segment</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;FieldInfo&gt; GetSerializableFields(Type type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.FieldInfo</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_InvokeSerializationAttributedMethods_" data-uid="NFX.Serialization.SerializationUtils.InvokeSerializationAttributedMethods*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_InvokeSerializationAttributedMethods_System_Collections_Generic_List_System_Reflection_MethodInfo__System_Object_System_Runtime_Serialization_StreamingContext_" data-uid="NFX.Serialization.SerializationUtils.InvokeSerializationAttributedMethods(System.Collections.Generic.List{System.Reflection.MethodInfo},System.Object,System.Runtime.Serialization.StreamingContext)">InvokeSerializationAttributedMethods(List&lt;MethodInfo&gt;, Object, StreamingContext)</h4>
+              <div class="markdown level1 summary"><p>Calls method in the list that was returned by a call to FindSerializationAttributedMethods</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void InvokeSerializationAttributedMethods(List&lt;MethodInfo&gt; methods, object instance, StreamingContext streamingContext)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Reflection.MethodInfo</span>&gt;</td>
+                    <td><span class="parametername">methods</span></td>
+                    <td><p>list that was returned by a call to FindSerializationAttributedMethods</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">instance</span></td>
+                    <td><p>Instance to invoke mathods on</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+                    <td><span class="parametername">streamingContext</span></td>
+                    <td><p>Streaming Context</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_MakeNewObjectInstance_" data-uid="NFX.Serialization.SerializationUtils.MakeNewObjectInstance*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_MakeNewObjectInstance_System_Type_" data-uid="NFX.Serialization.SerializationUtils.MakeNewObjectInstance(System.Type)">MakeNewObjectInstance(Type)</h4>
+              <div class="markdown level1 summary"><p>Create new object instance for type, calling default ctor</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static object MakeNewObjectInstance(Type type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_WalkArrayRead_" data-uid="NFX.Serialization.SerializationUtils.WalkArrayRead*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_WalkArrayRead__1_System_Array_System_Func___0__" data-uid="NFX.Serialization.SerializationUtils.WalkArrayRead``1(System.Array,System.Func{``0})">WalkArrayRead&lt;T&gt;(Array, Func&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Performs an action on each element of a possibly mutidimensional array</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WalkArrayRead&lt;T&gt;(Array arr, Func&lt;T&gt; each)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Array</span></td>
+                    <td><span class="parametername">arr</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;T&gt;</td>
+                    <td><span class="parametername">each</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_SerializationUtils_WalkArrayWrite_" data-uid="NFX.Serialization.SerializationUtils.WalkArrayWrite*"></a>
+              <h4 id="NFX_Serialization_SerializationUtils_WalkArrayWrite_System_Array_System_Action_System_Object__" data-uid="NFX.Serialization.SerializationUtils.WalkArrayWrite(System.Array,System.Action{System.Object})">WalkArrayWrite(Array, Action&lt;Object&gt;)</h4>
+              <div class="markdown level1 summary"><p>Performs an action on each element of a possibly mutidimensional array</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WalkArrayWrite(Array arr, Action&lt;object&gt; each)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Array</span></td>
+                    <td><span class="parametername">arr</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+                    <td><span class="parametername">each</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1953 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PatternSearch
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PatternSearch
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_CodeAnalysis_PatternSearch" data-uid="NFX.CodeAnalysis.PatternSearch">Class PatternSearch
+              </h1>
+              <div class="markdown level0 summary"><p>Provides Token-pattern matching utilities</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">PatternSearch</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.CodeAnalysis</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_CodeAnalysis_PatternSearch_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class PatternSearch</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_DoUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_DoUntilAny__1___0_NFX_CodeAnalysis_FSMI_System_Int32___" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny``1(``0,NFX.CodeAnalysis.FSMI,System.Int32[])">DoUntilAny&lt;TToken&gt;(TToken, FSMI, Int32[])</h4>
+              <div class="markdown level1 summary"><p>Performs FSM instruction unless token&#39;s type is any of the specified, then advances FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI DoUntilAny&lt;TToken&gt;(this TToken token, FSMI instruction, params int[] types)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td><span class="parametername">instruction</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_DoUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_DoUntilAny__1___0_NFX_CodeAnalysis_FSMI_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny``1(``0,NFX.CodeAnalysis.FSMI,System.String[])">DoUntilAny&lt;TToken&gt;(TToken, FSMI, String[])</h4>
+              <div class="markdown level1 summary"><p>Performs FSM instruction unless token&#39;s text is any of the specified, then advances FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI DoUntilAny&lt;TToken&gt;(this TToken token, FSMI instruction, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td><span class="parametername">instruction</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_DoUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_DoUntilAny__1___0_NFX_CodeAnalysis_FSMI_System_StringComparison_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny``1(``0,NFX.CodeAnalysis.FSMI,System.StringComparison,System.String[])">DoUntilAny&lt;TToken&gt;(TToken, FSMI, StringComparison, String[])</h4>
+              <div class="markdown level1 summary"><p>Performs FSM instruction unless token&#39;s text is any of the specified, then advances FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI DoUntilAny&lt;TToken&gt;(this TToken token, FSMI instruction, StringComparison comparison, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td><span class="parametername">instruction</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.StringComparison</span></td>
+                    <td><span class="parametername">comparison</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_DoUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_DoUntilAny__2___0_NFX_CodeAnalysis_FSMI___1___" data-uid="NFX.CodeAnalysis.PatternSearch.DoUntilAny``2(``0,NFX.CodeAnalysis.FSMI,``1[])">DoUntilAny&lt;TToken, TTokenType&gt;(TToken, FSMI, TTokenType[])</h4>
+              <div class="markdown level1 summary"><p>Performs FSM instruction unless token&#39;s type is any of the specified, then advances FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI DoUntilAny&lt;TToken, TTokenType&gt;(this TToken token, FSMI instruction, params TTokenType[] types)where TToken : Token where TTokenType : struct, IConvertible</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td><span class="parametername">instruction</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>TTokenType[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TTokenType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort__1___0_System_Int32___" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort``1(``0,System.Int32[])">IsAnyOrAbort&lt;TToken&gt;(TToken, Int32[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s type is any of specified or aborts FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI IsAnyOrAbort&lt;TToken&gt;(this TToken token, params int[] types)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort__1___0_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort``1(``0,System.String[])">IsAnyOrAbort&lt;TToken&gt;(TToken, String[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s text is any of specified or aborts FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI IsAnyOrAbort&lt;TToken&gt;(this TToken token, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort__1___0_System_StringComparison_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort``1(``0,System.StringComparison,System.String[])">IsAnyOrAbort&lt;TToken&gt;(TToken, StringComparison, String[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s text is any of specified or aborts FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI IsAnyOrAbort&lt;TToken&gt;(this TToken token, StringComparison comparison, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.StringComparison</span></td>
+                    <td><span class="parametername">comparison</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_IsAnyOrAbort__2___0___1___" data-uid="NFX.CodeAnalysis.PatternSearch.IsAnyOrAbort``2(``0,``1[])">IsAnyOrAbort&lt;TToken, TTokenType&gt;(TToken, TTokenType[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s type is any of specified or aborts FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI IsAnyOrAbort&lt;TToken, TTokenType&gt;(this TToken token, params TTokenType[] types)where TToken : Token where TTokenType : struct, IConvertible</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>TTokenType[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TTokenType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LazyFSM_" data-uid="NFX.CodeAnalysis.PatternSearch.LazyFSM*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LazyFSM__1_System_Collections_Generic_IEnumerable___0__NFX_CodeAnalysis_LazyFSMPredicate___0____" data-uid="NFX.CodeAnalysis.PatternSearch.LazyFSM``1(System.Collections.Generic.IEnumerable{``0},NFX.CodeAnalysis.LazyFSMPredicate{``0}[])">LazyFSM&lt;TToken&gt;(IEnumerable&lt;TToken&gt;, LazyFSMPredicate&lt;TToken&gt;[])</h4>
+              <div class="markdown level1 summary"><p>Makes finite state machine fed from IEnumerable(Token) only considering primary language tokens</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TToken LazyFSM&lt;TToken&gt;(this IEnumerable&lt;TToken&gt; tokens, params LazyFSMPredicate&lt;TToken&gt;[] predicates)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TToken&gt;</td>
+                    <td><span class="parametername">tokens</span></td>
+                    <td><p>Token enumerable</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate</a>&lt;TToken&gt;[]</td>
+                    <td><span class="parametername">predicates</span></td>
+                    <td><p>Predicates that supply machine state transition instructions</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><p>Resulting token fetched by FSMI.Take instruction or null</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td><p>Concrete language-typed token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LazyFSM_" data-uid="NFX.CodeAnalysis.PatternSearch.LazyFSM*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LazyFSM__1_System_Collections_Generic_IEnumerable___0__System_Boolean_NFX_CodeAnalysis_LazyFSMPredicate___0____" data-uid="NFX.CodeAnalysis.PatternSearch.LazyFSM``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,NFX.CodeAnalysis.LazyFSMPredicate{``0}[])">LazyFSM&lt;TToken&gt;(IEnumerable&lt;TToken&gt;, Boolean, LazyFSMPredicate&lt;TToken&gt;[])</h4>
+              <div class="markdown level1 summary"><p>Makes finite state machine fed from IEnumerable(Token)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TToken LazyFSM&lt;TToken&gt;(this IEnumerable&lt;TToken&gt; tokens, bool onlyPrimary, params LazyFSMPredicate&lt;TToken&gt;[] predicates)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TToken&gt;</td>
+                    <td><span class="parametername">tokens</span></td>
+                    <td><p>Token enumerable</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">onlyPrimary</span></td>
+                    <td><p>Sets filter to consider only primary language tokens (skip comments, directives, etc.)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate</a>&lt;TToken&gt;[]</td>
+                    <td><span class="parametername">predicates</span></td>
+                    <td><p>Predicates that supply machine state transition instructions</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><p>Resulting token fetched by FSMI.Take instruction or null</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td><p>Concrete language-typed token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LazyFSM_" data-uid="NFX.CodeAnalysis.PatternSearch.LazyFSM*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LazyFSM__1_System_Collections_Generic_IEnumerable___0__System_Boolean_NFX_CodeAnalysis_LazyFSMState___0___NFX_CodeAnalysis_LazyFSMPredicate___0____" data-uid="NFX.CodeAnalysis.PatternSearch.LazyFSM``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,NFX.CodeAnalysis.LazyFSMState{``0}@,NFX.CodeAnalysis.LazyFSMPredicate{``0}[])">LazyFSM&lt;TToken&gt;(IEnumerable&lt;TToken&gt;, Boolean, ref LazyFSMState&lt;TToken&gt;, LazyFSMPredicate&lt;TToken&gt;[])</h4>
+              <div class="markdown level1 summary"><p>Makes finite state machine fed from IEnumerable(Token)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TToken LazyFSM&lt;TToken&gt;(this IEnumerable&lt;TToken&gt; tokens, bool onlyPrimary, ref LazyFSMState&lt;TToken&gt; state, params LazyFSMPredicate&lt;TToken&gt;[] predicates)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TToken&gt;</td>
+                    <td><span class="parametername">tokens</span></td>
+                    <td><p>Token enumerable</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">onlyPrimary</span></td>
+                    <td><p>Sets filter to consider only primary language tokens (skip comments, directives, etc.)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMState-1.html">LazyFSMState</a>&lt;TToken&gt;</td>
+                    <td><span class="parametername">state</span></td>
+                    <td><p>Machine&#39;s state which will be allocated if null passed</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate</a>&lt;TToken&gt;[]</td>
+                    <td><span class="parametername">predicates</span></td>
+                    <td><p>Predicates that supply machine state transition instructions</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><p>Resulting token fetched by FSMI.Take instruction or null</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td><p>Concrete language-typed token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilAfterMatch_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAfterMatch*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilAfterMatch__1_NFX_CodeAnalysis_LazyFSMState___0__NFX_CodeAnalysis_LazyFSMPredicate___0____" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAfterMatch``1(NFX.CodeAnalysis.LazyFSMState{``0},NFX.CodeAnalysis.LazyFSMPredicate{``0}[])">LoopUntilAfterMatch&lt;TToken&gt;(LazyFSMState&lt;TToken&gt;, LazyFSMPredicate&lt;TToken&gt;[])</h4>
+              <div class="markdown level1 summary"><p>Loops until token pattern match succeeds.
+This method matches using the same primary token filter as the parent match.
+Keeps state machine if match was found on the first token that follows the match</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilAfterMatch&lt;TToken&gt;(this LazyFSMState&lt;TToken&gt; state, params LazyFSMPredicate&lt;TToken&gt;[] predicates)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMState-1.html">LazyFSMState</a>&lt;TToken&gt;</td>
+                    <td><span class="parametername">state</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate</a>&lt;TToken&gt;[]</td>
+                    <td><span class="parametername">predicates</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny__1___0_System_Int32___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny``1(``0,System.Int32[])">LoopUntilAny&lt;TToken&gt;(TToken, Int32[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s type is any of specified or loops FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilAny&lt;TToken&gt;(this TToken token, params int[] types)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny__1___0_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny``1(``0,System.String[])">LoopUntilAny&lt;TToken&gt;(TToken, String[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s text is any of specified or loops FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilAny&lt;TToken&gt;(this TToken token, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny__1___0_System_StringComparison_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny``1(``0,System.StringComparison,System.String[])">LoopUntilAny&lt;TToken&gt;(TToken, StringComparison, String[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s text is any of specified or loops FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilAny&lt;TToken&gt;(this TToken token, StringComparison comparison, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.StringComparison</span></td>
+                    <td><span class="parametername">comparison</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilAny__2___0___1___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilAny``2(``0,``1[])">LoopUntilAny&lt;TToken, TTokenType&gt;(TToken, TTokenType[])</h4>
+              <div class="markdown level1 summary"><p>Advances FSM when token&#39;s type is any of specified or loops FSM</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilAny&lt;TToken, TTokenType&gt;(this TToken token, params TTokenType[] types)where TToken : Token where TTokenType : struct, IConvertible</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>TTokenType[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TTokenType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilMatch_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilMatch*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilMatch__1_NFX_CodeAnalysis_LazyFSMState___0__NFX_CodeAnalysis_LazyFSMPredicate___0____" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilMatch``1(NFX.CodeAnalysis.LazyFSMState{``0},NFX.CodeAnalysis.LazyFSMPredicate{``0}[])">LoopUntilMatch&lt;TToken&gt;(LazyFSMState&lt;TToken&gt;, LazyFSMPredicate&lt;TToken&gt;[])</h4>
+              <div class="markdown level1 summary"><p>Loops until token pattern match succeeds, considering only primary language tokens.
+Keeps state machine if match was found on the first matching token</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilMatch&lt;TToken&gt;(this LazyFSMState&lt;TToken&gt; state, params LazyFSMPredicate&lt;TToken&gt;[] predicates)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMState-1.html">LazyFSMState</a>&lt;TToken&gt;</td>
+                    <td><span class="parametername">state</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate</a>&lt;TToken&gt;[]</td>
+                    <td><span class="parametername">predicates</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopUntilMatch_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilMatch*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopUntilMatch__1_NFX_CodeAnalysis_LazyFSMState___0__System_Boolean_NFX_CodeAnalysis_LazyFSMPredicate___0____" data-uid="NFX.CodeAnalysis.PatternSearch.LoopUntilMatch``1(NFX.CodeAnalysis.LazyFSMState{``0},System.Boolean,NFX.CodeAnalysis.LazyFSMPredicate{``0}[])">LoopUntilMatch&lt;TToken&gt;(LazyFSMState&lt;TToken&gt;, Boolean, LazyFSMPredicate&lt;TToken&gt;[])</h4>
+              <div class="markdown level1 summary"><p>Loops until token pattern match succeeds, conditionaly considering only primary language tokens.
+Keeps state machine if match was found on the first matching token</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopUntilMatch&lt;TToken&gt;(this LazyFSMState&lt;TToken&gt; state, bool onlyPrimary, params LazyFSMPredicate&lt;TToken&gt;[] predicates)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMState-1.html">LazyFSMState</a>&lt;TToken&gt;</td>
+                    <td><span class="parametername">state</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">onlyPrimary</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate</a>&lt;TToken&gt;[]</td>
+                    <td><span class="parametername">predicates</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort__1___0_System_Int32___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort``1(``0,System.Int32[])">LoopWhileAnyOrAbort&lt;TToken&gt;(TToken, Int32[])</h4>
+              <div class="markdown level1 summary"><p>Loops FSM while token&#39;s type is any of the specified or aborts</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopWhileAnyOrAbort&lt;TToken&gt;(this TToken token, params int[] types)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort__1___0_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort``1(``0,System.String[])">LoopWhileAnyOrAbort&lt;TToken&gt;(TToken, String[])</h4>
+              <div class="markdown level1 summary"><p>Loops FSM while token&#39;s text is any of the specified or aborts</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopWhileAnyOrAbort&lt;TToken&gt;(this TToken token, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort__1___0_System_StringComparison_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort``1(``0,System.StringComparison,System.String[])">LoopWhileAnyOrAbort&lt;TToken&gt;(TToken, StringComparison, String[])</h4>
+              <div class="markdown level1 summary"><p>Loops FSM while token&#39;s text is any of the specified or aborts</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopWhileAnyOrAbort&lt;TToken&gt;(this TToken token, StringComparison comparison, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.StringComparison</span></td>
+                    <td><span class="parametername">comparison</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort_" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_LoopWhileAnyOrAbort__2___0___1___" data-uid="NFX.CodeAnalysis.PatternSearch.LoopWhileAnyOrAbort``2(``0,``1[])">LoopWhileAnyOrAbort&lt;TToken, TTokenType&gt;(TToken, TTokenType[])</h4>
+              <div class="markdown level1 summary"><p>Loops FSM while token&#39;s type is any of the specified or aborts</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI LoopWhileAnyOrAbort&lt;TToken, TTokenType&gt;(this TToken token, params TTokenType[] types)where TToken : Token where TTokenType : struct, IConvertible</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>TTokenType[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TTokenType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_Skip_" data-uid="NFX.CodeAnalysis.PatternSearch.Skip*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_Skip__1_NFX_CodeAnalysis_LazyFSMState___0__System_Int32_" data-uid="NFX.CodeAnalysis.PatternSearch.Skip``1(NFX.CodeAnalysis.LazyFSMState{``0},System.Int32)">Skip&lt;TToken&gt;(LazyFSMState&lt;TToken&gt;, Int32)</h4>
+              <div class="markdown level1 summary"><p>Skips specified number of tokens by returning FSMI.Loop count times</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FSMI Skip&lt;TToken&gt;(this LazyFSMState&lt;TToken&gt; state, int count)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.LazyFSMState-1.html">LazyFSMState</a>&lt;TToken&gt;</td>
+                    <td><span class="parametername">state</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">count</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_TextIsAnyOf_" data-uid="NFX.CodeAnalysis.PatternSearch.TextIsAnyOf*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_TextIsAnyOf__1___0_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.TextIsAnyOf``1(``0,System.String[])">TextIsAnyOf&lt;TToken&gt;(TToken, String[])</h4>
+              <div class="markdown level1 summary"><p>Returns true when token&#39;s text is any of specified</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool TextIsAnyOf&lt;TToken&gt;(this TToken token, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_TextIsAnyOf_" data-uid="NFX.CodeAnalysis.PatternSearch.TextIsAnyOf*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_TextIsAnyOf__1___0_System_StringComparison_System_String___" data-uid="NFX.CodeAnalysis.PatternSearch.TextIsAnyOf``1(``0,System.StringComparison,System.String[])">TextIsAnyOf&lt;TToken&gt;(TToken, StringComparison, String[])</h4>
+              <div class="markdown level1 summary"><p>Returns true when token&#39;s text is any of specified</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool TextIsAnyOf&lt;TToken&gt;(this TToken token, StringComparison comparison, params string[] texts)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.StringComparison</span></td>
+                    <td><span class="parametername">comparison</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">texts</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_TypeIsAnyOf_" data-uid="NFX.CodeAnalysis.PatternSearch.TypeIsAnyOf*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_TypeIsAnyOf__1___0_System_Int32___" data-uid="NFX.CodeAnalysis.PatternSearch.TypeIsAnyOf``1(``0,System.Int32[])">TypeIsAnyOf&lt;TToken&gt;(TToken, Int32[])</h4>
+              <div class="markdown level1 summary"><p>Returns true when token&#39;s type is any of the specified</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool TypeIsAnyOf&lt;TToken&gt;(this TToken token, params int[] types)where TToken : Token</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CodeAnalysis_PatternSearch_TypeIsAnyOf_" data-uid="NFX.CodeAnalysis.PatternSearch.TypeIsAnyOf*"></a>
+              <h4 id="NFX_CodeAnalysis_PatternSearch_TypeIsAnyOf__2___0___1___" data-uid="NFX.CodeAnalysis.PatternSearch.TypeIsAnyOf``2(``0,``1[])">TypeIsAnyOf&lt;TToken, TTokenType&gt;(TToken, TTokenType[])</h4>
+              <div class="markdown level1 summary"><p>Returns true when token&#39;s type is any of the specified</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool TypeIsAnyOf&lt;TToken, TTokenType&gt;(this TToken token, params TTokenType[] types)where TToken : Token where TTokenType : struct, IConvertible</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TToken</span></td>
+                    <td><span class="parametername">token</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>TTokenType[]</td>
+                    <td><span class="parametername">types</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TToken</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TTokenType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

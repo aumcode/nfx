@@ -1,0 +1,2744 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TimeSeriesChart
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TimeSeriesChart
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart">Class TimeSeriesChart
+              </h1>
+              <div class="markdown level0 summary"><p>Implements a Chart control base. </p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+                  <div class="level2"><span class="xref">System.ComponentModel.Component</span></div>
+                  <div class="level3"><span class="xref">System.Windows.Forms.Control</span></div>
+                  <div class="level4"><span class="xref">TimeSeriesChart</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetAccessibilityObjectById(System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetAutoSizeMode(System.Windows.Forms.AutoSizeMode)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetAutoSizeMode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetPreferredSize(System.Drawing.Size)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityNotifyClients(System.Windows.Forms.AccessibleEvents, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityNotifyClients(System.Windows.Forms.AccessibleEvents, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BeginInvoke(System.Delegate)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BeginInvoke(System.Delegate, System.Object[])</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BringToFront()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Contains(System.Windows.Forms.Control)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateAccessibilityInstance()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateControlsInstance()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateGraphics()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefWndProc(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DestroyHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoDragDrop(System.Object, System.Windows.Forms.DragDropEffects)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DrawToBitmap(System.Drawing.Bitmap, System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.EndInvoke(System.IAsyncResult)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FindForm()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetTopLevel()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseKeyEvent(System.Object, System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseMouseEvent(System.Object, System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Focus()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FromChildHandle(System.IntPtr)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FromHandle(System.IntPtr)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetChildAtPoint(System.Drawing.Point, System.Windows.Forms.GetChildAtPointSkip)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetChildAtPoint(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetContainerControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetScaledBounds(System.Drawing.Rectangle, System.Drawing.SizeF, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetNextControl(System.Windows.Forms.Control, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetStyle(System.Windows.Forms.ControlStyles)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Hide()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InitLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Region)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Region, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Rectangle, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invoke(System.Delegate)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invoke(System.Delegate, System.Object[])</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokePaint(System.Windows.Forms.Control, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokePaintBackground(System.Windows.Forms.Control, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsKeyLocked(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsInputChar(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsInputKey(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsMnemonic(System.Char, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.NotifyInvalidate(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeOnClick(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnAutoSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackgroundImageChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackgroundImageLayoutChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBindingContextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCausesValidationChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnContextMenuChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnContextMenuStripChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCursorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDockChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnEnabledChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnFontChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnForeColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnRightToLeftChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnNotifyMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBackColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBackgroundImageChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBindingContextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentCursorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentEnabledChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentFontChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentForeColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentRightToLeftChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentVisibleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPrint(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTabIndexChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTabStopChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnVisibleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnClick(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnClientSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnControlAdded(System.Windows.Forms.ControlEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnControlRemoved(System.Windows.Forms.ControlEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCreateControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHandleCreated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLocationChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHandleDestroyed(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDoubleClick(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragEnter(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragOver(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragDrop(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnEnter(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeGotFocus(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnGotFocus(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHelpRequested(System.Windows.Forms.HelpEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnInvalidated(System.Windows.Forms.InvalidateEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyDown(System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyUp(System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLayout(System.Windows.Forms.LayoutEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeLostFocus(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLostFocus(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMarginChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseDoubleClick(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseClick(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseCaptureChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseDown(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseEnter(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseHover(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseMove(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseUp(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMove(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPaint(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPaintBackground(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnRegionChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnResize(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPreviewKeyDown(System.Windows.Forms.PreviewKeyDownEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnChangeUICues(System.Windows.Forms.UICuesEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnStyleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnSystemColorsChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnValidating(System.ComponentModel.CancelEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnValidated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PerformLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PerformLayout(System.Windows.Forms.Control, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PointToClient(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PointToScreen(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreProcessMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreProcessControlMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessCmdKey(System.Windows.Forms.Message, System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessDialogChar(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyEventArgs(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyPreview(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessMnemonic(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseDragEvent(System.Object, System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaisePaintEvent(System.Object, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RecreateHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RectangleToClient(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RectangleToScreen(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ReflectMessage(System.IntPtr, System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Refresh()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResetMouseEventArgs()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResetText()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResumeLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResumeLayout(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Scale(System.Drawing.SizeF)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ScaleControl(System.Drawing.SizeF, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Select()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Select(System.Boolean, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SelectNextControl(System.Windows.Forms.Control, System.Boolean, System.Boolean, System.Boolean, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SendToBack()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetBounds(System.Int32, System.Int32, System.Int32, System.Int32, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetClientSizeCore(System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SizeFromClientSize(System.Drawing.Size)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetStyle(System.Windows.Forms.ControlStyles, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetTopLevel(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetVisibleCore(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Windows.Forms.HorizontalAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Windows.Forms.LeftRightAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Drawing.ContentAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateHorizontal(System.Windows.Forms.HorizontalAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateLeftRight(System.Windows.Forms.LeftRightAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateContent(System.Drawing.ContentAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Show()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SuspendLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Update()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateZOrder()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateStyles()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.WndProc(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragEnter(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragOver(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragDrop(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnImeModeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityObject</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleDefaultActionDescription</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleDescription</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleRole</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AllowDrop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Anchor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AutoScrollOffset</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LayoutEngine</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImage</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageLayout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BindingContext</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Bottom</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Bounds</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanRaiseEvents</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanSelect</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Capture</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CausesValidation</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientRectangle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CompanyName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContainsFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenu</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuStrip</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Controls</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Created</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateParams</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Cursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DataBindings</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultBackColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultCursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultFont</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultForeColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMargin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMaximumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMinimumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultPadding</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DisplayRectangle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsDisposed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Disposing</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Dock</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoubleBuffered</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Enabled</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Focused</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Font</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FontHeight</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ForeColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Handle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HasChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Height</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsHandleCreated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeRequired</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsAccessible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsMirrored</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Left</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Location</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Margin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MaximumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MinimumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ModifierKeys</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseButtons</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MousePosition</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Name</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Parent</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProductName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProductVersion</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RecreatingHandle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Region</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RenderRightToLeft</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResizeRedraw</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Right</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RightToLeft</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ScaleChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Site</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Size</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabIndex</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabStop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Tag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Text</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Top</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TopLevelControl</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ShowKeyboardCues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ShowFocusCues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UseWaitCursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Visible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Width</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreferredSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Padding</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanEnableIme</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeModeBase</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PropagatingImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackColorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageLayoutChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BindingContextChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CausesValidationChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientSizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuStripChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CursorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DockChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.EnabledChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FontChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ForeColorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LocationChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MarginChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RegionChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RightToLeftChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabIndexChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabStopChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TextChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.VisibleChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Click</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ControlAdded</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ControlRemoved</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragDrop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragEnter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragOver</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragLeave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GiveFeedback</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HandleCreated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HandleDestroyed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HelpRequested</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PaddingChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Paint</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.QueryContinueDrag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.QueryAccessibilityHelp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoubleClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Enter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GotFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyPress</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyUp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Layout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Leave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LostFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseDoubleClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseCaptureChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseEnter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseLeave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseHover</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseMove</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseUp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseWheel</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Move</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreviewKeyDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Resize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ChangeUICues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.StyleChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SystemColorsChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Validating</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Validated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ParentChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeModeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Dispose()</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.GetService(System.Type)</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Events</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Container</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.DesignMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Disposed</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.CreateObjRef(System.Type)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.WinForms.Controls.ChartKit.Temporal</h6>
+              <h6><strong>Assembly</strong>:NFX.WinForms.dll</h6>
+              <h5 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class TimeSeriesChart : Control, IDropTarget, ISynchronizeInvoke, IWin32Window, IArrangedElement, IBindableComponent, IComponent, IDisposable, IConfigurable, IConfigurationPersistent</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart__ctor_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.#ctor*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart__ctor" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.#ctor">TimeSeriesChart()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TimeSeriesChart()</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_m_PaneVProportions" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.m_PaneVProportions">m_PaneVProportions</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Dictionary&lt;string, float&gt; m_PaneVProportions</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_AllowMultiLineTitle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.AllowMultiLineTitle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_AllowMultiLineTitle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.AllowMultiLineTitle">AllowMultiLineTitle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool AllowMultiLineTitle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_AutoScroll_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.AutoScroll*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_AutoScroll" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.AutoScroll">AutoScroll</h4>
+              <div class="markdown level1 summary"><p>When true, auto scrolls to the end of time series</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool AutoScroll { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GridLineDayChangeStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GridLineDayChangeStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GridLineDayChangeStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GridLineDayChangeStyle">GridLineDayChangeStyle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public LineStyle GridLineDayChangeStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.LineStyle.html">LineStyle</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GridLineStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GridLineStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GridLineStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GridLineStyle">GridLineStyle</h4>
+              <div class="markdown level1 summary"><p>Style for drawing grid lines</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public LineStyle GridLineStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.LineStyle.html">LineStyle</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GridLineTimeGapStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GridLineTimeGapStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GridLineTimeGapStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GridLineTimeGapStyle">GridLineTimeGapStyle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public LineStyle GridLineTimeGapStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.LineStyle.html">LineStyle</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_HScrollPosition_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.HScrollPosition*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_HScrollPosition" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.HScrollPosition">HScrollPosition</h4>
+              <div class="markdown level1 summary"><p>Horizontal scroll position in samples</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int HScrollPosition { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ID_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ID*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ID" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ID">ID</h4>
+              <div class="markdown level1 summary"><p>Specifies ID for this chart instance. IDs are needed for chart config persistence</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ID { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_LastPriceMarkerStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.LastPriceMarkerStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_LastPriceMarkerStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.LastPriceMarkerStyle">LastPriceMarkerStyle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style LastPriceMarkerStyle { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_MouseCursorMode_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.MouseCursorMode*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_MouseCursorMode" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.MouseCursorMode">MouseCursorMode</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public MouseCursorMode MouseCursorMode { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.MouseCursorMode.html">MouseCursorMode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Panes_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Panes*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Panes" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Panes">Panes</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IOrderedRegistry&lt;PlotPane&gt; Panes { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IOrderedRegistry-1.html">IOrderedRegistry</a>&lt;<a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.PlotPane.html">PlotPane</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_PlotStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.PlotStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_PlotStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.PlotStyle">PlotStyle</h4>
+              <div class="markdown level1 summary"><p>Returns the style object for default plots </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style PlotStyle { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ReadOnly_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ReadOnly*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ReadOnly" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ReadOnly">ReadOnly</h4>
+              <div class="markdown level1 summary"><p>Determines whether chart data can be modified (if chart supports it)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ReadOnly { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_RulerStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.RulerStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_RulerStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.RulerStyle">RulerStyle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style RulerStyle { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SampleFitAcrossCount_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SampleFitAcrossCount*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SampleFitAcrossCount" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SampleFitAcrossCount">SampleFitAcrossCount</h4>
+              <div class="markdown level1 summary"><p>Returns the number of samples that can fit across the cahrt</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int SampleFitAcrossCount { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Series_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Series*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Series" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Series">Series</h4>
+              <div class="markdown level1 summary"><p>Series that this chart shows </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Browsable(false)]
+public TimeSeries Series { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeries.html">TimeSeries</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ShowTimeGaps_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ShowTimeGaps*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ShowTimeGaps" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ShowTimeGaps">ShowTimeGaps</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ShowTimeGaps { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SplitterStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SplitterStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SplitterStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SplitterStyle">SplitterStyle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style SplitterStyle { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Style_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Style*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Style" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Style">Style</h4>
+              <div class="markdown level1 summary"><p>Default style object for all elements in the chart</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style Style { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_TimeLineTickSpace_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.TimeLineTickSpace*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_TimeLineTickSpace" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.TimeLineTickSpace">TimeLineTickSpace</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int TimeLineTickSpace { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_TimeScaleSelectStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.TimeScaleSelectStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_TimeScaleSelectStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.TimeScaleSelectStyle">TimeScaleSelectStyle</h4>
+              <div class="markdown level1 summary"><p>Style used for drawing the actively selected point on the timeline</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style TimeScaleSelectStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_TimeScaleStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.TimeScaleStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_TimeScaleStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.TimeScaleStyle">TimeScaleStyle</h4>
+              <div class="markdown level1 summary"><p>Style used for drawing timeline</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Style TimeScaleStyle { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.Style.html">Style</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_UseLocalTime_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.UseLocalTime*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_UseLocalTime" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.UseLocalTime">UseLocalTime</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool UseLocalTime { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VCursorLineStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VCursorLineStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VCursorLineStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VCursorLineStyle">VCursorLineStyle</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public LineStyle VCursorLineStyle { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.LineStyle.html">LineStyle</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VRulerDefaultFormat_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VRulerDefaultFormat*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VRulerDefaultFormat" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VRulerDefaultFormat">VRulerDefaultFormat</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string VRulerDefaultFormat { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VRulerFixedWidth_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VRulerFixedWidth*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VRulerFixedWidth" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VRulerFixedWidth">VRulerFixedWidth</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int VRulerFixedWidth { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VRulerPosition_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VRulerPosition*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_VRulerPosition" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.VRulerPosition">VRulerPosition</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public VRulerPosition VRulerPosition { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.VRulerPosition.html">VRulerPosition</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Zoom_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Zoom*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Zoom" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Zoom">Zoom</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public float Zoom { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomStepPercent_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomStepPercent*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomStepPercent" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomStepPercent">ZoomStepPercent</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int ZoomStepPercent { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_BuildDefaultStyle_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.BuildDefaultStyle*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_BuildDefaultStyle" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.BuildDefaultStyle">BuildDefaultStyle()</h4>
+              <div class="markdown level1 summary"><p>Builds default style for data cells in non-selected rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void BuildDefaultStyle()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Configure_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Configure*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Configure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Configure(NFX.Environment.IConfigSectionNode)">Configure(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Reads column configuration from config node that should contain [grid] sub elemnt/s. The id attribute should either match or be absent</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Configure(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigurable.html#NFX_Environment_IConfigurable_Configure_NFX_Environment_IConfigSectionNode_">IConfigurable.Configure(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Dispose_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Dispose*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_Dispose_System_Boolean_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">disposing</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.Dispose(System.Boolean)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GetPaneVProportion_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GetPaneVProportion*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_GetPaneVProportion_System_String_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.GetPaneVProportion(System.String)">GetPaneVProportion(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public float GetPaneVProportion(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_LayoutSubControls_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.LayoutSubControls*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_LayoutSubControls_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.LayoutSubControls(System.Int32,System.Int32,System.Int32,System.Int32)">LayoutSubControls(Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Performs layout of sub controls, such as element host, scroll bars etc.. </p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void LayoutSubControls(int oldLeft, int oldTop, int oldWidth, int oldHeight)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">oldLeft</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">oldTop</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">oldWidth</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">oldHeight</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_MapPaneYToValue_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.MapPaneYToValue*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_MapPaneYToValue_NFX_WinForms_Controls_ChartKit_Temporal_PlotPane_System_Int32_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.MapPaneYToValue(NFX.WinForms.Controls.ChartKit.Temporal.PlotPane,System.Int32)">MapPaneYToValue(PlotPane, Int32)</h4>
+              <div class="markdown level1 summary"><p>Maps mouse Y coordinate per pane&#39;s vertical scale value</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public float MapPaneYToValue(PlotPane pane, int y)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.PlotPane.html">PlotPane</a></td>
+                    <td><span class="parametername">pane</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_MapXToSample_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.MapXToSample*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_MapXToSample_System_Int32_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.MapXToSample(System.Int32)">MapXToSample(Int32)</h4>
+              <div class="markdown level1 summary"><p>Maps X coordinate to primary series sample</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ITimeSeriesSample MapXToSample(int xcoord)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">xcoord</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Market.ITimeSeriesSample.html">ITimeSeriesSample</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_NotifySeriesChange_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.NotifySeriesChange*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_NotifySeriesChange_System_Boolean_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.NotifySeriesChange(System.Boolean)">NotifySeriesChange(Boolean)</h4>
+              <div class="markdown level1 summary"><p>Notifies chart series that data/metadata has changed in series model/view properties 
+This method is NOT THREAD SAFE and runs in GUI thread.
+This method does call aggregation, that is - when this method is called many times within timespan it will rebuild chart only once at the end.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool NotifySeriesChange(bool rebuildPanes = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">rebuildPanes</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_OnChartPaneMouseEvent_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.OnChartPaneMouseEvent*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_OnChartPaneMouseEvent_NFX_WinForms_Controls_ChartKit_Temporal_ChartPaneMouseEventArgs_MouseEventType_NFX_WinForms_Controls_ChartKit_Temporal_PlotPane_System_Windows_Forms_MouseEventArgs_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.OnChartPaneMouseEvent(NFX.WinForms.Controls.ChartKit.Temporal.ChartPaneMouseEventArgs.MouseEventType,NFX.WinForms.Controls.ChartKit.Temporal.PlotPane,System.Windows.Forms.MouseEventArgs)">OnChartPaneMouseEvent(ChartPaneMouseEventArgs.MouseEventType, PlotPane, MouseEventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnChartPaneMouseEvent(ChartPaneMouseEventArgs.MouseEventType et, PlotPane senderPane, MouseEventArgs mouse)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.ChartPaneMouseEventArgs.MouseEventType.html">ChartPaneMouseEventArgs.MouseEventType</a></td>
+                    <td><span class="parametername">et</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.PlotPane.html">PlotPane</a></td>
+                    <td><span class="parametername">senderPane</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.MouseEventArgs</span></td>
+                    <td><span class="parametername">mouse</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_OnMouseWheel_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.OnMouseWheel*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_OnMouseWheel_System_Windows_Forms_MouseEventArgs_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.OnMouseWheel(System.Windows.Forms.MouseEventArgs)">OnMouseWheel(MouseEventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void OnMouseWheel(MouseEventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.MouseEventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.OnMouseWheel(System.Windows.Forms.MouseEventArgs)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_OnPaddingChanged_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.OnPaddingChanged*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_OnPaddingChanged_System_EventArgs_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.OnPaddingChanged(System.EventArgs)">OnPaddingChanged(EventArgs)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void OnPaddingChanged(EventArgs e)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.EventArgs</span></td>
+                    <td><span class="parametername">e</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.OnPaddingChanged(System.EventArgs)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_PersistConfiguration_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.PersistConfiguration*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_PersistConfiguration_NFX_Environment_ConfigSectionNode_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.PersistConfiguration(NFX.Environment.ConfigSectionNode)">PersistConfiguration(ConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Persists column configuration to config node. [grid] subnode will be created under specified node pr reused if one already exists</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void PersistConfiguration(ConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigurationPersistent.html#NFX_Environment_IConfigurationPersistent_PersistConfiguration_NFX_Environment_ConfigSectionNode_">IConfigurationPersistent.PersistConfiguration(ConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ProcessDialogKey_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ProcessDialogKey*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ProcessDialogKey_System_Windows_Forms_Keys_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ProcessDialogKey(System.Windows.Forms.Keys)">ProcessDialogKey(Keys)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override bool ProcessDialogKey(Keys keyData)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.Keys</span></td>
+                    <td><span class="parametername">keyData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.ProcessDialogKey(System.Windows.Forms.Keys)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SetBoundsCore_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SetBoundsCore*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SetBoundsCore_System_Int32_System_Int32_System_Int32_System_Int32_System_Windows_Forms_BoundsSpecified_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SetBoundsCore(System.Int32,System.Int32,System.Int32,System.Int32,System.Windows.Forms.BoundsSpecified)">SetBoundsCore(Int32, Int32, Int32, Int32, BoundsSpecified)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">width</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">height</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Windows.Forms.BoundsSpecified</span></td>
+                    <td><span class="parametername">specified</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Control.SetBoundsCore(System.Int32, System.Int32, System.Int32, System.Int32, System.Windows.Forms.BoundsSpecified)</span></div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SetPaneVProportion_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SetPaneVProportion*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_SetPaneVProportion_System_String_System_Single_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.SetPaneVProportion(System.String,System.Single)">SetPaneVProportion(String, Single)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SetPaneVProportion(string name, float proportion)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">proportion</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomDec_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomDec*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomDec" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomDec">ZoomDec()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ZoomDec()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomInc_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomInc*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomInc" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomInc">ZoomInc()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ZoomInc()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomReset_" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomReset*"></a>
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ZoomReset" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ZoomReset">ZoomReset()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ZoomReset()</code></pre>
+              </div>
+              <h3 id="events">Events
+              </h3>
+              
+              
+              <h4 id="NFX_WinForms_Controls_ChartKit_Temporal_TimeSeriesChart_ChartPaneMouseEvent" data-uid="NFX.WinForms.Controls.ChartKit.Temporal.TimeSeriesChart.ChartPaneMouseEvent">ChartPaneMouseEvent</h4>
+              <div class="markdown level1 summary"><p>Called when user moves the mouse over chart pane</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event ChartPaneMouseEventHandler ChartPaneMouseEvent</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WinForms.Controls.ChartKit.Temporal.ChartPaneMouseEventHandler.html">ChartPaneMouseEventHandler</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1395 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TemplateCompiler
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TemplateCompiler
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Templatization_TemplateCompiler" data-uid="NFX.Templatization.TemplateCompiler">Class TemplateCompiler
+              </h1>
+              <div class="markdown level0 summary"><p>Represents abstraction of template compilers. This class is not thread-safe</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><span class="xref">TemplateCompiler</span></div>
+                  <div class="level3"><a class="xref" href="NFX.Templatization.TextCSTemplateCompiler.html">TextCSTemplateCompiler</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Templatization</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Templatization_TemplateCompiler_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract class TemplateCompiler : DisposableObject, IDisposable, IConfigurable, IEnumerable&lt;CompileUnit&gt;, IEnumerable</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler__ctor_" data-uid="NFX.Templatization.TemplateCompiler.#ctor*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler__ctor" data-uid="NFX.Templatization.TemplateCompiler.#ctor">TemplateCompiler()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected TemplateCompiler()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler__ctor_" data-uid="NFX.Templatization.TemplateCompiler.#ctor*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler__ctor_NFX_Templatization_ITemplateSource___" data-uid="NFX.Templatization.TemplateCompiler.#ctor(NFX.Templatization.ITemplateSource[])">TemplateCompiler(ITemplateSource[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected TemplateCompiler(params ITemplateSource[] sources)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.ITemplateSource.html">ITemplateSource</a>[]</td>
+                    <td><span class="parametername">sources</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler__ctor_" data-uid="NFX.Templatization.TemplateCompiler.#ctor*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler__ctor_System_Collections_Generic_IEnumerable_NFX_Templatization_ITemplateSource__" data-uid="NFX.Templatization.TemplateCompiler.#ctor(System.Collections.Generic.IEnumerable{NFX.Templatization.ITemplateSource})">TemplateCompiler(IEnumerable&lt;ITemplateSource&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected TemplateCompiler(IEnumerable&lt;ITemplateSource&gt; sources)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Templatization.ITemplateSource.html">ITemplateSource</a>&gt;</td>
+                    <td><span class="parametername">sources</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_Assembly" data-uid="NFX.Templatization.TemplateCompiler.m_Assembly">m_Assembly</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Assembly m_Assembly</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Reflection.Assembly</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_AssemblyFileName" data-uid="NFX.Templatization.TemplateCompiler.m_AssemblyFileName">m_AssemblyFileName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected string m_AssemblyFileName</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_CodeCompilerErrors" data-uid="NFX.Templatization.TemplateCompiler.m_CodeCompilerErrors">m_CodeCompilerErrors</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected List&lt;Exception&gt; m_CodeCompilerErrors</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_Options" data-uid="NFX.Templatization.TemplateCompiler.m_Options">m_Options</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected IConfigSectionNode m_Options</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_ReferencedAssemblies" data-uid="NFX.Templatization.TemplateCompiler.m_ReferencedAssemblies">m_ReferencedAssemblies</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected List&lt;string&gt; m_ReferencedAssemblies</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_ReferencedAssembliesSearchPath" data-uid="NFX.Templatization.TemplateCompiler.m_ReferencedAssembliesSearchPath">m_ReferencedAssembliesSearchPath</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected string m_ReferencedAssembliesSearchPath</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Templatization_TemplateCompiler_m_Units" data-uid="NFX.Templatization.TemplateCompiler.m_Units">m_Units</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected CompileUnits m_Units</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.CompileUnits.html">CompileUnits</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Assembly_" data-uid="NFX.Templatization.TemplateCompiler.Assembly*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Assembly" data-uid="NFX.Templatization.TemplateCompiler.Assembly">Assembly</h4>
+              <div class="markdown level1 summary"><p>Returns compiled assembly or null if only source have been compiled when CompileCode=false;</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Assembly Assembly { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Reflection.Assembly</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_AssemblyFileName_" data-uid="NFX.Templatization.TemplateCompiler.AssemblyFileName*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_AssemblyFileName" data-uid="NFX.Templatization.TemplateCompiler.AssemblyFileName">AssemblyFileName</h4>
+              <div class="markdown level1 summary"><p>Gets/sets filename for assembly, if null then assembly is created in-memory only</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$asm-file&quot;)]
+public string AssemblyFileName { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_BaseTypeName_" data-uid="NFX.Templatization.TemplateCompiler.BaseTypeName*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_BaseTypeName" data-uid="NFX.Templatization.TemplateCompiler.BaseTypeName">BaseTypeName</h4>
+              <div class="markdown level1 summary"><p>Sets the name of base type that templates inherit from.
+This type must directly or indirectly inherit from Template</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$base-type&quot;)]
+public string BaseTypeName { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_CodeCompilerErrors_" data-uid="NFX.Templatization.TemplateCompiler.CodeCompilerErrors*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_CodeCompilerErrors" data-uid="NFX.Templatization.TemplateCompiler.CodeCompilerErrors">CodeCompilerErrors</h4>
+              <div class="markdown level1 summary"><p>Returns code compilation errors</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;Exception&gt; CodeCompilerErrors { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_CompileCode_" data-uid="NFX.Templatization.TemplateCompiler.CompileCode*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_CompileCode" data-uid="NFX.Templatization.TemplateCompiler.CompileCode">CompileCode</h4>
+              <div class="markdown level1 summary"><p>Indicates whether language compilation should be performed and Assembly be built</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$compile-code&quot;)]
+public bool CompileCode { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Compiled_" data-uid="NFX.Templatization.TemplateCompiler.Compiled*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Compiled" data-uid="NFX.Templatization.TemplateCompiler.Compiled">Compiled</h4>
+              <div class="markdown level1 summary"><p>Indicates whether this instance was compiled</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Compiled { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_CompileUnitsWithErrors_" data-uid="NFX.Templatization.TemplateCompiler.CompileUnitsWithErrors*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_CompileUnitsWithErrors" data-uid="NFX.Templatization.TemplateCompiler.CompileUnitsWithErrors">CompileUnitsWithErrors</h4>
+              <div class="markdown level1 summary"><p>Returns compile units that have errors</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;CompileUnit&gt; CompileUnitsWithErrors { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Templatization.CompileUnit.html">CompileUnit</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_HasErrors_" data-uid="NFX.Templatization.TemplateCompiler.HasErrors*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_HasErrors" data-uid="NFX.Templatization.TemplateCompiler.HasErrors">HasErrors</h4>
+              <div class="markdown level1 summary"><p>Indicates whether some units have template compilation errors or code compiler errors exist</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool HasErrors { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Item_" data-uid="NFX.Templatization.TemplateCompiler.Item*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Item_NFX_Templatization_ITemplateSource_" data-uid="NFX.Templatization.TemplateCompiler.Item(NFX.Templatization.ITemplateSource)">Item[ITemplateSource]</h4>
+              <div class="markdown level1 summary"><p>Returns a compile unit by template source or throws if it does not exist</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public CompileUnit this[ITemplateSource templateSource] { get; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.ITemplateSource.html">ITemplateSource</a></td>
+                    <td><span class="parametername">templateSource</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.CompileUnit.html">CompileUnit</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_LanguageName_" data-uid="NFX.Templatization.TemplateCompiler.LanguageName*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_LanguageName" data-uid="NFX.Templatization.TemplateCompiler.LanguageName">LanguageName</h4>
+              <div class="markdown level1 summary"><p>Gets the name of the language that this compiler supports, i.e. &quot;C#&quot;</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract string LanguageName { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_LanguageSourceFileExtension_" data-uid="NFX.Templatization.TemplateCompiler.LanguageSourceFileExtension*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_LanguageSourceFileExtension" data-uid="NFX.Templatization.TemplateCompiler.LanguageSourceFileExtension">LanguageSourceFileExtension</h4>
+              <div class="markdown level1 summary"><p>Gets the name of the language source code file extension that this compiler supports, i.e. &quot;.cs&quot;</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract string LanguageSourceFileExtension { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Namespace_" data-uid="NFX.Templatization.TemplateCompiler.Namespace*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Namespace" data-uid="NFX.Templatization.TemplateCompiler.Namespace">Namespace</h4>
+              <div class="markdown level1 summary"><p>Sets the name of namespace that classes compiled into</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$namespace&quot;)]
+public string Namespace { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Options_" data-uid="NFX.Templatization.TemplateCompiler.Options*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Options" data-uid="NFX.Templatization.TemplateCompiler.Options">Options</h4>
+              <div class="markdown level1 summary"><p>Config options section used for compilation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;options&quot;)]
+public IConfigSectionNode Options { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_ReferencedAssemblies_" data-uid="NFX.Templatization.TemplateCompiler.ReferencedAssemblies*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_ReferencedAssemblies" data-uid="NFX.Templatization.TemplateCompiler.ReferencedAssemblies">ReferencedAssemblies</h4>
+              <div class="markdown level1 summary"><p>Returns referenced assemblies</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; ReferencedAssemblies { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_ReferencedAssembliesSearchPath_" data-uid="NFX.Templatization.TemplateCompiler.ReferencedAssembliesSearchPath*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_ReferencedAssembliesSearchPath" data-uid="NFX.Templatization.TemplateCompiler.ReferencedAssembliesSearchPath">ReferencedAssembliesSearchPath</h4>
+              <div class="markdown level1 summary"><p>Gets/sets path for referenced assemblies that do not have a path in their names</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$ref-path&quot;)]
+public string ReferencedAssembliesSearchPath { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Compile_" data-uid="NFX.Templatization.TemplateCompiler.Compile*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Compile" data-uid="NFX.Templatization.TemplateCompiler.Compile">Compile()</h4>
+              <div class="markdown level1 summary"><p>Performs compilation if it has not already been performed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Compile()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Configure_" data-uid="NFX.Templatization.TemplateCompiler.Configure*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Configure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Templatization.TemplateCompiler.Configure(NFX.Environment.IConfigSectionNode)">Configure(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Configure(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigurable.html#NFX_Environment_IConfigurable_Configure_NFX_Environment_IConfigSectionNode_">IConfigurable.Configure(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_Destructor_" data-uid="NFX.Templatization.TemplateCompiler.Destructor*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_Destructor" data-uid="NFX.Templatization.TemplateCompiler.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Destructor">DisposableObject.Destructor()</a></div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_DoCompileCode_" data-uid="NFX.Templatization.TemplateCompiler.DoCompileCode*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_DoCompileCode" data-uid="NFX.Templatization.TemplateCompiler.DoCompileCode">DoCompileCode()</h4>
+              <div class="markdown level1 summary"><p>Override to perform compilation of code into assembly</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract void DoCompileCode()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_DoCompileTemplateSource_" data-uid="NFX.Templatization.TemplateCompiler.DoCompileTemplateSource*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit_" data-uid="NFX.Templatization.TemplateCompiler.DoCompileTemplateSource(NFX.Templatization.CompileUnit)">DoCompileTemplateSource(CompileUnit)</h4>
+              <div class="markdown level1 summary"><p>Override to perform code generation from template source into code</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract void DoCompileTemplateSource(CompileUnit unit)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.CompileUnit.html">CompileUnit</a></td>
+                    <td><span class="parametername">unit</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_DoConfigure_" data-uid="NFX.Templatization.TemplateCompiler.DoConfigure*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_DoConfigure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Templatization.TemplateCompiler.DoConfigure(NFX.Environment.IConfigSectionNode)">DoConfigure(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Override to perform custom configuration</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void DoConfigure(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_EnsureNotCompiled_" data-uid="NFX.Templatization.TemplateCompiler.EnsureNotCompiled*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_EnsureNotCompiled" data-uid="NFX.Templatization.TemplateCompiler.EnsureNotCompiled">EnsureNotCompiled()</h4>
+              <div class="markdown level1 summary"><p>Throws an exception if this instance has already been compiled</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void EnsureNotCompiled()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_ExcludeTemplateSource_" data-uid="NFX.Templatization.TemplateCompiler.ExcludeTemplateSource*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_ExcludeTemplateSource_NFX_Templatization_ITemplateSource_" data-uid="NFX.Templatization.TemplateCompiler.ExcludeTemplateSource(NFX.Templatization.ITemplateSource)">ExcludeTemplateSource(ITemplateSource)</h4>
+              <div class="markdown level1 summary"><p>Exclude template source from compilation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ExcludeTemplateSource(ITemplateSource source)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.ITemplateSource.html">ITemplateSource</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_GenerateUniqueName_" data-uid="NFX.Templatization.TemplateCompiler.GenerateUniqueName*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_GenerateUniqueName" data-uid="NFX.Templatization.TemplateCompiler.GenerateUniqueName">GenerateUniqueName()</h4>
+              <div class="markdown level1 summary"><p>Generates unique identifier suitable for use in code per compiler instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string GenerateUniqueName()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_GetEnumerator_" data-uid="NFX.Templatization.TemplateCompiler.GetEnumerator*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_GetEnumerator" data-uid="NFX.Templatization.TemplateCompiler.GetEnumerator">GetEnumerator()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerator&lt;CompileUnit&gt; GetEnumerator()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="NFX.Templatization.CompileUnit.html">CompileUnit</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;.GetEnumerator()</span></div>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_IncludeTemplateSource_" data-uid="NFX.Templatization.TemplateCompiler.IncludeTemplateSource*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_IncludeTemplateSource_NFX_Templatization_ITemplateSource_" data-uid="NFX.Templatization.TemplateCompiler.IncludeTemplateSource(NFX.Templatization.ITemplateSource)">IncludeTemplateSource(ITemplateSource)</h4>
+              <div class="markdown level1 summary"><p>Includes template source into compilation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void IncludeTemplateSource(ITemplateSource source)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.ITemplateSource.html">ITemplateSource</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_ReferenceAssembly_" data-uid="NFX.Templatization.TemplateCompiler.ReferenceAssembly*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_ReferenceAssembly_System_String_" data-uid="NFX.Templatization.TemplateCompiler.ReferenceAssembly(System.String)">ReferenceAssembly(String)</h4>
+              <div class="markdown level1 summary"><p>References assembly by its name if it is already not referenced</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ReferenceAssembly(string aname)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">aname</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_RegisterDefaultUsings_" data-uid="NFX.Templatization.TemplateCompiler.RegisterDefaultUsings*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_RegisterDefaultUsings_System_Collections_Generic_HashSet_System_String__" data-uid="NFX.Templatization.TemplateCompiler.RegisterDefaultUsings(System.Collections.Generic.HashSet{System.String})">RegisterDefaultUsings(HashSet&lt;String&gt;)</h4>
+              <div class="markdown level1 summary"><p>Override to provide default using clauses</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void RegisterDefaultUsings(HashSet&lt;string&gt; usings)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.HashSet</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td><span class="parametername">usings</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_UnReferenceAssembly_" data-uid="NFX.Templatization.TemplateCompiler.UnReferenceAssembly*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_UnReferenceAssembly_System_String_" data-uid="NFX.Templatization.TemplateCompiler.UnReferenceAssembly(System.String)">UnReferenceAssembly(String)</h4>
+              <div class="markdown level1 summary"><p>Removes assembly reference by its name if it was already referenced</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool UnReferenceAssembly(string aname)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">aname</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TemplateCompiler_System_Collections_IEnumerable_GetEnumerator_" data-uid="NFX.Templatization.TemplateCompiler.System#Collections#IEnumerable#GetEnumerator*"></a>
+              <h4 id="NFX_Templatization_TemplateCompiler_System_Collections_IEnumerable_GetEnumerator" data-uid="NFX.Templatization.TemplateCompiler.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.IEnumerator</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.IEnumerable.GetEnumerator()</span></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0_System_Int32__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T, Int32&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__System_Int32_">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstOrAnyOrDefault__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__">CollectionUtils.FirstOrAnyOrDefault&lt;TResult&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, Boolean&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_Distinct__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.Distinct&lt;TResult, TKey&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TKey&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Collections.LookAheadExtensions.html#NFX_Collections_LookAheadExtensions_AsLookAheadEnumerable__1_System_Collections_Generic_IEnumerable___0__">LookAheadExtensions.AsLookAheadEnumerable&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

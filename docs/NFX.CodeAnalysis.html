@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.CodeAnalysis
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.CodeAnalysis
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_CodeAnalysis" data-uid="NFX.CodeAnalysis">Namespace NFX.CodeAnalysis
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.CodeAnalysisException.html">CodeAnalysisException</a></h4>
+                  <section><p>Base exception thrown by the framework</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.CodeProcessorException.html">CodeProcessorException</a></h4>
+                  <section><p>Thrown by code processors such as lexers, parsers ,  symantic analyzers, compilers etc...</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.CommonCodeProcessor.html">CommonCodeProcessor</a></h4>
+                  <section><p>Provides base implementation for common code processors</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.Language.html">Language</a></h4>
+                  <section><p>Represents and abstraction of the language</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.LazyFSMState-1.html">LazyFSMState&lt;TToken&gt;</a></h4>
+                  <section><p>Represents a state object for Lazy Finate State Machine that enumerates tokes from IEnumerable(Token)
+and does not support a notion of index addressing</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.Lexer-1.html">Lexer&lt;TToken&gt;</a></h4>
+                  <section><p>Performs lexical analysis of the source code in particular language
+Allows to enumerate over source as typed Token stream - depending on implementation enumeration may do
+lexical analysis token-by-token or in chunks with every enumerator advance</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.Message.html">Message</a></h4>
+                  <section><p>Represents a message emitted from code-analyzing entities such as lexers, parsers, semantic analyzers and compilers.
+Messages have severity type like warning, info or error etc.</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.MessageList.html">MessageList</a></h4>
+                  <section><p>Provides a list of messages, this class is not thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.ObjectResultAnalysisContext-1.html">ObjectResultAnalysisContext&lt;TObject&gt;</a></h4>
+                  <section><p>A context that can hold analysis result as TObject.
+This class is useful for cases like dynamic language parsers (i.e. JSON)</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.Parser-1.html">Parser&lt;TLexer&gt;</a></h4>
+                  <section><p>Performs parsing of token streams provided by lexers</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.PatternSearch.html">PatternSearch</a></h4>
+                  <section><p>Provides Token-pattern matching utilities</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.SourceRefCommonCodeProcessor.html">SourceRefCommonCodeProcessor</a></h4>
+                  <section><p>Provides base implementation for common code processors</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.StringEscapeErrorException.html">StringEscapeErrorException</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.Token.html">Token</a></h4>
+                  <section><p>Represents a lexical token of the language. This is an abstract class that particular language implementations must extend
+to define language-specific token types</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.Tokenized-1.html">Tokenized&lt;TToken&gt;</a></h4>
+                  <section><p>Provides read-only view over TokenList</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.TokenList-1.html">TokenList&lt;TToken&gt;</a></h4>
+                  <section><p>A list of tokens</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.UnspecifiedLanguage.html">UnspecifiedLanguage</a></h4>
+                  <section><p>Represents Unspecified unknown language</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.IAnalysisContext.html">IAnalysisContext</a></h4>
+                  <section><p>Describes an entity that retains state during analysis, such as: module compiler, project compiler, code unit translator etc.
+This entity may also contain compiler/parser/lexer options etc.</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.ICodeProcessor.html">ICodeProcessor</a></h4>
+                  <section><p>Describes an entity that may process source code in some language</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.ILanguageProcessorNotifications.html">ILanguageProcessorNotifications</a></h4>
+                  <section><p>Describes an entity capable of receiving messages as they are emitted by entities such as parsers and compilers</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.ILexer.html">ILexer</a></h4>
+                  <section><p>Describes general lexer interface.
+Lexers turn string source input which is obtained via ISourceText implementation (i.e. FileSource,WebSource...)
+into tokenized stream. Some lexer implementations may support lazy analysis, that is - source text analysis which is done
+in chunks when lexer is iterated over, others may lex the whole source text at once</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.IParser.html">IParser</a></h4>
+                  <section><p>Describes general parser interface</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.IProjectItem.html">IProjectItem</a></h4>
+                  <section><p>Represents an item that is a part of some project, i.e. a CS source file in CSharp project</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.FSMI.html">FSMI</a></h4>
+                  <section><p>Describes transition instructions for Finate State Machine (FSM)</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.LanguageFamily.html">LanguageFamily</a></h4>
+                  <section><p>Defines various languages</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.MessageType.html">MessageType</a></h4>
+                  <section><p>Message type like: Info, Warning, Error</p>
+</section>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.TokenKind.html">TokenKind</a></h4>
+                  <section><p>Provides language-agnostic token classification</p>
+</section>
+                <h3 id="delegates">Delegates
+              </h3>
+                  <h4><a class="xref" href="NFX.CodeAnalysis.LazyFSMPredicate-1.html">LazyFSMPredicate&lt;TToken&gt;</a></h4>
+                  <section><p>Lazy Finate State Machine (FSM) predicate, tries to match condition and returns appropriate next action</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

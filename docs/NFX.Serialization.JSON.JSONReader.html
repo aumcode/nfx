@@ -1,0 +1,767 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class JSONReader
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class JSONReader
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Serialization_JSON_JSONReader" data-uid="NFX.Serialization.JSON.JSONReader">Class JSONReader
+              </h1>
+              <div class="markdown level0 summary"><p>Provides deserialization functionality from JSON format</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">JSONReader</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Serialization.JSON</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Serialization_JSON_JSONReader_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class JSONReader</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDataObject_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObject*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDataObject_NFX_CodeAnalysis_Source_ISourceText_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObject(NFX.CodeAnalysis.Source.ISourceText,System.Boolean)">DeserializeDataObject(ISourceText, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IJSONDataObject DeserializeDataObject(ISourceText source, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.Source.ISourceText.html">ISourceText</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.IJSONDataObject.html">IJSONDataObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDataObject_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObject*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDataObject_System_IO_Stream_System_Text_Encoding_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObject(System.IO.Stream,System.Text.Encoding,System.Boolean)">DeserializeDataObject(Stream, Encoding, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IJSONDataObject DeserializeDataObject(Stream stream, Encoding encoding = null, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">stream</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.IJSONDataObject.html">IJSONDataObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDataObject_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObject*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDataObject_System_String_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObject(System.String,System.Boolean)">DeserializeDataObject(String, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IJSONDataObject DeserializeDataObject(string source, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.IJSONDataObject.html">IJSONDataObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDataObjectFromFile_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObjectFromFile*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDataObjectFromFile_System_String_System_Text_Encoding_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDataObjectFromFile(System.String,System.Text.Encoding,System.Boolean)">DeserializeDataObjectFromFile(String, Encoding, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IJSONDataObject DeserializeDataObjectFromFile(string filePath, Encoding encoding = null, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">filePath</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.IJSONDataObject.html">IJSONDataObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDynamic_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDynamic*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDynamic_NFX_CodeAnalysis_Source_ISourceText_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDynamic(NFX.CodeAnalysis.Source.ISourceText,System.Boolean)">DeserializeDynamic(ISourceText, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static dynamic DeserializeDynamic(ISourceText source, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.Source.ISourceText.html">ISourceText</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDynamic_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDynamic*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDynamic_System_IO_Stream_System_Text_Encoding_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDynamic(System.IO.Stream,System.Text.Encoding,System.Boolean)">DeserializeDynamic(Stream, Encoding, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static dynamic DeserializeDynamic(Stream stream, Encoding encoding = null, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">stream</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_DeserializeDynamic_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDynamic*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_DeserializeDynamic_System_String_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.DeserializeDynamic(System.String,System.Boolean)">DeserializeDynamic(String, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static dynamic DeserializeDynamic(string source, bool caseSensitiveMaps = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitiveMaps</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_ToRow_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow_NFX_DataAccess_CRUD_Row_NFX_Serialization_JSON_JSONDataMap_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow(NFX.DataAccess.CRUD.Row,NFX.Serialization.JSON.JSONDataMap,System.Boolean)">ToRow(Row, JSONDataMap, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Converts JSONMap into supplied row instance.
+The extra data found in JSON map will be placed in AmorphousData dictionary if the row implemets IAmorphousData, discarded otherwise.
+Note: This method provides &quot;the best match&quot; and does not guarantee that all data will/can be converted from JSON, i.e.
+it can only convert one dimensional arrays and Lists of either primitive or TypeRow-derived entries</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void ToRow(Row row, JSONDataMap jsonMap, bool fromUI = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td><p>Row instance to convert into</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td><p>JSON data to convert into row</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">fromUI</span></td>
+                    <td><p>When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_ToRow_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow_System_Type_NFX_Serialization_JSON_JSONDataMap_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow(System.Type,NFX.Serialization.JSON.JSONDataMap,System.Boolean)">ToRow(Type, JSONDataMap, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Converts JSONMap into typed row of the requested type.
+The requested type must be derived from NFX.DataAccess.CRUD.TypedRow.
+The extra data found in JSON map will be placed in AmorphousData dictionary if the row implemets IAmorphousData, discarded otherwise.
+Note: This method provides &quot;the best match&quot; and does not guarantee that all data will/can be converted from JSON, i.e.
+it can only convert one dimensional arrays and Lists of either primitive or TypeRow-derived entries</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TypedRow ToRow(Type type, JSONDataMap jsonMap, bool fromUI = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">type</span></td>
+                    <td><p>TypedRow subtype to convert into</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td><p>JSON data to convert into row</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">fromUI</span></td>
+                    <td><p>When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_ToRow_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow__1_NFX_Serialization_JSON_JSONDataMap_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow``1(NFX.Serialization.JSON.JSONDataMap,System.Boolean)">ToRow&lt;T&gt;(JSONDataMap, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Generic version of</p>
+<a class="xref" href="NFX.Serialization.JSON.JSONReader.html#NFX_Serialization_JSON_JSONReader_ToRow_System_Type_NFX_Serialization_JSON_JSONDataMap_System_Boolean_">ToRow(Type, JSONDataMap, Boolean)</a>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static T ToRow&lt;T&gt;(JSONDataMap jsonMap, bool fromUI = true)where T : TypedRow</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">fromUI</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td><p>TypedRow</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_ToRowset_" data-uid="NFX.Serialization.JSON.JSONReader.ToRowset*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRowset_NFX_Serialization_JSON_JSONDataMap_System_Boolean_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRowset(NFX.Serialization.JSON.JSONDataMap,System.Boolean,System.Boolean)">ToRowset(JSONDataMap, Boolean, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Deserializes into Rowset or Table from JSONDataMap, as serialized by RowsedBase.WriteAsJSON()</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static RowsetBase ToRowset(JSONDataMap jsonMap, bool schemaOnly = false, bool readOnlySchema = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">schemaOnly</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnlySchema</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_JSON_JSONReader_ToRowset_" data-uid="NFX.Serialization.JSON.JSONReader.ToRowset*"></a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRowset_System_String_System_Boolean_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRowset(System.String,System.Boolean,System.Boolean)">ToRowset(String, Boolean, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Deserializes into Rowset or Table from JSOnDataMap, as serialized by RowsedBase.WriteAsJSON()</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static RowsetBase ToRowset(string json, bool schemaOnly = false, bool readOnlySchema = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">json</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">schemaOnly</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnlySchema</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

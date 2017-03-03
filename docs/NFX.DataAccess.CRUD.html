@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.DataAccess.CRUD
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.DataAccess.CRUD
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_DataAccess_CRUD" data-uid="NFX.DataAccess.CRUD">Namespace NFX.DataAccess.CRUD
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.AmorphousDynamicRow.html">AmorphousDynamicRow</a></h4>
+                  <section><p>Represents a row of data which has a schema only known at run-time that also implements IAmorphousData
+interface that allows this row to store &quot;extra&quot; data that does not comply with the current schema.
+Dynamic rows store data in object[] internally, providing better flexibility(ability to define schema at runtime) than TypedRows at the expense of performance.
+This class is not sealed so implementors may override configuration persistence</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.AmorphousTypedRow.html">AmorphousTypedRow</a></h4>
+                  <section><p>Represents a type-safe row of data when schema is known at compile-time that also implements IAmorphousData
+interface that allows this row to store &quot;extra&quot; data that does not comply with the current schema.
+Typed rows store data in instance fields, providing better performance and schema definition compile-time checking than DynamicRows
+at the expense of inability to define schema at runtime</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDException.html">CRUDException</a></h4>
+                  <section><p>Thrown by CRUD data access classes</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDFieldValidationException.html">CRUDFieldValidationException</a></h4>
+                  <section><p>Thrown by CRUD data access classes when field validation does not pass</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDOperationCallContext.html">CRUDOperationCallContext</a></h4>
+                  <section><p>Establishes a thead-static context which surrounds CRUD operations. You can derive your own classes, the .ctor must be chained.
+The context can be nested. A call to .ctor must be balanced with .Dispose().
+This is needed to pass some out-of-band information in some special cases to CRUD operations without changing
+the caller interface, i.e. to swap database connection string.
+This class IS NOT THREAD SAFE, so in cases of async operations, the context captures extra parameters ONLY for initial ASYNC INVOCATION, that is-
+a true ASYNC implementation must pass the reference along the task execution line (in which case the object may be already Disposed but usable for property access</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDQueryHandler.html">CRUDQueryHandler</a></h4>
+                  <section><p>Represents an entity that can execute a query. The implementation may be called by multiple threads and must be safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDQueryHandler-1.html">CRUDQueryHandler&lt;TStore&gt;</a></h4>
+                  <section><p>Represents an entity that can execute a query. The implementation may be called by multiple threads and must be safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDRowValidationException.html">CRUDRowValidationException</a></h4>
+                  <section><p>Thrown by CRUD data access classes when field validation does not pass</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDTransaction.html">CRUDTransaction</a></h4>
+                  <section><p>Represents an abstract base for CRUDTransactions that perform particular backend CRUD work in overriden classes</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDValidationException.html">CRUDValidationException</a></h4>
+                  <section><p>Thrown by CRUD data access classes when validation does not pass</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Cursor.html">Cursor</a></h4>
+                  <section><p>Represents a buffer-less unidicrectional reader that binds IEnumerable(Row) and the backend resource
+(such as SQLReader or other object which is internal to the backend).
+The cursor is NOT thread-safe and must be disposed properly by closing all resources associated with it.
+Only one iteration (one call to GetEnumerator) is possible</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Cursor.enumerator.html">Cursor.enumerator</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.DynamicRow.html">DynamicRow</a></h4>
+                  <section><p>Represents a row of data which has a schema only known at run-time.
+Dynamic rows store data in object[] internally, providing better flexibility(ability to define schema at runtime) than TypedRows at the expense of performance.
+This class is not sealed so implementors may override configuration persistence</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.FieldAttribute.html">FieldAttribute</a></h4>
+                  <section><p>Provides information about table schema that this typed row is a part of</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.FormModel.html">FormModel</a></h4>
+                  <section><p>Represents a &quot;model&quot; (in MVC terms) of a data-entry form.
+Form models are statically typed - contain fields and can contain &quot;extra amorphous&quot; data</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.JSONMappings.html">JSONMappings</a></h4>
+                  <section><p>Facilitates mapping of CRUD/CLR types/values to JSON and back to CLR/CRUD</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.NotImplementedCRUDDataStore.html">NotImplementedCRUDDataStore</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Query.html">Query</a></h4>
+                  <section><p>Defines a query sent into ICRUDDataStore implementor to retrieve data.
+A Query is a named bag of paremeters where every parameter has a name and the value.</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Query.Param.html">Query.Param</a></h4>
+                  <section><p>Represents a CRUD query parameter</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Query-1.html">Query&lt;TResultRow&gt;</a></h4>
+                  <section><p>Generic version of Query</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.QueryResolver.html">QueryResolver</a></h4>
+                  <section><p>Infrastructure class - not for app developers.
+Resolves Query objects into query handlers. Query names are case-insensitive.
+This class is thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.QuerySource.html">QuerySource</a></h4>
+                  <section><p>Represents query source code with pre-processed pragmas</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.QuerySource.ColumnDef.html">QuerySource.ColumnDef</a></h4>
+                  <section><p>Provides column definition in QuerySource</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></h4>
+                  <section><p>Base class for any CRUD row. This class has two direct subtypes - DynamicRow and TypedRow.
+Rows are NOT THREAD SAFE by definition</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.RowEqualityComparer.html">RowEqualityComparer</a></h4>
+                  <section><p>Checks for reference equality. Use RowEqualityComparer.Instance</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Rowset.html">Rowset</a></h4>
+                  <section><p>Implements a rowset that supports row change logging and CRUD operations.
+Rowsets are not optimal for data replication as they perform linear search which is slow, however
+Rowset class supports sorting. In contrast, Tables are kind of rowsets that keep data pre-sorted by key
+thus facilitating quick searching</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></h4>
+                  <section><p>Provides base for rowset implementation.
+Rowsets are mutable lists of rows where all rows must have the same schema, however a rowset may contain a mix of
+dynamic and typed rows as long as they have the same schema.
+Rowsets are not thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Schema.html">Schema</a></h4>
+                  <section><p>Describes a schema for rows: TypedRows and DynamicRows.
+DynamicRows are &quot;shaped&quot; in memory from schema, whereas, TypedRows define schema.
+Schema for Typedrows is cached in static dictionary for speed</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Schema.FieldDef.html">Schema.FieldDef</a></h4>
+                  <section><p>Provides a definition for a single field of a row</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.Table.html">Table</a></h4>
+                  <section><p>Implements a master table. Tables are rowsets that are pre-sorted by keys.
+They are used in scenarios when in-memory data replication is needed.
+A table supports efficient FindKey() operation but does not support sorting.
+This class is not thread-safe.</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.TableAttribute.html">TableAttribute</a></h4>
+                  <section><p>Provides information about table schema that this row is a part of</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.TargetedAttribute.html">TargetedAttribute</a></h4>
+                  <section><p>Provides a base for attributes which ar targeted for particular techlology (i.e. &quot;ORACLE&quot;)</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></h4>
+                  <section><p>Represents a type-safe row of data when schema is known at compile-time.
+Typed rows store data in instance fields, providing better performance and schema definition compile-time checking than DynamicRows
+at the expense of inability to define schema at runtime</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.UniqueSequenceAttribute.html">UniqueSequenceAttribute</a></h4>
+                  <section><p>Provides information for unique sequence gen: scope and name</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CacheParams.html">CacheParams</a></h4>
+                  <section><p>Implements ICacheParams - supplied caching parameters</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.RowChange.html">RowChange</a></h4>
+                  <section><p>Describes row modification</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.IAmorphousData.html">IAmorphousData</a></h4>
+                  <section><p>Denotes an entity, which is typically a row-derivative, that has extra data fields that are not
+defined by particular schema and get represented as {name:value} map instead (schema-less data).
+This interface is usually implemented by rows that support version changing between releases, i.e. when
+structured storage (such as Mongo DB) stores more fields than are currently declared in the row the extra fields will be placed
+in the AmorphousData collection. This interface also provides hook BeforeSave()/AfterLoad() that allow for transforms between
+Amorphous and &quot;hard-schema&quot; data models</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICacheParams.html">ICacheParams</a></h4>
+                  <section><p>Supplies caching params</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICRUDDataStore.html">ICRUDDataStore</a></h4>
+                  <section><p>Represents a DataStore that supports CRUD operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICRUDDataStoreImplementation.html">ICRUDDataStoreImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html">ICRUDOperations</a></h4>
+                  <section><p>Describes an entity that performs single (not in transaction/batch)CRUD operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICRUDQueryExecutionContext.html">ICRUDQueryExecutionContext</a></h4>
+                  <section><p>Represents a context (such as Sql Server connection + transaction scope, or Hadoop connect string etc.) for query execution.
+This is a marker interface implemented by particular providers</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICRUDQueryResolver.html">ICRUDQueryResolver</a></h4>
+                  <section><p>Represents a class that resolves Query into suitable handler that can execute it</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.ICRUDTransactionOperations.html">ICRUDTransactionOperations</a></h4>
+                  <section><p>Describes an entity that performs single (not in transaction/batch)CRUD operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.IValidatable.html">IValidatable</a></h4>
+                  <section><p>Denotes an entity that supports validation</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.CRUDDataStoreType.html">CRUDDataStoreType</a></h4>
+                  <section><p>Denotes types of CRUD stores</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.DataKind.html">DataKind</a></h4>
+                  <section><p>Provides hint/classification for field textual data</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.FormMode.html">FormMode</a></h4>
+                  <section><p>Denotes form modes: unspecified | insert | edit</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.RowChangeType.html">RowChangeType</a></h4>
+                  <section><p>Describes what kind of modification was done</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.TransactionDisposeBehavior.html">TransactionDisposeBehavior</a></h4>
+                  <section><p>Specifies how transaction scope behaves on scope exit</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.TransactionStatus.html">TransactionStatus</a></h4>
+                  <section><p>Denotes transaction statuses</p>
+</section>
+                <h3 id="delegates">Delegates
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></h4>
+                  <section><p>Provides filter predicate for CRUD operations. Return true to include the specified field</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.CRUD.SetFieldFunc.html">SetFieldFunc</a></h4>
+                  <section><p>Injects function that tries to set field value. May elect to skip the set and return false to indicate failure(instead of throwing exception)</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,2065 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MainForm
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MainForm
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="TelemetryViewer_MainForm" data-uid="TelemetryViewer.MainForm">Class MainForm
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+                  <div class="level2"><span class="xref">System.ComponentModel.Component</span></div>
+                  <div class="level3"><span class="xref">System.Windows.Forms.Control</span></div>
+                  <div class="level4"><span class="xref">System.Windows.Forms.ScrollableControl</span></div>
+                  <div class="level5"><span class="xref">System.Windows.Forms.ContainerControl</span></div>
+                  <div class="level6"><span class="xref">System.Windows.Forms.Form</span></div>
+                  <div class="level7"><span class="xref">MainForm</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.SetVisibleCore(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Activate()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ActivateMdiChild(System.Windows.Forms.Form)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AddOwnedForm(System.Windows.Forms.Form)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AdjustFormScrollbars(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Close()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.CreateControlsInstance()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.CreateHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.DefWndProc(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ProcessMnemonic(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.CenterToParent()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.CenterToScreen()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.LayoutMdi(System.Windows.Forms.MdiLayout)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnActivated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnBackgroundImageChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnBackgroundImageLayoutChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnClosing(System.ComponentModel.CancelEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnClosed(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnFormClosing(System.Windows.Forms.FormClosingEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnFormClosed(System.Windows.Forms.FormClosedEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnCreateControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnDeactivate(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnEnabledChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnEnter(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnFontChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnHandleCreated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnHandleDestroyed(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnHelpButtonClicked(System.ComponentModel.CancelEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnLayout(System.Windows.Forms.LayoutEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnLoad(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnMaximizedBoundsChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnMaximumSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnMinimumSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnInputLanguageChanged(System.Windows.Forms.InputLanguageChangedEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnInputLanguageChanging(System.Windows.Forms.InputLanguageChangingEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnVisibleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnMdiChildActivate(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnMenuStart(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnMenuComplete(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnPaint(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnResize(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnRightToLeftLayoutChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnShown(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnTextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ProcessCmdKey(System.Windows.Forms.Message, System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ProcessDialogKey(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ProcessDialogChar(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ProcessKeyPreview(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ProcessTabKey(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.RemoveOwnedForm(System.Windows.Forms.Form)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Select(System.Boolean, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.GetScaledBounds(System.Drawing.Rectangle, System.Drawing.SizeF, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ScaleControl(System.Drawing.SizeF, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.SetBoundsCore(System.Int32, System.Int32, System.Int32, System.Int32, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.SetClientSizeCore(System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.SetDesktopBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.SetDesktopLocation(System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Show(System.Windows.Forms.IWin32Window)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ShowDialog()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ShowDialog(System.Windows.Forms.IWin32Window)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.UpdateDefaultButton()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnResizeBegin(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnResizeEnd(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OnStyleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ValidateChildren()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ValidateChildren(System.Windows.Forms.ValidationConstraints)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.WndProc(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AcceptButton</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ActiveForm</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ActiveMdiChild</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AllowTransparency</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AutoScroll</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AutoSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AutoSizeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AutoValidate</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.BackColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.FormBorderStyle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.CancelButton</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ClientSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ControlBox</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.CreateParams</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.DefaultImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.DefaultSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.DesktopBounds</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.DesktopLocation</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.DialogResult</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.HelpButton</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Icon</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.IsMdiChild</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.IsMdiContainer</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.IsRestrictedWindow</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.KeyPreview</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Location</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MaximizedBounds</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MaximumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MainMenuStrip</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Menu</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MinimumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MaximizeBox</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MdiChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MdiParent</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MergedMenu</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MinimizeBox</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Modal</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Opacity</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.OwnedForms</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Owner</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.RestoreBounds</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.RightToLeftLayout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ShowInTaskbar</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ShowIcon</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ShowWithoutActivation</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Size</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.SizeGripStyle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.StartPosition</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Text</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.TopLevel</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.TopMost</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.TransparencyKey</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.WindowState</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AutoSizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.AutoValidateChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.HelpButtonClicked</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MaximizedBoundsChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MaximumSizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MinimumSizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Activated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Deactivate</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.FormClosing</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.FormClosed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Load</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MdiChildActivate</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MenuComplete</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.MenuStart</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.InputLanguageChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.InputLanguageChanging</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.RightToLeftLayoutChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.Shown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ResizeBegin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Form.ResizeEnd</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.System.Windows.Forms.IContainerControl.ActivateControl(System.Windows.Forms.Control)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.OnAutoValidateChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.OnParentChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.PerformAutoScale()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.Validate()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.Validate(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.AutoScaleDimensions</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.AutoScaleFactor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.AutoScaleMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.BindingContext</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.CanEnableIme</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.ActiveControl</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.CurrentAutoScaleDimensions</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ContainerControl.ParentForm</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollStateAutoScrolling</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollStateHScrollVisible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollStateVScrollVisible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollStateUserHasScrolled</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollStateFullDrag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.GetScrollState(System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.OnMouseWheel(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.OnRightToLeftChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.OnPaintBackground(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.OnPaddingChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.SetDisplayRectLocation(System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollControlIntoView(System.Windows.Forms.Control)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.ScrollToControl(System.Windows.Forms.Control)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.OnScroll(System.Windows.Forms.ScrollEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.SetAutoScrollMargin(System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.SetScrollState(System.Int32, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.AutoScrollMargin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.AutoScrollPosition</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.AutoScrollMinSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.DisplayRectangle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.HScroll</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.HorizontalScroll</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.VScroll</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.VerticalScroll</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.ScrollableControl.Scroll</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetAccessibilityObjectById(System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetAutoSizeMode(System.Windows.Forms.AutoSizeMode)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetAutoSizeMode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetPreferredSize(System.Drawing.Size)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityNotifyClients(System.Windows.Forms.AccessibleEvents, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityNotifyClients(System.Windows.Forms.AccessibleEvents, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BeginInvoke(System.Delegate)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BeginInvoke(System.Delegate, System.Object[])</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BringToFront()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Contains(System.Windows.Forms.Control)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateAccessibilityInstance()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateGraphics()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CreateControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DestroyHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoDragDrop(System.Object, System.Windows.Forms.DragDropEffects)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DrawToBitmap(System.Drawing.Bitmap, System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.EndInvoke(System.IAsyncResult)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FindForm()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetTopLevel()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseKeyEvent(System.Object, System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseMouseEvent(System.Object, System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Focus()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FromChildHandle(System.IntPtr)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FromHandle(System.IntPtr)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetChildAtPoint(System.Drawing.Point, System.Windows.Forms.GetChildAtPointSkip)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetChildAtPoint(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetContainerControl()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetNextControl(System.Windows.Forms.Control, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GetStyle(System.Windows.Forms.ControlStyles)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Hide()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InitLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Region)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Region, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidate(System.Drawing.Rectangle, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invoke(System.Delegate)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invoke(System.Delegate, System.Object[])</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokePaint(System.Windows.Forms.Control, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokePaintBackground(System.Windows.Forms.Control, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsKeyLocked(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsInputChar(System.Char)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsInputKey(System.Windows.Forms.Keys)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsMnemonic(System.Char, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.NotifyInvalidate(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeOnClick(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnAutoSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBackColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnBindingContextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCausesValidationChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnContextMenuChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnContextMenuStripChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnCursorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDockChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnForeColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnNotifyMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBackColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBackgroundImageChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentBindingContextChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentCursorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentEnabledChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentFontChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentForeColorChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentRightToLeftChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnParentVisibleChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPrint(System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTabIndexChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnTabStopChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnClick(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnClientSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnControlAdded(System.Windows.Forms.ControlEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnControlRemoved(System.Windows.Forms.ControlEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLocationChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDoubleClick(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragEnter(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragOver(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnDragDrop(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeGotFocus(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnGotFocus(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnHelpRequested(System.Windows.Forms.HelpEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnInvalidated(System.Windows.Forms.InvalidateEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyDown(System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnKeyUp(System.Windows.Forms.KeyEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeLostFocus(System.Windows.Forms.Control, System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnLostFocus(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMarginChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseDoubleClick(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseClick(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseCaptureChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseDown(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseEnter(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseHover(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseMove(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMouseUp(System.Windows.Forms.MouseEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnMove(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnRegionChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnPreviewKeyDown(System.Windows.Forms.PreviewKeyDownEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnSizeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnChangeUICues(System.Windows.Forms.UICuesEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnSystemColorsChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnValidating(System.ComponentModel.CancelEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnValidated(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PerformLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PerformLayout(System.Windows.Forms.Control, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PointToClient(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PointToScreen(System.Drawing.Point)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreProcessMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreProcessControlMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyEventArgs(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProcessKeyMessage(System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaiseDragEvent(System.Object, System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RaisePaintEvent(System.Object, System.Windows.Forms.PaintEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RecreateHandle()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RectangleToClient(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RectangleToScreen(System.Drawing.Rectangle)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ReflectMessage(System.IntPtr, System.Windows.Forms.Message)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Refresh()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResetMouseEventArgs()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResetText()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResumeLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResumeLayout(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Scale(System.Drawing.SizeF)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Select()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SelectNextControl(System.Windows.Forms.Control, System.Boolean, System.Boolean, System.Boolean, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SendToBack()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetBounds(System.Int32, System.Int32, System.Int32, System.Int32, System.Windows.Forms.BoundsSpecified)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SizeFromClientSize(System.Drawing.Size)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetStyle(System.Windows.Forms.ControlStyles, System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SetTopLevel(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Windows.Forms.HorizontalAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Windows.Forms.LeftRightAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateAlignment(System.Drawing.ContentAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateHorizontal(System.Windows.Forms.HorizontalAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateLeftRight(System.Windows.Forms.LeftRightAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RtlTranslateContent(System.Drawing.ContentAlignment)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Show()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SuspendLayout()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Update()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds(System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateBounds(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateZOrder()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UpdateStyles()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragEnter(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragOver(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragLeave(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.System.Windows.Forms.IDropTarget.OnDragDrop(System.Windows.Forms.DragEventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.OnImeModeChanged(System.EventArgs)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibilityObject</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleDefaultActionDescription</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleDescription</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AccessibleRole</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AllowDrop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Anchor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.AutoScrollOffset</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LayoutEngine</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImage</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageLayout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Bottom</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Bounds</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanRaiseEvents</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CanSelect</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Capture</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CausesValidation</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientRectangle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CompanyName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContainsFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenu</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuStrip</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Controls</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Created</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Cursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DataBindings</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultBackColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultCursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultFont</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultForeColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMargin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMaximumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultMinimumSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DefaultPadding</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsDisposed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Disposing</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Dock</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoubleBuffered</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Enabled</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Focused</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Font</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FontHeight</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ForeColor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Handle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HasChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Height</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsHandleCreated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.InvokeRequired</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsAccessible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.IsMirrored</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Left</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Margin</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ModifierKeys</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseButtons</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MousePosition</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Name</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Parent</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProductName</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ProductVersion</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RecreatingHandle</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Region</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RenderRightToLeft</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ResizeRedraw</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Right</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RightToLeft</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ScaleChildren</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Site</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabIndex</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabStop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Tag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Top</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TopLevelControl</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ShowKeyboardCues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ShowFocusCues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.UseWaitCursor</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Visible</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Width</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreferredSize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Padding</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeModeBase</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PropagatingImeMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackColorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BackgroundImageLayoutChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.BindingContextChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CausesValidationChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ClientSizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ContextMenuStripChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.CursorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DockChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.EnabledChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.FontChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ForeColorChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LocationChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MarginChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RegionChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.RightToLeftChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SizeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabIndexChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TabStopChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.TextChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.VisibleChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Click</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ControlAdded</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ControlRemoved</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragDrop</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragEnter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragOver</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DragLeave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GiveFeedback</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HandleCreated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HandleDestroyed</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.HelpRequested</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Invalidated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PaddingChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Paint</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.QueryContinueDrag</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.QueryAccessibilityHelp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.DoubleClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Enter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.GotFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyPress</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.KeyUp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Layout</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Leave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.LostFocus</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseDoubleClick</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseCaptureChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseEnter</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseLeave</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseHover</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseMove</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseUp</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.MouseWheel</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Move</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.PreviewKeyDown</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Resize</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ChangeUICues</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.StyleChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.SystemColorsChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Validating</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.Validated</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ParentChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.Windows.Forms.Control.ImeModeChanged</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Dispose()</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.GetService(System.Type)</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Events</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Container</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.DesignMode</span>
+                </div>
+                <div>
+                  <span class="xref">System.ComponentModel.Component.Disposed</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+                </div>
+                <div>
+                  <span class="xref">System.MarshalByRefObject.CreateObjRef(System.Type)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:TelemetryViewer</h6>
+              <h6><strong>Assembly</strong>:TelemetryViewer.dll</h6>
+              <h5 id="TelemetryViewer_MainForm_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class MainForm : Form, IDropTarget, ISynchronizeInvoke, IWin32Window, IBindableComponent, IArrangedElement, IComponent, IDisposable, IContainerControl</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="TelemetryViewer_MainForm__ctor_" data-uid="TelemetryViewer.MainForm.#ctor*"></a>
+              <h4 id="TelemetryViewer_MainForm__ctor" data-uid="TelemetryViewer.MainForm.#ctor">MainForm()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public MainForm()</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_DATUM" data-uid="TelemetryViewer.MainForm.I_DATUM">I_DATUM</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_DATUM = 5</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_DATUM_ERR" data-uid="TelemetryViewer.MainForm.I_DATUM_ERR">I_DATUM_ERR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_DATUM_ERR = 7</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_FOLDER" data-uid="TelemetryViewer.MainForm.I_FOLDER">I_FOLDER</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_FOLDER = 2</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_SITE" data-uid="TelemetryViewer.MainForm.I_SITE">I_SITE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_SITE = 3</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_SITE_ERR" data-uid="TelemetryViewer.MainForm.I_SITE_ERR">I_SITE_ERR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_SITE_ERR = 4</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_VALUE" data-uid="TelemetryViewer.MainForm.I_VALUE">I_VALUE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_VALUE = 8</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_WORLD" data-uid="TelemetryViewer.MainForm.I_WORLD">I_WORLD</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_WORLD = 0</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_I_WORLD_ERR" data-uid="TelemetryViewer.MainForm.I_WORLD_ERR">I_WORLD_ERR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int I_WORLD_ERR = 1</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="TelemetryViewer_MainForm_MAX_SITE_TRAFFIC_PAUSE_SEC" data-uid="TelemetryViewer.MainForm.MAX_SITE_TRAFFIC_PAUSE_SEC">MAX_SITE_TRAFFIC_PAUSE_SEC</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int MAX_SITE_TRAFFIC_PAUSE_SEC = 10</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="TelemetryViewer_MainForm_Dispose_" data-uid="TelemetryViewer.MainForm.Dispose*"></a>
+              <h4 id="TelemetryViewer_MainForm_Dispose_System_Boolean_" data-uid="TelemetryViewer.MainForm.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+              <div class="markdown level1 summary"><p>Clean up any resources being used.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">disposing</span></td>
+                    <td><p>true if managed resources should be disposed; otherwise, false.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">System.Windows.Forms.Form.Dispose(System.Boolean)</span></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

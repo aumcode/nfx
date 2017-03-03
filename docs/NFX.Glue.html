@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Glue
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Glue
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Glue" data-uid="NFX.Glue">Namespace NFX.Glue
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Glue.ArgsMarshallingAttribute.html">ArgsMarshallingAttribute</a></h4>
+                  <section><p>Decorates methods stipulating type of RequestMsg-derivative used for method call arguments marshalling</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.AuthenticationSupportAttribute.html">AuthenticationSupportAttribute</a></h4>
+                  <section><p>Indicates that contract supports authentication using AuthenticationHeader.
+When header is passed then Glue server will use its data to set user context through Application.SecurityManager.
+If this attribute not set then Glue runtime will ignore AuthenticationHeader</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Binding.html">Binding</a></h4>
+                  <section><p>Represents a particular named binding.
+Binding type defines a protocol by implementing a transport instance management strategy
+that support particular technology, such as blocking TCP or async ZeroMQ.
+Binding instance retains state/config information about all transports
+and has logic for Node&#39;s host:service resolution.
+Bindings are services, meaning - they can have state/threads that
+manage transport channels that operate under binding</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Bindings.html">Bindings</a></h4>
+                  <section><p>A registry of Binding-derived instances</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Call.html">Call</a></h4>
+                  <section><p>Describes a flow of events originating from a Glue client call</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.CallReactor.html">CallReactor</a></h4>
+                  <section><p>Facilititates execution of asynchronous client calls and their corresponding callback functions.
+This class introduces callback execution latency and is handy for cases where eventual event flow need to execute regardless of timing.
+The latency depends on other callback implementation as the reactor services all calls from a single thread</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.CallSlot.html">CallSlot</a></h4>
+                  <section><p>Represents a class that is immediately returned after transport sends RequestMsg.
+This class provides CallStatus and RequestID properties where the later is used to match the incoming ResponseMsg.
+CallSlots are kinds of &quot;spirit-less&quot; mailboxes that keep state about the call, but do not posess any threads/call events.
+Working with CallSlots from calling code&#39;s existing thread of execution is the most efficient way of working with Glue (in high load cases), as
+it does not create extra object instances (tasks do) for asynchronous coordination and continuation.
+It is possible to obtain an instance of CallSlot.AsTask in which case that instance is registered with the framework-internal reactor
+so task does complete normally even on timeout, however, in high-throughput apps (10K+ calls per second) this method is not the most efficient one
+as it allocates additional objects (task, list entry etc.) that eventually increase GC load for long runs.
+Note: A 3.2 Ghz 4-Core I7 server with 8Gb of ram can easily handle 40K 2-way calls a second (given little business server logic and simple payload).
+See also: CallReactor class</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ClientCallException.html">ClientCallException</a></h4>
+                  <section><p>Thrown by the Glue framework when clients try to perfom a call but that action fails</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ClientEndPoint.html">ClientEndPoint</a></h4>
+                  <section><p>Represents an ancestor for client classes that make calls to server endpoints.
+This and descendant classes are thread safe ONLY for making non-constructing/destructing remote calls, unless ReserveTransport is set to true
+in which case no operation is thread safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ClientMsgInspectionException.html">ClientMsgInspectionException</a></h4>
+                  <section><p>Thrown by the Glue framework when client message inspector fails with exception</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.ClientTransport-1.html">ClientTransport&lt;TBinding&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.ConstructorAttribute.html">ConstructorAttribute</a></h4>
+                  <section><p>Decorates methods that initialize instance of the server class and retain class instance
+in the server runtime</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.DestructorAttribute.html">DestructorAttribute</a></h4>
+                  <section><p>Decorates methods that finalize instance of the server class and release class instance
+in the server runtime</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.EndPoint.html">EndPoint</a></h4>
+                  <section><p>Abstarction of server and client endpoints. And endpoint is a logically-connected entity per: ABC rule - Address/Binding/Contract(s)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.GlueComponentService.html">GlueComponentService</a></h4>
+                  <section><p>Provides base functionality for internal glue component implementations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.GluedAttribute.html">GluedAttribute</a></h4>
+                  <section><p>Decorates interfaces that represent glued contract points</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.GlueException.html">GlueException</a></h4>
+                  <section><p>Base exception thrown by the Glue framework</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.InvalidGlueOperationException.html">InvalidGlueOperationException</a></h4>
+                  <section><p>Base exception thrown by the Glue framework when some operations are invoked that do not apply</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.LifeCycleAttribute.html">LifeCycleAttribute</a></h4>
+                  <section><p>Specifies the instance mode and timeout values for server classes that implement the decorated contract.
+If server class does not support state then timeout is ignored</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.MessageSizeException.html">MessageSizeException</a></h4>
+                  <section><p>Exception thrown in client/server when there&#39;s an attempt to send a too large message</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.MsgInspectorConfigurator.html">MsgInspectorConfigurator</a></h4>
+                  <section><p>Provides general configuration reading logic for message inspectors</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.NOPGlue.html">NOPGlue</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.OneWayAttribute.html">OneWayAttribute</a></h4>
+                  <section><p>Decorates methods that do not generate response message after execution.
+They must return void and if exception occurs it is not reported to the caller</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ProtocolException.html">ProtocolException</a></h4>
+                  <section><p>Exception thrown when there are protocol-related errors like deserialization,
+request message received when response is expected</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Provider.html">Provider</a></h4>
+                  <section><p>Represents a base type for providers - providers are facades for some
+low-level implementation that transports use, for example ZeroMQ.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Providers.html">Providers</a></h4>
+                  <section><p>A registry of Provider-derived instances</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.RemoteException.html">RemoteException</a></h4>
+                  <section><p>Base exception thrown by the Glue framework when remote errors are reported back to caller</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerCallContext.html">ServerCallContext</a></h4>
+                  <section><p>Provides access to server call context. Use to access Headers</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerContractException.html">ServerContractException</a></h4>
+                  <section><p>Exception thrown when server could not get contract</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerEndPoint.html">ServerEndPoint</a></h4>
+                  <section><p>Represents a server endpoint that accepts client requests. This is a sealed class</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerException.html">ServerException</a></h4>
+                  <section><p>Exception thrown in Glue server</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerInstanceActivationException.html">ServerInstanceActivationException</a></h4>
+                  <section><p>Exception thrown when server instance can not be created</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerMethodInvocationException.html">ServerMethodInvocationException</a></h4>
+                  <section><p>Exception thrown when server can not invoke method</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerNotRunningException.html">ServerNotRunningException</a></h4>
+                  <section><p>Exception thrown in Glue server when it shuts down/not running</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Servers.html">Servers</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.ServerTransport.html">ServerTransport</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.ServerTransport-1.html">ServerTransport&lt;TBinding&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.StatefulServerInstanceDoesNotExistException.html">StatefulServerInstanceDoesNotExistException</a></h4>
+                  <section><p>Exception thrown when statful server identified is not found/has expired/timed-out</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.StatefulServerInstanceLockTimeoutException.html">StatefulServerInstanceLockTimeoutException</a></h4>
+                  <section><p>Exception thrown when statful server instance is not thread safe and could not be locked before set timeout expired</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ThreadSafeAttribute.html">ThreadSafeAttribute</a></h4>
+                  <section><p>Indicates that server instance should not be lock()-ed by Glue handler because it is implemented in a thread-safe way.
+This attribute has no effect for Glue servers that are not [LifeCycle(Stateful)], because they are never locked.
+Singleton servers must be thread-safe by definition so this attribute is not needed for Singleton servers.
+If the server is implemented in a thread-safe way, then addition of this attribute may give 15-30% performance boost
+from Glue runtime when many parallel requests are trying to work with the same instance, however this benefit
+may be nullified by inefficient user locking code within server implementation. Leaving this attribute out is safer</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Transport.html">Transport</a></h4>
+                  <section><p>Transports are thread-safe and are intended for use by multiple threads from ClientCallReactor
+and ServerProcessor when bindings operate in OperationFlow.Asynchronous mode.
+Transports are acquired by the thread that creates them</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.Glue.Future-1.html">Future&lt;T&gt;</a></h4>
+                  <section><p>Provides a higher-level wrapper around CallSlot returned value by Glue.
+All property accessors evaluate synchronously on the calling thread.
+This struct should not be used with One-Way calls or calls that return void</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.FutureVoid.html">FutureVoid</a></h4>
+                  <section><p>Provides a higher-level wrapper around CallSlot returned by Glue.
+All property accessors evaluate synchronously on the calling thread.
+This struct should not be used with One-Way calls</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.Node.html">Node</a></h4>
+                  <section><p>Represents a network node. It is a binding, logical address of a host and a service that host provides
+Nodes are not contract-dependent. The componets of address are not case-sensitive.
+The form of the address is: <pre><code>binding://host:service</code></pre>. The &quot;host&quot; and &quot;service&quot; segment syntaxes depend on binding and may not contain the &#39;:&#39; char.
+An example of some &#39;mytest&#39; binding: &#39;mytest://adr=1.1.1.1,nic=eth001:job,chat,backup&#39;</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Glue.IClientMsgInspector.html">IClientMsgInspector</a></h4>
+                  <section><p>Inspects messages on the client side. ClientInspectors may be registered on ClientEndPoint, Binding or Glue levels</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.IGlue.html">IGlue</a></h4>
+                  <section><p>Represents a contract for Glue - a technology that provides asynchronous distributed component interconnection</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.IGlueImplementation.html">IGlueImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Glue.IMsgInspector.html">IMsgInspector</a></h4>
+                  <section><p>Denotes an entity that can inspect messages</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.IServerMsgInspector.html">IServerMsgInspector</a></h4>
+                  <section><p>Inspects messages on the server side. ServerInspectors may be registered on ServerEndPoint, Binding or Glue levels</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Glue.CallStatus.html">CallStatus</a></h4>
+                  <section><p>Stipulates codes returned for contract calls</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.DumpDetail.html">DumpDetail</a></h4>
+                  <section><p>Message/data dumping detail</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.LogSrc.html">LogSrc</a></h4>
+                  <section><p>Logging sources - client, server, any</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.OperationFlow.html">OperationFlow</a></h4>
+                  <section><p>Stipulates operation flow kind - sync/async</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.ServerInstanceMode.html">ServerInstanceMode</a></h4>
+                  <section><p>Denotes server instance modes - how server instances relate to calls</p>
+</section>
+                  <h4><a class="xref" href="NFX.Glue.TransportKind.html">TransportKind</a></h4>
+                  <section><p>Defines kinds of trasport</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,637 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CSVWriter
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CSVWriter
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Serialization_CSV_CSVWriter" data-uid="NFX.Serialization.CSV.CSVWriter">Class CSVWriter
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">CSVWriter</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Serialization.CSV</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Serialization_CSV_CSVWriter_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class CSVWriter</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_Write_" data-uid="NFX.Serialization.CSV.CSVWriter.Write*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_Write_NFX_DataAccess_CRUD_Row_NFX_Serialization_CSV_CSVWritingOptions_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.Write(NFX.DataAccess.CRUD.Row,NFX.Serialization.CSV.CSVWritingOptions,NFX.DataAccess.CRUD.FieldFilterFunc)">Write(Row, CSVWritingOptions, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string Write(Row row, CSVWritingOptions options = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_Write_" data-uid="NFX.Serialization.CSV.CSVWriter.Write*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_Write_NFX_DataAccess_CRUD_Row_System_IO_Stream_NFX_Serialization_CSV_CSVWritingOptions_System_Text_Encoding_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.Write(NFX.DataAccess.CRUD.Row,System.IO.Stream,NFX.Serialization.CSV.CSVWritingOptions,System.Text.Encoding,NFX.DataAccess.CRUD.FieldFilterFunc)">Write(Row, Stream, CSVWritingOptions, Encoding, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(Row row, Stream stream, CSVWritingOptions options = null, Encoding encoding = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">stream</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_Write_" data-uid="NFX.Serialization.CSV.CSVWriter.Write*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_Write_NFX_DataAccess_CRUD_Row_System_IO_TextWriter_NFX_Serialization_CSV_CSVWritingOptions_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.Write(NFX.DataAccess.CRUD.Row,System.IO.TextWriter,NFX.Serialization.CSV.CSVWritingOptions,NFX.DataAccess.CRUD.FieldFilterFunc)">Write(Row, TextWriter, CSVWritingOptions, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(Row row, TextWriter wri, CSVWritingOptions options = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.IO.TextWriter</span></td>
+                    <td><span class="parametername">wri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_Write_" data-uid="NFX.Serialization.CSV.CSVWriter.Write*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_Write_NFX_DataAccess_CRUD_RowsetBase_NFX_Serialization_CSV_CSVWritingOptions_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.Write(NFX.DataAccess.CRUD.RowsetBase,NFX.Serialization.CSV.CSVWritingOptions,NFX.DataAccess.CRUD.FieldFilterFunc)">Write(RowsetBase, CSVWritingOptions, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string Write(RowsetBase rowset, CSVWritingOptions options = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">rowset</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_Write_" data-uid="NFX.Serialization.CSV.CSVWriter.Write*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_Write_NFX_DataAccess_CRUD_RowsetBase_System_IO_Stream_NFX_Serialization_CSV_CSVWritingOptions_System_Text_Encoding_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.Write(NFX.DataAccess.CRUD.RowsetBase,System.IO.Stream,NFX.Serialization.CSV.CSVWritingOptions,System.Text.Encoding,NFX.DataAccess.CRUD.FieldFilterFunc)">Write(RowsetBase, Stream, CSVWritingOptions, Encoding, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(RowsetBase rowset, Stream stream, CSVWritingOptions options = null, Encoding encoding = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">rowset</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">stream</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_Write_" data-uid="NFX.Serialization.CSV.CSVWriter.Write*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_Write_NFX_DataAccess_CRUD_RowsetBase_System_IO_TextWriter_NFX_Serialization_CSV_CSVWritingOptions_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.Write(NFX.DataAccess.CRUD.RowsetBase,System.IO.TextWriter,NFX.Serialization.CSV.CSVWritingOptions,NFX.DataAccess.CRUD.FieldFilterFunc)">Write(RowsetBase, TextWriter, CSVWritingOptions, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(RowsetBase rowset, TextWriter wri, CSVWritingOptions options = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">rowset</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.IO.TextWriter</span></td>
+                    <td><span class="parametername">wri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_WriteToBuffer_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToBuffer*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_WriteToBuffer_NFX_DataAccess_CRUD_Row_NFX_Serialization_CSV_CSVWritingOptions_System_Text_Encoding_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToBuffer(NFX.DataAccess.CRUD.Row,NFX.Serialization.CSV.CSVWritingOptions,System.Text.Encoding,NFX.DataAccess.CRUD.FieldFilterFunc)">WriteToBuffer(Row, CSVWritingOptions, Encoding, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] WriteToBuffer(Row row, CSVWritingOptions options = null, Encoding encoding = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_WriteToBuffer_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToBuffer*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_WriteToBuffer_NFX_DataAccess_CRUD_RowsetBase_NFX_Serialization_CSV_CSVWritingOptions_System_Text_Encoding_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToBuffer(NFX.DataAccess.CRUD.RowsetBase,NFX.Serialization.CSV.CSVWritingOptions,System.Text.Encoding,NFX.DataAccess.CRUD.FieldFilterFunc)">WriteToBuffer(RowsetBase, CSVWritingOptions, Encoding, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] WriteToBuffer(RowsetBase rowset, CSVWritingOptions options = null, Encoding encoding = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">rowset</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_WriteToFile_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToFile*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_WriteToFile_NFX_DataAccess_CRUD_Row_System_String_NFX_Serialization_CSV_CSVWritingOptions_System_Text_Encoding_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToFile(NFX.DataAccess.CRUD.Row,System.String,NFX.Serialization.CSV.CSVWritingOptions,System.Text.Encoding,NFX.DataAccess.CRUD.FieldFilterFunc)">WriteToFile(Row, String, CSVWritingOptions, Encoding, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteToFile(Row row, string fileName, CSVWritingOptions options = null, Encoding encoding = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fileName</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_CSV_CSVWriter_WriteToFile_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToFile*"></a>
+              <h4 id="NFX_Serialization_CSV_CSVWriter_WriteToFile_NFX_DataAccess_CRUD_RowsetBase_System_String_NFX_Serialization_CSV_CSVWritingOptions_System_Text_Encoding_NFX_DataAccess_CRUD_FieldFilterFunc_" data-uid="NFX.Serialization.CSV.CSVWriter.WriteToFile(NFX.DataAccess.CRUD.RowsetBase,System.String,NFX.Serialization.CSV.CSVWritingOptions,System.Text.Encoding,NFX.DataAccess.CRUD.FieldFilterFunc)">WriteToFile(RowsetBase, String, CSVWritingOptions, Encoding, FieldFilterFunc)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteToFile(RowsetBase rowset, string fileName, CSVWritingOptions options = null, Encoding encoding = null, FieldFilterFunc filter = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">rowset</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fileName</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.CSV.CSVWritingOptions.html">CSVWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td><span class="parametername">filter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

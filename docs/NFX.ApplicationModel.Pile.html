@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.ApplicationModel.Pile
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.ApplicationModel.Pile
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_ApplicationModel_Pile" data-uid="NFX.ApplicationModel.Pile">Namespace NFX.ApplicationModel.Pile
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.CacheExtensions.html">CacheExtensions</a></h4>
+                  <section><p>Provides read/write-through extensions</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.DefaultPile.html">DefaultPile</a></h4>
+                  <section><p>Provides default implementation of IPile which stores objects on a local machine</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.LocalCache.html">LocalCache</a></h4>
+                  <section><p>Provides default implementation of a cache that stores the mapping locally.
+The mapped-to objects may reside in local or distributed pile as configured</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileAccessViolationException.html">PileAccessViolationException</a></h4>
+                  <section><p>Thrown by pile memory manager when a supplied PilePointer is not pointing to a valid buffer</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileCacheException.html">PileCacheException</a></h4>
+                  <section><p>Thrown by pile cache</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileException.html">PileException</a></h4>
+                  <section><p>Thrown by pile memory manager</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileOutOfSpaceException.html">PileOutOfSpaceException</a></h4>
+                  <section><p>Thrown by pile memory manager when there is not anough room in the pile to perform the requested operation</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.TableOptions.html">TableOptions</a></h4>
+                  <section><p>Provides config options for cache tables</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.Dated2GDIDWithISOKey.html">Dated2GDIDWithISOKey</a></h4>
+                  <section><p>Represents a date (not time)-sensitive value-type 2 GDIDs+3 char ISO code tuple, suitable for serving as a cache table key.
+The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.
+The ISO code is case-insensitive</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.DatedGDIDWithISOKey.html">DatedGDIDWithISOKey</a></h4>
+                  <section><p>Represents a date (not time)-sensitive value-type GDID+3 char ISO code tuple, suitable for serving as a cache table key.
+The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.
+The ISO code is case-insensitive</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.DefaultPile.SegmentCrawlStatus.html">DefaultPile.SegmentCrawlStatus</a></h4>
+                  <section><p>Holds information obtained after a segment crawl</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.GDIDWithInt.html">GDIDWithInt</a></h4>
+                  <section><p>Represents GDID with int</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.GDIDWithISOKey.html">GDIDWithISOKey</a></h4>
+                  <section><p>Represents a value-type GDID+3 char ISO code tuple, suitable for serving as a cache table key.
+The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.
+The ISO code is case-insensitive</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.GDIDWithStrHash.html">GDIDWithStrHash</a></h4>
+                  <section><p>Represents a GDID with 8 byte string hash. The hash is case sensitive.
+The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></h4>
+                  <section><p>Represents a pointer to the pile object (object stored in a pile).
+The reference may be local or distributed in which case the NodeID is&gt;=0.
+Distributed pointers are very useful for organizing piles of objects distributed among many servers, for example
+for &quot;Big Memory&quot; implementations or large neural networks where nodes may inter-connect between servers.
+The CLR reference to the IPile is not a part of this struct for performance and practicality reasons, as
+it is highly unlikely that there are going to be more than one instance of a pile in a process, however
+should more than 1 pile be allocated than this pointer would need to be wrapped in some other structure along with source IPile reference</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.TwoGDIDWithISOKey.html">TwoGDIDWithISOKey</a></h4>
+                  <section><p>Represents a value-type 2 GDIDs+3 char ISO code tuple, suitable for serving as a cache table key.
+The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.
+The ISO code is case-insensitive</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICache.html">ICache</a></h4>
+                  <section><p>Represents a cache of expiring objects, which are identified by a key and stored in a pile.
+Pile allows to store hundreds of millions of objects without overloading the managed GC.
+The cache may be local or distributed</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICacheImplementation.html">ICacheImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICacheTable.html">ICacheTable</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICacheTable-1.html">ICacheTable&lt;TKey&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.IPile.html">IPile</a></h4>
+                  <section><p>Represents a pile of objects - a custom memory heap that can store native CLR objects in a tightly-serialized form.
+Piles can be either local (allocate local RAM on the server), or distributed (allocate RAM on many servers).
+This class is designed primarily for applications that need to store/cache very many (100s of millions on local, billions on distributed) of objects in RAM
+(and/or possibly on disk) without causing the local CLR&#39;s GC scans of huge object graphs.
+Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at the cost of higher CPU usage.
+The implementor must be thread-safe for all operations unless stated otherwise on a member level.
+The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like Interlocked-family, Lock, MemoryBarriers and the like
+that regular RAM supports. Should a need arise to interlock within the pile - a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
+a Get does not impose a lock on ALL concurrent writes throught the pile (a write does not block all gets either).</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.IPileImplementation.html">IPileImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.IPileStatus.html">IPileStatus</a></h4>
+                  <section><p>Provides information about the pile - number of objects, allocated bytes, etc.</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.AllocationMode.html">AllocationMode</a></h4>
+                  <section><p>Defines modes of allocation: space/time tradeoff</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.LocalityKind.html">LocalityKind</a></h4>
+                  <section><p>Indicates where pile implementation stores data: local vs distributed</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.ObjectPersistence.html">ObjectPersistence</a></h4>
+                  <section><p>Denotes modes of object persistence</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PutResult.html">PutResult</a></h4>
+                  <section><p>Denotes statuses of cache table Put</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

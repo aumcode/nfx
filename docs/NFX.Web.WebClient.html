@@ -1,0 +1,2231 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebClient
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebClient
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Web_WebClient" data-uid="NFX.Web.WebClient">Class WebClient
+              </h1>
+              <div class="markdown level0 summary"><p>Facilitates working with external services provided via HTTP</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">WebClient</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Web</h6>
+              <h6><strong>Assembly</strong>:NFX.Web.dll</h6>
+              <h5 id="NFX_Web_WebClient_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class WebClient</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Web_WebClient_DoRequest_" data-uid="NFX.Web.WebClient.DoRequest*"></a>
+              <h4 id="NFX_Web_WebClient_DoRequest_System_Action_System_Net_WebClient__NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.DoRequest(System.Action{System.Net.WebClient},NFX.Web.WebClient.RequestParams)">DoRequest(Action&lt;WebClient&gt;, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void DoRequest(Action&lt;WebClient&gt; actor, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Net.WebClient</span>&gt;</td>
+                    <td><span class="parametername">actor</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_DoRequest_" data-uid="NFX.Web.WebClient.DoRequest*"></a>
+              <h4 id="NFX_Web_WebClient_DoRequest_System_Func_System_Net_WebClient_System_Threading_Tasks_Task__NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.DoRequest(System.Func{System.Net.WebClient,System.Threading.Tasks.Task},NFX.Web.WebClient.RequestParams)">DoRequest(Func&lt;WebClient, Task&gt;, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task DoRequest(Func&lt;WebClient, Task&gt; actor, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Net.WebClient</span>, <span class="xref">System.Threading.Tasks.Task</span>&gt;</td>
+                    <td><span class="parametername">actor</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_DoRequest_" data-uid="NFX.Web.WebClient.DoRequest*"></a>
+              <h4 id="NFX_Web_WebClient_DoRequest__1_System_Func_System_Net_WebClient___0__NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.DoRequest``1(System.Func{System.Net.WebClient,``0},NFX.Web.WebClient.RequestParams)">DoRequest&lt;T&gt;(Func&lt;WebClient, T&gt;, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static T DoRequest&lt;T&gt;(Func&lt;WebClient, T&gt; actor, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Net.WebClient</span>, T&gt;</td>
+                    <td><span class="parametername">actor</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_DoRequest_" data-uid="NFX.Web.WebClient.DoRequest*"></a>
+              <h4 id="NFX_Web_WebClient_DoRequest__1_System_Func_System_Net_WebClient_System_Threading_Tasks_Task___0___NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.DoRequest``1(System.Func{System.Net.WebClient,System.Threading.Tasks.Task{``0}},NFX.Web.WebClient.RequestParams)">DoRequest&lt;T&gt;(Func&lt;WebClient, Task&lt;T&gt;&gt;, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; DoRequest&lt;T&gt;(Func&lt;WebClient, Task&lt;T&gt;&gt; actor, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Net.WebClient</span>, <span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;&gt;</td>
+                    <td><span class="parametername">actor</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetData_" data-uid="NFX.Web.WebClient.GetData*"></a>
+              <h4 id="NFX_Web_WebClient_GetData_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetData(System.String,NFX.Web.WebClient.RequestParams)">GetData(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] GetData(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetData_" data-uid="NFX.Web.WebClient.GetData*"></a>
+              <h4 id="NFX_Web_WebClient_GetData_System_String_NFX_Web_WebClient_RequestParams_System_String__" data-uid="NFX.Web.WebClient.GetData(System.String,NFX.Web.WebClient.RequestParams,System.String@)">GetData(String, WebClient.RequestParams, out String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] GetData(string uri, WebClient.RequestParams request, out string contentType)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">contentType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetData_" data-uid="NFX.Web.WebClient.GetData*"></a>
+              <h4 id="NFX_Web_WebClient_GetData_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetData(System.Uri,NFX.Web.WebClient.RequestParams)">GetData(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] GetData(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetData_" data-uid="NFX.Web.WebClient.GetData*"></a>
+              <h4 id="NFX_Web_WebClient_GetData_System_Uri_NFX_Web_WebClient_RequestParams_System_String__" data-uid="NFX.Web.WebClient.GetData(System.Uri,NFX.Web.WebClient.RequestParams,System.String@)">GetData(Uri, WebClient.RequestParams, out String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static byte[] GetData(Uri uri, WebClient.RequestParams request, out string contentType)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">contentType</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetDataAsync_" data-uid="NFX.Web.WebClient.GetDataAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetDataAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetDataAsync(System.String,NFX.Web.WebClient.RequestParams)">GetDataAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;byte[]&gt; GetDataAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Byte</span>[]&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetDataAsync_" data-uid="NFX.Web.WebClient.GetDataAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetDataAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetDataAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetDataAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;byte[]&gt; GetDataAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Byte</span>[]&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetDataAsyncWithContentType_" data-uid="NFX.Web.WebClient.GetDataAsyncWithContentType*"></a>
+              <h4 id="NFX_Web_WebClient_GetDataAsyncWithContentType_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetDataAsyncWithContentType(System.String,NFX.Web.WebClient.RequestParams)">GetDataAsyncWithContentType(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;Tuple&lt;byte[], string&gt;&gt; GetDataAsyncWithContentType(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Tuple</span>&lt;<span class="xref">System.Byte</span>[], <span class="xref">System.String</span>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetDataAsyncWithContentType_" data-uid="NFX.Web.WebClient.GetDataAsyncWithContentType*"></a>
+              <h4 id="NFX_Web_WebClient_GetDataAsyncWithContentType_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetDataAsyncWithContentType(System.Uri,NFX.Web.WebClient.RequestParams)">GetDataAsyncWithContentType(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;Tuple&lt;byte[], string&gt;&gt; GetDataAsyncWithContentType(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Tuple</span>&lt;<span class="xref">System.Byte</span>[], <span class="xref">System.String</span>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetFile_" data-uid="NFX.Web.WebClient.GetFile*"></a>
+              <h4 id="NFX_Web_WebClient_GetFile_System_String_NFX_Web_WebClient_RequestParams_System_String_" data-uid="NFX.Web.WebClient.GetFile(System.String,NFX.Web.WebClient.RequestParams,System.String)">GetFile(String, WebClient.RequestParams, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void GetFile(string uri, WebClient.RequestParams request, string file)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetFile_" data-uid="NFX.Web.WebClient.GetFile*"></a>
+              <h4 id="NFX_Web_WebClient_GetFile_System_Uri_NFX_Web_WebClient_RequestParams_System_String_" data-uid="NFX.Web.WebClient.GetFile(System.Uri,NFX.Web.WebClient.RequestParams,System.String)">GetFile(Uri, WebClient.RequestParams, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void GetFile(Uri uri, WebClient.RequestParams request, string file)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetFileAsync_" data-uid="NFX.Web.WebClient.GetFileAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetFileAsync_System_String_NFX_Web_WebClient_RequestParams_System_String_" data-uid="NFX.Web.WebClient.GetFileAsync(System.String,NFX.Web.WebClient.RequestParams,System.String)">GetFileAsync(String, WebClient.RequestParams, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task GetFileAsync(string uri, WebClient.RequestParams request, string file)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetFileAsync_" data-uid="NFX.Web.WebClient.GetFileAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetFileAsync_System_Uri_NFX_Web_WebClient_RequestParams_System_String_" data-uid="NFX.Web.WebClient.GetFileAsync(System.Uri,NFX.Web.WebClient.RequestParams,System.String)">GetFileAsync(Uri, WebClient.RequestParams, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task GetFileAsync(Uri uri, WebClient.RequestParams request, string file)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetImage_" data-uid="NFX.Web.WebClient.GetImage*"></a>
+              <h4 id="NFX_Web_WebClient_GetImage_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetImage(System.String,NFX.Web.WebClient.RequestParams)">GetImage(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Image GetImage(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Image</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetImage_" data-uid="NFX.Web.WebClient.GetImage*"></a>
+              <h4 id="NFX_Web_WebClient_GetImage_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetImage(System.Uri,NFX.Web.WebClient.RequestParams)">GetImage(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Image GetImage(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Image</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetImageAsync_" data-uid="NFX.Web.WebClient.GetImageAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetImageAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetImageAsync(System.String,NFX.Web.WebClient.RequestParams)">GetImageAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;Image&gt; GetImageAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Drawing.Image</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetImageAsync_" data-uid="NFX.Web.WebClient.GetImageAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetImageAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetImageAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetImageAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;Image&gt; GetImageAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Drawing.Image</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJson_" data-uid="NFX.Web.WebClient.GetJson*"></a>
+              <h4 id="NFX_Web_WebClient_GetJson_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJson(System.String,NFX.Web.WebClient.RequestParams)">GetJson(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDataMap GetJson(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJson_" data-uid="NFX.Web.WebClient.GetJson*"></a>
+              <h4 id="NFX_Web_WebClient_GetJson_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJson(System.Uri,NFX.Web.WebClient.RequestParams)">GetJson(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDataMap GetJson(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonArray_" data-uid="NFX.Web.WebClient.GetJsonArray*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonArray_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonArray(System.String,NFX.Web.WebClient.RequestParams)">GetJsonArray(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDataArray GetJsonArray(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataArray.html">JSONDataArray</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonArray_" data-uid="NFX.Web.WebClient.GetJsonArray*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonArray_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonArray(System.Uri,NFX.Web.WebClient.RequestParams)">GetJsonArray(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDataArray GetJsonArray(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataArray.html">JSONDataArray</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonArrayAsync_" data-uid="NFX.Web.WebClient.GetJsonArrayAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonArrayAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonArrayAsync(System.String,NFX.Web.WebClient.RequestParams)">GetJsonArrayAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDataArray&gt; GetJsonArrayAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDataArray.html">JSONDataArray</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonArrayAsync_" data-uid="NFX.Web.WebClient.GetJsonArrayAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonArrayAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonArrayAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetJsonArrayAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDataArray&gt; GetJsonArrayAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDataArray.html">JSONDataArray</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonAsDynamic_" data-uid="NFX.Web.WebClient.GetJsonAsDynamic*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonAsDynamic_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonAsDynamic(System.String,NFX.Web.WebClient.RequestParams)">GetJsonAsDynamic(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDynamicObject GetJsonAsDynamic(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDynamicObject.html">JSONDynamicObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonAsDynamic_" data-uid="NFX.Web.WebClient.GetJsonAsDynamic*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonAsDynamic_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonAsDynamic(System.Uri,NFX.Web.WebClient.RequestParams)">GetJsonAsDynamic(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDynamicObject GetJsonAsDynamic(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDynamicObject.html">JSONDynamicObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonAsDynamicAsync_" data-uid="NFX.Web.WebClient.GetJsonAsDynamicAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonAsDynamicAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonAsDynamicAsync(System.String,NFX.Web.WebClient.RequestParams)">GetJsonAsDynamicAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDynamicObject&gt; GetJsonAsDynamicAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDynamicObject.html">JSONDynamicObject</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonAsDynamicAsync_" data-uid="NFX.Web.WebClient.GetJsonAsDynamicAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonAsDynamicAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonAsDynamicAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetJsonAsDynamicAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDynamicObject&gt; GetJsonAsDynamicAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDynamicObject.html">JSONDynamicObject</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonAsync_" data-uid="NFX.Web.WebClient.GetJsonAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonAsync(System.String,NFX.Web.WebClient.RequestParams)">GetJsonAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDataMap&gt; GetJsonAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetJsonAsync_" data-uid="NFX.Web.WebClient.GetJsonAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetJsonAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetJsonAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetJsonAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDataMap&gt; GetJsonAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetString_" data-uid="NFX.Web.WebClient.GetString*"></a>
+              <h4 id="NFX_Web_WebClient_GetString_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetString(System.String,NFX.Web.WebClient.RequestParams)">GetString(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string GetString(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetString_" data-uid="NFX.Web.WebClient.GetString*"></a>
+              <h4 id="NFX_Web_WebClient_GetString_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetString(System.Uri,NFX.Web.WebClient.RequestParams)">GetString(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string GetString(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetStringAsync_" data-uid="NFX.Web.WebClient.GetStringAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetStringAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetStringAsync(System.String,NFX.Web.WebClient.RequestParams)">GetStringAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; GetStringAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetStringAsync_" data-uid="NFX.Web.WebClient.GetStringAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetStringAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetStringAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetStringAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; GetStringAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetValueMap_" data-uid="NFX.Web.WebClient.GetValueMap*"></a>
+              <h4 id="NFX_Web_WebClient_GetValueMap_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetValueMap(System.String,NFX.Web.WebClient.RequestParams)">GetValueMap(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDataMap GetValueMap(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetValueMap_" data-uid="NFX.Web.WebClient.GetValueMap*"></a>
+              <h4 id="NFX_Web_WebClient_GetValueMap_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetValueMap(System.Uri,NFX.Web.WebClient.RequestParams)">GetValueMap(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static JSONDataMap GetValueMap(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetValueMapAsync_" data-uid="NFX.Web.WebClient.GetValueMapAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetValueMapAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetValueMapAsync(System.String,NFX.Web.WebClient.RequestParams)">GetValueMapAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDataMap&gt; GetValueMapAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetValueMapAsync_" data-uid="NFX.Web.WebClient.GetValueMapAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetValueMapAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetValueMapAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetValueMapAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;JSONDataMap&gt; GetValueMapAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetXML_" data-uid="NFX.Web.WebClient.GetXML*"></a>
+              <h4 id="NFX_Web_WebClient_GetXML_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetXML(System.String,NFX.Web.WebClient.RequestParams)">GetXML(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static XDocument GetXML(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Xml.Linq.XDocument</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetXML_" data-uid="NFX.Web.WebClient.GetXML*"></a>
+              <h4 id="NFX_Web_WebClient_GetXML_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetXML(System.Uri,NFX.Web.WebClient.RequestParams)">GetXML(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static XDocument GetXML(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Xml.Linq.XDocument</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetXMLAsync_" data-uid="NFX.Web.WebClient.GetXMLAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetXMLAsync_System_String_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetXMLAsync(System.String,NFX.Web.WebClient.RequestParams)">GetXMLAsync(String, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;XDocument&gt; GetXMLAsync(string uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Xml.Linq.XDocument</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_WebClient_GetXMLAsync_" data-uid="NFX.Web.WebClient.GetXMLAsync*"></a>
+              <h4 id="NFX_Web_WebClient_GetXMLAsync_System_Uri_NFX_Web_WebClient_RequestParams_" data-uid="NFX.Web.WebClient.GetXMLAsync(System.Uri,NFX.Web.WebClient.RequestParams)">GetXMLAsync(Uri, WebClient.RequestParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;XDocument&gt; GetXMLAsync(Uri uri, WebClient.RequestParams request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Uri</span></td>
+                    <td><span class="parametername">uri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.WebClient.RequestParams.html">WebClient.RequestParams</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Xml.Linq.XDocument</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

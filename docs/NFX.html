@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX" data-uid="NFX">Namespace NFX
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.AbsentValue.html">AbsentValue</a></h4>
+                  <section><p>Represents a special value that signifies the absence of any entity/state/value/data.
+The instances may be stored in a cache to indicate that the key exists, but points to a non-existing &quot;absent&quot; entity.
+This is usefull for DB lookups, not to touch the backend for values that dont exist.
+Use AbsentValue.Instance singleton</p>
+</section>
+                  <h4><a class="xref" href="NFX.App.html">App</a></h4>
+                  <section><p>Provides a shortcut access to app-global context NFX.ApplicationModel.ExecutionContext.Application.*</p>
+</section>
+                  <h4><a class="xref" href="NFX.Aver.html">Aver</a></h4>
+                  <section><p>Provides basic averments for test construction. May call Aver.Fail(msg) manually</p>
+</section>
+                  <h4><a class="xref" href="NFX.AvermentException.html">AvermentException</a></h4>
+                  <section><p>Thrown by Aver class to indicate averment failures</p>
+</section>
+                  <h4><a class="xref" href="NFX.CollectionUtils.html">CollectionUtils</a></h4>
+                  <section><p>Some helpful extensions for standard collections</p>
+</section>
+                  <h4><a class="xref" href="NFX.CoreConsts.html">CoreConsts</a></h4>
+                  <section><p>Central non-lozalizable NFX system consts</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataUtils.html">DataUtils</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Debug.html">Debug</a></h4>
+                  <section><p>Facilitates debugging tasks enabled by DEBUG conditional define</p>
+</section>
+                  <h4><a class="xref" href="NFX.DebugAssertionException.html">DebugAssertionException</a></h4>
+                  <section><p>Thrown by Debug class to indicate assertion failures</p>
+</section>
+                  <h4><a class="xref" href="NFX.Debugging.html">Debugging</a></h4>
+                  <section><p>Facilitates debugging tasks that do not depend on any conditional defines</p>
+</section>
+                  <h4><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></h4>
+                  <section><p>General-purpose base class for objects that need to be disposed</p>
+</section>
+                  <h4><a class="xref" href="NFX.DisposedObjectException.html">DisposedObjectException</a></h4>
+                  <section><p>This exception is thrown from DisposableObject.EnsureObjectNotDisposed() method</p>
+</section>
+                  <h4><a class="xref" href="NFX.ELink.html">ELink</a></h4>
+                  <section><p>Represents an Electronic Link which is an alpha-encoded identifier along with metadata information.
+Warning! This class MAY generate fragments of profanity, however any ID can be regenerated using a different seed passed to Encode(seed)</p>
+</section>
+                  <h4><a class="xref" href="NFX.EmbeddedResource.html">EmbeddedResource</a></h4>
+                  <section><p>Fetches resources such as script statement text by scriptName from assembly resource stream.
+Mostly used for SQL and JavaScript but maybe used for any text retrieval.
+This class is 100% safe for multithreading operations.
+Script texts are cached in ram for faster subsequent access.</p>
+</section>
+                  <h4><a class="xref" href="NFX.ExternalParameterAttribute.html">ExternalParameterAttribute</a></h4>
+                  <section><p>Decorates properties that may be used as bindable external parameters.
+Provides methods for extraction of parameter names, values and binding of external object values into
+public read/write properties decorated by this attribute</p>
+</section>
+                  <h4><a class="xref" href="NFX.ExternalRandomGenerator.html">ExternalRandomGenerator</a></h4>
+                  <section><p>Represents a random generator which is based on System.Random() yet has an ability to feed external samples into it.
+Use ExtrenalRandomGenerator.Instance to use the default thread-safe instance.</p>
+</section>
+                  <h4><a class="xref" href="NFX.GuidTypeAttribute.html">GuidTypeAttribute</a></h4>
+                  <section><p>Provides information about the decorated type: assignes a globally-unique immutable type id</p>
+</section>
+                  <h4><a class="xref" href="NFX.GuidTypeResolver-2.html">GuidTypeResolver&lt;T, A&gt;</a></h4>
+                  <section><p>Provides default type resolver implementation which looks for types in listed assemblies
+looking for types decorated with specified attribute</p>
+</section>
+                  <h4><a class="xref" href="NFX.IntMath.html">IntMath</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.IOMiscUtils.html">IOMiscUtils</a></h4>
+                  <section><p>Misc utils for I/O</p>
+</section>
+                  <h4><a class="xref" href="NFX.MiscUtils.html">MiscUtils</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.NFXException.html">NFXException</a></h4>
+                  <section><p>Base exception thrown by the framework</p>
+</section>
+                  <h4><a class="xref" href="NFX.ObjectValueConversion.html">ObjectValueConversion</a></h4>
+                  <section><p>Provides extension methods for converting object values to different scalar types</p>
+</section>
+                  <h4><a class="xref" href="NFX.OrderedRegistry-1.html">OrderedRegistry&lt;T&gt;</a></h4>
+                  <section><p>Represents a thread-safe registry of T which is ordered by Order property.
+This class is efficient for concurrent read access and is not designed for cases when frequent modifications happen.
+It is ideal for lookup of named instances that have much longer time span than components that look them up.
+Note: since registry does reading in a lock-free manner, it is possible to have an inconsistent read snapshot
+of ordered items which may capture items that have already/not yet been added to the registry</p>
+</section>
+                  <h4><a class="xref" href="NFX.ReferenceEqualityComparer-1.html">ReferenceEqualityComparer&lt;T&gt;</a></h4>
+                  <section><p>Checks for reference equality. Use ReferenceEqualityComparer(T).Instance</p>
+</section>
+                  <h4><a class="xref" href="NFX.Registry-1.html">Registry&lt;T&gt;</a></h4>
+                  <section><p>Represents a thread-safe registry of T. This class is efficient for concurrent read access and is not designed for cases when frequent modifications happen.
+It is ideal for lookup of named instances (such as components) that have much longer time span than components that look them up.
+Registry performs lock-free lookup which speeds-up many concurrent operations that need to map names into objects.
+The enumeration over registry makes a snapshot of its data, hence a registry may be modified by other threads while being enumerated.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Scope.html">Scope</a></h4>
+                  <section><p>Helper class to be used in the context of &#39;using&#39; clause to
+facilitate cleanup on scope exit and performing of other functions
+such as status logging</p>
+</section>
+                  <h4><a class="xref" href="NFX.SealedString.Scope.html">SealedString.Scope</a></h4>
+                  <section><p>Represents a scope of a SealedString creation that tracks the existing strings.
+Use Seal(string) to get an existing string or create a new one.
+Do not persist the instance of Scope for a long time as it accumulates references (string keys) that pressure the GC.
+This class is used in batched that create many sealed strings. Once those strings rae created the scope can be released.</p>
+</section>
+                  <h4><a class="xref" href="NFX.StringValueConversion.html">StringValueConversion</a></h4>
+                  <section><p>Provides extension methods for converting string values to different scalar types</p>
+</section>
+                  <h4><a class="xref" href="NFX.TaskUtils.html">TaskUtils</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Trace.html">Trace</a></h4>
+                  <section><p>Facilitates debugging tasks enabled by TRACE conditional define</p>
+</section>
+                  <h4><a class="xref" href="NFX.URIUtils.html">URIUtils</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.WrappedException.html">WrappedException</a></h4>
+                  <section><p>Represents exception that contains data about causing exception with all of it&#39;s chain</p>
+</section>
+                  <h4><a class="xref" href="NFX.WrappedExceptionData.html">WrappedExceptionData</a></h4>
+                  <section><p>Marshalls exception details</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.FID.html">FID</a></h4>
+                  <section><p>Represents an ultra-efficient 64 bit in-process-wide unique identifier &quot;Fast Id&quot;.
+The ID is going to wrap-around after at least 2 weeks (19 days).
+The ID consists of 3 segments: [timestamp: 24bit][threadseed: 24bit][counter: 16 bit].
+This is needed because:
+a). FID stays unique after process restarts
+b). This design does not use interlock on global seed, but uses thread-static vars which is 10-20 times faster</p>
+<p>The timestamp is the number of 100ms intervals elapsed since Jan 1 2015 expressed as a 24 bit unsigned int, which gives 2^24 = 16,777,216 combinations
+which covers 19 days (around 2 weeks) at 100 msec resolution, consequently the ID will generate duplicates after this period.
+This struct is useful for creating unique IDs for protocol/traffic messages that live for a limited time (no more than 2 weeks).
+Caution: This ID does not identify the machine or process, only items within the process, however when a hosting process restarts(i.e. crash or reboot)
+the new IDs will not collide with IDs generated right before the crash for at least 14 days (14 day sliding window).
+In a parallel test on 6 Core i7 3.2 GHz this class generates 405 million IDs/sec, which is 57 times faster than Guid that only generates 7 million IDs/sec</p>
+</section>
+                  <h4><a class="xref" href="NFX.Scope._scopeExit.html">Scope._scopeExit</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Scope._scopeExit-1.html">Scope._scopeExit&lt;TCtx1&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Scope._scopeExit-2.html">Scope._scopeExit&lt;TCtx1, TCtx2&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Scope._scopeExit-3.html">Scope._scopeExit&lt;TCtx1, TCtx2, TCtx3&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Scope._scopeExit-4.html">Scope._scopeExit&lt;TCtx1, TCtx2, TCtx3, TCtx4&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.SealedString.html">SealedString</a></h4>
+                  <section><p>Represents an immutable string data that is stored in an efficient way that relieves the GC pressure.
+The string can not be changed or deleted. Once created it stays as-is until the process is terminated.
+This structure is used to store much dictionary data (100s of millions of strings) in the process without causing GC overload.
+Note: The default .ctor DOES NOT check whether the same string is already present in memory. Use SealedString.Scope to
+store unique strings only (do not store the repetitions).
+This struct is THREAD SAFE and NOT SERIALIZABLE.</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.IEndableInstance.html">IEndableInstance</a></h4>
+                  <section><p>Describes an entity that can request some hosting container to end its lifetime by calling End() method</p>
+</section>
+                  <h4><a class="xref" href="NFX.IExternallyParameterized.html">IExternallyParameterized</a></h4>
+                  <section><p>Denotes an entity that has external parameters that can be get/set</p>
+</section>
+                  <h4><a class="xref" href="NFX.IGuidTypeResolver.html">IGuidTypeResolver</a></h4>
+                  <section><p>Describe an entity that resolve type guids into local CLR types</p>
+</section>
+                  <h4><a class="xref" href="NFX.INamed.html">INamed</a></h4>
+                  <section><p>Denotes an entity that has a Name property.
+This interface is primarily used with Registry[INamed] class that allows for
+string-based addressing (getting instances by object instance name).
+The names are ideal for many system functions, like naming components in configs and admin tools</p>
+</section>
+                  <h4><a class="xref" href="NFX.IOrdered.html">IOrdered</a></h4>
+                  <section><p>Denotes an entity that has a relative Order property within a collection of entities</p>
+</section>
+                  <h4><a class="xref" href="NFX.IOrderedRegistry-1.html">IOrderedRegistry&lt;T&gt;</a></h4>
+                  <section><p>Provides read-only named ordered object lookup capabilities</p>
+</section>
+                  <h4><a class="xref" href="NFX.IParameter.html">IParameter</a></h4>
+                  <section><p>Represents abstract parameter</p>
+</section>
+                  <h4><a class="xref" href="NFX.IParameters.html">IParameters</a></h4>
+                  <section><p>Represents abstract parameters bag</p>
+</section>
+                  <h4><a class="xref" href="NFX.IRegistry-1.html">IRegistry&lt;T&gt;</a></h4>
+                  <section><p>Provides read-only named object lookup capabilities</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.ConvertErrorHandling.html">ConvertErrorHandling</a></h4>
+                  <section><p>Specifies how to handle errors during object value conversion</p>
+</section>
+                  <h4><a class="xref" href="NFX.DebugAction.html">DebugAction</a></h4>
+                  <section><p>Specifies how to handle Assertion and other failures</p>
+</section>
+                  <h4><a class="xref" href="NFX.DumpFormat.html">DumpFormat</a></h4>
+                  <section><p>Format of the String Dump</p>
+</section>
+                  <h4><a class="xref" href="NFX.ExternalParameterSecurityCheck.html">ExternalParameterSecurityCheck</a></h4>
+                  <section><p>Specifies when security permissions should be checked while getting/setting extrenal parameters</p>
+</section>
+                  <h4><a class="xref" href="NFX.ObjectValueConversion.TriStateBool.html">ObjectValueConversion.TriStateBool</a></h4>
+                  <section><p>A &quot;hack&quot; enum used to provide tri-state checkbox functionality in some systems, i.e. HTML checkmarks
+do not understand &quot;nulls&quot;. This is a surrogate type not used in server-side programming</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

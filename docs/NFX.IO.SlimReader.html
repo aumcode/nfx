@@ -1,0 +1,1965 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SlimReader
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SlimReader
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_IO_SlimReader" data-uid="NFX.IO.SlimReader">Class SlimReader
+              </h1>
+              <div class="markdown level0 summary"><p>Reads primitives and other supported types from Slim-format stream. Use factory method of SlimFormat instance to create a new instance of SlimReader class</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.IO.Streamer.html">Streamer</a></div>
+                  <div class="level2"><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></div>
+                  <div class="level3"><span class="xref">SlimReader</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadFromStream_System_Byte___System_Int32_">ReadingStreamer.ReadFromStream(Byte[], Int32)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_UTF8Encoding">Streamer.UTF8Encoding</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_m_Buff32">Streamer.m_Buff32</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_m_Stream">Streamer.m_Stream</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_m_Encoding">Streamer.m_Encoding</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_Stream">Streamer.Stream</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_Encoding">Streamer.Encoding</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_BindStream_System_IO_Stream_">Streamer.BindStream(Stream)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_UnbindStream">Streamer.UnbindStream()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.IO</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_IO_SlimReader_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class SlimReader : ReadingStreamer</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_IO_SlimReader__ctor_" data-uid="NFX.IO.SlimReader.#ctor*"></a>
+              <h4 id="NFX_IO_SlimReader__ctor_System_Text_Encoding_" data-uid="NFX.IO.SlimReader.#ctor(System.Text.Encoding)">SlimReader(Encoding)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected SlimReader(Encoding encoding = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Text.Encoding</span></td>
+                    <td><span class="parametername">encoding</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_IO_SlimReader_Format_" data-uid="NFX.IO.SlimReader.Format*"></a>
+              <h4 id="NFX_IO_SlimReader_Format" data-uid="NFX.IO.SlimReader.Format">Format</h4>
+              <div class="markdown level1 summary"><p>Returns SlimFormat that this reader implements</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override StreamerFormat Format { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.StreamerFormat.html">StreamerFormat</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.Streamer.html#NFX_IO_Streamer_Format">Streamer.Format</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadAmount_" data-uid="NFX.IO.SlimReader.ReadAmount*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadAmount" data-uid="NFX.IO.SlimReader.ReadAmount">ReadAmount()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override Amount ReadAmount()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadAmount">ReadingStreamer.ReadAmount()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadBool_" data-uid="NFX.IO.SlimReader.ReadBool*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadBool" data-uid="NFX.IO.SlimReader.ReadBool">ReadBool()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool ReadBool()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadBool">ReadingStreamer.ReadBool()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadByte_" data-uid="NFX.IO.SlimReader.ReadByte*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadByte" data-uid="NFX.IO.SlimReader.ReadByte">ReadByte()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override byte ReadByte()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadByte">ReadingStreamer.ReadByte()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadByteArray_" data-uid="NFX.IO.SlimReader.ReadByteArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadByteArray" data-uid="NFX.IO.SlimReader.ReadByteArray">ReadByteArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override byte[] ReadByteArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadByteArray">ReadingStreamer.ReadByteArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadChar_" data-uid="NFX.IO.SlimReader.ReadChar*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadChar" data-uid="NFX.IO.SlimReader.ReadChar">ReadChar()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override char ReadChar()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadChar">ReadingStreamer.ReadChar()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadCharArray_" data-uid="NFX.IO.SlimReader.ReadCharArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadCharArray" data-uid="NFX.IO.SlimReader.ReadCharArray">ReadCharArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override char[] ReadCharArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadCharArray">ReadingStreamer.ReadCharArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadDateTime_" data-uid="NFX.IO.SlimReader.ReadDateTime*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadDateTime" data-uid="NFX.IO.SlimReader.ReadDateTime">ReadDateTime()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override DateTime ReadDateTime()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadDateTime">ReadingStreamer.ReadDateTime()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadDecimal_" data-uid="NFX.IO.SlimReader.ReadDecimal*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadDecimal" data-uid="NFX.IO.SlimReader.ReadDecimal">ReadDecimal()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override decimal ReadDecimal()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadDecimal">ReadingStreamer.ReadDecimal()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadDecimalArray_" data-uid="NFX.IO.SlimReader.ReadDecimalArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadDecimalArray" data-uid="NFX.IO.SlimReader.ReadDecimalArray">ReadDecimalArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override decimal[] ReadDecimalArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadDecimalArray">ReadingStreamer.ReadDecimalArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadDouble_" data-uid="NFX.IO.SlimReader.ReadDouble*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadDouble" data-uid="NFX.IO.SlimReader.ReadDouble">ReadDouble()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override double ReadDouble()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadDouble">ReadingStreamer.ReadDouble()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadDoubleArray_" data-uid="NFX.IO.SlimReader.ReadDoubleArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadDoubleArray" data-uid="NFX.IO.SlimReader.ReadDoubleArray">ReadDoubleArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override double[] ReadDoubleArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadDoubleArray">ReadingStreamer.ReadDoubleArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadFID_" data-uid="NFX.IO.SlimReader.ReadFID*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadFID" data-uid="NFX.IO.SlimReader.ReadFID">ReadFID()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override FID ReadFID()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.FID.html">FID</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadFID">ReadingStreamer.ReadFID()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadFloat_" data-uid="NFX.IO.SlimReader.ReadFloat*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadFloat" data-uid="NFX.IO.SlimReader.ReadFloat">ReadFloat()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override float ReadFloat()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadFloat">ReadingStreamer.ReadFloat()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadFloatArray_" data-uid="NFX.IO.SlimReader.ReadFloatArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadFloatArray" data-uid="NFX.IO.SlimReader.ReadFloatArray">ReadFloatArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override float[] ReadFloatArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Single</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadFloatArray">ReadingStreamer.ReadFloatArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadGDID_" data-uid="NFX.IO.SlimReader.ReadGDID*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadGDID" data-uid="NFX.IO.SlimReader.ReadGDID">ReadGDID()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override GDID ReadGDID()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadGDID">ReadingStreamer.ReadGDID()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadGuid_" data-uid="NFX.IO.SlimReader.ReadGuid*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadGuid" data-uid="NFX.IO.SlimReader.ReadGuid">ReadGuid()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override Guid ReadGuid()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadGuid">ReadingStreamer.ReadGuid()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadInt_" data-uid="NFX.IO.SlimReader.ReadInt*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadInt" data-uid="NFX.IO.SlimReader.ReadInt">ReadInt()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override int ReadInt()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadInt">ReadingStreamer.ReadInt()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadIntArray_" data-uid="NFX.IO.SlimReader.ReadIntArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadIntArray" data-uid="NFX.IO.SlimReader.ReadIntArray">ReadIntArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override int[] ReadIntArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadIntArray">ReadingStreamer.ReadIntArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadLong_" data-uid="NFX.IO.SlimReader.ReadLong*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadLong" data-uid="NFX.IO.SlimReader.ReadLong">ReadLong()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override long ReadLong()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadLong">ReadingStreamer.ReadLong()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadLongArray_" data-uid="NFX.IO.SlimReader.ReadLongArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadLongArray" data-uid="NFX.IO.SlimReader.ReadLongArray">ReadLongArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override long[] ReadLongArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadLongArray">ReadingStreamer.ReadLongArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadMetaHandle_" data-uid="NFX.IO.SlimReader.ReadMetaHandle*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadMetaHandle" data-uid="NFX.IO.SlimReader.ReadMetaHandle">ReadMetaHandle()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override MetaHandle ReadMetaHandle()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.MetaHandle.html">MetaHandle</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadMetaHandle">ReadingStreamer.ReadMetaHandle()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadMethodSpec_" data-uid="NFX.IO.SlimReader.ReadMethodSpec*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadMethodSpec" data-uid="NFX.IO.SlimReader.ReadMethodSpec">ReadMethodSpec()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override MethodSpec ReadMethodSpec()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.MethodSpec.html">MethodSpec</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadMethodSpec">ReadingStreamer.ReadMethodSpec()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNLSMap_" data-uid="NFX.IO.SlimReader.ReadNLSMap*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNLSMap" data-uid="NFX.IO.SlimReader.ReadNLSMap">ReadNLSMap()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override NLSMap ReadNLSMap()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNLSMap">ReadingStreamer.ReadNLSMap()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableAmount_" data-uid="NFX.IO.SlimReader.ReadNullableAmount*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableAmount" data-uid="NFX.IO.SlimReader.ReadNullableAmount">ReadNullableAmount()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override Amount? ReadNullableAmount()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Financial.Amount.html">Amount</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableAmount">ReadingStreamer.ReadNullableAmount()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableBool_" data-uid="NFX.IO.SlimReader.ReadNullableBool*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableBool" data-uid="NFX.IO.SlimReader.ReadNullableBool">ReadNullableBool()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool ? ReadNullableBool()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableBool">ReadingStreamer.ReadNullableBool()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableByte_" data-uid="NFX.IO.SlimReader.ReadNullableByte*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableByte" data-uid="NFX.IO.SlimReader.ReadNullableByte">ReadNullableByte()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override byte ? ReadNullableByte()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableByte">ReadingStreamer.ReadNullableByte()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableChar_" data-uid="NFX.IO.SlimReader.ReadNullableChar*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableChar" data-uid="NFX.IO.SlimReader.ReadNullableChar">ReadNullableChar()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override char ? ReadNullableChar()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableChar">ReadingStreamer.ReadNullableChar()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableDateTime_" data-uid="NFX.IO.SlimReader.ReadNullableDateTime*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableDateTime" data-uid="NFX.IO.SlimReader.ReadNullableDateTime">ReadNullableDateTime()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override DateTime? ReadNullableDateTime()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableDateTime">ReadingStreamer.ReadNullableDateTime()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableDecimal_" data-uid="NFX.IO.SlimReader.ReadNullableDecimal*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableDecimal" data-uid="NFX.IO.SlimReader.ReadNullableDecimal">ReadNullableDecimal()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override decimal ? ReadNullableDecimal()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableDecimal">ReadingStreamer.ReadNullableDecimal()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableDouble_" data-uid="NFX.IO.SlimReader.ReadNullableDouble*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableDouble" data-uid="NFX.IO.SlimReader.ReadNullableDouble">ReadNullableDouble()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override double ? ReadNullableDouble()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableDouble">ReadingStreamer.ReadNullableDouble()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableFID_" data-uid="NFX.IO.SlimReader.ReadNullableFID*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableFID" data-uid="NFX.IO.SlimReader.ReadNullableFID">ReadNullableFID()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override FID? ReadNullableFID()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.FID.html">FID</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableFID">ReadingStreamer.ReadNullableFID()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableFloat_" data-uid="NFX.IO.SlimReader.ReadNullableFloat*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableFloat" data-uid="NFX.IO.SlimReader.ReadNullableFloat">ReadNullableFloat()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override float ? ReadNullableFloat()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Single</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableFloat">ReadingStreamer.ReadNullableFloat()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableGDID_" data-uid="NFX.IO.SlimReader.ReadNullableGDID*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableGDID" data-uid="NFX.IO.SlimReader.ReadNullableGDID">ReadNullableGDID()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override GDID? ReadNullableGDID()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableGDID">ReadingStreamer.ReadNullableGDID()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableGuid_" data-uid="NFX.IO.SlimReader.ReadNullableGuid*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableGuid" data-uid="NFX.IO.SlimReader.ReadNullableGuid">ReadNullableGuid()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override Guid? ReadNullableGuid()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableGuid">ReadingStreamer.ReadNullableGuid()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableInt_" data-uid="NFX.IO.SlimReader.ReadNullableInt*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableInt" data-uid="NFX.IO.SlimReader.ReadNullableInt">ReadNullableInt()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override int ? ReadNullableInt()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableInt">ReadingStreamer.ReadNullableInt()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableLong_" data-uid="NFX.IO.SlimReader.ReadNullableLong*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableLong" data-uid="NFX.IO.SlimReader.ReadNullableLong">ReadNullableLong()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override long ? ReadNullableLong()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableLong">ReadingStreamer.ReadNullableLong()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableMetaHandle_" data-uid="NFX.IO.SlimReader.ReadNullableMetaHandle*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableMetaHandle" data-uid="NFX.IO.SlimReader.ReadNullableMetaHandle">ReadNullableMetaHandle()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override MetaHandle? ReadNullableMetaHandle()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.IO.MetaHandle.html">MetaHandle</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableMetaHandle">ReadingStreamer.ReadNullableMetaHandle()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableNLSMap_" data-uid="NFX.IO.SlimReader.ReadNullableNLSMap*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableNLSMap" data-uid="NFX.IO.SlimReader.ReadNullableNLSMap">ReadNullableNLSMap()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override NLSMap? ReadNullableNLSMap()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableNLSMap">ReadingStreamer.ReadNullableNLSMap()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullablePilePointer_" data-uid="NFX.IO.SlimReader.ReadNullablePilePointer*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullablePilePointer" data-uid="NFX.IO.SlimReader.ReadNullablePilePointer">ReadNullablePilePointer()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override PilePointer? ReadNullablePilePointer()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullablePilePointer">ReadingStreamer.ReadNullablePilePointer()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableSByte_" data-uid="NFX.IO.SlimReader.ReadNullableSByte*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableSByte" data-uid="NFX.IO.SlimReader.ReadNullableSByte">ReadNullableSByte()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override sbyte ? ReadNullableSByte()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.SByte</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableSByte">ReadingStreamer.ReadNullableSByte()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableShort_" data-uid="NFX.IO.SlimReader.ReadNullableShort*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableShort" data-uid="NFX.IO.SlimReader.ReadNullableShort">ReadNullableShort()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override short ? ReadNullableShort()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int16</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableShort">ReadingStreamer.ReadNullableShort()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableTimeSpan_" data-uid="NFX.IO.SlimReader.ReadNullableTimeSpan*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableTimeSpan" data-uid="NFX.IO.SlimReader.ReadNullableTimeSpan">ReadNullableTimeSpan()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override TimeSpan? ReadNullableTimeSpan()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableTimeSpan">ReadingStreamer.ReadNullableTimeSpan()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableUInt_" data-uid="NFX.IO.SlimReader.ReadNullableUInt*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableUInt" data-uid="NFX.IO.SlimReader.ReadNullableUInt">ReadNullableUInt()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override uint ? ReadNullableUInt()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt32</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableUInt">ReadingStreamer.ReadNullableUInt()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableULong_" data-uid="NFX.IO.SlimReader.ReadNullableULong*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableULong" data-uid="NFX.IO.SlimReader.ReadNullableULong">ReadNullableULong()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override ulong ? ReadNullableULong()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableULong">ReadingStreamer.ReadNullableULong()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableUShort_" data-uid="NFX.IO.SlimReader.ReadNullableUShort*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableUShort" data-uid="NFX.IO.SlimReader.ReadNullableUShort">ReadNullableUShort()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override ushort ? ReadNullableUShort()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt16</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableUShort">ReadingStreamer.ReadNullableUShort()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadNullableVarIntStr_" data-uid="NFX.IO.SlimReader.ReadNullableVarIntStr*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadNullableVarIntStr" data-uid="NFX.IO.SlimReader.ReadNullableVarIntStr">ReadNullableVarIntStr()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override VarIntStr? ReadNullableVarIntStr()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.IO.VarIntStr.html">VarIntStr</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadNullableVarIntStr">ReadingStreamer.ReadNullableVarIntStr()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadPilePointer_" data-uid="NFX.IO.SlimReader.ReadPilePointer*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadPilePointer" data-uid="NFX.IO.SlimReader.ReadPilePointer">ReadPilePointer()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override PilePointer ReadPilePointer()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadPilePointer">ReadingStreamer.ReadPilePointer()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadSByte_" data-uid="NFX.IO.SlimReader.ReadSByte*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadSByte" data-uid="NFX.IO.SlimReader.ReadSByte">ReadSByte()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override sbyte ReadSByte()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.SByte</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadSByte">ReadingStreamer.ReadSByte()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadShort_" data-uid="NFX.IO.SlimReader.ReadShort*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadShort" data-uid="NFX.IO.SlimReader.ReadShort">ReadShort()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override short ReadShort()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadShort">ReadingStreamer.ReadShort()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadString_" data-uid="NFX.IO.SlimReader.ReadString*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadString" data-uid="NFX.IO.SlimReader.ReadString">ReadString()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string ReadString()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadString">ReadingStreamer.ReadString()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadStringArray_" data-uid="NFX.IO.SlimReader.ReadStringArray*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadStringArray" data-uid="NFX.IO.SlimReader.ReadStringArray">ReadStringArray()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string[] ReadStringArray()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadStringArray">ReadingStreamer.ReadStringArray()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadStringMap_" data-uid="NFX.IO.SlimReader.ReadStringMap*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadStringMap" data-uid="NFX.IO.SlimReader.ReadStringMap">ReadStringMap()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override StringMap ReadStringMap()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Collections.StringMap.html">StringMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadStringMap">ReadingStreamer.ReadStringMap()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadTimeSpan_" data-uid="NFX.IO.SlimReader.ReadTimeSpan*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadTimeSpan" data-uid="NFX.IO.SlimReader.ReadTimeSpan">ReadTimeSpan()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override TimeSpan ReadTimeSpan()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.TimeSpan</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadTimeSpan">ReadingStreamer.ReadTimeSpan()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadTypeSpec_" data-uid="NFX.IO.SlimReader.ReadTypeSpec*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadTypeSpec" data-uid="NFX.IO.SlimReader.ReadTypeSpec">ReadTypeSpec()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override TypeSpec ReadTypeSpec()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.TypeSpec.html">TypeSpec</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadTypeSpec">ReadingStreamer.ReadTypeSpec()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadUInt_" data-uid="NFX.IO.SlimReader.ReadUInt*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadUInt" data-uid="NFX.IO.SlimReader.ReadUInt">ReadUInt()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override uint ReadUInt()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadUInt">ReadingStreamer.ReadUInt()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadULong_" data-uid="NFX.IO.SlimReader.ReadULong*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadULong" data-uid="NFX.IO.SlimReader.ReadULong">ReadULong()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override ulong ReadULong()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadULong">ReadingStreamer.ReadULong()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadUShort_" data-uid="NFX.IO.SlimReader.ReadUShort*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadUShort" data-uid="NFX.IO.SlimReader.ReadUShort">ReadUShort()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override ushort ReadUShort()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadUShort">ReadingStreamer.ReadUShort()</a></div>
+              
+              
+              <a id="NFX_IO_SlimReader_ReadVarIntStr_" data-uid="NFX.IO.SlimReader.ReadVarIntStr*"></a>
+              <h4 id="NFX_IO_SlimReader_ReadVarIntStr" data-uid="NFX.IO.SlimReader.ReadVarIntStr">ReadVarIntStr()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override VarIntStr ReadVarIntStr()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.VarIntStr.html">VarIntStr</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.ReadingStreamer.html#NFX_IO_ReadingStreamer_ReadVarIntStr">ReadingStreamer.ReadVarIntStr()</a></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

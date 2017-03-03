@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Instrumentation.Analytics
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Instrumentation.Analytics
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Instrumentation_Analytics" data-uid="NFX.Instrumentation.Analytics">Namespace NFX.Instrumentation.Analytics
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.Dimension.html">Dimension</a></h4>
+                  <section><p>Base class of a histogram dimension.
+of data type TData partitions a range defined by MinValue and MaxValue,
+by mapping the given value into [0 ... PartitionCount] partitions</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.Dimension-1.html">Dimension&lt;TData&gt;</a></h4>
+                  <section><p>A dimension of data type TData partitions a range of values
+by mapping the given value into [0 ... PartitionCount] partitions</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.HistData.html">HistData</a></h4>
+                  <section><p>Helper type representing a dictionary for storing historam data</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.Histogram.html">Histogram</a></h4>
+                  <section><p>Base histogram to be used by typed histogram generic derived classes.
+The histogram holds a dictionary of integer counts for each measurement
+keys (with number of keys correspondent to the number of dimensions
+in the histogram).</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.Histogram-1.html">Histogram&lt;TData1&gt;</a></h4>
+                  <section><p>One-dimensional histogram for storing number of samples for a given
+dimension key</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.Histogram-2.html">Histogram&lt;TData1, TData2&gt;</a></h4>
+                  <section><p>Two-dimensional histogram for storing number of samples for given
+dimension keys</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.Histogram-3.html">Histogram&lt;TData1, TData2, TData3&gt;</a></h4>
+                  <section><p>Three-dimensional histogram for storing number of samples for given
+dimension keys</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.HistogramEntry.html">HistogramEntry</a></h4>
+                  <section><p>The placeholder of histogram data that represents a sample count
+for a given set of histogram keys.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.HistogramReporters.html">HistogramReporters</a></h4>
+                  <section><p>Maps histogram data into some other representation (such as text, HTML, etc)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.TimeDimension.html">TimeDimension</a></h4>
+                  <section><p>A dimension of data type double partitions a range of values
+by mapping the given value into [0 ... PartitionCount] partitions.
+This is a helper class for creating a dimension of TimeHistogram</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.TimeHistogram.html">TimeHistogram</a></h4>
+                  <section><p>Time measurement 1D histogram aggregates measurements in fractions of a second</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.TimeHistogram-1.html">TimeHistogram&lt;TData2&gt;</a></h4>
+                  <section><p>Time measurement 2D histogram aggregates measurements in fractions of a second
+for a given 1st dimension key.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.TimeHistogram-2.html">TimeHistogram&lt;TData2, TData3&gt;</a></h4>
+                  <section><p>Time measurement 3D histogram aggregates measurements in fractions of a second
+for a given 1st and 2nd dimension keys.</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.HistogramKeys.html">HistogramKeys</a></h4>
+                  <section><p>Represents histogram dimension key vector.
+This class is introduced for performance enhancement vs int[] approach
+that would have allocated extra object on heap per call</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.IHistogram.html">IHistogram</a></h4>
+                  <section><p>Basic histogram interface to be implemented by all types of
+instrumentation histograms</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.ITimeHistogram.html">ITimeHistogram</a></h4>
+                  <section><p>Histogram for measuring latency</p>
+</section>
+                <h3 id="delegates">Delegates
+              </h3>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.PartitionFunc-1.html">PartitionFunc&lt;TData&gt;</a></h4>
+                  <section><p>References a function that maps input value into a partition index
+in the context of a given Partitioner</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Analytics.PartitionNameFunc.html">PartitionNameFunc</a></h4>
+                  <section><p>Returns a partition name for a given partition index</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

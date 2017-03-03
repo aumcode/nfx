@@ -1,0 +1,2319 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PaySystem
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PaySystem
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Web_Pay_PaySystem" data-uid="NFX.Web.Pay.PaySystem">Class PaySystem
+              </h1>
+              <div class="markdown level0 summary"><p>Base class for IPaySystemImplementation implementation.
+Instances of descendants of this class is typically created and configured in PaySystemStarter class.
+Then particular pay system can be obtained from PaySystem.Instances[PAY_SYSTEM_NAME] indexer</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html">ApplicationComponent</a></div>
+                  <div class="level3"><a class="xref" href="NFX.ServiceModel.Service.html">Service</a></div>
+                  <div class="level4"><a class="xref" href="NFX.ServiceModel.Service-1.html">Service</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+                  <div class="level5"><a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html">ServiceWithInstrumentationBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+                  <div class="level6"><span class="xref">PaySystem</span></div>
+                  <div class="level7"><a class="xref" href="NFX.Web.Pay.Braintree.BraintreeSystem.html">BraintreeSystem</a></div>
+                  <div class="level7"><a class="xref" href="NFX.Web.Pay.Mock.MockSystem.html">MockSystem</a></div>
+                  <div class="level7"><a class="xref" href="NFX.Web.Pay.PayPal.PayPalSystem.html">PayPalSystem</a></div>
+                  <div class="level7"><a class="xref" href="NFX.Web.Pay.PaySystemWithStaticFees.html">PaySystemWithStaticFees</a></div>
+                  <div class="level7"><a class="xref" href="NFX.Web.Pay.Stripe.StripeSystem.html">StripeSystem</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalParameters">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalParameters</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalParametersForGroups_System_String___">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalParametersForGroups(String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalGetParameter_System_String_System_Object__System_String___">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalGetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalSetParameter_System_String_System_Object_System_String___">ServiceWithInstrumentationBase&lt;Object&gt;.ExternalSetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service-1.html#NFX_ServiceModel_Service_1_ComponentDirector">Service&lt;Object&gt;.ComponentDirector</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CONFIG_NAME_ATTR">Service.CONFIG_NAME_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_ApplicationDontAutoStartService">Service.ApplicationDontAutoStartService</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Status">Service.Status</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Running">Service.Running</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Name">Service.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_TimeLocation">Service.TimeLocation</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_LocalizedTime">Service.LocalizedTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Configure_NFX_Environment_IConfigSectionNode_">Service.Configure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Start">Service.Start()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_SignalStop">Service.SignalStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckForCompleteStop">Service.CheckForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_WaitForCompleteStop">Service.WaitForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_AcceptManagerVisit_System_Object_System_DateTime_">Service.AcceptManagerVisit(Object, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_UniversalTimeToLocalizedTime_System_DateTime_">Service.UniversalTimeToLocalizedTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_LocalizedTimeToUniversalTime_System_DateTime_">Service.LocalizedTimeToUniversalTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_AbortStart">Service.AbortStart()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoSignalStop">Service.DoSignalStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoCheckForCompleteStop">Service.DoCheckForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceInactive">Service.CheckServiceInactive()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActive">Service.CheckServiceActive()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActiveOrStarting">Service.CheckServiceActiveOrStarting()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_____ObtainPrivateServiceStatusLockObject">Service.____ObtainPrivateServiceStatusLockObject()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_AllComponents">ApplicationComponent.AllComponents</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentBySID_System_UInt64_">ApplicationComponent.GetAppComponentBySID(UInt64)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentByCommonName_System_String_">ApplicationComponent.GetAppComponentByCommonName(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentSID">ApplicationComponent.ComponentSID</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentStartTime">ApplicationComponent.ComponentStartTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentCommonName">ApplicationComponent.ComponentCommonName</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Web.Pay</h6>
+              <h6><strong>Assembly</strong>:NFX.Web.dll</h6>
+              <h5 id="NFX_Web_Pay_PaySystem_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract class PaySystem : ServiceWithInstrumentationBase&lt;object&gt;, IApplicationComponent, IDisposable, IService, ILocalizedTimeProvider, IWebClientCaller, IPaySystemImplementation, IPaySystem, INamed, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem__ctor_" data-uid="NFX.Web.Pay.PaySystem.#ctor*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem__ctor_System_String_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Pay.PaySystem.#ctor(System.String,NFX.Environment.IConfigSectionNode)">PaySystem(String, IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected PaySystem(string name, IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem__ctor_" data-uid="NFX.Web.Pay.PaySystem.#ctor*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem__ctor_System_String_NFX_Environment_IConfigSectionNode_System_Object_" data-uid="NFX.Web.Pay.PaySystem.#ctor(System.String,NFX.Environment.IConfigSectionNode,System.Object)">PaySystem(String, IConfigSectionNode, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected PaySystem(string name, IConfigSectionNode node, object director)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">director</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_AUTO_START_ATTR" data-uid="NFX.Web.Pay.PaySystem.CONFIG_AUTO_START_ATTR">CONFIG_AUTO_START_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_AUTO_START_ATTR = &quot;auto-start&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_CURRENCIES_SECTION" data-uid="NFX.Web.Pay.PaySystem.CONFIG_CURRENCIES_SECTION">CONFIG_CURRENCIES_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CURRENCIES_SECTION = &quot;currencies&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_CURRENCY_MARKET_SECTION" data-uid="NFX.Web.Pay.PaySystem.CONFIG_CURRENCY_MARKET_SECTION">CONFIG_CURRENCY_MARKET_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CURRENCY_MARKET_SECTION = &quot;currency-market&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_FEE_FLAT_ATTR" data-uid="NFX.Web.Pay.PaySystem.CONFIG_FEE_FLAT_ATTR">CONFIG_FEE_FLAT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_FEE_FLAT_ATTR = &quot;fee-flat&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_FEE_PCT_ATTR" data-uid="NFX.Web.Pay.PaySystem.CONFIG_FEE_PCT_ATTR">CONFIG_FEE_PCT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_FEE_PCT_ATTR = &quot;fee-pct&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_FEE_TRAN_TYPE_ATTR" data-uid="NFX.Web.Pay.PaySystem.CONFIG_FEE_TRAN_TYPE_ATTR">CONFIG_FEE_TRAN_TYPE_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_FEE_TRAN_TYPE_ATTR = &quot;tran-type&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_PAY_SYSTEM_HOST_SECTION" data-uid="NFX.Web.Pay.PaySystem.CONFIG_PAY_SYSTEM_HOST_SECTION">CONFIG_PAY_SYSTEM_HOST_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_PAY_SYSTEM_HOST_SECTION = &quot;pay-system-host&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_PAY_SYSTEM_SECTION" data-uid="NFX.Web.Pay.PaySystem.CONFIG_PAY_SYSTEM_SECTION">CONFIG_PAY_SYSTEM_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_PAY_SYSTEM_SECTION = &quot;pay-system&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_CONFIG_PAYMENT_PROCESSING_SECTION" data-uid="NFX.Web.Pay.PaySystem.CONFIG_PAYMENT_PROCESSING_SECTION">CONFIG_PAYMENT_PROCESSING_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_PAYMENT_PROCESSING_SECTION = &quot;payment-processing&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Web_Pay_PaySystem_Sessions" data-uid="NFX.Web.Pay.PaySystem.Sessions">Sessions</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected readonly List&lt;PaySession&gt; Sessions</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_ChargeFeeKind_" data-uid="NFX.Web.Pay.PaySystem.ChargeFeeKind*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_ChargeFeeKind" data-uid="NFX.Web.Pay.PaySystem.ChargeFeeKind">ChargeFeeKind</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual ProcessingFeeKind ChargeFeeKind { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.ProcessingFeeKind.html">ProcessingFeeKind</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_ChargeFeeKind">IPaySystem.ChargeFeeKind</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_CurrenciesCfg_" data-uid="NFX.Web.Pay.PaySystem.CurrenciesCfg*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_CurrenciesCfg" data-uid="NFX.Web.Pay.PaySystem.CurrenciesCfg">CurrenciesCfg</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;currencies&quot;)]
+public IConfigSectionNode CurrenciesCfg { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DefaultSessionConnectParams_" data-uid="NFX.Web.Pay.PaySystem.DefaultSessionConnectParams*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DefaultSessionConnectParams" data-uid="NFX.Web.Pay.PaySystem.DefaultSessionConnectParams">DefaultSessionConnectParams</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected ConnectionParameters DefaultSessionConnectParams { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.ConnectionParameters.html">ConnectionParameters</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DefaultSessionConnectParamsCfg_" data-uid="NFX.Web.Pay.PaySystem.DefaultSessionConnectParamsCfg*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DefaultSessionConnectParamsCfg" data-uid="NFX.Web.Pay.PaySystem.DefaultSessionConnectParamsCfg">DefaultSessionConnectParamsCfg</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;default-session-connect-params&quot;)]
+public IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_DefaultSessionConnectParamsCfg">IPaySystem.DefaultSessionConnectParamsCfg</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_Instances_" data-uid="NFX.Web.Pay.PaySystem.Instances*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_Instances" data-uid="NFX.Web.Pay.PaySystem.Instances">Instances</h4>
+              <div class="markdown level1 summary"><p>Returns the read-only registry view of payment systems currently activated</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IRegistry&lt;IPaySystem&gt; Instances { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IRegistry-1.html">IRegistry</a>&lt;<a class="xref" href="NFX.Web.Pay.IPaySystem.html">IPaySystem</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_InstrumentationEnabled_" data-uid="NFX.Web.Pay.PaySystem.InstrumentationEnabled*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_InstrumentationEnabled" data-uid="NFX.Web.Pay.PaySystem.InstrumentationEnabled">InstrumentationEnabled</h4>
+              <div class="markdown level1 summary"><p>Implements IInstrumentable</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = false)]
+[ExternalParameter(new string[]{&quot;instrumentation&quot;, &quot;pay&quot;})]
+public override bool InstrumentationEnabled { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><span class="xref">NFX.ServiceModel.ServiceWithInstrumentationBase&lt;System.Object&gt;.InstrumentationEnabled</span></div>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Instrumentation.IInstrumentable.html#NFX_Instrumentation_IInstrumentable_InstrumentationEnabled">IInstrumentable.InstrumentationEnabled</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_IsPaySystemHost_" data-uid="NFX.Web.Pay.PaySystem.IsPaySystemHost*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_IsPaySystemHost" data-uid="NFX.Web.Pay.PaySystem.IsPaySystemHost">IsPaySystemHost</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool IsPaySystemHost { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_KeepAlive_" data-uid="NFX.Web.Pay.PaySystem.KeepAlive*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_KeepAlive" data-uid="NFX.Web.Pay.PaySystem.KeepAlive">KeepAlive</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = true)]
+public bool KeepAlive { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.IWebClientCaller.html#NFX_Web_IWebClientCaller_KeepAlive">IWebClientCaller.KeepAlive</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_LogLevel_" data-uid="NFX.Web.Pay.PaySystem.LogLevel*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_LogLevel" data-uid="NFX.Web.Pay.PaySystem.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"><p>Specifies the log level for operations performed by Pay System.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = MessageType.Warning)]
+[ExternalParameter(new string[]{&quot;pay&quot;})]
+public MessageType LogLevel { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystemImplementation.html#NFX_Web_Pay_IPaySystemImplementation_LogLevel">IPaySystemImplementation.LogLevel</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_PaySystemHost_" data-uid="NFX.Web.Pay.PaySystem.PaySystemHost*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_PaySystemHost" data-uid="NFX.Web.Pay.PaySystem.PaySystemHost">PaySystemHost</h4>
+              <div class="markdown level1 summary"><p>Returns process-global pay system host used to resolve accounts and transactions
+or throws if host is not set. Check IsPaySystemHost to see if host is set.
+This design provides an indirection level between pay systems (like Stripe, PayPal, Bank etc.) and
+particular application data store implementation as it decouples system-internal formats of transaction and
+account storage from provider-internal data (i.e. PayPal payment token string)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IPaySystemHost PaySystemHost { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.IPaySystemHost.html">IPaySystemHost</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_Pipelined_" data-uid="NFX.Web.Pay.PaySystem.Pipelined*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_Pipelined" data-uid="NFX.Web.Pay.PaySystem.Pipelined">Pipelined</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = true)]
+public bool Pipelined { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.IWebClientCaller.html#NFX_Web_IWebClientCaller_Pipelined">IWebClientCaller.Pipelined</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_SupportedCurrencies_" data-uid="NFX.Web.Pay.PaySystem.SupportedCurrencies*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_SupportedCurrencies" data-uid="NFX.Web.Pay.PaySystem.SupportedCurrencies">SupportedCurrencies</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;string&gt; SupportedCurrencies { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_SupportedCurrencies">IPaySystem.SupportedCurrencies</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_TransferFeeKind_" data-uid="NFX.Web.Pay.PaySystem.TransferFeeKind*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_TransferFeeKind" data-uid="NFX.Web.Pay.PaySystem.TransferFeeKind">TransferFeeKind</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual ProcessingFeeKind TransferFeeKind { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.ProcessingFeeKind.html">ProcessingFeeKind</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_TransferFeeKind">IPaySystem.TransferFeeKind</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_WebServiceCallTimeoutMs_" data-uid="NFX.Web.Pay.PaySystem.WebServiceCallTimeoutMs*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_WebServiceCallTimeoutMs" data-uid="NFX.Web.Pay.PaySystem.WebServiceCallTimeoutMs">WebServiceCallTimeoutMs</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = 20000)]
+public int WebServiceCallTimeoutMs { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.IWebClientCaller.html#NFX_Web_IWebClientCaller_WebServiceCallTimeoutMs">IWebClientCaller.WebServiceCallTimeoutMs</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_WebTerminal_" data-uid="NFX.Web.Pay.PaySystem.WebTerminal*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_WebTerminal" data-uid="NFX.Web.Pay.PaySystem.WebTerminal">WebTerminal</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual IPayWebTerminal WebTerminal { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.IPayWebTerminal.html">IPayWebTerminal</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_WebTerminal">IPaySystem.WebTerminal</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem____SetPaySystemHost_" data-uid="NFX.Web.Pay.PaySystem.___SetPaySystemHost*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem____SetPaySystemHost_NFX_Web_Pay_IPaySystemHostImplementation_" data-uid="NFX.Web.Pay.PaySystem.___SetPaySystemHost(NFX.Web.Pay.IPaySystemHostImplementation)">___SetPaySystemHost(IPaySystemHostImplementation)</h4>
+              <div class="markdown level1 summary"><p>Sets process-global pay system host used to resolve accounts and transactions.
+If PayStarter is used then the host may be auto-injected from configuration if it is there.
+Developers: Do not call this method as it is used for dependency injection from system code</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void ___SetPaySystemHost(IPaySystemHostImplementation host)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.IPaySystemHostImplementation.html">IPaySystemHostImplementation</a></td>
+                    <td><span class="parametername">host</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_AutoStartSystems_" data-uid="NFX.Web.Pay.PaySystem.AutoStartSystems*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_AutoStartSystems" data-uid="NFX.Web.Pay.PaySystem.AutoStartSystems">AutoStartSystems()</h4>
+              <div class="markdown level1 summary"><p>Automatically starts systems designated in config with auto-start attribute</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void AutoStartSystems()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_Destructor_" data-uid="NFX.Web.Pay.PaySystem.Destructor*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_Destructor" data-uid="NFX.Web.Pay.PaySystem.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Destructor">Service.Destructor()</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoAcceptManagerVisit_" data-uid="NFX.Web.Pay.PaySystem.DoAcceptManagerVisit*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoAcceptManagerVisit_System_Object_System_DateTime_" data-uid="NFX.Web.Pay.PaySystem.DoAcceptManagerVisit(System.Object,System.DateTime)">DoAcceptManagerVisit(Object, DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoAcceptManagerVisit(object manager, DateTime managerNow)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">manager</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">managerNow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoAcceptManagerVisit_System_Object_System_DateTime_">Service.DoAcceptManagerVisit(Object, DateTime)</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoCapture_" data-uid="NFX.Web.Pay.PaySystem.DoCapture*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoCapture_NFX_Web_Pay_PaySession_NFX_Web_Pay_Transaction_System_Nullable_System_Decimal__System_String_System_Object_" data-uid="NFX.Web.Pay.PaySystem.DoCapture(NFX.Web.Pay.PaySession,NFX.Web.Pay.Transaction,System.Nullable{System.Decimal},System.String,System.Object)">DoCapture(PaySession, Transaction, Nullable&lt;Decimal&gt;, String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract bool DoCapture(PaySession session, Transaction charge, decimal ? amount = null, string description = null, object extraData = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">charge</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">description</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">extraData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoCharge_" data-uid="NFX.Web.Pay.PaySystem.DoCharge*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoCharge_NFX_Web_Pay_PaySession_NFX_Web_Pay_Account_NFX_Web_Pay_Account_NFX_Financial_Amount_System_Boolean_System_String_System_Object_" data-uid="NFX.Web.Pay.PaySystem.DoCharge(NFX.Web.Pay.PaySession,NFX.Web.Pay.Account,NFX.Web.Pay.Account,NFX.Financial.Amount,System.Boolean,System.String,System.Object)">DoCharge(PaySession, Account, Account, Amount, Boolean, String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract Transaction DoCharge(PaySession session, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></td>
+                    <td><span class="parametername">to</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">capture</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">description</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">extraData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoConfigure_" data-uid="NFX.Web.Pay.PaySystem.DoConfigure*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoConfigure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Pay.PaySystem.DoConfigure(NFX.Environment.IConfigSectionNode)">DoConfigure(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoConfigure(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoConfigure_NFX_Environment_IConfigSectionNode_">Service.DoConfigure(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoRefresh_" data-uid="NFX.Web.Pay.PaySystem.DoRefresh*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoRefresh_NFX_Web_Pay_PaySession_NFX_Web_Pay_Transaction_System_Object_" data-uid="NFX.Web.Pay.PaySystem.DoRefresh(NFX.Web.Pay.PaySession,NFX.Web.Pay.Transaction,System.Object)">DoRefresh(PaySession, Transaction, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual bool DoRefresh(PaySession session, Transaction transaction, object extraData = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">transaction</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">extraData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoRefund_" data-uid="NFX.Web.Pay.PaySystem.DoRefund*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoRefund_NFX_Web_Pay_PaySession_NFX_Web_Pay_Transaction_System_Nullable_System_Decimal__System_String_System_Object_" data-uid="NFX.Web.Pay.PaySystem.DoRefund(NFX.Web.Pay.PaySession,NFX.Web.Pay.Transaction,System.Nullable{System.Decimal},System.String,System.Object)">DoRefund(PaySession, Transaction, Nullable&lt;Decimal&gt;, String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract bool DoRefund(PaySession session, Transaction charge, decimal ? amount = null, string description = null, object extraData = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">charge</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">description</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">extraData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoStart_" data-uid="NFX.Web.Pay.PaySystem.DoStart*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoStart" data-uid="NFX.Web.Pay.PaySystem.DoStart">DoStart()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoStart()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoStart">Service.DoStart()</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoStartSession_" data-uid="NFX.Web.Pay.PaySystem.DoStartSession*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoStartSession_NFX_Web_Pay_ConnectionParameters_NFX_Web_Pay_IPaySessionContext_" data-uid="NFX.Web.Pay.PaySystem.DoStartSession(NFX.Web.Pay.ConnectionParameters,NFX.Web.Pay.IPaySessionContext)">DoStartSession(ConnectionParameters, IPaySessionContext)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract PaySession DoStartSession(ConnectionParameters cParams, IPaySessionContext context = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.ConnectionParameters.html">ConnectionParameters</a></td>
+                    <td><span class="parametername">cParams</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.IPaySessionContext.html">IPaySessionContext</a></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoTransfer_" data-uid="NFX.Web.Pay.PaySystem.DoTransfer*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoTransfer_NFX_Web_Pay_PaySession_NFX_Web_Pay_Account_NFX_Web_Pay_Account_NFX_Financial_Amount_System_String_System_Object_" data-uid="NFX.Web.Pay.PaySystem.DoTransfer(NFX.Web.Pay.PaySession,NFX.Web.Pay.Account,NFX.Web.Pay.Account,NFX.Financial.Amount,System.String,System.Object)">DoTransfer(PaySession, Account, Account, Amount, String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract Transaction DoTransfer(PaySession session, Account from, Account to, Amount amount, string description = null, object extraData = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></td>
+                    <td><span class="parametername">to</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">description</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">extraData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoVerifyPotentialTransaction_" data-uid="NFX.Web.Pay.PaySystem.DoVerifyPotentialTransaction*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoVerifyPotentialTransaction_NFX_Web_Pay_PaySession_NFX_Web_Pay_TransactionType_NFX_Web_Pay_Account_NFX_Web_Pay_Account_NFX_Financial_Amount_" data-uid="NFX.Web.Pay.PaySystem.DoVerifyPotentialTransaction(NFX.Web.Pay.PaySession,NFX.Web.Pay.TransactionType,NFX.Web.Pay.Account,NFX.Web.Pay.Account,NFX.Financial.Amount)">DoVerifyPotentialTransaction(PaySession, TransactionType, Account, Account, Amount)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual PaymentException DoVerifyPotentialTransaction(PaySession session, TransactionType type, Account from, Account to, Amount amount)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.TransactionType.html">TransactionType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Account.html">Account</a></td>
+                    <td><span class="parametername">to</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaymentException.html">PaymentException</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoVoid_" data-uid="NFX.Web.Pay.PaySystem.DoVoid*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoVoid_NFX_Web_Pay_PaySession_NFX_Web_Pay_Transaction_System_String_System_Object_" data-uid="NFX.Web.Pay.PaySystem.DoVoid(NFX.Web.Pay.PaySession,NFX.Web.Pay.Transaction,System.String,System.Object)">DoVoid(PaySession, Transaction, String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract bool DoVoid(PaySession session, Transaction charge, string description = null, object extraData = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">charge</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">description</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">extraData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_DoWaitForCompleteStop_" data-uid="NFX.Web.Pay.PaySystem.DoWaitForCompleteStop*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_DoWaitForCompleteStop" data-uid="NFX.Web.Pay.PaySystem.DoWaitForCompleteStop">DoWaitForCompleteStop()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoWaitForCompleteStop()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoWaitForCompleteStop">Service.DoWaitForCompleteStop()</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_IsTransactionTypeSupported_" data-uid="NFX.Web.Pay.PaySystem.IsTransactionTypeSupported*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_IsTransactionTypeSupported_NFX_Web_Pay_TransactionType_System_String_" data-uid="NFX.Web.Pay.PaySystem.IsTransactionTypeSupported(NFX.Web.Pay.TransactionType,System.String)">IsTransactionTypeSupported(TransactionType, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual bool IsTransactionTypeSupported(TransactionType type, string currencyISO = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.TransactionType.html">TransactionType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">currencyISO</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_IsTransactionTypeSupported_NFX_Web_Pay_TransactionType_System_String_">IPaySystem.IsTransactionTypeSupported(TransactionType, String)</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_Log_" data-uid="NFX.Web.Pay.PaySystem.Log*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_Log_NFX_Log_MessageType_System_String_System_String_System_Exception_System_Nullable_System_Guid__System_String_" data-uid="NFX.Web.Pay.PaySystem.Log(NFX.Log.MessageType,System.String,System.String,System.Exception,System.Nullable{System.Guid},System.String)">Log(MessageType, String, String, Exception, Nullable&lt;Guid&gt;, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Guid Log(MessageType type, string from, string message, Exception error = null, Guid? relatedMessageID = null, string parameters = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">message</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Exception</span></td>
+                    <td><span class="parametername">error</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+                    <td><span class="parametername">relatedMessageID</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">parameters</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_Make_" data-uid="NFX.Web.Pay.PaySystem.Make*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_Make__1_System_String_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Pay.PaySystem.Make``1(System.String,NFX.Environment.IConfigSectionNode)">Make&lt;TPaySystem&gt;(String, IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TPaySystem Make&lt;TPaySystem&gt;(string name, IConfigSectionNode node)where TPaySystem : PaySystem</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TPaySystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TPaySystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_Make_" data-uid="NFX.Web.Pay.PaySystem.Make*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_Make__1_System_String_System_String_System_String_" data-uid="NFX.Web.Pay.PaySystem.Make``1(System.String,System.String,System.String)">Make&lt;TPaySystem&gt;(String, String, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TPaySystem Make&lt;TPaySystem&gt;(string name, string cfgStr, string format = &quot;laconf&quot;)where TPaySystem : PaySystem</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">cfgStr</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">format</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TPaySystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TPaySystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_MakeDefaultSessionConnectParams_" data-uid="NFX.Web.Pay.PaySystem.MakeDefaultSessionConnectParams*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_MakeDefaultSessionConnectParams_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Pay.PaySystem.MakeDefaultSessionConnectParams(NFX.Environment.IConfigSectionNode)">MakeDefaultSessionConnectParams(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract ConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">paramsSection</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.ConnectionParameters.html">ConnectionParameters</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StartSession_" data-uid="NFX.Web.Pay.PaySystem.StartSession*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StartSession_NFX_Web_Pay_ConnectionParameters_NFX_Web_Pay_IPaySessionContext_" data-uid="NFX.Web.Pay.PaySystem.StartSession(NFX.Web.Pay.ConnectionParameters,NFX.Web.Pay.IPaySessionContext)">StartSession(ConnectionParameters, IPaySessionContext)</h4>
+              <div class="markdown level1 summary"><p>Starts new pay session of system-specific type</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public PaySession StartSession(ConnectionParameters cParams = null, IPaySessionContext context = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.ConnectionParameters.html">ConnectionParameters</a></td>
+                    <td><span class="parametername">cParams</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.IPaySessionContext.html">IPaySessionContext</a></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.PaySession.html">PaySession</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Pay.IPaySystem.html#NFX_Web_Pay_IPaySystem_StartSession_NFX_Web_Pay_ConnectionParameters_NFX_Web_Pay_IPaySessionContext_">IPaySystem.StartSession(ConnectionParameters, IPaySessionContext)</a></div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatCapture_" data-uid="NFX.Web.Pay.PaySystem.StatCapture*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatCapture_NFX_Web_Pay_Transaction_System_Nullable_System_Decimal__" data-uid="NFX.Web.Pay.PaySystem.StatCapture(NFX.Web.Pay.Transaction,System.Nullable{System.Decimal})">StatCapture(Transaction, Nullable&lt;Decimal&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatCapture(Transaction charge, decimal ? amount)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">charge</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatCaptureError_" data-uid="NFX.Web.Pay.PaySystem.StatCaptureError*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatCaptureError" data-uid="NFX.Web.Pay.PaySystem.StatCaptureError">StatCaptureError()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatCaptureError()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatCharge_" data-uid="NFX.Web.Pay.PaySystem.StatCharge*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatCharge_NFX_Financial_Amount_" data-uid="NFX.Web.Pay.PaySystem.StatCharge(NFX.Financial.Amount)">StatCharge(Amount)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatCharge(Amount amount)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatChargeError_" data-uid="NFX.Web.Pay.PaySystem.StatChargeError*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatChargeError" data-uid="NFX.Web.Pay.PaySystem.StatChargeError">StatChargeError()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatChargeError()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatRefund_" data-uid="NFX.Web.Pay.PaySystem.StatRefund*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatRefund_NFX_Web_Pay_Transaction_System_Nullable_System_Decimal__" data-uid="NFX.Web.Pay.PaySystem.StatRefund(NFX.Web.Pay.Transaction,System.Nullable{System.Decimal})">StatRefund(Transaction, Nullable&lt;Decimal&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatRefund(Transaction charge, decimal ? amount)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">charge</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatRefundError_" data-uid="NFX.Web.Pay.PaySystem.StatRefundError*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatRefundError" data-uid="NFX.Web.Pay.PaySystem.StatRefundError">StatRefundError()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatRefundError()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatTransfer_" data-uid="NFX.Web.Pay.PaySystem.StatTransfer*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatTransfer_NFX_Financial_Amount_" data-uid="NFX.Web.Pay.PaySystem.StatTransfer(NFX.Financial.Amount)">StatTransfer(Amount)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatTransfer(Amount amount)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">amount</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatTransferError_" data-uid="NFX.Web.Pay.PaySystem.StatTransferError*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatTransferError" data-uid="NFX.Web.Pay.PaySystem.StatTransferError">StatTransferError()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatTransferError()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatVoid_" data-uid="NFX.Web.Pay.PaySystem.StatVoid*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatVoid_NFX_Web_Pay_Transaction_" data-uid="NFX.Web.Pay.PaySystem.StatVoid(NFX.Web.Pay.Transaction)">StatVoid(Transaction)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatVoid(Transaction charge)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Pay.Transaction.html">Transaction</a></td>
+                    <td><span class="parametername">charge</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Pay_PaySystem_StatVoidError_" data-uid="NFX.Web.Pay.PaySystem.StatVoidError*"></a>
+              <h4 id="NFX_Web_Pay_PaySystem_StatVoidError" data-uid="NFX.Web.Pay.PaySystem.StatVoidError">StatVoidError()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void StatVoidError()</code></pre>
+              </div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

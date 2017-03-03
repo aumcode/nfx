@@ -1,0 +1,953 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ErlObject
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ErlObject
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Erlang_ErlObject" data-uid="NFX.Erlang.ErlObject">Class ErlObject
+              </h1>
+              <div class="markdown level0 summary"><p>Class defines extension methods on types implementing IErlObject interface
+and static methods dealing with IErlObject</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">ErlObject</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Erlang</h6>
+              <h6><strong>Assembly</strong>:NFX.Erlang.dll</h6>
+              <h5 id="NFX_Erlang_ErlObject_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class ErlObject</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Erlang_ErlObject_AsType_" data-uid="NFX.Erlang.ErlObject.AsType*"></a>
+              <h4 id="NFX_Erlang_ErlObject_AsType_NFX_Erlang_IErlObject_System_Type_" data-uid="NFX.Erlang.ErlObject.AsType(NFX.Erlang.IErlObject,System.Type)">AsType(IErlObject, Type)</h4>
+              <div class="markdown level1 summary"><p>Tries to convert an Erlang term as specified native type.
+Throw exception if conversion is not possible</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static object AsType(this IErlObject val, Type t)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">val</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">t</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ErlArgs_" data-uid="NFX.Erlang.ErlObject.ErlArgs*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ErlArgs_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.ErlArgs(System.String,System.Object[])">ErlArgs(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>Convert C# string to ErlString</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string ErlArgs(this string str, params object[] args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">str</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_Format_" data-uid="NFX.Erlang.ErlObject.Format*"></a>
+              <h4 id="NFX_Erlang_ErlObject_Format_NFX_Erlang_ErlList_" data-uid="NFX.Erlang.ErlObject.Format(NFX.Erlang.ErlList)">Format(ErlList)</h4>
+              <div class="markdown level1 summary"><p>Substitute variables in the args[0] string</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string Format(ErlList args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a></td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_IsInt_" data-uid="NFX.Erlang.ErlObject.IsInt*"></a>
+              <h4 id="NFX_Erlang_ErlObject_IsInt_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlObject.IsInt(NFX.Erlang.IErlObject)">IsInt(IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Determines if Erlang object is of type ErlByte or ErlLong</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool IsInt(this IErlObject o)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_IsNull_" data-uid="NFX.Erlang.ErlObject.IsNull*"></a>
+              <h4 id="NFX_Erlang_ErlObject_IsNull_NFX_Erlang_IErlObject_" data-uid="NFX.Erlang.ErlObject.IsNull(NFX.Erlang.IErlObject)">IsNull(IErlObject)</h4>
+              <div class="markdown level1 summary"><p>Determines if Erlang object is NULL - that is ErlAtom.Undefined or null reference</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool IsNull(this IErlObject o)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_Parse_" data-uid="NFX.Erlang.ErlObject.Parse*"></a>
+              <h4 id="NFX_Erlang_ErlObject_Parse_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.Parse(System.String,System.Object[])">Parse(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>Parse a string into an Erlang term</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IErlObject Parse(string fmt, params object[] args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fmt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_Parse_" data-uid="NFX.Erlang.ErlObject.Parse*"></a>
+              <h4 id="NFX_Erlang_ErlObject_Parse__1_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.Parse``1(System.String,System.Object[])">Parse&lt;T&gt;(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>Parse a string into an Erlang term</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static T Parse&lt;T&gt;(string fmt, params object[] args)where T : IErlObject</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fmt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ParseMFA_" data-uid="NFX.Erlang.ErlObject.ParseMFA*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ParseMFA_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.ParseMFA(System.String,System.Object[])">ParseMFA(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>Parse a string representation of an Erlang function call
+&quot;Module:Function(Arg1, ..., ArgN)&quot; to a 3-element (Module, Function, Arguments) tuple</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Tuple&lt;ErlAtom, ErlAtom, ErlList&gt; ParseMFA(string fmt, params object[] args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fmt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Tuple</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>, <a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>, <a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_Subst_" data-uid="NFX.Erlang.ErlObject.Subst*"></a>
+              <h4 id="NFX_Erlang_ErlObject_Subst_NFX_Erlang_IErlObject_NFX_Erlang_ErlVarBind_" data-uid="NFX.Erlang.ErlObject.Subst(NFX.Erlang.IErlObject,NFX.Erlang.ErlVarBind)">Subst(IErlObject, ErlVarBind)</h4>
+              <div class="markdown level1 summary"><p>Substibute all variables in the given object using provided binding
+and return the resulting object</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IErlObject Subst(this IErlObject o, ErlVarBind binding)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlVarBind.html">ErlVarBind</a></td>
+                    <td><span class="parametername">binding</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_To_" data-uid="NFX.Erlang.ErlObject.To*"></a>
+              <h4 id="NFX_Erlang_ErlObject_To__1_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.To``1(System.String,System.Object[])">To&lt;T&gt;(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>Parse a string into an Erlang term</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static T To&lt;T&gt;(this string fmt, params object[] args)where T : IErlObject</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fmt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ToErlMFA_" data-uid="NFX.Erlang.ErlObject.ToErlMFA*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ToErlMFA_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.ToErlMFA(System.String,System.Object[])">ToErlMFA(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>Parse a string representation of an Erlang function call
+&quot;Module:Function(Arg1, ..., ArgN)&quot; to a 3-element (Module, Function, Arguments) tuple</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Tuple&lt;ErlAtom, ErlAtom, ErlList&gt; ToErlMFA(this string fmt, params object[] args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fmt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Tuple</span>&lt;<a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>, <a class="xref" href="NFX.Erlang.ErlAtom.html">ErlAtom</a>, <a class="xref" href="NFX.Erlang.ErlList.html">ErlList</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ToErlObject_" data-uid="NFX.Erlang.ErlObject.ToErlObject*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ToErlObject_System_Object_" data-uid="NFX.Erlang.ErlObject.ToErlObject(System.Object)">ToErlObject(Object)</h4>
+              <div class="markdown level1 summary"><p>Try to convert .NET native object type to corresponding Erlang term.
+Throw exception if conversion is not possible</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IErlObject ToErlObject(this object o)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ToErlObject_" data-uid="NFX.Erlang.ErlObject.ToErlObject*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_" data-uid="NFX.Erlang.ErlObject.ToErlObject(System.Object,NFX.Erlang.ErlTypeOrder,System.Boolean)">ToErlObject(Object, ErlTypeOrder, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Try to convert .NET native object type to corresponding Erlang term of given type.
+Throw exception if conversion is not possible</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IErlObject ToErlObject(this object o, ErlTypeOrder etp, bool strict = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlTypeOrder.html">ErlTypeOrder</a></td>
+                    <td><span class="parametername">etp</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">strict</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ToErlObject_" data-uid="NFX.Erlang.ErlObject.ToErlObject*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ToErlObject_System_String_System_Object___" data-uid="NFX.Erlang.ErlObject.ToErlObject(System.String,System.Object[])">ToErlObject(String, Object[])</h4>
+              <div class="markdown level1 summary"><p>String extension method to parse a string into an Erlang term</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IErlObject ToErlObject(this string fmt, params object[] args)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fmt</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_ToErlString_" data-uid="NFX.Erlang.ErlObject.ToErlString*"></a>
+              <h4 id="NFX_Erlang_ErlObject_ToErlString_System_String_" data-uid="NFX.Erlang.ErlObject.ToErlString(System.String)">ToErlString(String)</h4>
+              <div class="markdown level1 summary"><p>Convert C# string to ErlString</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ErlString ToErlString(this string str)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">str</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.ErlString.html">ErlString</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Erlang_ErlObject_Visit_" data-uid="NFX.Erlang.ErlObject.Visit*"></a>
+              <h4 id="NFX_Erlang_ErlObject_Visit__1_NFX_Erlang_IErlObject___0_System_Func___0_NFX_Erlang_IErlObject___0__" data-uid="NFX.Erlang.ErlObject.Visit``1(NFX.Erlang.IErlObject,``0,System.Func{``0,NFX.Erlang.IErlObject,``0})">Visit&lt;TAccumulate&gt;(IErlObject, TAccumulate, Func&lt;TAccumulate, IErlObject, TAccumulate&gt;)</h4>
+              <div class="markdown level1 summary"><p>Execute fun for every nested term</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TAccumulate Visit&lt;TAccumulate&gt;(this IErlObject o, TAccumulate acc, Func&lt;TAccumulate, IErlObject, TAccumulate&gt; fun)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a></td>
+                    <td><span class="parametername">o</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">TAccumulate</span></td>
+                    <td><span class="parametername">acc</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TAccumulate, <a class="xref" href="NFX.Erlang.IErlObject.html">IErlObject</a>, TAccumulate&gt;</td>
+                    <td><span class="parametername">fun</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TAccumulate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TAccumulate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

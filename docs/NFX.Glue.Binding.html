@@ -1,0 +1,2540 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Binding
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Binding
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Glue_Binding" data-uid="NFX.Glue.Binding">Class Binding
+              </h1>
+              <div class="markdown level0 summary"><p>Represents a particular named binding.
+Binding type defines a protocol by implementing a transport instance management strategy
+that support particular technology, such as blocking TCP or async ZeroMQ.
+Binding instance retains state/config information about all transports
+and has logic for Node&#39;s host:service resolution.
+Bindings are services, meaning - they can have state/threads that
+manage transport channels that operate under binding</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html">ApplicationComponent</a></div>
+                  <div class="level3"><a class="xref" href="NFX.ServiceModel.Service.html">Service</a></div>
+                  <div class="level4"><a class="xref" href="NFX.ServiceModel.Service-1.html">Service</a>&lt;<a class="xref" href="NFX.Glue.IGlueImplementation.html">IGlueImplementation</a>&gt;</div>
+                  <div class="level5"><a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html">ServiceWithInstrumentationBase</a>&lt;<a class="xref" href="NFX.Glue.IGlueImplementation.html">IGlueImplementation</a>&gt;</div>
+                  <div class="level6"><a class="xref" href="NFX.Glue.GlueComponentService.html">GlueComponentService</a></div>
+                  <div class="level7"><span class="xref">Binding</span></div>
+                  <div class="level8"><a class="xref" href="NFX.Glue.Native.InProcBinding.html">InProcBinding</a></div>
+                  <div class="level8"><a class="xref" href="NFX.Glue.Native.MpxBinding.html">MpxBinding</a></div>
+                  <div class="level8"><a class="xref" href="NFX.Glue.Native.SyncBinding.html">SyncBinding</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.Glue.GlueComponentService.html#NFX_Glue_GlueComponentService_Glue">GlueComponentService.Glue</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Glue.GlueComponentService.html#NFX_Glue_GlueComponentService_InstrumentationEnabled">GlueComponentService.InstrumentationEnabled</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Glue.GlueComponentService.html#NFX_Glue_GlueComponentService_WriteLog_NFX_Glue_LogSrc_NFX_Log_MessageType_System_String_System_String_System_Exception_System_String_System_Nullable_System_Guid__">GlueComponentService.WriteLog(LogSrc, MessageType, String, String, Exception, String, Nullable&lt;Guid&gt;)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalParameters">ServiceWithInstrumentationBase&lt;IGlueImplementation&gt;.ExternalParameters</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalParametersForGroups_System_String___">ServiceWithInstrumentationBase&lt;IGlueImplementation&gt;.ExternalParametersForGroups(String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalGetParameter_System_String_System_Object__System_String___">ServiceWithInstrumentationBase&lt;IGlueImplementation&gt;.ExternalGetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html#NFX_ServiceModel_ServiceWithInstrumentationBase_1_ExternalSetParameter_System_String_System_Object_System_String___">ServiceWithInstrumentationBase&lt;IGlueImplementation&gt;.ExternalSetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service-1.html#NFX_ServiceModel_Service_1_ComponentDirector">Service&lt;IGlueImplementation&gt;.ComponentDirector</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CONFIG_NAME_ATTR">Service.CONFIG_NAME_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_ApplicationDontAutoStartService">Service.ApplicationDontAutoStartService</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Status">Service.Status</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Running">Service.Running</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Name">Service.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_TimeLocation">Service.TimeLocation</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_LocalizedTime">Service.LocalizedTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Configure_NFX_Environment_IConfigSectionNode_">Service.Configure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Start">Service.Start()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_SignalStop">Service.SignalStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckForCompleteStop">Service.CheckForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_WaitForCompleteStop">Service.WaitForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_AcceptManagerVisit_System_Object_System_DateTime_">Service.AcceptManagerVisit(Object, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_UniversalTimeToLocalizedTime_System_DateTime_">Service.UniversalTimeToLocalizedTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_LocalizedTimeToUniversalTime_System_DateTime_">Service.LocalizedTimeToUniversalTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_AbortStart">Service.AbortStart()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoStart">Service.DoStart()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoCheckForCompleteStop">Service.DoCheckForCompleteStop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceInactive">Service.CheckServiceInactive()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActive">Service.CheckServiceActive()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActiveOrStarting">Service.CheckServiceActiveOrStarting()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_____ObtainPrivateServiceStatusLockObject">Service.____ObtainPrivateServiceStatusLockObject()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_AllComponents">ApplicationComponent.AllComponents</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentBySID_System_UInt64_">ApplicationComponent.GetAppComponentBySID(UInt64)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentByCommonName_System_String_">ApplicationComponent.GetAppComponentByCommonName(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentSID">ApplicationComponent.ComponentSID</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentStartTime">ApplicationComponent.ComponentStartTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentCommonName">ApplicationComponent.ComponentCommonName</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Glue</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Glue_Binding_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract class Binding : GlueComponentService, IApplicationComponent, IDisposable, IService, INamed, IConfigurable, ILocalizedTimeProvider, IInstrumentable, IExternallyParameterized</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_Glue_Binding__ctor_" data-uid="NFX.Glue.Binding.#ctor*"></a>
+              <h4 id="NFX_Glue_Binding__ctor_NFX_Glue_IGlueImplementation_System_String_NFX_Glue_Provider_" data-uid="NFX.Glue.Binding.#ctor(NFX.Glue.IGlueImplementation,System.String,NFX.Glue.Provider)">Binding(IGlueImplementation, String, Provider)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Binding(IGlueImplementation glue, string name = null, Provider provider = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.IGlueImplementation.html">IGlueImplementation</a></td>
+                    <td><span class="parametername">glue</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Provider.html">Provider</a></td>
+                    <td><span class="parametername">provider</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding__ctor_" data-uid="NFX.Glue.Binding.#ctor*"></a>
+              <h4 id="NFX_Glue_Binding__ctor_System_String_" data-uid="NFX.Glue.Binding.#ctor(System.String)">Binding(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Binding(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Glue_Binding_ATTR_PATH" data-uid="NFX.Glue.Binding.ATTR_PATH">ATTR_PATH</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string ATTR_PATH = &quot;$&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_ATTR_SLASH_PATH" data-uid="NFX.Glue.Binding.ATTR_SLASH_PATH">ATTR_SLASH_PATH</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string ATTR_SLASH_PATH = &quot;/$&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT" data-uid="NFX.Glue.Binding.CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT">CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_DEFAULT = 8</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT" data-uid="NFX.Glue.Binding.CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT">CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT = 100</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CLIENT_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT" data-uid="NFX.Glue.Binding.CLIENT_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT">CLIENT_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int CLIENT_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT = 120000</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CLIENT_TRANSPORT_MAX_COUNT_DEFAULT" data-uid="NFX.Glue.Binding.CLIENT_TRANSPORT_MAX_COUNT_DEFAULT">CLIENT_TRANSPORT_MAX_COUNT_DEFAULT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int CLIENT_TRANSPORT_MAX_COUNT_DEFAULT = 0</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT" data-uid="NFX.Glue.Binding.CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT">CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_DEFAULT = 15000</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_CLIENT_DUMP_ATTR" data-uid="NFX.Glue.Binding.CONFIG_CLIENT_DUMP_ATTR">CONFIG_CLIENT_DUMP_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLIENT_DUMP_ATTR = &quot;client-dump&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_ATTR" data-uid="NFX.Glue.Binding.CONFIG_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_ATTR">CONFIG_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLIENT_TRANSPORT_COUNT_WAIT_THRESHOLD_ATTR = &quot;count-wait-threshold&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR" data-uid="NFX.Glue.Binding.CONFIG_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR">CONFIG_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLIENT_TRANSPORT_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR = &quot;existing-acquisition-timeout-ms&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_CLIENT_TRANSPORT_MAX_COUNT_ATTR" data-uid="NFX.Glue.Binding.CONFIG_CLIENT_TRANSPORT_MAX_COUNT_ATTR">CONFIG_CLIENT_TRANSPORT_MAX_COUNT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLIENT_TRANSPORT_MAX_COUNT_ATTR = &quot;max-count&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR" data-uid="NFX.Glue.Binding.CONFIG_CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR">CONFIG_CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLIENT_TRANSPORT_MAX_EXISTING_ACQUISITION_TIMEOUT_MS_ATTR = &quot;max-existing-acquisition-timeout-ms&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_CLIENT_TRANSPORT_SECTION" data-uid="NFX.Glue.Binding.CONFIG_CLIENT_TRANSPORT_SECTION">CONFIG_CLIENT_TRANSPORT_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLIENT_TRANSPORT_SECTION = &quot;client-transport&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_DUMP_FORMAT_ATTR" data-uid="NFX.Glue.Binding.CONFIG_DUMP_FORMAT_ATTR">CONFIG_DUMP_FORMAT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_DUMP_FORMAT_ATTR = &quot;dump-format&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_DUMP_PATH_ATTR" data-uid="NFX.Glue.Binding.CONFIG_DUMP_PATH_ATTR">CONFIG_DUMP_PATH_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_DUMP_PATH_ATTR = &quot;dump-path&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_INSTRUMENT_TRANSPORT_STAT_ATTR" data-uid="NFX.Glue.Binding.CONFIG_INSTRUMENT_TRANSPORT_STAT_ATTR">CONFIG_INSTRUMENT_TRANSPORT_STAT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_INSTRUMENT_TRANSPORT_STAT_ATTR = &quot;instrument-transport-stat&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_SERVER_DUMP_ATTR" data-uid="NFX.Glue.Binding.CONFIG_SERVER_DUMP_ATTR">CONFIG_SERVER_DUMP_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_SERVER_DUMP_ATTR = &quot;server-dump&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_SERVER_TRANSPORT_SECTION" data-uid="NFX.Glue.Binding.CONFIG_SERVER_TRANSPORT_SECTION">CONFIG_SERVER_TRANSPORT_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_SERVER_TRANSPORT_SECTION = &quot;server-transport&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_STAT_TIMES_EMA_FACTOR_ATTR" data-uid="NFX.Glue.Binding.CONFIG_STAT_TIMES_EMA_FACTOR_ATTR">CONFIG_STAT_TIMES_EMA_FACTOR_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_STAT_TIMES_EMA_FACTOR_ATTR = &quot;stat-times-ema-factor&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_CONFIG_TRANSPORT_IDLE_TIMEOUT_MS_ATTR" data-uid="NFX.Glue.Binding.CONFIG_TRANSPORT_IDLE_TIMEOUT_MS_ATTR">CONFIG_TRANSPORT_IDLE_TIMEOUT_MS_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_TRANSPORT_IDLE_TIMEOUT_MS_ATTR = &quot;idle-timeout-ms&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_DEFAULT_STAT_TIMES_EMA_FACTOR" data-uid="NFX.Glue.Binding.DEFAULT_STAT_TIMES_EMA_FACTOR">DEFAULT_STAT_TIMES_EMA_FACTOR</h4>
+              <div class="markdown level1 summary"><p>Defines how much smoothing the timing statistics filter does - the lower the number the more smoothing is done.
+Smoothing makes stat times insensitive to some seldom delays that may happen every now and then</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const double DEFAULT_STAT_TIMES_EMA_FACTOR = 0.04</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_m_ClientTransportAllocatorLocks" data-uid="NFX.Glue.Binding.m_ClientTransportAllocatorLocks">m_ClientTransportAllocatorLocks</h4>
+              <div class="markdown level1 summary"><p>Hash table of locks used during new transport allocation, must be prime size</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected object[] m_ClientTransportAllocatorLocks</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_m_Provider" data-uid="NFX.Glue.Binding.m_Provider">m_Provider</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Provider m_Provider</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Provider.html">Provider</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_MAX_STAT_TIMES_EMA_FACTOR" data-uid="NFX.Glue.Binding.MAX_STAT_TIMES_EMA_FACTOR">MAX_STAT_TIMES_EMA_FACTOR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const double MAX_STAT_TIMES_EMA_FACTOR = 0.999</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_MIN_STAT_TIMES_EMA_FACTOR" data-uid="NFX.Glue.Binding.MIN_STAT_TIMES_EMA_FACTOR">MIN_STAT_TIMES_EMA_FACTOR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const double MIN_STAT_TIMES_EMA_FACTOR = 0.0001</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Glue_Binding_SERVER_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT" data-uid="NFX.Glue.Binding.SERVER_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT">SERVER_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int SERVER_TRANSPORT_IDLE_TIMEOUT_MS_DEFAULT = 600000</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Glue_Binding_ClientDump_" data-uid="NFX.Glue.Binding.ClientDump*"></a>
+              <h4 id="NFX_Glue_Binding_ClientDump" data-uid="NFX.Glue.Binding.ClientDump">ClientDump</h4>
+              <div class="markdown level1 summary"><p>Turns on/off client message dumping to disk. Turning on dumping has negative effect on performance and consumes resources</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$client-dump&quot;, DumpDetail.None)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public DumpDetail ClientDump { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.DumpDetail.html">DumpDetail</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientMsgInspectors_" data-uid="NFX.Glue.Binding.ClientMsgInspectors*"></a>
+              <h4 id="NFX_Glue_Binding_ClientMsgInspectors" data-uid="NFX.Glue.Binding.ClientMsgInspectors">ClientMsgInspectors</h4>
+              <div class="markdown level1 summary"><p>Returns client message inspectors for this instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public OrderedRegistry&lt;IClientMsgInspector&gt; ClientMsgInspectors { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.OrderedRegistry-1.html">OrderedRegistry</a>&lt;<a class="xref" href="NFX.Glue.IClientMsgInspector.html">IClientMsgInspector</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientTransportCountWaitThreshold_" data-uid="NFX.Glue.Binding.ClientTransportCountWaitThreshold*"></a>
+              <h4 id="NFX_Glue_Binding_ClientTransportCountWaitThreshold" data-uid="NFX.Glue.Binding.ClientTransportCountWaitThreshold">ClientTransportCountWaitThreshold</h4>
+              <div class="markdown level1 summary"><p>Sets the threshold, expressed as the number of active client transports per remote address, below which binding will always allocate a new instance
+of client transport without trying/waiting to acquire an existing one. When this number is exceeded then binding will try to acquire an existing
+client transport instance for up to ClientTransportExistingAcquisitionTimeoutMs milliseconds.
+For more info, see &#39;NFX.Glue: Client Call Concurrency&#39; topic in manual/blog</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;client-transport/$count-wait-threshold&quot;, 8)]
+[ExternalParameter(new string[]{&quot;glue&quot;})]
+public int ClientTransportCountWaitThreshold { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientTransportExistingAcquisitionTimeoutMs_" data-uid="NFX.Glue.Binding.ClientTransportExistingAcquisitionTimeoutMs*"></a>
+              <h4 id="NFX_Glue_Binding_ClientTransportExistingAcquisitionTimeoutMs" data-uid="NFX.Glue.Binding.ClientTransportExistingAcquisitionTimeoutMs">ClientTransportExistingAcquisitionTimeoutMs</h4>
+              <div class="markdown level1 summary"><p>Sets the length of interval for the binding trying to acquire existing client transport instance to make a call.
+When this interval is exhausted then binding tries to allocate a new client transport per remote address, unless
+other limits prohibit (max transport count). The value has to be greater or equal to zero.
+NOTE: this property works in conjunction with ClientTransportCoutWaitThreshold, if the number of active client transports
+is below ClientTransportCoutWaitThreshold, then binding does not wait and allocates a new client transport right away until
+ClientTransportCoutWaitThreshold limit is reached, then binding will try to acquire existing transport for ClientTransportExistingAcquisitionTimeoutMs milliseconds.
+For more info, see &#39;NFX.Glue: Client Call Concurrency&#39; topic in manual/blog</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;client-transport/$existing-acquisition-timeout-ms&quot;, 100)]
+[ExternalParameter(new string[]{&quot;glue&quot;})]
+public int ClientTransportExistingAcquisitionTimeoutMs { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientTransportIdleTimeoutMs_" data-uid="NFX.Glue.Binding.ClientTransportIdleTimeoutMs*"></a>
+              <h4 id="NFX_Glue_Binding_ClientTransportIdleTimeoutMs" data-uid="NFX.Glue.Binding.ClientTransportIdleTimeoutMs">ClientTransportIdleTimeoutMs</h4>
+              <div class="markdown level1 summary"><p>Specifies when client transports get auto-closed. Interval is measured in ms. Zero means indefinite/never closed transport.
+For more info, see &#39;NFX.Glue: Client Call Concurrency&#39; topic in manual/blog</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;client-transport/$idle-timeout-ms&quot;, 120000)]
+[ExternalParameter(new string[]{&quot;glue&quot;})]
+public int ClientTransportIdleTimeoutMs { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientTransportMaxCount_" data-uid="NFX.Glue.Binding.ClientTransportMaxCount*"></a>
+              <h4 id="NFX_Glue_Binding_ClientTransportMaxCount" data-uid="NFX.Glue.Binding.ClientTransportMaxCount">ClientTransportMaxCount</h4>
+              <div class="markdown level1 summary"><p>Imposes a limit on number of active client transports per remote address. Once this limit is reached the binding will block until it can acquire
+an existing transport instance. Set value to zero to remove the limit.
+For more info, see &#39;NFX.Glue: Client Call Concurrency&#39; topic in manual/blog</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;client-transport/$max-count&quot;, 0)]
+[ExternalParameter(new string[]{&quot;glue&quot;})]
+public int ClientTransportMaxCount { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientTransportMaxExistingAcquisitionTimeoutMs_" data-uid="NFX.Glue.Binding.ClientTransportMaxExistingAcquisitionTimeoutMs*"></a>
+              <h4 id="NFX_Glue_Binding_ClientTransportMaxExistingAcquisitionTimeoutMs" data-uid="NFX.Glue.Binding.ClientTransportMaxExistingAcquisitionTimeoutMs">ClientTransportMaxExistingAcquisitionTimeoutMs</h4>
+              <div class="markdown level1 summary"><p>Imposes a timeout for binding trying to get an existing transport instance per remote address.
+Binding throws ClientCallException when this timeout is exceeded. A value of zero removes the limit</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;client-transport/$max-existing-acquisition-timeout-ms&quot;, 15000)]
+[ExternalParameter(new string[]{&quot;glue&quot;})]
+public int ClientTransportMaxExistingAcquisitionTimeoutMs { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ClientTransports_" data-uid="NFX.Glue.Binding.ClientTransports*"></a>
+              <h4 id="NFX_Glue_Binding_ClientTransports" data-uid="NFX.Glue.Binding.ClientTransports">ClientTransports</h4>
+              <div class="markdown level1 summary"><p>Returns all client transports in the binding stack</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;ClientTransport&gt; ClientTransports { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ConfigNode_" data-uid="NFX.Glue.Binding.ConfigNode*"></a>
+              <h4 id="NFX_Glue_Binding_ConfigNode" data-uid="NFX.Glue.Binding.ConfigNode">ConfigNode</h4>
+              <div class="markdown level1 summary"><p>Returns configuration node for this named instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IConfigSectionNode ConfigNode { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_DumpMsgFormat_" data-uid="NFX.Glue.Binding.DumpMsgFormat*"></a>
+              <h4 id="NFX_Glue_Binding_DumpMsgFormat" data-uid="NFX.Glue.Binding.DumpMsgFormat">DumpMsgFormat</h4>
+              <div class="markdown level1 summary"><p>Set the format for message dumping</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$dump-format&quot;, DumpFormat.Binary)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public DumpFormat DumpMsgFormat { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DumpFormat.html">DumpFormat</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_DumpPath_" data-uid="NFX.Glue.Binding.DumpPath*"></a>
+              <h4 id="NFX_Glue_Binding_DumpPath" data-uid="NFX.Glue.Binding.DumpPath">DumpPath</h4>
+              <div class="markdown level1 summary"><p>Set the path for message dumping. Must be an existing navigable path</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$dump-path&quot;)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public string DumpPath { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_EncodingFormat_" data-uid="NFX.Glue.Binding.EncodingFormat*"></a>
+              <h4 id="NFX_Glue_Binding_EncodingFormat" data-uid="NFX.Glue.Binding.EncodingFormat">EncodingFormat</h4>
+              <div class="markdown level1 summary"><p>Returns name of msg format encoding</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract string EncodingFormat { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_InstrumentClientTransportStat_" data-uid="NFX.Glue.Binding.InstrumentClientTransportStat*"></a>
+              <h4 id="NFX_Glue_Binding_InstrumentClientTransportStat" data-uid="NFX.Glue.Binding.InstrumentClientTransportStat">InstrumentClientTransportStat</h4>
+              <div class="markdown level1 summary"><p>Defines whether client transport statistics is periodically dumped into instrumentation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;client-transport/$instrument-transport-stat&quot;)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public bool InstrumentClientTransportStat { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_InstrumentServerTransportStat_" data-uid="NFX.Glue.Binding.InstrumentServerTransportStat*"></a>
+              <h4 id="NFX_Glue_Binding_InstrumentServerTransportStat" data-uid="NFX.Glue.Binding.InstrumentServerTransportStat">InstrumentServerTransportStat</h4>
+              <div class="markdown level1 summary"><p>Defines whether server transport statistics is periodically dumped into instrumentation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;server-transport/$instrument-transport-stat&quot;)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public bool InstrumentServerTransportStat { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_MeasureStatTimes_" data-uid="NFX.Glue.Binding.MeasureStatTimes*"></a>
+              <h4 id="NFX_Glue_Binding_MeasureStatTimes" data-uid="NFX.Glue.Binding.MeasureStatTimes">MeasureStatTimes</h4>
+              <div class="markdown level1 summary"><p>Defines whether message processing latency should be measured - i.e. messages time-stamped on arrival</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public bool MeasureStatTimes { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_OperationFlow_" data-uid="NFX.Glue.Binding.OperationFlow*"></a>
+              <h4 id="NFX_Glue_Binding_OperationFlow" data-uid="NFX.Glue.Binding.OperationFlow">OperationFlow</h4>
+              <div class="markdown level1 summary"><p>Returns sync/async flow that this binding provides</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract OperationFlow OperationFlow { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.OperationFlow.html">OperationFlow</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_Provider_" data-uid="NFX.Glue.Binding.Provider*"></a>
+              <h4 id="NFX_Glue_Binding_Provider" data-uid="NFX.Glue.Binding.Provider">Provider</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Provider Provider { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Provider.html">Provider</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ServerDump_" data-uid="NFX.Glue.Binding.ServerDump*"></a>
+              <h4 id="NFX_Glue_Binding_ServerDump" data-uid="NFX.Glue.Binding.ServerDump">ServerDump</h4>
+              <div class="markdown level1 summary"><p>Turns on/off server message dumping to disk. Turning on dumping has negative effect on performance and consumes resources</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$server-dump&quot;, DumpDetail.None)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public DumpDetail ServerDump { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.DumpDetail.html">DumpDetail</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ServerMsgInspectors_" data-uid="NFX.Glue.Binding.ServerMsgInspectors*"></a>
+              <h4 id="NFX_Glue_Binding_ServerMsgInspectors" data-uid="NFX.Glue.Binding.ServerMsgInspectors">ServerMsgInspectors</h4>
+              <div class="markdown level1 summary"><p>Returns server message inspectors for this instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public OrderedRegistry&lt;IServerMsgInspector&gt; ServerMsgInspectors { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.OrderedRegistry-1.html">OrderedRegistry</a>&lt;<a class="xref" href="NFX.Glue.IServerMsgInspector.html">IServerMsgInspector</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ServerTransportIdleTimeoutMs_" data-uid="NFX.Glue.Binding.ServerTransportIdleTimeoutMs*"></a>
+              <h4 id="NFX_Glue_Binding_ServerTransportIdleTimeoutMs" data-uid="NFX.Glue.Binding.ServerTransportIdleTimeoutMs">ServerTransportIdleTimeoutMs</h4>
+              <div class="markdown level1 summary"><p>Specifies when server transports get auto-closed. Interval is measured in ms. Zero means indefinite/never closed transport.
+For more info, see &#39;NFX.Glue: Client Call Concurrency&#39; topic in manual/blog</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;server-transport/$idle-timeout-ms&quot;, 600000)]
+[ExternalParameter(new string[]{&quot;glue&quot;})]
+public int ServerTransportIdleTimeoutMs { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ServerTransports_" data-uid="NFX.Glue.Binding.ServerTransports*"></a>
+              <h4 id="NFX_Glue_Binding_ServerTransports" data-uid="NFX.Glue.Binding.ServerTransports">ServerTransports</h4>
+              <div class="markdown level1 summary"><p>Returns all server transports in the binding stack</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;ServerTransport&gt; ServerTransports { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Glue.ServerTransport.html">ServerTransport</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_StatTimesEMAFactor_" data-uid="NFX.Glue.Binding.StatTimesEMAFactor*"></a>
+              <h4 id="NFX_Glue_Binding_StatTimesEMAFactor" data-uid="NFX.Glue.Binding.StatTimesEMAFactor">StatTimesEMAFactor</h4>
+              <div class="markdown level1 summary"><p>Defines how much smoothing the timing statistics filter does - the lower the number the more smoothing is done.
+Smoothing makes stat times insensitive to some seldom delays that may happen every now and then</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;stat-times-ema-factor&quot;, 0.04)]
+[ExternalParameter(new string[]{&quot;glue&quot;, &quot;instrumentation&quot;})]
+public double StatTimesEMAFactor { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_StatTimeTicks_" data-uid="NFX.Glue.Binding.StatTimeTicks*"></a>
+              <h4 id="NFX_Glue_Binding_StatTimeTicks" data-uid="NFX.Glue.Binding.StatTimeTicks">StatTimeTicks</h4>
+              <div class="markdown level1 summary"><p>Returns current time in system frequency-dependent ticks.
+This property is used to measure accurate times and depends on MeasureStatTimes set to true, otherwise 0 is returned</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public long StatTimeTicks { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_Transports_" data-uid="NFX.Glue.Binding.Transports*"></a>
+              <h4 id="NFX_Glue_Binding_Transports" data-uid="NFX.Glue.Binding.Transports">Transports</h4>
+              <div class="markdown level1 summary"><p>Returns all transports in the binding stack</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;Transport&gt; Transports { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Glue.Transport.html">Transport</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Glue_Binding__Register_" data-uid="NFX.Glue.Binding._Register*"></a>
+              <h4 id="NFX_Glue_Binding__Register_NFX_Glue_Transport_" data-uid="NFX.Glue.Binding._Register(NFX.Glue.Transport)">_Register(Transport)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void _Register(Transport transport)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Transport.html">Transport</a></td>
+                    <td><span class="parametername">transport</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding__Unregister_" data-uid="NFX.Glue.Binding._Unregister*"></a>
+              <h4 id="NFX_Glue_Binding__Unregister_NFX_Glue_Transport_" data-uid="NFX.Glue.Binding._Unregister(NFX.Glue.Transport)">_Unregister(Transport)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void _Unregister(Transport transport)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Transport.html">Transport</a></td>
+                    <td><span class="parametername">transport</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_AcquireClientTransportForCall_" data-uid="NFX.Glue.Binding.AcquireClientTransportForCall*"></a>
+              <h4 id="NFX_Glue_Binding_AcquireClientTransportForCall_NFX_Glue_ClientEndPoint_NFX_Glue_Protocol_RequestMsg_" data-uid="NFX.Glue.Binding.AcquireClientTransportForCall(NFX.Glue.ClientEndPoint,NFX.Glue.Protocol.RequestMsg)">AcquireClientTransportForCall(ClientEndPoint, RequestMsg)</h4>
+              <div class="markdown level1 summary"><p>Returns an instance of transport suitable for a call. The implementation may return existing transport or allocate a new instance.
+The call is thread-safe</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual ClientTransport AcquireClientTransportForCall(ClientEndPoint client, RequestMsg request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientEndPoint.html">ClientEndPoint</a></td>
+                    <td><span class="parametername">client</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.RequestMsg.html">RequestMsg</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_AreNodesIdentical_" data-uid="NFX.Glue.Binding.AreNodesIdentical*"></a>
+              <h4 id="NFX_Glue_Binding_AreNodesIdentical_NFX_Glue_Node_NFX_Glue_Node_" data-uid="NFX.Glue.Binding.AreNodesIdentical(NFX.Glue.Node,NFX.Glue.Node)">AreNodesIdentical(Node, Node)</h4>
+              <div class="markdown level1 summary"><p>Returns true when two nodes represent the same binding, host and service identities.
+The implementation depends on binding, for example some binding may recognize an optional parameter as part of host segment, however
+that parameter does not change the identity of the node instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract bool AreNodesIdentical(Node left, Node right)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Node.html">Node</a></td>
+                    <td><span class="parametername">left</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Node.html">Node</a></td>
+                    <td><span class="parametername">right</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_CheckRunningState_" data-uid="NFX.Glue.Binding.CheckRunningState*"></a>
+              <h4 id="NFX_Glue_Binding_CheckRunningState_System_Boolean_" data-uid="NFX.Glue.Binding.CheckRunningState(System.Boolean)">CheckRunningState(Boolean)</h4>
+              <div class="markdown level1 summary"><p>Ensures that application and binding runtime are running or throws otherwise</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CheckRunningState(bool client = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">client</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_CloseServerEndpoint_" data-uid="NFX.Glue.Binding.CloseServerEndpoint*"></a>
+              <h4 id="NFX_Glue_Binding_CloseServerEndpoint_NFX_Glue_ServerEndPoint_" data-uid="NFX.Glue.Binding.CloseServerEndpoint(NFX.Glue.ServerEndPoint)">CloseServerEndpoint(ServerEndPoint)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract void CloseServerEndpoint(ServerEndPoint epoint)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ServerEndPoint.html">ServerEndPoint</a></td>
+                    <td><span class="parametername">epoint</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ConfigureAndStartNewClientTransport_" data-uid="NFX.Glue.Binding.ConfigureAndStartNewClientTransport*"></a>
+              <h4 id="NFX_Glue_Binding_ConfigureAndStartNewClientTransport_NFX_Glue_ClientTransport_" data-uid="NFX.Glue.Binding.ConfigureAndStartNewClientTransport(NFX.Glue.ClientTransport)">ConfigureAndStartNewClientTransport(ClientTransport)</h4>
+              <div class="markdown level1 summary"><p>Override to perform custom transport preparation and launch</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void ConfigureAndStartNewClientTransport(ClientTransport transport)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a></td>
+                    <td><span class="parametername">transport</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_Destructor_" data-uid="NFX.Glue.Binding.Destructor*"></a>
+              <h4 id="NFX_Glue_Binding_Destructor" data-uid="NFX.Glue.Binding.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Destructor">Service.Destructor()</a></div>
+              
+              
+              <a id="NFX_Glue_Binding_DispatchCall_" data-uid="NFX.Glue.Binding.DispatchCall*"></a>
+              <h4 id="NFX_Glue_Binding_DispatchCall_NFX_Glue_ClientEndPoint_NFX_Glue_Protocol_RequestMsg_" data-uid="NFX.Glue.Binding.DispatchCall(NFX.Glue.ClientEndPoint,NFX.Glue.Protocol.RequestMsg)">DispatchCall(ClientEndPoint, RequestMsg)</h4>
+              <div class="markdown level1 summary"><p>Dispatches a call allocating new or re-using existing transport if needed. The strategy depends on particular Binding implementation.
+This call is thread-safe</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public CallSlot DispatchCall(ClientEndPoint client, RequestMsg request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientEndPoint.html">ClientEndPoint</a></td>
+                    <td><span class="parametername">client</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.RequestMsg.html">RequestMsg</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.CallSlot.html">CallSlot</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_DoAcceptManagerVisit_" data-uid="NFX.Glue.Binding.DoAcceptManagerVisit*"></a>
+              <h4 id="NFX_Glue_Binding_DoAcceptManagerVisit_System_Object_System_DateTime_" data-uid="NFX.Glue.Binding.DoAcceptManagerVisit(System.Object,System.DateTime)">DoAcceptManagerVisit(Object, DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoAcceptManagerVisit(object manager, DateTime managerNow)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">manager</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">managerNow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoAcceptManagerVisit_System_Object_System_DateTime_">Service.DoAcceptManagerVisit(Object, DateTime)</a></div>
+              
+              
+              <a id="NFX_Glue_Binding_DoConfigure_" data-uid="NFX.Glue.Binding.DoConfigure*"></a>
+              <h4 id="NFX_Glue_Binding_DoConfigure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Glue.Binding.DoConfigure(NFX.Environment.IConfigSectionNode)">DoConfigure(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoConfigure(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoConfigure_NFX_Environment_IConfigSectionNode_">Service.DoConfigure(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_Glue_Binding_DoSignalStop_" data-uid="NFX.Glue.Binding.DoSignalStop*"></a>
+              <h4 id="NFX_Glue_Binding_DoSignalStop" data-uid="NFX.Glue.Binding.DoSignalStop">DoSignalStop()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoSignalStop()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoSignalStop">Service.DoSignalStop()</a></div>
+              
+              
+              <a id="NFX_Glue_Binding_DoWaitForCompleteStop_" data-uid="NFX.Glue.Binding.DoWaitForCompleteStop*"></a>
+              <h4 id="NFX_Glue_Binding_DoWaitForCompleteStop" data-uid="NFX.Glue.Binding.DoWaitForCompleteStop">DoWaitForCompleteStop()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoWaitForCompleteStop()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoWaitForCompleteStop">Service.DoWaitForCompleteStop()</a></div>
+              
+              
+              <a id="NFX_Glue_Binding_DumpMsg_" data-uid="NFX.Glue.Binding.DumpMsg*"></a>
+              <h4 id="NFX_Glue_Binding_DumpMsg_System_Boolean_NFX_Glue_Protocol_Msg_System_ArraySegment_System_Byte__" data-uid="NFX.Glue.Binding.DumpMsg(System.Boolean,NFX.Glue.Protocol.Msg,System.ArraySegment{System.Byte})">DumpMsg(Boolean, Msg, ArraySegment&lt;Byte&gt;)</h4>
+              <div class="markdown level1 summary"><p>Conditionally dumps message to disk</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void DumpMsg(bool server, Msg msg, ArraySegment&lt;byte&gt; data)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">server</span></td>
+                    <td><p>True for server-side message</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.Msg.html">Msg</a></td>
+                    <td><span class="parametername">msg</span></td>
+                    <td><p>Message that was deserialized/serialized. If null then error happened while deserializing</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.ArraySegment</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+                    <td><span class="parametername">data</span></td>
+                    <td><p>Data</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_DumpMsg_" data-uid="NFX.Glue.Binding.DumpMsg*"></a>
+              <h4 id="NFX_Glue_Binding_DumpMsg_System_Boolean_NFX_Glue_Protocol_Msg_System_Byte___System_Int32_System_Int32_" data-uid="NFX.Glue.Binding.DumpMsg(System.Boolean,NFX.Glue.Protocol.Msg,System.Byte[],System.Int32,System.Int32)">DumpMsg(Boolean, Msg, Byte[], Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Conditionally dumps message to disk</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void DumpMsg(bool server, Msg msg, byte[] buffer, int offset, int count)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">server</span></td>
+                    <td><p>True for server-side message</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.Msg.html">Msg</a></td>
+                    <td><span class="parametername">msg</span></td>
+                    <td><p>Message that was deserialized/serialized. If null then error happened while deserializing</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buffer</span></td>
+                    <td><p>Message body</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">offset</span></td>
+                    <td><p>Start index in buffer</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">count</span></td>
+                    <td><p>Byte size of message body</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_DumpMsg_" data-uid="NFX.Glue.Binding.DumpMsg*"></a>
+              <h4 id="NFX_Glue_Binding_DumpMsg_System_Boolean_NFX_Glue_Protocol_Msg_System_Func_System_ArraySegment_System_Byte___" data-uid="NFX.Glue.Binding.DumpMsg(System.Boolean,NFX.Glue.Protocol.Msg,System.Func{System.ArraySegment{System.Byte}})">DumpMsg(Boolean, Msg, Func&lt;ArraySegment&lt;Byte&gt;&gt;)</h4>
+              <div class="markdown level1 summary"><p>Conditionally dumps message to disk where the data is lazily obtained by calling dataFun</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void DumpMsg(bool server, Msg msg, Func&lt;ArraySegment&lt;byte&gt;&gt; dataFun)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">server</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.Msg.html">Msg</a></td>
+                    <td><span class="parametername">msg</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.ArraySegment</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+                    <td><span class="parametername">dataFun</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_GetClientCallStatTimeKey_" data-uid="NFX.Glue.Binding.GetClientCallStatTimeKey*"></a>
+              <h4 id="NFX_Glue_Binding_GetClientCallStatTimeKey_NFX_Glue_ClientEndPoint_NFX_Glue_Protocol_RequestMsg_" data-uid="NFX.Glue.Binding.GetClientCallStatTimeKey(NFX.Glue.ClientEndPoint,NFX.Glue.Protocol.RequestMsg)">GetClientCallStatTimeKey(ClientEndPoint, RequestMsg)</h4>
+              <div class="markdown level1 summary"><p>Extracts necessary information from client:request pair that characterizes the particular call
+for the purpose of call timing</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual string GetClientCallStatTimeKey(ClientEndPoint client, RequestMsg request)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientEndPoint.html">ClientEndPoint</a></td>
+                    <td><span class="parametername">client</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Protocol.RequestMsg.html">RequestMsg</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_MakeNewClientTransport_" data-uid="NFX.Glue.Binding.MakeNewClientTransport*"></a>
+              <h4 id="NFX_Glue_Binding_MakeNewClientTransport_NFX_Glue_ClientEndPoint_" data-uid="NFX.Glue.Binding.MakeNewClientTransport(NFX.Glue.ClientEndPoint)">MakeNewClientTransport(ClientEndPoint)</h4>
+              <div class="markdown level1 summary"><p>Factory method - Override to make an instance of a new client transport suitable for particular binding type</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract ClientTransport MakeNewClientTransport(ClientEndPoint client)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientEndPoint.html">ClientEndPoint</a></td>
+                    <td><span class="parametername">client</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_OpenServerEndpoint_" data-uid="NFX.Glue.Binding.OpenServerEndpoint*"></a>
+              <h4 id="NFX_Glue_Binding_OpenServerEndpoint_NFX_Glue_ServerEndPoint_" data-uid="NFX.Glue.Binding.OpenServerEndpoint(NFX.Glue.ServerEndPoint)">OpenServerEndpoint(ServerEndPoint)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract ServerTransport OpenServerEndpoint(ServerEndPoint epoint)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ServerEndPoint.html">ServerEndPoint</a></td>
+                    <td><span class="parametername">epoint</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ServerTransport.html">ServerTransport</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_ReleaseClientTransportAfterCall_" data-uid="NFX.Glue.Binding.ReleaseClientTransportAfterCall*"></a>
+              <h4 id="NFX_Glue_Binding_ReleaseClientTransportAfterCall_NFX_Glue_ClientTransport_" data-uid="NFX.Glue.Binding.ReleaseClientTransportAfterCall(NFX.Glue.ClientTransport)">ReleaseClientTransportAfterCall(ClientTransport)</h4>
+              <div class="markdown level1 summary"><p>Releases a transport instance that was acquired for call.
+The implementation may return this instance back to the pool of available transports or deallocate it.
+The default implementation releases the instance back to the pool</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void ReleaseClientTransportAfterCall(ClientTransport transport)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a></td>
+                    <td><span class="parametername">transport</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Glue_Binding_TryGetExistingAcquiredTransportPerRemoteNode_" data-uid="NFX.Glue.Binding.TryGetExistingAcquiredTransportPerRemoteNode*"></a>
+              <h4 id="NFX_Glue_Binding_TryGetExistingAcquiredTransportPerRemoteNode_NFX_Glue_Node_" data-uid="NFX.Glue.Binding.TryGetExistingAcquiredTransportPerRemoteNode(NFX.Glue.Node)">TryGetExistingAcquiredTransportPerRemoteNode(Node)</h4>
+              <div class="markdown level1 summary"><p>Tries to acquire an available client transport to make a call.
+This method respects binding/transport settings that impose a limit on the number of
+open concurrent transports and timeouts for acqusition waiting</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual ClientTransport TryGetExistingAcquiredTransportPerRemoteNode(Node remoteNode)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.Node.html">Node</a></td>
+                    <td><span class="parametername">remoteNode</span></td>
+                    <td><p>remote node to connect to</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.ClientTransport.html">ClientTransport</a></td>
+                    <td><p>Available acquired transport or null</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

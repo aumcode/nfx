@@ -1,0 +1,1742 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class IOMiscUtils
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class IOMiscUtils
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_IOMiscUtils" data-uid="NFX.IOMiscUtils">Class IOMiscUtils
+              </h1>
+              <div class="markdown level0 summary"><p>Misc utils for I/O</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">IOMiscUtils</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_IOMiscUtils_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class IOMiscUtils</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_IOMiscUtils_IO_WAIT_DEFAULT_TIMEOUT" data-uid="NFX.IOMiscUtils.IO_WAIT_DEFAULT_TIMEOUT">IO_WAIT_DEFAULT_TIMEOUT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int IO_WAIT_DEFAULT_TIMEOUT = 2000</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_IOMiscUtils_IO_WAIT_GRANULARITY_MS" data-uid="NFX.IOMiscUtils.IO_WAIT_GRANULARITY_MS">IO_WAIT_GRANULARITY_MS</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int IO_WAIT_GRANULARITY_MS = 200</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_IOMiscUtils_IO_WAIT_MIN_TIMEOUT" data-uid="NFX.IOMiscUtils.IO_WAIT_MIN_TIMEOUT">IO_WAIT_MIN_TIMEOUT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int IO_WAIT_MIN_TIMEOUT = 100</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_IOMiscUtils_AsCharEnumerable_" data-uid="NFX.IOMiscUtils.AsCharEnumerable*"></a>
+              <h4 id="NFX_IOMiscUtils_AsCharEnumerable_System_IO_Stream_" data-uid="NFX.IOMiscUtils.AsCharEnumerable(System.IO.Stream)">AsCharEnumerable(Stream)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;char&gt; AsCharEnumerable(this Stream stream)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">stream</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_AsCharEnumerable_" data-uid="NFX.IOMiscUtils.AsCharEnumerable*"></a>
+              <h4 id="NFX_IOMiscUtils_AsCharEnumerable_System_IO_TextReader_" data-uid="NFX.IOMiscUtils.AsCharEnumerable(System.IO.TextReader)">AsCharEnumerable(TextReader)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;char&gt; AsCharEnumerable(this TextReader reader)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.TextReader</span></td>
+                    <td><span class="parametername">reader</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_CopyStream_" data-uid="NFX.IOMiscUtils.CopyStream*"></a>
+              <h4 id="NFX_IOMiscUtils_CopyStream_System_IO_Stream_System_IO_Stream_" data-uid="NFX.IOMiscUtils.CopyStream(System.IO.Stream,System.IO.Stream)">CopyStream(Stream, Stream)</h4>
+              <div class="markdown level1 summary"><p>Copies one stream into another using temp buffer</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void CopyStream(Stream from, Stream to)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">to</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_EnsureAccessibleDirectory_" data-uid="NFX.IOMiscUtils.EnsureAccessibleDirectory*"></a>
+              <h4 id="NFX_IOMiscUtils_EnsureAccessibleDirectory_System_String_" data-uid="NFX.IOMiscUtils.EnsureAccessibleDirectory(System.String)">EnsureAccessibleDirectory(String)</h4>
+              <div class="markdown level1 summary"><p>Creates directory and immediately grants it accessibility rules for everyone if it does not exists,
+or returns the existing directory</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static DirectoryInfo EnsureAccessibleDirectory(string path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">path</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.DirectoryInfo</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_EnsureDirectoryDeleted_" data-uid="NFX.IOMiscUtils.EnsureDirectoryDeleted*"></a>
+              <h4 id="NFX_IOMiscUtils_EnsureDirectoryDeleted_System_String_System_Int32_" data-uid="NFX.IOMiscUtils.EnsureDirectoryDeleted(System.String,System.Int32)">EnsureDirectoryDeleted(String, Int32)</h4>
+              <div class="markdown level1 summary"><p>Tries to delete the specified directory if it exists BLOCKING for up to the specified interval until directory is PHYSICALLY deleted.
+Returns true when directory either did not exist in the first place or was successfully deleted (with confirmation).
+Returns false when directory could not be confirmed to be deleted within the specified timeout, this does not mean
+that the OS will not delete the directory later, so calling this function in a loop is expected.
+NOTE: Directory.Delete() does not guarantee that directory is no longer on disk upon its return</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool EnsureDirectoryDeleted(string dirName, int timeoutMs = 2000)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">dirName</span></td>
+                    <td><p>Directory to delete</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeoutMs</span></td>
+                    <td><p>Timeout in ms</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_EnsureFileEventuallyDeleted_" data-uid="NFX.IOMiscUtils.EnsureFileEventuallyDeleted*"></a>
+              <h4 id="NFX_IOMiscUtils_EnsureFileEventuallyDeleted_System_String_" data-uid="NFX.IOMiscUtils.EnsureFileEventuallyDeleted(System.String)">EnsureFileEventuallyDeleted(String)</h4>
+              <div class="markdown level1 summary"><p>Deleted file if it exists - does not block until file is deleted, the behavior is up to the OS</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void EnsureFileEventuallyDeleted(string fileName)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fileName</span></td>
+                    <td><p>Full file name with path</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_GetURL_" data-uid="NFX.IOMiscUtils.GetURL*"></a>
+              <h4 id="NFX_IOMiscUtils_GetURL_System_String_System_Int32_" data-uid="NFX.IOMiscUtils.GetURL(System.String,System.Int32)">GetURL(String, Int32)</h4>
+              <div class="markdown level1 summary"><p>Fetch the content of a given URL.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static KeyValuePair&lt;HttpStatusCode, string&gt; GetURL(string urlAddress, int timeout = 5000)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">urlAddress</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">System.Net.HttpStatusCode</span>, <span class="xref">System.String</span>&gt;</td>
+                    <td><p>Return fetched URL as a string, or null string when resulting status code is not HttpStatusCode.OK.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_MemBufferEquals_" data-uid="NFX.IOMiscUtils.MemBufferEquals*"></a>
+              <h4 id="NFX_IOMiscUtils_MemBufferEquals_System_Byte___System_Byte___" data-uid="NFX.IOMiscUtils.MemBufferEquals(System.Byte[],System.Byte[])">MemBufferEquals(Byte[], Byte[])</h4>
+              <div class="markdown level1 summary"><p>Returns true if both buffers contain the same number of the same bytes.
+The implementation uses quad-word comparison as much as possible for speed.
+Requires UNSAFE switch</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool MemBufferEquals(this byte[] buf1, byte[] buf2)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf1</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf2</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_NormalizeCenteredImage_" data-uid="NFX.IOMiscUtils.NormalizeCenteredImage*"></a>
+              <h4 id="NFX_IOMiscUtils_NormalizeCenteredImage_System_Drawing_Image_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="NFX.IOMiscUtils.NormalizeCenteredImage(System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32)">NormalizeCenteredImage(Image, Int32, Int32, Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Scales source image so it fits in the desired image size preserving aspect ratio.
+This function is usable for profile picture size/aspect normalization</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Image NormalizeCenteredImage(this Image srcImage, int targetWidth = 128, int targetHeight = 128, int xDpi = 96, int yDpi = 96)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Image</span></td>
+                    <td><span class="parametername">srcImage</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">targetWidth</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">targetHeight</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">xDpi</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">yDpi</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Image</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_PackISO3CodeToInt_" data-uid="NFX.IOMiscUtils.PackISO3CodeToInt*"></a>
+              <h4 id="NFX_IOMiscUtils_PackISO3CodeToInt_System_String_" data-uid="NFX.IOMiscUtils.PackISO3CodeToInt(System.String)">PackISO3CodeToInt(String)</h4>
+              <div class="markdown level1 summary"><p>Represents an ISO code as 4 byte integer filled with
+up to 3 ASCII chars converted to upper case, the highest byte is free to be used by the application</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int PackISO3CodeToInt(string iso)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">iso</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEInt32_" data-uid="NFX.IOMiscUtils.ReadBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEInt32_System_Byte___" data-uid="NFX.IOMiscUtils.ReadBEInt32(System.Byte[])">ReadBEInt32(Byte[])</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at index 0</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int ReadBEInt32(this byte[] buf)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEInt32_" data-uid="NFX.IOMiscUtils.ReadBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEInt32_System_Byte___System_Int32__" data-uid="NFX.IOMiscUtils.ReadBEInt32(System.Byte[],System.Int32@)">ReadBEInt32(Byte[], ref Int32)</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at the specified index
+and increments the idx by the number of bytes read</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int ReadBEInt32(this byte[] buf, ref int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEInt32_" data-uid="NFX.IOMiscUtils.ReadBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEInt32_System_Byte___System_Int64__" data-uid="NFX.IOMiscUtils.ReadBEInt32(System.Byte[],System.Int64@)">ReadBEInt32(Byte[], ref Int64)</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at the specified index
+and increments the idx by the number of bytes read</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int ReadBEInt32(this byte[] buf, ref long idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEInt32_" data-uid="NFX.IOMiscUtils.ReadBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEInt32_System_IO_Stream_" data-uid="NFX.IOMiscUtils.ReadBEInt32(System.IO.Stream)">ReadBEInt32(Stream)</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int ReadBEInt32(this Stream s)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEShort_" data-uid="NFX.IOMiscUtils.ReadBEShort*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEShort_System_Byte___System_Int32__" data-uid="NFX.IOMiscUtils.ReadBEShort(System.Byte[],System.Int32@)">ReadBEShort(Byte[], ref Int32)</h4>
+              <div class="markdown level1 summary"><p>Reads a short encoded as big endian from buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static short ReadBEShort(this byte[] buf, ref int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEShort_" data-uid="NFX.IOMiscUtils.ReadBEShort*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEShort_System_IO_Stream_" data-uid="NFX.IOMiscUtils.ReadBEShort(System.IO.Stream)">ReadBEShort(Stream)</h4>
+              <div class="markdown level1 summary"><p>Reads a short encoded as big endian from stream</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static short ReadBEShort(this Stream s)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUInt32_" data-uid="NFX.IOMiscUtils.ReadBEUInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUInt32_System_Byte___" data-uid="NFX.IOMiscUtils.ReadBEUInt32(System.Byte[])">ReadBEUInt32(Byte[])</h4>
+              <div class="markdown level1 summary"><p>Reads an unsigned integer encoded as big endian from buffer at index 0</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static uint ReadBEUInt32(this byte[] buf)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUInt32_" data-uid="NFX.IOMiscUtils.ReadBEUInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUInt32_System_Byte___System_Int32__" data-uid="NFX.IOMiscUtils.ReadBEUInt32(System.Byte[],System.Int32@)">ReadBEUInt32(Byte[], ref Int32)</h4>
+              <div class="markdown level1 summary"><p>Reads an unsigned integer encoded as big endian from buffer at the specified index
+and increments the idx by the number of bytes read</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static uint ReadBEUInt32(this byte[] buf, ref int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUInt32_" data-uid="NFX.IOMiscUtils.ReadBEUInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUInt32_System_Byte___System_Int64__" data-uid="NFX.IOMiscUtils.ReadBEUInt32(System.Byte[],System.Int64@)">ReadBEUInt32(Byte[], ref Int64)</h4>
+              <div class="markdown level1 summary"><p>Reads an unsigned integer encoded as big endian from buffer at the specified index
+and increments the idx by the number of bytes read</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static uint ReadBEUInt32(this byte[] buf, ref long idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUInt64_" data-uid="NFX.IOMiscUtils.ReadBEUInt64*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUInt64_System_Byte___System_Int32_" data-uid="NFX.IOMiscUtils.ReadBEUInt64(System.Byte[],System.Int32)">ReadBEUInt64(Byte[], Int32)</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at the specified index
+and increments the idx by the number of bytes read</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ulong ReadBEUInt64(this byte[] buf, int idx = 0)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUInt64_" data-uid="NFX.IOMiscUtils.ReadBEUInt64*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUInt64_System_Byte___System_Int32__" data-uid="NFX.IOMiscUtils.ReadBEUInt64(System.Byte[],System.Int32@)">ReadBEUInt64(Byte[], ref Int32)</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at the specified index
+and increments the idx by the number of bytes read</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ulong ReadBEUInt64(this byte[] buf, ref int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUInt64_" data-uid="NFX.IOMiscUtils.ReadBEUInt64*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUInt64_System_IO_Stream_" data-uid="NFX.IOMiscUtils.ReadBEUInt64(System.IO.Stream)">ReadBEUInt64(Stream)</h4>
+              <div class="markdown level1 summary"><p>Reads an integer encoded as big endian from buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ulong ReadBEUInt64(this Stream s)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadBEUShort_" data-uid="NFX.IOMiscUtils.ReadBEUShort*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadBEUShort_System_IO_Stream_" data-uid="NFX.IOMiscUtils.ReadBEUShort(System.IO.Stream)">ReadBEUShort(Stream)</h4>
+              <div class="markdown level1 summary"><p>Reads an ushort encoded as big endian from stream</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ushort ReadBEUShort(this Stream s)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt16</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_ReadLine_" data-uid="NFX.IOMiscUtils.ReadLine*"></a>
+              <h4 id="NFX_IOMiscUtils_ReadLine_System_String_" data-uid="NFX.IOMiscUtils.ReadLine(System.String)">ReadLine(String)</h4>
+              <div class="markdown level1 summary"><p>Reads first line from the string</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string ReadLine(this string str)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">str</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_UnpackISO3CodeFromInt_" data-uid="NFX.IOMiscUtils.UnpackISO3CodeFromInt*"></a>
+              <h4 id="NFX_IOMiscUtils_UnpackISO3CodeFromInt_System_Int32_" data-uid="NFX.IOMiscUtils.UnpackISO3CodeFromInt(System.Int32)">UnpackISO3CodeFromInt(Int32)</h4>
+              <div class="markdown level1 summary"><p>Unpacks an ISO code from int which was packed with PackISO3CodeToInt</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string UnpackISO3CodeFromInt(int iso)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">iso</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEInt32_" data-uid="NFX.IOMiscUtils.WriteBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEInt32_System_Byte___System_Int32_" data-uid="NFX.IOMiscUtils.WriteBEInt32(System.Byte[],System.Int32)">WriteBEInt32(Byte[], Int32)</h4>
+              <div class="markdown level1 summary"><p>Writes an integer encoded as big endian to buffer at index 0</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEInt32(this byte[] buf, int value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEInt32_" data-uid="NFX.IOMiscUtils.WriteBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEInt32_System_Byte___System_Int32_System_Int32_" data-uid="NFX.IOMiscUtils.WriteBEInt32(System.Byte[],System.Int32,System.Int32)">WriteBEInt32(Byte[], Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Writes an integer encoded as big endian to buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEInt32(this byte[] buf, int idx, int value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEInt32_" data-uid="NFX.IOMiscUtils.WriteBEInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEInt32_System_IO_Stream_System_Int32_" data-uid="NFX.IOMiscUtils.WriteBEInt32(System.IO.Stream,System.Int32)">WriteBEInt32(Stream, Int32)</h4>
+              <div class="markdown level1 summary"><p>Writes an integer encoded as big endian to the given stream</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEInt32(this Stream s, int value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEShort_" data-uid="NFX.IOMiscUtils.WriteBEShort*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEShort_System_Byte___System_Int32_System_Int16_" data-uid="NFX.IOMiscUtils.WriteBEShort(System.Byte[],System.Int32,System.Int16)">WriteBEShort(Byte[], Int32, Int16)</h4>
+              <div class="markdown level1 summary"><p>Writes a short encoded as big endian to buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEShort(this byte[] buf, int idx, short value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEShort_" data-uid="NFX.IOMiscUtils.WriteBEShort*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEShort_System_IO_Stream_System_Int16_" data-uid="NFX.IOMiscUtils.WriteBEShort(System.IO.Stream,System.Int16)">WriteBEShort(Stream, Int16)</h4>
+              <div class="markdown level1 summary"><p>Writes a short encoded as big endian to the given stream</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEShort(this Stream s, short value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEUInt32_" data-uid="NFX.IOMiscUtils.WriteBEUInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEUInt32_System_Byte___System_Int32_System_UInt32_" data-uid="NFX.IOMiscUtils.WriteBEUInt32(System.Byte[],System.Int32,System.UInt32)">WriteBEUInt32(Byte[], Int32, UInt32)</h4>
+              <div class="markdown level1 summary"><p>Writes an unsigned integer encoded as big endian to buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEUInt32(this byte[] buf, int idx, uint value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEUInt32_" data-uid="NFX.IOMiscUtils.WriteBEUInt32*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEUInt32_System_Byte___System_UInt32_" data-uid="NFX.IOMiscUtils.WriteBEUInt32(System.Byte[],System.UInt32)">WriteBEUInt32(Byte[], UInt32)</h4>
+              <div class="markdown level1 summary"><p>Writes an unsigned integer encoded as big endian to buffer at index 0</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEUInt32(this byte[] buf, uint value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEUInt64_" data-uid="NFX.IOMiscUtils.WriteBEUInt64*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEUInt64_System_Byte___System_Int32_System_UInt64_" data-uid="NFX.IOMiscUtils.WriteBEUInt64(System.Byte[],System.Int32,System.UInt64)">WriteBEUInt64(Byte[], Int32, UInt64)</h4>
+              <div class="markdown level1 summary"><p>Writes an unsigned long integer encoded as big endian to buffer at the specified index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEUInt64(this byte[] buf, int idx, ulong value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEUInt64_" data-uid="NFX.IOMiscUtils.WriteBEUInt64*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEUInt64_System_Byte___System_UInt64_" data-uid="NFX.IOMiscUtils.WriteBEUInt64(System.Byte[],System.UInt64)">WriteBEUInt64(Byte[], UInt64)</h4>
+              <div class="markdown level1 summary"><p>Writes an unsigned long integer encoded as big endian to buffer at the beginning</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEUInt64(this byte[] buf, ulong value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">buf</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEUInt64_" data-uid="NFX.IOMiscUtils.WriteBEUInt64*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEUInt64_System_IO_Stream_System_UInt64_" data-uid="NFX.IOMiscUtils.WriteBEUInt64(System.IO.Stream,System.UInt64)">WriteBEUInt64(Stream, UInt64)</h4>
+              <div class="markdown level1 summary"><p>Writes an unsigned long integer encoded as big endian to the given stream</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEUInt64(this Stream s, ulong value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IOMiscUtils_WriteBEUShort_" data-uid="NFX.IOMiscUtils.WriteBEUShort*"></a>
+              <h4 id="NFX_IOMiscUtils_WriteBEUShort_System_IO_Stream_System_UInt16_" data-uid="NFX.IOMiscUtils.WriteBEUShort(System.IO.Stream,System.UInt16)">WriteBEUShort(Stream, UInt16)</h4>
+              <div class="markdown level1 summary"><p>Writes an ushort encoded as big endian to the given stream</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteBEUShort(this Stream s, ushort value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.Stream</span></td>
+                    <td><span class="parametername">s</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

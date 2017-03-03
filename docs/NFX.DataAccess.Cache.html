@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.DataAccess.Cache
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.DataAccess.Cache
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_DataAccess_Cache" data-uid="NFX.DataAccess.Cache">Namespace NFX.DataAccess.Cache
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.Bucketed.html">Bucketed</a></h4>
+                  <section><p>Abstraction of an item that can be placed in hashing bucket</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.CacheRec.html">CacheRec</a></h4>
+                  <section><p>Stores cached item (such as a business object) along with additional caching information about it.
+The instance of this class gets reused for the same Key, so Key is immutable field.
+The instance of this class is returned by table.Get(key...) so the calling thread may see different Value property with time
+as it may be dynamically changed by some other thread (the newer value for the same Key)</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.CacheStore.html">CacheStore</a></h4>
+                  <section><p>Represents an efficient in-memory cache of expiring optionally-prioritized objects.
+This class is higly optimized for caching of business objects in data store implementations and does not guarantee that
+all hash collisions are handled, that is - some data may be overridden. The implementation relies on 2 stage hashing, where the second collision replaces the
+existing item with the colliding one if items are equal in their priorities. The degree of collisions is controlled by &#39;bucketSize&#39; and &#39;recPerPage&#39; parameters that
+are passed to the store per table, so basically the tables are capped at a certain size and can not change (bucketSize*recPerPage).
+The lookup implementation is 100% lock-free, whereas the degree of mutability-related locking is controlled by &#39;lockCount&#39; per table.
+This class is thread safe for reading and writing cache items, however it does not guarantee instant read/write consistency between threads.</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.ComplexKeyHashingStrategy.html">ComplexKeyHashingStrategy</a></h4>
+                  <section><p>Provides hashing strategy for keys that are not scalar uint64.
+This is a companion class for CacheStore which only understands uint64 as keys for efficiency purposes.
+One may extend this class to implement custom resolution of complex keys into uint64 hashes
+and provide collision handling. The base implementation uses object.GetHashCode() with chaining for collision resolution</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.Table.html">Table</a></h4>
+                  <section><p>Represents a table that stores cached items identified by keys</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.TableOptions.html">TableOptions</a></h4>
+                  <section><p>Provides config options for cache tables</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.Cache.TableCapacity.html">TableCapacity</a></h4>
+                  <section><p>Provides cache table capacity classifications</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

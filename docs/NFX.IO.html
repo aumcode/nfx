@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.IO
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.IO
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_IO" data-uid="NFX.IO">Namespace NFX.IO
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.BufferSegmentReadingStream.html">BufferSegmentReadingStream</a></h4>
+                  <section><p>Implements a read-only stream wrapper around a segment of byte[].
+Unlike MemoryStream, this class allows for use of long indexes and reuse the same stream instance with different byte[].</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.ConsoleUtils.html">ConsoleUtils</a></h4>
+                  <section><p>Provides various console-helper utilities</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.LEB128.html">LEB128</a></h4>
+                  <section><p>Facilitates int64/uint64 LEB128 encode/decode
+See <a href="https://en.wikipedia.org/wiki/LEB128">https://en.wikipedia.org/wiki/LEB128</a>
+See <a href="http://llvm.org/docs/doxygen/html/LEB128_8h_source.html">http://llvm.org/docs/doxygen/html/LEB128_8h_source.html</a></p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.NFXIOException.html">NFXIOException</a></h4>
+                  <section><p>Base exception thrown by the IO-related classes</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.NonClosingStreamWrap.html">NonClosingStreamWrap</a></h4>
+                  <section><p>Implements a stream wrapper that does not close/get disposed.
+This stream is needed for TextWriter defect that always closes stream in its destructor</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.ReadingStreamer.html">ReadingStreamer</a></h4>
+                  <section><p>Reads primitives from stream</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.SlimFormat.html">SlimFormat</a></h4>
+                  <section><p>A format that writes into binary files in an efficient way using variable-length integers, strings and meta handles.
+Developers may derive new formats that support custom serialization of their business-related types. This may increase performance dramatically.
+For example, in a drawing application a new format may derive from SlimFormat to natively serialize Point and PolarPoint structs to yield faster serialization times.
+NFX.Serialization.Slim.SlimSlimSerializer is capable of SlimFormat-derived format injection, in which case it will automatically discover new types that are directly supported
+by the format.</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.SlimReader.html">SlimReader</a></h4>
+                  <section><p>Reads primitives and other supported types from Slim-format stream. Use factory method of SlimFormat instance to create a new instance of SlimReader class</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.SlimWriter.html">SlimWriter</a></h4>
+                  <section><p>Writes primitives and other supported types to Slim-format stream. Use factory method of SlimFormat instance to create a new instance of SlimWriter class</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Streamer.html">Streamer</a></h4>
+                  <section><p>Represents a base for stream readers and writers.
+Streamer object instances ARE NOT THREAD-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.StreamerFormat.html">StreamerFormat</a></h4>
+                  <section><p>Describes a format - apair of readers/writers along with their capabilities - what types format supports natively</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.StreamerFormat-2.html">StreamerFormat&lt;TReader, TWriter&gt;</a></h4>
+                  <section><p>Describes a format - apair of readers/writers along with their capabilities.
+Developers may derive new formats that support custom serialization schemes</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></h4>
+                  <section><p>Writes primitives to stream</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.MetaHandle.html">MetaHandle</a></h4>
+                  <section><p>Represents a tuple of an unsigned integer with optional int or string metadata. If metadata is null then integer is stored by itself in an efficient way.
+The type is useful for storage of handles/indexes (such as pointer surrogates) with optional description of pointed-to data (such as type information).
+A special case is reserved for strings which are immutable yet reference types, in which case a special handle INLINED_STRING_HANDLE is set to indicate that
+&quot;Metadata&quot; really contains string data that this handle should resolve into. Check &quot;IsInlinedString&quot; property to see if string was inlined.
+Check &quot;IsInlinedValueType&quot; is set to true when a struct/valuetype is inlined and &quot;Metadata&quot; contains type spec</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.VarIntStr.html">VarIntStr</a></h4>
+                  <section><p>Holds either an integer or a string value.
+This is useful for metadata, i.e. types, if type is known an integer is sent, otherwise a full type name is sent</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

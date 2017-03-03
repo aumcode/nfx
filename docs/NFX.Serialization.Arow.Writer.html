@@ -1,0 +1,2097 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Writer
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Writer
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Serialization_Arow_Writer" data-uid="NFX.Serialization.Arow.Writer">Class Writer
+              </h1>
+              <div class="markdown level0 summary"><p>Provides low-level Arow format writing</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">Writer</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Serialization.Arow</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Serialization_Arow_Writer_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class Writer</code></pre>
+              </div>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Serialization_Arow_Writer_MAX_ARRAY_LENGTH" data-uid="NFX.Serialization.Arow.Writer.MAX_ARRAY_LENGTH">MAX_ARRAY_LENGTH</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const int MAX_ARRAY_LENGTH = 1048576</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_Serialization_Arow_Writer_SER_TYPE_MAP" data-uid="NFX.Serialization.Arow.Writer.SER_TYPE_MAP">SER_TYPE_MAP</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static readonly Dictionary&lt;Type, string&gt; SER_TYPE_MAP</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.Type</span>, <span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_NFX_ApplicationModel_Pile_PilePointer_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,NFX.ApplicationModel.Pile.PilePointer)">Write(WritingStreamer, UInt64, PilePointer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, PilePointer value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_NFX_DataAccess_Distributed_GDID_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,NFX.DataAccess.Distributed.GDID)">Write(WritingStreamer, UInt64, GDID)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, GDID value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_NFX_FID_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,NFX.FID)">Write(WritingStreamer, UInt64, FID)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, FID value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.FID.html">FID</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_NFX_Financial_Amount_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,NFX.Financial.Amount)">Write(WritingStreamer, UInt64, Amount)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, Amount value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Financial.Amount.html">Amount</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_NFX_Serialization_JSON_NLSMap_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,NFX.Serialization.JSON.NLSMap)">Write(WritingStreamer, UInt64, NLSMap)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, NLSMap value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Boolean_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Boolean)">Write(WritingStreamer, UInt64, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, bool value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Byte_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Byte)">Write(WritingStreamer, UInt64, Byte)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, byte value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Byte</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Byte___" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Byte[])">Write(WritingStreamer, UInt64, Byte[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, byte[] value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Char_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Char)">Write(WritingStreamer, UInt64, Char)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, char value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_NFX_ApplicationModel_Pile_PilePointer__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{NFX.ApplicationModel.Pile.PilePointer})">Write(WritingStreamer, UInt64, IEnumerable&lt;PilePointer&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;PilePointer&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_NFX_DataAccess_Distributed_GDID__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{NFX.DataAccess.Distributed.GDID})">Write(WritingStreamer, UInt64, IEnumerable&lt;GDID&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;GDID&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_NFX_FID__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{NFX.FID})">Write(WritingStreamer, UInt64, IEnumerable&lt;FID&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;FID&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.FID.html">FID</a>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_NFX_Financial_Amount__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{NFX.Financial.Amount})">Write(WritingStreamer, UInt64, IEnumerable&lt;Amount&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;Amount&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Financial.Amount.html">Amount</a>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_NFX_Serialization_JSON_NLSMap__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{NFX.Serialization.JSON.NLSMap})">Write(WritingStreamer, UInt64, IEnumerable&lt;NLSMap&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;NLSMap&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Serialization.JSON.NLSMap.html">NLSMap</a>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Boolean__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Boolean})">Write(WritingStreamer, UInt64, IEnumerable&lt;Boolean&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;bool&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Byte__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Byte})">Write(WritingStreamer, UInt64, IEnumerable&lt;Byte&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;byte&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Char__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Char})">Write(WritingStreamer, UInt64, IEnumerable&lt;Char&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;char&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_DateTime__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.DateTime})">Write(WritingStreamer, UInt64, IEnumerable&lt;DateTime&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;DateTime&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Decimal__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Decimal})">Write(WritingStreamer, UInt64, IEnumerable&lt;Decimal&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;decimal&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Decimal</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Double__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Double})">Write(WritingStreamer, UInt64, IEnumerable&lt;Double&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;double&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Guid__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Guid})">Write(WritingStreamer, UInt64, IEnumerable&lt;Guid&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;Guid&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Int16__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Int16})">Write(WritingStreamer, UInt64, IEnumerable&lt;Int16&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;short&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Int16</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Int32__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Int32})">Write(WritingStreamer, UInt64, IEnumerable&lt;Int32&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;int&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Int64__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Int64})">Write(WritingStreamer, UInt64, IEnumerable&lt;Int64&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;long&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_SByte__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.SByte})">Write(WritingStreamer, UInt64, IEnumerable&lt;SByte&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;sbyte&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.SByte</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Single__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Single})">Write(WritingStreamer, UInt64, IEnumerable&lt;Single&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;float&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Single</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_String__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.String})">Write(WritingStreamer, UInt64, IEnumerable&lt;String&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;string&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_TimeSpan__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.TimeSpan})">Write(WritingStreamer, UInt64, IEnumerable&lt;TimeSpan&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;TimeSpan&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_UInt16__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.UInt16})">Write(WritingStreamer, UInt64, IEnumerable&lt;UInt16&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;ushort&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.UInt16</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_UInt32__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.UInt32})">Write(WritingStreamer, UInt64, IEnumerable&lt;UInt32&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;uint&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.UInt32</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_UInt64__" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.UInt64})">Write(WritingStreamer, UInt64, IEnumerable&lt;UInt64&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, IEnumerable&lt;ulong&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_DateTime_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.DateTime)">Write(WritingStreamer, UInt64, DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, DateTime value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Decimal_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Decimal)">Write(WritingStreamer, UInt64, Decimal)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, decimal value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Decimal</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Double_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Double)">Write(WritingStreamer, UInt64, Double)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, double value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Double</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Guid_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Guid)">Write(WritingStreamer, UInt64, Guid)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, Guid value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Int16_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Int16)">Write(WritingStreamer, UInt64, Int16)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, short value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Int32_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Int32)">Write(WritingStreamer, UInt64, Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, int value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Int64_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Int64)">Write(WritingStreamer, UInt64, Int64)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, long value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_SByte_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.SByte)">Write(WritingStreamer, UInt64, SByte)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, sbyte value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.SByte</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_Single_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.Single)">Write(WritingStreamer, UInt64, Single)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, float value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Single</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_String_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.String)">Write(WritingStreamer, UInt64, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, string value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_TimeSpan_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.TimeSpan)">Write(WritingStreamer, UInt64, TimeSpan)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, TimeSpan value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.TimeSpan</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_UInt16_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.UInt16)">Write(WritingStreamer, UInt64, UInt16)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, ushort value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt16</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_UInt32_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.UInt32)">Write(WritingStreamer, UInt64, UInt32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, uint value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt32</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_Write_" data-uid="NFX.Serialization.Arow.Writer.Write*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_Write_NFX_IO_WritingStreamer_System_UInt64_System_UInt64_" data-uid="NFX.Serialization.Arow.Writer.Write(NFX.IO.WritingStreamer,System.UInt64,System.UInt64)">Write(WritingStreamer, UInt64, UInt64)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Write(WritingStreamer streamer, ulong name, ulong value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteEORow_" data-uid="NFX.Serialization.Arow.Writer.WriteEORow*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteEORow_NFX_IO_WritingStreamer_" data-uid="NFX.Serialization.Arow.Writer.WriteEORow(NFX.IO.WritingStreamer)">WriteEORow(WritingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteEORow(WritingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteHeader_" data-uid="NFX.Serialization.Arow.Writer.WriteHeader*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteHeader_NFX_IO_WritingStreamer_" data-uid="NFX.Serialization.Arow.Writer.WriteHeader(NFX.IO.WritingStreamer)">WriteHeader(WritingStreamer)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteHeader(WritingStreamer streamer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteNull_" data-uid="NFX.Serialization.Arow.Writer.WriteNull*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteNull_NFX_IO_WritingStreamer_System_UInt64_" data-uid="NFX.Serialization.Arow.Writer.WriteNull(NFX.IO.WritingStreamer,System.UInt64)">WriteNull(WritingStreamer, UInt64)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteNull(WritingStreamer streamer, ulong name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteObject_" data-uid="NFX.Serialization.Arow.Writer.WriteObject*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteObject_NFX_IO_WritingStreamer_System_UInt64_System_Object_" data-uid="NFX.Serialization.Arow.Writer.WriteObject(NFX.IO.WritingStreamer,System.UInt64,System.Object)">WriteObject(WritingStreamer, UInt64, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteObject(WritingStreamer streamer, ulong name, object obj)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">obj</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteObjectArray_" data-uid="NFX.Serialization.Arow.Writer.WriteObjectArray*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteObjectArray_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_System_Object__" data-uid="NFX.Serialization.Arow.Writer.WriteObjectArray(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{System.Object})">WriteObjectArray(WritingStreamer, UInt64, IEnumerable&lt;Object&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteObjectArray(WritingStreamer streamer, ulong name, IEnumerable&lt;object&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteRow_" data-uid="NFX.Serialization.Arow.Writer.WriteRow*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteRow_NFX_IO_WritingStreamer_System_UInt64_NFX_DataAccess_CRUD_TypedRow_" data-uid="NFX.Serialization.Arow.Writer.WriteRow(NFX.IO.WritingStreamer,System.UInt64,NFX.DataAccess.CRUD.TypedRow)">WriteRow(WritingStreamer, UInt64, TypedRow)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteRow(WritingStreamer streamer, ulong name, TypedRow row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_Arow_Writer_WriteRowArray_" data-uid="NFX.Serialization.Arow.Writer.WriteRowArray*"></a>
+              <h4 id="NFX_Serialization_Arow_Writer_WriteRowArray_NFX_IO_WritingStreamer_System_UInt64_System_Collections_Generic_IEnumerable_NFX_DataAccess_CRUD_TypedRow__" data-uid="NFX.Serialization.Arow.Writer.WriteRowArray(NFX.IO.WritingStreamer,System.UInt64,System.Collections.Generic.IEnumerable{NFX.DataAccess.CRUD.TypedRow})">WriteRowArray(WritingStreamer, UInt64, IEnumerable&lt;TypedRow&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void WriteRowArray(WritingStreamer streamer, ulong name, IEnumerable&lt;TypedRow&gt; array)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.WritingStreamer.html">WritingStreamer</a></td>
+                    <td><span class="parametername">streamer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.TypedRow.html">TypedRow</a>&gt;</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

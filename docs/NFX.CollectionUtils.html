@@ -1,0 +1,942 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CollectionUtils
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CollectionUtils
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_CollectionUtils" data-uid="NFX.CollectionUtils">Class CollectionUtils
+              </h1>
+              <div class="markdown level0 summary"><p>Some helpful extensions for standard collections</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">CollectionUtils</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_CollectionUtils_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class CollectionUtils</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_CollectionUtils_AddRange_" data-uid="NFX.CollectionUtils.AddRange*"></a>
+              <h4 id="NFX_CollectionUtils_AddRange__2_System_Collections_Generic_IDictionary___0___1__System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair___0___1___" data-uid="NFX.CollectionUtils.AddRange``2(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}})">AddRange&lt;TKey, TValue&gt;(IDictionary&lt;TKey, TValue&gt;, IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;)</h4>
+              <div class="markdown level1 summary"><p>Add all values from range sequence to src IDictionary. Source is actually modified.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IDictionary&lt;TKey, TValue&gt; AddRange&lt;TKey, TValue&gt;(this IDictionary&lt;TKey, TValue&gt; src, IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt; range)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;TKey, TValue&gt;</td>
+                    <td><span class="parametername">src</span></td>
+                    <td><p>Source IDictionary (where to add range)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;&gt;</td>
+                    <td><span class="parametername">range</span></td>
+                    <td><p>Sequence that should be added to source IDictionary</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;TKey, TValue&gt;</td>
+                    <td><p>Source with added elements from range (to have ability to chain operations)</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TKey</span></td>
+                    <td><p>Type of key</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TValue</span></td>
+                    <td><p>Type of value</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_AppendToNew_" data-uid="NFX.CollectionUtils.AppendToNew*"></a>
+              <h4 id="NFX_CollectionUtils_AppendToNew__1___0_____0___" data-uid="NFX.CollectionUtils.AppendToNew``1(``0[],``0[])">AppendToNew&lt;T&gt;(T[], T[])</h4>
+              <div class="markdown level1 summary"><p>Returns a new array that contains source elements with additional elements appended at the end</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static T[] AppendToNew&lt;T&gt;(this T[] source, params T[] elements)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>T[]</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>T[]</td>
+                    <td><span class="parametername">elements</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>T[]</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_Distinct_" data-uid="NFX.CollectionUtils.Distinct*"></a>
+              <h4 id="NFX_CollectionUtils_Distinct__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__" data-uid="NFX.CollectionUtils.Distinct``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">Distinct&lt;TResult, TKey&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TKey&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TResult&gt; Distinct&lt;TResult, TKey&gt;(this IEnumerable&lt;TResult&gt; source, Func&lt;TResult, TKey&gt; selector)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TResult, TKey&gt;</td>
+                    <td><span class="parametername">selector</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TResult</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TKey</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_FirstMax_" data-uid="NFX.CollectionUtils.FirstMax*"></a>
+              <h4 id="NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__" data-uid="NFX.CollectionUtils.FirstMax``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TResult FirstMax&lt;TResult, TComparand&gt;(this IEnumerable&lt;TResult&gt; source, Func&lt;TResult, TComparand&gt; selector)where TComparand : IComparable</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TResult, TComparand&gt;</td>
+                    <td><span class="parametername">selector</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TResult</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TResult</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TComparand</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_FirstMax_" data-uid="NFX.CollectionUtils.FirstMax*"></a>
+              <h4 id="NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__" data-uid="NFX.CollectionUtils.FirstMax``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},``1@)">FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TResult FirstMax&lt;TResult, TComparand&gt;(this IEnumerable&lt;TResult&gt; source, Func&lt;TResult, TComparand&gt; selector, out TComparand maxComparand)where TComparand : IComparable</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TResult, TComparand&gt;</td>
+                    <td><span class="parametername">selector</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">TComparand</span></td>
+                    <td><span class="parametername">maxComparand</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TResult</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TResult</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TComparand</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_FirstMin_" data-uid="NFX.CollectionUtils.FirstMin*"></a>
+              <h4 id="NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__" data-uid="NFX.CollectionUtils.FirstMin``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TResult FirstMin&lt;TResult, TComparand&gt;(this IEnumerable&lt;TResult&gt; source, Func&lt;TResult, TComparand&gt; selector)where TComparand : IComparable</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TResult, TComparand&gt;</td>
+                    <td><span class="parametername">selector</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TResult</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TResult</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TComparand</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_FirstMin_" data-uid="NFX.CollectionUtils.FirstMin*"></a>
+              <h4 id="NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__" data-uid="NFX.CollectionUtils.FirstMin``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},``1@)">FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TResult FirstMin&lt;TResult, TComparand&gt;(this IEnumerable&lt;TResult&gt; source, Func&lt;TResult, TComparand&gt; selector, out TComparand minComparand)where TComparand : IComparable</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TResult, TComparand&gt;</td>
+                    <td><span class="parametername">selector</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">TComparand</span></td>
+                    <td><span class="parametername">minComparand</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TResult</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TResult</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="parametername">TComparand</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_FirstOrAnyOrDefault_" data-uid="NFX.CollectionUtils.FirstOrAnyOrDefault*"></a>
+              <h4 id="NFX_CollectionUtils_FirstOrAnyOrDefault__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__" data-uid="NFX.CollectionUtils.FirstOrAnyOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">FirstOrAnyOrDefault&lt;TResult&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Tries to find the first element that matches the predicate and returns it,
+otherwise returns the first element found or default (i.e. null)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TResult FirstOrAnyOrDefault&lt;TResult&gt;(this IEnumerable&lt;TResult&gt; source, Func&lt;TResult, bool&gt; predicate)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TResult&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;TResult, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">predicate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TResult</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TResult</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_ForEach_" data-uid="NFX.CollectionUtils.ForEach*"></a>
+              <h4 id="NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0_System_Int32__" data-uid="NFX.CollectionUtils.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0,System.Int32})">ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T, Int32&gt;)</h4>
+              <div class="markdown level1 summary"><p>Runs some method over each element of src sequence</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; ForEach&lt;T&gt;(this IEnumerable&lt;T&gt; src, Action&lt;T, int&gt; action)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td><span class="parametername">src</span></td>
+                    <td><p>Source sequence</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;T, <span class="xref">System.Int32</span>&gt;</td>
+                    <td><span class="parametername">action</span></td>
+                    <td><p>Method to call on each element and its sequence number</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td><p>Source sequence (to have ability to chain similar calls)</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td><p>Sequence item type</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_ForEach_" data-uid="NFX.CollectionUtils.ForEach*"></a>
+              <h4 id="NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__" data-uid="NFX.CollectionUtils.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Runs some method over each element of src sequence</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; ForEach&lt;T&gt;(this IEnumerable&lt;T&gt; src, Action&lt;T&gt; action)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td><span class="parametername">src</span></td>
+                    <td><p>Source sequence</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;T&gt;</td>
+                    <td><span class="parametername">action</span></td>
+                    <td><p>Method to run over each element</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td><p>Source sequence (to have ability to chain similar calls)</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td><p>Sequence item type</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_SkipLast_" data-uid="NFX.CollectionUtils.SkipLast*"></a>
+              <h4 id="NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__" data-uid="NFX.CollectionUtils.SkipLast``1(System.Collections.Generic.IEnumerable{``0})">SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Takes all elements except for last element from the given source</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; SkipLast&lt;T&gt;(this IEnumerable&lt;T&gt; source)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_CollectionUtils_SkipLast_" data-uid="NFX.CollectionUtils.SkipLast*"></a>
+              <h4 id="NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__System_Int32_" data-uid="NFX.CollectionUtils.SkipLast``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;, Int32)</h4>
+              <div class="markdown level1 summary"><p>Takes all but last N elements from the source</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; SkipLast&lt;T&gt;(this IEnumerable&lt;T&gt; source, int n)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">n</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

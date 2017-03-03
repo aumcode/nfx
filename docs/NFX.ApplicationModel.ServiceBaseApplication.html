@@ -1,0 +1,1162 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ServiceBaseApplication
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ServiceBaseApplication
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_ApplicationModel_ServiceBaseApplication" data-uid="NFX.ApplicationModel.ServiceBaseApplication">Class ServiceBaseApplication
+              </h1>
+              <div class="markdown level0 summary"><p>Provides base implementation of IApplication for applications that have no forms like services and console apps. This class IS thread safe</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html">CommonApplicationLogic</a></div>
+                  <div class="level3"><span class="xref">ServiceBaseApplication</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_SWITCH">CommonApplicationLogic.CONFIG_SWITCH</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_APP_NAME_ATTR">CommonApplicationLogic.CONFIG_APP_NAME_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_UNIT_TEST_ATTR">CommonApplicationLogic.CONFIG_UNIT_TEST_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_MEMORY_MANAGEMENT_SECTION">CommonApplicationLogic.CONFIG_MEMORY_MANAGEMENT_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_STARTERS_SECTION">CommonApplicationLogic.CONFIG_STARTERS_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_STARTER_SECTION">CommonApplicationLogic.CONFIG_STARTER_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_TIMESOURCE_SECTION">CommonApplicationLogic.CONFIG_TIMESOURCE_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_EVENT_TIMER_SECTION">CommonApplicationLogic.CONFIG_EVENT_TIMER_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_LOG_SECTION">CommonApplicationLogic.CONFIG_LOG_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_INSTRUMENTATION_SECTION">CommonApplicationLogic.CONFIG_INSTRUMENTATION_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_THROTTLING_SECTION">CommonApplicationLogic.CONFIG_THROTTLING_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_DATA_STORE_SECTION">CommonApplicationLogic.CONFIG_DATA_STORE_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_OBJECT_STORE_SECTION">CommonApplicationLogic.CONFIG_OBJECT_STORE_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_GLUE_SECTION">CommonApplicationLogic.CONFIG_GLUE_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_SECURITY_SECTION">CommonApplicationLogic.CONFIG_SECURITY_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_PRELOAD_ASSEMBLIES_SECTION">CommonApplicationLogic.CONFIG_PRELOAD_ASSEMBLIES_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_ASSEMBLY_SECTION">CommonApplicationLogic.CONFIG_ASSEMBLY_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_PATH_ATTR">CommonApplicationLogic.CONFIG_PATH_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CONFIG_ENABLED_ATTR">CommonApplicationLogic.CONFIG_ENABLED_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_ConfigSettings">CommonApplicationLogic.m_ConfigSettings</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_FinishNotifiables">CommonApplicationLogic.m_FinishNotifiables</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_ConfigRoot">CommonApplicationLogic.m_ConfigRoot</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_Log">CommonApplicationLogic.m_Log</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_Instrumentation">CommonApplicationLogic.m_Instrumentation</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_Throttling">CommonApplicationLogic.m_Throttling</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_DataStore">CommonApplicationLogic.m_DataStore</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_ObjectStore">CommonApplicationLogic.m_ObjectStore</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_Glue">CommonApplicationLogic.m_Glue</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_SecurityManager">CommonApplicationLogic.m_SecurityManager</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_TimeSource">CommonApplicationLogic.m_TimeSource</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_m_EventTimer">CommonApplicationLogic.m_EventTimer</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_IsUnitTest">CommonApplicationLogic.IsUnitTest</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_InstanceID">CommonApplicationLogic.InstanceID</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_StartTime">CommonApplicationLogic.StartTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Name">CommonApplicationLogic.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Active">CommonApplicationLogic.Active</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Stopping">CommonApplicationLogic.Stopping</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_ShutdownStarted">CommonApplicationLogic.ShutdownStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Stop">CommonApplicationLogic.Stop()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Log">CommonApplicationLogic.Log</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Instrumentation">CommonApplicationLogic.Instrumentation</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Throttling">CommonApplicationLogic.Throttling</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_ConfigRoot">CommonApplicationLogic.ConfigRoot</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_DataStore">CommonApplicationLogic.DataStore</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_ObjectStore">CommonApplicationLogic.ObjectStore</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Glue">CommonApplicationLogic.Glue</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_SecurityManager">CommonApplicationLogic.SecurityManager</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_TimeSource">CommonApplicationLogic.TimeSource</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_EventTimer">CommonApplicationLogic.EventTimer</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_TimeLocation">CommonApplicationLogic.TimeLocation</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_LocalizedTime">CommonApplicationLogic.LocalizedTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_UniversalTimeToLocalizedTime_System_DateTime_">CommonApplicationLogic.UniversalTimeToLocalizedTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_LocalizedTimeToUniversalTime_System_DateTime_">CommonApplicationLogic.LocalizedTimeToUniversalTime(DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_MakeNewSessionInstance_System_Guid_NFX_Security_User_">CommonApplicationLogic.MakeNewSessionInstance(Guid, User)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_RegisterConfigSettings_NFX_Environment_IConfigSettings_">CommonApplicationLogic.RegisterConfigSettings(IConfigSettings)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_UnregisterConfigSettings_NFX_Environment_IConfigSettings_">CommonApplicationLogic.UnregisterConfigSettings(IConfigSettings)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_NotifyAllConfigSettingsAboutChange">CommonApplicationLogic.NotifyAllConfigSettingsAboutChange()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_RegisterAppFinishNotifiable_NFX_ApplicationModel_IApplicationFinishNotifiable_">CommonApplicationLogic.RegisterAppFinishNotifiable(IApplicationFinishNotifiable)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_UnregisterAppFinishNotifiable_NFX_ApplicationModel_IApplicationFinishNotifiable_">CommonApplicationLogic.UnregisterAppFinishNotifiable(IApplicationFinishNotifiable)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_PreloadAssemblies_System_Boolean_">CommonApplicationLogic.PreloadAssemblies(Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_WriteLog_NFX_Log_MessageType_System_String_System_String_System_Exception_System_String_System_Int32_System_Object_">CommonApplicationLogic.WriteLog(MessageType, String, String, Exception, String, Int32, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_GetStarters">CommonApplicationLogic.GetStarters()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_InitApplication">CommonApplicationLogic.InitApplication()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_CleanupApplication">CommonApplicationLogic.CleanupApplication()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_GetDefaultConfigFileName">CommonApplicationLogic.GetDefaultConfigFileName()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_NotifyAllConfigSettingsAboutChange_NFX_Environment_IConfigSectionNode_">CommonApplicationLogic.NotifyAllConfigSettingsAboutChange(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeLogStart_NFX_Log_ILogImplementation_">CommonApplicationLogic.BeforeLogStart(ILogImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeInstrumentationStart_NFX_Instrumentation_IInstrumentationImplementation_">CommonApplicationLogic.BeforeInstrumentationStart(IInstrumentationImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeThrottlingStart_NFX_Throttling_IThrottlingImplementation_">CommonApplicationLogic.BeforeThrottlingStart(IThrottlingImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeDataStoreStart_NFX_DataAccess_IDataStoreImplementation_">CommonApplicationLogic.BeforeDataStoreStart(IDataStoreImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeObjectStoreStart_NFX_ApplicationModel_Volatile_IObjectStoreImplementation_">CommonApplicationLogic.BeforeObjectStoreStart(IObjectStoreImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeGlueStart_NFX_Glue_IGlueImplementation_">CommonApplicationLogic.BeforeGlueStart(IGlueImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeSecurityManagerStart_NFX_Security_ISecurityManagerImplementation_">CommonApplicationLogic.BeforeSecurityManagerStart(ISecurityManagerImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeTimeSourceStart_NFX_Time_ITimeSourceImplementation_">CommonApplicationLogic.BeforeTimeSourceStart(ITimeSourceImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_BeforeEventTimerStart_NFX_Time_IEventTimerImplementation_">CommonApplicationLogic.BeforeEventTimerStart(IEventTimerImplementation)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_DoInitApplication">CommonApplicationLogic.DoInitApplication()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_DoCleanupApplication">CommonApplicationLogic.DoCleanupApplication()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.ApplicationModel</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_ApplicationModel_ServiceBaseApplication_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class ServiceBaseApplication : CommonApplicationLogic, IDisposable, IApplication, INamed, ILocalizedTimeProvider</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication__ctor_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.#ctor*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication__ctor_System_String_NFX_Environment_Configuration_NFX_Environment_ConfigSectionNode_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.#ctor(System.String,NFX.Environment.Configuration,NFX.Environment.ConfigSectionNode)">ServiceBaseApplication(String, Configuration, ConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Takes optional command-line configuration args and root configuration. If configuration is null then
+application is configured from a file co-located with entry-point assembly and
+called the same name as assembly with &#39;.config&#39; extension, unless args are specified and &quot;/config file&quot;
+switch is used in which case &#39;file&#39; has to be locatable and readable.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ServiceBaseApplication(string name, Configuration cmdLineArgs, ConfigSectionNode rootConfig)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.Configuration.html">Configuration</a></td>
+                    <td><span class="parametername">cmdLineArgs</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td><span class="parametername">rootConfig</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication__ctor_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.#ctor*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication__ctor_System_String___NFX_Environment_ConfigSectionNode_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.#ctor(System.String[],NFX.Environment.ConfigSectionNode)">ServiceBaseApplication(String[], ConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Takes optional application args[] and root configuration.
+The args are parsed into CommandArgsConfiguration.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ServiceBaseApplication(string[] args, ConfigSectionNode rootConfig)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">args</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td><span class="parametername">rootConfig</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_m_CommandArgs" data-uid="NFX.ApplicationModel.ServiceBaseApplication.m_CommandArgs">m_CommandArgs</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected ConfigSectionNode m_CommandArgs</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_s_Instance" data-uid="NFX.ApplicationModel.ServiceBaseApplication.s_Instance">s_Instance</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected static ServiceBaseApplication s_Instance</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ServiceBaseApplication.html">ServiceBaseApplication</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_AppName_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.AppName*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_AppName" data-uid="NFX.ApplicationModel.ServiceBaseApplication.AppName">AppName</h4>
+              <div class="markdown level1 summary"><p>Returns application name</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static string AppName { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_CmdArgs_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.CmdArgs*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_CmdArgs" data-uid="NFX.ApplicationModel.ServiceBaseApplication.CmdArgs">CmdArgs</h4>
+              <div class="markdown level1 summary"><p>References command line arguments configuration, so one can use it as:</p>
+<pre><code> if (Servicepplication.CmdArgs["DeleteFiles"].Exists)
+ {
+   // this will run if process was invoked like so: process.exe /deleteFiles
+ }</code></pre>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IConfigSectionNode CmdArgs { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_CommandArgs_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.CommandArgs*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_CommandArgs" data-uid="NFX.ApplicationModel.ServiceBaseApplication.CommandArgs">CommandArgs</h4>
+              <div class="markdown level1 summary"><p>References command line arguments configuration, so one can use it as:</p>
+<pre><code> if (ServiceApplication.Instance.CommandArgs["DeleteFiles"].Exists)
+ {
+   // this will run if process was invoked like so: process.exe /deleteFiles
+ }</code></pre>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IConfigSectionNode CommandArgs { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_ConfRoot_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.ConfRoot*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_ConfRoot" data-uid="NFX.ApplicationModel.ServiceBaseApplication.ConfRoot">ConfRoot</h4>
+              <div class="markdown level1 summary"><p>Provides access to configuration root for the whole application</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ConfigSectionNode ConfRoot { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_ContextAvailable_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.ContextAvailable*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_ContextAvailable" data-uid="NFX.ApplicationModel.ServiceBaseApplication.ContextAvailable">ContextAvailable</h4>
+              <div class="markdown level1 summary"><p>Indicates whether application context was allocated</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool ContextAvailable { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Data_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Data*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Data" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Data">Data</h4>
+              <div class="markdown level1 summary"><p>References application data store</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IDataStore Data { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStore.html">IDataStore</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Glues_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Glues*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Glues" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Glues">Glues</h4>
+              <div class="markdown level1 summary"><p>References glue that can be used to connect to remote entities</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IGlue Glues { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Glue.IGlue.html">IGlue</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Instance_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Instance*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Instance" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Instance">Instance</h4>
+              <div class="markdown level1 summary"><p>References a singleton instance of BaseApplication</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ServiceBaseApplication Instance { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.ServiceBaseApplication.html">ServiceBaseApplication</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Instruments_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Instruments*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Instruments" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Instruments">Instruments</h4>
+              <div class="markdown level1 summary"><p>References application instrumentation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IInstrumentation Instruments { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Instrumentation.IInstrumentation.html">IInstrumentation</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_IsActive_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.IsActive*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_IsActive" data-uid="NFX.ApplicationModel.ServiceBaseApplication.IsActive">IsActive</h4>
+              <div class="markdown level1 summary"><p>Returns true when application instance is active and working. This property returns false as soon as application finalization starts on shutdown
+Use to exit long-running loops and such</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool IsActive { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Logger_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Logger*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Logger" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Logger">Logger</h4>
+              <div class="markdown level1 summary"><p>References application logger</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ILog Logger { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.ILog.html">ILog</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Objects_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Objects*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Objects" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Objects">Objects</h4>
+              <div class="markdown level1 summary"><p>References application object store. Objects will survive application termination</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IObjectStore Objects { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Volatile.IObjectStore.html">IObjectStore</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Security_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Security*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Security" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Security">Security</h4>
+              <div class="markdown level1 summary"><p>References security manager that performs user authentication based on passed credentials and other security-related global tasks</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ISecurityManager Security { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Security.ISecurityManager.html">ISecurityManager</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Throttles_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Throttles*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Throttles" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Throttles">Throttles</h4>
+              <div class="markdown level1 summary"><p>References application throttling</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IThrottling Throttles { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Throttling.IThrottling.html">IThrottling</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Time_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Time*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Time" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Time">Time</h4>
+              <div class="markdown level1 summary"><p>References time source - an entity that supplies local and UTC times. The concrete implementation
+may elect to get accurate times from the network or other external precision time sources (i.e. NASA atomic clock)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static ITimeSource Time { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.ITimeSource.html">ITimeSource</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Timer_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Timer*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Timer" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Timer">Timer</h4>
+              <div class="markdown level1 summary"><p>References event timer which maintains and runs scheduled Event instances</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEventTimer Timer { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Time.IEventTimer.html">IEventTimer</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Destroy_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Destroy*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Destroy" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Destroy">Destroy()</h4>
+              <div class="markdown level1 summary"><p>Destroys application effectively finalizing all services</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void Destroy()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_Destructor_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Destructor*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_Destructor" data-uid="NFX.ApplicationModel.ServiceBaseApplication.Destructor">Destructor()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void Destructor()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html#NFX_ApplicationModel_CommonApplicationLogic_Destructor">CommonApplicationLogic.Destructor()</a></div>
+              
+              
+              <a id="NFX_ApplicationModel_ServiceBaseApplication_GetConfiguration_" data-uid="NFX.ApplicationModel.ServiceBaseApplication.GetConfiguration*"></a>
+              <h4 id="NFX_ApplicationModel_ServiceBaseApplication_GetConfiguration" data-uid="NFX.ApplicationModel.ServiceBaseApplication.GetConfiguration">GetConfiguration()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual Configuration GetConfiguration()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.Configuration.html">Configuration</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

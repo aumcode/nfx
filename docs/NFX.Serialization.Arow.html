@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Serialization.Arow
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Serialization.Arow
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Serialization_Arow" data-uid="NFX.Serialization.Arow">Namespace NFX.Serialization.Arow
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.ArowAttribute.html">ArowAttribute</a></h4>
+                  <section><p>Denotes types that generate Arow ser/deser core</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.ArowException.html">ArowException</a></h4>
+                  <section><p>Base exception thrown by the Arow serialization format</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.ArowSerializer.html">ArowSerializer</a></h4>
+                  <section><p>Facade for performing Arow serilalization.
+Arow format is purposely designed for &quot;[a]daptable [row]&quot;/version tolerant serialization that eschews creating extra copies and
+object instances. The serializer is used in conjunction with cl compiler that generates type-specific static serializer cores
+for every type that supports the format</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.CodeGenerator.html">CodeGenerator</a></h4>
+                  <section><p>Generates code for serilaizer and deserializer</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.Reader.html">Reader</a></h4>
+                  <section><p>Provides low-level Arow format reading</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.Writer.html">Writer</a></h4>
+                  <section><p>Provides low-level Arow format writing</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.ITypeSerializationCore.html">ITypeSerializationCore</a></h4>
+                  <section><p>Designates classes that register their single instance via a call to ArowSerializer.Register().
+These classes are generated by cl arow compiler</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.CodeGenerator.GeneratedCodeSegregation.html">CodeGenerator.GeneratedCodeSegregation</a></h4>
+                  <section><p>Defines how generated files should be stored on disk</p>
+</section>
+                  <h4><a class="xref" href="NFX.Serialization.Arow.DataType.html">DataType</a></h4>
+                  <section><p>Denotes types that Arow directly supports. Complex object are serialized as POD</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

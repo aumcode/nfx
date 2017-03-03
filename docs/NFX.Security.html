@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Security
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Security
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Security" data-uid="NFX.Security">Namespace NFX.Security
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Security.AccessLevel.html">AccessLevel</a></h4>
+                  <section><p>A level of access granted to user for certain permission, i.e. if (level.Denied).....</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.AdHocPermission.html">AdHocPermission</a></h4>
+                  <section><p>Represents a permission check instance which is a-typical and is based on string arguments</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.AuthorizationException.html">AuthorizationException</a></h4>
+                  <section><p>Base exception thrown by the security framework</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.BlankCredentials.html">BlankCredentials</a></h4>
+                  <section><p>Represents credentials that are absent. This is a singleton class</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.ConfigSecurityManager.html">ConfigSecurityManager</a></h4>
+                  <section><p>Provides security manager implementation that authenticates and authorizes users from configuration</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.Credentials.html">Credentials</a></h4>
+                  <section><p>User credentials base class. A credentials may be as simple as user+password, access card codes, door key, Twitter account token etc...</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.DefaultPasswordManager.html">DefaultPasswordManager</a></h4>
+                  <section><p>Provides default implementation for password managment functionality based on injectable algorithms and default password strength calculation</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.GDIDCredentials.html">GDIDCredentials</a></h4>
+                  <section><p>Represents credentials based on Global Distributed ID</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.HashedPassword.html">HashedPassword</a></h4>
+                  <section><p>Represents abstraction of a hashed password, the concreate password algorithm provide implementation (i.e. bytebuffer, dictionary, string)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.IDPasswordCredentials.html">IDPasswordCredentials</a></h4>
+                  <section><p>Represents simple ID/password textual credentials.
+Note: The password is stored as plain text</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.MD5PasswordHashingAlgorithm.html">MD5PasswordHashingAlgorithm</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Security.NOPSecurityManager.html">NOPSecurityManager</a></h4>
+                  <section><p>Provides security manager implementation that does nothing and always returns fake user instance</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.PasswordHashingAlgorithm.html">PasswordHashingAlgorithm</a></h4>
+                  <section><p>Represents an abstraction of password algorithm that performs hashing and verification of passwords supplied as SecureBuffer</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.PasswordHashingAlgorithm-1.html">PasswordHashingAlgorithm&lt;TOptions&gt;</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Security.PasswordRepresentation.html">PasswordRepresentation</a></h4>
+                  <section><p>Provides password representation content, i.e. an image with drawn password which is understandable by humans</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.Permission.html">Permission</a></h4>
+                  <section><p>Represents a general permission abstraction - where permission type represents the path/name of the permission
+in User&#39;s rights and .ctor takes specific parameters to check while authorizing user.
+Permission-derived class represents a certain permission type, whereas its instance is a check for particular desired level.
+To authorize certain actions, one creates an instance of Permission-derived class passing in its .ctor required
+access levels, then calls a Check() method that returns true if action is authorized.</p>
+<p>This scheme provides a great deal of flexibility, i.e. for very complex security cases developers may inherit leaf-level permissions from intermediate ones
+that have logic tied to session-level variables, this way user&#39;s access may vary by permission/session state, i.e. a user may have
+&quot;Patient.Master&quot; level 4 access in database &quot;A&quot;, while having acess denied to the same named permission in database &quot;B&quot;.
+User&#39;s database, or system instance is a flag in user-session context</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.Rights.html">Rights</a></h4>
+                  <section><p>User rights contains data about access levels to permissions in the system.
+Use Configuration internally to keep the data organized in hierarchical navigable structure.
+Configuration also allows to cross-link permission levels using vars and make acess level
+dependent on settings on a particular machine using environmental vars</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.SecureBuffer.html">SecureBuffer</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Security.SecurityException.html">SecurityException</a></h4>
+                  <section><p>Base exception thrown by the Security framework</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.SocialNetTokenCredentials.html">SocialNetTokenCredentials</a></h4>
+                  <section><p>Represents credentials supplied from/to Social Net site (i.e. Facebook, Twitter etc.)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.TypedPermission.html">TypedPermission</a></h4>
+                  <section><p>A general ancestor for all typed permissions - the ones declared in code</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.User.html">User</a></h4>
+                  <section><p>Provides base user functionality. Particular security manager implementations may return users derived from this class</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.Security.AuthenticationToken.html">AuthenticationToken</a></h4>
+                  <section><p>Represents security provider-internal ID that SecurityManager assigns into User object on authentication.
+These tokens can be used in place of Credentials to re-authenticate users or to requery user rights.
+External parties should never be supplied with this struct as it is backend-internal</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.MD5PasswordHashingOptions.html">MD5PasswordHashingOptions</a></h4>
+                  <section></section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Security.IPasswordHashingOptions.html">IPasswordHashingOptions</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Security.IPasswordManager.html">IPasswordManager</a></h4>
+                  <section><p>Denoutes an entity that manages passwords such as: computes and verified hash tokens
+and provides password strength verification</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.IPasswordManagerImplementation.html">IPasswordManagerImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Security.ISecurityException.html">ISecurityException</a></h4>
+                  <section><p>Marker interface for security exceptions</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.ISecurityManager.html">ISecurityManager</a></h4>
+                  <section><p>Represents an entity that performs user authentication based on passed credentials and other security-related global tasks</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.ISecurityManagerImplementation.html">ISecurityManagerImplementation</a></h4>
+                  <section><p>Represents an implementation of an entity that performs user authentication based on passed credentials and other security-related global tasks</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.IStringRepresentableCredentials.html">IStringRepresentableCredentials</a></h4>
+                  <section><p>Denotes credentials that can be represented as a string that can be used for example in Authorization header</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Security.PasswordFamily.html">PasswordFamily</a></h4>
+                  <section><p>Denoutes kinds of passwords i.e.: text that user types on login, short PIN,
+geometrical curve that users need to trace with their finger, select areas of picture</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.PasswordRepresentationType.html">PasswordRepresentationType</a></h4>
+                  <section><p>Flags denote types of password representation: Text/Image/Audio</p>
+</section>
+                  <h4><a class="xref" href="NFX.Security.PasswordStrengthLevel.html">PasswordStrengthLevel</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Security.UserStatus.html">UserStatus</a></h4>
+                  <section><p>User status enumeration -  super-permission levels</p>
+</section>
+                <h3 id="delegates">Delegates
+              </h3>
+                  <h4><a class="xref" href="NFX.Security.GetSessionFunc.html">GetSessionFunc</a></h4>
+                  <section><p>Invoked by permission checker to get session</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

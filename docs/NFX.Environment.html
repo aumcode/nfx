@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Environment
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Environment
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Environment" data-uid="NFX.Environment">Namespace NFX.Environment
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Environment.Behavior.html">Behavior</a></h4>
+                  <section><p>Represents a piece of logic that can be applied to different entities declaratively as attribute or through configuration.
+Behaviors are a form of inversion-of-control that allows to configure entities by code which itself can be injected by name from configuration.
+Behaviors are a form of aspect-oriented programming as they allow to proclaim certain &quot;behavior&quot; that knows how to implement itself on various
+application components (i.e. some behavior may inject Glue message inspector or log destination).
+Behaviors can be used to enforce policies by performing pre-run checks  and throw exceptions if certain required providers are not injected/configured</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.BehaviorApplyException.html">BehaviorApplyException</a></h4>
+                  <section><p>Thrown by Behavior class to indicate behavior apply error</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.BuildInformation.html">BuildInformation</a></h4>
+                  <section><p>Retrieves build information encapsulated into a module in the form of an embedded resource</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.CommandArgsConfiguration.html">CommandArgsConfiguration</a></h4>
+                  <section><p>Provides implementation of configuration based on arguments supplied from command line
+which is &quot;string[]&quot;. Arguments start with either &quot;/&quot; or &quot;-&quot; prefix. If any argument is not
+prefixed then it is written as an auto-named attribute node of the root with its value set, otherwise a section (under root) with
+argument&#39;s name is created. Any argument may have options. Any option may either consist of name
+or name value pair delimited by &quot;=&quot;.
+Argument options are written as attribute nodes of their corresponding sections.
+If option value specified without name (without &quot;=&quot;) then option is auto-named</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigAttribute.html">ConfigAttribute</a></h4>
+                  <section><p>Specifies how to apply configuration values to classes/fields/props</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a></h4>
+                  <section><p>Represents an attribute of a attribute node</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigException.html">ConfigException</a></h4>
+                  <section><p>Configuration-related exception</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigMacroContextAttribute.html">ConfigMacroContextAttribute</a></h4>
+                  <section><p>Decorates classes or structs that act as a context object for macro evaluation - passed as context parameter to MacroRunner.Run(...context) method</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigNode.html">ConfigNode</a></h4>
+                  <section><p>Provides configuration node abstraction for section and attribute nodes. This class is thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigNodeEqualityComparer.html">ConfigNodeEqualityComparer</a></h4>
+                  <section><p>Performs deep structural comparison of IConfigNodes</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></h4>
+                  <section><p>Represents configuration section node. This class is thread safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ConfigStringBuilder.html">ConfigStringBuilder</a></h4>
+                  <section><p>Facilitates the creation/building of strings from existing strings or configuration vectors.
+This is used for example to build DB connect strings from host names that need
+to be resolved via an external system</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.Configuration.html">Configuration</a></h4>
+                  <section><p>Provides top-level configuration abstraction</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.DefaultMacroRunner.html">DefaultMacroRunner</a></h4>
+                  <section><p>Provides default implementation for configuration variable macros.
+NOTE: When serialized a new instance is created which will not equal by reference to static.Instance property</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.FactoryUtils.html">FactoryUtils</a></h4>
+                  <section><p>Provides helper methods for dynamic object creation and configuration</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.FileConfiguration.html">FileConfiguration</a></h4>
+                  <section><p>Provides file-based configuration base object used for concrete implementations such as XML or INI file base configurations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.JSONConfiguration.html">JSONConfiguration</a></h4>
+                  <section><p>Provides implementation of configuration based on a classic JSON content</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.LaconicConfiguration.html">LaconicConfiguration</a></h4>
+                  <section><p>Provides implementation of configuration based on Laconic content format</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.MemoryConfiguration.html">MemoryConfiguration</a></h4>
+                  <section><p>Implements configuration that can not be persisted/loaded anywhere - just stored in memory</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.NodeOverrideRules.html">NodeOverrideRules</a></h4>
+                  <section><p>Contains node override rule definitions such as override specifier names and values.
+This class is used for merging/override of configurations/nodes</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.ScriptRunner.html">ScriptRunner</a></h4>
+                  <section><p>Executes configuration scripts which are embedded in configuration</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.Vars.html">Vars</a></h4>
+                  <section><p>Allows for simple ad-hoc environment var passing to configuration</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.WindowsEnvironmentVariableResolver.html">WindowsEnvironmentVariableResolver</a></h4>
+                  <section><p>Resolves variables using Windows environment variables.
+NOTE: When serialized a new instance is created which will not equal by reference to static.Instance property</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.XMLConfiguration.html">XMLConfiguration</a></h4>
+                  <section><p>Provides implementation of configuration based on a classic XML content</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Environment.IConfigAttrNode.html">IConfigAttrNode</a></h4>
+                  <section><p>Represents a read-only attribute of a attribute node</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigNode.html">IConfigNode</a></h4>
+                  <section><p>Provides read-only configuration node abstraction for section and attribute nodes</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigNodeProvider.html">IConfigNodeProvider</a></h4>
+                  <section><p>Represents an entity that provides config node. It is primarily used for includes</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></h4>
+                  <section><p>Provides read-only configuration section node abstraction</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigSettings.html">IConfigSettings</a></h4>
+                  <section><p>Represents an entity that provides a type-safe access to configuration settings that come from Configuration nodes.
+This class obviates the need for navigation between config nodes on every property get and facilitates faster access to some config parameters
+that need to be gotten efficiently, as they are now kept cached in RAM in native format (i.e. DateTime vs. string) as fields.
+Usually classes that implement this interface are singleton and they get registered with the application using IApplication.RegisterConfigSettings()
+method. Warning: the implementation must be thread-safe and allow property getters to keep reading while ConfigChanged() notification happens</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigStringBuilder.html">IConfigStringBuilder</a></h4>
+                  <section><p>Denotes objects that can build a string (i.e. a database connection string) from the configured
+state/properties. This is used for example to build DB connect strings from host names that need
+to be resolved via an external system</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigurable.html">IConfigurable</a></h4>
+                  <section><p>Designates entities that may be configured</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IConfigurationPersistent.html">IConfigurationPersistent</a></h4>
+                  <section><p>Designates entities that may persist their parameters/state in configuration</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IEnvironmentVariableResolver.html">IEnvironmentVariableResolver</a></h4>
+                  <section><p>Represents an entity that can resolve variables</p>
+</section>
+                  <h4><a class="xref" href="NFX.Environment.IMacroRunner.html">IMacroRunner</a></h4>
+                  <section><p>Represents an entity that runs config var macros</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Environment.OverrideSpec.html">OverrideSpec</a></h4>
+                  <section><p>Override specifications that dictate what to do when another node supplies entity with the same name</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

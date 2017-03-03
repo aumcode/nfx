@@ -1,0 +1,2318 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RowsetBase
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RowsetBase
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_DataAccess_CRUD_RowsetBase" data-uid="NFX.DataAccess.CRUD.RowsetBase">Class RowsetBase
+              </h1>
+              <div class="markdown level0 summary"><p>Provides base for rowset implementation.
+Rowsets are mutable lists of rows where all rows must have the same schema, however a rowset may contain a mix of
+dynamic and typed rows as long as they have the same schema.
+Rowsets are not thread-safe</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">RowsetBase</span></div>
+                  <div class="level2"><a class="xref" href="NFX.DataAccess.CRUD.Rowset.html">Rowset</a></div>
+                  <div class="level2"><a class="xref" href="NFX.DataAccess.CRUD.Table.html">Table</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.DataAccess.CRUD</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_DataAccess_CRUD_RowsetBase_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class RowsetBase : IList&lt;Row&gt;, ICollection&lt;Row&gt;, IEnumerable&lt;Row&gt;, IEnumerable, IComparer&lt;Row&gt;, IJSONWritable, IValidatable</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase__ctor_" data-uid="NFX.DataAccess.CRUD.RowsetBase.#ctor*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase__ctor_NFX_DataAccess_CRUD_Schema_" data-uid="NFX.DataAccess.CRUD.RowsetBase.#ctor(NFX.DataAccess.CRUD.Schema)">RowsetBase(Schema)</h4>
+              <div class="markdown level1 summary"><p>Creates an empty rowset</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected RowsetBase(Schema schema)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Schema.html">Schema</a></td>
+                    <td><span class="parametername">schema</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_m_Schema" data-uid="NFX.DataAccess.CRUD.RowsetBase.m_Schema">m_Schema</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Schema m_Schema</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Schema.html">Schema</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_AsReadonlyIList_" data-uid="NFX.DataAccess.CRUD.RowsetBase.AsReadonlyIList*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_AsReadonlyIList" data-uid="NFX.DataAccess.CRUD.RowsetBase.AsReadonlyIList">AsReadonlyIList</h4>
+              <div class="markdown level1 summary"><p>Returns data as non-generic readonly IList</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IList AsReadonlyIList { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.IList</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_ChangeCount_" data-uid="NFX.DataAccess.CRUD.RowsetBase.ChangeCount*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_ChangeCount" data-uid="NFX.DataAccess.CRUD.RowsetBase.ChangeCount">ChangeCount</h4>
+              <div class="markdown level1 summary"><p>Returns a count of accumulated modifications performed on the rowset, or zero when no modifications have been made or
+LogModifications = false</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int ChangeCount { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Changes_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Changes*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Changes" data-uid="NFX.DataAccess.CRUD.RowsetBase.Changes">Changes</h4>
+              <div class="markdown level1 summary"><p>Returns accumulated modifications performed on the rowset, or empty enumerator if no modifications have been made or
+LogModifications = false</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;RowChange&gt; Changes { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.RowChange.html">RowChange</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Context_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Context*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Context" data-uid="NFX.DataAccess.CRUD.RowsetBase.Context">Context</h4>
+              <div class="markdown level1 summary"><p>Provides dynamic view of rowset&#39;s data context - attributes applicable to the whole rowset</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public dynamic Context { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_ContextMap_" data-uid="NFX.DataAccess.CRUD.RowsetBase.ContextMap*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_ContextMap" data-uid="NFX.DataAccess.CRUD.RowsetBase.ContextMap">ContextMap</h4>
+              <div class="markdown level1 summary"><p>Provides dynamic view as JSONDataMap of rowset&#39;s data context - attributes applicable to the whole rowset</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public JSONDataMap ContextMap { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Count_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Count*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Count" data-uid="NFX.DataAccess.CRUD.RowsetBase.Count">Count</h4>
+              <div class="markdown level1 summary"><p>Returns row count in this rowset</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.Count</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_InstanceGUID_" data-uid="NFX.DataAccess.CRUD.RowsetBase.InstanceGUID*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_InstanceGUID" data-uid="NFX.DataAccess.CRUD.RowsetBase.InstanceGUID">InstanceGUID</h4>
+              <div class="markdown level1 summary"><p>Returns globaly-unique instance ID.
+This ID is useful as a key for storing rowsets in object stores and posting data back from web client to server.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Guid InstanceGUID { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_IsReadOnly_" data-uid="NFX.DataAccess.CRUD.RowsetBase.IsReadOnly*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_IsReadOnly" data-uid="NFX.DataAccess.CRUD.RowsetBase.IsReadOnly">IsReadOnly</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.IsReadOnly</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Item_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Item*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Item_System_Int32_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Item(System.Int32)">Item[Int32]</h4>
+              <div class="markdown level1 summary"><p>This method performs update on set</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Row this[int index] { get; set; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">index</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IList&lt;T&gt;.Item[System.Int32]</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_LogChanges_" data-uid="NFX.DataAccess.CRUD.RowsetBase.LogChanges*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_LogChanges" data-uid="NFX.DataAccess.CRUD.RowsetBase.LogChanges">LogChanges</h4>
+              <div class="markdown level1 summary"><p>Gets/Sets whether this rowset keeps track of all modifications done to it.
+This property must be set to true to be able to save changes into ICRUDDataStore</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool LogChanges { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Schema_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Schema*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Schema" data-uid="NFX.DataAccess.CRUD.RowsetBase.Schema">Schema</h4>
+              <div class="markdown level1 summary"><p>Returns a schema for rows that this rowset contains</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Schema Schema { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Schema.html">Schema</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Add_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Add*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Add_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Add(NFX.DataAccess.CRUD.Row)">Add(Row)</h4>
+              <div class="markdown level1 summary"><p>Inserts a row</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Add(Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.Add(T)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Check_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Check*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Check_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Check(NFX.DataAccess.CRUD.Row)">Check(Row)</h4>
+              <div class="markdown level1 summary"><p>Checks argument for being non-null and of the same schema with this rowset</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected void Check(Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Clear_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Clear*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Clear" data-uid="NFX.DataAccess.CRUD.RowsetBase.Clear">Clear()</h4>
+              <div class="markdown level1 summary"><p>Purges table</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+              </div>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.Clear()</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Compare_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Compare*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Compare_NFX_DataAccess_CRUD_Row_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Compare(NFX.DataAccess.CRUD.Row,NFX.DataAccess.CRUD.Row)">Compare(Row, Row)</h4>
+              <div class="markdown level1 summary"><p>Compares two rows</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract int Compare(Row rowA, Row rowB)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">rowA</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">rowB</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IComparer&lt;T&gt;.Compare(T, T)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Contains_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Contains*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Contains_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Contains(NFX.DataAccess.CRUD.Row)">Contains(Row)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Contains(Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.Contains(T)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_CopyTo_" data-uid="NFX.DataAccess.CRUD.RowsetBase.CopyTo*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_CopyTo_NFX_DataAccess_CRUD_Row___System_Int32_" data-uid="NFX.DataAccess.CRUD.RowsetBase.CopyTo(NFX.DataAccess.CRUD.Row[],System.Int32)">CopyTo(Row[], Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CopyTo(Row[] array, int arrayIndex)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>[]</td>
+                    <td><span class="parametername">array</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">arrayIndex</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.CopyTo(T[], System.Int32)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Delete_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Delete*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Delete_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Delete(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey)">Delete(Row, IDataStoreKey)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row with the same set of key fields in this table and if found, deletes it and returns its index, otherwise -1</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Delete(Row row, IDataStoreKey key = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Delete_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Delete*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Delete_System_Object___" data-uid="NFX.DataAccess.CRUD.RowsetBase.Delete(System.Object[])">Delete(Object[])</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row with the same set of key fields in this table and if found, deletes it and returns its index, otherwise -1</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Delete(params object[] keys)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">keys</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_DeleteAll_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DeleteAll*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_DeleteAll" data-uid="NFX.DataAccess.CRUD.RowsetBase.DeleteAll">DeleteAll()</h4>
+              <div class="markdown level1 summary"><p>Deletes all rows from table. This method is similar to Purge() but does logging (when enabled)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void DeleteAll()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_DoDelete_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoDelete*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_DoDelete_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoDelete(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey)">DoDelete(Row, IDataStoreKey)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row with the same set of key fields in this table and if found, deletes it and returns its index, otherwise -1</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual int DoDelete(Row row, IDataStoreKey key = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_DoInsert_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoInsert*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_DoInsert_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoInsert(NFX.DataAccess.CRUD.Row)">DoInsert(Row)</h4>
+              <div class="markdown level1 summary"><p>Tries to insert a row. If another row with the same set of key fields already in the table returns -1, otherwise
+returns insertion index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual int DoInsert(Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_DoUpdate_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoUpdate*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_DoUpdate_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoUpdate(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey)">DoUpdate(Row, IDataStoreKey)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row with the same set of key fields in this table and if found, replaces it and returns its index,
+otherwise returns -1</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual int DoUpdate(Row row, IDataStoreKey key = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_DoUpsert_" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoUpsert*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_DoUpsert_NFX_DataAccess_CRUD_Row_System_Func_NFX_DataAccess_CRUD_Row_System_Boolean__" data-uid="NFX.DataAccess.CRUD.RowsetBase.DoUpsert(NFX.DataAccess.CRUD.Row,System.Func{NFX.DataAccess.CRUD.Row,System.Boolean})">DoUpsert(Row, Func&lt;Row, Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row with the same set of key fields in this table and if found, replaces it and returns true,
+otherwise inserts the row (if schemas match) and returns false. Optionally pass updateWhere condition
+that may check whether update needs to be performed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual bool DoUpsert(Row row, Func&lt;Row, bool&gt; updateWhere)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">updateWhere</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey(NFX.DataAccess.CRUD.Row)">FindByKey(Row)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row by specified keyset and returns it or null if not found</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Row FindByKey(Row keyRow)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">keyRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_NFX_DataAccess_CRUD_Row_System_Func_NFX_DataAccess_CRUD_Row_System_Boolean__" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey(NFX.DataAccess.CRUD.Row,System.Func{NFX.DataAccess.CRUD.Row,System.Boolean})">FindByKey(Row, Func&lt;Row, Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row by specified keyset and extra WHERE clause and returns it or null if not found.
+This method does not perform well on Rowsets instances as a rowset is unordered list which does linear search.
+In contrast, Tables are always ordered and perform binary search instead</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Row FindByKey(Row row, Func&lt;Row, bool&gt; extraWhere)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">extraWhere</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_System_Func_NFX_DataAccess_CRUD_Row_System_Boolean__System_Object___" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey(System.Func{NFX.DataAccess.CRUD.Row,System.Boolean},System.Object[])">FindByKey(Func&lt;Row, Boolean&gt;, Object[])</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row by specified keyset and extra WHERE clause and returns it or null if not found</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Row FindByKey(Func&lt;Row, bool&gt; extraWhere, params object[] keys)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">extraWhere</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">keys</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FindByKey_System_Object___" data-uid="NFX.DataAccess.CRUD.RowsetBase.FindByKey(System.Object[])">FindByKey(Object[])</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row by specified keyset and returns it or null if not found.
+This method does not perform well on Rowsets instances as a rowset is unordered list which does linear search.
+In contrast, Tables are always ordered and perform binary search instead</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Row FindByKey(params object[] keys)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">keys</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_NFX_Serialization_JSON_JSONDataMap_System_Boolean_System_Boolean_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON(NFX.Serialization.JSON.JSONDataMap,System.Boolean,System.Boolean)">FromJSON(JSONDataMap, Boolean, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static RowsetBase FromJSON(JSONDataMap jsonMap, bool schemaOnly = false, bool readOnlySchema = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">schemaOnly</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnlySchema</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_NFX_Serialization_JSON_JSONDataMap_System_Boolean__System_Boolean_System_Boolean_NFX_DataAccess_CRUD_SetFieldFunc_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON(NFX.Serialization.JSON.JSONDataMap,System.Boolean@,System.Boolean,System.Boolean,NFX.DataAccess.CRUD.SetFieldFunc)">FromJSON(JSONDataMap, out Boolean, Boolean, Boolean, SetFieldFunc)</h4>
+              <div class="markdown level1 summary"><p>Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present.
+allMatched==false when some data did not match schema (i.e. too little fields or extra fields supplied)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static RowsetBase FromJSON(JSONDataMap jsonMap, out bool allMatched, bool schemaOnly = false, bool readOnlySchema = false, SetFieldFunc setFieldFunc = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">allMatched</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">schemaOnly</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnlySchema</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.SetFieldFunc.html">SetFieldFunc</a></td>
+                    <td><span class="parametername">setFieldFunc</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_System_String_System_Boolean_System_Boolean_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON(System.String,System.Boolean,System.Boolean)">FromJSON(String, Boolean, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Reads either Table or Rowset from JSON created by WriteAsJSON. Metadata must be present</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static RowsetBase FromJSON(string json, bool schemaOnly = false, bool readOnlySchema = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">json</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">schemaOnly</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnlySchema</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON__1_NFX_Serialization_JSON_JSONDataMap_NFX_DataAccess_CRUD_RowsetBase__NFX_DataAccess_CRUD_SetFieldFunc_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON``1(NFX.Serialization.JSON.JSONDataMap,NFX.DataAccess.CRUD.RowsetBase@,NFX.DataAccess.CRUD.SetFieldFunc)">FromJSON&lt;T&gt;(JSONDataMap, ref RowsetBase, SetFieldFunc)</h4>
+              <div class="markdown level1 summary"><p>Reads either Table or Rowset from JSON created by WriteAsJSON.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int FromJSON&lt;T&gt;(JSONDataMap jsonMap, ref RowsetBase result, SetFieldFunc setFieldFunc = null)where T : TypedRow, new ()</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td><span class="parametername">jsonMap</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">result</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.SetFieldFunc.html">SetFieldFunc</a></td>
+                    <td><span class="parametername">setFieldFunc</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><p>Total number of rows found in JSON. If this number is less than
+result.Count, then not all rows matched the schema of the resulting rowset.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON__1_NFX_Serialization_JSON_JSONDataMap_NFX_DataAccess_CRUD_RowsetBase__NFX_DataAccess_CRUD_SetFieldFunc__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The schema of &quot;result&quot; must match the schema of the typed row T.
+It&#39;s the responsibility of the caller to clear the &quot;result&quot; prior to
+calling this function - the function appends rows to existing rowset.</p>
+</div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_FromJSON_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON__1_System_String_NFX_DataAccess_CRUD_RowsetBase__NFX_DataAccess_CRUD_SetFieldFunc_" data-uid="NFX.DataAccess.CRUD.RowsetBase.FromJSON``1(System.String,NFX.DataAccess.CRUD.RowsetBase@,NFX.DataAccess.CRUD.SetFieldFunc)">FromJSON&lt;T&gt;(String, ref RowsetBase, SetFieldFunc)</h4>
+              <div class="markdown level1 summary"><p>Reads either Table or Rowset from JSON created by WriteAsJSON.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static int FromJSON&lt;T&gt;(string json, ref RowsetBase result, SetFieldFunc setFieldFunc = null)where T : TypedRow, new ()</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">json</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.RowsetBase.html">RowsetBase</a></td>
+                    <td><span class="parametername">result</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.SetFieldFunc.html">SetFieldFunc</a></td>
+                    <td><span class="parametername">setFieldFunc</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><p>Total number of rows found in JSON. If this number is less than
+result.Count, then not all rows matched the schema of the resulting rowset.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">T</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_DataAccess_CRUD_RowsetBase_FromJSON__1_System_String_NFX_DataAccess_CRUD_RowsetBase__NFX_DataAccess_CRUD_SetFieldFunc__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The schema of &quot;result&quot; must match the schema of the typed row T.
+It&#39;s the responsibility of the caller to clear the &quot;result&quot; prior to
+calling this function - the function appends rows to existing rowset.</p>
+</div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_GetChangeAt_" data-uid="NFX.DataAccess.CRUD.RowsetBase.GetChangeAt*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_GetChangeAt_System_Int32_" data-uid="NFX.DataAccess.CRUD.RowsetBase.GetChangeAt(System.Int32)">GetChangeAt(Int32)</h4>
+              <div class="markdown level1 summary"><p>Retrievs a change by index or null if index is out of bounds or changes are not logged</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RowChange? GetChangeAt(int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.RowChange.html">RowChange</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_GetEnumerator_" data-uid="NFX.DataAccess.CRUD.RowsetBase.GetEnumerator*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_GetEnumerator" data-uid="NFX.DataAccess.CRUD.RowsetBase.GetEnumerator">GetEnumerator()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerator&lt;Row&gt; GetEnumerator()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;.GetEnumerator()</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_IndexOf_" data-uid="NFX.DataAccess.CRUD.RowsetBase.IndexOf*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_IndexOf_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.IndexOf(NFX.DataAccess.CRUD.Row)">IndexOf(Row)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int IndexOf(Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IList&lt;T&gt;.IndexOf(T)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Insert_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Insert*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Insert_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Insert(NFX.DataAccess.CRUD.Row)">Insert(Row)</h4>
+              <div class="markdown level1 summary"><p>Inserts the row. Returns insertion index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Insert(Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Insert_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Insert*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Insert_System_Int32_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Insert(System.Int32,NFX.DataAccess.CRUD.Row)">Insert(Int32, Row)</h4>
+              <div class="markdown level1 summary"><p>Inserts row at index</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual void Insert(int index, Row row)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">index</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IList&lt;T&gt;.Insert(System.Int32, T)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_KeyRowFromValues_" data-uid="NFX.DataAccess.CRUD.RowsetBase.KeyRowFromValues*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_KeyRowFromValues_System_Object___" data-uid="NFX.DataAccess.CRUD.RowsetBase.KeyRowFromValues(System.Object[])">KeyRowFromValues(Object[])</h4>
+              <div class="markdown level1 summary"><p>Creates key row out of field values for keys</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Row KeyRowFromValues(params object[] keys)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Object</span>[]</td>
+                    <td><span class="parametername">keys</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Purge_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Purge*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Purge" data-uid="NFX.DataAccess.CRUD.RowsetBase.Purge">Purge()</h4>
+              <div class="markdown level1 summary"><p>Deletes all rows from table without logging the deleted modifications even when LogModifications=true</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Purge()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_PurgeChanges_" data-uid="NFX.DataAccess.CRUD.RowsetBase.PurgeChanges*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_PurgeChanges" data-uid="NFX.DataAccess.CRUD.RowsetBase.PurgeChanges">PurgeChanges()</h4>
+              <div class="markdown level1 summary"><p>Clears modifications accumulated by this instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void PurgeChanges()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Remove_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Remove*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Remove_NFX_DataAccess_CRUD_Row_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Remove(NFX.DataAccess.CRUD.Row)">Remove(Row)</h4>
+              <div class="markdown level1 summary"><p>Performs row delete</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Remove(Row item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.ICollection&lt;T&gt;.Remove(T)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_RemoveAt_" data-uid="NFX.DataAccess.CRUD.RowsetBase.RemoveAt*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_RemoveAt_System_Int32_" data-uid="NFX.DataAccess.CRUD.RowsetBase.RemoveAt(System.Int32)">RemoveAt(Int32)</h4>
+              <div class="markdown level1 summary"><p>Deletes row</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void RemoveAt(int index)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">index</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IList&lt;T&gt;.RemoveAt(System.Int32)</span></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_SearchForRow_" data-uid="NFX.DataAccess.CRUD.RowsetBase.SearchForRow*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_SearchForRow_NFX_DataAccess_CRUD_Row_System_Int32__" data-uid="NFX.DataAccess.CRUD.RowsetBase.SearchForRow(NFX.DataAccess.CRUD.Row,System.Int32@)">SearchForRow(Row, out Int32)</h4>
+              <div class="markdown level1 summary"><p>Provides rowsearching. Override to do binary search in sorted rowsets</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual int SearchForRow(Row row, out int index)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td><p>A row to search for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">index</span></td>
+                    <td><p>An index where search collapsed without finding the match. Used for sorted insertions</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Update_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Update*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Update_NFX_DataAccess_CRUD_Row_NFX_DataAccess_IDataStoreKey_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Update(NFX.DataAccess.CRUD.Row,NFX.DataAccess.IDataStoreKey)">Update(Row, IDataStoreKey)</h4>
+              <div class="markdown level1 summary"><p>Updates the row, Returns the row index or -1</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Update(Row row, IDataStoreKey key = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.IDataStoreKey.html">IDataStoreKey</a></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Upsert_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Upsert*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Upsert_NFX_DataAccess_CRUD_Row_System_Func_NFX_DataAccess_CRUD_Row_System_Boolean__" data-uid="NFX.DataAccess.CRUD.RowsetBase.Upsert(NFX.DataAccess.CRUD.Row,System.Func{NFX.DataAccess.CRUD.Row,System.Boolean})">Upsert(Row, Func&lt;Row, Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Tries to find a row for update and if found, updates it and returns true,
+otherwise inserts the row (if schemas match) and returns false. Optionally pass updateWhere condition
+that may check whether update needs to be performed</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Upsert(Row row, Func&lt;Row, bool&gt; updateWhere = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a></td>
+                    <td><span class="parametername">row</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">updateWhere</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_Validate_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Validate*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_Validate_System_String_" data-uid="NFX.DataAccess.CRUD.RowsetBase.Validate(System.String)">Validate(String)</h4>
+              <div class="markdown level1 summary"><p>Validates all rows in this rowset.
+Override to perform custom validations.
+The method is not expected to throw exception in case of failed validation, rather return exception instance because
+throwing exception really hampers validation performance when many rows need to be validated</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual Exception Validate(string targetName)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">targetName</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Exception</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.DataAccess.CRUD.IValidatable.html#NFX_DataAccess_CRUD_IValidatable_Validate_System_String_">IValidatable.Validate(String)</a></div>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_WriteAsJSON_" data-uid="NFX.DataAccess.CRUD.RowsetBase.WriteAsJSON*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_WriteAsJSON_System_IO_TextWriter_System_Int32_NFX_Serialization_JSON_JSONWritingOptions_" data-uid="NFX.DataAccess.CRUD.RowsetBase.WriteAsJSON(System.IO.TextWriter,System.Int32,NFX.Serialization.JSON.JSONWritingOptions)">WriteAsJSON(TextWriter, Int32, JSONWritingOptions)</h4>
+              <div class="markdown level1 summary"><p>Writes rowset as JSON including schema information. Do not call this method directly, instead call rowset.ToJSON() or use JSONWriter class</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.IO.TextWriter</span></td>
+                    <td><span class="parametername">wri</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">nestingLevel</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONWritingOptions.html">JSONWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.JSON.IJSONWritable.html#NFX_Serialization_JSON_IJSONWritable_WriteAsJSON_System_IO_TextWriter_System_Int32_NFX_Serialization_JSON_JSONWritingOptions_">IJSONWritable.WriteAsJSON(TextWriter, Int32, JSONWritingOptions)</a></div>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              
+              
+              <a id="NFX_DataAccess_CRUD_RowsetBase_System_Collections_IEnumerable_GetEnumerator_" data-uid="NFX.DataAccess.CRUD.RowsetBase.System#Collections#IEnumerable#GetEnumerator*"></a>
+              <h4 id="NFX_DataAccess_CRUD_RowsetBase_System_Collections_IEnumerable_GetEnumerator" data-uid="NFX.DataAccess.CRUD.RowsetBase.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.IEnumerator</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.IEnumerable.GetEnumerator()</span></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.DataUtils.html#NFX_DataUtils_AsEnumerableOf__1_System_Collections_Generic_IEnumerable_NFX_DataAccess_CRUD_Row__">DataUtils.AsEnumerableOf&lt;TRow&gt;(IEnumerable&lt;Row&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0_System_Int32__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T, Int32&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__System_Int32_">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstOrAnyOrDefault__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__">CollectionUtils.FirstOrAnyOrDefault&lt;TResult&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, Boolean&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_Distinct__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.Distinct&lt;TResult, TKey&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TKey&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Collections.LookAheadExtensions.html#NFX_Collections_LookAheadExtensions_AsLookAheadEnumerable__1_System_Collections_Generic_IEnumerable___0__">LookAheadExtensions.AsLookAheadEnumerable&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

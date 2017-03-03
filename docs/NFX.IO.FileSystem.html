@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.IO.FileSystem
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.IO.FileSystem
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_IO_FileSystem" data-uid="NFX.IO.FileSystem">Namespace NFX.IO.FileSystem
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.DeleteFilesJob.html">DeleteFilesJob</a></h4>
+                  <section><p>Represents a job(a scheduled event) which deletes FS files</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystem.html">FileSystem</a></h4>
+                  <section><p>Provides a base for various file system abstractions.
+FileSystem abstractions are mostly useful for working with components/classes that may need to inter-operate not only with local file system
+but also with distributed systems like ApacheHDFS, SVN, GIT, or Aum Cluster Big-Transactional File System (BoltFS).
+NFX library provides compatibility wrapper &#39;NFX.IO.FileSystem.Local.LocalFileSystem&#39; for access to local machine file system
+(which is based on this class and is implemented using a traditional System.IO.* set of classes).
+The FileSystem abstraction supports the following concepts: versioning, transactions, metadata, security; however it does not guarantee that
+every implementation is capable of providing all of these functions. Query &quot;GeneralCapabilities&quot; and &quot;InstanceCapabilities&quot; to see what functions
+are supported by a particular instance.
+This class is not thread-safe unless stated otherwise on method level, however multiple threads are allowed to obtain their own FileSystemSession
+object via a call to StartSession() which is thread safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></h4>
+                  <section><p>Represents a directory item in a file system. This class is NOT thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemException.html">FileSystemException</a></h4>
+                  <section><p>General NFX file system specific exception</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemFile.html">FileSystemFile</a></h4>
+                  <section><p>Represents a file in a file system. This class is NOT thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemSession.html">FileSystemSession</a></h4>
+                  <section><p>Represents a user-impersonated session of working with a file system. This class is NOT thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionConnectParams.html">FileSystemSessionConnectParams</a></h4>
+                  <section><p>Provides parameters for new sessions establishment</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></h4>
+                  <section><p>Represents an abstraction for items kept in a file system - i.e. directories and files.This class is NOT thread-safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemStarter.html">FileSystemStarter</a></h4>
+                  <section><p>Represents a starter that launches file systems on startup</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a></h4>
+                  <section><p>Represents a stream that can work with contents of FileSystem. This class is NOT thread-safe</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.IFileSystem.html">IFileSystem</a></h4>
+                  <section><p>Stipulates contract for various file system abstractions.
+FileSystem abstractions are mostly useful for working with components/classes that may need to inter-operate not only with local file system
+but also with distributed systems like ApacheHDFS, SVN, GIT, or Aum Cluster File System (ACFS).
+NFX library provides compatibility wrapper &#39;NFX.IO.FileSystem.Local.LocalFileSystem&#39; for access to local machine file system
+(which is based on this class and is implemented using a traditional System.IO.* set of classes).
+The FileSystem abstraction supports the following concepts: versioning, transactions, metadata, security; however it does not guarantee that
+every implementation is capable of providing all of these functions. Query &quot;GeneralCapabilities&quot; and &quot;InstanceCapabilities&quot; to see what functions
+are supported by a particular instance.</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.IFileSystemCapabilities.html">IFileSystemCapabilities</a></h4>
+                  <section><p>Supplies capabilities for the file system. The implementation must be thread safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.IFileSystemHandle.html">IFileSystemHandle</a></h4>
+                  <section><p>Denotes a handle for item in a file system.
+For example: in a distributed system this may be some form of unique file/directory id (i.e. a GUID) or
+object instance internal to implementation</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.IFileSystemImplementation.html">IFileSystemImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.IFileSystemTransactionHandle.html">IFileSystemTransactionHandle</a></h4>
+                  <section><p>Denotes a handle for transaction in a file system.
+For example: in a distributed system this may be an object instance holding information about transaction which is internal to implementation</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.IFileSystemVersion.html">IFileSystemVersion</a></h4>
+                  <section><p>Decorates entities that represent version for file systems that support versioning</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.DirCopyFlags.html">FileSystemDirectory.DirCopyFlags</a></h4>
+                  <section></section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

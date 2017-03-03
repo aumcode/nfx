@@ -1,0 +1,3016 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TextCSTemplateCompiler
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TextCSTemplateCompiler
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Templatization_TextCSTemplateCompiler" data-uid="NFX.Templatization.TextCSTemplateCompiler">Class TextCSTemplateCompiler
+              </h1>
+              <div class="markdown level0 summary"><p>Compiles templates based of text files that use C# language syntax</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><a class="xref" href="NFX.Templatization.TemplateCompiler.html">TemplateCompiler</a></div>
+                  <div class="level3"><span class="xref">TextCSTemplateCompiler</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Destructor">TemplateCompiler.Destructor()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_Options">TemplateCompiler.m_Options</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_Assembly">TemplateCompiler.m_Assembly</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_AssemblyFileName">TemplateCompiler.m_AssemblyFileName</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_Units">TemplateCompiler.m_Units</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_ReferencedAssemblies">TemplateCompiler.m_ReferencedAssemblies</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_ReferencedAssembliesSearchPath">TemplateCompiler.m_ReferencedAssembliesSearchPath</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_m_CodeCompilerErrors">TemplateCompiler.m_CodeCompilerErrors</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Compiled">TemplateCompiler.Compiled</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Options">TemplateCompiler.Options</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Assembly">TemplateCompiler.Assembly</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_ReferencedAssemblies">TemplateCompiler.ReferencedAssemblies</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_ReferencedAssembliesSearchPath">TemplateCompiler.ReferencedAssembliesSearchPath</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_AssemblyFileName">TemplateCompiler.AssemblyFileName</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_CompileCode">TemplateCompiler.CompileCode</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_BaseTypeName">TemplateCompiler.BaseTypeName</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Namespace">TemplateCompiler.Namespace</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Item_NFX_Templatization_ITemplateSource_">TemplateCompiler.Item[ITemplateSource]</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_HasErrors">TemplateCompiler.HasErrors</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_CodeCompilerErrors">TemplateCompiler.CodeCompilerErrors</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_CompileUnitsWithErrors">TemplateCompiler.CompileUnitsWithErrors</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_EnsureNotCompiled">TemplateCompiler.EnsureNotCompiled()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Compile">TemplateCompiler.Compile()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_Configure_NFX_Environment_IConfigSectionNode_">TemplateCompiler.Configure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_IncludeTemplateSource_NFX_Templatization_ITemplateSource_">TemplateCompiler.IncludeTemplateSource(ITemplateSource)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_ExcludeTemplateSource_NFX_Templatization_ITemplateSource_">TemplateCompiler.ExcludeTemplateSource(ITemplateSource)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_ReferenceAssembly_System_String_">TemplateCompiler.ReferenceAssembly(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_UnReferenceAssembly_System_String_">TemplateCompiler.UnReferenceAssembly(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_GenerateUniqueName">TemplateCompiler.GenerateUniqueName()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_GetEnumerator">TemplateCompiler.GetEnumerator()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_System_Collections_IEnumerable_GetEnumerator">TemplateCompiler.IEnumerable.GetEnumerator()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoConfigure_NFX_Environment_IConfigSectionNode_">TemplateCompiler.DoConfigure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_RegisterDefaultUsings_System_Collections_Generic_HashSet_System_String__">TemplateCompiler.RegisterDefaultUsings(HashSet&lt;String&gt;)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Templatization</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class TextCSTemplateCompiler : TemplateCompiler, IDisposable, IConfigurable, IEnumerable&lt;CompileUnit&gt;, IEnumerable</code></pre>
+              </div>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_examples"><strong>Examples</strong></h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler__ctor_" data-uid="NFX.Templatization.TextCSTemplateCompiler.#ctor*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler__ctor" data-uid="NFX.Templatization.TextCSTemplateCompiler.#ctor">TextCSTemplateCompiler()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TextCSTemplateCompiler()</code></pre>
+              </div>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler__ctor_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler__ctor_" data-uid="NFX.Templatization.TextCSTemplateCompiler.#ctor*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler__ctor_NFX_Templatization_ITemplateSource_System_String____" data-uid="NFX.Templatization.TextCSTemplateCompiler.#ctor(NFX.Templatization.ITemplateSource{System.String}[])">TextCSTemplateCompiler(ITemplateSource&lt;String&gt;[])</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TextCSTemplateCompiler(params ITemplateSource&lt;string&gt;[] sources)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.ITemplateSource-1.html">ITemplateSource</a>&lt;<span class="xref">System.String</span>&gt;[]</td>
+                    <td><span class="parametername">sources</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler__ctor_NFX_Templatization_ITemplateSource_System_String_____examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler__ctor_" data-uid="NFX.Templatization.TextCSTemplateCompiler.#ctor*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler__ctor_System_Collections_Generic_IEnumerable_NFX_Templatization_ITemplateSource_System_String___" data-uid="NFX.Templatization.TextCSTemplateCompiler.#ctor(System.Collections.Generic.IEnumerable{NFX.Templatization.ITemplateSource{System.String}})">TextCSTemplateCompiler(IEnumerable&lt;ITemplateSource&lt;String&gt;&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TextCSTemplateCompiler(IEnumerable&lt;ITemplateSource&lt;string&gt;&gt; sources)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Templatization.ITemplateSource-1.html">ITemplateSource</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+                    <td><span class="parametername">sources</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler__ctor_System_Collections_Generic_IEnumerable_NFX_Templatization_ITemplateSource_System_String____examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_AREA" data-uid="NFX.Templatization.TextCSTemplateCompiler.AREA">AREA</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string AREA = &quot;#[&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_AREA_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_AREA_ESCAPE" data-uid="NFX.Templatization.TextCSTemplateCompiler.AREA_ESCAPE">AREA_ESCAPE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string AREA_ESCAPE = &quot;##&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_AREA_ESCAPE_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CLASS_AREA" data-uid="NFX.Templatization.TextCSTemplateCompiler.CLASS_AREA">CLASS_AREA</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CLASS_AREA = &quot;class&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CLASS_AREA_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_ABSTRACT_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_ABSTRACT_ATTR">CONFIG_ABSTRACT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_ABSTRACT_ATTR = &quot;abstract&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_ABSTRACT_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_ATTRIBUTE_DECL_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_ATTRIBUTE_DECL_ATTR">CONFIG_ATTRIBUTE_DECL_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_ATTRIBUTE_DECL_ATTR = &quot;decl&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_ATTRIBUTE_DECL_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_ATTRIBUTE_SECTION" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_ATTRIBUTE_SECTION">CONFIG_ATTRIBUTE_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_ATTRIBUTE_SECTION = &quot;attribute&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_ATTRIBUTE_SECTION_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_BASE_CLASS_NAME_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_BASE_CLASS_NAME_ATTR">CONFIG_BASE_CLASS_NAME_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_BASE_CLASS_NAME_ATTR = &quot;base-class-name&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_BASE_CLASS_NAME_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_BASE_RENDER_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_BASE_RENDER_ATTR">CONFIG_BASE_RENDER_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_BASE_RENDER_ATTR = &quot;base-render&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_BASE_RENDER_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_CLASS_CONSTRAINT_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_CLASS_CONSTRAINT_ATTR">CONFIG_CLASS_CONSTRAINT_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLASS_CONSTRAINT_ATTR = &quot;class-constraint&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_CLASS_CONSTRAINT_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_CLASS_DECLARATION_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_CLASS_DECLARATION_ATTR">CONFIG_CLASS_DECLARATION_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLASS_DECLARATION_ATTR = &quot;class-declaration&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_CLASS_DECLARATION_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_CLASS_NAME_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_CLASS_NAME_ATTR">CONFIG_CLASS_NAME_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLASS_NAME_ATTR = &quot;class-name&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_CLASS_NAME_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_COMPILER_SECTION" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_COMPILER_SECTION">CONFIG_COMPILER_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_COMPILER_SECTION = &quot;compiler&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_COMPILER_SECTION_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_END" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_END">CONFIG_END</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_END = &quot;#&lt;/conf&gt;&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_END_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_NAMESPACE_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_NAMESPACE_ATTR">CONFIG_NAMESPACE_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_NAMESPACE_ATTR = &quot;namespace&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_NAMESPACE_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_REF_ASSEMBLY_NAME_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_REF_ASSEMBLY_NAME_ATTR">CONFIG_REF_ASSEMBLY_NAME_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_REF_ASSEMBLY_NAME_ATTR = &quot;name&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_REF_ASSEMBLY_NAME_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_REF_ASSEMBLY_SECTION" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_REF_ASSEMBLY_SECTION">CONFIG_REF_ASSEMBLY_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_REF_ASSEMBLY_SECTION = &quot;ref-asm&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_REF_ASSEMBLY_SECTION_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_START" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_START">CONFIG_START</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_START = &quot;#&lt;conf&gt;&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_START_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_SUMMARY_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_SUMMARY_ATTR">CONFIG_SUMMARY_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_SUMMARY_ATTR = &quot;summary&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_SUMMARY_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_USING_NS_ATTR" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_USING_NS_ATTR">CONFIG_USING_NS_ATTR</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_USING_NS_ATTR = &quot;ns&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_USING_NS_ATTR_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_USING_SECTION" data-uid="NFX.Templatization.TextCSTemplateCompiler.CONFIG_USING_SECTION">CONFIG_USING_SECTION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string CONFIG_USING_SECTION = &quot;using&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_CONFIG_USING_SECTION_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_DEFAULT_BASE_TEMPLATE_CLASS_NAME" data-uid="NFX.Templatization.TextCSTemplateCompiler.DEFAULT_BASE_TEMPLATE_CLASS_NAME">DEFAULT_BASE_TEMPLATE_CLASS_NAME</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string DEFAULT_BASE_TEMPLATE_CLASS_NAME = &quot;NFX.Templatization.Template&lt;object, NFX.Templatization.IRenderingTarget, object&gt;&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_DEFAULT_BASE_TEMPLATE_CLASS_NAME_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_EXPRESSION" data-uid="NFX.Templatization.TextCSTemplateCompiler.EXPRESSION">EXPRESSION</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string EXPRESSION = &quot;?[&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_EXPRESSION_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_EXPRESSION_ESCAPE" data-uid="NFX.Templatization.TextCSTemplateCompiler.EXPRESSION_ESCAPE">EXPRESSION_ESCAPE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string EXPRESSION_ESCAPE = &quot;??&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_EXPRESSION_ESCAPE_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_LACONFIG_END" data-uid="NFX.Templatization.TextCSTemplateCompiler.LACONFIG_END">LACONFIG_END</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string LACONFIG_END = &quot;#&lt;/laconf&gt;&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_LACONFIG_END_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_LACONFIG_START" data-uid="NFX.Templatization.TextCSTemplateCompiler.LACONFIG_START">LACONFIG_START</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string LACONFIG_START = &quot;#&lt;laconf&gt;&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_LACONFIG_START_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_OVERRIDE" data-uid="NFX.Templatization.TextCSTemplateCompiler.OVERRIDE">OVERRIDE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string OVERRIDE = &quot;override&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_OVERRIDE_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_RENDER_AREA" data-uid="NFX.Templatization.TextCSTemplateCompiler.RENDER_AREA">RENDER_AREA</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string RENDER_AREA = &quot;render&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_RENDER_AREA_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_SPAN_CLOSE" data-uid="NFX.Templatization.TextCSTemplateCompiler.SPAN_CLOSE">SPAN_CLOSE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const char SPAN_CLOSE = ']'</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_SPAN_CLOSE_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_SPAN_OPEN" data-uid="NFX.Templatization.TextCSTemplateCompiler.SPAN_OPEN">SPAN_OPEN</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const char SPAN_OPEN = '['</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Char</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_SPAN_OPEN_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_STATEMENT" data-uid="NFX.Templatization.TextCSTemplateCompiler.STATEMENT">STATEMENT</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string STATEMENT = &quot;@[&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_STATEMENT_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_STATEMENT_ESCAPE" data-uid="NFX.Templatization.TextCSTemplateCompiler.STATEMENT_ESCAPE">STATEMENT_ESCAPE</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string STATEMENT_ESCAPE = &quot;@@&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_STATEMENT_ESCAPE_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_VERBATIM" data-uid="NFX.Templatization.TextCSTemplateCompiler.VERBATIM">VERBATIM</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string VERBATIM = &quot;:&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_VERBATIM_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_VIRTUAL" data-uid="NFX.Templatization.TextCSTemplateCompiler.VIRTUAL">VIRTUAL</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string VIRTUAL = &quot;virtual&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_VIRTUAL_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler_LanguageName_" data-uid="NFX.Templatization.TextCSTemplateCompiler.LanguageName*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_LanguageName" data-uid="NFX.Templatization.TextCSTemplateCompiler.LanguageName">LanguageName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string LanguageName { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_LanguageName">TemplateCompiler.LanguageName</a></div>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_LanguageName_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler_LanguageSourceFileExtension_" data-uid="NFX.Templatization.TextCSTemplateCompiler.LanguageSourceFileExtension*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_LanguageSourceFileExtension" data-uid="NFX.Templatization.TextCSTemplateCompiler.LanguageSourceFileExtension">LanguageSourceFileExtension</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string LanguageSourceFileExtension { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_LanguageSourceFileExtension">TemplateCompiler.LanguageSourceFileExtension</a></div>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_LanguageSourceFileExtension_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler_DoCompileCode_" data-uid="NFX.Templatization.TextCSTemplateCompiler.DoCompileCode*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_DoCompileCode" data-uid="NFX.Templatization.TextCSTemplateCompiler.DoCompileCode">DoCompileCode()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoCompileCode()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoCompileCode">TemplateCompiler.DoCompileCode()</a></div>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_DoCompileCode_examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler_DoCompileTemplateSource_" data-uid="NFX.Templatization.TextCSTemplateCompiler.DoCompileTemplateSource*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit_" data-uid="NFX.Templatization.TextCSTemplateCompiler.DoCompileTemplateSource(NFX.Templatization.CompileUnit)">DoCompileTemplateSource(CompileUnit)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoCompileTemplateSource(CompileUnit unit)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.CompileUnit.html">CompileUnit</a></td>
+                    <td><span class="parametername">unit</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit_">TemplateCompiler.DoCompileTemplateSource(CompileUnit)</a></div>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit__examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0_System_Int32__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T, Int32&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__System_Int32_">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstOrAnyOrDefault__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__">CollectionUtils.FirstOrAnyOrDefault&lt;TResult&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, Boolean&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_Distinct__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.Distinct&lt;TResult, TKey&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TKey&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Collections.LookAheadExtensions.html#NFX_Collections_LookAheadExtensions_AsLookAheadEnumerable__1_System_Collections_Generic_IEnumerable___0__">LookAheadExtensions.AsLookAheadEnumerable&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

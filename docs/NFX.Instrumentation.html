@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Instrumentation
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Instrumentation
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Instrumentation" data-uid="NFX.Instrumentation">Namespace NFX.Instrumentation
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Instrumentation.AmountGauge.html">AmountGauge</a></h4>
+                  <section><p>Represents a general-purpose financial Amount measurement datum</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Datum.html">Datum</a></h4>
+                  <section><p>Base class for single measurement events (datums) reported to instrumentation</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.DecimalGauge.html">DecimalGauge</a></h4>
+                  <section><p>Represents a general-purpose decimal measurement datum</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.DoubleGauge.html">DoubleGauge</a></h4>
+                  <section><p>Represents a general-purpose double measurement datum</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Event.html">Event</a></h4>
+                  <section><p>Represents a base for events that happen so instrumentation can calculate event counts and rates of occurence</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ExceptionEvent.html">ExceptionEvent</a></h4>
+                  <section><p>Represents an exception event recorded by instrumentation</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.Gauge.html">Gauge</a></h4>
+                  <section><p>Represents a base for gauges - events of measurement of some values</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html">InstrumentationProvider</a></h4>
+                  <section><p>Defines a base provider for InstrumentationService</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.InstrumentationService.html">InstrumentationService</a></h4>
+                  <section><p>Implements IInstrumentation. This service aggregates data by type,source and sends result into provider</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.InstrumentViewGroup.html">InstrumentViewGroup</a></h4>
+                  <section><p>Denotes interface types that participate in instrumentation data grouping.
+Records that implement several classification interfaces which are decorated by this attribute
+get listed in each decorated interface/group</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.LogInstrumentationProvider.html">LogInstrumentationProvider</a></h4>
+                  <section><p>Represents a provider that writes aggregated datums to log</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.LongGauge.html">LongGauge</a></h4>
+                  <section><p>Represents a general-purpose long integer measurement datum</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.NOPInstrumentation.html">NOPInstrumentation</a></h4>
+                  <section><p>Provides IInstrumentation implementation that does nothing</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.NOPInstrumentationProvider.html">NOPInstrumentationProvider</a></h4>
+                  <section><p>Represents a provider that does nothing</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Instrumentation.IBusinessLogic.html">IBusinessLogic</a></h4>
+                  <section><p>A class of operations related to business logic that instrument measures</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ICacheInstrument.html">ICacheInstrument</a></h4>
+                  <section><p>Cache-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ICatastropyInstrument.html">ICatastropyInstrument</a></h4>
+                  <section><p>Data of this class indicates an abnormality that will most likely lead to system inability to continue functioning as expected</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ICPUInstrument.html">ICPUInstrument</a></h4>
+                  <section><p>CPU-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IDatabaseInstrument.html">IDatabaseInstrument</a></h4>
+                  <section><p>DB-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IDiskInstrument.html">IDiskInstrument</a></h4>
+                  <section><p>Disk operations (i.e. % drive free)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IErrorInstrument.html">IErrorInstrument</a></h4>
+                  <section><p>Data of this class indicates a definite abnormality, however the system is going to continue functioning</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IFinancialLogic.html">IFinancialLogic</a></h4>
+                  <section><p>A class of operations related to financial transactions / business logic</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IGDIDInstrument.html">IGDIDInstrument</a></h4>
+                  <section><p>GDID-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IInstrumentable.html">IInstrumentable</a></h4>
+                  <section><p>Denotes an entity that can be instrumented</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IInstrumentation.html">IInstrumentation</a></h4>
+                  <section><p>Stipulates instrumentation contract</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IInstrumentationImplementation.html">IInstrumentationImplementation</a></h4>
+                  <section><p>Stipulates instrumentation contract</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IInstrumentationInstrument.html">IInstrumentationInstrument</a></h4>
+                  <section><p>Instruments that measure instrumentation itself</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IInstrumentClass.html">IInstrumentClass</a></h4>
+                  <section><p>Root marker interface for instrumentation data classification.
+Instruments are primarily classified by their derivation from Datum ancestor, however this interface-based
+scheme allows for alternate classification (a la multiple inheritance)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IIOInstrumentClass.html">IIOInstrumentClass</a></h4>
+                  <section><p>IO-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ILockingInstrument.html">ILockingInstrument</a></h4>
+                  <section><p>Locking/coordination-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IMemoryInstrument.html">IMemoryInstrument</a></h4>
+                  <section><p>Memory-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.INetInstrument.html">INetInstrument</a></h4>
+                  <section><p>Network operations (i.e. sockets)</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IOperationClass.html">IOperationClass</a></h4>
+                  <section><p>A class of operations that instrument measures</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IProblemClass.html">IProblemClass</a></h4>
+                  <section><p>A class of problem that decorate instrument represents</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IQueueInstrument.html">IQueueInstrument</a></h4>
+                  <section><p>Queue-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ISchedulingInstrument.html">ISchedulingInstrument</a></h4>
+                  <section><p>Timer/scheduling-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ISecurityInstrument.html">ISecurityInstrument</a></h4>
+                  <section><p>Security-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.ISocialLogic.html">ISocialLogic</a></h4>
+                  <section><p>A class of operations related to social operations / business logic</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IWarningInstrument.html">IWarningInstrument</a></h4>
+                  <section><p>Data of this class indicates some abnormality in operation, i.e. &quot;LowDisk&quot;</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IWebInstrument.html">IWebInstrument</a></h4>
+                  <section><p>Web-related operations</p>
+</section>
+                  <h4><a class="xref" href="NFX.Instrumentation.IWorkerInstrument.html">IWorkerInstrument</a></h4>
+                  <section><p>Worker-related operations i.e. Todo queue</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

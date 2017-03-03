@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.IO.Net.Gate
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.IO.Net.Gate
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_IO_Net_Gate" data-uid="NFX.IO.Net.Gate">Namespace NFX.IO.Net.Gate
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.Group.html">Group</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.Group.Address.html">Group.Address</a></h4>
+                  <section><p>Represents the address node of the group</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.NetGate.html">NetGate</a></h4>
+                  <section><p>Represents a network gate - a logical filter of incoming network traffic.
+Network gate is somewhat similar to a firewall - it allows/denies the int/out traffic based on the set of rules</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.NetGate.State.html">NetGate.State</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.NetGateException.html">NetGateException</a></h4>
+                  <section><p>Throw by NetGate</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.NetSiteState.html">NetSiteState</a></h4>
+                  <section><p>Represents the state of the metwrk site - it can be a particular address or group</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.NOPNetGate.html">NOPNetGate</a></h4>
+                  <section><p>Represents an implementation of INetGate that allows all traffic</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.Rule.html">Rule</a></h4>
+                  <section><p>Represents the named rule for NetGate</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.VarDef.html">VarDef</a></h4>
+                  <section><p>Provides variable definition - the name and parameters how fast a variable decays - loses its value towards 0 when it gets deleted</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.GeneralTraffic.html">GeneralTraffic</a></h4>
+                  <section><p>Represents general kind of traffic not bound to any particular technology</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.HTTPIncomingTraffic.html">HTTPIncomingTraffic</a></h4>
+                  <section><p>Represents HTTP traffic that arrives via HttpListener</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.INetGate.html">INetGate</a></h4>
+                  <section><p>Stipulates general contract for nrtwork gates - entities similar to firewall.
+Network gates allow/deny in/out traffic based on a set of rules</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.INetGateImplementation.html">INetGateImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.ITraffic.html">ITraffic</a></h4>
+                  <section><p>Represents a traffic that passes through network gate</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.GateAction.html">GateAction</a></h4>
+                  <section><p>Allow/Deny</p>
+</section>
+                  <h4><a class="xref" href="NFX.IO.Net.Gate.TrafficDirection.html">TrafficDirection</a></h4>
+                  <section></section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

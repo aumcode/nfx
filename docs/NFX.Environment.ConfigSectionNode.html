@@ -1,0 +1,2248 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ConfigSectionNode
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ConfigSectionNode
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_Environment_ConfigSectionNode" data-uid="NFX.Environment.ConfigSectionNode">Class ConfigSectionNode
+              </h1>
+              <div class="markdown level0 summary"><p>Represents configuration section node. This class is thread safe</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.Environment.ConfigNode.html">ConfigNode</a></div>
+                  <div class="level2"><span class="xref">ConfigSectionNode</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_m_Configuration">ConfigNode.m_Configuration</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_m_Modified">ConfigNode.m_Modified</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Configuration">ConfigNode.Configuration</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Exists">ConfigNode.Exists</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Name">ConfigNode.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_VerbatimValue">ConfigNode.VerbatimValue</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_EvaluatedValue">ConfigNode.EvaluatedValue</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Value">ConfigNode.Value</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Parent">ConfigNode.Parent</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_NFX_Environment_IConfigNode_Parent">ConfigNode.IConfigNode.Parent</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_NFX_Environment_IConfigNode_RootPath">ConfigNode.IConfigNode.RootPath</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_RootPath">ConfigNode.RootPath</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsString_System_String_System_Boolean_">ConfigNode.ValueAsString(String, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsByteArray_System_Byte___System_Boolean_">ConfigNode.ValueAsByteArray(Byte[], Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsShort_System_Int16_System_Boolean_">ConfigNode.ValueAsShort(Int16, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableShort_System_Nullable_System_Int16__System_Boolean_">ConfigNode.ValueAsNullableShort(Nullable&lt;Int16&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsUShort_System_UInt16_System_Boolean_">ConfigNode.ValueAsUShort(UInt16, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableUShort_System_Nullable_System_UInt16__System_Boolean_">ConfigNode.ValueAsNullableUShort(Nullable&lt;UInt16&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsByte_System_Byte_System_Boolean_">ConfigNode.ValueAsByte(Byte, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableByte_System_Nullable_System_Byte__System_Boolean_">ConfigNode.ValueAsNullableByte(Nullable&lt;Byte&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsSByte_System_SByte_System_Boolean_">ConfigNode.ValueAsSByte(SByte, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableSByte_System_Nullable_System_SByte__System_Boolean_">ConfigNode.ValueAsNullableSByte(Nullable&lt;SByte&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsInt_System_Int32_System_Boolean_">ConfigNode.ValueAsInt(Int32, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableInt_System_Nullable_System_Int32__System_Boolean_">ConfigNode.ValueAsNullableInt(Nullable&lt;Int32&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsUInt_System_UInt32_System_Boolean_">ConfigNode.ValueAsUInt(UInt32, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableUInt_System_Nullable_System_UInt32__System_Boolean_">ConfigNode.ValueAsNullableUInt(Nullable&lt;UInt32&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsLong_System_Int64_System_Boolean_">ConfigNode.ValueAsLong(Int64, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableLong_System_Nullable_System_Int64__System_Boolean_">ConfigNode.ValueAsNullableLong(Nullable&lt;Int64&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsULong_System_UInt64_System_Boolean_">ConfigNode.ValueAsULong(UInt64, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableULong_System_Nullable_System_UInt64__System_Boolean_">ConfigNode.ValueAsNullableULong(Nullable&lt;UInt64&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsDouble_System_Double_System_Boolean_">ConfigNode.ValueAsDouble(Double, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableDouble_System_Nullable_System_Double__System_Boolean_">ConfigNode.ValueAsNullableDouble(Nullable&lt;Double&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsFloat_System_Single_System_Boolean_">ConfigNode.ValueAsFloat(Single, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableFloat_System_Nullable_System_Single__System_Boolean_">ConfigNode.ValueAsNullableFloat(Nullable&lt;Single&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsDecimal_System_Decimal_System_Boolean_">ConfigNode.ValueAsDecimal(Decimal, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableDecimal_System_Nullable_System_Decimal__System_Boolean_">ConfigNode.ValueAsNullableDecimal(Nullable&lt;Decimal&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsBool_System_Boolean_System_Boolean_">ConfigNode.ValueAsBool(Boolean, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableBool_System_Nullable_System_Boolean__System_Boolean_">ConfigNode.ValueAsNullableBool(Nullable&lt;Boolean&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsGUID_System_Guid_System_Boolean_">ConfigNode.ValueAsGUID(Guid, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableGUID_System_Nullable_System_Guid__System_Boolean_">ConfigNode.ValueAsNullableGUID(Nullable&lt;Guid&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsGDID_NFX_DataAccess_Distributed_GDID_System_Boolean_">ConfigNode.ValueAsGDID(GDID, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableGDID_System_Nullable_NFX_DataAccess_Distributed_GDID__System_Boolean_">ConfigNode.ValueAsNullableGDID(Nullable&lt;GDID&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsDateTime_System_DateTime_System_Boolean_">ConfigNode.ValueAsDateTime(DateTime, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableDateTime_System_Nullable_System_DateTime__System_Boolean_">ConfigNode.ValueAsNullableDateTime(Nullable&lt;DateTime&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsTimeSpan_System_TimeSpan_System_Boolean_">ConfigNode.ValueAsTimeSpan(TimeSpan, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableTimeSpan_System_Nullable_System_TimeSpan__System_Boolean_">ConfigNode.ValueAsNullableTimeSpan(Nullable&lt;TimeSpan&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsEnum__1___0_System_Boolean_">ConfigNode.ValueAsEnum&lt;TEnum&gt;(TEnum, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsNullableEnum__1_System_Nullable___0__System_Boolean_">ConfigNode.ValueAsNullableEnum&lt;TEnum&gt;(Nullable&lt;TEnum&gt;, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ValueAsType_System_Type_System_Boolean_System_Boolean_">ConfigNode.ValueAsType(Type, Boolean, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_IsSameName_NFX_Environment_IConfigNode_">ConfigNode.IsSameName(IConfigNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_IsSameName_System_String_">ConfigNode.IsSameName(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ToString">ConfigNode.ToString()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Environment</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_Environment_ConfigSectionNode_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Serializable]
+public sealed class ConfigSectionNode : ConfigNode, IConfigSectionNode, IConfigNode, INamed</code></pre>
+              </div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AttrCount_" data-uid="NFX.Environment.ConfigSectionNode.AttrCount*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AttrCount" data-uid="NFX.Environment.ConfigSectionNode.AttrCount">AttrCount</h4>
+              <div class="markdown level1 summary"><p>Returns number of child attribute nodes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int AttrCount { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_AttrCount">IConfigSectionNode.AttrCount</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Attributes_" data-uid="NFX.Environment.ConfigSectionNode.Attributes*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Attributes" data-uid="NFX.Environment.ConfigSectionNode.Attributes">Attributes</h4>
+              <div class="markdown level1 summary"><p>Enumerates all attribute nodes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;ConfigAttrNode&gt; Attributes { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ChildCount_" data-uid="NFX.Environment.ConfigSectionNode.ChildCount*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ChildCount" data-uid="NFX.Environment.ConfigSectionNode.ChildCount">ChildCount</h4>
+              <div class="markdown level1 summary"><p>Returns number of child section nodes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int ChildCount { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_ChildCount">IConfigSectionNode.ChildCount</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Children_" data-uid="NFX.Environment.ConfigSectionNode.Children*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Children" data-uid="NFX.Environment.ConfigSectionNode.Children">Children</h4>
+              <div class="markdown level1 summary"><p>Enumerates all child nodes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;ConfigSectionNode&gt; Children { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_HasAttributes_" data-uid="NFX.Environment.ConfigSectionNode.HasAttributes*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_HasAttributes" data-uid="NFX.Environment.ConfigSectionNode.HasAttributes">HasAttributes</h4>
+              <div class="markdown level1 summary"><p>Indicates whether this node has any associated attributes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool HasAttributes { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_HasAttributes">IConfigSectionNode.HasAttributes</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_HasChildren_" data-uid="NFX.Environment.ConfigSectionNode.HasChildren*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_HasChildren" data-uid="NFX.Environment.ConfigSectionNode.HasChildren">HasChildren</h4>
+              <div class="markdown level1 summary"><p>Indicates whether this node has any child section nodes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool HasChildren { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_HasChildren">IConfigSectionNode.HasChildren</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Item_" data-uid="NFX.Environment.ConfigSectionNode.Item*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Item_System_Int32_" data-uid="NFX.Environment.ConfigSectionNode.Item(System.Int32)">Item[Int32]</h4>
+              <div class="markdown level1 summary"><p>Retrieves section node by index or empty node instance if section node with such index could not be found</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode this[int idx] { get; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Item_" data-uid="NFX.Environment.ConfigSectionNode.Item*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Item_System_String___" data-uid="NFX.Environment.ConfigSectionNode.Item(System.String[])">Item[String[]]</h4>
+              <div class="markdown level1 summary"><p>Retrieves section node by names, from left to right until existing node is found.
+If no existing node could be found then empty node instance is returned</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode this[params string[] names] { get; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">names</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Modified_" data-uid="NFX.Environment.ConfigSectionNode.Modified*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Modified" data-uid="NFX.Environment.ConfigSectionNode.Modified">Modified</h4>
+              <div class="markdown level1 summary"><p>Indicates whether this or any child nodes or attributes were modified</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override bool Modified { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Modified">ConfigNode.Modified</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddAttributeNode_" data-uid="NFX.Environment.ConfigSectionNode.AddAttributeNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddAttributeNode_System_String_" data-uid="NFX.Environment.ConfigSectionNode.AddAttributeNode(System.String)">AddAttributeNode(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigAttrNode AddAttributeNode(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddAttributeNode_" data-uid="NFX.Environment.ConfigSectionNode.AddAttributeNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddAttributeNode_System_String_System_Object_" data-uid="NFX.Environment.ConfigSectionNode.AddAttributeNode(System.String,System.Object)">AddAttributeNode(String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigAttrNode AddAttributeNode(string name, object value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddAttributeNode_" data-uid="NFX.Environment.ConfigSectionNode.AddAttributeNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddAttributeNode_System_String_System_String_" data-uid="NFX.Environment.ConfigSectionNode.AddAttributeNode(System.String,System.String)">AddAttributeNode(String, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigAttrNode AddAttributeNode(string name, string value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddChildNode_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddChildNode_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode(NFX.Environment.IConfigSectionNode)">AddChildNode(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Adds a new child node into this one deeply cloning nodes data from some other node which may belong to a different conf instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode AddChildNode(IConfigSectionNode clone)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">clone</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddChildNode_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddChildNode_System_String_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode(System.String)">AddChildNode(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode AddChildNode(string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddChildNode_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddChildNode_System_String_System_Object_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode(System.String,System.Object)">AddChildNode(String, Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode AddChildNode(string name, object value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddChildNode_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddChildNode_System_String_System_String_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNode(System.String,System.String)">AddChildNode(String, String)</h4>
+              <div class="markdown level1 summary"><p>Adds a new child section node to this node</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode AddChildNode(string name, string value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AddChildNodeFromMerge_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNodeFromMerge*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AddChildNodeFromMerge_NFX_Environment_IConfigSectionNode_NFX_Environment_IConfigSectionNode_NFX_Environment_NodeOverrideRules_" data-uid="NFX.Environment.ConfigSectionNode.AddChildNodeFromMerge(NFX.Environment.IConfigSectionNode,NFX.Environment.IConfigSectionNode,NFX.Environment.NodeOverrideRules)">AddChildNodeFromMerge(IConfigSectionNode, IConfigSectionNode, NodeOverrideRules)</h4>
+              <div class="markdown level1 summary"><p>Adds a new section node to this configuration which is an ordered merge result of two other nodes - base and override.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode AddChildNodeFromMerge(IConfigSectionNode baseNode, IConfigSectionNode overrideNode, NodeOverrideRules rules = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">baseNode</span></td>
+                    <td><p>A base node that data is defaulted from</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">overrideNode</span></td>
+                    <td><p>A node that contains overrides/additions of/to data from base node</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.NodeOverrideRules.html">NodeOverrideRules</a></td>
+                    <td><span class="parametername">rules</span></td>
+                    <td><p>Rules to use for this merge. Default rules will be used if null is passed</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AttrByIndex_" data-uid="NFX.Environment.ConfigSectionNode.AttrByIndex*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AttrByIndex_System_Int32_" data-uid="NFX.Environment.ConfigSectionNode.AttrByIndex(System.Int32)">AttrByIndex(Int32)</h4>
+              <div class="markdown level1 summary"><p>Returns attribute node by its index or empty attribute if real attribute with such index does not exist</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigAttrNode AttrByIndex(int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AttrByName_" data-uid="NFX.Environment.ConfigSectionNode.AttrByName*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AttrByName_System_String_System_Boolean_" data-uid="NFX.Environment.ConfigSectionNode.AttrByName(System.String,System.Boolean)">AttrByName(String, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigAttrNode AttrByName(string name, bool autoCreate = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">autoCreate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigAttrNode.html">ConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_AttrsToStringMap_" data-uid="NFX.Environment.ConfigSectionNode.AttrsToStringMap*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_AttrsToStringMap_System_Boolean_" data-uid="NFX.Environment.ConfigSectionNode.AttrsToStringMap(System.Boolean)">AttrsToStringMap(Boolean)</h4>
+              <div class="markdown level1 summary"><p>Returns attribute values as string map</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public StringMap AttrsToStringMap(bool verbatim = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">verbatim</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Collections.StringMap.html">StringMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_AttrsToStringMap_System_Boolean_">IConfigSectionNode.AttrsToStringMap(Boolean)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Delete_" data-uid="NFX.Environment.ConfigSectionNode.Delete*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Delete" data-uid="NFX.Environment.ConfigSectionNode.Delete">Delete()</h4>
+              <div class="markdown level1 summary"><p>Deletes this section from its parent</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override void Delete()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_Delete">ConfigNode.Delete()</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_DeleteAllAttributes_" data-uid="NFX.Environment.ConfigSectionNode.DeleteAllAttributes*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_DeleteAllAttributes" data-uid="NFX.Environment.ConfigSectionNode.DeleteAllAttributes">DeleteAllAttributes()</h4>
+              <div class="markdown level1 summary"><p>Deletes all attribute nodes from this node</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void DeleteAllAttributes()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_DeleteAllChildren_" data-uid="NFX.Environment.ConfigSectionNode.DeleteAllChildren*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_DeleteAllChildren" data-uid="NFX.Environment.ConfigSectionNode.DeleteAllChildren">DeleteAllChildren()</h4>
+              <div class="markdown level1 summary"><p>Deletes all child section nodes from this node</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void DeleteAllChildren()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_EvaluateValueVariables_" data-uid="NFX.Environment.ConfigSectionNode.EvaluateValueVariables*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_EvaluateValueVariables_System_String_" data-uid="NFX.Environment.ConfigSectionNode.EvaluateValueVariables(System.String)">EvaluateValueVariables(String)</h4>
+              <div class="markdown level1 summary"><p>Evaluates a value string expanding all variables with var-paths relative to this node.
+Evaluates configuration variables such as &quot;$(varname)&quot; or &quot;$(@varname)&quot;. Varnames are paths
+to other config nodes from the same configuration or variable names when prefixed with &quot;~&quot;. If varname starts with &quot;@&quot; then it gets combined
+with input as path string. &quot;~&quot; is used to qualify environment vars that get resolved through Configuration.EnvironmentVarResolver
+Example: <code>....add key=&quot;Schema.$(/A/B/C/$attr)&quot; value=&quot;$(@~HOME)bin\Transforms\&quot;...</code></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string EvaluateValueVariables(string value)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">value</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_EvaluateValueVariables_System_String_">IConfigSectionNode.EvaluateValueVariables(String)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_IsSameNameAttr_" data-uid="NFX.Environment.ConfigSectionNode.IsSameNameAttr*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_IsSameNameAttr_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Environment.ConfigSectionNode.IsSameNameAttr(NFX.Environment.IConfigSectionNode)">IsSameNameAttr(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Returns true when another node has the attribute called &#39;name&#39; and its value is the same as in this one per case-insensitive culture-neutral comparison</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsSameNameAttr(IConfigSectionNode other)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_IsSameNameAttr_NFX_Environment_IConfigSectionNode_">IConfigSectionNode.IsSameNameAttr(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_IsSameNameAttr_" data-uid="NFX.Environment.ConfigSectionNode.IsSameNameAttr*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_IsSameNameAttr_System_String_" data-uid="NFX.Environment.ConfigSectionNode.IsSameNameAttr(System.String)">IsSameNameAttr(String)</h4>
+              <div class="markdown level1 summary"><p>Returns true when another name is the same as this section &quot;name&quot; attribute per case-insensitive culture-neutral comparison</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsSameNameAttr(string other)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_IsSameNameAttr_System_String_">IConfigSectionNode.IsSameNameAttr(String)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_MergeAttributes_" data-uid="NFX.Environment.ConfigSectionNode.MergeAttributes*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_MergeAttributes_NFX_Environment_IConfigSectionNode_NFX_Environment_NodeOverrideRules_" data-uid="NFX.Environment.ConfigSectionNode.MergeAttributes(NFX.Environment.IConfigSectionNode,NFX.Environment.NodeOverrideRules)">MergeAttributes(IConfigSectionNode, NodeOverrideRules)</h4>
+              <div class="markdown level1 summary"><p>Merges attributes from another node into this one. Another node may belong to a different configuration instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void MergeAttributes(IConfigSectionNode other, NodeOverrideRules rules = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.NodeOverrideRules.html">NodeOverrideRules</a></td>
+                    <td><span class="parametername">rules</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_MergeSections_" data-uid="NFX.Environment.ConfigSectionNode.MergeSections*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_MergeSections_NFX_Environment_IConfigSectionNode_NFX_Environment_NodeOverrideRules_" data-uid="NFX.Environment.ConfigSectionNode.MergeSections(NFX.Environment.IConfigSectionNode,NFX.Environment.NodeOverrideRules)">MergeSections(IConfigSectionNode, NodeOverrideRules)</h4>
+              <div class="markdown level1 summary"><p>Merges child sections from another node into this one. Another node may belong to a different configuration instance.
+This method ignores override flags and merges nodes regardless</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void MergeSections(IConfigSectionNode other, NodeOverrideRules rules = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.NodeOverrideRules.html">NodeOverrideRules</a></td>
+                    <td><span class="parametername">rules</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_Navigate_" data-uid="NFX.Environment.ConfigSectionNode.Navigate*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_Navigate_System_String_" data-uid="NFX.Environment.ConfigSectionNode.Navigate(System.String)">Navigate(String)</h4>
+              <div class="markdown level1 summary"><p>Navigates the path and return the appropriate node. Example: &#39;!/nfx/logger/destination/$file-name&#39;</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigNode Navigate(string path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>If path starts from &#39;!&#39; then exception will be thrown if such a node does not exist;
+ Use &#39;/&#39; as leading char for root,
+ &#39;..&#39; for step up,
+ &#39;$&#39; for attribute name,
+ [int] for access to subsection or attribute by index,
+ section[value] for access using value comparison of named section,
+ section[attr=value] for access using value of sections named attr
+Multiple paths may be coalesed using &#39;|&#39; or &#39;;&#39;</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigNode.html">ConfigNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Environment_ConfigSectionNode_Navigate_System_String__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>/table[patient]    -   get first section named &quot;table&quot; with value &quot;patient&quot;
+/[3]               -   get 4th child section from the root
+/table/$[2]        -   get 3rd attribute of first section named &quot;table&quot;
+/table[short-name=pat] -  get first section named &quot;table&quot; having attribute named &quot;short-name&quot; equal &quot;pat&quot;</p>
+</div>
+              <h5 id="NFX_Environment_ConfigSectionNode_Navigate_System_String__examples">Examples</h5>
+              
+Navigate("/vars/[3]"); Navigate("/tables/table[resident]"); Navigate("/vars/var1/$[2]");  Navigate("/tables/table[name=patient]");
+
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NavigateSection_" data-uid="NFX.Environment.ConfigSectionNode.NavigateSection*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NavigateSection_System_String_" data-uid="NFX.Environment.ConfigSectionNode.NavigateSection(System.String)">NavigateSection(String)</h4>
+              <div class="markdown level1 summary"><p>Navigates the path and return the appropriate section node. Example &#39;!/nfx/logger/destination&#39;</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ConfigSectionNode NavigateSection(string path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>If path starts from &#39;!&#39; then exception will be thrown if such a section node does not exist;
+ Use &#39;/&#39; as leading char for root,
+ &#39;..&#39; for step up. Multiple paths may be coalesced using &#39;|&#39; or &#39;;&#39;</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.ConfigSectionNode.html">ConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_OverrideBy_" data-uid="NFX.Environment.ConfigSectionNode.OverrideBy*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_OverrideBy_NFX_Environment_IConfigSectionNode_NFX_Environment_NodeOverrideRules_" data-uid="NFX.Environment.ConfigSectionNode.OverrideBy(NFX.Environment.IConfigSectionNode,NFX.Environment.NodeOverrideRules)">OverrideBy(IConfigSectionNode, NodeOverrideRules)</h4>
+              <div class="markdown level1 summary"><p>Merges another node data by overriding this node&#39;s value/attributes/sub nodes according to rules.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool OverrideBy(IConfigSectionNode other, NodeOverrideRules rules = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.NodeOverrideRules.html">NodeOverrideRules</a></td>
+                    <td><span class="parametername">rules</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True when merge match was made</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ProcessIncludePragmas_" data-uid="NFX.Environment.ConfigSectionNode.ProcessIncludePragmas*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ProcessIncludePragmas_System_Boolean_System_String_" data-uid="NFX.Environment.ConfigSectionNode.ProcessIncludePragmas(System.Boolean,System.String)">ProcessIncludePragmas(Boolean, String)</h4>
+              <div class="markdown level1 summary"><p>Replaces all include pragmas - sections with specified names (&#39;_include&#39; by default), with pointed to configuration file content
+as obtained via the call to file system specified in every pragma.
+If no FS specified then LocalFileSystem is used. If no file name specified when try to allocate config node provider.
+Returns true if include pragmas were found.
+Note: this method does not process new include pragmas that may have fetched during this call.
+Caution: the file system used in the operation may rely on the App container that may need to be set-up for the call to succeed,
+therefore calling this method before app has activated may fail, in such cases a temp app container may be set to get the config file
+with processed includes, then the result may be passed to the primary app container ctor.
+This call is not logically thread-safe, it must be called from the main thread in the app</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool ProcessIncludePragmas(bool recurse, string includePragma = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">recurse</span></td>
+                    <td><p>True to process inner nodes</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">includePragma</span></td>
+                    <td><p>Pragma section name, &#39;_include&#39; by default</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p>True if pragmas were found</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Environment_ConfigSectionNode_ProcessIncludePragmas_System_Boolean_System_String__examples">Examples</h5>
+              
+nfx
+{
+sectionA{ a=2 b=3}
+_include
+{
+name=secret // '_include' will be replaced by 'secret' with sub-nodes from referenced file
+file="/etc/cluster/mysecret.laconf" //would come from local FS
+required=false //if file is not found then nothing will be included instead of '_include' which will be just removed
+}
+_include
+{
+// '_include' will be replaced by whatever root section content in the referenced file
+fs {type="NFX.Web.IO.FileSystem.SVNFileSystem, NFX.Web"}
+session { server-url="https://myhost.com/mySvnRepo/trunk/configs" user-name="user1" user-password="******"}
+}
+}
+
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ReplaceBy_" data-uid="NFX.Environment.ConfigSectionNode.ReplaceBy*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ReplaceBy_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Environment.ConfigSectionNode.ReplaceBy(NFX.Environment.IConfigSectionNode)">ReplaceBy(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"><p>Completely replaces this node&#39;s attributes, value and children with data from another node</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ReplaceBy(IConfigSectionNode other)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">other</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ResetModified_" data-uid="NFX.Environment.ConfigSectionNode.ResetModified*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ResetModified" data-uid="NFX.Environment.ConfigSectionNode.ResetModified">ResetModified()</h4>
+              <div class="markdown level1 summary"><p>Resets modification of this an all child nodes</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override void ResetModified()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Environment.ConfigNode.html#NFX_Environment_ConfigNode_ResetModified">ConfigNode.ResetModified()</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ToConfigurationJSONDataMap_" data-uid="NFX.Environment.ConfigSectionNode.ToConfigurationJSONDataMap*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ToConfigurationJSONDataMap" data-uid="NFX.Environment.ConfigSectionNode.ToConfigurationJSONDataMap">ToConfigurationJSONDataMap()</h4>
+              <div class="markdown level1 summary"><p>Returns this config node as JSON data map suitable for making JSONConfiguration.
+Contrast with ToJSONDataMap</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public JSONDataMap ToConfigurationJSONDataMap()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_ToConfigurationJSONDataMap">IConfigSectionNode.ToConfigurationJSONDataMap()</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ToJSONDataMap_" data-uid="NFX.Environment.ConfigSectionNode.ToJSONDataMap*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ToJSONDataMap" data-uid="NFX.Environment.ConfigSectionNode.ToJSONDataMap">ToJSONDataMap()</h4>
+              <div class="markdown level1 summary"><p>Converts this ConfigSectionNode to JSONDataMap. Contrast with ToConfigurationJSONDataMap
+Be carefull: that this operation can &quot;lose&quot; data from ConfigSectionNode.
+In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap, for example
+this method overwrites duplicate key names and does not support section values</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public JSONDataMap ToJSONDataMap()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONDataMap.html">JSONDataMap</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_ToJSONDataMap">IConfigSectionNode.ToJSONDataMap()</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ToJSONString_" data-uid="NFX.Environment.ConfigSectionNode.ToJSONString*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ToJSONString_NFX_Serialization_JSON_JSONWritingOptions_" data-uid="NFX.Environment.ConfigSectionNode.ToJSONString(NFX.Serialization.JSON.JSONWritingOptions)">ToJSONString(JSONWritingOptions)</h4>
+              <div class="markdown level1 summary"><p>Serializes configuration tree rooted at this node into JSON configuration format and returns it as a string</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ToJSONString(JSONWritingOptions options = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.JSON.JSONWritingOptions.html">JSONWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_ToJSONString_NFX_Serialization_JSON_JSONWritingOptions_">IConfigSectionNode.ToJSONString(JSONWritingOptions)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_ToLaconicString_" data-uid="NFX.Environment.ConfigSectionNode.ToLaconicString*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_ToLaconicString_NFX_CodeAnalysis_Laconfig_LaconfigWritingOptions_" data-uid="NFX.Environment.ConfigSectionNode.ToLaconicString(NFX.CodeAnalysis.Laconfig.LaconfigWritingOptions)">ToLaconicString(LaconfigWritingOptions)</h4>
+              <div class="markdown level1 summary"><p>Serializes configuration tree rooted at this node into Laconic format and returns it as a string</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ToLaconicString(LaconfigWritingOptions options = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.CodeAnalysis.Laconfig.LaconfigWritingOptions.html">LaconfigWritingOptions</a></td>
+                    <td><span class="parametername">options</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_ToLaconicString_NFX_CodeAnalysis_Laconfig_LaconfigWritingOptions_">IConfigSectionNode.ToLaconicString(LaconfigWritingOptions)</a></div>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_AttrByIndex_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#AttrByIndex*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_AttrByIndex_System_Int32_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#AttrByIndex(System.Int32)">IConfigSectionNode.AttrByIndex(Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IConfigAttrNode IConfigSectionNode.AttrByIndex(int idx)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigAttrNode.html">IConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_AttrByIndex_System_Int32_">IConfigSectionNode.AttrByIndex(Int32)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_AttrByName_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#AttrByName*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_AttrByName_System_String_System_Boolean_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#AttrByName(System.String,System.Boolean)">IConfigSectionNode.AttrByName(String, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IConfigAttrNode IConfigSectionNode.AttrByName(string name, bool autoCreate)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">autoCreate</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigAttrNode.html">IConfigAttrNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_AttrByName_System_String_System_Boolean_">IConfigSectionNode.AttrByName(String, Boolean)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Attributes_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Attributes*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Attributes" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Attributes">IConfigSectionNode.Attributes</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IEnumerable&lt;IConfigAttrNode&gt; IConfigSectionNode.Attributes { get; }</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Environment.IConfigAttrNode.html">IConfigAttrNode</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_Attributes">IConfigSectionNode.Attributes</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Children_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Children*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Children" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Children">IConfigSectionNode.Children</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IEnumerable&lt;IConfigSectionNode&gt; IConfigSectionNode.Children { get; }</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_Children">IConfigSectionNode.Children</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Item_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Item*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Item_System_Int32_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Item(System.Int32)">IConfigSectionNode.Item[Int32]</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IConfigSectionNode IConfigSectionNode.this[int idx] { get; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">idx</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_Item_System_Int32_">IConfigSectionNode.Item[Int32]</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Item_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Item*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Item_System_String___" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Item(System.String[])">IConfigSectionNode.Item[String[]]</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IConfigSectionNode IConfigSectionNode.this[params string[] names] { get; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">names</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_Item_System_String___">IConfigSectionNode.Item[String[]]</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Navigate_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Navigate*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_Navigate_System_String_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#Navigate(System.String)">IConfigSectionNode.Navigate(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IConfigNode IConfigSectionNode.Navigate(string path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">path</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigNode.html">IConfigNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_Navigate_System_String_">IConfigSectionNode.Navigate(String)</a></div>
+              
+              
+              <a id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_NavigateSection_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#NavigateSection*"></a>
+              <h4 id="NFX_Environment_ConfigSectionNode_NFX_Environment_IConfigSectionNode_NavigateSection_System_String_" data-uid="NFX.Environment.ConfigSectionNode.NFX#Environment#IConfigSectionNode#NavigateSection(System.String)">IConfigSectionNode.NavigateSection(String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IConfigSectionNode IConfigSectionNode.NavigateSection(string path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">path</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Environment.IConfigSectionNode.html#NFX_Environment_IConfigSectionNode_NavigateSection_System_String_">IConfigSectionNode.NavigateSection(String)</a></div>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.IO.FileSystem.Packaging.ManifestUtils.html#NFX_IO_FileSystem_Packaging_ManifestUtils_HasTheSameContent_NFX_Environment_IConfigSectionNode_NFX_Environment_IConfigSectionNode_System_Boolean_">ManifestUtils.HasTheSameContent(IConfigSectionNode, IConfigSectionNode, Boolean)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

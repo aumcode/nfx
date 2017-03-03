@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.DataAccess.Distributed
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.DataAccess.Distributed
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_DataAccess_Distributed" data-uid="NFX.DataAccess.Distributed">Namespace NFX.DataAccess.Distributed
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.Command.html">Command</a></h4>
+                  <section><p>Defines a command sent into an IDistributedDataStore implementor to retrieve or change(if supported) data.
+A Command is a named bag of paremeters where every parameter has a name and a value.
+Every command has a unique Identity(GUID) which represents a token of the whole command state (name, type,all params).
+The identity is used for quick lookup/caching. The identity may be supplied externally as
+business code may map certain parameters into GUID and later reuse the same GUID to retrieve the cached command result, for example
+a web server app may cache command &quot;GetPurchases(user=123, year=2015, month=3)&quot; under session key &quot;MY_PURCHASES_201503&quot; to later
+retrieve a cached (if available) command results from the DB layer, this way the DB server does not have to store the whole
+commands with all params as the cache key (which would have been slow to compare and would have induced GC pressure).
+Warning: DO NOT CACHE command identity value on a client (i.e. web page) in an un-encrypted state, as this is a security flaw</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.Command.Param.html">Command.Param</a></h4>
+                  <section><p>Represents a distributed command parameter</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.DataParcelAttribute.html">DataParcelAttribute</a></h4>
+                  <section><p>Decorates Pacel-derivative classes specifying distributed data store options.
+Unlike the CRUD family of metadata attributes this attributed is NOT TARGETABLE on purpose
+beacause different sharding definitions would have affected the properties of the parcel which could have been
+very complex to maintain/account for. So, every parcel has ONLY ONE set opf metadata definition.
+In case when different parcel definitions needed a new parcel type should be created which can reuse the payload - this is much
+easier to implement (two parcels) than targeting within the same parcel.
+Table mappings are targetable</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.DistributedDataAccessException.html">DistributedDataAccessException</a></h4>
+                  <section><p>Thrown by distributed data access classes</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.DistributedDataParcelSerializationException.html">DistributedDataParcelSerializationException</a></h4>
+                  <section><p>Thrown by distributed data access classes when parcel serialization problems happen</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.GDIDRangeComparer.html">GDIDRangeComparer</a></h4>
+                  <section><p>Compares GDID regardless of authority. This is useful for range checking, when authorities generating GDIDs in the same
+range should be disregarded. Use GDIDRangeComparer.Instance.
+Only relative range comparison can be made.
+The Equality returned by this comparer can not be relied upon for GDID comparison as it disregards authority.
+Equality can only be tested for range comparison.</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.NullCommandResult.html">NullCommandResult</a></h4>
+                  <section><p>Represents a result of command that is absent. This is needed to distinguish from null reference</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.Parcel.html">Parcel</a></h4>
+                  <section><p>Describes a data parcel - a piece of logically-grouped data that gets fetched from/comitted into a distributed backend system.
+Parcels represent an atomic unit of change, a changeset that gets replicated between failover hosts.
+Every parcel has a Payload property that stores business data of interest that the parcel contains.
+This class is not thread-safe. Use DeepClone() to create 100% copies for working in multiple threads.
+This particular class serves as a very base for all Parcel implementations</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.Parcel-1.html">Parcel&lt;TPayload&gt;</a></h4>
+                  <section><p>Describes a data parcel - a piece of logically-grouped data that gets fetched from/comitted into a distributed backend system.
+Parcels represent an atomic unit of change, a changeset that gets replicated between failover hosts.
+Every parcel has a Payload property that stores business data of interest that the parcel contains.
+This class is not thread-safe.
+This particular class serves as a very base for distributed data store implementations</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.ParcelSealValidationException.html">ParcelSealValidationException</a></h4>
+                  <section><p>Thrown by Parcel.Seal() method trying to ensure parcel consistency before it gets sealed</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.ParcelValidationException.html">ParcelValidationException</a></h4>
+                  <section><p>Thrown by distributed data access classes  to indicate some data validation error</p>
+</section>
+                <h3 id="structs">Structs
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.CachePolicyData.html">CachePolicyData</a></h4>
+                  <section><p>Holds data per IParcelCachePolicy contract</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.GDID.html">GDID</a></h4>
+                  <section><p>Represents a Global Distributed ID key (key field) used in distributed databases that identify entities with a combination of unsigned 32 bit integer
+&#39;Era&#39; and unsigned 64 bit integer &#39;ID&#39;. The first 32 bit integer is an &#39;era&#39; in which the &#39;ID&#39; (64 bit) was created, consequently
+a GDID is a 12 byte = 96 bit integer that can hold 2^96 = 79,228,162,514,264,337,593,543,950,336 combinations.
+The ID consists of two segments: 4 bit authority + 60 bits counter. Authority segment occupies the most significant 4 bits of uint64, so
+the system may efficiently query the data store to identify the highest stored ID value in a range.
+Authorities identify one of 16 possible ID generation sources in the global distributed system, therefore ID duplications are not
+possible between authorities.
+Within a single era, GDID structure may identify 2^60 = 1,152,921,504,606,846,976(per authority) * 16(authorities) = 2^64 = 18,446,744,073,709,551,616 total combinations.
+Because of such a large number of combinations supported by GDID.ID alone (having the same Era), some systems may always use Era=0 and only store the ID part
+(i.e. as UNSIGNED BIGINT in SQL datastores).
+Note GDID.Zero is never returned by generators as it represents the absence of a value</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.GDIDSymbol.html">GDIDSymbol</a></h4>
+                  <section><p>Represents a tuple of GDID and its symbolic representation (framework usualy uses an ELink as symbolic representation).
+This struct is needed to pass GDID along with its ELink representation together.
+Keep in mind that string poses a GC load, so this stuct is not suitable for beiing used as a pile cache key</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.ShardingPointer.html">ShardingPointer</a></h4>
+                  <section><p>Contains information about sharding parcel type and ID
+which is used to calculate the physical location of parcel data</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.TargetTableMapping.html">TargetTableMapping</a></h4>
+                  <section><p>Provides information about targetname-&gt;table name, sequence name(and possibly other) mappings</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IArea.html">IArea</a></h4>
+                  <section><p>Provides information about an area of a bank schema. This information does not depend on a particular bank instance,
+as it is common for all banks that implement the same schema.
+Area provides configuration information for parcels that it can store.
+Every instance of this (interface-implementer) class has a corresponding IAreaInstance instance that stores information
+for every particular bank, i.e. what distribution policies are applied (such as sharding) to the parcels stored in this area</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IAreaInstance.html">IAreaInstance</a></h4>
+                  <section><p>Represents data for a concrete instance of schema area within banks, this depends on a concrete bank instance (unlike it&#39;s complementary part IArea)</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IBank.html">IBank</a></h4>
+                  <section><p>Provides abstraction for Global Database Bank instance</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.ICachePolicy.html">ICachePolicy</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IDistributedDataStore.html">IDistributedDataStore</a></h4>
+                  <section><p>Represents a data store that works with large distributed systems that support OLTP-style processing
+and provide data querying, caching, partitioning/sharding, failover and replication.
+These systems are designed to handle billions of rows that need to be accessed by millions of active concurrent users,
+so the design is specific to this model that scales horizontally. There is no need to use this technology for medium and smaller data stores
+as it imposes specific requirements on how application is written/interacts with the backend system. This technology is based on the idea
+of Parcels - an atomic unit of data change. Parcels get replicated between hosts for failover and performance reasons.
+Note:
+NFX library does not provide the implementation for this technology, only marker interfaces so developers can plan for distributed backends
+in future</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IDistributedDataStoreImplementation.html">IDistributedDataStoreImplementation</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IDistributedStableHashProvider.html">IDistributedStableHashProvider</a></h4>
+                  <section><p>Denotes entities that provide ULONG STABLE hash code for use in a distributed (large scale) system.
+This is needed primarily for cluster/large datasets to properly compute 64bit sharding addresses and to differentiate
+from GetHashCode() that returns 32 bits unstable hash for local object location in hashtables.
+DO not confuse with object.GetHashCode() which is un-suitable for long-term persistence</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IReplicatable.html">IReplicatable</a></h4>
+                  <section><p>Denotes a distributed entity that can be replicated to a different location/site/instance.
+Normally only Parcel and its derivatives should implement this interface</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IReplicationVersionInfo.html">IReplicationVersionInfo</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.ISchema.html">ISchema</a></h4>
+                  <section><p>Provides information about schema of data store banks. Schema defines areas of the bank, where every area
+defines what parcel types can be stored. Each bank implements only one bank schema</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.IShardingPointerProvider.html">IShardingPointerProvider</a></h4>
+                  <section><p>Denotes an entity which provides a sharding parcel type along with sharding ID (ShardingPointer) that can be used to determine
+data location via conversion of this id into physical shard #(particular server) that this entity represents</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.DataCaching.html">DataCaching</a></h4>
+                  <section><p>Stipulates where data gets cached</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.DataVeracity.html">DataVeracity</a></h4>
+                  <section><p>Stipulates levels of data fidality, the higher the level - the more accurately verified data is provided</p>
+</section>
+                  <h4><a class="xref" href="NFX.DataAccess.Distributed.ParcelState.html">ParcelState</a></h4>
+                  <section><p>Represents data parcel states - creating, modifying, sealed</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

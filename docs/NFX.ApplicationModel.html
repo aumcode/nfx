@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.ApplicationModel
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.ApplicationModel
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_ApplicationModel" data-uid="NFX.ApplicationModel">Namespace NFX.ApplicationModel
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html">ApplicationComponent</a></h4>
+                  <section><p>An abstraction of a disposable application component - major implementation/functionality part of an app.
+Components logically subdivide application container so their instances may be discovered
+by other parties, for example: one may iterate over all components in an application that support instrumentation and logging.
+Services are sub-types of components.
+Use &quot;ApplicationComponent.AllComponents&quot; to access all components in the container</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.BaseSession.html">BaseSession</a></h4>
+                  <section><p>Implements base ISession  functionality</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.CommonApplicationLogic.html">CommonApplicationLogic</a></h4>
+                  <section><p>Provides base implementation of IApplication for various application kinds</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.ExecutionContext.html">ExecutionContext</a></h4>
+                  <section><p>Provides access to execution context - an entity that groups Request, Response and Session object.
+This class has nothing to do with Web. Execution contexts are supported as easily in console, service, web,  and Windows forms apps.
+All objects may be either application-global or thread level. This class is useful for technology-agnostic implementations
+of Record Models i.e. in a Record class one may write:  &quot; if (ExecutionContext.Session.User.Kind==UserKind.Administrator)...&quot;</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.NOPApplication.html">NOPApplication</a></h4>
+                  <section><p>Represents an application that consists of pure-nop providers, consequently
+this application does not log, does not store data and does not do anything else
+still satisfying its contract</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.NOPSession.html">NOPSession</a></h4>
+                  <section><p>Represents a session that does nothing and returns fake user</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.ServiceBaseApplication.html">ServiceBaseApplication</a></h4>
+                  <section><p>Provides base implementation of IApplication for applications that have no forms like services and console apps. This class IS thread safe</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.TestApplication.html">TestApplication</a></h4>
+                  <section><p>Application designated for use in various unit test cases.
+This class is not intended for use in production systems!</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.IApplication.html">IApplication</a></h4>
+                  <section><p>Describes general application model - usually a dependency injection container
+that governs application initialization, state management, logging etc...
+An applications is usually implemented with a singleton class that has static
+conduits to instance properties. Applications may be passed by reference (hence this interface)
+to simplify mocking that otherwise (in case of static-only class) would have been impossible</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.IApplicationComponent.html">IApplicationComponent</a></h4>
+                  <section><p>Provides marker contract requirement for an ApplicationComponent.
+This interface must be implemented only by ApplicationComponent class</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.IApplicationFinishNotifiable.html">IApplicationFinishNotifiable</a></h4>
+                  <section><p>Represents an entity that can get notified about application finish</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.IApplicationStarter.html">IApplicationStarter</a></h4>
+                  <section><p>Represents an entity that performs work on application start.
+This entity must be either invoked directly or declared in config file under &quot;starters&quot; section</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.ISession.html">ISession</a></h4>
+                  <section><p>Describes user session</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.ApplicationModel.SessionLoginType.html">SessionLoginType</a></h4>
+                  <section><p>Denotes types of session login</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

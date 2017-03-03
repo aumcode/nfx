@@ -1,0 +1,727 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DataUtils
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DataUtils
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_DataUtils" data-uid="NFX.DataUtils">Class DataUtils
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">DataUtils</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">System.Object.ToString()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX</h6>
+              <h6><strong>Assembly</strong>:NFX.dll</h6>
+              <h5 id="NFX_DataUtils_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static class DataUtils</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_DataUtils_AllButTheseFields_" data-uid="NFX.DataUtils.AllButTheseFields*"></a>
+              <h4 id="NFX_DataUtils_AllButTheseFields_System_Collections_Generic_IEnumerable_System_String__System_Boolean_" data-uid="NFX.DataUtils.AllButTheseFields(System.Collections.Generic.IEnumerable{System.String},System.Boolean)">AllButTheseFields(IEnumerable&lt;String&gt;, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Converts field names separated by &#39;,&#39; or &#39;;&#39; into a FieldFilterFunction</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FieldFilterFunc AllButTheseFields(this IEnumerable&lt;string&gt; fields, bool caseSensitive = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td><span class="parametername">fields</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitive</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_AllButTheseFields_" data-uid="NFX.DataUtils.AllButTheseFields*"></a>
+              <h4 id="NFX_DataUtils_AllButTheseFields_System_String_System_Boolean_" data-uid="NFX.DataUtils.AllButTheseFields(System.String,System.Boolean)">AllButTheseFields(String, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Converts field names separated by &#39;,&#39; or &#39;;&#39; into a FieldFilterFunction</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FieldFilterFunc AllButTheseFields(this string fields, bool caseSensitive = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fields</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitive</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_AsEnumerableOf_" data-uid="NFX.DataUtils.AsEnumerableOf*"></a>
+              <h4 id="NFX_DataUtils_AsEnumerableOf__1_System_Collections_Generic_IEnumerable_NFX_DataAccess_CRUD_Row__" data-uid="NFX.DataUtils.AsEnumerableOf``1(System.Collections.Generic.IEnumerable{NFX.DataAccess.CRUD.Row})">AsEnumerableOf&lt;TRow&gt;(IEnumerable&lt;Row&gt;)</h4>
+              <div class="markdown level1 summary"><p>Casts enumerable of rows (such as rowset) to the specified row type, returning empty enumerable if the source is null</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TRow&gt; AsEnumerableOf&lt;TRow&gt;(this IEnumerable&lt;Row&gt; source)where TRow : Row</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.DataAccess.CRUD.Row.html">Row</a>&gt;</td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TRow&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_Clone_" data-uid="NFX.DataUtils.Clone*"></a>
+              <h4 id="NFX_DataUtils_Clone__1___0_System_Boolean_System_Boolean_System_Func_System_String_NFX_DataAccess_CRUD_Schema_FieldDef_System_Boolean__System_Func_System_String_System_String_System_Boolean__" data-uid="NFX.DataUtils.Clone``1(``0,System.Boolean,System.Boolean,System.Func{System.String,NFX.DataAccess.CRUD.Schema.FieldDef,System.Boolean},System.Func{System.String,System.String,System.Boolean})">Clone&lt;TRow&gt;(TRow, Boolean, Boolean, Func&lt;String, Schema.FieldDef, Boolean&gt;, Func&lt;String, String, Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>If source is not null, creates a shallow clone using &#39;source.CopyFields(copy)&#39;</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TRow Clone&lt;TRow&gt;(this TRow source, bool includeAmorphousData = true, bool invokeAmorphousAfterLoad = true, Func&lt;string, Schema.FieldDef, bool&gt; fieldFilter = null, Func&lt;string, string, bool&gt; amorphousFieldFilter = null)where TRow : Row</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TRow</span></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">includeAmorphousData</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">invokeAmorphousAfterLoad</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="NFX.DataAccess.CRUD.Schema.FieldDef.html">Schema.FieldDef</a>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">fieldFilter</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">amorphousFieldFilter</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_LoadEnumerable_" data-uid="NFX.DataUtils.LoadEnumerable*"></a>
+              <h4 id="NFX_DataUtils_LoadEnumerable__1_NFX_DataAccess_CRUD_ICRUDOperations_NFX_DataAccess_CRUD_Query___0__" data-uid="NFX.DataUtils.LoadEnumerable``1(NFX.DataAccess.CRUD.ICRUDOperations,NFX.DataAccess.CRUD.Query{``0})">LoadEnumerable&lt;TRow&gt;(ICRUDOperations, Query&lt;TRow&gt;)</h4>
+              <div class="markdown level1 summary"><p>Loads rowset with rows cast per Query(T) or empty enum</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TRow&gt; LoadEnumerable&lt;TRow&gt;(this ICRUDOperations operations, Query&lt;TRow&gt; query)where TRow : Row</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html">ICRUDOperations</a></td>
+                    <td><span class="parametername">operations</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query-1.html">Query</a>&lt;TRow&gt;</td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TRow&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_LoadEnumerableAsync_" data-uid="NFX.DataUtils.LoadEnumerableAsync*"></a>
+              <h4 id="NFX_DataUtils_LoadEnumerableAsync__1_NFX_DataAccess_CRUD_ICRUDOperations_NFX_DataAccess_CRUD_Query___0__" data-uid="NFX.DataUtils.LoadEnumerableAsync``1(NFX.DataAccess.CRUD.ICRUDOperations,NFX.DataAccess.CRUD.Query{``0})">LoadEnumerableAsync&lt;TRow&gt;(ICRUDOperations, Query&lt;TRow&gt;)</h4>
+              <div class="markdown level1 summary"><p>Async version - loads rowset with rows cast per Query(T) or empty enum</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;IEnumerable&lt;TRow&gt;&gt; LoadEnumerableAsync&lt;TRow&gt;(this ICRUDOperations operations, Query&lt;TRow&gt; query)where TRow : Row</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html">ICRUDOperations</a></td>
+                    <td><span class="parametername">operations</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query-1.html">Query</a>&lt;TRow&gt;</td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TRow&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_LoadRow_" data-uid="NFX.DataUtils.LoadRow*"></a>
+              <h4 id="NFX_DataUtils_LoadRow__1_NFX_DataAccess_CRUD_ICRUDOperations_NFX_DataAccess_CRUD_Query___0__" data-uid="NFX.DataUtils.LoadRow``1(NFX.DataAccess.CRUD.ICRUDOperations,NFX.DataAccess.CRUD.Query{``0})">LoadRow&lt;TRow&gt;(ICRUDOperations, Query&lt;TRow&gt;)</h4>
+              <div class="markdown level1 summary"><p>Loads one row cast per Query(T) or null</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TRow LoadRow&lt;TRow&gt;(this ICRUDOperations operations, Query&lt;TRow&gt; query)where TRow : Row</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html">ICRUDOperations</a></td>
+                    <td><span class="parametername">operations</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query-1.html">Query</a>&lt;TRow&gt;</td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_LoadRowAsync_" data-uid="NFX.DataUtils.LoadRowAsync*"></a>
+              <h4 id="NFX_DataUtils_LoadRowAsync__1_NFX_DataAccess_CRUD_ICRUDOperations_NFX_DataAccess_CRUD_Query___0__" data-uid="NFX.DataUtils.LoadRowAsync``1(NFX.DataAccess.CRUD.ICRUDOperations,NFX.DataAccess.CRUD.Query{``0})">LoadRowAsync&lt;TRow&gt;(ICRUDOperations, Query&lt;TRow&gt;)</h4>
+              <div class="markdown level1 summary"><p>Async version - loads one row cast per Query(T) or null</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Task&lt;TRow&gt; LoadRowAsync&lt;TRow&gt;(this ICRUDOperations operations, Query&lt;TRow&gt; query)where TRow : Row</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.ICRUDOperations.html">ICRUDOperations</a></td>
+                    <td><span class="parametername">operations</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.Query-1.html">Query</a>&lt;TRow&gt;</td>
+                    <td><span class="parametername">query</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Threading.Tasks.Task</span>&lt;TRow&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TRow</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_OnlyTheseFields_" data-uid="NFX.DataUtils.OnlyTheseFields*"></a>
+              <h4 id="NFX_DataUtils_OnlyTheseFields_System_Collections_Generic_IEnumerable_System_String__System_Boolean_" data-uid="NFX.DataUtils.OnlyTheseFields(System.Collections.Generic.IEnumerable{System.String},System.Boolean)">OnlyTheseFields(IEnumerable&lt;String&gt;, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Converts field names separated by &#39;,&#39; or &#39;;&#39; into a FieldFilterFunction</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FieldFilterFunc OnlyTheseFields(this IEnumerable&lt;string&gt; fields, bool caseSensitive = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td><span class="parametername">fields</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitive</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_DataUtils_OnlyTheseFields_" data-uid="NFX.DataUtils.OnlyTheseFields*"></a>
+              <h4 id="NFX_DataUtils_OnlyTheseFields_System_String_System_Boolean_" data-uid="NFX.DataUtils.OnlyTheseFields(System.String,System.Boolean)">OnlyTheseFields(String, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Converts field names separated by &#39;,&#39; or &#39;;&#39; into a FieldFilterFunction</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static FieldFilterFunc OnlyTheseFields(this string fields, bool caseSensitive = false)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fields</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">caseSensitive</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.DataAccess.CRUD.FieldFilterFunc.html">FieldFilterFunc</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

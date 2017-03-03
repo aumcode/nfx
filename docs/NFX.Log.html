@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NFX.Log
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NFX.Log
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              <h1 id="NFX_Log" data-uid="NFX.Log">Namespace NFX.Log
+              </h1>
+              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="markdown level0 remarks"></div>
+                <h3 id="classes">Classes
+              </h3>
+                  <h4><a class="xref" href="NFX.Log.LogService.html">LogService</a></h4>
+                  <section><p>Provides logging services by buffering messages and dispatching them into destinations.
+This is an asynchronous service, meaning that Write(msg) never blocks for long.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Log.LogServiceBase.html">LogServiceBase</a></h4>
+                  <section><p>Based class for implementing test and non-test logging services.
+Destinations may fail and the message will be failed-over into another destination in the same logger
+as specified by &#39;failover&#39; attribute of destination. This attribute is also present on service level.
+Cascading failover is not supported (failover of failovers). Another consideration is that messages
+get sent into destinations synchronously by internal thread so specifying too many destinations may
+limit overall LogService throughput. In complex scenarios consider using LogServiceDestination instead.</p>
+</section>
+                  <h4><a class="xref" href="NFX.Log.LogServiceBase.DestinationList.html">LogServiceBase.DestinationList</a></h4>
+                  <section></section>
+                  <h4><a class="xref" href="NFX.Log.Message.html">Message</a></h4>
+                  <section><p>Represents a Log message</p>
+</section>
+                  <h4><a class="xref" href="NFX.Log.MessageFilterExpression.html">MessageFilterExpression</a></h4>
+                  <section><p>Defines an expression used for log message filtering.
+Important: it is not a good practice to create many different scopes as it leads to creation of many assemblies dynamically</p>
+</section>
+                  <h4><a class="xref" href="NFX.Log.NOPLog.html">NOPLog</a></h4>
+                  <section><p>Represents log that does not do anything</p>
+</section>
+                <h3 id="interfaces">Interfaces
+              </h3>
+                  <h4><a class="xref" href="NFX.Log.ILog.html">ILog</a></h4>
+                  <section><p>Describes entity capable of being written log information to</p>
+</section>
+                  <h4><a class="xref" href="NFX.Log.ILogImplementation.html">ILogImplementation</a></h4>
+                  <section><p>Describes entity capable of being written log information to</p>
+</section>
+                <h3 id="enums">Enums
+              </h3>
+                  <h4><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></h4>
+                  <section><p>Stipulates general logging message types like: Info/Warning/Error etc...</p>
+</section>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

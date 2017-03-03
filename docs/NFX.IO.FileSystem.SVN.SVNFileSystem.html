@@ -1,0 +1,1665 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SVNFileSystem
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SVNFileSystem
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="NFX_IO_FileSystem_SVN_SVNFileSystem" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem">Class SVNFileSystem
+              </h1>
+              <div class="markdown level0 summary"><p>Implements FileSystem for SVN.
+WebDAV protocol is used so reading methods only are implemented</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
+                  <div class="level2"><a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html">ApplicationComponent</a></div>
+                  <div class="level3"><a class="xref" href="NFX.IO.FileSystem.FileSystem.html">FileSystem</a></div>
+                  <div class="level4"><span class="xref">SVNFileSystem</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_CONFIG_FILESYSTEMS_SECTION">FileSystem.CONFIG_FILESYSTEMS_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_CONFIG_FILESYSTEM_SECTION">FileSystem.CONFIG_FILESYSTEM_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_CONFIG_AUTO_START_ATTR">FileSystem.CONFIG_AUTO_START_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_CONFIG_NAME_ATTR">FileSystem.CONFIG_NAME_ATTR</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_CONFIG_DEFAULT_SESSION_CONNECT_PARAMS_SECTION">FileSystem.CONFIG_DEFAULT_SESSION_CONNECT_PARAMS_SECTION</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Instances">FileSystem.Instances</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_AutoStartSystems">FileSystem.AutoStartSystems()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Make__1_NFX_Environment_IConfigSectionNode_">FileSystem.Make&lt;TParam&gt;(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Make__1_System_String_System_String_">FileSystem.Make&lt;TParam&gt;(String, String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Destructor">FileSystem.Destructor()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_m_Name">FileSystem.m_Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_m_Sessions">FileSystem.m_Sessions</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Name">FileSystem.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Sessions">FileSystem.Sessions</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_Configure_NFX_Environment_IConfigSectionNode_">FileSystem.Configure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_CombinePaths_System_String_System_String___">FileSystem.CombinePaths(String, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_ToString">FileSystem.ToString()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DefaultSessionConnectParams">FileSystem.DefaultSessionConnectParams</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoConfigure_NFX_Environment_IConfigSectionNode_">FileSystem.DoConfigure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCheckCanChange_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoCheckCanChange(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCheckCanChangeAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoCheckCanChangeAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetLatestVersion_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoGetLatestVersion(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetLatestVersionAsync_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoGetLatestVersionAsync(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetVersion_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoGetVersion(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetVersionAsync_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoGetVersionAsync(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetVersion_NFX_IO_FileSystem_FileSystemSession_NFX_IO_FileSystem_IFileSystemVersion_">FileSystem.DoSetVersion(FileSystemSession, IFileSystemVersion)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetVersionAsync_NFX_IO_FileSystem_FileSystemSession_NFX_IO_FileSystem_IFileSystemVersion_">FileSystem.DoSetVersionAsync(FileSystemSession, IFileSystemVersion)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoBeginTransaction_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoBeginTransaction(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoBeginTransactionAsync_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoBeginTransactionAsync(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCommitTransaction_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoCommitTransaction(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCommitTransactionAsync_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoCommitTransactionAsync(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoRollbackTransaction_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoRollbackTransaction(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoRollbackTransactionAsync_NFX_IO_FileSystem_FileSystemSession_">FileSystem.DoRollbackTransactionAsync(FileSystemSession)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoRefresh_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoRefresh(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoRefreshAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoRefreshAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetSubDirectoryNamesAsync_NFX_IO_FileSystem_FileSystemDirectory_System_Boolean_">FileSystem.DoGetSubDirectoryNamesAsync(FileSystemDirectory, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetFileNamesAsync_NFX_IO_FileSystem_FileSystemDirectory_System_Boolean_">FileSystem.DoGetFileNamesAsync(FileSystemDirectory, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoNavigateAsync_NFX_IO_FileSystem_FileSystemSession_System_String_">FileSystem.DoNavigateAsync(FileSystemSession, String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoRenameItemAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_String_">FileSystem.DoRenameItemAsync(FileSystemSessionItem, String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoDeleteItemAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoDeleteItemAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCreateFileAsync_NFX_IO_FileSystem_FileSystemDirectory_System_String_System_Int32_">FileSystem.DoCreateFileAsync(FileSystemDirectory, String, Int32)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCreateFileAsync_NFX_IO_FileSystem_FileSystemDirectory_System_String_System_String_System_Boolean_">FileSystem.DoCreateFileAsync(FileSystemDirectory, String, String, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCreateDirectoryAsync_NFX_IO_FileSystem_FileSystemDirectory_System_String_">FileSystem.DoCreateDirectoryAsync(FileSystemDirectory, String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoDirectoryDeepCopyAsync_NFX_IO_FileSystem_FileSystemDirectory_NFX_IO_FileSystem_FileSystemDirectory_NFX_IO_FileSystem_FileSystemDirectory_DirCopyFlags_System_Int32_System_Func_NFX_IO_FileSystem_FileSystemSessionItem_System_Boolean__System_Func_NFX_IO_FileSystem_FileSystemSessionItem_System_Boolean__">FileSystem.DoDirectoryDeepCopyAsync(FileSystemDirectory, FileSystemDirectory, FileSystemDirectory.DirCopyFlags, Int32, Func&lt;FileSystemSessionItem, Boolean&gt;, Func&lt;FileSystemSessionItem, Boolean&gt;)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetItemSizeAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetItemSizeAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetPermissionsStreamAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_Action_NFX_IO_FileSystem_FileSystemStream__">FileSystem.DoGetPermissionsStreamAsync(FileSystemSessionItem, Action&lt;FileSystemStream&gt;)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetMetadataStreamAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_Action_NFX_IO_FileSystem_FileSystemStream__">FileSystem.DoGetMetadataStreamAsync(FileSystemSessionItem, Action&lt;FileSystemStream&gt;)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetFileStreamAsync_NFX_IO_FileSystem_FileSystemFile_System_Action_NFX_IO_FileSystem_FileSystemStream__">FileSystem.DoGetFileStreamAsync(FileSystemFile, Action&lt;FileSystemStream&gt;)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetCreationTimestampAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_">FileSystem.DoSetCreationTimestampAsync(FileSystemSessionItem, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetModificationTimestampAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_">FileSystem.DoSetModificationTimestampAsync(FileSystemSessionItem, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetLastAccessTimestampAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_">FileSystem.DoSetLastAccessTimestampAsync(FileSystemSessionItem, DateTime)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetReadOnlyAsync_NFX_IO_FileSystem_FileSystemSessionItem_System_Boolean_">FileSystem.DoSetReadOnlyAsync(FileSystemSessionItem, Boolean)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetCreationUser_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetCreationUser(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetCreationUserAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetCreationUserAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetModificationUser_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetModificationUser(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetModificationUserAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetModificationUserAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetLastAccessUser_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetLastAccessUser(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetLastAccessUserAsync_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetLastAccessUserAsync(FileSystemSessionItem)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoFlushAsync_NFX_IO_FileSystem_FileSystemStream_System_Threading_CancellationToken_">FileSystem.DoFlushAsync(FileSystemStream, CancellationToken)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoReadAsync_NFX_IO_FileSystem_FileSystemStream_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_">FileSystem.DoReadAsync(FileSystemStream, Byte[], Int32, Int32, CancellationToken)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoWriteAsync_NFX_IO_FileSystem_FileSystemStream_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_">FileSystem.DoWriteAsync(FileSystemStream, Byte[], Int32, Int32, CancellationToken)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_AllComponents">ApplicationComponent.AllComponents</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentBySID_System_UInt64_">ApplicationComponent.GetAppComponentBySID(UInt64)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_GetAppComponentByCommonName_System_String_">ApplicationComponent.GetAppComponentByCommonName(String)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentSID">ApplicationComponent.ComponentSID</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentStartTime">ApplicationComponent.ComponentStartTime</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentDirector">ApplicationComponent.ComponentDirector</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeAndNull__1___0__">DisposableObject.DisposeAndNull&lt;T&gt;(T)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_DisposeStarted">DisposableObject.DisposeStarted</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Disposed">DisposableObject.Disposed</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_EnsureObjectNotDisposed">DisposableObject.EnsureObjectNotDisposed()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.DisposableObject.html#NFX_DisposableObject_Dispose">DisposableObject.Dispose()</a>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.GetType()</span>
+                </div>
+                <div>
+                  <span class="xref">System.Object.MemberwiseClone()</span>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.IO.FileSystem.SVN</h6>
+              <h6><strong>Assembly</strong>:NFX.Web.dll</h6>
+              <h5 id="NFX_IO_FileSystem_SVN_SVNFileSystem_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class SVNFileSystem : FileSystem, IFileSystemImplementation, IFileSystem, IApplicationComponent, INamed, IDisposable, IConfigurable</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem__ctor_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.#ctor*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem__ctor_System_String_NFX_Environment_IConfigSectionNode_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.#ctor(System.String,NFX.Environment.IConfigSectionNode)">SVNFileSystem(String, IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public SVNFileSystem(string name, IConfigSectionNode node = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_ComponentCommonName_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.ComponentCommonName*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_ComponentCommonName" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.ComponentCommonName">ComponentCommonName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string ComponentCommonName { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ApplicationModel.ApplicationComponent.html#NFX_ApplicationModel_ApplicationComponent_ComponentCommonName">ApplicationComponent.ComponentCommonName</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_GeneralCapabilities_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.GeneralCapabilities*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_GeneralCapabilities" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.GeneralCapabilities">GeneralCapabilities</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override IFileSystemCapabilities GeneralCapabilities { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.IFileSystemCapabilities.html">IFileSystemCapabilities</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_GeneralCapabilities">FileSystem.GeneralCapabilities</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_InstanceCapabilities_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.InstanceCapabilities*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_InstanceCapabilities" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.InstanceCapabilities">InstanceCapabilities</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override IFileSystemCapabilities InstanceCapabilities { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.IFileSystemCapabilities.html">IFileSystemCapabilities</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_InstanceCapabilities">FileSystem.InstanceCapabilities</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoCreateDirectory_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoCreateDirectory*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoCreateDirectory_NFX_IO_FileSystem_FileSystemDirectory_System_String_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoCreateDirectory(NFX.IO.FileSystem.FileSystemDirectory,System.String)">DoCreateDirectory(FileSystemDirectory, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemDirectory DoCreateDirectory(FileSystemDirectory dir, string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></td>
+                    <td><span class="parametername">dir</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCreateDirectory_NFX_IO_FileSystem_FileSystemDirectory_System_String_">FileSystem.DoCreateDirectory(FileSystemDirectory, String)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoCreateFile_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoCreateFile*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoCreateFile_NFX_IO_FileSystem_FileSystemDirectory_System_String_System_Int32_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoCreateFile(NFX.IO.FileSystem.FileSystemDirectory,System.String,System.Int32)">DoCreateFile(FileSystemDirectory, String, Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemFile DoCreateFile(FileSystemDirectory dir, string name, int size)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></td>
+                    <td><span class="parametername">dir</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">size</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemFile.html">FileSystemFile</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCreateFile_NFX_IO_FileSystem_FileSystemDirectory_System_String_System_Int32_">FileSystem.DoCreateFile(FileSystemDirectory, String, Int32)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoCreateFile_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoCreateFile*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoCreateFile_NFX_IO_FileSystem_FileSystemDirectory_System_String_System_String_System_Boolean_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoCreateFile(NFX.IO.FileSystem.FileSystemDirectory,System.String,System.String,System.Boolean)">DoCreateFile(FileSystemDirectory, String, String, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemFile DoCreateFile(FileSystemDirectory dir, string name, string localFile, bool readOnly)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></td>
+                    <td><span class="parametername">dir</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">localFile</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnly</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemFile.html">FileSystemFile</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoCreateFile_NFX_IO_FileSystem_FileSystemDirectory_System_String_System_String_System_Boolean_">FileSystem.DoCreateFile(FileSystemDirectory, String, String, Boolean)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoDeleteItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoDeleteItem*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoDeleteItem_NFX_IO_FileSystem_FileSystemSessionItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoDeleteItem(NFX.IO.FileSystem.FileSystemSessionItem)">DoDeleteItem(FileSystemSessionItem)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoDeleteItem(FileSystemSessionItem item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoDeleteItem_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoDeleteItem(FileSystemSessionItem)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetCreationTimestamp_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetCreationTimestamp*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetCreationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetCreationTimestamp(NFX.IO.FileSystem.FileSystemSessionItem)">DoGetCreationTimestamp(FileSystemSessionItem)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override DateTime? DoGetCreationTimestamp(FileSystemSessionItem item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetCreationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetCreationTimestamp(FileSystemSessionItem)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetFileNames_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetFileNames*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetFileNames_NFX_IO_FileSystem_FileSystemDirectory_System_Boolean_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetFileNames(NFX.IO.FileSystem.FileSystemDirectory,System.Boolean)">DoGetFileNames(FileSystemDirectory, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;string&gt; DoGetFileNames(FileSystemDirectory directory, bool recursive)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></td>
+                    <td><span class="parametername">directory</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">recursive</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetFileNames_NFX_IO_FileSystem_FileSystemDirectory_System_Boolean_">FileSystem.DoGetFileNames(FileSystemDirectory, Boolean)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetFileStream_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetFileStream*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetFileStream_NFX_IO_FileSystem_FileSystemFile_System_Action_NFX_IO_FileSystem_FileSystemStream__" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetFileStream(NFX.IO.FileSystem.FileSystemFile,System.Action{NFX.IO.FileSystem.FileSystemStream})">DoGetFileStream(FileSystemFile, Action&lt;FileSystemStream&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemStream DoGetFileStream(FileSystemFile file, Action&lt;FileSystemStream&gt; disposeAction)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemFile.html">FileSystemFile</a></td>
+                    <td><span class="parametername">file</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;<a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a>&gt;</td>
+                    <td><span class="parametername">disposeAction</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetFileStream_NFX_IO_FileSystem_FileSystemFile_System_Action_NFX_IO_FileSystem_FileSystemStream__">FileSystem.DoGetFileStream(FileSystemFile, Action&lt;FileSystemStream&gt;)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetItemSize_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetItemSize*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetItemSize_NFX_IO_FileSystem_FileSystemSessionItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetItemSize(NFX.IO.FileSystem.FileSystemSessionItem)">DoGetItemSize(FileSystemSessionItem)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override ulong DoGetItemSize(FileSystemSessionItem item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.UInt64</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetItemSize_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetItemSize(FileSystemSessionItem)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetLastAccessTimestamp_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetLastAccessTimestamp*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetLastAccessTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetLastAccessTimestamp(NFX.IO.FileSystem.FileSystemSessionItem)">DoGetLastAccessTimestamp(FileSystemSessionItem)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override DateTime? DoGetLastAccessTimestamp(FileSystemSessionItem item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetLastAccessTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetLastAccessTimestamp(FileSystemSessionItem)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetMetadataStream_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetMetadataStream*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetMetadataStream_NFX_IO_FileSystem_FileSystemSessionItem_System_Action_NFX_IO_FileSystem_FileSystemStream__" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetMetadataStream(NFX.IO.FileSystem.FileSystemSessionItem,System.Action{NFX.IO.FileSystem.FileSystemStream})">DoGetMetadataStream(FileSystemSessionItem, Action&lt;FileSystemStream&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemStream DoGetMetadataStream(FileSystemSessionItem item, Action&lt;FileSystemStream&gt; disposeAction)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;<a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a>&gt;</td>
+                    <td><span class="parametername">disposeAction</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetMetadataStream_NFX_IO_FileSystem_FileSystemSessionItem_System_Action_NFX_IO_FileSystem_FileSystemStream__">FileSystem.DoGetMetadataStream(FileSystemSessionItem, Action&lt;FileSystemStream&gt;)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetModificationTimestamp_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetModificationTimestamp*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetModificationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetModificationTimestamp(NFX.IO.FileSystem.FileSystemSessionItem)">DoGetModificationTimestamp(FileSystemSessionItem)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override DateTime? DoGetModificationTimestamp(FileSystemSessionItem item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetModificationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetModificationTimestamp(FileSystemSessionItem)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetPermissionsStream_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetPermissionsStream*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetPermissionsStream_NFX_IO_FileSystem_FileSystemSessionItem_System_Action_NFX_IO_FileSystem_FileSystemStream__" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetPermissionsStream(NFX.IO.FileSystem.FileSystemSessionItem,System.Action{NFX.IO.FileSystem.FileSystemStream})">DoGetPermissionsStream(FileSystemSessionItem, Action&lt;FileSystemStream&gt;)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemStream DoGetPermissionsStream(FileSystemSessionItem item, Action&lt;FileSystemStream&gt; disposeAction)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Action</span>&lt;<a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a>&gt;</td>
+                    <td><span class="parametername">disposeAction</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemStream.html">FileSystemStream</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetPermissionsStream_NFX_IO_FileSystem_FileSystemSessionItem_System_Action_NFX_IO_FileSystem_FileSystemStream__">FileSystem.DoGetPermissionsStream(FileSystemSessionItem, Action&lt;FileSystemStream&gt;)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetReadOnly_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetReadOnly*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetReadOnly_NFX_IO_FileSystem_FileSystemSessionItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetReadOnly(NFX.IO.FileSystem.FileSystemSessionItem)">DoGetReadOnly(FileSystemSessionItem)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override bool DoGetReadOnly(FileSystemSessionItem item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetReadOnly_NFX_IO_FileSystem_FileSystemSessionItem_">FileSystem.DoGetReadOnly(FileSystemSessionItem)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetSubDirectoryNames_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetSubDirectoryNames*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoGetSubDirectoryNames_NFX_IO_FileSystem_FileSystemDirectory_System_Boolean_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoGetSubDirectoryNames(NFX.IO.FileSystem.FileSystemDirectory,System.Boolean)">DoGetSubDirectoryNames(FileSystemDirectory, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;string&gt; DoGetSubDirectoryNames(FileSystemDirectory directory, bool recursive)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemDirectory.html">FileSystemDirectory</a></td>
+                    <td><span class="parametername">directory</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">recursive</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoGetSubDirectoryNames_NFX_IO_FileSystem_FileSystemDirectory_System_Boolean_">FileSystem.DoGetSubDirectoryNames(FileSystemDirectory, Boolean)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoNavigate_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoNavigate*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoNavigate_NFX_IO_FileSystem_FileSystemSession_System_String_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoNavigate(NFX.IO.FileSystem.FileSystemSession,System.String)">DoNavigate(FileSystemSession, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemSessionItem DoNavigate(FileSystemSession session, string path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSession.html">FileSystemSession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">path</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoNavigate_NFX_IO_FileSystem_FileSystemSession_System_String_">FileSystem.DoNavigate(FileSystemSession, String)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoRenameItem_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoRenameItem*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoRenameItem_NFX_IO_FileSystem_FileSystemSessionItem_System_String_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoRenameItem(NFX.IO.FileSystem.FileSystemSessionItem,System.String)">DoRenameItem(FileSystemSessionItem, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override bool DoRenameItem(FileSystemSessionItem item, string newName)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">newName</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoRenameItem_NFX_IO_FileSystem_FileSystemSessionItem_System_String_">FileSystem.DoRenameItem(FileSystemSessionItem, String)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetCreationTimestamp_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetCreationTimestamp*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetCreationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetCreationTimestamp(NFX.IO.FileSystem.FileSystemSessionItem,System.DateTime)">DoSetCreationTimestamp(FileSystemSessionItem, DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoSetCreationTimestamp(FileSystemSessionItem item, DateTime timestamp)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">timestamp</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetCreationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_">FileSystem.DoSetCreationTimestamp(FileSystemSessionItem, DateTime)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetLastAccessTimestamp_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetLastAccessTimestamp*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetLastAccessTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetLastAccessTimestamp(NFX.IO.FileSystem.FileSystemSessionItem,System.DateTime)">DoSetLastAccessTimestamp(FileSystemSessionItem, DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoSetLastAccessTimestamp(FileSystemSessionItem item, DateTime timestamp)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">timestamp</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetLastAccessTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_">FileSystem.DoSetLastAccessTimestamp(FileSystemSessionItem, DateTime)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetModificationTimestamp_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetModificationTimestamp*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetModificationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetModificationTimestamp(NFX.IO.FileSystem.FileSystemSessionItem,System.DateTime)">DoSetModificationTimestamp(FileSystemSessionItem, DateTime)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoSetModificationTimestamp(FileSystemSessionItem item, DateTime timestamp)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.DateTime</span></td>
+                    <td><span class="parametername">timestamp</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetModificationTimestamp_NFX_IO_FileSystem_FileSystemSessionItem_System_DateTime_">FileSystem.DoSetModificationTimestamp(FileSystemSessionItem, DateTime)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetReadOnly_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetReadOnly*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_DoSetReadOnly_NFX_IO_FileSystem_FileSystemSessionItem_System_Boolean_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.DoSetReadOnly(NFX.IO.FileSystem.FileSystemSessionItem,System.Boolean)">DoSetReadOnly(FileSystemSessionItem, Boolean)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoSetReadOnly(FileSystemSessionItem item, bool readOnly)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionItem.html">FileSystemSessionItem</a></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">readOnly</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_DoSetReadOnly_NFX_IO_FileSystem_FileSystemSessionItem_System_Boolean_">FileSystem.DoSetReadOnly(FileSystemSessionItem, Boolean)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_MakeSessionConfigParams_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.MakeSessionConfigParams*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_MakeSessionConfigParams_NFX_Environment_IConfigSectionNode_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.MakeSessionConfigParams(NFX.Environment.IConfigSectionNode)">MakeSessionConfigParams(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override FileSystemSessionConnectParams MakeSessionConfigParams(IConfigSectionNode node)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionConnectParams.html">FileSystemSessionConnectParams</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_MakeSessionConfigParams_NFX_Environment_IConfigSectionNode_">FileSystem.MakeSessionConfigParams(IConfigSectionNode)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_StartSession_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.StartSession*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_StartSession_NFX_IO_FileSystem_FileSystemSessionConnectParams_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.StartSession(NFX.IO.FileSystem.FileSystemSessionConnectParams)">StartSession(FileSystemSessionConnectParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override FileSystemSession StartSession(FileSystemSessionConnectParams cParams = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSessionConnectParams.html">FileSystemSessionConnectParams</a></td>
+                    <td><span class="parametername">cParams</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.FileSystemSession.html">FileSystemSession</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.IO.FileSystem.FileSystem.html#NFX_IO_FileSystem_FileSystem_StartSession_NFX_IO_FileSystem_FileSystemSessionConnectParams_">FileSystem.StartSession(FileSystemSessionConnectParams)</a></div>
+              
+              
+              <a id="NFX_IO_FileSystem_SVN_SVNFileSystem_StartSession_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.StartSession*"></a>
+              <h4 id="NFX_IO_FileSystem_SVN_SVNFileSystem_StartSession_NFX_IO_FileSystem_SVN_SVNFileSystemSessionConnectParams_" data-uid="NFX.IO.FileSystem.SVN.SVNFileSystem.StartSession(NFX.IO.FileSystem.SVN.SVNFileSystemSessionConnectParams)">StartSession(SVNFileSystemSessionConnectParams)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public SVNFileSystemSession StartSession(SVNFileSystemSessionConnectParams cParams)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.SVN.SVNFileSystemSessionConnectParams.html">SVNFileSystemSessionConnectParams</a></td>
+                    <td><span class="parametername">cParams</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.IO.FileSystem.SVN.SVNFileSystemSession.html">SVNFileSystemSession</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNonNullOrEmptyString_System_Object_">ObjectValueConversion.AsNonNullOrEmptyString(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLaconicConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLaconicConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsJSONConfig_System_Object_NFX_Environment_ConfigSectionNode_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsJSONConfig(Object, ConfigSectionNode, String, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsXMLConfig_System_Object_NFX_Environment_ConfigSectionNode_NFX_ConvertErrorHandling_">ObjectValueConversion.AsXMLConfig(Object, ConfigSectionNode, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsChar_System_Object_System_Char_NFX_ConvertErrorHandling_">ObjectValueConversion.AsChar(Object, Char, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableChar_System_Object_System_Nullable_System_Char__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableChar(Object, Nullable&lt;Char&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsByte_System_Object_System_Byte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsByte(Object, Byte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableByte_System_Object_System_Nullable_System_Byte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableByte(Object, Nullable&lt;Byte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsSByte_System_Object_System_SByte_NFX_ConvertErrorHandling_">ObjectValueConversion.AsSByte(Object, SByte, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableSByte_System_Object_System_Nullable_System_SByte__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableSByte(Object, Nullable&lt;SByte&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsShort_System_Object_System_Int16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsShort(Object, Int16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableShort_System_Object_System_Nullable_System_Int16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableShort(Object, Nullable&lt;Int16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUShort_System_Object_System_UInt16_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUShort(Object, UInt16, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUShort_System_Object_System_Nullable_System_UInt16__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUShort(Object, Nullable&lt;UInt16&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsInt_System_Object_System_Int32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsInt(Object, Int32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableInt_System_Object_System_Nullable_System_Int32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableInt(Object, Nullable&lt;Int32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUInt_System_Object_System_UInt32_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUInt(Object, UInt32, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableUInt_System_Object_System_Nullable_System_UInt32__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableUInt(Object, Nullable&lt;UInt32&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsLong_System_Object_System_Int64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsLong(Object, Int64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableLong_System_Object_System_Nullable_System_Int64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableLong(Object, Nullable&lt;Int64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsULong_System_Object_System_UInt64_NFX_ConvertErrorHandling_">ObjectValueConversion.AsULong(Object, UInt64, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableULong_System_Object_System_Nullable_System_UInt64__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableULong(Object, Nullable&lt;UInt64&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDouble_System_Object_System_Double_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDouble(Object, Double, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDouble_System_Object_System_Nullable_System_Double__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDouble(Object, Nullable&lt;Double&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsFloat_System_Object_System_Single_NFX_ConvertErrorHandling_">ObjectValueConversion.AsFloat(Object, Single, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableFloat_System_Object_System_Nullable_System_Single__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableFloat(Object, Nullable&lt;Single&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDecimal_System_Object_System_Decimal_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDecimal(Object, Decimal, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDecimal_System_Object_System_Nullable_System_Decimal__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDecimal(Object, Nullable&lt;Decimal&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsBool_System_Object_System_Boolean_NFX_ConvertErrorHandling_">ObjectValueConversion.AsBool(Object, Boolean, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableBool_System_Object_System_Nullable_System_Boolean__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableBool(Object, Nullable&lt;Boolean&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGUID_System_Object_System_Guid_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGUID(Object, Guid, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGUID_System_Object_System_Nullable_System_Guid__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGUID(Object, Nullable&lt;Guid&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_">ObjectValueConversion.AsDateTime(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsDateTime_System_Object_System_DateTime_NFX_ConvertErrorHandling_">ObjectValueConversion.AsDateTime(Object, DateTime, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableDateTime_System_Object_System_Nullable_System_DateTime__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableDateTime(Object, Nullable&lt;DateTime&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_">ObjectValueConversion.AsGDID(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDID_System_Object_NFX_DataAccess_Distributed_GDID_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDID(Object, GDID, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDID_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDID__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDID(Object, Nullable&lt;GDID&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_">ObjectValueConversion.AsGDIDSymbol(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsGDIDSymbol_System_Object_NFX_DataAccess_Distributed_GDIDSymbol_NFX_ConvertErrorHandling_">ObjectValueConversion.AsGDIDSymbol(Object, GDIDSymbol, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableGDIDSymbol_System_Object_System_Nullable_NFX_DataAccess_Distributed_GDIDSymbol__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableGDIDSymbol(Object, Nullable&lt;GDIDSymbol&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_">ObjectValueConversion.AsTimeSpan(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsTimeSpan_System_Object_System_TimeSpan_NFX_ConvertErrorHandling_">ObjectValueConversion.AsTimeSpan(Object, TimeSpan, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableTimeSpan_System_Object_System_Nullable_System_TimeSpan__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableTimeSpan(Object, Nullable&lt;TimeSpan&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsEnum__1_System_Object___0_NFX_ConvertErrorHandling_">ObjectValueConversion.AsEnum&lt;TEnum&gt;(Object, TEnum, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsNullableEnum__1_System_Object_System_Nullable___0__NFX_ConvertErrorHandling_">ObjectValueConversion.AsNullableEnum&lt;TEnum&gt;(Object, Nullable&lt;TEnum&gt;, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_TextWriter_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, TextWriter, JSONWritingOptions)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
