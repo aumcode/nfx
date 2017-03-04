@@ -194,6 +194,24 @@ namespace NFX.Serialization.JSON
         return JSONWriter.Write(this, JSONWritingOptions.Compact);
       }
 
+
+      public override int GetHashCode()
+      {
+        return m_Data!=null ? m_Data.Aggregate( 0, (n1, n2) => n1.GetHashCode() ^ n2.GetHashCode()) : 0;
+      }
+
+      public override bool Equals(object obj)
+      {
+        if (!(obj is NLSMap)) return false;
+        var other = (NLSMap)obj;
+        if (this.m_Data==null)
+        {
+          if (other.m_Data==null) return true;
+          return false;
+        }
+        return m_Data.SequenceEqual(other.m_Data);
+      }
+
       public enum GetParts{ Name, Description, NameOrDescription, DescriptionOrName, NameAndDescription, DescriptionAndName}
 
       /// <summary>
