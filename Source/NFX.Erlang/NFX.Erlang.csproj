@@ -84,6 +84,7 @@
     <Compile Include="Types\ErlBoolean.cs" />
     <Compile Include="Types\ErlByte.cs" />
     <Compile Include="Types\ErlDouble.cs" />
+    <Compile Include="Types\ErlMap.cs" />
     <Compile Include="Types\ErlList.cs" />
     <Compile Include="Types\ErlLong.cs" />
     <Compile Include="Types\ErlObject.cs" />

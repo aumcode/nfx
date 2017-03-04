@@ -209,6 +209,17 @@ namespace NFX.NUnit.Erlang
         var es = new ErlInputStream(b);
         Assert.AreEqual(t, es.Read());
       }
+      {
+        var b = new byte[] { 131 };
+        var t = new ErlMap {
+          { new ErlAtom("a"), 1.ToErlObject() },
+          { new ErlString("str"), new ErlDouble(2.0) }
+        };
+        var os = new ErlOutputStream(t);
+        Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
+        var es = new ErlInputStream(b);
+        Assert.AreEqual(t, es.Read());
+      }
     }
   }
 }
