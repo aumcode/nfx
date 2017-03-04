@@ -3,7 +3,7 @@ Server UNISTACK framework.
 
 License: Apache 2.0
 
-[Documentation http://nfxlib.com](https://nfxlib.com)
+[Documentation http://nfxlib.com](http://nfxlib.com)
 
 NFX is written in C# and runs on a CLR machine, however it has very little to do with .NET.
 This framework contains truly unique intellectual assets and allows for unconventional things
