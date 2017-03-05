@@ -239,4 +239,37 @@ namespace NFX.NUnit.Serialization
     }
 
   }
+
+
+
+  [Arow]
+  public class Ver1Row : AmorphousTypedRow
+  {
+    [Field(backendName: "a", isArow: true)]public string A {get; set;}
+    [Field(backendName: "b", isArow: true)]public int    B {get; set;}
+    [Field(backendName: "c", isArow: true)]public int?   C { get;set;}
+    [Field(backendName: "d", isArow: true)]public bool?  D { get;set;}
+    [Field(backendName: "e", isArow: true)]public byte[] E{ get;set;}
+    [Field(backendName: "f", isArow: true)]public DateTime F{ get;set;}
+    [Field(backendName: "g", isArow: true)]public List<Ver1Row> G{ get;set;}
+  }
+
+  [Arow]
+  public class Ver2Row : AmorphousTypedRow
+  {
+    [Field(backendName: "a", isArow: true)]public string  A {get; set;}
+    [Field(backendName: "be", isArow: true)]public int    B {get; set;}
+    [Field(backendName: "ce", isArow: true)]public int?   C { get;set;}
+    [Field(backendName: "d", isArow: true)]public bool    D { get;set;}
+    [Field(backendName: "e", isArow: true)]public char[] E{ get;set;}
+    [Field(backendName: "f", isArow: true)]public DateTime? F{ get;set;}
+    [Field(backendName: "ge", isArow: true)]public List<Ver2Row> G{ get;set;}
+
+    public override bool AmorphousDataEnabled { get { return true; } }
+  }
+
+
+
+
+
 }

@@ -128,7 +128,7 @@ namespace NFX.Serialization.Arow
       {
         var c = name & 0xff;
         if (c==0) return result;
-        result = c + result;
+        result = ((char)c) + result;
         name >>= 8;
       }
       return result;

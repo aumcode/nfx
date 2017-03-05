@@ -273,5 +273,47 @@ namespace NFX.NUnit.Serialization
       }
 
 
+      [Test]
+      public void OneAfterAnother()
+      {
+        var writer = SlimFormat.Instance.GetWritingStreamer();
+        var reader = SlimFormat.Instance.GetReadingStreamer();
+        var fail = "";
+        using(var ms = new MemoryStream())
+        {
+          writer.BindStream(ms);
+          for(var i=0; i<CASES.Length; i++)
+          {
+            var row1 = CASES[i];
+            ArowSerializer.Serialize(row1, writer);
+          }
+          writer.UnbindStream();
+
+          ms.Position = 0;
+          reader.BindStream(ms);
+          for(var i=0; i<CASES.Length; i++)
+          {
+            var row1 = CASES[i];
+            var row2 = new AllArowTypesRow();
+            ArowSerializer.Deserialize(row2, reader);
+
+            if (!row1.AllFieldsEqual( row2 ))
+            {
+              Console.WriteLine(row2.ToJSON());
+              Console.WriteLine("FAIL");
+              fail =  "The test case #{0} has failed.\nJSON:\n{1}".Args(i, row1.ToJSON());
+            }
+            else
+              Console.WriteLine("PASS");
+
+            Console.WriteLine();
+          }
+          reader.UnbindStream();
+          if (fail.IsNotNullOrWhiteSpace())
+            Aver.Fail(fail);
+        }
+      }
+
+
     }
 }

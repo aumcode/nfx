@@ -29,6 +29,8 @@ namespace NFX.Serialization.Arow
   /// </summary>
   public static class ArowSerializer
   {
+    public const string AROW_TARGET = "AROW-SERIALIZER";
+
     private static object s_Lock = new object();
     private static Dictionary<Type, ITypeSerializationCore> s_Serializers = new Dictionary<Type, ITypeSerializationCore>();
 
@@ -49,6 +51,12 @@ namespace NFX.Serialization.Arow
       var tRow = row.GetType();
       if (!s_Serializers.TryGetValue(tRow, out core))
         throw new ArowException(StringConsts.AROW_TYPE_NOT_SUPPORTED_ERROR.Args(tRow.FullName));
+
+      var ar = row as IAmorphousData;
+      if (ar!=null)
+      {
+        if (ar.AmorphousDataEnabled) ar.BeforeSave(AROW_TARGET);
+      }
 
       //1 Header
       if (header) Writer.WriteHeader(streamer);
@@ -80,6 +88,12 @@ namespace NFX.Serialization.Arow
 
       //2 Body
       core.Deserialize(row, streamer);
+
+      var ar = row as IAmorphousData;
+      if (ar!=null)
+      {
+        if (ar.AmorphousDataEnabled) ar.AfterLoad(AROW_TARGET);
+      }
 
       return true;
     }

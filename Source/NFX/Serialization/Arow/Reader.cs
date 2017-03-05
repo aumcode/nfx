@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using NFX.IO;
 using NFX.DataAccess.CRUD;
@@ -156,7 +157,7 @@ namespace NFX.Serialization.Arow
 
 
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    [ MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static void ReadHeader(ReadingStreamer streamer)
     {
       if (streamer.ReadByte()==0xC0 && streamer.ReadByte()==0xFE) return;
@@ -164,13 +165,13 @@ namespace NFX.Serialization.Arow
       throw new ArowException(StringConsts.AROW_HEADER_CORRUPT_ERROR);
     }
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    [ MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static ulong ReadName(ReadingStreamer streamer)
     {
       return streamer.ReadULong();
     }
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    [ MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static DataType ReadDataType(ReadingStreamer streamer)
     {
       return (DataType)streamer.ReadByte();
@@ -230,19 +231,31 @@ namespace NFX.Serialization.Arow
     {
        object value = null;
 
-       if (atp.HasValue)
+       if (dt!=DataType.Null)
        {
-         var len = ReadArrayLength(streamer);
-         var arr = new object[len];
-         for(var i=0; i<arr.Length; i++)
-          arr[i] = readOneAsObject(streamer, dt);
-         value = arr;
-       }
-       else
-       {
-         value = readOneAsObject(streamer, dt);
-       }
+         if (dt==DataType.Array && !atp.HasValue)
+           atp = Reader.ReadDataType(streamer);
 
+         if (atp.HasValue)
+         {
+           var len = ReadArrayLength(streamer);
+           var arr = new object[len];
+           for(var i=0; i<arr.Length; i++)
+           {
+             if (atp.Value==DataType.Row)
+             {
+               var has = streamer.ReadBool();
+               if (!has) continue;
+             }
+             arr[i] = readOneAsObject(streamer, atp.Value);
+           }
+           value = arr;
+         }
+         else
+         {
+           value = readOneAsObject(streamer, dt);
+         }
+       }
        var arow = row as IAmorphousData;
        if (arow==null) return value;
        if (!arow.AmorphousDataEnabled) return value;
@@ -300,7 +313,7 @@ namespace NFX.Serialization.Arow
       }
     }
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    [ MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static int ReadArrayLength(ReadingStreamer streamer)
     {
       var len = streamer.ReadInt();
@@ -309,28 +322,70 @@ namespace NFX.Serialization.Arow
     }
 
 
-
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Boolean                                ReadBoolean      (ReadingStreamer streamer){ return streamer.ReadBool(); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Char                                   ReadChar         (ReadingStreamer streamer){ return streamer.ReadChar(); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static String                                 ReadString       (ReadingStreamer streamer){ return streamer.ReadString (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Single                                 ReadSingle       (ReadingStreamer streamer){ return streamer.ReadFloat  (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Double                                 ReadDouble       (ReadingStreamer streamer){ return streamer.ReadDouble (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Decimal                                ReadDecimal      (ReadingStreamer streamer){ return streamer.ReadDecimal(); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static NFX.Financial.Amount                   ReadAmount       (ReadingStreamer streamer){ return streamer.ReadAmount(); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Byte                                   ReadByte         (ReadingStreamer streamer){ return streamer.ReadByte     (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static SByte                                  ReadSByte        (ReadingStreamer streamer){ return streamer.ReadSByte    (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Int16                                  ReadInt16        (ReadingStreamer streamer){ return streamer.ReadShort    (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Int32                                  ReadInt32        (ReadingStreamer streamer){ return streamer.ReadInt      (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Int64                                  ReadInt64        (ReadingStreamer streamer){ return streamer.ReadLong     (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static UInt16                                 ReadUInt16       (ReadingStreamer streamer){ return streamer.ReadUShort   (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static UInt32                                 ReadUInt32       (ReadingStreamer streamer){ return streamer.ReadUInt     (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static UInt64                                 ReadUInt64       (ReadingStreamer streamer){ return streamer.ReadULong    (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static DateTime                               ReadDateTime     (ReadingStreamer streamer){ return streamer.ReadDateTime (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static TimeSpan                               ReadTimeSpan     (ReadingStreamer streamer){ return streamer.ReadTimeSpan (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static Guid                                   ReadGuid         (ReadingStreamer streamer){ return streamer.ReadGuid     (); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static NFX.DataAccess.Distributed.GDID        ReadGDID         (ReadingStreamer streamer){ return streamer.ReadGDID(); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static FID                                    ReadFID          (ReadingStreamer streamer){ return streamer.ReadFID();  }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static NFX.ApplicationModel.Pile.PilePointer  ReadPilePointer  (ReadingStreamer streamer){ return streamer.ReadPilePointer(); }
+
+    [MethodImpl( MethodImplOptions.AggressiveInlining)]
     public static NFX.Serialization.JSON.NLSMap          ReadNLSMap       (ReadingStreamer streamer){ return streamer.ReadNLSMap(); }
 
 
