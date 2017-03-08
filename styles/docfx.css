@@ -890,3 +890,7 @@ div.embeddedvideo iframe {
   height: 35px;
   margin: 8px 8px 8px 0;
 }
+.imgHomePage {
+  width:  40%;
+  margin: 10px;
+}
