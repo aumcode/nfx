@@ -183,7 +183,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
-        var method = usps.Methods["USPS_PRIORITY"];
+        var method = usps.Services["USPS_PRIORITY"];
         var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
@@ -204,7 +204,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var dhl = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.DHLExpress);
-        var method = dhl.Methods["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
+        var method = dhl.Services["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
 
         var shipment = getDefaultShipment(dhl, method);
         var label = session.CreateLabel(null, shipment);
@@ -224,7 +224,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
-        var method = usps.Methods["USPS_PRIORITY"];
+        var method = usps.Services["USPS_PRIORITY"];
         var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
@@ -249,7 +249,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var dhl = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.DHLExpress);
-        var method = dhl.Methods["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
+        var method = dhl.Services["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
 
         var shipment = getDefaultShipment(dhl, method);
         shipment.ReturnAddress = getDefaultAddress();
@@ -273,7 +273,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
-        var method = usps.Methods["USPS_PRIORITY"];
+        var method = usps.Services["USPS_PRIORITY"];
         var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
@@ -292,7 +292,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
 
-        var method = usps.Methods["USPS_PRIORITY"];
+        var method = usps.Services["USPS_PRIORITY"];
         var shipment = getDefaultShipment(usps, method);
         var amount = session.EstimateShippingCost(null, shipment);
 
@@ -300,7 +300,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         Assert.AreEqual(amount.Value.CurrencyISO, "USD");
         Assert.AreEqual(amount.Value.Value, 6.95M);
 
-        method = usps.Methods["USPS_PRIORITY_EXPRESS"];
+        method = usps.Services["USPS_PRIORITY_EXPRESS"];
         shipment = getDefaultShipment(usps, method);
         amount = session.EstimateShippingCost(null, shipment);
 
@@ -308,7 +308,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         Assert.AreEqual(amount.Value.CurrencyISO, "USD");
         Assert.AreEqual(amount.Value.Value, 28.08M);
 
-        method = usps.Methods["USPS_PARCEL_SELECT"];
+        method = usps.Services["USPS_PARCEL_SELECT"];
         shipment = getDefaultShipment(usps, method);
         amount = session.EstimateShippingCost(null, shipment);
 
@@ -316,7 +316,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         Assert.AreEqual(amount.Value.CurrencyISO, "USD");
         Assert.AreEqual(amount.Value.Value, 7.11M);
 
-        method = usps.Methods["USPS_FIRST"];
+        method = usps.Services["USPS_FIRST"];
         shipment = getDefaultShipment(usps, method);
         amount = session.EstimateShippingCost(null, shipment);
 
@@ -332,7 +332,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var dhl = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.DHLExpress);
-        var method = dhl.Methods["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
+        var method = dhl.Services["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
 
         var shipment = getDefaultShipment(dhl, method);
         var amount = session.EstimateShippingCost(null, shipment);
@@ -512,7 +512,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
       return result;
     }
 
-    private Shipment getDefaultShipment(ShippingCarrier carrier, ShippingCarrier.Method method, ShippingCarrier.Package template = null)
+    private Shipment getDefaultShipment(ShippingCarrier carrier, ShippingCarrier.Service method, ShippingCarrier.Package template = null)
     {
       var result = new Shipment
       {
@@ -523,7 +523,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
         Weight = 0.3M,
         WeightUnit = NFX.Standards.Weight.UnitType.Lb,
         Carrier = carrier,
-        Method = method,
+        Service = method,
         Package = template,
         FromAddress = new Address
         {

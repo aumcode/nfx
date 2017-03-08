@@ -33,13 +33,13 @@ namespace NFX.Web.Shipping
     #region Inner classes
 
       /// <summary>
-      /// Represents shipping method i.e. USPS First Class, FedEx Ground etc.
+      /// Represents shipping service i.e. USPS First Class, FedEx Ground etc.
       /// </summary>
-      public class Method : IConfigurable, INamed
+      public class Service : IConfigurable, INamed
       {
-        public Method(ShippingCarrier carrier)
+        public Service(ShippingCarrier carrier)
       {
-        if (carrier==null) throw new ShippingException("Method.ctor(carrier=null)");
+        if (carrier==null) throw new ShippingException("Service.ctor(carrier=null)");
 
         m_Carrier = carrier;
       }
@@ -105,8 +105,8 @@ namespace NFX.Web.Shipping
 
     #region CONST
 
-      public const string CONFIG_METHODS_SECTION  = "methods";
-      public const string CONFIG_METHOD_SECTION   = "method";
+      public const string CONFIG_SERVICES_SECTION = "services";
+      public const string CONFIG_SERVICE_SECTION  = "service";
       public const string CONFIG_PACKAGES_SECTION = "packages";
       public const string CONFIG_PACKAGE_SECTION  = "package";
       public const string CONFIG_NLS_SECTION      = "nls-name";
@@ -118,12 +118,12 @@ namespace NFX.Web.Shipping
       if (shippingSystem==null) throw new ShippingException("Carrier.ctor(shippingSystem=null)");
 
       m_ShippingSystem = shippingSystem;
-      m_Methods = new Registry<Method>();
+      m_Services = new Registry<Service>();
       m_Packages = new Registry<Package>();
     }
 
     private readonly ShippingSystem m_ShippingSystem;
-    private readonly Registry<Method> m_Methods;
+    private readonly Registry<Service> m_Services;
     private readonly Registry<Package> m_Packages;
 
     public ShippingSystem ShippingSystem { get { return m_ShippingSystem; } }
@@ -135,7 +135,7 @@ namespace NFX.Web.Shipping
 
     public byte[] Logo { get; set; }
 
-    public IRegistry<Method>  Methods { get { return m_Methods; } }
+    public IRegistry<Service> Services { get { return m_Services; } }
     public IRegistry<Package> Packages { get { return m_Packages; } }
 
 
@@ -143,11 +143,11 @@ namespace NFX.Web.Shipping
     {
       ConfigAttribute.Apply(this, node);
 
-      var mnodes = node[CONFIG_METHODS_SECTION].Children.Where(n=>n.IsSameName(CONFIG_METHOD_SECTION));
+      var mnodes = node[CONFIG_SERVICES_SECTION].Children.Where(n=>n.IsSameName(CONFIG_SERVICE_SECTION));
       foreach(var mnode in mnodes)
       {
-          var method = FactoryUtils.MakeAndConfigure<Method>(mnode, typeof(Method), new object[] { this });
-          m_Methods.Register(method);
+          var service = FactoryUtils.MakeAndConfigure<Service>(mnode, typeof(Service), new object[] { this });
+          m_Services.Register(service);
       }
 
       var templates = new List<Package>();
@@ -163,12 +163,12 @@ namespace NFX.Web.Shipping
   }
 
   /// <summary>
-  /// Represents abstraction of shipment - a package (i.e. Envelope) along with its shipping method (i.e. USPS Ground)
+  /// Represents abstraction of shipment - a package (i.e. Envelope) along with its shipping service (i.e. USPS Ground)
   /// </summary>
   public class Shipment
   {
     public ShippingCarrier Carrier { get; set; }
-    public ShippingCarrier.Method Method { get; set; }
+    public ShippingCarrier.Service Service { get; set; }
     public ShippingCarrier.Package Package { get; set; }
 
     public Distance.UnitType DistanceUnit { get; set; }
@@ -214,7 +214,7 @@ namespace NFX.Web.Shipping
     }
 
     public string      CarrierID       { get; set; }
-    public string      MethodID        { get; set; }
+    public string      ServiceID       { get; set; }
     public string      TrackingURL     { get; set; }
     public string      TrackingNumber  { get; set; }
     public DateTime?   Date            { get; set; }

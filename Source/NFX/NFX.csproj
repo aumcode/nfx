@@ -622,9 +622,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeAnalysis\Laconfig\LaconfigParser.Impl.cs" />
-    <None Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Compile Include="Media\TagCodes\QR\QRMatrix.Mask.cs" />
     <None Include="Media\TagCodes\CHANGES" />
   </ItemGroup>

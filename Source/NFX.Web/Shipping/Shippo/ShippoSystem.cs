@@ -233,7 +233,7 @@ namespace NFX.Web.Shipping.Shippo
 
       public Financial.Amount? EstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment)
       {
-        var logID = Log(MessageType.Info, "EstimateShippingCost()", StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_MESSAGE.Args(shipment.FromAddress, shipment.ToAddress, shipment.Method.Name));
+        var logID = Log(MessageType.Info, "EstimateShippingCost()", StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_MESSAGE.Args(shipment.FromAddress, shipment.ToAddress, shipment.Service.Name));
 
         try
         {
@@ -243,7 +243,7 @@ namespace NFX.Web.Shipping.Shippo
         {
           StatEstimateShippingCostErrorCount();
 
-          var header = StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_ERROR.Args(shipment.FromAddress, shipment.ToAddress, shipment.Method.Name, ex.ToMessageWithType());
+          var header = StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_ERROR.Args(shipment.FromAddress, shipment.ToAddress, shipment.Service.Name, ex.ToMessageWithType());
           Log(MessageType.Error, "EstimateShippingCost()", header, ex, logID);
           var error = ShippingException.ComposeError(ex.Message, ex);
 
@@ -341,7 +341,7 @@ namespace NFX.Web.Shipping.Shippo
         result.CurrentLocation = getAddressFromJSON(status["location"] as JSONDataMap);
 
         var service = response["servicelevel"] as JSONDataMap;
-        if (service != null) result.MethodID = service["name"].AsString();
+        if (service != null) result.ServiceID = service["name"].AsString();
         result.FromAddress = getAddressFromJSON(response["address_from"] as JSONDataMap);
         result.ToAddress = getAddressFromJSON(response["address_to"] as JSONDataMap);
 
@@ -451,7 +451,7 @@ namespace NFX.Web.Shipping.Shippo
           var carrierID = rate["carrier_account"].AsString();
           if (carrierID.IsNotNullOrWhiteSpace() &&
               string.Equals(carrierID, shipment.Carrier.Name, StringComparison.InvariantCultureIgnoreCase) &&
-              string.Equals(rate["servicelevel_token"].AsString(), shipment.Method.Name, StringComparison.InvariantCultureIgnoreCase))
+              string.Equals(rate["servicelevel_token"].AsString(), shipment.Service.Name, StringComparison.InvariantCultureIgnoreCase))
             return new Financial.Amount(rate["currency_local"].AsString(), rate["amount_local"].AsDecimal());
 
             // todo: where is Template?! minimize cost among all mathced rates?
@@ -515,7 +515,7 @@ namespace NFX.Web.Shipping.Shippo
 
         var body = new JSONDataMap();
         body["carrier_account"] = shipment.Carrier.Name;
-        body["servicelevel_token"] = shipment.Method.Name;
+        body["servicelevel_token"] = shipment.Service.Name;
         body["label_file_type"] = FORMATS[shipment.LabelFormat];
         body["async"] = false;
 
