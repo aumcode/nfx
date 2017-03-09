@@ -160,6 +160,8 @@ namespace NFX.Erlang
             return ReadPort();
           case ErlExternalTag.Pid:
             return ReadPid();
+          case ErlExternalTag.Map:
+            return ReadMap();
           default:
             throw new ErlException(
                 StringConsts.ERL_UNSUPPORTED_TERM_TYPE_ERROR,
@@ -498,6 +500,28 @@ namespace NFX.Erlang
                 "string", tag.ToString());
         }
         return new ErlString(s);
+      }
+    
+      public ErlMap ReadMap()
+      {
+        var tag = readTag();
+        if (tag != ErlExternalTag.Map)
+          throw new ErlException(StringConsts.ERL_INVALID_TERM_TYPE_ERROR,
+                                 "map", tag.ToString());
+
+        var length = Read4BE();
+
+        var res = new Dictionary<IErlObject, IErlObject>(length);
+
+        for (int i = 0; i < length; ++i)
+        {
+          var key = Read();
+          var value = Read();
+
+          res[key] = value;
+        }
+
+        return new ErlMap(res, clone: false);
       }
 
       public override string ToString()

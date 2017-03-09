@@ -39,7 +39,8 @@ namespace NFX.Erlang
     ErlRef,
     ErlString,
     ErlTuple,
-    ErlVar
+    ErlVar,
+    ErlMap
   }
 
   /// <summary>
@@ -70,6 +71,7 @@ namespace NFX.Erlang
     Bin             = 109,
     SmallBigInt     = 110,
     LargeBigInt     = 111,
+    Map             = 116,
 
     Version         = 131,
   }
