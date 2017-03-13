@@ -593,6 +593,7 @@
     <Compile Include="StringConsts.cs" />
     <Compile Include="StringValueConversion.cs" />
     <Compile Include="TaskUtils.cs" />
+    <Compile Include="Templatization\DOMGenerator.cs" />
     <Compile Include="Templatization\Sources.cs" />
     <Compile Include="Templatization\IRenderingTarget.cs" />
     <Compile Include="Templatization\Exceptions.cs" />
@@ -601,6 +602,7 @@
     <Compile Include="Templatization\Template.cs" />
     <Compile Include="Templatization\TextCSTemplateCompiler.cs" />
     <Compile Include="Aver.cs" />
+    <Compile Include="Templatization\TextJSTemplateCompiler.cs" />
     <Compile Include="Throttling\NOPThrottle.cs" />
     <Compile Include="Throttling\Intfs.cs" />
     <Compile Include="Throttling\NOPThrottling.cs" />

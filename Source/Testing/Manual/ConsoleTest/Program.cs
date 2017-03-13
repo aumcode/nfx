@@ -52,7 +52,9 @@ namespace ConsoleTest
 
       //CacheTest.Run(16, 20, 150000, 40);
 
-      GoogleDrive.GoogleDriveFileSystemTests.Run();
+      //GoogleDrive.GoogleDriveFileSystemTests.Run();
+
+     Templatization.JS.JSTemplate.Run();
 
       Console.WriteLine("done"); Console.ReadKey();
 
@@ -81,5 +83,5 @@ namespace ConsoleTest
 
 
   }
-  
+
 }

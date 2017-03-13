@@ -49,6 +49,9 @@ namespace NFX
       public const string CS_LANGUAGE = "C#";
       public const string CS_EXTENSION = ".cs";
 
+      public const string JS_LANGUAGE = "JavaScript";
+      public const string JS_EXTENSION = ".js";
+
       public const string UNKNOWN = "<unknown>";
 
       public const string UNNAMED_MEMORY_BUFFER = "<unnamed memory buffer>";

@@ -1,0 +1,283 @@
+﻿#<conf>
+  <compiler base-class-name="NFX.Templatization.SimpleTemplate"
+            class-name="VodkaCheckoutPage"
+            namespace="MyPages.Alcohol">
+   <ref-asm name="NFX.Text.dll" />
+  </compiler>
+#</conf>
+#[class]
+    //class - statement block example
+    private int dima = 0;
+    protected abstract void renderBody(bool stateLaw, Color color);
+#[render]
+<html>
+
+<head>
+ <title> Kozlik</title>
+</head>
+
+
+
+<body>
+<h1>Services</h1>
+
+   <p>
+    IT Adapter Corporation provides professional services ?[Model.fldRating] in the fields of system architecture, database modeling and general development efforts.
+    Backed by over 18 years of professional experience, we firmly stand amidst gusty winds of change during turbulent times.
+   </p>
+
+<h2>Consulting</h2>
+<hr />
+
+
+
+  <h3>System Architecture</h3>
+    <ul>
+      <li>Service-Oriented-Architecture (SOA)?[Model.fldRating.Where(r=>r.Topic="SOA")]</li>
+      <li>Web Services?[Model.fldRating.Where(r=>r.Topic="1")]</li>
+      <li>e-Commerce Web?[Model.fldRating.Where(r=>r.Topic="2")]</li>
+      <li>Desktop Applications?[Model.fldRating.Where(r=>r.Topic="3")]</li>
+      <li>Server Applications - ISAPI, Win32 Services, SOAP, Remoting, WCF?[Model.fldRating.Where(r=>r.Topic="4")]</li>
+      <li>Multi-Tier and Client-Server</li>
+      <li>Device Interfaces, hardware control, CNC</li>
+      <li>Mobile Applications for smart phones, PDAs and tablets</li>
+   </ul>
+
+
+<table>
+@[foreach(var svc in Model.fldServices.Where(svc=>svc.isHighlyPaid){]
+    <tr>
+       <td>?[:svc.Title]</td>
+       <td>?[:svc.PublicName]</td>
+       <td>?[:svc.Description]</td>
+       <td>?[svc.Cost]</td>
+       <td>?[svc.ContactCenterOption]</td>
+       <td>?[svc.DeliveryContract]</td>
+       <td>?[svc.IsCertified]</td>
+    </tr>
+@[}]
+</table>
+
+  <h3>Data Modeling, Database Design and Development</h3>
+    <ul>
+      <li>Relation Databases Management Systems (RDBMS) - OLTP and OLAP</li>
+      <li>Data Warehousing with ROLAP, MOLAP, HOLAP</li>
+      <li>Extract-Transform-Load (ETL)</li>
+      <li>Business Application Data Modeling</li>
+      <li>SOA data tiers</li>
+      <li>Consolidation and Replication solutions</li>
+      <li>Multi-user concurrency</li>
+   </ul>
+
+
+   <h3>Application Development</h3>
+    <ul>
+      <li>Object-Oriented Development</li>
+      <li>Agile Development, Extreme Programming, Test-Driven-Development</li>
+      <li>Custom Applications</li>
+      <li>GUI and Server</li>
+      <li>Mobile Applications: Android, iOS, PhoneGap</li>
+   </ul>
+
+<br />
+
+
+
+<h2>Industries / Business Expertise</h2>
+<hr />
+
+
+   <h3>Advertising / Ad Serving</h3>
+         <ul>
+          <li>Real-Time Bidding</li>
+          <li>Ad Serving</li>
+          <li>Geo-Targeting</li>
+          <li>Conversions Tracking</li>
+          <li>Mobile Optimizations</li>
+          <li>Backend Scalability</li>
+          <li>Adaptive Bidding Strategies</li>
+          <li>Statistical Analysis &amp; Reporting</li>
+          <li>Hosted Solutions</li>
+          <li>High-Volume Processing (Bidding/Strategy Execution)
+             <ul>
+               <li>Highly available concurrent distributed systems</li>
+               <li>Microsecond-time algorithm optimizations</li>
+               <li>Low-latency request processing</li>
+               <li>Real-time aquisition and processing of market data</li>
+               <li>Architectures specifically tailored for lightweight transaction processing</li>
+               <li>Kernel-level optimizations (Linux)</li>
+               <li>Lock-free concurrency implementations with Erlang and C++</li>
+               <li>Network optimizations for high-performance computing (topology, protocol stack)</li>
+               <li>Real-time P&amp;L monitoring</li>
+               <li>Reactive alerts with negative feedback control</li>
+               <li>Exchange integrations</li>
+             </ul>
+
+          </li>
+          <li>Branding / Logo Design/ Banner Design</li>
+          <li>Campaign Optimization and Targeting</li>
+
+        </ul>
+
+
+   <h3>Medical</h3>
+    <ul>
+      <li>HIPPA Compliance</li>
+      <li>US coding standards ICD9, NDC</li>
+      <li>International WHO coding standards - ICD10, ATC</li>
+      <li>HL7 2.x, HL7 3 RIMS</li>
+      <li>Patient Management</li>
+      <li>Continuity of Care Document (CCD), Clinical Data Architecture (CDA), Continuity of Care Record (CCR)</li>
+      <li>837, 835 Claim Transaction Set</li>
+      <li>Private Patient Billing</li>
+      <li>Electronic Medical Records (EMR)</li>
+      <li>Patient Health Record (PHR)</li>
+      <li>Long-Term Care (LTC)
+         <ul>
+           <li>CMS and State Regulations</li>
+           <li>LTC-specific AR - resource rules, case mix, proration (including state-specific), ancillary charges</li>
+           <li>Resident Management: Admission/Discharge/Transfer (ADT)</li>
+           <li>Census</li>
+           <li>MDS 2.0 (Minimum Data Set) (including state-specific section "S"), OBRA/PPS Assessments</li>
+           <li>MDS 3.0 new regulations</li>
+           <li>Resident Assessment Protocols (RAPs)</li>
+           <li>Case-Mix, maximizing reimbursement</li>
+           <li>DAVe crosschecks and warnings</li>
+           <li>HCFA 802, 672</li>
+         </ul>
+
+      </li>
+      <li>Care Plans</li>
+      <li>Behavior Tracking</li>
+    </ul>
+
+   <h3>Accounting and Financial</h3>
+    <ul>
+      <li>Portfolio Management</li>
+      <li>Trend Analysis - IRR/NPV, cash flow projections</li>
+      <li>Revenue Projections</li>
+      <li>Goal-seek and decision trees</li>
+      <li>AR, AP, GL, Payroll</li>
+    </ul>
+
+    <h3>Manufacturing and Asset Management</h3>
+    <ul>
+      <li>Supply chain management</li>
+      <li>Inventory control </li>
+      <li>RFID + EPC Compliance</li>
+      <li>Global Asset Tracking</li>
+      <li>Fleet Management and Tracking</li>
+      <li>GPS tracking</li>
+      <li>CNC automation, G-Code</li>
+      <li>Device testing automation</li>
+    </ul>
+
+    <h3>Scheduling, Personnel, Resource Planning</h3>
+    <ul>
+      <li>Dispatch systems</li>
+      <li>Enterprise-wide scheduling</li>
+      <li>Employee management</li>
+    </ul>
+
+
+<br />
+
+
+<h2>Technologies</h2>
+<hr />
+
+  <div class="inlineBlock" style="width: 100%">
+    <div class="left" style="width: 40%">
+        <h3>Software Platforms</h3>
+          <ul>
+            <li>Microsoft .NET 1.x-4</li>
+            <li>Java/JSE/JEE/JME</li>
+            <li>LAMP</li>
+            <li>Open Telecom Platform (Erlang OTP)</li>
+            <li>Win32, Win64 native</li>
+            <li>Linux native</li>
+            <li>Mobile - Android 1.x-4</li>
+            <li>Mobile - iOS/Cocoa Touch</li>
+         </ul>
+    </div>
+
+    <div class="right" style="width: 60%">
+        <h3>Relational, Realtime &amp; NoSQL Databases</h3>
+         <ul>
+          <li>ORACLE  8i, 9i, 10g, 11g - PL/SQL</li>
+          <li>MS SQL Server 2000, 2005, 2008 - T-SQL
+             <ul>
+                    <li>SQL Server Integration Services (SSIS/ETL)</li>
+                    <li>SQL Server Reporting Services (SSRS)</li>
+                    <li>SQL Server Analysis Services (MDX)</li>
+             </ul>
+          </li>
+          <li>IBM DB2</li>
+          <li>MySQL 4.x-5.x</li>
+          <li>PostgreSQL 7.x-9.x</li>
+          <li>FastDB</li>
+          <li>Gigabase</li>
+          <li>TimesTen</li>
+          <li>Interbase/Firebird</li>
+          <li>MS Access, Paradox, dBase</li>
+          <li>SQLite</li>
+          <li>MongoDB</li>
+          <li>Riak</li>
+          <li>CouchDB</li>
+          <li>Mnesia</li>
+          <li>Redis</li>
+         </ul>
+   </div>
+ </div>
+
+ <div class="inlineBlock" style="width: 100%">
+    <div class="left" style="width: 40%">
+          <h3>Programming Languages</h3>
+           <ul>
+            <li>C# 1.0-4.0</li>
+            <li>Erlang/OTP R12B-R16B</li>
+            <li>VB 3.x-6.x</li>
+            <li>VB.NET 7.x-9.x</li>
+            <li>Java 1.1-6.x, Android Java/Dalvik</li>
+            <li>Delphi 1-2009</li>
+            <li>C, C++ BCPP, MVCPP, gcc, LLVM</li>
+            <li>Objective C / iOS</li>
+            <li>PHP 4.x-5x</li>
+           </ul>
+
+         <h3>Testing</h3>
+           <ul>
+            <li>Test-Driven-Development with NUnit/JUnit, NMock, FIT</li>
+            <li>Test automation with  QTP, HP Quality Center</li>
+           </ul>
+
+    </div>
+
+   <div class="right" style="width: 60%">
+       <h3>Web Technologies and Tools</h3>
+         <ul>
+          <li>XML, XHTML, CSS/3, XSLT</li>
+          <li>HTML5 capabilities (Canvas, Local Storage, Multimedia)</li>
+          <li>DOM, DHTML</li>
+          <li>JavaScript</li>
+          <li>AJAX</li>
+          <li>jQuery, Prototype, Dojo, Microsoft AJAX Toolkit, Telerik</li>
+          <li>Adobe CS suite: Premiere, Illustrator, Photoshop, Fireworks, Dreamweaver</li>
+          <li>Flash,  ActionScript, Flex</li>
+          <li>Web Graphics Design and Content Optimization</li>
+          <li>2D and 3D vector modeling</li>
+          <li>JavaScript advanced animations w/o Flash</li>
+          <li>table-less CSS layouts</li>
+          <li>SEO (Search Engine Optimization)</li>
+          <li>Google APIs (Maps, Analytics, OAuth etc.)</li>
+          <li>WebServers: Apache, IIS, nginx, Cowboy, Yaws, Tomcat</li>
+         </ul>
+     </div>
+ </div>
+
+<p>&nbsp;</p>
+
+
+</body>
+</html>
+

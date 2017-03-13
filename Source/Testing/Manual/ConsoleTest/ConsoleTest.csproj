@@ -77,9 +77,10 @@
     <Compile Include="CacheTest.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConsoleLog.cs" />
-    <Compile Include="CSTemplate.cs" />
+    <Compile Include="Templatization\CS\CSTemplate.cs" />
     <Compile Include="GoogleDrive\GoogleDriveFileSystem.cs" />
     <Compile Include="JokeServer.cs" />
+    <Compile Include="Templatization\JS\JSTemplate.cs" />
     <Compile Include="Markup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,10 +133,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Template1.htm" />
+    <EmbeddedResource Include="Templatization\CS\Template1.htm" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Template2.htm" />
+    <EmbeddedResource Include="Templatization\CS\Template2.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templatization\JS\SimpleTest.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
