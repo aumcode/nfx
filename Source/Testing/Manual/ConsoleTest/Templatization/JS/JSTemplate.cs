@@ -16,9 +16,11 @@
 </FILE_LICENSE>*/
 
 using NFX;
+using NFX.Environment;
 using NFX.Templatization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,11 +29,24 @@ namespace ConsoleTest.Templatization.JS
 {
   public class JSTemplate
   {
+    public static string CONFIG = @"
+    compiler
+    {
+      dom-gen
+      {
+        pretty=true
+      }
+    }
+    ";
+
     public static void Run()
     {
-      var tplSource = typeof(JSTemplate).GetText("SimpleTest.js");
+      var tplSource = typeof(JSTemplate).GetText("_source.js");
+      var config = CONFIG.AsLaconicConfig();
+      var type = typeof(TextJSTemplateCompiler);
+      var args = new object[] {new TemplateStringContentSource(tplSource)};
 
-      var cmp = new TextJSTemplateCompiler( new TemplateStringContentSource(tplSource));
+      var cmp = FactoryUtils.MakeAndConfigure<TextJSTemplateCompiler>(config, type, args);
       cmp.Compile();
 
 
@@ -39,7 +54,15 @@ namespace ConsoleTest.Templatization.JS
       if (unit.CompilationException != null)
         Console.WriteLine(unit.CompilationException.ToMessageWithType());
       else
+      {
         Console.WriteLine( unit.CompiledSource );
+        File.WriteAllText(@"..\..\Source\Testing\Manual\ConsoleTest\Templatization\JS\compiled.js", unit.CompiledSource);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+      }
     }
   }
 }

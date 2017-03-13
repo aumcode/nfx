@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="../../../../../NFX.Wave/Templatization/StockContent/Embedded/script/jquery-2.1.4.js"></script>
+  <script src="../../../../../NFX.Wave/Templatization/StockContent/Embedded/script/wv.js"></script>
+  <script src="compiled.js"></script>
+  <script>
+    var obj = {
+      color: "green",
+      height: 20
+    }
+    render("root", obj);
+  </script>
+  <style>
+    div {
+      border: 1px solid #000;
+      padding: 10px;
+    }
+  </style>
+</body>
+</html>

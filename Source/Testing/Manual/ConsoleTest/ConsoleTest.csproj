@@ -139,7 +139,11 @@
     <EmbeddedResource Include="Templatization\CS\Template2.htm" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templatization\JS\SimpleTest.js" />
+    <EmbeddedResource Include="Templatization\JS\_source.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templatization\JS\jsCompiler.test.html" />
+    <Content Include="Templatization\JS\compiled.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

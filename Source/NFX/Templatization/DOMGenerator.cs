@@ -11,8 +11,10 @@ namespace NFX.Templatization
   public class DOMGenerator : IConfigurable
   {
     #region CONSTS
-    public const string EVT_PREFIX_ATTR = "on-";
+    public const string CONFIG_EVENT_PREFIX_ATTR = "on-";
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
+
+    public const string JS_USE_CTX_VARIABLE = "ljs_useCtx";
     #endregion
 
     #region Static
@@ -29,7 +31,7 @@ namespace NFX.Templatization
     #endregion
 
     #region private
-    private string m_LineEnd = System.Environment.NewLine;
+    private string m_LineEnding = "";
     #endregion
 
     #region Public
@@ -39,26 +41,28 @@ namespace NFX.Templatization
       if (node == null || !node.Exists) return;
 
       var attr = node.AttrByName(CONFIG_PRETTIFY_ATTR);
-      if (attr != null && attr.Exists && attr.ValueAsBool(true))
+      if (attr != null && attr.Exists && attr.ValueAsBool(false))
       {
-        m_LineEnd = System.Environment.NewLine;
+        m_LineEnding = System.Environment.NewLine;
       }
     }
 
     public string Generate(IConfigSectionNode node)
     {
-      string elemId;
       int counter = 0;
-      return createElement(node, null, ref counter, out elemId);
+      return createElement(node, null, ref counter);
     }
 
     #endregion
 
-    private string createElement(IConfigSectionNode node, string parent, ref int counter, out string elemId)
+    private string createElement(IConfigSectionNode node, string root, ref int counter)
     {
+      var isRootNode = root.IsNullOrWhiteSpace();
       var sb = new StringBuilder();
-      elemId = "ljs_{0}".Args(++counter);
-      sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, node.Name, m_LineEnd);
+      var elemId = "ljs_{0}".Args(++counter);
+
+      sb.AppendFormat("var {0} = WAVE.isObject(ctx);{1}", JS_USE_CTX_VARIABLE, m_LineEnding);
+      sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, node.Name, m_LineEnding);
       foreach(var attr in node.Attributes)
       {
         var value = attr.Value;
@@ -66,20 +70,29 @@ namespace NFX.Templatization
           continue;
 
         var name = attr.Name;
-        if (name.StartsWith(EVT_PREFIX_ATTR, StringComparison.Ordinal))
-          sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(EVT_PREFIX_ATTR, "").ToLower(), value, m_LineEnd);
-        else
-          sb.AppendFormat("{0}.setAttribute('{1}', '{2}');{3}", elemId, name, value, m_LineEnd);
+        if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
+          sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, "").ToLower(), value, m_LineEnding);
+        else {
+          var v = "{0} ? WAVE.strHTMLTemplate(\"{1}\", ctx) : \"{1}\"".Args(JS_USE_CTX_VARIABLE, value.Replace('"', '\''));//TODO refactor
+          sb.AppendFormat("{0}.setAttribute('{1}', {2});{3}", elemId, name, v, m_LineEnding);
+        }
       }
       foreach(var child in node.Children)
       {
-        string cel;
-        sb.Append(createElement(child, elemId, ref counter, out cel));
+        sb.Append(createElement(child, elemId, ref counter));
       }
-      //if (parent.IsNullOrWhiteSpace())
-      //  throw new TemplatizationException("Parent node does not specified: {0}".Args(node.ToLaconicString()));
+      if (isRootNode)//this means that this is root node
+      {
+        sb.AppendFormat("if (typeof(root) !== 'undefined' && root !== null) {{{0}", m_LineEnding);
+        sb.AppendFormat("if (WAVE.isString(root)){0}", m_LineEnding);
+        sb.AppendFormat("root = WAVE.id(root);{0}", m_LineEnding);
+        sb.AppendFormat("if (WAVE.isObject(root)){0}", m_LineEnding);
+        sb.AppendFormat("root.appendChild({0});{1}", elemId, m_LineEnding);
+        sb.AppendFormat("}}{0}", m_LineEnding);
+      }
+      else
+        sb.AppendFormat("{0}.appendChild({1});{2}", root, elemId, m_LineEnding);
 
-      sb.AppendFormat("{0}.appendChild({1});{2}", parent, elemId, m_LineEnd);
       return sb.ToString();
     }
   }
