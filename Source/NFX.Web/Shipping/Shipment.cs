@@ -38,11 +38,11 @@ namespace NFX.Web.Shipping
       public class Service : IConfigurable, INamed
       {
         public Service(ShippingCarrier carrier)
-      {
-        if (carrier==null) throw new ShippingException("Service.ctor(carrier=null)");
+        {
+          if (carrier==null) throw new ShippingException("Service.ctor(carrier=null)");
 
-        m_Carrier = carrier;
-      }
+          m_Carrier = carrier;
+        }
 
         private readonly ShippingCarrier m_Carrier;
 

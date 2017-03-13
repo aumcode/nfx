@@ -49,7 +49,7 @@ namespace NFX.NUnit.Config
         public void MakeUsingCtor_3()
         {
           var made = FactoryUtils.MakeUsingCtor<CTORClass>("node{type='NFX.NUnit.Config.CTORClassDerived, NFX.NUnit' arg0=1 arg1=2}".AsLaconicConfig());
-          
+
           Assert.IsTrue( made is CTORClassDerived);
           Assert.AreEqual(1, made.A);
           Assert.AreEqual(2, made.B);
@@ -59,7 +59,7 @@ namespace NFX.NUnit.Config
         public void MakeUsingCtor_4()
         {
           var made = FactoryUtils.MakeUsingCtor<CTORClass>("node{type='NFX.NUnit.Config.CTORClassDerived, NFX.NUnit' arg0='7/1/1982'}".AsLaconicConfig());
-          
+
           Assert.IsTrue( made is CTORClassDerived);
           Assert.AreEqual(1982, made.A);
           Assert.AreEqual(7, made.B);
@@ -80,7 +80,7 @@ namespace NFX.NUnit.Config
         {
           var made = FactoryUtils.MakeAndConfigure<CTORClass>(
               "node{type='NFX.NUnit.Config.CTORClassDerived, NFX.NUnit' data1='AAA' data2='bbb'}".AsLaconicConfig(), args: new object[]{1,12});
-          
+
           Assert.IsTrue( made is CTORClassDerived);
           Assert.AreEqual(1, made.A);
           Assert.AreEqual(12, made.B);
@@ -94,7 +94,7 @@ namespace NFX.NUnit.Config
         {
           var made = FactoryUtils.MakeUsingCtor<CTORClass>(
               "node{type='CTORClassDerived' arg0='12' arg1='234'}".AsLaconicConfig(), typePattern: "NFX.NUnit.Config.*, NFX.NUnit");
-          
+
           Assert.IsTrue( made is CTORClassDerived);
           Assert.AreEqual(12, made.A);
           Assert.AreEqual(234, made.B);
@@ -122,7 +122,7 @@ namespace NFX.NUnit.Config
           public CTORClassDerived(DateTime dt) : base(dt){}
 
           public readonly int C = 155;
-          
+
           [Config]
           public string Data1{get;set;}
 

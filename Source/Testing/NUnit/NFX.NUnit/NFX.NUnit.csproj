@@ -114,6 +114,7 @@
     <Compile Include="Serialization\ARow.cs" />
     <Compile Include="Serialization\ARowAllTypes.cs" />
     <Compile Include="Serialization\ARowAmorphous.cs" />
+    <Compile Include="Serialization\ARowBenchmarkingParallel.cs" />
     <Compile Include="Serialization\CSVWriterTest.cs" />
     <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
     <Compile Include="Serialization\CSVParserTest.cs" />

@@ -60,7 +60,8 @@ namespace NFX.Web.Shipping
     USPS = 1,
     FedEx = 2,
     UPS = 3,
-    DHLExpress = 4
+    DHLExpress = 4,
+    Custom = 100000
   }
 
   /// <summary>
