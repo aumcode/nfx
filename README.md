@@ -7,9 +7,6 @@ License: Apache 2.0
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
 
-<img src="https://ci.appveyor.com/project/itadapter/nfx/branch/master?svg=true" alt="Project Badge" width="300">
-
-
 NFX is written in C# and runs on a CLR machine, however it has very little to do with .NET.
 This framework contains truly unique intellectual assets and allows for unconventional things
 that significantly boost performance and simplify the development (such as stateful web). 
