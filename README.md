@@ -3,7 +3,7 @@ Server UNISTACK framework.
 
 License: Apache 2.0
 
-<img src="https://ci.appveyor.com/api/projects/status/github/aumcode/nfx?svg=true" alt="Project Badge" width="200">
+[<img src="https://ci.appveyor.com/api/projects/status/github/aumcode/nfx?svg=true" alt="Project Badge" width="200">](https://ci.appveyor.com/project/itadapter/nfx/history)
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
 
