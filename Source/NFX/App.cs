@@ -28,6 +28,61 @@ namespace NFX
     /// </summary>
     public static class App
     {
+       /// <summary>
+       /// Denotes memory utilization modes
+       /// </summary>
+       public enum MemoryUtilizationModel
+       {
+         /// <summary>
+         /// The application may use memory in a regular way without restraints
+         /// </summary>
+         Regular = 0,
+
+         /// <summary>
+         /// The application must try to use memory sparingly and not allocate large cache and buffers.
+         /// This mode is typically used in a constrained 32bit apps and smaller servers
+         /// </summary>
+         Compact = -1,
+
+         /// <summary>
+         /// The application must try not to use extra memory for caches and temp buffers.
+         /// This mode is typically used in a constrained 32bit apps and smaller servers.
+         /// Thsi mode is stricter than Compact
+         /// </summary>
+         Tiny = -2
+       }
+
+
+       private static MemoryUtilizationModel s_MemoryModel;
+
+
+       /// <summary>
+       /// Returns the memory utilization model for the application.
+       /// This property is NOT configurable. It may be set at process entrypoint via a call to
+       /// App.SetMemoryModel() before the app contrainer spawns.
+       /// Typical applications should not change the defaults.
+       /// Some system service providers examine this property to allocate less cache and temp buffers
+       /// in the memory-constrained environments
+       /// </summary>
+       public static MemoryUtilizationModel MemoryModel{ get{ return s_MemoryModel;} }
+
+       /// <summary>
+       /// Sets the memory utilization model for the whole app.
+       /// This setting is NOT configurable. It may be set at process entrypoint via a call to
+       /// App.SetMemoryModel() before the app contrainer spawns.
+       /// Typical applications should not change the defaults.
+       /// Some system service providers may examine this property to allocate less cache and temp buffers
+       /// in the memory-constrained environments
+       /// </summary>
+       public static void SetMemoryModel(MemoryUtilizationModel model)
+       {
+         if (Available)
+           throw new NFXException(StringConsts.APP_SET_MEMORY_MODEL_ERROR);
+         s_MemoryModel = model;
+       }
+
+
+
 
        public static IApplication Instance
        {

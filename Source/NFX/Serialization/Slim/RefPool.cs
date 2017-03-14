@@ -48,6 +48,9 @@ namespace NFX.Serialization.Slim
 
     internal class RefPool
     {
+       public const int POOL_CAPACITY = 1024;
+       public const int LARGE_TRIM_THRESHOLD = 16 * 1024;
+
 
        public void Acquire(SerializationOperation mode)
        {
@@ -71,8 +74,8 @@ namespace NFX.Serialization.Slim
 
 
        private SerializationOperation m_Mode;
-       private QuickRefList m_List = new QuickRefList(1024);
-       private Dictionary<object, int> m_Dict = new Dictionary<object,int>(1024, ReferenceEqualityComparer<object>.Instance);
+       private QuickRefList m_List = new QuickRefList(POOL_CAPACITY);
+       private Dictionary<object, int> m_Dict = new Dictionary<object,int>(POOL_CAPACITY, ReferenceEqualityComparer<object>.Instance);
        private List<_ISerializableFixup> m_Fixups = new List<_ISerializableFixup>();
        private List<_OnDeserializedCallback> m_OnDeserializedCallbacks = new List<_OnDeserializedCallback>();
 
@@ -289,6 +292,7 @@ namespace NFX.Serialization.Slim
     {
       public QuickRefList(int capacity)
       {
+        if (App.MemoryModel < App.MemoryUtilizationModel.Regular) capacity = capacity / 2;
         m_InitialCapacity = capacity;
         m_Data = new object[ capacity ];
         m_Count = 1;//the "zeros" element is always NULL
@@ -305,15 +309,18 @@ namespace NFX.Serialization.Slim
 
       public void Clear()
       {
-        const int TRIM_THRESHOLD = 250000;//* 2(array growth factor) = 500,000 references * 54 bits =  4,000,000 bytes
+        var mm = App.MemoryModel;
+        var trimAt = mm < App.MemoryUtilizationModel.Regular ?  RefPool.POOL_CAPACITY : RefPool.LARGE_TRIM_THRESHOLD;
 
-        if (m_Count>TRIM_THRESHOLD) //We want to get rid of excess data when too much
+        if (m_Count>trimAt) //We want to get rid of excess data when too much
         {                           //otherwise the array will get stuck in pool cache for a long time
           m_Data = new object[ m_InitialCapacity ];
+        } else if (mm==App.MemoryUtilizationModel.Tiny)
+        {
+           Array.Clear(m_Data, 0, m_Data.Length);
         }
 
-        m_Count = 1;//[0]==null, dont clear
-        //notice: no Array.Clear...
+        m_Count = 1;//[0]==null, dont clear //notice: no Array.Clear... for normal memory modes
       }
 
       public void Add(object reference)

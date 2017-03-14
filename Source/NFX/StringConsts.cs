@@ -34,6 +34,10 @@ namespace NFX
   {
     public const string SECURITY_NON_AUTHENTICATED = "<non-authenticated>";
 
+
+    public const string APP_SET_MEMORY_MODEL_ERROR =
+      "The App.SetMemoryModel() method must be called at process entry point before the app container allocation";
+
         public const string OBJECT_DISPOSED_ERROR =
             "Object was already disposed";
 
