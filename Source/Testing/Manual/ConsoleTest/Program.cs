@@ -56,7 +56,8 @@ namespace ConsoleTest
 
      Templatization.JS.JSTemplate.Run();
 
-      Console.WriteLine("done"); Console.ReadKey();
+      Console.WriteLine("done");
+      Console.ReadKey();
 
         //Console.WriteLine("Server starting with arguments: " + string.Join(" ", args));
 

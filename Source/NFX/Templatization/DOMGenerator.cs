@@ -15,6 +15,8 @@ namespace NFX.Templatization
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
 
     public const string JS_USE_CTX_VARIABLE = "ljs_useCtx";
+
+    public const string LJS_CONTENT_PROP = "-content";
     #endregion
 
     #region Static
@@ -71,10 +73,19 @@ namespace NFX.Templatization
 
         var name = attr.Name;
         if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
-          sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, "").ToLower(), value, m_LineEnding);
+          sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, m_LineEnding);
         else {
-          var v = "{0} ? WAVE.strHTMLTemplate(\"{1}\", ctx) : \"{1}\"".Args(JS_USE_CTX_VARIABLE, value.Replace('"', '\''));//TODO refactor
-          sb.AppendFormat("{0}.setAttribute('{1}', {2});{3}", elemId, name, v, m_LineEnding);
+          var v = value.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\"", "\\\"");
+
+          var valueId = "ljs_{0}".Args(++counter);
+          sb.AppendFormat("var {0} = \"{1}\";{2}", valueId, v, m_LineEnding);
+
+          v = "{0} ? WAVE.strHTMLTemplate({1}, ctx) : WAVE.strEscapeHTML({1})".Args(JS_USE_CTX_VARIABLE, valueId);
+
+          if (name.EqualsOrdSenseCase(LJS_CONTENT_PROP))
+            sb.AppendFormat("{0}.innerText = {1};{2}", elemId, v, m_LineEnding);
+          else
+            sb.AppendFormat("{0}.setAttribute('{1}', {2});{3}", elemId, name, v, m_LineEnding);
         }
       }
       foreach(var child in node.Children)

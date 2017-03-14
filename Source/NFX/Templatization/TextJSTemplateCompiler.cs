@@ -88,7 +88,7 @@ namespace NFX.Templatization
 
       var r = new Regex(@"\/\*{3}(.*?)\*{3}\/", RegexOptions.Singleline);
 
-      unit.CompiledSource = r.Replace(text, delegate(Match m) {
+      unit.CompiledSource = r.Replace(text, (m) => {
         var c = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
         return DOMGenerator.Generate(c);
       });

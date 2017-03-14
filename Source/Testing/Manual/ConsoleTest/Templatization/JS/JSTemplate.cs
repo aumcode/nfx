@@ -57,7 +57,7 @@ namespace ConsoleTest.Templatization.JS
       {
         Console.WriteLine( unit.CompiledSource );
         File.WriteAllText(@"..\..\Source\Testing\Manual\ConsoleTest\Templatization\JS\compiled.js", unit.CompiledSource);
-        Console.WriteLine();
+        Console.WriteLine("Saved to file");
         Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine();
