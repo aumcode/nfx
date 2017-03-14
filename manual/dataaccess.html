@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Data Access </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="Data Access ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,9 +64,124 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="data-access">Data Access</h1>
               
-              <p>Data Access</p>
-<p>...</p>
+<p><strong>NFX</strong> Data Access was designed to be very flexible and support single and non-homogeneous data stores. 
+Contemporary data stores can not be modeled after client/server(in RDBMS sense) RDBMS/SQL-only concepts, 
+instead modern data is usually distributed and arrives from different sources/providers. </p>
+<p>For example, a high-frequency-trading application data store may have a read-only market feed that is provided by subscription channels (async socket push) 
+and a typical &quot;back office&quot; system where trading and strategy definitions are kept. 
+In this instance, the subscription feeds take some &quot;query&quot; (i.e. a symbol and sampling rate &quot;MSFT^&quot;/1minute) 
+while &quot;backoffice&quot; query may be more of a kin to &quot;select all strategies where risk-category &lt; ‘75%’&quot;.</p>
+<p><strong>NFX</strong> Data Access starts from the root Data: IDataStore property on the root Application container interface. 
+It is just that - a marker interface. Actual application shall derive from it and implement their own data stores to fit their particular purpose. </p>
+<p><strong>NFX</strong> provides two primary data store &quot;schemes&quot;:</p>
+<ul>
+<li><p>CRUD data store - usually implementors of ICRUDDataStore - provide automatic generation of database (not necessarily SQL-only) commands to service CRUD (insert/update/delete/upsert) requests</p>
+</li>
+<li><p>Composite data stores - these are more &quot;layered&quot; data stores that use composition of CRUD and other data stores. They act as a business facades to your data</p>
+</li>
+</ul>
+<p>Simple business applications may use CRUD data stores directly as they suffice in 90% of cases, however most realistic business pas should create a business-oriented facades - composite data stores - that better represent logic sections of the problem domain. </p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-csharp">var shippers = MyECommerceApp.Data.ShippingLogic.GetShippersForRegion(&quot;USA&quot;, &quot;OH&quot;);
+</code></pre><p>Notice the use of the typed-application facade &quot;MyECommerceApp&quot;. 
+It is usually a static class that provides a shortcut access to a TYPED data store per your particular app:</p>
+<pre><code class="lang-csharp">public IMyECommerceDataStore Data 
+{
+  get { return App.Data as IMyECommerceDataStore; } // or throw 
+}
+</code></pre><h2 id="data-objects-schema-and-metadata">Data Objects, Schema and Metadata</h2>
+<p><strong>NFX</strong> data access concept revolves around CRUD primitives: Rows and Rowsets/Tables.</p>
+<p>A Row represents a row of data, not necessarily relational, that has fields. 
+A row may have a hierarchical (nested) structure. A row may represent a row from RDBMS, file, document (i.e. MongoDB) and other sources. 
+Some rows are read only, and only used to project data into (i.e. from SQL), whereas majority of rows is usually &quot;writable&quot; akin to an &quot;Active Record&quot; pattern, 
+they can be saved back into the data store.</p>
+<p>Every row has a Schema - a list of field definitions with metadata attributes.
+There are two primary types of rows, both inherit from Row: DynamicRow and TypedRow.</p>
+<p>Dynamic rows store data in <code>object[]</code> and the data is &quot;shaped&quot; according to the Schema.
+TypedRows are &quot;shaped&quot; by their declared properties decorated with [FIELD] attribute.</p>
+<pre><code class="lang-csharp">public class Person : TypedRow
+{
+  [Field(backendName: &quot;pk&quot;, key: true, required: true)]
+  public string ID{ get; set;}
+
+  [Field]
+  public string Name{ get; set;}
+
+  [Field(required: true)]
+  public DateTime? DOB{ get; set;}
+}
+</code></pre><p>Rows have <code>Validate(string target)</code> method that returns either null or in case of validation violations an instance of <code>ValidationException</code>. 
+The exception is not thrown, it is returned instead, this is done for speed (throw is 20-100 slower than return) as validation exceptions are pretty much a norm.</p>
+<p>As POCO classes, rows are teleportable with Slim, so they can be transparently stored in Pile/Cache and be teleported to other machines/processes using Glue.</p>
+<p>Rows can be used in <code>List&lt;&gt;</code>, however NFX provides a more handy structure: Rowsets and Tables. 
+The difference stems from the recognition of the primary key by the Table - it is a form of a sorted -by-pk rowset (with binary search findkey). 
+Tables are good for data sync in distributed systems (i.e. used in trading system fed from Erlang OTP).</p>
+<h2 id="querying-and-crud">Querying and CRUD</h2>
+<p><strong>NFX</strong> data access does not use LINQ on purpose. 
+This is because it is impossible to efficiently map LINQ to a possibly non-homogeneous data store that joins/takes data from different sources. 
+Instead, data access in <strong>NFX</strong> is based on virtual queries. Queries get resolved by CRUDDataStore into <code>ICRUDQueryHandler</code>.  </p>
+<p>When data must be loaded, instead of using ORM/and/or LINQto*(entity) a developer would execute a query which has a name and named parameters. 
+The query DOES NOT specify the text of the actual backend query as it is not necessarily a scriptable backend which is being queried. 
+A query specifies the NAME of command. It is a &quot;command object&quot; pattern per GOF jargon.</p>
+<pre><code class="lang-csharp">var qryPatients = new Query&lt;PatientRow&gt;(&quot;GetPatientsByProvider&quot;)
+{
+  new Query.Param(&quot;HospitalID&quot;, hID),
+  new Query.Param(&quot;ProviderID&quot;, myProviderID)
+};
+
+var patients = MyApp.Data.LoadOneRowset(qryPatients);
+
+foreach(var patient in patients)
+{
+  // patient is of type PatientRow
+}
+</code></pre><p>The &quot;GetPatientsByProvider&quot; name will get resolved into either of the two the ICRUDQueryHandler implementations:</p>
+<ul>
+<li>An embedded textual script <code>ICRUDScriptQueryHandler</code></li>
+<li>A custom class that implements <code>ICRUDQueryHandler</code></li>
+</ul>
+<p>If a query can be executed using SQL or JSON (in case of MongoDB) or ErlTuple(for Erlang Mnesia or RPC).</p>
+<p>Scripts can have target suffixes, as the data access layer supports multi targeting, so it is possible to target say ORACLE and MSSQL (and others) by the same codeset. 
+The difference would be in the file suffixes.</p>
+<p>An Important capability is the class <code>CRUDQueryHandlers</code> - they allow for arbitrary/custom implementation in C#, 
+so in case some target does not support some function (i.e. MySQL does not support CONNECT BY), 
+we can implement this (just)for MySQL using a few query requests and C# code, while ORACLE implementation remains script-only. 
+This approach allows for an infinite flexibility.</p>
+<h2 id="providers">Providers</h2>
+<p><strong>NFX</strong> data access providers provide implementation of contracts for particular technologies.</p>
+<p>NFX currently supports the following providers out-of-box:</p>
+<ul>
+<li><p>CRUD MySQL</p>
+</li>
+<li><p>CRUD MongoDB</p>
+</li>
+<li><p>Direct MongoDB Driver (BSON level)</p>
+</li>
+<li><p>Mongo Log support</p>
+</li>
+<li><p>MSSQL Log support</p>
+</li>
+<li><p>Erlang Mnesia NFX - OTP wrapper around Mnesia database</p>
+</li>
+<li><p>Erlang NFX - OTP custom data feeder from Erlang</p>
+</li>
+</ul>
+<p>The providers lookup particular query scripts using suffix notation, for example: &quot;GetCustomerBySSN.my.sql&quot; vs &quot;GetCustomerBYSSN.ora.sql&quot;.</p>
+<h2 id="relational-schema">Relational Schema</h2>
+<p>Relational Schema is the conceptual scripting language that allows for declarative database structure creation of:</p>
+<ul>
+<li>Tables</li>
+<li>Indexes</li>
+<li>Foreign Keys</li>
+<li>Domains</li>
+</ul>
+<p>The script is based on LACONIC config format and is basically a code transform tool that generates script suitable for particular backend. 
+For example one can invoke the <strong>RSC</strong> (Rel Schema Compiler) tool from command line passing the specific target and the SQL DDL(Data Definition Language) specific to that target will be generated.</p>
+<p>RSC generates proper prefixes for related objects, for example if a table is called &quot;USER&quot;, the foreign key constraint would be called &quot;FK_USER…&quot;.</p>
+<p>The key feature of RSC is the ability to use injectable domains definitions. This is true EVEN for databases that do not support domains, for example one could use &quot;THumanName&quot;  and define it as &quot;varchar(25)&quot;, so now in multiple places &quot;THumanName &quot; can be used as a domain, resulting script will have &quot;varchar(25)&quot;.
+RSC also has capabilities for macro/mixins and scripts. This is very useful for example for including column block such as &quot;customer address&quot;.</p>
 
             </article>
           </div>

@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NFX Template Compiler/Transpiler </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NFX Template Compiler/Transpiler ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx-template-compilertranspiler">NFX Template Compiler/Transpiler</h1>
+              
+<p>Transpiles the source template in particular syntax into another syntax. The tool takes the compiler
+type via <code>-c|-compiler</code> switch. The default <code>TextCSTemplateCompiler</code> generates CS source code 
+based on NTC syntax. See <a href="/specs">Specifications</a> section for NTC template details.</p>
+<p>Type<code>ntc -?</code> for help.</p>
+<pre><code class="lang-css"> Usage:
+   ntc source_path [/h | /? | /help]
+              [/options | /o[asm-file= file_name]
+                            [compile-code= true|false]
+                            [base-type= base_type_name]
+                            [namespace= namespace_name]
+                            [ref= assembly_name0[;assembly_nameX...]]
+                            [ref-path= path]
+              ]
+
+              [/r | /recurse]
+              [/c | /compiler  fully_qualified_type_name]
+              [/src]   
+              [/ext file_extension]
+
+ source_path - path to template source files, may include wildcard
+
+Options:
+
+ /h | /help | /? - displays help message 
+ /o | /options - specifies compiler options.
+
+    asm-file - creates an assembly file on disk
+    compile-code - performs code compilation   
+
+    base-type - specifies default base type name which has to be fully qualified but without
+       assembly namespace - fully qualified namespace name
+    ref - adds assembly reference, may contain multiple names separated by &quot;;&quot; character
+    ref-path - additional path used for referenced assemblies location
+
+ /r | /recurse - walk subdirectory structure as well
+ /c | /compiler - uses specified compiler. If omitted then TextCSTemplateCompiler is used
+ /ext - specifies file extension to use for source files. When omitted, default language 
+        extension will be appended to source file name
+ /src - writes compiled source files to disk
+
+Examples:
+
+  ntc &quot;c:\templates\*.tpl&quot; -r -src 
+Compiles all files with &quot;tpl&quot; extension in specified folder and all subfolders
+using default TextCSTemplateCompiler generating C# source files on disk
+
+  ntc &quot;c:\templates\*.tpl&quot; -r -o compile-code=true 
+        ref-path=&quot;c:\mylibs&quot;
+        ref=&quot;System.Web.dll;NFX.Web.dll&quot;
+        asm-file=&quot;c:\mylibs\Templates.dll&quot; 
+
+Compiles all files with &quot;tpl&quot; extension in specified folder and all subfolders
+using default TextCSTemplateCompiler generating assembly &quot;Templates.dll&quot; that
+contains compiled template types. Adds &quot;System.Web&quot; and &quot;NFX.Web&quot; referenced assemblies
+providing reference searchpath at &quot;c:\mylibs&quot;
+</code></pre>
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
