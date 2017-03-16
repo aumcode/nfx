@@ -210,7 +210,7 @@ namespace NFX.NUnit.Erlang
         Assert.AreEqual(t, es.Read());
       }
       {
-        var b = new byte[] { 131 };
+        var b = new byte[] { 131, 116, 0, 0, 0, 2, 100, 0, 1, 97, 97, 1, 107, 0, 3, 115, 116, 114, 70, 64, 0, 0, 0, 0, 0, 0, 0 };
         var t = new ErlMap {
           { new ErlAtom("a"), 1.ToErlObject() },
           { new ErlString("str"), new ErlDouble(2.0) }

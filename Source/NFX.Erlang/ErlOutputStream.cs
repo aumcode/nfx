@@ -184,6 +184,7 @@ namespace NFX.Erlang
         case ErlTypeOrder.ErlRef:       WriteRef((ErlRef)o); break;
         case ErlTypeOrder.ErlString:    WriteString((ErlString)o); break;
         case ErlTypeOrder.ErlTuple:     WriteTuple((ErlTuple)o); break;
+        case ErlTypeOrder.ErlMap:       WriteMap((ErlMap)o); break;
         default:
           throw new ErlException(
               StringConsts.ERL_UNSUPPORTED_ELEMENT_TYPE_ERROR,
@@ -270,6 +271,9 @@ namespace NFX.Erlang
           var l4 = (ErlTuple)o;
           int sz = 1 + (l4.Count < 0xff ? 1 : 4);
           return sz + l4.Value.Sum(obj2 => EncodeSize(obj2));
+        case ErlTypeOrder.ErlMap:
+          var m1 = (ErlMap)o;
+          return 1 + 4 + m1.Sum(kvp => EncodeSize(kvp.Key) + EncodeSize(kvp.Value));
         default:
           throw new ErlException(StringConsts.ERL_UNSUPPORTED_ELEMENT_TYPE_ERROR,
               o.GetType().Name, o.TypeOrder.ToString());
@@ -423,6 +427,21 @@ namespace NFX.Erlang
       {
         write(ErlExternalTag.LargeTuple);
         Write4BE(arity);
+      }
+    }
+
+    /// <summary>
+    /// Write an Erlang map to the stream.
+    /// </summary>
+    /// <param name="map"></param>
+    public void WriteMap(ErlMap map)
+    {
+      write(ErlExternalTag.Map);
+      Write4BE(map.Count);
+      foreach (var kvp in map)
+      {
+        Write(kvp.Key);
+        Write(kvp.Value);
       }
     }
 
