@@ -36,7 +36,7 @@ namespace NFX.Web.Social
 
         private const string LOGIN_LINK_TEMPLATE = "https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&response_type=code&scope={2}";
 
-        private const string ACCESSTOKEN_BASEURL = "https://graph.facebook.com/oauth/access_token";
+        private const string ACCESSTOKEN_BASEURL = "https://graph.facebook.com/v2.8/oauth/access_token";
         private const string ACCESSTOKEN_CODE_PARAMNAME = "code";
         private const string ACCESSTOKEN_CLIENTID_PARAMNAME = "client_id";
         private const string ACCESSTOKEN_CLIENTSECRET_PARAMNAME = "client_secret";
@@ -46,7 +46,7 @@ namespace NFX.Web.Social
         private const string GRANTTYPE_PARAMNAME = "grant_type";
         private const string GRANTTYPE_FBEXCHANGETOKEN_PARAMVALUE = FBEXCHANGETOKEN_PARAMNAME;
 
-        private const string GETUSERINFO_BASEURL = "https://graph.facebook.com/me";
+        private const string GETUSERINFO_BASEURL = "https://graph.facebook.com/v2.8/me";
 
         private const string GETUSERINFO_FIELDS_PARAMNAME = "fields";
 
@@ -66,8 +66,8 @@ namespace NFX.Web.Social
           private const string USER_PICTURE_DATA_PARAMNAME = "data";
           private const string USER_PICTURE_URL_PARAMNAME = "url";
 
-        private const string PUBLISH_BASEURL_PATTERN = "https://graph.facebook.com/{0}/feed";
-        private const string GET_USER_PICTURE_URL_PATTERN = "https://graph.facebook.com/{0}/picture?type=large&redirect=false";
+        private const string PUBLISH_BASEURL_PATTERN = "https://graph.facebook.com/v2.8/{0}/feed";
+        private const string GET_USER_PICTURE_URL_PATTERN = "https://graph.facebook.com/v2.8/{0}/picture?type=large&redirect=false";
 
         private const string MESSAGE_PARAMNAME = "message";
 
@@ -190,10 +190,10 @@ namespace NFX.Web.Social
 
         private string getAccessToken(string code, string redirectURI)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+          var response = WebClient.GetJson(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
           {
             Method = HTTPRequestMethod.GET,
-            Headers = new Dictionary<string, string>() {
+            QueryParameters = new Dictionary<string, string>() {
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_REDIRECTURL_PARAMNAME, redirectURI},
               {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
@@ -213,7 +213,7 @@ namespace NFX.Web.Social
           dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, new WebClient.RequestParams(this)
           {
             Method = HTTPRequestMethod.GET,
-            Headers = new Dictionary<string, string>() {
+            QueryParameters = new Dictionary<string, string>() {
               {ACCESSTOKEN_PARAMNAME, userInfo.AccessToken},
               {GETUSERINFO_FIELDS_PARAMNAME, fields}
             }
@@ -248,9 +248,9 @@ namespace NFX.Web.Social
 
         private string getLongTermAccessToken(string accessToken)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+          var response = WebClient.GetJson(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
           {
-            Headers = new Dictionary<string, string>() {
+            QueryParameters = new Dictionary<string, string>() {
               {GRANTTYPE_PARAMNAME, GRANTTYPE_FBEXCHANGETOKEN_PARAMVALUE},
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
