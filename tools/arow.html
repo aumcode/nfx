@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Arow Serializer Code Generator </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="Arow Serializer Code Generator ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,131 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="arow-serializer-code-generator">Arow Serializer Code Generator</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<h2 id="arow-serializer-overview">Arow Serializer Overview</h2>
+<p>Adaptive Row (Arow) - code generator produces C# code that serializes and de-serializes object 
+instances derived form <code>TypedRow</code>. The Arow serializer is very efficient as it avoids boxing and
+making transitive copies. The Arow serializer does not support polymorphism and only allows for the
+following types:</p>
+<ul>
+<li>CLR Primitives</li>
+<li>Nullable CLR Primitives</li>
+<li>Guid, GDID, Amount  NFX structs</li>
+<li>Types derived directly or indirectly from TypedRow</li>
+<li>List or arrays of the aforementioned types</li>
+</ul>
+<p>The Arow serializer only processes properties decorated with <code>[Field]</code> attribute having 
+<code>isArow: true</code> property. The <code>backendName</code> has to be 1-8 ASCII-only chars, so the field names are
+written using compressed ULONG format for efficiency (strings are much less efficient because they 
+are reference types and require GC). Arow binds rows by name, consequently Arow is a Version-tolerant
+serializer. </p>
+<p>An example class:</p>
+<pre><code class="lang-cs">[Arow]
+public class SimplePersonRow : TypedRow
+{
+  [Field(backendName: &quot;id&quot;,   isArow: true)] public GDID     ID    {get; set;}
+  [Field(backendName: &quot;name&quot;, isArow: true)] public string   Name  {get; set;}
+  [Field(backendName: &quot;age&quot;,  isArow: true)] public int      Age   {get; set;}
+  [Field(backendName: &quot;b1&quot;,   isArow: true)] public bool     Bool1 {get; set;}
+  [Field(backendName: &quot;s1&quot;,   isArow: true)] public string   Str1  {get; set;}
+  [Field(backendName: &quot;s2&quot;,   isArow: true)] public string   Str2  {get; set;}
+  [Field(backendName: &quot;d1&quot;,   isArow: true)] public DateTime Date  {get; set;}
+  [Field(backendName: &quot;slr&quot;,  isArow: true)] public double   Salary{get; set;}
+}
+</code></pre><p>Can be serialized like so (from unit test):</p>
+<pre><code class="lang-cs">..............
+ArowSerializer.RegisterTypeSerializationCores( Assembly.GetExecutingAssembly() );
+..............
+var row1 = new SimplePersonRow
+{
+   Age = 123, Bool1 =true, ID = new GDID(12,234), Name = &quot;Jacques Anthony&quot;, Salary=143098, 
+   Str1=&quot;Some String&quot;, Date = new DateTime(1980, 08, 12, 13, 45, 11)
+};
+var writer = SlimFormat.Instance.GetWritingStreamer();
+var reader = SlimFormat.Instance.GetReadingStreamer();
+using(var ms = new MemoryStream())
+{
+    writer.BindStream(ms);
+    ArowSerializer.Serialize(row1, writer);
+    writer.UnbindStream();
 
+    ms.Position = 0;
+
+    var row2 = new SimplePersonRow();
+    reader.BindStream(ms);
+    ArowSerializer.Deserialize(row2, reader); //deserialize
+    reader.UnbindStream();
+
+    Aver.AreEqual(row1.ID, row2.ID);
+    ...................................
+}
+</code></pre><h2 id="performance">Performance</h2>
+<p>The performance of Arow is akin to the fastest binary serializers in CLR (.NET Core or full) due
+to C# code which gets emitted for every type and avoidance of boxing and string instances for 
+field names (similar approach is used in Protobuf et. al.)</p>
+<p>The following table compares the performance of Arow vs. Slim 
+ (which is the general-purpose CLR serializer ala BinaryFormatter only faster see <a href="https://github.com/aumcode/serbench">Serbench</a>)</p>
+<p>Intel Core i7-3930K @ 3.2 GHz (6 Physical), Windows 7 64bit .NET 4.5</p>
+<p>Single-threaded SimplePerson (a flat linear structure described above): </p>
+<pre><code class="lang-css">Serialization:
+
+  NFX.NUnit.Serialization.ARowBenchmarking.Serialize_SimplePerson_Arow
+  Arow did 250,000 in 166 ms at 1,506,024 ops/sec. Stream Size is: 86 bytes
+
+  NFX.NUnit.Serialization.ARowBenchmarking.Serialize_SimplePerson_Slim
+  Slim did 250,000 in 191 ms at 1,308,901 ops/sec. Stream Size is: 59 bytes
+
+Deserialization:
+
+  NFX.NUnit.Serialization.ARowBenchmarking.Deserialize_SimplePerson_Arow
+  Arow did 250,000 in 190 ms at 1,315,789 ops/sec. Stream Size is: 86 bytes
+
+  NFX.NUnit.Serialization.ARowBenchmarking.Deserialize_SimplePerson_Slim
+  Slim did 250,000 in 283 ms at   883,392 ops/sec. Stream Size is: 59 bytes
+</code></pre><p>Multi-threaded SimplePerson (a flat linear structure described above): </p>
+<pre><code class="lang-css">Serialization:
+
+  NFX.NUnit.Serialization.ARowBenchmarkingParallel.Serialize_SimplePerson_Arow(250000,12)
+  Arow did 3,000,000 in 362 ms at 8,287,293 ops/sec
+
+  NFX.NUnit.Serialization.ARowBenchmarkingParallel.Serialize_SimplePerson_Slim(250000,12)
+  Slim did 3,000,000 in 443 ms at 6,772,009 ops/sec
+
+Deserialization:
+
+  NFX.NUnit.Serialization.ARowBenchmarkingParallel.Deserialize_SimplePerson_Arow(250000,12)
+  Arow did 3,000,000 in 191 ms at 15,706,806 ops/sec
+
+  NFX.NUnit.Serialization.ARowBenchmarkingParallel.Serialize_SimplePerson_Arow(250000,12)
+  Arow did 3,000,000 in 362 ms at  8,287,293 ops/sec
+</code></pre><h2 id="the-cli-tool">The CLI tool</h2>
+<p>The serialization/deserialization cores get generated by the command line tool <code>arow</code>.</p>
+<p>A recommended pattern for project/solution layout with Arow:</p>
+<ul>
+<li>Create TypedRow-derived business/domain objects (i.e. <code>MyBusiness.dll</code>)</li>
+<li>Create another project with the same name as the one that contains objects, add &quot;Arow&quot; suffix,
+(in the example above <code>MyBusiness.Arow.dll</code>)</li>
+<li>Add the POST BUILD step to the first project like so: 
+<code>arow &quot;MuBusiness.dll&quot; &quot;$(SolutionDir)\Source\MyBusiness.Arow.dll&quot;</code> use macros as appropriate</li>
+<li>Add the generated <code>*.cs</code> files into *.Arow project and cloak them from source control 
+(as they are auto-generated)</li>
+</ul>
+<pre><code class="lang-css"> Usage:
+   arow assembly out-path [/h | /? | /help]
+        [/c | /code  FilePerNamespace|FilePerType|AllInOne]
+
+ assembly - source assembly file (with path)
+ out-path - directory path where to create files  - must exist
+
+ Options:
+
+ /c | /code - how to organize gen code in files
+
+ Examples:
+
+ arow &quot;mytypes.dll&quot; &quot;..\source\ArowSer\&quot;
+</code></pre>
             </article>
           </div>
           

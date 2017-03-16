@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NFX.Glue - Interprocess Communication </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NFX.Glue - Interprocess Communication ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfxglue---interprocess-communication">NFX.Glue - Interprocess Communication</h1>
+              
+<h2 id="definition--features">Definition + Features</h2>
+<p>NFX.Glue - is a part of NFX framework that allows developers to quickly (much faster than using WCF/RMI or remoting) interconnect/&quot;glue together&quot; various process instances. 
+In one sentence: <strong>NFX.Glue is a contract-based state-less or state-full RPC mechanism that uses messages as logical delivery unit.</strong> 
+The core implementation of Glue is probably less than 10,000 LOC (very usual for NFX), and adds roughly 300Kb to the final assembly image.</p>
+<h3 id="nfxglue-features">NFX.Glue Features</h3>
+<ul>
+<li><strong>Very Simple</strong> - to use and configure</li>
+<li>Built-in NFX application container, so can be <strong>Hosted in any app type without special &quot;service hosts&quot;</strong></li>
+<li>Contract-based programming</li>
+<li>Injectable binding types define protocol/message exchange patterns (i.e. sync blocking/async/multicast etc)</li>
+<li>Pre-implemented native bindings: TCP sync, TCP async, In-process</li>
+<li>Native bindings allow for <strong>transparent serialization, no need for special attributes</strong> (unlike WCF or ProtoBuf), supports objects of any complexity with cyclical references</li>
+<li>Message-based. Every call turns into RequestMsg, server generates ResponseMsg for two-way calls</li>
+<li>Aupports MessageHeaders for extra data (i.e. security credentials)</li>
+<li>Supports one-way or two-way calls</li>
+<li>Supports multilevel message filtering/inspection (glue/client/binding)</li>
+<li>Supports security - guard contracts/methods/classes with permission attributes</li>
+<li>Supports <strong>state-less or state-full</strong> server programming with volatile process lifecycle (allows process to restart without &quot;forgeting&quot; its state)</li>
+<li>Proxy Clients natively provide sync and async call trampolines without any extra threads or wait queues/reactors</li>
+<li>Built-in <strong>channel/transport lifecycle management</strong> - impose limits on the number of outgoing connections per host etc., how long to keep idle channels alive etc.</li>
+<li><strong>Detailed statistics</strong> - number of messages/bytes/calls, call <strong>round-trip times per contract/method</strong></li>
+<li><strong>Performance</strong> on a 6 core machine: ~120,000 ops/sec two-way simple calls (return int as string+&#39;hello!&#39;) via native TCP sync binding</li>
+</ul>
+<h2 id="how-nfxglue-works">How NFX.Glue Works</h2>
+<p>A call is originated from a calling party, like so:</p>
+<pre><code class="lang-cs">var node = new Node(&quot;async://quad:7311&quot;); 
+var console = new RemoteTerminalClient( node );
+console.Connect(&quot;Jack Lowery&quot;);
+
+Console.WriteLine(&quot;The time on connected node is: &quot; + console.Execute(&quot;time&quot;);
+
+console.Disconnect();
+</code></pre><p>Here, we have connected to machine &quot;quad&quot; using &quot;async&quot; for binding. The calling process has a piece of config that says:</p>
+<pre><code>glue
+{
+ bindings
+ {
+  binding {name=&quot;async&quot; type=&quot;NFX.Glue.Native.MpxBinding, NFX&quot;}
+ }
+}
+</code></pre><p>So now, the Glue runtime knows that &quot;async&quot; is an instance of &quot;NFX.Glue.Native.MpxBinding, NFX&quot; (with about dozen of parameters like TCP buffer windows etc). 
+The original contract for the service is this:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Represents a contract for working with remote entities using terminal/command approach
+/// &lt;/summary&gt;
+[Glued]
+[AuthenticationSupport]
+[RemoteTerminalOperatorPermission]
+[LifeCycle(ServerInstanceMode.Stateful, SysConsts.REMOTE_TERMINAL_TIMEOUT_MS)]
+public interface IRemoteTerminal
+{
+    [Constructor]
+    RemoteTerminalInfo Connect(string who);
+
+    string Execute(string command);
+
+    [Destructor]
+    string Disconnect();
+}
+</code></pre><p>It is a state-full contract that initializes server instance (a terminal connection, in our case) with a call to &quot;Connect&quot; and then either times-out 
+after &quot;REMOTE_TERMINAL_TIMEOUT_MS&quot; or gets torn down by a call to &quot;Destructor&quot;. In this semantic, constructor/destructor is just a special kind of method 
+that does regular method work, possibly returning some parameters but also telling Glue what to do with the instance. 
+The &quot;LifeCycle&quot; is a part of the contract not the implementation, because it really dictates what other methods a contract should have/not have. 
+Pay attention to &quot;RemoteTerminalOperatorPermission&quot; which guards ALL methods of this contract. 
+A user must supply a valid token, for this &quot;AuthenticationSupport&quot; is stipulated.</p>
+<p>On the server we will include in config:</p>
+<pre><code>glue
+{
+ servers
+ {
+  server {name=&quot;TerminalAsync&quot;
+          node=&quot;async://*:7700&quot;
+          contract-servers=&quot;ahgov.HGovRemoteTerminal, ahgov&quot;}
+ }
+}
+</code></pre><p>And then implement the interface like so:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Provides basic app-management capabilities
+/// &lt;/summary&gt;
+[Serializable]
+public class AppRemoteTerminal : IRemoteTerminal
+{
+    public AppRemoteTerminal()
+    {                                                            
+    .....
+    }
+
+    protected override void Destructor()
+    {
+    .....
+    }
+
+    private int m_ID;
+    private string m_Name;
+    private string m_Who;
+    private DateTime m_WhenConnected;
+    private DateTime m_WhenInteracted;
+
+
+    public virtual RemoteTerminalInfo Connect(string who)
+    {
+      ..........
+    }
+
+    [AppRemoteTerminalPermission]
+    public virtual string Execute(string command)
+    {
+       ....... 
+    }
+
+    public virtual string Disconnect()
+    {
+        return &quot;Good bye!&quot;;
+    }
+ }
+</code></pre><p>Notice the use of instance fields.</p>
+<p>Lets look at the following diagram:
+<img src="../../../../images/archive/Glue-1.png" alt="Glue-1.png"></p>
+<p>The call is made in the client code, and then it gets turned into a &quot;RequestMsg&quot;. The client transport makes a &quot;CallSlot&quot; - a type of &quot;spirit-less-mailbox&quot;(no threads/events) 
+that captures a request with its timestamp and unique GUID. At the end of the call, the server sends ResponseMsg if a call is not OneWay, 
+and the response gets matched by the RequestID into the original &quot;CallSlot&quot;.</p>
+<p>An interesting part of this design is the &quot;Binding&quot; area - it controls the means of message delivery (i.e. TCP/IP/USB/COM/LPT or anything else) 
+and the message exchange mode: synchronous or asynchronous. In SYNC mode the message gets sent and response gets delivered in one operation akin to TCP blocking sockets. 
+In ASYNC mode we use completion ports on Windows to establish a bi-directional traffic channel per every single socket. 
+Those implementations are provided in &quot;NFX.Glue.Native&quot; namespace in &quot;SyncBinding&quot; and &quot;MpxBinding&quot;(MultiplexingBinding). 
+&quot;MpxBinding&quot;, which is asynchronous by definition, the sending is orthogonal to receiving, what this means is that the physical TCP channel IS NOT BLOCKED 
+for the duration of the call execution. For example, suppose the server needs 100msec to execute some method. 
+One can post 1000s calls using the same transport via MpxBinding, the responses will arrive as they get generated by the server. 
+Had we used &quot;SyncBinding&quot; instead, we would have needed as many TCP connections as currently pending calls, however do not question the need for &quot;SyncBinding&quot;. 
+Blocking sockets work with much-lower call-roundtrip latency in scenarious when calls are not frequent and not highly-parallel - for example 
+local machine clock update done every minute via SyncBinding would work much better time-wise vs. async socket/message IO (+-few milliseconds difference). 
+So, &quot;MpxBinding&quot; is better for throughput and tolerable latencies for many calls (1000s/sec), whereas &quot;SyncBinding&quot; is better latency for relatively-seldom calls (10s/sec).</p>
+<h2 id="a-few-qa">A Few Q/A</h2>
+<ul>
+<li><strong>How does this relate to ZeroMQ?</strong> - NFX.Glue is a Contract-based/object-level message passing system, whereas ZeroMQ is byte-message oriented. 
+NFX.Glue is a much higher-level framework designed to work with higher-level constructs conducive to solving business problems</li>
+<li><strong>Is Glue slower than ZeroMQ?</strong> - it really depends on what type of &quot;business payload&quot; your app is pushing. 
+The network part of Glue is as fast as ZeroMQ as it uses basic sockets and avoids buffer copies whenever possible, 
+but please do not compare sending byte[4] with calling a method on a remote class instance</li>
+<li><strong>How does Glue relate to Erlang?</strong> - a similar answer to the ZeroMQ question above, Erlang works with much lower-level(than Glue) data primitives - tuples, 
+lists and the like. One can not really compare the two technologies directly as building the similar feature set in Erlang would require a significant effort 
+(add security, permissions, state management), and Erlang uses its own communication platform (OTP) very well, 
+however it is still much narrower in scope than NFX.Glue. Take a look at NFX.Erlang instead if you need to support Erlang/OTP from NFX.</li>
+<li><strong>Does Glue replace completely WCF?</strong> - for us YES, 200%. The whole Aum Cluster is based on Glue, because all nodes in cluster are running NFX, 
+it is a benefit of UNISTACK concept that I described a few weeks back. If you are a corporate SOAP/WSE-consumer then NO, 
+glue does not support it currently with native bindings and never will. One can create bindings for SOAP and other corporate bloat 
+but there is really no need to pollute a clean NFX library with out-dated crap.</li>
+<li><strong>How do I expose a Glue contract as JSON/REST</strong> - you&#39;d need to use JSONHttp binding for that, the one that I have not created and have no intention to create, 
+because it has no practical value. In NFX, REST services are done much easier with NFX.Wave MVC controllers, that should expose your internal Glue services as a facade. 
+Remember - Glue was never meant to be exposed publicly, although it could via corresponding bindings, 
+but there is no need to create bindings just to support some standards that will never be used.</li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

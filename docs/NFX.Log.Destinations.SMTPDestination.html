@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="shortcut icon" href="../images/NFX.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -482,6 +482,32 @@ public string CredentialsPassword { get; set; }</code></pre>
               </table>
               
               
+              <a id="NFX_Log_Destinations_SMTPDestination_DropFolder_" data-uid="NFX.Log.Destinations.SMTPDestination.DropFolder*"></a>
+              <h4 id="NFX_Log_Destinations_SMTPDestination_DropFolder" data-uid="NFX.Log.Destinations.SMTPDestination.DropFolder">DropFolder</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public string DropFolder { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_Log_Destinations_SMTPDestination_FromAddress_" data-uid="NFX.Log.Destinations.SMTPDestination.FromAddress*"></a>
               <h4 id="NFX_Log_Destinations_SMTPDestination_FromAddress" data-uid="NFX.Log.Destinations.SMTPDestination.FromAddress">FromAddress</h4>
               <div class="markdown level1 summary"></div>
@@ -566,7 +592,7 @@ public string SmtpHost { get; set; }</code></pre>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[Config]
+                <pre><code class="lang-csharp hljs">[Config(Default = 587)]
 public int SmtpPort { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>

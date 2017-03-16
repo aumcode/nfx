@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="shortcut icon" href="../images/NFX.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -424,6 +424,37 @@ Use to exit long-running loops and such</p>
               </table>
               
               
+              <a id="NFX_App_MemoryModel_" data-uid="NFX.App.MemoryModel*"></a>
+              <h4 id="NFX_App_MemoryModel" data-uid="NFX.App.MemoryModel">MemoryModel</h4>
+              <div class="markdown level1 summary"><p>Returns the memory utilization model for the application.
+This property is NOT configurable. It may be set at process entrypoint via a call to
+App.SetMemoryModel() before the app contrainer spawns.
+Typical applications should not change the defaults.
+Some system service providers examine this property to allocate less cache and temp buffers
+in the memory-constrained environments</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static App.MemoryUtilizationModel MemoryModel { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.App.MemoryUtilizationModel.html">App.MemoryUtilizationModel</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_App_Name_" data-uid="NFX.App.Name*"></a>
               <h4 id="NFX_App_Name" data-uid="NFX.App.Name">Name</h4>
               <div class="markdown level1 summary"><p>Returns application name</p>
@@ -672,6 +703,39 @@ may elect to get accurate times from the network or other external precision tim
                 <tbody>
                   <tr>
                     <td><span class="xref">System.DateTime</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_App_SetMemoryModel_" data-uid="NFX.App.SetMemoryModel*"></a>
+              <h4 id="NFX_App_SetMemoryModel_NFX_App_MemoryUtilizationModel_" data-uid="NFX.App.SetMemoryModel(NFX.App.MemoryUtilizationModel)">SetMemoryModel(App.MemoryUtilizationModel)</h4>
+              <div class="markdown level1 summary"><p>Sets the memory utilization model for the whole app.
+This setting is NOT configurable. It may be set at process entrypoint via a call to
+App.SetMemoryModel() before the app contrainer spawns.
+Typical applications should not change the defaults.
+Some system service providers may examine this property to allocate less cache and temp buffers
+in the memory-constrained environments</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void SetMemoryModel(App.MemoryUtilizationModel model)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.App.MemoryUtilizationModel.html">App.MemoryUtilizationModel</a></td>
+                    <td><span class="parametername">model</span></td>
                     <td></td>
                   </tr>
                 </tbody>

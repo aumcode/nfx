@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>UNISTACK - a form of Intellectual Property Compression </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="UNISTACK - a form of Intellectual Property Compression ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="unistack---a-form-of-intellectual-property-compression">UNISTACK - a form of Intellectual Property Compression</h1>
+              
+<h2 id="about">About</h2>
+<p>This post is a continuation of <a href="/archive/blog/2013/02/nfx-aum-cluster-philosophy.html">NFX / Aum Cluster - The Philosophy</a> I am trying to outline an effect of <strong>intellectual property compression</strong> - an attempt to reduce system complexity.</p>
+<h2 id="some-definitions">Some Definitions</h2>
+<p>What is <strong>intellectual property</strong>? - It is everything you have in your mind and disk - (in no particular order) design docs, data, state, code, architecture, pattern, know-how. &quot;Information&quot; - is the most general term. As we all know information takes space to store and time to process, unless we use...</p>
+<p><strong>Data Compression</strong> - according to the <a href="http://en.wikipedia.org/wiki/Data_compression" title="Wikipedia: Data compression">Wikipedia article</a>: &quot;Lossless compression reduces bits by identifying and eliminating statistical redundancy&quot; and &quot;Compression is useful because it helps reduce resource usage, such as data storage space or transmission capacity&quot;. Keep reading the article and we see that &quot;Because compressed data must be decompressed to use, this extra processing imposes computational or other costs through decompression; this situation is far from being a free lunch. Data compression is subject to a space–time complexity trade-off&quot;. We know that it takes time to compress and decompress. If we take the analogy of byte stream compression and apply it to the stream of &quot;unified concepts&quot; that UNISTACK promotes we can conclude that the compression time is actually paid for by the creator of the UNISTACK, it is our pain to create a good dictionary of solutions, so compressing &quot;a file&quot;(a particular project) one does not need to create prefix codes and build Huffman trees. On the other hand, unlike regular ZIP files, the decompression is really not needed for the end product to operate, to the contrary it will operate better in the &quot;compressed&quot; form. This is because the compression is performed in the different domain of information - in the conceptual domain, not in the binary domain on a particular machine.</p>
+<h2 id="it-chagrin">IT Chagrin</h2>
+<p>I think that the software industry is the place of the most speculation and term misunderstanding/misuse. Take &quot;MVC&quot;, for example. What one calls &quot;M&quot; may be easily re-interpreted as &quot;V&quot; by someone else, i.e. &quot;M&quot; for UI developer may really be a data projection - that is a &quot;VIEW&quot; for DB developer, because for DB developer normalized tables and domains that they rely on are models, but VIEWS are views. It is all tautological.</p>
+<p>Why am I bringing this up? I am sick and tired of &quot;configuration&quot; frameworks. When I talk to people I hear &quot;have you seen this? (CF Engine/Chef/Puppet/Zookeeper....&quot;. This is exactly the same kind of confusion that I described in the prior case with MVC. What does &quot;configuration&quot; mean? It turns out that for most in the IT operations it means &quot;installing updates and patches&quot;, for developers it means &quot;reading XML files&quot;, etc.. But what does it really mean? See, there is no &quot;really&quot; - it all depends on who you ask, BUT at the end of the day what matters is, how MUCH $$$$ have you spent int both literal monetary sums and time-wise to build you product that does XYZ, and what are ongoing costs.</p>
+<h2 id="unistack--compression">UNISTACK = Compression</h2>
+<p>The concept of UNIFIED (Software) STACK is to cut all of the costs/times without sacrificing features. This is achieved by <strong>decreasing the number of standards</strong> that the systems is built against. The standards mean: languages, runtimes, libraries, components, frameworks, file formats, DB backends, etc...</p>
+<p>Below I have compiled a typical Q/A that I usually have while talking about our product.</p>
+<ul>
+<li><strong>Different languages do different things better. Why do you insist on using &quot;one language&quot;?</strong> - I do not disagree that different languages have better internal models for handling specific tasks, i.e. take Erlang for its concurrency model. But this is all very superficial view. If your project is large you will introduce more troubles by employing more and more languages as complexity will keep growing. Of course you can use some language for some particular system component, but then you would need to build an ecosystem just for that.</li>
+<li><strong>If I use Python for some backend business logic and NodeJS for web, I want to use some Erlang for chat server, why not?</strong> - You can use anything you want, you can even write a QuickBasic stdio redirect into web server, the question is WHY? The problem in today&#39;s world is that those very many languages are out there, yet, none of them really have a solid cluster-forming concept, maybe Erlang does to some extent, but those languages are just bare. In C++ you can not think fault tolerance in cluster, just not what the language was built for.</li>
+<li><strong>But what do you suggest? That&#39;s why we use different tools.</strong> - Everyone does, and complexity keeps increasing. There is a fundamental flaw in the approach to problem solving. Different disjoint frameworks introduce complexity when the whole system needs to work in concert. This all happens because there is never enough time to do things the right way from day one. It is an illusion, that by &#39;somehow making it work&#39; regardless of &#39;how&#39; you can save a lot. Maybe you can as a consultant who is interested in hourly rates and 3 month projects.</li>
+<li><strong>So what do you suggest?</strong> - I suggest that you take good general purpose programming language/runtime (not PHP) and write all components from scratch according to one simple and elegant blueprint, and that blueprint gotta have cluster in mind from day 1. As the result you will have 10-fold reduction in number of edge-cases in your system that you need to support today, from Date parsing in JSON to configuring your nodes from central servers.</li>
+<li><strong>This is too good to be true, how long will it take one to write &quot;everything&quot;?</strong> - in practice it will take 20 + years to refine concepts especially for cluster programming. You would need to write a good 10+ large-scale client/server web systems from scratch, each containing 100s of screens to get the experience and get rid of the fright. At the end of the day it would become apparent that the majority of software development frameworks today are created/coded by people who really lack experience building large systems all by themselves. Modern developers really lost their software engineering qualifications, that&#39;s where the term &quot;developer&quot; came from - landscaping. Nothing needs to be developed in software - a compiler does that for you automatically. Software is all about architecture only. If there is &quot;development&quot; work in your project then it means that you are not doing it the right way. There should be no repetition, only architecture and repetition only comes in binary files made by compiler. Of course, there are some edge cases, like government forms and some other sorts of corporate chaff, but that is not software engineering.</li>
+<li><strong>Some real numbers?</strong> - how many languages do you need to know in your project? 3? I need one. How many config file formats do you need to remember/document? 10? I need 1. How many entities like classes/functors/namespases do you need to work with? 1000s? I only have &lt; 100. And the most important thing, there are no 3rd party libs, no software/license updates/ tiny footprint/self-reliance. Let&#39;s assume that there are 200 servers to deploy your system on. How many web servers, how many job, how many DBs etc. How do you deploy changes? I press one button, I monitor one screen with ability to drill down anywhere I want. In other words - had it not been for physical hardware that fails every now and then (and requires attention), one can use UNISTACK to build Google-like system that will be supported only by a few people, no matter how big it gets. That&#39;s the real practical power of UNISTACK - unified stack of software for everything you need. It is an effect of <strong>intellectual property compression</strong> - akin to ZIP - you decrease the information chaos by creating a dictionary of repeating patterns and re-use them. For that, one needs to operate on a homogeneous stream of information, say &quot;concepts&quot; (ZIP operates on byte streams). UNISTACK provides a stream of &quot;unified concepts&quot; so our process (ZIP) can compress them.</li>
+<li><strong>But is this not what all other libs are for - get things done for you?</strong> - they are, but it is the question of the scope. Most frameworks are very narrow-minded (i.e. take Hibernate - and you will get into 1000s of classes just to execute a simple SQL), we are talking framework that does everything all other common frameworks do - in the same way. Of course we do not do things like speech recognition or 10-dim differential equations, there is no need for that, but there are 100s of general-purpose functions that are just not unified across myriads of frameworks. For example, the moment I use some 3rd party control it requires log4J, but I use another logger, so now I need to support 2 completely different logging solutions in the same process. And this applies to every single function you app needs. Its like misspelling your customer&#39;s name in 10 different ways on the same page!</li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

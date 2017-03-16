@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>NFX Relational Schema Compiler </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="NFX Relational Schema Compiler ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,178 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx-relational-schema-compiler">NFX Relational Schema Compiler</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<p>The purpose of Relational Schema (RS) is to abstract away the declarative (such as DDL) database 
+design nuances. The syntaxes for the majority of RDBMS solutions (i.e. compare Microsoft SQL and 
+ORACLE) are somewhat similar yet, different. For example: all of the modern databases support a 
+concept of auto-incremented columns/fields (IDs/Counters) which are usually employed as non-intelligent
+primary keys; yet, the mechanics of their declaration is different (i.e. IDENTITY columns in MsSQL,
+sequences in ORACLE etc.). </p>
+<p>The Relational Schema Compiler (RSC) tool takes a universal definition of database schema expressed 
+as DSL configuration scripts, which are easy to create and maintain (i.e. diff via SCM), and truns it
+into a target-specific DDL (Data Definition Language). The targeting is done via an injectable 
+compiler using a <code>-c|-compiler</code> switch. The default compiler is <code>MySQLCompiler</code>
+(used when no other compiler is injected).</p>
+<p>The main advantage of using NFX Relational Schema over other tools (i.e. Entity Framework Code First)
+is that this approach allows for <strong>multi database targeting within the same application code base</strong>
+as NFX allows for model <code>[Field]</code> attribute multi-targeting and virtual queries against hybrid data 
+stores. Please see the <a href="/manual/dataaccess.html">Data Access</a> topic. </p>
+<pre><code class="lang-css">Usage:
+   rsc schema_file [/h | /? | /help]
+              [/c | /compiler  fully_qualified_type_name]
+              [/options | /opt | /o
+                            [out-path= path]
+                            [out-name-prefix= prefix]
+                            [name-case-sensitivity= ToUpper|ToLower|AsIs]
+                            [domain-search-paths= path[;pathX...]]
+                            [separate-indexes= true|false]
+                            [separate-fkeys= true|false]
+              ]
 
+schema-file - relational schema file
+
+
+Options:
+
+ /c | /compiler - a fully qualified compiler type name, if omitted MySQLCompiler is used
+ /o | /options - specifies compiler options.
+
+    out-path - output path, if omitted then input file path is used
+    out-name-prefix - prefix gets appended to every out file name
+    name-case-sensitivity - when AsIs, indicates that object names are case sensitive, 
+      so they must be kept kept as-is, otherwise applies ToUpper or ToLower transform
+    domain-search-paths - RDBMS only option, a &quot;;&quot; delimited list of assembly-qualified 
+      namespaces paths with &#39;.*&#39; wildcard that should be searched for domain type names
+    separate-indexes - RDBMS only option, write create index in a separate output
+    separate-fkeys - RDBMS only option, write all foreign keys in a separate output using
+      ALTER TABLE ADD CONSTRAINT...
+
+Examples:
+
+  rsc &quot;c:\db\Doctor.rschema&quot;
+      -options
+          out-name-prefix=MyProject
+          domain-search-paths=&quot;MyProject.DataTypes;MyWeb.Domains&quot; 
+Compiles &quot;doctors&quot; schema using MySQLCompiler and prepends all output file names with &quot;MyProject&quot;. 
+Also specifies namespaces used for domain type lookup
+</code></pre><h2 id="relational-schema-language">Relational Schema Language</h2>
+<p>The language is based on Laconic configuration format and abides by all configuration framework rules.
+Refer to Laconic Configuration documentation.
+The configuration tree has the following general structure:</p>
+<pre><code class="lang-cs">schema
+{
+  include=&quot;file-name&quot;{}
+  script-include=&quot;file-name&quot;{}
+  script-text=&quot;verbatim text to include in the output&quot;{}
+
+  table=TABLE_NAME
+  {
+    short-name=TABLE_SHORT_NAME
+    comment=&quot;Entity comment text&quot;
+    script-comment=&quot;Comment text to be placed in script&quot;
+    column=COLUMN_NAME
+    {
+      short-name=COLUMN_SHORT_NAME
+      type=DOMAIN_NAME(.CTOR_PARAMS){DOMAIN_CONFIG_TREE}
+      required=true|false
+      default=value
+      primary-key=NAME{OPTIONS}
+      reference=NAME{table=REF_TABLE_NAME column=REF_COLUMN_NAME}
+    }
+
+    index=INDEX_NAME
+    {
+        unique=true|false
+        column=COLUMN_NAME { order=asc|desc length=int}
+    }
+  }
+}
+</code></pre><h2 id="the-output">The Output</h2>
+<p>The RSC generates the appropriate scripts (i.e. SQL files for RDBMS targets). Here is an example table
+<code>ShipCode</code> expressed in RS DSL, and resulting DDL generated by RSC tool for My SQL target.</p>
+<pre><code class="lang-css">table=ShipCode
+{
+  comment=&quot;Code of product shipping, i.e. &#39;FRAGILE&#39;&quot;
+
+  //Global ID
+  _call=/scripts/gdid{}
+
+  column=Vendor
+  {
+    type=$(/$TRequiredGDIDRef)
+    comment=&quot;Vendor&quot;
+    reference{ table=&quot;Vendor&quot; column=$(/$PK_COLUMN) }
+  }
+
+  column=ID { type=$(/$TShortMnemonic) required=true comment=&quot;ID of shipping code&quot;}
+  _call=/scripts/description{}
+  column=Config{type=$(/$TConfigScript) required=true comment=&quot;&quot;}
+  _call=/scripts/in-use{}
+  _call=/scripts/external-data{}
+  index=uk{ unique=true column=Vendor{} column=ID{} }
+}
+</code></pre><p>gets compiled into My SQL DDL below, note the complex constraint naming performed by the RSC,
+i.e. column &#39;Vendor&#39; references table &#39;Vendor&#39;.pk, get written as &quot;G_VENDOR&quot; BINARY(12) as specified
+by the domain. The object casing is controlled by the RSC compiler. It is also possible to emit all 
+indexes/constraints in a separate file.</p>
+<pre><code class="lang-sql">-- Table tbl_shipcode
+create table `tbl_shipcode`
+(
+ `GDID`           BINARY(12)     not null,
+ `G_VENDOR`       BINARY(12)     not null comment &#39;Vendor&#39;,
+ `ID`             char(8)        not null comment &#39;ID of shipping code&#39;,
+ `DESCRIPTION`    varchar(80)     comment &#39;Description of this record&#39;,
+ `CONFIG`         TEXT           not null,
+ `IN_USE`         CHAR(1)        not null default &#39;T&#39;,
+ `EXTERNAL_DATA`  TEXT            comment &#39;Attaches arbitrary user-specific external data&#39;,
+  constraint `pk_tbl_shipcode_primary` primary key (`GDID`),
+  constraint `fk_tbl_shipcode_vendor` foreign key (`G_VENDOR`) references `tbl_vendor`(`GDID`)
+)
+    comment = &#39;Code of product shipping, i.e. \&#39;FRAGILE\&#39;&#39;
+;.
+
+delimiter ;.
+  create unique index `idx_tbl_shipcode_uk` on `tbl_shipcode`(`G_VENDOR`, `ID`);.
+</code></pre><h2 id="relational-schema-scripting">Relational Schema Scripting</h2>
+<p>The following snippet declares a mixin called &quot;names&quot; which can be invoked from multiple places 
+throughout the project:</p>
+<pre><code class="lang-cs">schema
+{
+  PK_COLUMN=&quot;counter&quot;
+  scripts
+  {
+    script-only=true
+    names
+    {
+        column=first_name  {type=THumanName  required=true}
+        column=middle_name {type=THumanName }
+        column=last_name   {type=THumanName  required=true}
+    }
+  }
+}
+</code></pre><p>Mixing-in the columns by invoking the mixin script <code>_call=/scripts/names{}</code> </p>
+<pre><code class="lang-cs">schema
+{
+  include=&quot;name-of-script-file&quot;{}
+
+  table=doctor
+  {
+     short-name=&quot;doc&quot;
+     comment=&quot;Holds information about licensed doctors&quot;
+     column=$(/$PK_COLUMN) {type=TCounter  required=true primary-key{} }
+     column=NPI {type=TVarchar(24) required=true }
+     _call=/scripts/names{}
+
+     index=npi
+     {
+       unique=true
+       column=NPI {}
+       comment=&quot;Every doctor is uniquely identified by NPI&quot;
+     }
+  }
+}
+</code></pre>
             </article>
           </div>
           

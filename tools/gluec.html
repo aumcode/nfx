@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>NFX Glue Client Compiler </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="NFX Glue Client Compiler ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,73 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx-glue-client-compiler">NFX Glue Client Compiler</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<p>Extracts interfaces denoted by <code>[Glued]</code> attribute and generates the source code for call proxy.
+The compiler is injectable via <code>-c|-compiler</code> switch, the default is <code>CSharpGluecCompiler</code>.</p>
+<p>Example contract:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Represents a contract for working with remote entities using terminal/command approach
+/// &lt;/summary&gt;
+[Glued]
+[AuthenticationSupport]
+[RemoteTerminalOperatorPermission]
+[LifeCycle(ServerInstanceMode.Stateful, SysConsts.REMOTE_TERMINAL_TIMEOUT_MS)]
+public interface IRemoteTerminal
+{
+    [Constructor]
+    RemoteTerminalInfo Connect(string who);
 
+    string Execute(string command);
+
+    [Destructor]
+    string Disconnect();
+}
+</code></pre><p>generates the proxy:</p>
+<pre><code class="lang-cs"> var node = new Node(&quot;async://quad:7311&quot;); 
+ var console = new RemoteTerminalClient( node );
+ console.Connect(&quot;Jack Lowery&quot;);
+
+ Console.WriteLine(&quot;The time on connected node is: &quot; + console.Execute(&quot;time&quot;));
+
+ console.Disconnect();
+</code></pre><p>Type<code>gluec -?</code> for help.</p>
+<pre><code class="lang-css"> Usage:
+   gluec assembly [/h | /? | /help]
+              [/options | /o[out= file_name]
+                            [fpc= true|false]
+                            [ns-suffix= namespace_suffix]
+                            [cl-suffix= class-suffix]
+              ]
+
+              [/f | /flt | /filter namespace_list]
+              [/c | /compiler  fully_qualified_type_name]
+
+assembly - path to CLR assembly to scan for types marked with [Glued] attribute
+
+Options:
+
+/h | /help | /? - displays help message 
+/o | /options - specifies compiler options.
+
+          out - output path, if omitted then assembly path is used
+          fpc - file-per-contract, when true puts each contract in a separate source code file   
+          ns-root - namespace root name, if set replaces original contract namespace name
+          ns-suffix - namespace suffix gets attached at the end of the original contract ns name
+          cl-suffix - class suffix gets attached at the end of client class name
+
+ /f | /flt | /filter - a &#39;;&#39;=delimited list of namespaces to process contracts from the assembly
+ /c | /compiler - a fully qualified compiler type name, if omitted CSharpGluecCompiler is used
+
+Examples:
+
+  gluec &quot;c:\bin\BusinessLogic.dll&quot; 
+        /o out=&quot;c:\bin\contracts&quot;
+           fpc=false
+           ns-suffix=&quot;Callers&quot;
+Compiles contracts from assembly into specified out path all in one source CSharp file.
+Namespaces are suffixed with &quot;Callers&quot;
+</code></pre>
             </article>
           </div>
           

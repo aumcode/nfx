@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Client Side </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Client Side ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../images/NFX.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../index.html">
+                <img id="nfx-logo" src="../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="client-side">Client Side</h1>
+              
+<p>On the client side WAVE framework is represented by javascript libraries <strong>wv.js</strong> and <strong>wv.gui.js</strong>. 
+These libraries provide powerful instruments to implement complex reactive web applications. 
+The framework contains:</p>
+<ul>
+<li>Various auxiliary General-Purpose Functions to work with strings, arrays and objects, different type conversion functions.</li>
+<li>Geometry contains a large number of functions to work with geometry tasks.</li>
+<li>Classes to build/render GUI elements like dialogs, toasts, forms, etc.</li>
+<li><code>EventManager</code> mixin that implements the event-handler mechanism and can be added to any class.</li>
+<li><code>RecordModel</code> contains classes for MVVM pattern implementation.</li>
+<li><code>UTest</code> - implementation of unit testing concept.</li>
+</ul>
+<p>Walkable mixin that enables function chaining that facilitates lazy evaluation via lambda-functions, contains full set of projection, filtering, partitioning, aggregation, grouping and etc. operations - analogues of corresponding methods of <code>IEnumerable</code> in C#.</p>
+<p>It is needed to pay more attention to <code>RecordModel</code>. It consists of:</p>
+<ul>
+<li><code>Record</code>. The purpose of this class is to represent server-side <code>NFX.DataAccess.CRUD.Schema</code> on the client side along with view model/controller. 
+<code>Record</code> instances are initialized using server <code>NFX.Wave.Client.RecordModelGenerator</code> class that turns Schema into JSON object suitable for record initialization on client.</li>
+<li><code>Field. Record</code> consists of fields and Field represents a <code>FieldDef</code> from server-side <code>NFX.DataAccess.CRUD.Schema</code> on the client side along with view model/controller.</li>
+<li><code>RecordView</code> and <code>FieldView</code>. Binds Record model (an instance of <code>Record</code> class) with UI builder/rendering library (<strong>wv.gui.js</strong>) which dynamically builds the DOM in the attached view components. 
+Thus, changes made to view model/data model in record instance will get automatically represented in the attached UI (dual way binding).</li>
+</ul>
+<p><strong>Example 1:</strong></p>
+<pre><code class="lang-js">var rec = new WAVE.RecordModel.Record({ID: &#39;REC-1&#39;, 
+          fields:
+          [
+            {def: {Name: &#39;FirstName&#39;, Type: &#39;string&#39;}, val: &#39;John&#39;},
+            {def: {Name: &#39;LastName&#39;, Type: &#39;string&#39;}, val: &#39;Smith&#39;},
+            {def: {Name: &#39;Age&#39;, Type: &#39;int&#39;}, val: 33},
+            {def: {Name: &#39;Helper&#39;, Type: &#39;string&#39;, Stored: false}}
+          ]});
+
+var d = JSON.stringify(rec.data());
+</code></pre><p><strong>Example 2:</strong></p>
+<pre><code class="lang-js">var rec = new WAVE.RecordModel.Record(&#39;ID-123456&#39;,
+            function(){
+              new this.Field({Name: &#39;FirstName&#39;,
+                              Type: &#39;string&#39;,
+                              Required: true});
+              new this.Field({Name: &#39;LastName&#39;, Type: &#39;string&#39;});
+              new this.Field({Name: &#39;Age&#39;, Type: &#39;int&#39;});
+            }
+          );
+</code></pre><p><strong>Example 3:</strong></p>
+<pre><code class="lang-js">var REC = new WAVE.RecordModel.Record({ID: &#39;R1&#39;,
+            fields:
+            [
+              { def: { Name: &#39;FirstName&#39;, 
+                       Type: &#39;string&#39;,
+                       Required: true, 
+                       DefaultValue: &#39;Bob&#39;,
+                       Placeholder: &#39;Your First Name&#39; },
+                val: &#39;John&#39;},
+              { def: { Name: &#39;LastName&#39;, 
+                       Type: &#39;string&#39;,
+                       Required: false,
+                       Placeholder: &#39;Your Last Name&#39;},
+                val: &#39;Smith&#39;},
+              { def: { Name: &#39;MusicType&#39;, 
+                       Type: &#39;string&#39;,
+                       Case: WAVE.RecordModel.CASE_UPPER,
+                       LookupDict: {
+                         RСK: &#39;Rock&#39;,
+                         RAP: &#39;Rap&#39;,
+                         CLS: &#39;Classical music&#39;}
+                     }
+              }
+            ]}
+          );
+
+var RVIEW = new WAVE.RecordModel.RecordView(&#39;V1&#39;, REC);
+</code></pre><p>HTML client-side code:</p>
+<pre><code class="lang-html">&lt;form data-wv-rid=&quot;V1&quot;&gt;
+  &lt;div class=&quot;fView&quot; data-wv-fname=&quot;FirstName&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;fView&quot; data-wv-fname=&quot;LastName&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;fView&quot; data-wv-fname=&quot;MusicType&quot;&gt;&lt;/div&gt;
+
+  Record-level errors:
+  &lt;div class=&quot;fView&quot; data-wv-fname=&quot;#&quot;&gt;&lt;/div&gt;
+&lt;/form&gt;
+</code></pre>
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -69,7 +69,9 @@
 <p>Transpiles the source template in particular syntax into another syntax. The tool takes the compiler
 type via <code>-c|-compiler</code> switch. The default <code>TextCSTemplateCompiler</code> generates CS source code 
 based on NTC syntax. See <a href="/specs">Specifications</a> section for NTC template details.</p>
-<p>Type<code>ntc -?</code> for help.</p>
+<p>A typical Visual Studio pre-build step use case to generate template pages:</p>
+<pre><code class="lang-css">&quot;$(SolutionDir)..\Output\$(ConfigurationName)\ntc&quot; &quot;$(ProjectDir)\Pages\*.htm&quot; -r -ext &quot;.auto.cs&quot; -src
+</code></pre><p>Type<code>ntc -?</code> for help:</p>
 <pre><code class="lang-css"> Usage:
    ntc source_path [/h | /? | /help]
               [/options | /o[asm-file= file_name]

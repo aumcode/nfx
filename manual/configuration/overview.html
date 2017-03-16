@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Overview </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Overview ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../images/NFX.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../index.html">
+                <img id="nfx-logo" src="../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="overview">Overview</h1>
+              
+<p>One of the main purposes of any configuration process is the ability to fill entities with values stored in configuration file. 
+With <strong>NFX</strong> configuration one can do it by placing <code>NFX.Environment.ConfigureAttribute</code> on class members and then calling <code>ConfigAttribute.Apply()</code> to automatically supply your class members with values taken from config. 
+Entities that should have more precise configuration (e.g. recursive configuration by <strong>NFX</strong> infrastructure etc.) must implement interface</p>
+<pre><code class="lang-csharp">public interface IConfigurable
+{
+  void Configure(IConfigSectionNode node);
+}
+</code></pre><p>It is preferable to use special LACONIC configuration format which gives full flexibility, but it is also possible to use XML or JSON formats which are fully supported in <strong>NFX</strong>.</p>
+<p>Below are some examples of <strong>NFX</strong> configuration features. For more details, please see following links</p>
+<p><strong>Example 1:</strong></p>
+<p>The following configuration</p>
+<pre><code class="lang-js">root
+{
+  person
+  {
+    data
+    {
+      salary=3000
+      phone-number=&#39;8-901-900-00-00&#39;
+      name=&#39;John&#39;
+      DOB=&#39;12/05/1980&#39;
+    }
+  }
+}
+</code></pre><p>being applied to instance of a class</p>
+<pre><code class="lang-csharp">[Config(&quot;person/data&quot;)]
+public class Person
+{
+  [Config]
+  private int m_Salary;
+
+  [Config(&quot;$phone-number&quot;)]
+  protected string m_Phone;
+
+  [Config]
+  public string Name { get; set; }
+
+  [Config]
+  public DateTime DOB { get; set; }
+
+  [Config(&quot;$height-cm&quot;, 180)]
+  public int Height { get; set; }
+}
+</code></pre><p>by the following two lines of code</p>
+<pre><code class="lang-csharp">var person = new Person();
+ConfigAttribute.Apply(person, conf.Root);
+</code></pre><p>results in filling all class instance fields and properties which are marked with <code>[Config]</code> attribute with the config values. Height property is absent in config node thus it will be initiated by default value 180. 
+Notice how Config attributes allows for attribute name overrides, when omitted the attribute name is derived from a member name having member prefix stripped-off.</p>
+<p><strong>Example 2:</strong>
+Truly impressive configuration flexibility is provided by its <strong>merge</strong> and <strong>include</strong> features. 
+As the names implies, the latter provides merging operation in a natural way. 
+Following code performs merge and include operations correspondingly:</p>
+<pre><code class="lang-csharp">var conf = new MemoryConfiguration();
+conf.CreateFromMerge(confA.Root, confB.Root);
+</code></pre><p>and</p>
+<pre><code class="lang-csharp">confA.Include(confA.Root[&quot;section-name&quot;], confB.Root)
+</code></pre><p>Merging operation can also be controlled by <code>_override</code> pragma.</p>
+<p><strong>Example 3:</strong></p>
+<p>Navigation within configuration nodes can be achieved by following code examples</p>
+<pre><code class="lang-csharp">conf.Root[&quot;section-name&quot;]
+conf.Root[&quot;section-name&quot;][&quot;sub-section-name&quot;]
+conf.Navigate(&quot;/$a&quot;).ValueAsInt()
+conf.Navigate(&quot;/contacts/phone/$[0]&quot;).Value
+conf.Root.AttrByName(&quot;meduza&quot;)
+</code></pre><p><strong>Example 4:</strong></p>
+<p>Custom variables can also be declared and evaluated for future reuse within configuration:</p>
+<p>js
+root
+{
+  gv
+  {
+    paths
+    {
+      home-root=$(~ENV_HOME_ROOT)
+      ds-mysql=&quot;NFX.MySQL&quot;
+    }
+  }</p>
+<p>  type=&quot;$(/gv/paths/$ds-mysql)&quot;
+  home=&quot;$(/gv/paths/$home-root)&quot;
+  nowis=$(::now) // &quot;::&quot; - macro
+}
+```</p>
+<p>Here <code>$(~ENV_HOME_ROOT)</code> resolves system environment variable, 
+<code>&quot;$(/gv/paths/$ds-mysql)&quot;</code> and <code>&quot;$(/gv/paths/$home-root)&quot;</code> are resolved into some variables defined above in the code</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

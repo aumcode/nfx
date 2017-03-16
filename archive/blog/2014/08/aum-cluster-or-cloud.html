@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Aum Cluster or Cloud? </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Aum Cluster or Cloud? ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="aum-cluster-or-cloud">Aum Cluster or Cloud?</h1>
+              
+<h2 id="disambiguation-and-some-faq">Disambiguation and some FAQ</h2>
+<p>What is a cloud-system? How does it relate to clustering? What about server virtualization?</p>
+<p>There are many definitions, each bringing their own little flavor, leaving some confusion aftertaste. 
+If you inoculate yourself against correctness angst, trendy words and &quot;term juggling&quot;, become nonchalant and just look at facts 
+then you would realize that there is an entanglement of a completely orthogonal ontologies.</p>
+<h3 id="virtual-servers">Virtual Servers</h3>
+<p>At first let&#39;s get virtualization out of the game. One can build a cloud/cluster/large system without any virtualization whatsoever. 
+The confusion comes from the fact that many service providers these days offer &quot;clouds&quot; as a dynamic sets of &quot;virtual&quot;(not real) logical computers 
+that customers can create/delete/start/stop. Those computers are not real hardware, there are one way or another emulated as-if being real. 
+Of course those &quot;logical&quot; computers run on some physical machines, but this behavior is transparent. The point is - <strong>&quot;virtualization&quot; neither does nor does not automatically make your application for-&quot;cloud&quot;</strong>. 
+Your app must be created for cloud regardless of virtualization.</p>
+<p>Virtualization is good for cloud apps because it allows to dynamically increase/decrease your server usage by adding/removing boxes as you need them, 
+thus you can better utilize your hardware, BUT <strong>if your app is not created to dynamically (at runtime) adjust its participating nodes/servers then virtualization benefits get diminished</strong>.</p>
+<h3 id="what-are-clouds">What are &quot;Clouds&quot;?</h3>
+<p>A cloud is just an abstraction of &quot;somewhere on the internet&quot;. A cloud-system is a system that runs on some servers in some data centers, 
+NOT on your laptop/tablet/phone, although local devices of course interface with clouds, they do not store your data - less headache! 
+Contrary to what many believe, clouds do not have to have public access (such as Facebook or Twitter), indeed many corporations built their own internal clouds 
+that only internal resources/devices/employees can connect to ( i.e. via VPN).</p>
+<h3 id="server-clusters">Server Clusters?</h3>
+<p>As demands grow systems end up employing many servers to do some job. i.e. serving database requests or building web pages. 
+<strong>A cluster is a set of machines that appear as a single logical system that performs some specific task. 
+The machines are usually tightly connected in a data-center and may even span multiple geographical data centers.</strong></p>
+<h3 id="am-i-in-the-cloud-now">Am I in the cloud now?</h3>
+<p>Simple. If all of your personal PCs/tablets/gadgets get fried today, will you lose your data/software in question? 
+If yes, then you are not in the modern cloud. Modern cloud systems give you this benefit - just remember your ID and password, and you can continue 
+where you left off from any machine/point in the world. This rule is for general apps that are usually web-based. Of course there are special kinds of apps (like 3d games) 
+that would require to re-install something on the new computer, but still you would recover all of you &quot;state&quot; where you left off before all of your devices got lost.</p>
+<h3 id="do-i-need-to-use-clusters-to-be-in-the-cloud">Do I need to use clusters to be in the cloud?</h3>
+<p>Most likely your cloud system does consist of some form of cluster software/hardware. But the answer is NO. 
+One may create a cloud service out of many disjoint computers (that someone else may call a &quot;cluster&quot;).</p>
+<h3 id="do-i-need-to-use-virtual-servers-to-built-clouds">Do I need to use virtual servers to built clouds?</h3>
+<p>Absolutely not. Any cloud service can be created without a single virtual computer.</p>
+<h3 id="what-are-cloud-apps">What are &quot;cloud-apps&quot;?</h3>
+<p>These are applications engineered to run in the cloud. Usually these are systems that know how to deal with myriads of problems that do not exist in &quot;regular&quot;/local apps. 
+For example, in cloud clusters there are many servers to deal with, how does the app get configuration/connect strings to other members of the cloud? 
+There are 100s of questions that cloud apps need to address that local (or small client/server apps) don&#39;t care about.</p>
+<h3 id="can-i-auto-convert-without-spending-time-my-existing-clientserver-db-app-into-a-cloud-app">Can I AUTO-convert (without spending time) my existing client/server DB app into a &quot;cloud-app&quot;?</h3>
+<p>If you still expect to have 5-10 active user then yes, no need to convert. Just host your current client-server app on something like Amazon, 
+and nothing needs to be changed (except for some config files). On the other hand, it is not going to be what guys like Google, Facebook, Twitter call &quot;cloud app&quot;. 
+There is no way to auto-convert your client-server application into a scale-able web service that services 1,000,000 customers a day. 
+You need absolutely different architecture for that.</p>
+<p><strong>To Summarize</strong>: Cloud systems are in the cloud (literally somewhere else). Clustering is just a way of sticking many computers together (either physically or logically). 
+Cloud services are usually comprised of software and hardware clusters of all sorts. They run applications that were engineered with all crazy cloud system nuances in mind 
+(and cost a lot of $$$:(). And finally, virtualization is not a necessary (although convenient for some) requirement to be in the cloud.</p>
+<h2 id="aum-cluster">Aum Cluster</h2>
+<p>&quot;Aum Cluster&quot; is a software library/framework for creation of massive general-purpose computer clusters that may be used to create public/private cloud-based applications. 
+The &quot;general-purpose clusters&quot; means - many computers that perform app-dependent tasks, for example, unlike Oracle Database Cluster, 
+which is a strictly-speaking just a name for Oracle&#39;s database product. Aum Cluster is a library, which means - you build what you want with it, 
+be it particle physics simulation or online e-commerce site.</p>
+<p>The purpose of Aum Cluster is to address 100s of very complex software problems that arise in distributed systems, 
+so its users may concentrate on business-specific tasks. For example: things like configuration of 1,000,000s of servers, discovery, 
+peer name resolution, unique ID gen, replicated data stores, process management and remote control, security is all factored in.</p>
+<p>What sets Aum Cluster aside from many &quot;cloud systems&quot; is the Unistack approach. 
+Unistack is a unified software library that gets deployed to all participating servers thus reducing the complexity 10-fold. 
+I have blogged about it <a href="/archive/blog/2014/07/unistack-form-of-intellectual-property-compression.html" title="UNISTACK - a form of Intellectual Property Compression">before</a>.</p>
+<p>Aum Cluster can run on either virtual or physical servers. Virtualization has no real significance when you write your app.</p>
+<p><strong>To Summarize</strong>: Aum Cluster framework allows you to properly architect and build huge systems (with millions of nodes) 
+taking care of 100s of complex issues that exist in any distributed system. 
+It is like Google/Facebook/Twitter internal mechanisms made available to any application in a general way.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

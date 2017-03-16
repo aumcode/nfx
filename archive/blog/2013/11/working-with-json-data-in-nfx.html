@@ -1,0 +1,583 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Working with JSON data in NFX </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Working with JSON data in NFX ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="working-with-json-data-in-nfx">Working with JSON data in NFX</h1>
+              
+<h2 id="json-support-in-nfx">JSON support in NFX</h2>
+<p>There is no life this day and age without JSON support. If you are a seasoned developer you know better - JSON serialization is a pain. There are many options for it but there is always something that either does not work right (i.e. dates are not serialized per ISO standard), or slow, or both.</p>
+<p>As I have already mentioned <a href="/arhcive/blog/2013/08/what-is-nfx-what-is-unistack.htm" title="What is NFX? What is Unistack?">here, NFX is a &quot;Unistack&quot; concept, meaning</a> - it has to have all vital functions natively integrated in it&#39;s core. JSON support is certainly qualified as such. We can not afford to spend time figuring out why some structure does not serialize the way Twitter or some other service expects. It has to be small, and simple. It has to perform very well.</p>
+<h2 id="how-is-json-support-implemented-in-nfx">How is JSON Support Implemented in NFX</h2>
+<p>I wrote JSON lexer and parser in less than 8 hrs, that includes Unicode escapes, intricate string escapes and much more. I also managed to write around 50 unit tests the next day. The reason why I was able to write this so fast is because NFX has a nice &quot;CodeAnalysis&quot; concept that provides abstract support for writing language analysis tools/compilers. This certainly deserves it&#39;s own blog post, but I&#39;ll just say that low-level mechanisms of tokenezation, source code management (read from buffer, from file), compiler pipeline contexts(Lexer-&gt;Parser-&gt;Semantics-&gt;Code Generator), warnings/errors, source positioning, and other things are already there, so I just needed to add JSON support.</p>
+<p>Here are a few JSON lexer unit tests:</p>
+<pre><code class="lang-cs">[TestCase]
+public void TokenClassifications()
+{
+  var src = @&quot;a &#39;string&#39; : 12 //comment&quot;;
+
+  var tokens = new JL(new StringSource(src)).Tokens;
+
+  Assert.IsTrue( tokens[0].IsBOF);
+  Assert.IsTrue( tokens[0].IsNonLanguage);
+  Assert.IsFalse( tokens[0].IsPrimary);
+  Assert.AreEqual(TokenKind.BOF, tokens[0].Kind);
+
+  Assert.AreEqual( JSONTokenType.tIdentifier, tokens[1].Type);
+  Assert.IsFalse( tokens[1].IsNonLanguage);
+  Assert.IsTrue( tokens[1].IsPrimary);
+  Assert.AreEqual(TokenKind.Identifier, tokens[1].Kind);
+
+  Assert.AreEqual( JSONTokenType.tStringLiteral, tokens[2].Type);
+  Assert.IsFalse( tokens[2].IsNonLanguage);
+  Assert.IsTrue( tokens[2].IsPrimary);
+  Assert.IsTrue( tokens[2].IsTextualLiteral);
+  Assert.AreEqual(TokenKind.Literal, tokens[2].Kind);
+
+  Assert.AreEqual( JSONTokenType.tColon, tokens[3].Type);
+  Assert.IsFalse( tokens[3].IsNonLanguage);
+  Assert.IsTrue( tokens[3].IsPrimary);
+  Assert.IsTrue( tokens[3].IsOperator);
+  Assert.AreEqual(TokenKind.Operator, tokens[3].Kind);
+
+  Assert.AreEqual( JSONTokenType.tIntLiteral, tokens[4].Type);
+  Assert.IsFalse( tokens[4].IsNonLanguage);
+  Assert.IsTrue( tokens[4].IsPrimary);
+  Assert.IsTrue( tokens[4].IsNumericLiteral);
+  Assert.AreEqual(TokenKind.Literal, tokens[4].Kind);
+
+  Assert.AreEqual( JSONTokenType.tComment, tokens[5].Type);
+  Assert.IsFalse( tokens[5].IsNonLanguage);
+  Assert.IsFalse( tokens[5].IsPrimary);
+  Assert.IsTrue( tokens[5].IsComment);
+  Assert.AreEqual(TokenKind.Comment, tokens[5].Kind);
+}
+
+[TestCase]
+public void BasicTokens2()
+{
+  var src = @&quot;{a: 2, b: true, c: false, d: null, e: [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]}&quot;;
+
+  var lxr = new JL(new StringSource(src));
+
+  var expected = new JSONTokenType[]
+  { 
+    JSONTokenType.tBOF, JSONTokenType.tBraceOpen,
+    JSONTokenType.tIdentifier, JSONTokenType.tColon,
+    JSONTokenType.tIntLiteral, JSONTokenType.tComma,
+    JSONTokenType.tIdentifier, JSONTokenType.tColon,
+    JSONTokenType.tTrue, JSONTokenType.tComma,
+    JSONTokenType.tIdentifier, JSONTokenType.tColon,
+    JSONTokenType.tFalse, JSONTokenType.tComma,
+    JSONTokenType.tIdentifier, JSONTokenType.tColon,
+    JSONTokenType.tNull, JSONTokenType.tComma,
+    JSONTokenType.tIdentifier, JSONTokenType.tColon,
+    JSONTokenType.tSqBracketOpen,
+    JSONTokenType.tStringLiteral, JSONTokenType.tComma,
+    JSONTokenType.tStringLiteral, JSONTokenType.tComma,
+    JSONTokenType.tStringLiteral, JSONTokenType.tSqBracketClose,
+    JSONTokenType.tBraceClose, JSONTokenType.tEOF
+  };
+
+  Assert.IsTrue( lxr.Select(t =&gt; t.Type).SequenceEqual(expected) );
+}
+
+[TestCase]
+public void IntLiterals()
+{
+  Assert.AreEqual(12,  new JL(new StringSource(@&quot;12&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(2,   new JL(new StringSource(@&quot;0b10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(16,  new JL(new StringSource(@&quot;0x10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(8,   new JL(new StringSource(@&quot;0o10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+}
+</code></pre><p>Did you see something weird? YES, this is not JSON, this is <strong>superset of JSON!</strong></p>
+<h2 id="json-is-a-json-on-steroids-or-vodka">JSON+ (is) a JSON on Steroids (or vodka)</h2>
+<p>NFX supports reading of JSON superset. It naturally happened so that my JSON parser was built per NFX.CodeAnalysis namespace, so I got support for the following things for free:</p>
+<ul>
+<li>Single line comments</li>
+<li>Multiline comment blocks</li>
+<li>Compiler directives</li>
+<li>Verbatim strings</li>
+<li>Hex, Bin, Octal prefixes in integer literals</li>
+</ul>
+<p>Instead of removing those features because JSON does not support them, I decided to leave them as-is, so now I can use JSON+(that&#39;s how I call NFX.JSON superset) for other things. For example:</p>
+<pre><code class="lang-cs">[TestCase]
+public void ParallelDeserializationOfManyComplexObjects()
+{
+  const int TOTAL = 1000000;
+  var src = @&quot;
+ {FirstName: &quot;&quot;Oleg&quot;&quot;,  //comments dont hurt
+  &#39;LastName&#39;: &quot;&quot;Ogurtsov&quot;&quot;,
+  &quot;&quot;Middle Name&quot;&quot;: &#39;V.&#39;,
+  &quot;&quot;Crazy\nName&quot;&quot;: &#39;Shamanov&#39;,
+  LuckyNumbers: [4,5,6,7,8,9], 
+  /* comments
+  do not break stuff */
+  |* in this JSON superset *|
+  History: 
+  [
+    #HOT_TOPIC    //ability to use directive pragmas
+    {Date: &#39;05/14/1905&#39;, What: &#39;Tsushima&#39;},
+    #MODERN_TOPIC
+    {Date: &#39;09/01/1939&#39;, What: &#39;WW2 Started&#39;, Who: [&#39;Germany&#39;,&#39;USSR&#39;, &#39;USA&#39;, &#39;Japan&#39;, &#39;Italy&#39;, &#39;Others&#39;]}
+  ] ,
+  Note:
+$&#39;This note text
+can span many lines
+and
+this \r\n is not escape&#39;
+ }&quot;;
+  var watch = Stopwatch.StartNew();
+
+  System.Threading.Tasks.Parallel.For
+  (0, TOTAL,
+    (i)=&gt;
+    {
+      var obj = src.JSONToDynamic();
+      Assert.AreEqual(&quot;Oleg&quot;, obj.FirstName);
+      Assert.AreEqual(&quot;Ogurtsov&quot;, obj.LastName);
+      Assert.AreEqual(&quot;V.&quot;, obj[&quot;Middle Name&quot;]);
+      Assert.AreEqual(&quot;Shamanov&quot;, obj[&quot;Crazy\nName&quot;]);
+      Assert.AreEqual(6, obj.LuckyNumbers.Count);
+      Assert.AreEqual(6, obj.LuckyNumbers.List.Count);
+      Assert.AreEqual(7, obj.LuckyNumbers[3]);
+      Assert.AreEqual(&quot;USSR&quot;, obj.History[1].Who[1]);
+    }
+  );
+
+  var time = watch.ElapsedMilliseconds;
+  Console.WriteLine(&quot;Long JSON-&gt;dynamic deserialization test took {0}ms for {1} objects @ {2}op/sec&quot;
+         .Args(time, TOTAL, TOTAL / (time / 1000d)));
+}
+</code></pre><p>This approach is 100% compatible with &quot;regular&quot; JSON as &quot;regular&quot; JSON does not have comments and verbatim strings. The only &quot;dangling&quot; feature is compiler pragmas that I left there - they are just ignored for now and we may use them for something else in future. The bottom line is, that I spent &lt;20 hours writing lexer, parser and around 90 unit tests in total. The tests are hand-written and test many edge cases like: comment within a string or string inside comment, Unicode escapes etc.</p>
+<h2 id="json-pattern-matching">JSON Pattern Matching</h2>
+<p>I guess you already figured that we do know about benefits of programming in functional languages (such as Erlang) and message oriented systems. Since our JSON support is based on NFX.CodeAnalysis, we have a feature right out of the box - pattern matching. Pattern matching is really cool because we can use it to quickly filter/reject JSON messages that we do/do not need. Let look at the code:</p>
+<pre><code class="lang-cs">// mathc a person - a message with &quot;Last name&quot;
+public class JSONPersonMatchAttribute : JSONPatternMatchAttribute
+{
+  public override bool Match(NFX.CodeAnalysis.JSON.JSONLexer content)
+  {
+    return content.LazyFSM(
+      (s,t) =&gt; s.LoopUntilMatch(
+       (ss, tk) =&gt; tk.LoopUntilAny(&quot;First-Name&quot;,&quot;FirstName&quot;,&quot;first_name&quot;),
+       (ss, tk) =&gt; tk.IsAnyOrAbort(JSONTokenType.tColon),
+       (ss, tk) =&gt; tk.IsAnyOrAbort(JSONTokenType.tStringLiteral),
+       (ss, tk) =&gt; FSMI.TakeAndComplete
+             ),
+      (s,t) =&gt; FSMI.Take
+    ) != null;  
+  }
+}
+</code></pre><p>And now, we can quickly filter by doing this:</p>
+<pre><code class="lang-cs">[JSONPersonMatch] //&lt;---- OUR MATCHER!
+[TestCase]
+public void JSONPatternMatchAttribute3()
+{
+  var src = @&quot;{ code: 1121982, color: red, &#39;first_name&#39;: &#39;Alex&#39;, DOB: null}&quot;;
+  var lxr = new JL(new StringSource(src));
+  var match = JSONPatternMatchAttribute.Check(MethodBase.GetCurrentMethod(), lxr);          
+  Assert.IsTrue( match );
+}
+</code></pre><p>The filter statement above is an example of <strong>imperative filter</strong>. It is a Finate State Machine that gets fed from lexically-analyzed JSON stream. What makes it very fast, is the fact that <strong>JSON lexer is a lazy one</strong> - it parses input only when parser asks for the next token. Suppose we need to parse a message that has 64 kbytes of JSON content. Why would a lexer need to parse all 64 kbytes if our particular business code can only process JSON message that has some certain structure? So, the way it is implemented now, as soon as pattern match fails - there is no need to keep parsing to end. Again, this is not a JSON-specific concept in NFX, rather a general NFX.CodeAnalysis concept that applies to other parsers (C#, Laconic, RelationalScema, etc.)</p>
+<p>One more thing about parsing, if you have noticed - I used a pattern attribute on a method declaration. It is purposely done for message-processing cases (i.e. web MVC applications), where method signature may take some JSON data as input and pattern match attribute will guard the method this way. Sounds like Erlang or Delphi message, or better yet ObjC to anyone?</p>
+<p>As far as pattern matching is concerned - people ask me &quot;why do you not use regular expressions?&quot;. Simple - because, we do use the similar approach with FSM(Finate State Machine) but we analyse tokens, not characters, so our matches are 100% correct in terms of language grammar, whereas RegExp has no clue about tokens as it works on strings. The feature that we do want to add in future though, is an ability to write pattern matches not only imperatively, but also in a reg-exp style and we do have a reservation of special matching terminal symbols in the language. We just did not have time to implement yet.</p>
+<h2 id="reading-json-data">Reading JSON data</h2>
+<p>The best way to describe our features is to show some code:</p>
+<pre><code class="lang-cs">[TestCase]
+public void ReadSimple2() //using DYNAMIC
+{
+  var obj = &quot;{a: -2, b: true, c: false, d: &#39;hello&#39;}&quot;.JSONToDynamic();
+
+  Assert.AreEqual(-2, obj.a);
+  Assert.AreEqual(true, obj.b);
+  Assert.AreEqual(false, obj.c);
+  Assert.AreEqual(&quot;hello&quot;, obj.d);
+}
+
+[TestCase]
+public void ReadSimpleNameWithSpace() //using DYNAMIC
+{
+  var obj = @&quot;{a: -2, &#39;b or \&#39;&#39;: &#39;yes, ok&#39;, c: false, d: &#39;hello&#39;}&quot;.JSONToDynamic();
+
+  Assert.AreEqual(-2, obj.a);
+  Assert.AreEqual(&quot;yes, ok&quot;, obj[&quot;b or &#39;&quot;]);
+  Assert.AreEqual(false, obj.c);
+  Assert.AreEqual(&quot;hello&quot;, obj.d);
+}
+
+[TestCase]
+public void RootObject() //using JSONData
+{
+  var src = @&quot;{a: 1, b: true, c: null}&quot;;
+
+  var parser = new JP(  new JL( new StringSource(src) )  );
+
+  parser.Parse();
+
+  Assert.IsInstanceOf(typeof(JSONDataMap), parser.ResultContext.ResultObject);
+  var obj = (JSONDataMap)parser.ResultContext.ResultObject;
+
+  Assert.AreEqual(3, obj.Count);
+  Assert.AreEqual(1, obj[&quot;a&quot;]);
+  Assert.AreEqual(true, obj[&quot;b&quot;]);
+  Assert.AreEqual(null, obj[&quot;c&quot;]);
+}
+</code></pre><p>In the code above I read JSON content into dynamic and JSONData hashtable. And now, the shocking confession: <strong>NFX.JSON does not support reading JSON into some arbitrary CLR classes!</strong> Why? Because it is not needed, and it is impossible to implement correctly as JSON is a total &quot;impedance&quot; mismatch for CLR complex types. I do know about Newtonsoft etc, but I have never ever had a need to deserialize JSON into type-safe structure because either: a). you need to code that by hand anyway or b). your CLR structure must be dumb-simple in order to map to JSON 1:1. NFX design does not endorse the creation of garbage DTO (data transfer objects) just for the purpose of being able to read form JSON. Dynamic languages are far more superior for these purposes, so I decided NOT TO implement JSON deserialization into customCLR types. Think about it, and you would agree that working with &quot;dynamic&quot; keyword is far more convenient than creating 100s of junk classes.</p>
+<h2 id="writing-json-data">Writing JSON data</h2>
+<p>Writing is a whole another story. JSONWriter class serializes any CLR complex type, IEnumerable or IDictionary into JSON:</p>
+<pre><code class="lang-cs">[TestCase]
+public void RootDictionary_object()
+{
+  var dict = new Dictionary&lt;object, object&gt;
+      {
+        {&quot;name&quot;, &quot;Lenin&quot;}, 
+        {&quot;in space&quot;, true},
+        {1905, true},
+        {1917, true},
+        {1961, false},
+        {&quot;Bank&quot;, null}
+      };
+  var json = JW.Write(dict);
+  Console.WriteLine(json);
+  Assert.AreEqual(&quot;{\&quot;name\&quot;:\&quot;Lenin\&quot;,\&quot;in space\&quot;:true,\&quot;1905\&quot;:true,\&quot;1917\&quot;:true,\&quot;1961\&quot;:false,\&quot;Bank\&quot;:null}&quot;,  json);
+}
+</code></pre><p>A more complex cases:</p>
+<pre><code class="lang-cs">[TestCase]
+public void RootListOfDictionaries_object_SpaceSymbols()
+{
+ var lst = new List&lt;object&gt;
+     {
+       12,
+       16,
+       new Dictionary&lt;object, object&gt;{ {&quot;name&quot;, &quot;Lenin&quot;}, {&quot;in space&quot;, true}},
+       new Dictionary&lt;object, object&gt;{ {&quot;name&quot;, &quot;Solovei&quot;}, {&quot;in space&quot;, false}},
+       true,
+       true,
+       -1789,
+       new Dictionary&lt;object, object&gt;{ {&quot;name&quot;, &quot;Dodik&quot;}, {&quot;in space&quot;, false}}
+     };
+ var json = JW.Write(lst, new JSONWritingOptions{SpaceSymbols=true});
+ Console.WriteLine(json);
+ Assert.AreEqual(&quot;[12, 16, {\&quot;name\&quot;: \&quot;Lenin\&quot;, \&quot;in space\&quot;: true}, {\&quot;name\&quot;: \&quot;Solovei\&quot;, \&quot;in space\&quot;: false}, true, true, -1789, {\&quot;name\&quot;: \&quot;Dodik\&quot;, \&quot;in space\&quot;: false}]&quot;, json);
+}
+
+[TestCase]
+public void RootDictionaryWithLists_object()
+{
+  var lst = new Dictionary&lt;object, object&gt;
+      {
+        {&quot;Important&quot;, true},
+        {&quot;Patient&quot;, new Dictionary&lt;string, object&gt;
+                    {
+                      {&quot;LastName&quot;, &quot;Kozloff&quot;},
+                      {&quot;FirstName&quot;, &quot;Alexander&quot;}, 
+                      {&quot;Occupation&quot;, &quot;Idiot&quot;}
+                    }
+        },
+        {&quot;Salaries&quot;, new List&lt;object&gt;{30000, 78000, 125000, 4000000} },
+        {&quot;Cars&quot;, new List&lt;object&gt;{&quot;Buick&quot;, &quot;Ferrari&quot;, &quot;Lada&quot;, new Dictionary&lt;string, object&gt;
+                                                              {
+                                                                {&quot;Make&quot;, &quot;Zaporozhets&quot;},
+                                                                {&quot;Model&quot;, &quot;Gorbatiy&quot;},
+                                                                {&quot;Year&quot;, 1971}
+                                                              }
+        }},
+      };
+  var json = JW.Write(lst, JSONWritingOptions.PrettyPrint);
+  Console.WriteLine(json);
+
+  var expected =
+@&quot;
+{
+  &quot;&quot;Important&quot;&quot;: true, 
+  &quot;&quot;Patient&quot;&quot;: 
+    {
+      &quot;&quot;LastName&quot;&quot;: &quot;&quot;Kozloff&quot;&quot;, 
+      &quot;&quot;FirstName&quot;&quot;: &quot;&quot;Alexander&quot;&quot;, 
+      &quot;&quot;Occupation&quot;&quot;: &quot;&quot;Idiot&quot;&quot;
+    }, 
+  &quot;&quot;Salaries&quot;&quot;: [30000, 78000, 125000, 4000000], 
+  &quot;&quot;Cars&quot;&quot;: [&quot;&quot;Buick&quot;&quot;, &quot;&quot;Ferrari&quot;&quot;, &quot;&quot;Lada&quot;&quot;, 
+      {
+        &quot;&quot;Make&quot;&quot;: &quot;&quot;Zaporozhets&quot;&quot;, 
+        &quot;&quot;Model&quot;&quot;: &quot;&quot;Gorbatiy&quot;&quot;, 
+        &quot;&quot;Year&quot;&quot;: 1971
+      }]
+}&quot;;
+  Assert.AreEqual(expected, json);
+}
+</code></pre><p>And now, from JSONDynamicObject:</p>
+<pre><code class="lang-cs">[TestCase]
+public void Dynamic1()
+{
+  dynamic dob = new JDO(NFX.Serialization.JSON.JSONDynamicObjectKind.Map);
+
+  dob.FirstName = &quot;Serge&quot;;
+  dob.LastName = &quot;Rachmaninoff&quot;;
+  dob[&quot;Middle Name&quot;] = &quot;V&quot;;
+
+  var json = JW.Write(dob);
+
+  Console.WriteLine(json);
+
+  Assert.AreEqual(&quot;{\&quot;FirstName\&quot;:\&quot;Serge\&quot;,\&quot;LastName\&quot;:\&quot;Rachmaninoff\&quot;,\&quot;Middle Name\&quot;:\&quot;V\&quot;}&quot;, json);
+}
+</code></pre><p>How about a full loop write-&gt;JSON-&gt;read:</p>
+<pre><code class="lang-cs">[TestCase]
+public void Dynamic3_WriteRead()
+{
+  dynamic dob = new JDO(NFX.Serialization.JSON.JSONDynamicObjectKind.Map);
+  dob.FirstName = &quot;Al&quot;;
+  dob.LastName = &quot;Kutz&quot;;
+  dob.Autos = new List&lt;string&gt;{&quot;Buick&quot;, &quot;Chevy&quot;, &quot;Mazda&quot;, &quot;Oka&quot;};
+
+  string json = JW.Write(dob);
+
+  var dob2 = json.JSONToDynamic();
+  Assert.AreEqual(dob2.FirstName, dob.FirstName);
+  Assert.AreEqual(dob2.LastName, dob.LastName);
+  Assert.AreEqual(dob2.Autos.Count, dob.Autos.Count);
+}
+</code></pre><p>And some crazy Unicode content, notice the option to write JSON using ASCII-only:</p>
+<pre><code class="lang-cs">[TestCase]
+public void StringEscapes_2_ASCII_NON_ASCII_Targets()
+{
+  var lst = new List&lt;object&gt;{ &quot;Hello\n\rDolly!&quot;, &quot;Главное за сутки&quot;};
+  var json = JW.Write(lst, JSONWritingOptions.CompactASCII ); //ASCII-only
+  Console.WriteLine(json);
+  Assert.AreEqual(&quot;[\&quot;Hello\\n\\rDolly!\&quot;,\&quot;\\u0413\\u043b\\u0430\\u0432\\u043d\\u043e\\u0435 \\u0437\\u0430 \\u0441\\u0443\\u0442\\u043a\\u0438\&quot;]&quot;, json);
+  json = JW.Write(lst, JSONWritingOptions.Compact );
+  Console.WriteLine(json);
+  Assert.AreEqual(&quot;[\&quot;Hello\\n\\rDolly!\&quot;,\&quot;Главное за сутки\&quot;]&quot;, json);
+}
+</code></pre><p>How about anonymous classes? Here ya go:</p>
+<pre><code class="lang-cs">[TestCase]
+public void RootAnonymousClass_withArrayandSubClass()
+{
+  var data = new {
+                   Name=&quot;Kuklachev&quot;,
+                   Age=99,
+                   IsGood = new object [] { 1, new {Meduza=&quot;Gargona&quot;, Salary=123m},true}
+                 }; 
+  var json = JW.Write(data);
+  Console.WriteLine(json);
+  Assert.AreEqual(&quot;{\&quot;Name\&quot;:\&quot;Kuklachev\&quot;,\&quot;Age\&quot;:99,\&quot;IsGood\&quot;:[1,{\&quot;Meduza\&quot;:\&quot;Gargona\&quot;,\&quot;Salary\&quot;:123},true]}&quot;, json);
+}
+</code></pre><p>And a &quot;regular&quot; .NET CLR POCO class:</p>
+<pre><code class="lang-cs">internal class ClassWithAutoPropFields
+{
+  public string Name{ get; set;}
+  public int Age{ get; set;}
+}
+
+[TestCase]
+public void RootAutoPropFields()
+{
+  var data = new ClassWithAutoPropFields{Name=&quot;Kuklachev&quot;, Age=99}; 
+
+  var json = JW.Write(data);
+  Console.WriteLine(json);
+  Assert.AreEqual(&quot;{\&quot;Name\&quot;:\&quot;Kuklachev\&quot;,\&quot;Age\&quot;:99}&quot;, json);
+}
+</code></pre><p>And a few more cool features, mostly for performance and portability:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Denotes a CLR type-safe entity (class or struct) that can directly write itself as JSON content string. 
+/// This mechanism bypasses all of the reflection/dynamic code.
+/// This approach may be far more performant for some classes that need to serialize their state/data in JSON format, 
+/// than relying on general-purpose JSON serializer that can serialize any type but is slower
+/// &lt;/summary&gt;
+public interface IJSONWritable
+{
+  /// &lt;summary&gt;
+  /// Writes entitie&#39;s data/state as JSON string
+  /// &lt;/summary&gt;
+  ///&lt;param name=&quot;wri&quot;&gt;
+  ///TextWriter to write JSON content into
+  ///
+  /// &lt;param name=&quot;nestingLevel&quot;&gt;
+  /// A level of nesting that this instance is at, relative to the graph root.
+  /// Implementations may elect to use this parameter to control indenting or ignore it
+  /// 
+  /// &lt;param name=&quot;options&quot;&gt;
+  /// Writing options, such as indenting.
+  /// Implementations may elect to use this parameter to control text output or ignore it
+  /// 
+  void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null);
+}
+</code></pre><p>And here is the place where it is used:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Provides base for rowset implementation. 
+/// Rowsets are mutable lists of rows where all rows must have the same schema, however a rowset may contain a mix of
+///  dynamic and typed rows as long as they have the same schema.
+/// Rowsets are not thread-safe
+/// &lt;/summary&gt;
+[Serializable]
+public abstract class RowsetBase : IList&lt;row&gt;, IComparer&lt;row&gt;, IJSONWritable
+{
+  .........
+  /// &lt;summary&gt;
+  /// Writes rowset as JSON including schema information. 
+  /// Do not call this method directly, instead call rowset.ToJSON() or use JSONWriter class
+  /// &lt;/summary&gt;
+  public void WriteAsJSON(System.IO.TextWriter wri,
+                          int nestingLevel,
+                          JSONWritingOptions options = null)
+  {
+    var tp = GetType();
+
+    var map = new Dictionary&lt;string, object&gt;
+    {
+      {&quot;Instance&quot;, m_InstanceGUID.ToString(&quot;D&quot;)},
+      {&quot;Type&quot;, tp.FullName},
+      {&quot;IsTable&quot;, typeof(Table).IsAssignableFrom( tp )},
+      {&quot;Schema&quot;, m_Schema},
+      {&quot;Rows&quot;, m_List}
+    };
+    JSONWriter.WriteMap(wri, map, nestingLevel, options);
+  } 
+}
+</code></pre><h2 id="performancebenchmarks">Performance/Benchmarks</h2>
+<p>And finally, some numbers. Lets compare NFX.Serialization.JSON with MS-provided stuff. Tests reside in NFX.NUnit.Integration for now:</p>
+<pre><code class="lang-no-highlight">***** NFX.NUnit.Integration.Serialization.JSON.Benchmark_Serialize_DataObjectClass()
+Serialize.DataObjectClass
+    NFX: 15290.5198776758 op/sec 
+    MS JSser: 3777.86173026067 op/sec
+    MS DataContractSer: 8920.60660124888 op/sec
+    Ratio NFX/JS: 4.04740061162079
+    Ratio NFX/DC: 1.71406727828746
+
+***** NFX.NUnit.Integration.Serialization.JSON.Benchmark_Serialize_DictionaryPrimitive()
+Serialize.DictionaryPrimitive
+    NFX: 303030.303030303 op/sec 
+    MS JSser: 270270.27027027 op/sec
+    MS DataContractSer: 45248.8687782805 op/sec
+    Ratio NFX/JS: 1.12121212121212
+    Ratio NFX/DC: 6.6969696969697 
+
+***** NFX.NUnit.Integration.Serialization.JSON.Benchmark_Serialize_ListObjects()
+DataContractJSONSerializer does not support this test case:
+[System.Runtime.Serialization.SerializationException] 
+Type &#39;NFX.NUnit.Integration.Serialization.APerson&#39; with data contract name &#39;APerson:http://schemas.datacontract.org/2004/07/NFX.NUnit.Integration.Serialization&#39; is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+Serialize.ListObjects
+    NFX: 71942.4460431655 op/sec 
+    MS JSser: 16366.612111293 op/sec
+    MS DataContractSer: 1.0842021724855E-12 op/sec
+    Ratio NFX/JS: 4.39568345323741
+    Ratio NFX/DC: N/A 
+
+***** NFX.NUnit.Integration.Serialization.JSON.Benchmark_Serialize_ListPrimitive()
+Serialize.ListPrimitive
+    NFX: 344827.586206897 op/sec 
+    MS JSser: 370370.37037037 op/sec
+    MS DataContractSer: 114942.528735632 op/sec
+    Ratio NFX/JS: 0.931034482758621
+    Ratio NFX/DC: 3 
+
+***** NFX.NUnit.Integration.Serialization.JSON.Benchmark_Serialize_PersonClass()
+Serialize.PersonClass
+    NFX: 285714.285714286 op/sec 
+    MS JSser: 52631.5789473684 op/sec
+    MS DataContractSer: 277777.777777778 op/sec
+    Ratio NFX/JS: 5.42857142857143
+    Ratio NFX/DC: 1.02857142857143
+</code></pre><p>What we see here is that NFX JSON code really beats both Microsoft JavaScript and DataContract serializers, and frankly I had not had a chance yet to optimize JSON lexer in NFX. I guess I can squeeze another good 25% speed boost if I revise string parsing, but this is not important now.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>NFX provides rich support for working with JSON data format. The functionality is built on top of NFX.CodeAnalysis which unifies and simplifies the construction of lexers and parsers and, as a benefit, it allows us to filter/pattern match against JSON data without reading-in the whole JSON content. The library is well tested against edge cases like Unicode escapes, ISO dates, and also supports reading of JSON+ superset that understands comments, hex/bin/octal numeric prefixes that make this format very well suited for config files. The library writes standard JSON with extensive ability to serialize IEnumerable&lt;&gt;, IDictionary&lt;,&gt; and POCO classes specifying indentetion, ASCII vs. Unicode and ISO date options.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

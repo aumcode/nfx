@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Aum Cluster - Application Remote Terminals </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Aum Cluster - Application Remote Terminals ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="aum-cluster---application-remote-terminals">Aum Cluster - Application Remote Terminals</h1>
+              
+<h2 id="what-is-it">What is it?</h2>
+<p>Aum Clusterware supports a concept of <strong>application remote terminals</strong>. They behave much like a regular command prompt, however the commands are application level - they operate not on OS objects but rather on application objects. Here is a typical command: &quot;gc&quot; - it performs a garbage collection inside your server process.</p>
+<p>The way it works is really simple - take a look at the following contract:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Represents a contract for working with remote entities using terminal/command approach
+/// &lt;/summary&gt;
+[Glued]
+[AuthenticationSupport]
+[RemoteTerminalOperatorPermission]
+[LifeCycle(ServerInstanceMode.Stateful, SysConsts.REMOTE_TERMINAL_TIMEOUT_MS)]
+public interface IRemoteTerminal
+{
+  [Constructor]
+  RemoteTerminalInfo Connect(string who);
+
+  string Execute(string command);
+
+  [Destructor]
+  string Disconnect();
+}
+</code></pre><p>This is a typical NFX.Glue stateful entity that serves remote console sessions, it is hosted on the server that you want to login into, and gets activated by NFX.Glue runtime. All we need to do is add the following lines to our configuration file on the host process:</p>
+<pre><code>glue
+{
+  servers
+  {
+    server {name=&quot;TerminalAsync&quot;
+            node=&quot;async://*:7700&quot;
+            contract-servers=&quot;ahgov.HGovRemoteTerminal, ahgov&quot;}
+  }
+}
+</code></pre><p>This exposes HGovRemoteTerminal class as a server using &quot;async&quot; binding on all network interfaces on tcp port 7700. This class is the one that implements the aforementioned IRemoteTerminal contract. Now we can consume the service remotely!</p>
+<h2 id="how-do-i-work-withmanage-my-remote-application">How do I work with/manage my remote application?</h2>
+<p>Since our app remote terminal architecture relies on NFX.Glue, we can simply connect to remote terminal using Aum.Cluster.Clients.RemoteTerminal class, which resides in Aum.Cluster.dll assembly, but why would you want to do this? The whole point of this approach is <strong>to be able to work with application containers remotely without any coding</strong> - that is what people use command prompts for or maybe even graphical management tools that send commands on the background.</p>
+<p>So we have created a tool - &quot;ascon&quot; which stands for &quot;aum server console&quot;. Here is a nice screenshot:<br><img src="../../../../images/archive/ascon1.png" alt="ascon1"></p>
+<p>The app runs in verbose or silent modes, here I have typed-in a &quot;help&quot; command:<br><img src="../../../../images/archive/ascon2.png" alt="ascon2"></p>
+<p>You can also specify command text right from orignal command-line and also use &quot;silent&quot; switch to suppress all logos and info messages. In this example we get an information for the remote server build set: dates, computer names and who built the software that runs on the server:<br><img src="../../../../images/archive/ascon3.png" alt="ascon3"></p>
+<h2 id="command-lets">Command-Lets</h2>
+<p>We chose a flexible approach to creating server handlers that understand those little commands that you enter via the ASCON tool. We use reflection to dynamically discover Cmdlet class implementers and that is how commands get dispatched and provide help. Let&#39;s look at a VER commandlet:</p>
+<pre><code class="lang-cs">public class Ver : Cmdlet
+{
+  public Ver(AppRemoteTerminal terminal, IConfigSectionNode args) :
+    base(terminal, args) {}
+
+  public override string Execute()
+  {
+    var result = new StringBuilder(0xff);
+    result.AppendLine(&quot;Server Version/Build information:&quot;);
+    result.AppendLine(&quot; App:     &quot; + App.Name);
+    result.AppendLine(&quot; NFX:     &quot; + BuildInformation.ForFramework);
+    result.AppendLine(&quot; Cluster: &quot; + new BuildInformation( typeof(Aum.Cluster.Clusterware).Assembly ));
+    result.AppendLine(&quot; Host:    &quot; + new BuildInformation( Assembly.GetEntryAssembly() ));
+
+    return result.ToString();
+  }
+
+  public override string GetHelp()
+  {
+    return &quot;Returns version/build information&quot;;
+  }
+}
+</code></pre><p>Enough said! You&#39;ve got the idea!</p>
+<h2 id="remote-management---io-redirection">Remote Management - IO Redirection</h2>
+<p>Here is another nice commandlet &quot;run&quot;. I want to ping my host &quot;SEXTOD&quot; from my server, notice how I forgot to specify the args and &quot;PING&quot; responded with help into our server process which redirected IO into this ASCON session using NFX.Glue:<br><img src="../../../../images/archive/ascon4.png" alt="ascon4"></p>
+<h2 id="remote-management---load-testing-and-performance">Remote Management - Load Testing and Performance</h2>
+<p>If you are not convinced that this is cool, here are a few more commands for you: &quot;toil&quot; and &quot;perf&quot;.</p>
+<p>&quot;TOIL&quot; - is used to load server with garbage work, you can specify options - whether you want CPU only, or RAM only, or both. Take a look:<br><img src="../../../../images/archive/ascon6.png" alt="ascon6"></p>
+<p>And here is the result on the server computer:<br><img src="../../../../images/archive/ascon5.png" alt="ascon5"></p>
+<p>This is really usable for load testing to stress the poor server out until it cries for medical help! But wait! I am not at the server! How can I see my CPU and RAM spikes? Not to worry about things like physical locality (since we are not fully enlightened beings yet and must crawl in those damn bodies of ours that depend on stupid physics!), we have included another interesting command-let &quot;PERF&quot;:<br><img src="../../../../images/archive/ascon7.png" alt="ascon7"></p>
+<p>I was &quot;toiling&quot; the server from another console session, RAM graph got really high, then I ran &quot;GC&quot; and RAM went down!</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>What is remote application console - it is a simple feature that one can not expect to build a reliable cluster-enabled system without, where there are 1000s of machines. Yes, there is SSH and other gooddies, but they are NOT APPLICATION level, they are OS level - and that is <strong>where we hugely differ from the rest in our approach</strong>, our whole framework is cloud-aware, so our services like application containers and other components are built for the cloud from day one. Remote Application Console is a living testimony to this.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>
