@@ -148,6 +148,25 @@ namespace NFX.NUnit
         }
 
         [TestCase]
+        public void ReadWriteLEShortTestStream()
+        {
+            var ms = new MemoryStream();
+            ms.WriteLEShort(789);
+            Assert.AreEqual(2, ms.Position);
+            Assert.AreEqual(new byte[] { 15, 3 }, ms.ToArray());
+
+            ms.Position = 0;
+            Assert.AreEqual(789, ms.ReadLEShort());
+
+            ms.Position = 0;
+            ms.WriteLEUShort(789);
+            Assert.AreEqual(2, ms.Position);
+            Assert.AreEqual(new byte[] { 15, 3 }, ms.ToArray());
+            ms.Position = 0;
+            Assert.AreEqual(789, ms.ReadLEUShort());
+        }
+
+        [TestCase]
         public void ReadWriteBEShortTestArray()
         {
             var buf = new byte[2];
@@ -159,7 +178,6 @@ namespace NFX.NUnit
             Assert.AreEqual(2, idx);
         }
 
-
         [TestCase]
         public void ReadWriteBEInt32TestStream()
         {
@@ -170,6 +188,18 @@ namespace NFX.NUnit
 
             ms.Position = 0;
             Assert.AreEqual(16909060, ms.ReadBEInt32());
+        }
+
+        [TestCase]
+        public void ReadWriteLEInt32TestStream()
+        {
+            var ms = new MemoryStream();
+            ms.WriteLEInt32(16909060);
+            Assert.AreEqual(4, ms.Position);
+            Assert.AreEqual(new byte[] { 4, 3, 2, 1 }, ms.ToArray());
+
+            ms.Position = 0;
+            Assert.AreEqual(16909060, ms.ReadLEInt32());
         }
 
         [TestCase]
@@ -197,6 +227,20 @@ namespace NFX.NUnit
 
             ms.Position = 0;
             Assert.AreEqual(0xFACACA07EBEDDAFE, ms.ReadBEUInt64());
+            ms.Position = 0;
+            Assert.AreEqual(0xFEDAEDEB07CACAFA, ms.ReadLEUInt64());
+        }
+
+        [TestCase]
+        public void ReadWriteLEInt64TestStream()
+        {
+            var ms = new MemoryStream();
+            ms.WriteLEUInt64(0xFACACA07EBEDDAFE);
+            Assert.AreEqual(8, ms.Position);
+            Assert.AreEqual(new byte[] { 0xFE, 0xDA, 0xED, 0xEB, 0x07, 0xCA, 0xCA, 0xFA }, ms.ToArray());
+
+            ms.Position = 0;
+            Assert.AreEqual(0xFACACA07EBEDDAFE, ms.ReadLEUInt64());
         }
 
         [TestCase]

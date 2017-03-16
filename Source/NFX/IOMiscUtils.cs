@@ -228,6 +228,18 @@ namespace NFX
         }
 
         /// <summary>
+        /// Reads a short encoded as little endian from stream
+        /// </summary>
+        public static short ReadLEShort(this Stream s)
+        {
+            var b1 = s.ReadByte();
+            var b2 = s.ReadByte();
+            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEShort()");
+
+            return (short)((b2 << 8) + b1);
+        }
+
+        /// <summary>
         /// Reads an ushort encoded as big endian from stream
         /// </summary>
         public static ushort ReadBEUShort(this Stream s)
@@ -242,6 +254,18 @@ namespace NFX
                          (b1 << 8 ) +
                          (b2)
                         );
+        }
+
+        /// <summary>
+        /// Reads an ushort encoded as little endian from stream
+        /// </summary>
+        public static ushort ReadLEUShort(this Stream s)
+        {
+            var b1 = s.ReadByte();
+            var b2 = s.ReadByte();
+            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEUShort()");
+
+            return (ushort)((b2 << 8) + b1);
         }
 
         /// <summary>
@@ -268,9 +292,26 @@ namespace NFX
         }
 
         /// <summary>
+        /// Reads an integer encoded as little endian from buffer at the specified index
+        /// </summary>
+        public static int ReadLEInt32(this Stream s)
+        {
+            var b1 = s.ReadByte();
+            var b2 = s.ReadByte();
+            var b3 = s.ReadByte();
+            var b4 = s.ReadByte();
+            if (b4<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEInt32()");
+
+            return (b4 << 24) +
+                   (b3 << 16) +
+                   (b2 <<  8) +
+                   (b1);
+        }
+
+        /// <summary>
         /// Reads an integer encoded as big endian from buffer at the specified index
         /// </summary>
-        public static UInt64 ReadBEUInt64(this Stream s)
+        public static ulong ReadBEUInt64(this Stream s)
         {
            var b1 = s.ReadByte();
            if (b1<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEUInt64()");
@@ -309,13 +350,37 @@ namespace NFX
         }
 
         /// <summary>
+        /// Reads an integer encoded as little endian from buffer at the specified index
+        /// </summary>
+        public static ulong ReadLEUInt64(this Stream s)
+        {
+           var b1 = s.ReadByte();
+           var b2 = s.ReadByte();
+           var b3 = s.ReadByte();
+           var b4 = s.ReadByte();
+           var b5 = s.ReadByte();
+           var b6 = s.ReadByte();
+           var b7 = s.ReadByte();
+           var b8 = s.ReadByte();
+           if (b8<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
+          return ((ulong)b8 << 56) +
+                 ((ulong)b7 << 48) +
+                 ((ulong)b6 << 40) +
+                 ((ulong)b5 << 32) +
+                 ((ulong)b4 << 24) +
+                 ((ulong)b3 << 16) +
+                 ((ulong)b2 << 8)  +
+                 ((ulong)b1) ;
+        }
+
+        /// <summary>
         /// Writes an integer encoded as big endian to buffer at index 0
         /// </summary>
         public static void WriteBEInt32(this byte[] buf, Int32 value)
         {
            WriteBEInt32(buf, 0, value);
         }
-
 
         /// <summary>
         /// Writes an integer encoded as big endian to buffer at the specified index
@@ -394,12 +459,30 @@ namespace NFX
         }
 
         /// <summary>
+        /// Writes a short encoded as little endian to the given stream
+        /// </summary>
+        public static void WriteLEShort(this Stream s, short value)
+        {
+            s.WriteByte((byte)value);
+            s.WriteByte((byte)(value >> 8));
+        }
+
+        /// <summary>
         /// Writes an ushort encoded as big endian to the given stream
         /// </summary>
         public static void WriteBEUShort(this Stream s, ushort value)
         {
             s.WriteByte((byte)(value >> 8));
             s.WriteByte((byte)value);
+        }
+
+        /// <summary>
+        /// Writes an ushort encoded as little endian to the given stream
+        /// </summary>
+        public static void WriteLEUShort(this Stream s, ushort value)
+        {
+            s.WriteByte((byte)value);
+            s.WriteByte((byte)(value >> 8));
         }
 
         /// <summary>
@@ -411,6 +494,17 @@ namespace NFX
             s.WriteByte((byte)(value  >> 16));
             s.WriteByte((byte)(value  >> 8));
             s.WriteByte((byte)(value));
+        }
+
+        /// <summary>
+        /// Writes an integer encoded as little endian to the given stream
+        /// </summary>
+        public static void WriteLEInt32(this Stream s, int value)
+        {
+            s.WriteByte((byte)(value));
+            s.WriteByte((byte)(value  >> 8));
+            s.WriteByte((byte)(value  >> 16));
+            s.WriteByte((byte)(value  >> 24));
         }
 
         /// <summary>
@@ -426,6 +520,21 @@ namespace NFX
           s.WriteByte((byte)(value >> 16));
           s.WriteByte((byte)(value >> 8));
           s.WriteByte((byte)(value));
+        }
+
+        /// <summary>
+        /// Writes an unsigned long integer encoded as little endian to the given stream
+        /// </summary>
+        public static void WriteLEUInt64(this Stream s, ulong value)
+        {
+          s.WriteByte((byte)(value));
+          s.WriteByte((byte)(value >> 8));
+          s.WriteByte((byte)(value >> 16));
+          s.WriteByte((byte)(value >> 24));
+          s.WriteByte((byte)(value >> 32));
+          s.WriteByte((byte)(value >> 40));
+          s.WriteByte((byte)(value >> 48));
+          s.WriteByte((byte)(value >> 56));
         }
 
         public static IEnumerable<char> AsCharEnumerable(this Stream stream)

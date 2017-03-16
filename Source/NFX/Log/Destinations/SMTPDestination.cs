@@ -80,12 +80,14 @@ namespace NFX.Log.Destinations
 
         [Config]
         public string SmtpHost { get; set; }
-        [Config]
+        [Config(Default = DEFAULT_SMTP_PORT)]
         public int SmtpPort { get; set; }
 
         [Config]
         public bool SmtpSSL { get; set; }
 
+        [Config]
+        public string DropFolder { get; set; }
 
 
         [Config]
@@ -115,18 +117,30 @@ namespace NFX.Log.Destinations
 
        public override void Open()
        {
-           base.Open();
+          base.Open();
 
-           m_Smtp =
-               new SmtpClient
-               {
-                   Host = this.SmtpHost,
-                   Port = this.SmtpPort,
-                   EnableSsl = this.SmtpSSL,
-                   DeliveryMethod = SmtpDeliveryMethod.Network,
-                   UseDefaultCredentials = false,
-                   Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword)
-               };
+          if (DropFolder.IsNotNullOrWhiteSpace() && System.IO.Directory.Exists(DropFolder))
+          {
+            m_Smtp =
+                    new SmtpClient
+                    {
+                      DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+                      PickupDirectoryLocation = DropFolder
+                    };
+          }
+          else
+          {
+            m_Smtp =
+                    new SmtpClient
+                    {
+                      Host = this.SmtpHost,
+                      Port = this.SmtpPort,
+                      EnableSsl = this.SmtpSSL,
+                      DeliveryMethod = SmtpDeliveryMethod.Network,
+                      UseDefaultCredentials = false,
+                      Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword)
+                    };
+          }
        }
 
        public override void Close()
