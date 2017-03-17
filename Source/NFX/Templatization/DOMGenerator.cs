@@ -62,7 +62,7 @@ namespace NFX.Templatization
       var elemId = "ljs_{0}".Args(++counter);
 
       if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(ctx);{1}", JS_USE_CTX_VARIABLE, m_LineEnding);
-      sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, node.Name, m_LineEnding);
+      sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, MiscUtils.EscapeJSLiteral(node.Name), m_LineEnding);
 
 
       if (node.Value.IsNotNullOrWhiteSpace()) 
@@ -77,7 +77,7 @@ namespace NFX.Templatization
         if (value.IsNullOrWhiteSpace())
           continue;
 
-        var name = attr.Name;
+        var name = MiscUtils.EscapeJSLiteral(attr.Name);
         if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
           sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, m_LineEnding);
         else {
@@ -106,12 +106,9 @@ namespace NFX.Templatization
 
     private string makeValueVariable(string value, int seed, ref StringBuilder result)
     {
-      var v = value.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\"", "\\\"");
-
       var valueId = "ljs_{0}".Args(seed);
-      result.AppendFormat("var {0} = \"{1}\";{2}", valueId, v, m_LineEnding);
-      result.AppendFormat("{1} = {0} ? WAVE.strHTMLTemplate({1}, ctx) : WAVE.strEscapeHTML({1});{2}".Args(JS_USE_CTX_VARIABLE, valueId, m_LineEnding));
-
+      result.AppendFormat("var {0} = \"{1}\";{2}", valueId, MiscUtils.EscapeJSLiteral(value), m_LineEnding);
+      result.AppendFormat("{1} = {0} ? WAVE.strHTMLTemplate({1}, ctx) : {1};{2}".Args(JS_USE_CTX_VARIABLE, valueId, m_LineEnding));
       return valueId;
     }
   }

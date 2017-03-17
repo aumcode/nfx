@@ -11,7 +11,7 @@ div{
   div{ class=@color@ }
   div{ class="stub @color@" }
 
-  div="<script>alert(\"'<script>alert();</script>'text\")</script>"{}
+  div="<script>alert(\"'<script>alert('@color@');</script>'text\")</script>"{}
   div{
     div{
       class=@color@
@@ -24,8 +24,7 @@ div{
               div{
                 div{
                   class=@color@
-                  div{
-                  }
+                  div=",./[\\]{}|!@#$%^&*()_+=-~`'"{}
                 }
               }
             }
@@ -57,7 +56,7 @@ div{
     id=container
     h1="Animation Test"{}
     button=Highlight { class=highlight on-click="function() { hello('highlight'); }" }
-    button=Fade { class=fade on-click=hello }
+    button=Fade { class=fade on-click="function() { hello('fade'); }" }
     button=Rizzle { class=rizzle on-click=hello }
     button=Knit { class=knit on-click=hello }
     button=Shrink { class=shrink on-click=hello }
@@ -69,7 +68,7 @@ div{
 
   h1="Compiler output example"{}
 
-  code =$"
+  code=$"
       function noRoot() {
         var ljs_useCtx = WAVE.isObject(ctx);
         var ljs_1 = document.createElement('section');

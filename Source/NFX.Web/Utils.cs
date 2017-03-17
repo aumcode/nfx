@@ -42,36 +42,5 @@ namespace NFX.Web
 	    return utcDateTime.ToString("ddd, dd-MMM-yyyy HH':'mm':'ss 'GMT'", DateTimeFormatInfo.InvariantInfo);
     }
 
-
-    /// <summary>
-    /// Escapes JS literal, replacing / \ \r \n " ' &lt; &gt; &amp; chars with their hex codes
-    /// </summary>
-    public static string EscapeJSLiteral(this string value)
-    {
-      if (value==null) return null;
-      if (value.Length==0) return string.Empty;
-
-      var sb = new StringBuilder();
-      for(var i=0; i<value.Length; i++)
-      {
-        var c = value[i];
-        if (c < 0x20 || //space
-            c=='\'' || c=='"' ||
-            c=='/' || c=='\\' ||
-            c=='&' || c=='<'  || c=='>')
-        {
-          sb.Append(@"\x");
-          var nibble = (c >> 4) & 0x0f; //this works faster than int to string hex
-          sb.Append((char)(nibble<=9 ? '0'+nibble : 'A'+(nibble-10)));
-          nibble =  c & 0x0f;
-          sb.Append((char)(nibble<=9 ? '0'+nibble : 'A'+(nibble-10)));
-          continue;
-        }
-
-        sb.Append(c);
-      }
-      return sb.ToString();
-    }
-
   }
 }

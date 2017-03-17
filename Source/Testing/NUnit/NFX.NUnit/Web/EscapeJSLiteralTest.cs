@@ -17,8 +17,6 @@
 using NUnit.Framework;
 using System;
 
-using NFX.Web;
-
 namespace NFX.NUnit.Web
 {
   [TestFixture]
@@ -27,36 +25,36 @@ namespace NFX.NUnit.Web
     [Test]
     public void Empty()
     {
-      Assert.AreEqual(null, Utils.EscapeJSLiteral(null));
-      Assert.AreEqual("", Utils.EscapeJSLiteral(""));
-      Assert.AreEqual("   ", Utils.EscapeJSLiteral("   "));
+      Assert.AreEqual(null, MiscUtils.EscapeJSLiteral(null));
+      Assert.AreEqual("", MiscUtils.EscapeJSLiteral(""));
+      Assert.AreEqual("   ", MiscUtils.EscapeJSLiteral("   "));
     }
 
     [Test]
     public void Quotes()
     {
-      Assert.AreEqual(@"Mc\x27Cloud", Utils.EscapeJSLiteral("Mc'Cloud"));
-      Assert.AreEqual(@"Mc\x22Cloud", Utils.EscapeJSLiteral("Mc\"Cloud"));
-      Assert.AreEqual(@"Mc\x22\x27Cloud", Utils.EscapeJSLiteral("Mc\"'Cloud"));
+      Assert.AreEqual(@"Mc\x27Cloud", MiscUtils.EscapeJSLiteral("Mc'Cloud"));
+      Assert.AreEqual(@"Mc\x22Cloud", MiscUtils.EscapeJSLiteral("Mc\"Cloud"));
+      Assert.AreEqual(@"Mc\x22\x27Cloud", MiscUtils.EscapeJSLiteral("Mc\"'Cloud"));
       
     }
 
     [Test]
     public void Script()
     {
-      Assert.AreEqual(@"not \x3C\x2Fscript\x3E the end", Utils.EscapeJSLiteral("not </script> the end"));
+      Assert.AreEqual(@"not \x3C\x2Fscript\x3E the end", MiscUtils.EscapeJSLiteral("not </script> the end"));
     }
 
     [Test]
     public void RN()
     {
-      Assert.AreEqual(@"not \x0D \x0A the end", Utils.EscapeJSLiteral("not \r \n the end"));
+      Assert.AreEqual(@"not \x0D \x0A the end", MiscUtils.EscapeJSLiteral("not \r \n the end"));
     }
 
     [Test]
     public void Various()
     {
-      Assert.AreEqual(@"not\x27s \x22\x26amp;\x22 the\x5Cs\x2F end", Utils.EscapeJSLiteral(@"not's ""&amp;"" the\s/ end"));
+      Assert.AreEqual(@"not\x27s \x22\x26amp;\x22 the\x5Cs\x2F end", MiscUtils.EscapeJSLiteral(@"not's ""&amp;"" the\s/ end"));
     }
 
   }
