@@ -15,8 +15,6 @@ namespace NFX.Templatization
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
 
     public const string JS_USE_CTX_VARIABLE = "ljs_useCtx";
-
-    public const string LJS_CONTENT_PROP = "-content";
     #endregion
 
     #region Static
@@ -63,8 +61,16 @@ namespace NFX.Templatization
       var sb = new StringBuilder();
       var elemId = "ljs_{0}".Args(++counter);
 
-      sb.AppendFormat("var {0} = WAVE.isObject(ctx);{1}", JS_USE_CTX_VARIABLE, m_LineEnding);
+      if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(ctx);{1}", JS_USE_CTX_VARIABLE, m_LineEnding);
       sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, node.Name, m_LineEnding);
+
+
+      if (node.Value.IsNotNullOrWhiteSpace()) 
+      {
+        var v = makeValueVariable(node.Value, ++counter, ref sb);
+        sb.AppendFormat("{0}.innerText = {1};{2}", elemId, v, m_LineEnding);
+      }
+
       foreach(var attr in node.Attributes)
       {
         var value = attr.Value;
@@ -75,17 +81,8 @@ namespace NFX.Templatization
         if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
           sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, m_LineEnding);
         else {
-          var v = value.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\"", "\\\"");
-
-          var valueId = "ljs_{0}".Args(++counter);
-          sb.AppendFormat("var {0} = \"{1}\";{2}", valueId, v, m_LineEnding);
-
-          v = "{0} ? WAVE.strHTMLTemplate({1}, ctx) : WAVE.strEscapeHTML({1})".Args(JS_USE_CTX_VARIABLE, valueId);
-
-          if (name.EqualsOrdSenseCase(LJS_CONTENT_PROP))
-            sb.AppendFormat("{0}.innerText = {1};{2}", elemId, v, m_LineEnding);
-          else
-            sb.AppendFormat("{0}.setAttribute('{1}', {2});{3}", elemId, name, v, m_LineEnding);
+          var v = makeValueVariable(value, ++counter, ref sb);
+          sb.AppendFormat("{0}.setAttribute('{1}', {2});{3}", elemId, name, v, m_LineEnding);
         }
       }
       foreach(var child in node.Children)
@@ -99,12 +96,23 @@ namespace NFX.Templatization
         sb.AppendFormat("root = WAVE.id(root);{0}", m_LineEnding);
         sb.AppendFormat("if (WAVE.isObject(root)){0}", m_LineEnding);
         sb.AppendFormat("root.appendChild({0});{1}", elemId, m_LineEnding);
-        sb.AppendFormat("}}{0}", m_LineEnding);
+        sb.AppendFormat("}}");
       }
       else
         sb.AppendFormat("{0}.appendChild({1});{2}", root, elemId, m_LineEnding);
 
       return sb.ToString();
+    }
+
+    private string makeValueVariable(string value, int seed, ref StringBuilder result)
+    {
+      var v = value.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\"", "\\\"");
+
+      var valueId = "ljs_{0}".Args(seed);
+      result.AppendFormat("var {0} = \"{1}\";{2}", valueId, v, m_LineEnding);
+      result.AppendFormat("{1} = {0} ? WAVE.strHTMLTemplate({1}, ctx) : WAVE.strEscapeHTML({1});{2}".Args(JS_USE_CTX_VARIABLE, valueId, m_LineEnding));
+
+      return valueId;
     }
   }
 }

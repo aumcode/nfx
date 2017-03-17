@@ -1,5 +1,5 @@
-﻿function hello() {
-  alert("Hello");
+﻿function hello(text) {
+  alert(WAVE.strDefault(text, "Hello"));
 }
 
 function render(root, ctx){
@@ -11,7 +11,7 @@ div{
   div{ class=@color@ }
   div{ class="stub @color@" }
 
-  div{ -content="<script>alert(\"'<script>alert();</script>'text\")</script>" }
+  div="<script>alert(\"'<script>alert();</script>'text\")</script>"{}
   div{
     div{
       class=@color@
@@ -55,22 +55,21 @@ div{
 
   div{
     id=container
-    h1{ -content="Animation Test" }
-    button { class=highlight -content=Highlight on-click=hello }
-    button { class=fade -content=Fade on-click=hello }
-    button { class=rizzle -content=Rizzle on-click=hello }
-    button { class=knit -content=Knit on-click=hello }
-    button { class=shrink -content=Shrink on-click=hello }
-    button { class=rotate -content=Rotate on-click=hello }
-    button { class=boom -content=Boom on-click=hello }
-    button { class=squeeze -content=Squeeze on-click=hello }
-    button { class=deform -content=Deform on-click=hello }
+    h1="Animation Test"{}
+    button=Highlight { class=highlight on-click="function() { hello('highlight'); }" }
+    button=Fade { class=fade on-click=hello }
+    button=Rizzle { class=rizzle on-click=hello }
+    button=Knit { class=knit on-click=hello }
+    button=Shrink { class=shrink on-click=hello }
+    button=Rotate { class=rotate on-click=hello }
+    button=Boom { class=boom on-click=hello }
+    button=Squeeze { class=squeeze on-click=hello }
+    button=Deform { class=deform on-click=hello }
   }
 
-  h1 { -content="Compiler output example" }
+  h1="Compiler output example"{}
 
-  code {
-    -content=$"
+  code =$"
       function noRoot() {
         var ljs_useCtx = WAVE.isObject(ctx);
         var ljs_1 = document.createElement('section');
@@ -86,10 +85,7 @@ div{
         if (WAVE.isObject(root))
         root.appendChild(ljs_1);
       }
-    "
-  }
-
-
+    " {}
 }
 ***/
 }
@@ -97,14 +93,14 @@ div{
 
 function noRoot() {
 /***
-  section{
-    id=sect
-    class=sect
-    -content = $"
+  section= $"
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sollicitudin interdum,
       sollicitudin condimentum montes nulla bibendum aliquam velit? Fermentum mattis aenean nec...
       Orci proin litora nec ullamcorper?
     "
+  {
+    id=sect
+    class=sect
   }
 ***/
 }
