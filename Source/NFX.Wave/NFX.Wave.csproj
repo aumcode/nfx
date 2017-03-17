@@ -120,7 +120,10 @@
     <None Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
     <None Include="Templatization\StockContent\Embedded\stl\select.test.css" />
     <None Include="Templatization\StockContent\Embedded\script\wv.html.test.htm" />
+    <Content Include="Templatization\StockContent\Embedded\script\js-compiler.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\js-compiler.test.html" />
     <Content Include="Templatization\StockContent\Embedded\script\wv.dialog.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\js-compiler.ntc.js" />
     <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -427,6 +430,8 @@
     <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"
 
 "$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src
+
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.ntc.js" -r -ext ".js" -replace ".ntc.js" /src /c "NFX.Templatization.TextJSTemplateCompiler, NFX" 
 
 
 where /q java

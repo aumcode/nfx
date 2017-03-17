@@ -57,7 +57,7 @@ namespace NFX.Templatization
 
     private string createElement(IConfigSectionNode node, string root, ref int counter)
     {
-      var isRootNode = root.IsNullOrWhiteSpace();
+      var isRootNode = root.IsNullOrWhiteSpace();//this means that this is a root node
       var sb = new StringBuilder();
       var elemId = "ljs_{0}".Args(++counter);
 
@@ -89,7 +89,7 @@ namespace NFX.Templatization
       {
         sb.Append(createElement(child, elemId, ref counter));
       }
-      if (isRootNode)//this means that this is root node
+      if (isRootNode)
       {
         sb.AppendFormat("if (typeof(root) !== 'undefined' && root !== null) {{{0}", m_LineEnding);
         sb.AppendFormat("if (WAVE.isString(root)){0}", m_LineEnding);

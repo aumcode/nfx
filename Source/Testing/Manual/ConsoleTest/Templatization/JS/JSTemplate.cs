@@ -49,7 +49,6 @@ namespace ConsoleTest.Templatization.JS
       var cmp = FactoryUtils.MakeAndConfigure<TextJSTemplateCompiler>(config, type, args);
       cmp.Compile();
 
-
       var unit = cmp.First();
       if (unit.CompilationException != null)
         Console.WriteLine(unit.CompilationException.ToMessageWithType());

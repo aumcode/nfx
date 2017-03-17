@@ -150,13 +150,16 @@ namespace ntc
                                   static void writeToDiskCompiledSourceFiles(TemplateCompiler compiler, IConfigSectionNode configRoot)
                                   {
                                      var ext = configRoot["ext"].AttrByIndex(0).ValueAsString(compiler.LanguageSourceFileExtension);
+                                     var re = configRoot["replace"].AttrByIndex(0).ValueAsString();
 
                                       foreach(var cu in compiler)
                                       {
                                         if (cu.CompilationException!=null) continue;
                                         var fs = cu.TemplateSource as FileTemplateStringContentSource;
                                         if (fs==null) continue;
-                                        File.WriteAllText(fs.FileName + ext , cu.CompiledSource);
+
+                                        var fn = (re.IsNotNullOrWhiteSpace() ? fs.FileName.Replace(re, string.Empty) : fs.FileName) + ext;
+                                        File.WriteAllText(fn , cu.CompiledSource);
                                       }
                                   }
 

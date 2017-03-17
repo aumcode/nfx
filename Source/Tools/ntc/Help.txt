@@ -15,6 +15,7 @@
               [/c | /compiler  fully_qualified_type_name]
               [/src]   
               [/ext file_extension]
+              [/replace file_segment]
                                                                   
 
  <f color=green>source_path<f color=gray> - path to template source files, may include wildcard
@@ -39,6 +40,7 @@
  <f color=darkCyan>/c | /compiler<f color=gray> - uses specified compiler. If omitted then TextCSTemplateCompiler is used
  <f color=darkCyan>/ext<f color=gray> - specifies file extension to use for source files.
   When omitted, default language extension will be appended to source file name
+ <f color=darkCyan>/replace<f color=gray> - replaces the specified file segment
  <f color=darkCyan>/src<f color=gray> - writes compiled source files to disk
 
 
