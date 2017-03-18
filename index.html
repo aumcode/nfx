@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NFX </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NFX ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="images/NFX.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="index.html">
+                <img id="nfx-logo" src="images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx">NFX</h1>
+              
+<p><strong>NFX</strong> is written in C# and runs on a CLR machine, however it has very little to do with .NET. 
+This framework contains truly unique intellectual assets and allows for unconventional things that significantly boost performance and simplify the development (such as stateful web). </p>
+<p>The majority of the achievements are possible because of two key things:</p>
+<ul>
+<li><p>Unification of design - all components are written in the same way</p>
+</li>
+<li><p>Sophisticated serialization mechanism aka &quot;teleportation&quot;</p>
+</li>
+</ul>
+<p>promoting:</p>
+<ul>
+<li><p>Stateful WEB programming (not mandatory)</p>
+</li>
+<li><p>Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems</p>
+</li>
+<li><p>Serving 50,000+ BUSINESS web requests a second (with logic) on a 4 core 3.0 GHz machine looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache)</p>
+</li>
+<li><p>The concepts have been well tested and used. In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances 
+(including non-trivial CLR cases like: structs with read-only fields, arrays of structs of structs, custom streamers like Dictionary&lt;&gt; with comparers etc.)</p>
+</li>
+</ul>
+<p><a href="https://ci.appveyor.com/project/itadapter/nfx/history"><img class="img3rdpartyIcon" src="../images/3rdparties/camo.svg"></a></p>
+<p>License: Apache 2.0</p>
+<p><br></p>
+<h2 id="img-classimg3rdpartyicon-srcimages3rdpartiesgithubsvghttpsgithubcomaumcodenfx-get-the-code-contribute"><a href="https://github.com/aumcode/nfx"><img class="img3rdpartyIcon" src="../images/3rdparties/github.svg"></a> Get The Code, Contribute</h2>
+<p><br></p>
+<h2 id="img-classimg3rdpartyicon-srcimages3rdpartiesnugetsvghttpswwwnugetorgpackagesnfx-install-instructions"><a href="https://www.nuget.org/packages/NFX"><img class="img3rdpartyIcon" src="../images/3rdparties/nuget.svg"></a> Install instructions</h2>
+<p><br></p>
+<h2 id="img-classimg3rdpartyicon-srcimages3rdpartiesyoutubesvghttpswwwyoutubecomuseritadapterincvideos-watch-our-videos"><a href="https://www.youtube.com/user/itadapterinc/videos"><img class="img3rdpartyIcon" src="../images/3rdparties/youtube.svg"></a> Watch Our Videos</h2>
+<p><br></p>
+<h2 id="documentation---read-the-manual-browse-docs">Documentation - Read the Manual browse Docs</h2>
+<ul>
+<li><a href="../book">Book</a></li>
+<li><a href="../specs">Specifications</a></li>
+<li><a href="../tutorials">Tutorials</a></li>
+<li><a href="../tools">Tools</a></li>
+<li><a href="../docs">Code Documentation</a></li>
+<li><a href="../archive/blog">Archive</a></li>
+</ul>
+<h2 id="the-press">The Press</h2>
+<ul>
+<li><a href="https://www.infoq.com/articles/Big-Memory-Part-1">Big Memory .NET Part 1 - The Challenges in Handling 1 Billion Resident Business Objects</a></li>
+<li><a href="https://www.infoq.com/articles/Big-Memory-Part-1">Big Memory .NET Part 2 - Pile, Our Big Memory Solution for .NET</a></li>
+</ul>
+<h2 id="demos">Demos</h2>
+<ul>
+<li><a href="https://github.com/aumcode/nfx-demos">All</a></li>
+<li><a href="https://github.com/aumcode/nfx-demos/tree/master/Config">Config</a></li>
+<li><a href="https://github.com/aumcode/nfx-demos/tree/master/Wave">Wave</a></li>
+<li><a href="https://github.com/aumcode/nfx-demos/tree/master/Glue">Glue</a></li>
+<li><a href="http://aumcode.github.io/serbench/">Slim Serializer Benchmarks</a></li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
