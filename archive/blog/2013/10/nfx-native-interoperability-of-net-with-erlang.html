@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NFX: Native Interoperability of .NET with Erlang </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NFX: Native Interoperability of .NET with Erlang ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx-native-interoperability-of-net-with-erlang">NFX: Native Interoperability of .NET with Erlang</h1>
+              
+<p>One of the components included in the NFX library under NFX.Erlang namespace is a set of classes that represent Erlang language types and the connectivity transport that allows to start an Erlang distributed node in a running .NET process and perform demultiplexed communication with other Erlang nodes in the network. This includes ability to redirect I/O, perform RPC calls, etc.</p>
+<p>The component can be logically broken down into two parts:</p>
+<ul>
+<li>Erlang types</li>
+<li>Erlang distributed connectivity and message passing</li>
+</ul>
+<p>The following basic .NET types (NFX.Erlang namespace) map to the corresponding types in Erlang language, which all implement <strong>NFX.Erlang.IErlObject</strong> interface:</p>
+<ul>
+<li>ErlAtom</li>
+<li>ErlBinary</li>
+<li>ErlBoolean</li>
+<li>ErlByte</li>
+<li>ErlDouble</li>
+<li>ErlList</li>
+<li>ErlLong</li>
+<li>ErlPid</li>
+<li>ErlPort</li>
+<li>ErlRef</li>
+<li>ErlString</li>
+<li>ErlTuple</li>
+<li>ErlVar</li>
+</ul>
+<p>Most of these types are structs - i.e. they are merely wrappers around corresponding native types that carry no additional memory or performance overhead. These types are instantiated in the intuitive manner:</p>
+<pre><code class="lang-cs">var n = new ErlLong(1000);
+var a = new ErlAtom(&quot;abc&quot;);
+var l = new ErlList(n, a, 100, 10.5, &quot;str&quot;);
+var t = new ErlTuple(n, a, l);
+</code></pre><p>Most of Erl native types support implicit casting:</p>
+<pre><code class="lang-cs">ErlLong   n1 = 1000;
+ErlAtom   a1 = &quot;abc&quot;;
+ErlString s1 = &quot;efg&quot;;
+ErlDouble d1 = 10.128;
+ErlByte   b1 = 10;
+
+int       n2 = n1;
+string    a2 = a1;
+string    s2 = s1;
+double    d2 = d1;
+byte      b2 = b1;
+</code></pre><p>There are string extension methods that allow to parse strings into Erlang terms:</p>
+<pre><code class="lang-cs">IErlObject t0 = &quot;{ok, [{a, 10}, {b, good}, {c, 2.0}]}&quot;.ToErlObject();
+IErlObject t1 = &quot;{ok, [{a, ~i}, {b, ~w},   {c, ~f}]}&quot;.ToErlObject(10, new ErlAtom(&quot;good&quot;), 2.0);
+ErlList    l0 = &quot;[a,  1, c]&quot;.To&lt;ErlList&gt;();
+ErlList    l1 = &quot;[a, ~w, c]&quot;.To&lt;ErlList&gt;(1);
+</code></pre><h2 id="what-can-you-do-with-erlang-objects-terms">What can you do with Erlang objects (terms)?</h2>
+<p>The most useful thing you can do with Erlang types is pattern matching.</p>
+<p>The basic idea behind pattern matching is that you can overlay a pattern over an Erlang object, such that the pattern can extract values of sub-objects and bind them with variables.  In order to familiarize yourself with pattern matching, we&#39;ll introduce another .NET type, called <strong>ErlVarBind</strong>. It is actually a dictionary mapping variable names to ErlObject&#39;s.</p>
+<p>In order to illustrate the execution of the code snippets below, we can use the <a href="http://www.linqpad.net/" title="LINQPad">LINQPad</a> program. Once you install it, open it in the &quot;C# Statement(s)&quot; language mode, and add the reference to <strong>NFX.dll</strong> by right-clicking the query section, going to &quot;Query Properties&quot;, and adding <strong>NFX.dll</strong> to the list of &quot;Additional References&quot;, and &quot;NFX.Erlang&quot; to the tab of &quot;Additional Namespace Imports&quot;. After having done that, type the following code in the query window, and press &quot;F5&quot; to execute:</p>
+<pre><code class="lang-cs">var V = new ErlVar(&quot;V&quot;);           // Create a variable named &quot;V&quot;
+var p = &quot;{ok, ~w}&quot;.ToErlObject(V); // V is stored as a variable that can be bound
+var t = &quot;{ok, 123}&quot;.ToErlObject(); // Erlang term to match
+
+ErlVarBind b = t.Match(p);         // Match a term against the pattern
+                                   // ErlVarBind is a dictionary of bound variables
+if (b != null)
+    Console.WriteLine(&quot;Value of variable {0} = {1}&quot;, V.Name, b[V].ValueAsInt);
+</code></pre><p>When a match is not successful, <strong>IErlObject.Match()</strong> call returns <strong>null</strong>. Each Erlang object has a set of properties to retrieve their .NET native value. These properties are called <strong>ValueAs{Type}</strong>, where {Type} is .NET specific type, such as <strong>Int</strong>, <strong>Double</strong>, <strong>Decimal</strong>, etc.</p>
+<p>Erlang terms can be serialized into Erlang External Binary format using <strong>NFX.Erlang.ErlOutputStream</strong> and <strong>NFX.Erlang.ErlInputStream</strong>:</p>
+<pre><code class="lang-cs">var x = &quot;{ok, [{a, 10}]}&quot;.ToErlObject();
+var s = new ErlOutputStream(x);
+Console.WriteLine(s.ToBinaryString());
+// Output:  &lt;&lt;131,104,2,100,0,2,111,107,108,0,0,0,1,104,2,100,0,1,97,97,10,106&gt;&gt;
+</code></pre><p>Analogously we can deserialize the binary representation back into the corresponding Erlang object:</p>
+<pre><code class="lang-cs">var i = new ErlInputStream(new byte[] {131,104,2,100,0,2,111,107,108,0,0,0,1,104,2,100,0,1,97,97,10,106});
+Console.WriteLine(i.Read().ToString());
+// Output:  {ok,[{a,10}]}
+</code></pre><h2 id="distributed-erlang-working-with-remote-nodes">Distributed Erlang: working with remote nodes</h2>
+<p>In order to illustrate how we can connect a .NET program to an Erlang node, let&#39;s fire off an Erlang shell, and give it a security cookie <strong>hahaha</strong> to be used by inter-node authentication:</p>
+<pre><code class="lang-erlang">$ erl -sname r -setcookie hahaha
+(r@pipit)1&gt;
+</code></pre><p>Let&#39;s try to connect to this Erlang node and send a message from .NET to Erlang. In order to accomplish this we&#39;ll register a named mailbox in the Erlang shell, called &quot;me&quot;, and start waiting for incoming message:</p>
+<pre><code class="lang-erlang">(r@pipit)1&gt; register(me, self()).
+true
+(r@pipit)2&gt; f(M), receive M -&gt; io:format(&quot;Got message: ~p\n&quot;, [M]) end.
+</code></pre><p>Now, we can send a message from .NET to this process on the Erlang node:</p>
+<pre><code class="lang-cs">var n = new ErlLocalNode(&quot;abc&quot;, new ErlAtom(&quot;hahaha&quot;));
+n.AcceptConnections = false;   // Don&#39;t accept incoming connections
+n.Start();
+
+var m = n.CreateMbox(&quot;test&quot;);
+n.Send(m.Self, remoteNode: &quot;r@pipit&quot;, toName: &quot;me&quot;, new ErlString(&quot;Hello!&quot;));
+</code></pre><p>What we&#39;ve done here, we created a .NET local Erlang node called <strong>&quot;abc&quot;</strong> using the same authentication cookie <strong>&#39;hahaha&#39;</strong>, and started it. We instruct the node not to register with the local port mapping daemon (epmd process), so that other nodes cannot connect to it by name. Then we created a named mailbox <strong>&quot;test&quot;</strong>. We used this mailbox in order to send messages (sending messages to remote named processes (mailboxes) requires to have a PID of the sender (m.Self)), make an rpc call, and capture the result.</p>
+<p>After executing the code above, the Erlang shell prints:</p>
+<pre><code class="lang-erlang">Got message: &quot;Hello!&quot;
+ok
+</code></pre><p>Let&#39;s try to obtain the UTC time from the Erlang node it by making an RPC call from .NET to <strong>erlang:now()</strong> function:</p>
+<pre><code class="lang-cs">var r = m.RPC(&quot;r@pipit&quot;, &quot;erlang&quot;, &quot;now&quot;, new ErlList());
+Console.WriteLine(&quot;Remote time: {0}&quot;, r.ValueAsDateTime.ToString());
+</code></pre><p>We used previously registered mailbox &quot;test&quot; in order to make an rpc call and capture the result. Once the call returned, we output the content to console. .NET outputs:</p>
+<pre><code>Remote time: 10/9/2013 3:29:47 PM
+</code></pre><p>Along with the synchronous RPC, it&#39;s possible to do asynchronous calls. Let&#39;s illustrate by example (we reuse the variables from preceeding example):</p>
+<pre><code class="lang-cs">// The following call is non-blocking - it sends an RPC message
+// and returns immediately. Note that ErlList.Empty is analogous to
+// &quot;new ErlList()&quot;
+m.AsyncRPC(&quot;r@pipit&quot;, &quot;erlang&quot;, &quot;now&quot;, ErlList.Empty);
+
+// WaitAny call can take several mailboxes and it returns the index
+// of the first mailbox, whose queue has some messages waiting
+int i = n.WaitAny(mbox);
+
+if (i &lt; 0)
+{
+  Console.WriteLine(&quot;Timeout waiting for RPC result&quot;);
+  goto exit;
+}
+
+// This call fetches an RPC result from the mailbox
+r = m.ReceiveRPC();
+
+Console.WriteLine(
+  &quot;AsyncRPC call to erlang:now() resulted in response: {0}&quot;,
+  r.ValueAsDateTime.ToLocalTime());
+</code></pre><p>Let&#39;s beef this up a little by writing a loop that will pattern match all messages received in our &quot;test&quot; mailbox, and print them out to console. When we receive the atom &#39;stop&#39; we should exit the loop:</p>
+<pre><code class="lang-cs">bool active = true;
+var matcher = new ErlPatternMatcher
+    {
+      {&quot;stop&quot;, (p, t, b, _args) =&gt; { active = false; return null; } },
+      {&quot;Msg&quot;,  (p, t, b, _args) =&gt; { Console.WriteLine(b[&quot;Msg&quot;].ToString()); return null; } },
+    };
+
+while (active)
+{
+  m.ReceiveMatch(matcher);
+}
+
+Console.WriteLine(&quot;Done!&quot;);
+</code></pre><p>Here we introduced another class <strong>ErlPatternMatcher</strong> that takes an array of actions, where the first item is the pattern to match the incoming message against, and the second item is a lambda function receiving four items: the matched pattern, the Erlang object that was used to match against the pattern, the ErlVarBind map containing matched/bound variables from the patterns, and finally the <strong>_args</strong> is that array of optional parameters that can be passed to the ErlMbox.ReceiveMatch() call.</p>
+<p>Let&#39;s test this in the Erlang shell:</p>
+<pre><code class="lang-erlang">(r@pipit)1&gt; {test, ab@pipit} ! &quot;Hello&quot;.
+
+    LINQPad&#39;s output panel prints: &quot;Hello&quot;
+</code></pre><pre><code class="lang-erlang">(r@pipit)2&gt; {test, ab@pipit} ! {test, ab@pipit} ! {ok, [1,2,{data, [{a, 12}]}]}.
+
+    LINQPad&#39;s output panel prints: {ok,[1,2,{data,[{a,12}]}]}
+</code></pre><pre><code class="lang-erlang">(r@pipit)2&gt; {test, ab@pipit} ! stop.
+
+    LINQPad&#39;s output panel prints: Done!
+</code></pre><p>The example above illustrated RPC calls from .NET to Erlang. However it is also possible to do the reverse. In current implementation an ErlLocalNode starts a dispatching thread per connection that dispatches incoming Erlang messages to corresponding mailboxes. Messages sent to non-existing mailboxes get silently dropped. One of the internal registered mailboxes created on node&#39;s startup is the RPC mailbox called <strong>&quot;rex&quot;</strong>. There&#39;s a simple Erlang RPC protocol that .NET implementation supports, which makes it possible for Erlang to invoke static member functions in .NET. Here we illustrate a call from the Erlang shell into the .NET node in order to obtain the local time from .NET:</p>
+<pre><code class="lang-erlang">(r@pipit)3&gt; f(Time), {ok, Time} = rpc:call(ab@pipit, &#39;System.DateTime&#39;, &#39;UtcNow&#39;, []), calendar:now_to_local_time(Time).
+{{2013,10,8},{1,24,26}}
+</code></pre><p>Having illustrated RPC, we now show how to do I/O redirection. Suppose you do an RPC call from .NET to Erlang, and you want to make sure that all output printed by that call via <strong>io:format()</strong> and alike functions is sent back to .NET. This is accomplished by the fact that .NET node runs another server thread that polls for data in a special mailbox registered by name <strong>&quot;user&quot;</strong>. This mailbox is also accessible via <strong>ErlLocalNode.GroupLeader</strong>. All RPC calls by default pass that mailbox information, so that remote nodes could deliver the output there. Let&#39;s illustrate:</p>
+<pre><code class="lang-cs">var n = new ErlLocalNode(&quot;d&quot;) {
+    OnIoOutput = (_encoding, output) =&gt;
+        Console.WriteLine(&quot;&lt;I/O output&gt;  ==&gt; Received output: {0}&quot;, output)
+};
+
+n.Start();
+var m = n.CreateMbox(&quot;test&quot;);
+var c = n.Connection(&quot;r@pipit&quot;);
+var r = m.RPC(c.RemoteNode.NodeName, &quot;io&quot;, &quot;format&quot;, new ErlList(&quot;Hello world!&quot;));
+Console.WriteLine(&quot;Result: {0}&quot;, r.ToString());
+</code></pre><p>When we execute this code, here&#39;s what gets printed:</p>
+<pre><code>&lt;I/O output&gt;  ==&gt; Received output: &quot;Hello world!&quot;
+Result: ok
+</code></pre><h2 id="runtime-configuration">Runtime configuration</h2>
+<p>Erlang node implementation supports a powerful concept of NFX framework configuration. In order to auto-configure a .NET application to start an Erlang node at application startup, we need to define a starter configuration section, and provide node startup details:</p>
+<pre><code>nfx
+{
+  starters {
+    starter{ name=&quot;Erlang&quot; type=&quot;NFX.Erlang.ErlApp&quot; }
+  }
+
+  erlang
+  {
+    cookie=&quot;hahaha&quot;
+
+    node=&quot;me&quot; {
+      trace=&quot;wire&quot;
+      accept=true
+      address=&quot;localhost&quot; // address=&quot;127.0.0.1:1234&quot;
+      tcp-no-delay=true
+      tcp-rcv-buf-size=4096
+      tcp-snd-buf-size=4096
+    } 
+
+    node=&quot;r@localhost&quot; {
+      tcp-no-delay=false
+      tcp-rcv-buf-size=100000
+      tcp-snd-buf-size=100000
+    }
+  }   
+}
+</code></pre><p>The &quot;starters&quot; section in NFX contains a list of static starter types that implement <strong>IApplicationStarter</strong> behavior. For Erlang node that is implemented by the &quot;NFX.Erlang.ErlApp&quot; type.</p>
+<p>Next we define the &quot;erlang&quot; section that tells to use cookie &quot;hahaha&quot; for connecting to distributed Erlang nodes. It also defines a node &quot;me&quot; to be used as the local node name (since it doesn&#39;t have the &quot;@hostname&quot; suffix), which will be accessible through a static singleton variable <strong>ErlApp.Node</strong>. Also at startup the local node &quot;me&quot; will connect to remote node &quot;r@localhost&quot;, whose connection configuration details are customized under &#39;node=&quot;r@localhost&#39;.</p>
+<p>The local node &quot;me&quot; will register with EPMD daemon, and accept incoming connections from other nodes (&quot;accept=true&quot;), it will enable debug tracing to print wire-level messages (&quot;trace=wire&quot;) if ErlApp.Node.OnTrace event has been set in the application code.</p>
+<p>The NFX application startup code and sample simplistic implementation that prints out messages received by the &quot;test&quot; mailbox then looks something like this:</p>
+<pre><code class="lang-cs">static void Main(string[] args)
+{
+  Configuration argsConfig = new CommandArgsConfiguration(args);
+
+  using(new ServiceBaseApplication(args, null))
+    run();
+}
+
+static void run()
+{
+  var mbox = ErlApp.Node.CreateMbox(&quot;test&quot;);
+
+  while (App.Active)
+  {
+    var result = mbox.Receive(1000);
+    if (result != null)
+      Console.WriteLine(&quot;Mailbox {0} got message: {1}&quot;, mbox.Self, result);
+  }
+}
+</code></pre><h2 id="conclusion">Conclusion</h2>
+<p>NFX implementation of Erlang terms and distributed transport provides a rich set of primitives needed to communicate with applications running Erlang nodes very efficiently with minimal memory with processing overhead.</p>
+<p>The implementation takes advantage of modern C# concepts that include Linq, Enumerators, and other paradigms that make writing distributed systems a very pleasant experience.</p>
+<p>NFX Erlang is a complete rewrite of its predecessor <a href="https://github.com/saleyn/otp.net">otp.net</a>. Current version eliminates all deficiencies of the former inherited from initial auto-conversion from corresponding Java code, contains a much cleaner and simpler conceptual model, and gives a .NET programmer a very powerful tool of exploring Erlang interoperability.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

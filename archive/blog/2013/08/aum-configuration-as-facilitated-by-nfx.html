@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Aum Configuration as Facilitated By NFX </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Aum Configuration as Facilitated By NFX ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="aum-configuration-as-facilitated-by-nfx">Aum Configuration as Facilitated By NFX</h1>
+              
+<h2 id="problems-with-built-in-approaches">Problems with &quot;built-in&quot; approaches</h2>
+<p>Configuration is just another pain that everyone is constantly struggling with. I have never liked the .NET built-in configuration mechanisms. Why? Because, it does not have the so-needed functions that developers (we) have to compensate for daily. Although a typical .NET or Java developer is used to working with those limits, it is time to reconsider.</p>
+<p>It is a fact of life - that many systems to this day (in 2013!!!!) use INI-like files with hand-written primitive string parsers. It is a total fiasco when it comes to supporting config files for DEV, TEST, SANDBOX environments.</p>
+<p>Here, I have compiled a small list of things lacking in general config frameworks I have been working with in the past 15 years:</p>
+<ul>
+<li>Centralized network configuration - what if I have to configure 10 servers? Do I copy files? How to keep all configs in one place, say SQL db?</li>
+<li>Absurdly complex file locations, I once spent 1 hr trying to find the app.config file for some desktop app of mine on Windows Vista computer as installer put the file in the abyss or Profile..... folders</li>
+<li>Microsoft .NET configuration framework has more than 100 classes, it is very complex yet very inflexible. Many people parse text files by hand</li>
+<li>Inability to evaluate variables, i.e. in .NET there is no variable support in configuration, one must parse it by hand. INI files lack it. Registry is even more mess and hard to deal with</li>
+<li>Painful APIs, i.e. an attempt to read a non-existing node must be always precluded by IF statements in .NET. Int values are hard to get as bool, dates as numbers etc...</li>
+<li>Absence of unified configuration tree that could be hydrated from different sources, be it XML, INI, JSON, or even command-line args</li>
+<li>And finally - the <strong>absence of unified configuration application</strong> - every component needs to configure itself &quot;by hand&quot;</li>
+</ul>
+<h2 id="welcome-to-nfx-configuration">Welcome to NFX Configuration</h2>
+<p>NFX library provides a unified configuration approach by providing:</p>
+<ul>
+<li>Format-abstract configuration <strong>tree in-memory</strong></li>
+<li>Support for <strong>navigation</strong> (similar to x-path) within the tree</li>
+<li><strong>Variable evaluation</strong>, node inter-referencing, infinite cycles are detected and stopped</li>
+<li>Environment variable (external vars) evaluation built-in</li>
+<li>Pluggable variable value providers</li>
+<li>Structural <strong>merging, overrides</strong> with rules. Prohibition (sealed sections) of overrides</li>
+<li>Pluggable variable evaluation macros (i.e. ::NOW)</li>
+<li>Support for XML, Laconic, Command-Line Args formats</li>
+<li>Full support for <strong>imperative constructs</strong> (macros) - loops, vars, Ifs, blocks</li>
+<li>Unified model to configure classes,services, properties,fields etc. from configuration</li>
+<li><strong>Aspect injection with configuration Behaviors</strong> - named kits of config values that may be applied to different nodes indirectly. This approach addresses <strong>cross-cutting concerns</strong> on the configuration level</li>
+<li>Multiple getters for different nodes and data types (i.e. ValueAs: String/Date/Enum/Int.....) with defaults</li>
+</ul>
+<p>Example of an XML-based configuration:</p>
+<pre><code class="lang-xml">&lt;nfx log-root=&quot;c:\nfx\&quot; log-csv=&quot;NFX.Log.Destinations.CSVFileDestination, NFX&quot; log-debug=&quot;NFX.Log.Destinations.DebugDestination, NFX&quot; debug-default-action=&quot;LogAndThrow&quot; debug-conf-refresh=&quot;false&quot; app-name=&quot;test-client&quot;&gt;
+
+  &lt;log name=&quot;Logger&quot; default-failover=&quot;destFailures&quot;&gt;
+
+    &lt;destination type=&quot;$(/$log-csv)&quot; name=&quot;$(/$app-name)&quot; filename=&quot;$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log&quot; create-dir=&quot;true&quot; min-level=&quot;Info&quot;&gt;&lt;/destination&gt;
+
+    &lt;destination type=&quot;$(/$log-csv)&quot; name=&quot;$(/$app-name)-perf&quot; filename=&quot;$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log&quot; create-dir=&quot;true&quot; min-level=&quot;PerformanceInstrumentation&quot; max-level=&quot;PerformanceInstrumentation&quot;&gt;&lt;/destination&gt;
+
+    &lt;destination type=&quot;$(/$log-debug)&quot; name=&quot;$(/$app-name)-debug&quot; filename=&quot;$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log&quot; min-level=&quot;Debug&quot; max-level=&quot;TraceZ&quot;&gt;&lt;/destination&gt;
+  &lt;/log&gt;
+&lt;/nfx&gt;
+</code></pre><p>Example of a Laconic configuration with the same tree as the above:</p>
+<pre><code>nfx
+{
+  log-root=&quot;c:\nfx\&quot;
+  log-csv=&quot;NFX.Log.Destinations.CSVFileDestination, NFX&quot;
+  log-debug=&quot;NFX.Log.Destinations.DebugDestination, NFX&quot;
+  debug-default-action=&quot;LogAndThrow&quot;
+  debug-conf-refresh=&quot;false&quot;
+  app-name=&quot;test-client&quot;
+
+  log
+  {
+    name=&quot;Logger&quot; default-failover=&quot;destFailures&quot;
+
+    destination {
+      type=&quot;$(/$log-csv)&quot;
+      name=&quot;$(/$app-name)&quot;
+      filename=&quot;$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log&quot;
+      create-dir=&quot;true&quot;
+      min-level=&quot;Info&quot; }
+
+
+    destination {
+      type=&quot;$(/$log-csv)&quot;
+      name=&quot;$(/$app-name)-perf&quot;
+      filename=&quot;$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log&quot;
+      create-dir=&quot;true&quot;
+      min-level=&quot;PerformanceInstrumentation&quot;
+      max-level=&quot;PerformanceInstrumentation&quot; }
+
+    destination {
+      type=&quot;$(/$log-debug)&quot;
+      name=&quot;$(/$app-name)-debug&quot;
+      filename=&quot;$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log&quot;
+      min-level=&quot;Debug&quot;
+      max-level=&quot;TraceZ&quot;}
+  }
+}//nfx - notice the use of comments
+</code></pre><p>Example of an command-line configuration used to inject some compiler settings. Yes, same framework for that:</p>
+<pre><code>gluec &quot;c:\mysrc\contacts&quot; -assemblies NFX.dll MyBusiness.dll
+                          -out &quot;c:\templates\&quot;
+                          -opt single-file=true crlf=dos comments=false
+                               override=true base=MyPages.SimplePageBase
+                          -sign name=&quot;Dmitriy&quot; date=now
+</code></pre><p>Because all of the things above come down to the same tree in memory, we can use those completely disjoint ways of specifying settings in the same way to configure classes in code like so:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Implements log destination that sends emails
+/// &lt;/summary&gt;
+public class SMTPDestination : Destination
+{
+  ......
+  [Config(&quot;$smtp-host&quot;)]
+  public string SmtpHost { get; set; }
+
+  [Config(&quot;$smtp-port&quot;)]
+  public int SmtpPort { get; set; }
+
+  [Config(&quot;$smtp-ssl&quot;)]
+  public bool SmtpSSL { get; set; }
+
+  [Config(&quot;$from-address&quot;)]
+  public string FromAddress { get; set; }
+
+  [Config(&quot;$from-name&quot;)]
+  public string FromName { get; set; }
+  .......
+}
+</code></pre><p>The configuration is a tree in memory, but how do we bind it to the actual code structures (properties, fields etc..)? How do we use it in our code? For that we have a number of ways.</p>
+<ul>
+<li>Of course you can write regular code to bind any configuration value into any variable at runtime.</li>
+<li>You can create Settings- derived type safe class that wraps configuration tree in a type-safe way. This is needed primarily for performance reasons when some tight code block may suffer from frequent access to text-based values * that involve string parsing</li>
+<li>You can use ConfigurationAttribute.Apply(object, section) method to apply config section data to some object</li>
+<li>You can implement IConfigurable.Configure(section) in your class and apply section data by code to your class. This is useful for handling dynamic configuration structures when, for example a &quot;parent&quot; class manages many subordinate child classes that are polymorphic and may be injected by configuration</li>
+</ul>
+<p>This topic organically touches inversion-of-control (really dependency injection) container of NFX.ApplicationModel. In Aum (and NFX) any process is hosted in a IApplication derivative, which injects all of its services into its own properties. There are many cases when one needs to configure their own particular components, for that FactoryUtils class is used which &quot;manufactures&quot; object instances as specified by the configuration and checks certain contract assertions supplied:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Creates and configures an instance of appropriate configurable object
+/// as specified in supplied config node. Applies configured behaviors
+/// &lt;/summary&gt;
+public static T MakeAndConfigure&lt;t&gt;(IConfigSectionNode node, Type defaultType = null,
+                                    IApplication application = null, object[] args = null)
+       where T : IConfigurable
+...............
+
+protected override void DoConfigure(IConfigSectionNode node)
+{
+  base.DoConfigure(node);
+
+  foreach (var snode in
+               node.Children.Where(n =&gt; n.IsSameName(CONFIG_SINK_SECTION)))
+    RegisterSink(FactoryUtils.MakeAndConfigure(snode) as LogSink);
+}
+</code></pre><h2 id="aum-cluster-configuration">Aum Cluster Configuration</h2>
+<p>Aum Clusterware is built on top of NFX (on CLR platform), so it is all based on the NFX.Environment.Configuration classes, however it takes that configuration capabilities to the next level - the <strong>hierarchical configuration tree</strong> that the cluster is configured from. Because of it, we do not need to maintain configuration for 1000s of servers, we project configuration segments down the tree to arrive to final configuration section that is built for particular node/service/end point. We do come all the way down to endpoint level.</p>
+<p>This topic definitely deserves a post of its own that I&#39;ll do in the next month.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

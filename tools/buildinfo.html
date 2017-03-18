@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Build Information Generator </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="Build Information Generator ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,9 +64,22 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="build-information-generator">Build Information Generator</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<p>Generates build information that gets embedded into an assembly image. The information can be accessed using
+<code>NFX.Environment.BuildInformation</code> class.</p>
+<p>Example:</p>
+<pre><code class="lang-cs">....
+  //Prints BuildInfo for NFX assembly
+  Console.WriteLine( BuildInformation.ForFramework );
+....
+  //Prints the build timestamp for assembly
+  var bi = new BuildInformation(assembly);
+  var lastModified = bi.DateStampUTC;
+....
+</code></pre><p>The tool does not take any args. The activation is done via a pre-build step, 
+like so:  <code>&quot;$(TargetDir)buildinfo&quot; &gt; &quot;$(ProjectDir)BUILD_INFO.txt&quot;</code> where the BUILD_INFO.txt file
+must be included in solution as <code>Embedded Resource</code>. The file should be cloaked from the source control.</p>
 
             </article>
           </div>

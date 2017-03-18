@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NFX is Aum's Runtime Library </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NFX is Aum's Runtime Library ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="nfx-is-aums-runtime-library">NFX is Aum&#39;s Runtime Library</h1>
+              
+<h2 id="what-is-nfx">What is NFX?</h2>
+<p>NFX stands for .NET Framework Extension. It is written in C# and uses only <strong>very-BCL</strong> types (such as: IEnumerable, List, Dictionary, string, DateTime). I have explained this in the prior post here. The purpose of NFX is to provide UNISTACK - unified stack of libraries/software for solving real application programming tasks. There is also JFX which is very similar to NFX and I used it for building some Android apps. But NFX is much more than that.</p>
+<h2 id="what-is-aum">What is Aum?</h2>
+<p>Aum is the multi-paradigm programming language which has been an internal research project at IT Adapter since 2004. It is somewhat similar to modern C# in its feature set adding aspect-oriented-programming, message passing and pattern matching (a la ObjectiveC, Delphi and Erlang). This post is definitely not the right place for Aum language description, so I&#39;ll include just a few lines.</p>
+<p>Why new language? - because, in my opinion, there are no alternatives. Java is very sluggish in terms of feature adoption (where are lambdas in 2012?), yet C# is very good but really community must obey Microsoft. Mono is trying to add additional features, but let&#39;s be honest - how many projects are Mono-primary (vs VS/Win-Primary). Other languages are not general purpose enough i.e. Erlang was never designed to handle fast math, and even basic integer arithmetic is a few times slower than in a C app. See this perf test: <a href="http://blog.itadapter.com/2013/05/parallel-integer-summation-challenge.html">Parallel integer summation challenge Erlang vs CLR/C#</a>.</p>
+<p>After Microsoft added lambda functions and closures, C# code started to look much more functional, and honestly after Parallel Task Library addition many Erlang benefits started to vanish.</p>
+<p>Yes! C++ is very fast but it is not a modern language. Very easy to abuse, very hard to read, and still no way to do even simplest form of reflection converting string-&gt;type instance. I remember, back in 1995 when Delphi 1 came around, we were really excited to see things that allowed us to get method pointer from it&#39;s name. Not many .NET developer realize that much of .NET convenience actually came from Delphi RTL/VCL.</p>
+<p>Coming back to Aum language - the main idea is to build everything around AST. There is no intermediate code a-la Java bytecode or CIL or Dalvik code. Aum modules (compiled assemblies .dll/.class files analogue) are generically serialized abstract-syntax-trees. Aum supports aspect oriented programming with AST pattern matching so aspects may be injected in &quot;compiled&quot; code.</p>
+<p>Currently we have constructed lexer,parser and most of semantic analyzer. The first code gen is basically an AST-walking interpreter. We have plans to keep working on this project and start using LLVM for machine code JIT compilation. One of the compilation targets is native executable (no VM) just like with C/C++.</p>
+<h2 id="what-does-aum-language-have-to-do-with-nfx">What does Aum Language have to do with NFX?</h2>
+<p>I stopped investing much time in Aum language compiler back in 2008 because I realized something else. A language even a fast one, with a good compiler does not mean anything without organic library support. Since Aum is somewhat similar to C# in it&#39;s features, I decided to invest more into NFX.</p>
+<p>NFX is built around .NET CLR, but it is <strong>not a typical .NET framework at all!</strong> NFX is really a run-time/base class library for Aum language. We just decided to spend more time now building real applications that use NFX (since CLR is kindly written by Microsoft).</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

@@ -894,3 +894,11 @@ div.embeddedvideo iframe {
   width:  47%;
   margin: 10px;
 }
+
+.bookSubtitle {
+  font-size: 18px;
+}
+
+.img3rdpartyIcon {
+  height: 30px;
+}

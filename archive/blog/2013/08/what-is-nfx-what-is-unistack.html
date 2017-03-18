@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>What is NFX? What is Unistack? </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="What is NFX? What is Unistack? ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="what-is-nfx-what-is-unistack">What is NFX? What is Unistack?</h1>
+              
+<p>The name &quot;NFX&quot; stands for &quot;.NET Framework Extension&quot;, there is also &quot;JFX&quot; and &quot;*FX&quot; in works. All of them form a &quot;Unistack&quot;. &quot;Unistack&quot; = &quot;Unified Software Stack&quot;, a conceptually-monolithic library that facilitates whatever service/facilities developers need to create <strong>scale-able</strong>, solid business/data-driven application systems (not just applications). As such, the unistack support many facilities that traditionally are scattered among myriads of disjoint software frameworks.</p>
+<h2 id="what-is-nfx">What is NFX?</h2>
+<p>NFX is a <strong>application-system development framework</strong> that addresses the following concerns in a <strong>UNIFIED</strong> (as in the &quot;same pattern&quot;) way. Oh, and one more thing. NFX does not use any 3rd party libraries for the services it provides, except for things like database driver (i.e. MongoDB driver). So, NFX is a self-contained library (but for DB drivers) which is less than 2 mb in size compiled that provides:</p>
+<ul>
+<li><strong>Application Container</strong> - no counterpart in .NET framework<ul>
+<li>Provides a unified model (the same way of working with) for <strong>all application types</strong>: console, web, forms, service</li>
+<li>Provides central hub for all application services: log, instrumentation, glue, throttling, security, zoned time etc.</li>
+<li>Dependency injection container</li>
+<li>Policy/Behavior injection container</li>
+<li>Configuration management</li>
+<li><strong>Big Memory</strong> object database client - promotes <strong>stateful in-memory programming mode</strong> for web and other server applications. Supports <strong>virtual out-of-process</strong> heaps of native CLR objects, supported by custom-purposed CLR-specific - - serialization mechanisms, with <strong>ability to transform object memory field structure between software upgrades</strong></li>
+</ul>
+</li>
+<li><strong>Code Analysis</strong> - no counterpart in .NET framework<ul>
+<li>Promotes run-time code/textual analysis that is very useful for pattern matching, serialization of dynamic formats and code inventorization</li>
+<li>Provides general abstraction for <strong>languages</strong>, their <strong>lexers, parsers</strong> and semantic analyzers</li>
+<li>Facilitates code analysis, provides pattern-matching <strong>language polymorphic Finite State Machine</strong> implementations</li>
+<li>Organically supports non-copying serializers/deserializers of various text-based dynamic formats (XML, JSON, Erlang tuple stream, Laconic, etc.)</li>
+</ul>
+</li>
+<li><strong>Data Abstraction Layer</strong> - replaces System.Data, ORMs (nHibernate, LINQ to SQL, Entity Framework)<ul>
+<li>Decouples business code from particular backing store implementations, supports SQL and NoSQL backends in the same way</li>
+<li>Scaffolds RDB and NoSQL data, based on meta-information</li>
+<li>Generates CRUD SQL automatically according to &quot;Convention-over-Config&quot; pattern, with ability to override any underlying provider statement</li>
+<li>Abstracts non-homogeneous/hybrid data stores in a unified data-access service available within the application container</li>
+<li>Support as of right now: <strong>PostgreSQL, MsSQLServer, MySQL, MongoDB</strong>. Planned: Oracle, DB2, Riak, CouchDB, Redis, Mnesia</li>
+<li>DataStore providers may utilizes NATIVE CAPABILITIES of the target backend, developers can use backend-proprietary features without sacrificing performance (i.e. use CONNECT BY in ORACLE)</li>
+<li>Ability to optionaly implement Query handlers in code i.e. when particular backend can not perform some action using built-in command</li>
+</ul>
+</li>
+<li><strong>Environment / Configuration</strong> - compensates for .NET configuration framework deficiencies described <a href="/archive/blog/2013/08/aum-configuration-as-facilitated-by-nfx.html" title="Aum Configuration as Facilitated By NFX">here</a><ul>
+<li>Format-abstract configuration tree in memory</li>
+<li>Non-file-based configurations (i.e. database configuration, cluster configuration, command-args-based configuration)</li>
+<li>Supports XML and Laconic configuration file formats by default</li>
+<li>Embed-able in Microsoft configuration system (i.e. web.config)</li>
+<li>Full support for variable evaluation within configuration, path concatenation support (slashes)</li>
+<li>Node navigation a la XPath (but works on any format including JSON and INI files)</li>
+<li>Full support for imperative macro execution within configuration (IF, LOOP, SET)</li>
+<li>Structural configuration merging, overrides, with rules (allow/stop/deny)</li>
+<li>Aspect injection with Behaviors</li>
+<li>Host environment variables support</li>
+<li>APIs to configure classes (fields/properties) using attributes declaratively or imperatively</li>
+<li>Plug-able macros for variable and function evaluation (i.e. DATE= :NOW)</li>
+<li>Dependency injection class factory utils integrated</li>
+<li>Unified way to configure any compoent in NFX (be it logger, CRUD data store, MVC, or anything else)</li>
+</ul>
+</li>
+<li><strong>Instrumentation</strong> - much more flexible than .NET performance counters (i.e.write into cluster server or NoSQL db or file)<ul>
+<li>Events, gauges, levels, typed classes - Datum-based type safe classes checked at compile time</li>
+<li>Multiple classifications of instruments (i.e. MyDatabaseFreePrimaryDisk = MyDatabaseIsntrument, IOInstrument, DataVolumeInstrument, etc. )</li>
+<li>Asynchronous transparent acquisition of data - non performance affecting</li>
+<li>Plug-able instrumentation backends (i.e. MongoDB, log file, Aum Cluster Server)</li>
+<li>Application container log integration</li>
+<li>Multidimensional histograms</li>
+</ul>
+</li>
+<li><strong>Code Inventorization</strong> - no counterpart in .NET framework<ul>
+<li>Promotes decoration of types and methods with Inventory attribute</li>
+<li>Allows to automatically discover various components of the system based on their logical classification (i.e. deployment risk)</li>
+<li>Allows for creation of various automation tools that may generate/transform code based on some other code/metadata provided by inventorization</li>
+<li>In cloud/cluster framework allows for automatic registration of components, services and their coupling</li>
+</ul>
+</li>
+<li><strong>Various IO Formats</strong> - no such concept in .NET framework<ul>
+<li>Provides polymorphic StreamerFormat-derived classes that allow for efficient reading/writing of various binary terms</li>
+<li>Supports unified parsing of binary format such as Slim, Erlang OTP etc.</li>
+<li>Supports native Hadoop binary formatting (protocol)</li>
+</ul>
+</li>
+<li><strong>Logging</strong> - no built-in library in .NET framework (replaces MS EntLib, Log4Net, NLog, etc.)<ul>
+<li>Asynchronous logging, priority logging</li>
+<li>Sinks: MsSQLServer, SMTP, CSV file, debug file, MongoDB, Composite, AsyncComposite, *nix Syslog</li>
+<li>Filters: Level ranges, days of week, hour ranges, date ranges, message patterns, custom filters (injectable filter statement)</li>
+<li>SLA, Failures, Failovers (when A fails, log to B)</li>
+<li>Flood prevention (log message time latch)</li>
+<li>DEBUG/TRACE integration</li>
+<li>Instrumentation integration</li>
+</ul>
+</li>
+<li><strong>Record Model - MVVM not only for Web</strong> - no built-in library in .NET framework<ul>
+<li>Unified model for: Web, console, Forms, or anything else (Wpf, Silverlight etc.)</li>
+<li>Allows developers to write complex business logic without considering the particular view/UI engine</li>
+<li>Supports complex lookup scenarios - foreign keys selectable from a different model/screen</li>
+<li>Various levels of validation: record-level, field-level, deferred</li>
+<li>Field attributes: Enabled, Visible, Applicable, ReadOnly, Validated, Valid, Modified, Description, Watermark... and many more</li>
+<li>Field validation attributes: Required, Default, Min/Max checking, Regexp, US Zip/Phone, Lookup Dictionaries, Char Casing, Passwords</li>
+<li>Automatic DataStore CRUD (no need to write any SQL or NoSQL commands to load/save records) with ability to override default behaviors</li>
+<li>Stateful programming - models may be retained between calls in BigMemory heap allowing for 100% stateful programming in volatile environments (i.e. on the Web)</li>
+<li>Custom validation scripts for various targets (i.e. field/record-level validation JavaScript for browser)</li>
+</ul>
+</li>
+<li><strong>Relational Model</strong> - no built-in library either .NET or any other major framework<ul>
+<li>Declarative well-structured programming language for database design (not only for RDBMS)</li>
+<li>Database schema becomes parsable configuration file - i.e. can generate code, analyze dependencies etc. Can not parse ORACLE specific DDL now to generate C# code? How about MongoDB?(there is no DDL in MongoDB), however there is RelationSchema in NFX which is the same source be it ORACLE, MongoDB, Google BigTable or anything else that you may to want to model against</li>
+<li>Pluggable backend compiler generates DDL/script for particular backends</li>
+<li>Supports: tables, check constraints, keys, indexes, foreign keys, comments, verbatim scripts, domains, identities</li>
+<li>Allows to execute macros - i.e.create many tables in a loop and make them inter-dependent</li>
+<li>Outputs DDL statements of various kinds in either different or the single files</li>
+<li>Supports data domains (even if backend does not support it) with pick-lists and range checks</li>
+<li>Supports identities that result in different entities (Sequence in ORACLE, IDENTITY in MsSQL etc..)</li>
+<li>Supports delta schema generation</li>
+</ul>
+</li>
+<li><strong>Security</strong> - built-in support in .NET is very weak and hard to deal with (especially when there are 100s of permissions to check). .NEt permissions are called &quot;Roles&quot; and basically are boolean flags. In NFX permissions are complex vectors that may support integer levels of access along with any number of custom flags (i.e. &quot;allow to print invoice, but hide The co-payor names&quot;)<ul>
+<li>Integrated with all components of NFX</li>
+<li>Unified security model for: web, console, service, forms, wpf, etc.</li>
+<li>Declaratively guard mathods/classes/actions, or imperatively check access levels by hand</li>
+<li><strong>Typed permissions</strong>, no need to type strings, type classes instead and get a compile-time error if mispelled</li>
+<li><strong>Imperative permissions</strong>, write addition security assertions in the permission - inversion of control principle</li>
+<li>Designed to handle 1000s of permissions/grants per user - this is needed for systems with many screens where every field/button may need to be protected</li>
+<li>Smart security descriptor caching /invalidation</li>
+<li>Credentials/Identity/Tokens marshalling, transparent impersonation of users on remote hosts via Glued endpoints</li>
+<li>Built for modern web/distributed systems: Integration with <strong>OAuth, Twitter, Facebook, LinkedIn and others</strong> using flexible Credentials class (that you can derive from)</li>
+</ul>
+</li>
+<li><strong>Serialization</strong> - replaces various 3rd party libs working with JSON. Replaces DataContractSerializer for internal Glue programming<ul>
+<li>Slim Serialization - supports efficient binary serialization of CLR types. Implementation uses dynamic compilation of expression trees that yields much better (up to 15 times faster) performace than binary formatter. No need for   - data contracts.</li>
+<li>JSON Serialization - very fast reading/writing objects without extra string copies. Perform JSON pattern matching over lexer-provided token stream (no need to parse the content if match does not happen). Output objects into JSON in   - a custom way (IJSONWritable).</li>
+<li>Erlang native binary term serialization</li>
+<li>Portable Object Documents - a format to express complex (including cyclical) native object graphs in normalized way (i.e. without reference cycles). Change object version and migrate objects using transforms</li>
+</ul>
+</li>
+<li><strong>Service Model</strong> - no counterpart in .NET<ul>
+<li>Promotes a concept of a light-weight service - a &quot;process&quot; that may or may not own a thread/threads</li>
+<li>Integrates in dependency injection application container. All major components in NFX are services</li>
+<li>Provides message pumps/queues for asynchronous parallel programming</li>
+</ul>
+</li>
+<li><strong>Templatization</strong> - in .NET only text templates are implemented for web an VS templates<ul>
+<li>Allows to create templates for any content generation (not only text, i.e. may create templatized images)</li>
+<li>Provides text-based engine for generic document generation, and web documents. Performs 25% faster than classic ASP.NET pages and up to 40% faster than Razor</li>
+<li>Web: may be served as pages or MVC views. Templates are 100% embed-able in DLL, no need to deploy files. No one will mend web page files by hand on a 100 server farm</li>
+</ul>
+</li>
+<li><strong>Throttling</strong> - no counterpart in .NET<ul>
+<li>Declarative/imperative control of throughput</li>
+<li>Time sliding/spacing throttles</li>
+<li>Execution quotas (transactions per second, CPU% etc.)</li>
+</ul>
+</li>
+<li><strong>Time Services</strong> - no counterpart in .NET as there are no &quot;service&quot; and &quot;application&quot; concepts<ul>
+<li>Facilitates distributed cluster-enabled programming in regions that span many time zones</li>
+<li>Time Zoning in the application container. All components of the container may work in pre-configured zones (i.e. log time, transaction time, local time etc.). Zones defined by policies (possibly cluster-global)</li>
+<li>Injectable external time sources (high precision/remote clocks)</li>
+<li>Inter-component Time zone conversions</li>
+</ul>
+</li>
+<li><strong>Web-specific MVC (Model View Controller)</strong> - supersedes ASP.MVC<ul>
+<li>Tiny implementation (less than 15 classes)</li>
+<li>Routing support, controllers, actions, parameter binding, JSON support</li>
+<li>100% integrated with security/authorization/authentication - just tag action methods with permission attributes (that may be typed)</li>
+<li>May use MVC without routing</li>
+<li>Supports 100% stateful controllers (in addition to traditional stateless architecture) - controller instances may live in BigMemory heaps</li>
+<li>Declarative control of controller lifecycle, timeouts, security, Http constraints etc.</li>
+<li>Automatic payload parsing/assignment toform action methods</li>
+<li>Integrated support for NFX.Templatization (return typed views etc.)</li>
+</ul>
+</li>
+<li><strong>Web controls for RecordModel MVVM (auto building controls)</strong> - no similar concept in .NET or other major frameworks<ul>
+<li>Utilize metadata</li>
+<li>Think about records and fields, not about divs and CSS</li>
+<li>Override by hand in custom cases</li>
+<li>Field views and grids</li>
+<li>We support foreign keys (when they have to be looked-up from other screens with 100000 rows )</li>
+<li>Declarative fields placement in HTML template markup</li>
+</ul>
+</li>
+<li><strong>Windows forms controls for RecordModel</strong> - no similar concept in .NET or other major frameworks<ul>
+<li>Very similar to the controls on the Web</li>
+<li>Utilize metadata</li>
+<li>Thinks about records and fields, not boxes/buttons and style properties</li>
+<li>Override by hand in custom cases</li>
+<li>Field views, grids and forms</li>
+<li>We support foreign keys (when they have to be looked-up from other screens with 100000 rows)</li>
+</ul>
+</li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

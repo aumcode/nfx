@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Security </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Security ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../images/NFX.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../index.html">
+                <img id="nfx-logo" src="../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="security">Security</h1>
+              
+<p>Let see on the example how interaction between nodes with some security requirements can be implemented with Glue technology.
+Here is configuration on the server node. On the client node only bindings section is required.</p>
+<pre><code class="lang-js">application
+{  
+  glue
+  {   
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+        server-transport
+        {
+          rcv-buf-size=131072
+          snd-buf-size=131072
+          rcv-timeout=15000
+          snd-timeout=15000
+        }
+      }
+    }
+
+    servers
+    {
+      server
+      {
+        node=&quot;sync://localhost:8080&quot;
+        contract-servers=&quot;Glue.Server.Services.SecureService, Glue.Server&quot;
+      }
+    }
+  }
+</code></pre><p>In this example some security requirements are set. 
+Here are two registered users with different permission levels (see <code>NFX.Security.AccessLevel</code> that sets level of access granted to user for certain permission).</p>
+<pre><code class="lang-js">security
+{
+  users
+  {
+    user
+    {
+      name=&quot;Clinton&quot;
+      description=&quot;Bill Clinton&quot;
+      id=&quot;clinton&quot;
+      password=&quot;89c246298be2b6113fb10ba80f3c6956&quot; // phash &#39;billy&#39;
+      rights
+      {
+        specialized
+        {
+          superman  {level=1}
+          president {level=1}
+        }
+        gov
+        {
+          executive {level=0}  // he is not current president
+        }
+      }
+    }
+
+    user
+    {
+      name=&quot;Trump&quot;
+      description=&quot;Donald Trump&quot;
+      id=&quot;trump&quot;
+      password=&quot;10189466c646898c1fcf2363b5cf038d&quot; // phash &#39;chicago&#39;
+      rights
+      {
+        specialized
+        {
+          superman  {level=1}
+          president {level=1}
+        }
+        gov
+        {
+          executive {level=1} // he is current president
+        }
+      }
+    }
+  }
+}
+</code></pre><p>As it was mentioned above contract should be specified with Glued attribute. AuthenticationSupport attribute indicates that contract supports authentication using AuthenticationHeader. When header is passed then Glue server will use its data to set user context through Application.SecurityManager. If this attribute not set then Glue runtime will ignore AuthenticationHeader that marshalls user authentication information. AdHocPermission attribute represents a permission check instance which is a-typical and is based on string   arguments.</p>
+<pre><code class="lang-csharp">[Glued]
+[AuthenticationSupport]
+[AdHocPermission(&quot;specialized&quot;, &quot;superman&quot;, AccessLevel.VIEW)]
+public interface ISecureService
+{
+  string Echo(string message);
+
+  // This method can only accessed by superman
+  // who is also a president
+  [AdHocPermission(&quot;specialized&quot;, &quot;president&quot;, AccessLevel.VIEW)]
+  string PresidentEcho(string message);
+}
+
+// Service on the server
+public class SecureService : ISecureService
+{
+  public string Echo(string message)
+  {
+    return &quot;Secure service echo: &quot; + message;
+  }
+
+  [AdHocPermission(&quot;gov&quot;, &quot;executive&quot;, AccessLevel.VIEW)]
+  public string PresidentEcho(string message)
+  {
+    return &quot;President secure echo: &quot; + message;
+  }
+}
+</code></pre><p>Implementation of client class is received with calling</p>
+<p>gluec.exe <assembly> /o cl-suffix=&quot;AutoClient&quot;<p>
+<p>where <assembly> - path to CLR assembly to scan for types marked with Glued attribute and cl-suffix - class suffix gets attached at the end of client class name.<p>
+<pre><code class="lang-csharp">public class SecureServiceAutoClient : ClientEndPoint,
+  @Glue.@Contracts.@Services.@ISecureService
+{
+  private static TypeSpec   s_ts_CONTRACT;
+  private static MethodSpec @s_ms_Echo_0;
+  private static MethodSpec @s_ms_PresidentEcho_1;
+
+  static SecureServiceAutoClient()
+  {
+    var t = typeof(@Contracts.@Services.@ISecureService);
+    s_ts_CONTRACT = new TypeSpec(t);
+    @s_ms_Echo_0 = new MethodSpec(t.GetMethod(&quot;Echo&quot;,
+                                    new Type[]{ typeof(@System.@String) })
+                                  );
+    @s_ms_PresidentEcho_1 = new MethodSpec(t.GetMethod(&quot;PresidentEcho&quot;,
+                                             new Type[]{ typeof(@System.@String) })
+                                           );
+  }
+
+  ...
+
+  public @System.@String @Echo(@System.@String  @message)
+  {
+    var call = Async_Echo(@message);
+    return call.GetValue&lt;@System.@String&gt;();
+  }
+
+  public CallSlot Async_Echo(@System.@String @message)
+  {
+    var request = new RequestAnyMsg(s_ts_CONTRACT,
+                                    @s_ms_Echo_0,
+                                    false,
+                                    RemoteInstance,
+                                    new object[]{@message});
+    return DispatchCall(request);
+  }
+
+  // two similar methods for ISecureService.PresidentEcho
+}
+</code></pre><p><code>ClientEndPoint</code> class represents an ancestor for client classes that make calls to server endpoints. 
+This and descendant classes are thread safe only for making non-constructing/destructing remote calls, 
+unless <code>ReserveTransport</code> flag is set to true in which case no operation is thread safe. 
+This class is not thread safe in general, however Glue allows for concurrent remote calls via the same endpoint 
+instance if the following conditions are met:</p>
+<ul>
+<li>The endpoint instance has not reserved its transport (<code>ReserveTransport</code>=false)</li>
+<li>Either remote contract is stateless or none of the concurrent calls are constructing/destructing remote instance </li>
+</ul>
+<p>The second condition ensures that stateful remote instance is consistent, otherwise operations may get executed out-of-order in the multithreaded scenario.
+<code>TypeSpec</code> and <code>MethodSpec</code> represent type and method specifications for marshalling contract types between glued peers correspondingly.
+<code>DispatchCall</code> is method of <code>ClientEndPoint</code> class, it dispatches a call into binding passing message through client inspectors on this endpoint.
+<code>CallSlot</code> represents a class that is immediately returned after transport sends RequestMsg. This class provides <code>CallStatus</code> and <code>RequestID</code> properties where the later is used to match the incoming <code>ResponseMsg</code>. <code>CallSlots</code> are kinds of &quot;spirit-less&quot; mailboxes that keep state about the call, but do not possess any threads/call events. Working with <code>CallSlots</code> from calling code&#39;s existing thread of execution is the most efficient way of working with Glue (in high load cases), as it does not create extra object instances for asynchronous coordination and continuation.
+<code>CallSlot.GetValue</code> method returns a value from the other side, it gets the response message and checks it for errors, throwing <code>RemoteError</code> exception if one came from server. 
+Accessing this property blocks calling thread until either <code>ResponseMsg</code> arrives or timeout expires. Accessing this method for one-way methods throws exception.
+<code>RequestMsg</code> represents request message from client to server that contains contract type, method specification and invocation arguments which are included as object array. Although the most convenient and simple, this way of working with glue is slower than using its typed version which needs to be derived-from for every method (that allows to avoid boxing).
+So fragment of code with <code>SecureServiceAutoClient</code> usage may look like:</p>
+<pre><code class="lang-csharp">try
+{
+  using (var client =
+               new SecureServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  {
+    client.Headers.Add(new AuthenticationHeader(
+                         new IDPasswordCredentials(user, password)));
+
+    if (!isPresident)
+      response = client.Echo(&quot;test&quot;);
+    else
+      response = client.PresidentEcho(&quot;test&quot;);
+
+    System.Console.WriteLine(response);
+  }
+}
+catch (Exception error)
+{
+  System.Console.WriteLine(error.Message());
+}
+</code></pre><p>Now due to security settings in the configuration and the contract there will be errors if you tries to log in neither as &quot;clinton&quot; or &quot;trump&quot;, 
+or tries to send message to server as &quot;clinton&quot; with isPresident=true. 
+If you log in as &quot;clinton&quot; you can use isPresident=false only and will get &quot;Secure service echo: test&quot; as a result. As &quot;trump&quot; you can use both values of isPresident and will get both corresponding responses.
+In this fragment <code>AuthenticationHeader</code> marshalls user authentication information.</p>
+</assembly></assembly>
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>File Utilities - getdatetime </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="File Utilities - getdatetime ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,48 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="file-utilities---getdatetime">File Utilities - getdatetime</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<p>Returns the timestamp offset from the local timestamp by the specified parameters.</p>
+<pre><code class="lang-css">Usage:
+  getdatetime [format] ([[{+/-},{part spec},{num}]/[{=,{part spec},{num}]])
 
+  [format] - standard .net date/time formatting pattern 
+     &quot;yyyyMMddHHmmss&quot; will be used if no [format] param supplied
+
+  (modifier) - optional, allows to alter date time, may be repeated, 
+               evaluated from left to right
+
+   Shift Modifier:
+    [{+/-},{part spec},{num}] - allows to shift date time
+      {+/-}  add/subtract
+      {part spec}  date/time part to change
+      {num}  value of change (integer)
+
+   Set Modifier:
+    [{=},{part spec},{num}] - allows to set date time part to a specific value
+      {=}  set
+      {part spec}  date/time part to change
+      {num}  new value (integer)
+
+   part spec:
+      {m/d/y/h/i/s}
+          m  - month
+          d  - day
+          y  - year
+          h  - hour
+          i  - minute
+          s  - second
+
+
+Example:
+
+ getdatetime yyyyMMddHHmmss  -,d,15
+  returns date and time 15 days ago from current system date time stamp
+
+ getdatetime yyyyMMddHHmmss  -,d,15 =,h,1 =,i,0 =,s,0
+  returns date 15 days ago from current system date, time is set to 1:00 AM
+</code></pre>
             </article>
           </div>
           

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Telemetry Viewer </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="Telemetry Viewer ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,20 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="telemetry-viewer">Telemetry Viewer</h1>
               
-              <p>Tools</p>
-<p>...</p>
-
+<p>NOTE: This tool is <strong>deprecated</strong> in favour of web-based instrumentation UI.</p>
+<p>Provides a telemetry server endpoint bound to <code>ITelemetryReceiver</code> implementation
+ with WinForms-based GUI (charts).</p>
+<p>Point the <code>TelemetryInstrumentationProvider</code> at the server endpoint to start the visualization.</p>
+<pre><code class="lang-xml">&lt;instrumentation name=&quot;Instruments&quot; interval-ms=&quot;5000&quot;&gt;
+  &lt;provider  name=&quot;Telemetry Instrumentation Provider&quot;
+             type=&quot;NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider&quot;
+             use-log=&quot;false&quot;
+             receiver-node=&quot;sync://127.0.0.1:8300&quot;
+  /&gt;
+&lt;/instrumentation&gt;
+</code></pre>
             </article>
           </div>
           

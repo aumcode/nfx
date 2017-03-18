@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Password Hash Generator </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="Password Hash Generator ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,57 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="password-hash-generator">Password Hash Generator</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<p>NFX Security functionality is provided by the various <code>ISecurityManager</code> injectable implementations 
+which, in turn use injectable <code>IPasswordManager</code> providing password generation/hashing functions.
+See the <a href="/docs/NFX.Security.html">NFX.Security</a> topic.
+The <code>phash</code> tool is the CLI application specifically designed to generate password vectors for password managers.
+The strength and algorithm used for hashing is injectable via configuration. The tool also
+takes command line arguments.</p>
+<p>Tool capabilities:</p>
+<ul>
+<li>Acquires entropy samples from user, unless <code>-ne</code> is specified</li>
+<li>Requires certain password strength score, as specified by <code>-score</code></li>
+<li>Allows for various hashing levels via <code>-lvl</code></li>
+</ul>
+<p>The configuration file specifies the PasswordManager, available hashing algorithms.
+By default the <code>DefaultPasswordManager</code> is injected which uses the simplest 
+<code>MD5PasswordHashingAlgorithm</code>.</p>
+<p>Command-line usage:</p>
+<pre><code class="lang-css">
+   phash [/h | /? | /help]
+              [/pp | /pretty]
+              [/ne | /noentropy]
+              [/st | /score]
+              [/lvl |/level]
 
+
+ Options:
+
+ /h | /help | /? - displays help message
+ /pp | /pretty  - pretty prints hashed password
+ /ne | /noentropy  - precludes entropy acquisition from user
+ /st | /score int - strength score threshold
+
+  /lvl | /level  level - the strength level of hash
+              level = Default| Minimum |BelowNormal|Normal|AboveNormal|Maximum
+
+ Examples:
+
+  phash -pp -st 90 -lvl Normal
+ Pretty print with score threshold 90% hashing strength Normal
+</code></pre><p>The example password vector (JSON object) for password &quot;abcd1234&quot;, note: the tool was executed with 
+ <code>-st 10</code> switch that lowered the required password score (as &quot;abcd1234&quot; is a very weak password that would have been rejected without the switch)</p>
+<pre><code class="lang-json">Hashed Password:
+
+{
+  &quot;algo&quot;:&quot;MD5&quot;,
+  &quot;fam&quot;:&quot;Text&quot;,
+  &quot;hash&quot;:&quot;MckMtVWvDazQ3Q1+qcm1MA==&quot;,
+  &quot;salt&quot;:&quot;yil5Oom3kepMbyeOOwDGqaFtPbwHIGZYod1Yoxwr&quot;
+}
+</code></pre>
             </article>
           </div>
           

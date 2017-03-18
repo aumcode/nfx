@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>File Utilities - delbydate </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="File Utilities - delbydate ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../images/NFX.ico">
@@ -64,10 +64,22 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="file-utilities---delbydate">File Utilities - delbydate</h1>
               
-              <p>Tools</p>
-<p>...</p>
+<p>Deletes files according to the mask and time filter expression specified:</p>
+<pre><code class="lang-css"> Usage:
+    delbydate &quot;path&quot; &quot;expr&quot;
 
+    path - wildcards permitted
+    expr - standard C# date time expression. 
+           &#39;file&#39; - is the reference to current file date time
+
+ Example:
+
+  delbydate &quot;c:\temp\*.bak&quot; &quot;((file.Hour==5)||(file&lt;DateTime.Now.AddMonths(-6)))&quot;
+  This will delete any file that has .BAK extension and was written to last time either 
+  at 5 am or over 6 month ago
+</code></pre>
             </article>
           </div>
           

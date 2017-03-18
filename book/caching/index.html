@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Big Memory and Caching </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Big Memory and Caching ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../images/NFX.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../index.html">
+                <img id="nfx-logo" src="../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="big-memory-and-caching">Big Memory and Caching</h1>
+              
+<p>Managed runtimes can not handle more than 10 million objects without pauses for garbage collection. 
+Sometimes even 10 MM resident objects start to pause process. GC Heap defragmentation kills the application by adding unpredictable stalls. 
+The addition of physical RAM leads to increase of unpredictability even more as GC can now postpone its full sweep. 
+So it is practically impossible to use in 64/128/256GB RAM nowadays, occupied by small CLR objects - the process just stalls.</p>
+<p>All of the modern techniques (concurrent, background, parallel, server mode) try to overcome this situation but without any significant success. 
+CLR objects consume lots of RAM, for example a string “ABC” holds around 30 bytes instead of 3. 
+Java has the same issue, in spite of the fact that its VMs have way more options to control GC, but it is not enough for such big memory anyway. 
+The root of the problem: the GC “sees” references and has to traverse them to see what is still reachable and what is not, obviously it takes time and slows down the application.</p>
+<p>Many resident data objects are needed for different types of applications such as neural networks, caches, pre-computed data, etc. 
+Stateless design is not applicable, actually it is not possible to keep all data in database because it is very slow and it is needed to cache data right in-process anyhow. 
+It it is impossible to postpone garbage collection for a long time. </p>
+<h1 id="contents">Contents</h1>
+<ul>
+<li><p><a href="pile.html">Pile</a></p>
+</li>
+<li><p><a href="cache.html">Cache</a></p>
+</li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

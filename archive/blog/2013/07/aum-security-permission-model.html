@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Aum Security Permission Model </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Aum Security Permission Model ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="aum-security-permission-model">Aum Security Permission Model</h1>
+              
+<h2 id="overview">Overview</h2>
+<p>It is not a secret that application security is not a simple topic. In this post I will concentrate on the Authorization API side of it - something that is usually overlooked at the original design phases of most applications, then added later.</p>
+<p><strong>Aum framework uses permission-based security</strong> where named permission sets are called &quot;roles&quot;, in other words - <strong>Aum uses role-based security at the superficial level</strong>, that goes deeper down to permission level. This approach is much more granular than typical frameworks like ASP.MVC because we go down to permission level when we run methods, show pages, glue contracts etc.</p>
+<h2 id="what-are-permissions">What are permissions?</h2>
+<p>Permission are pieces of security-addressable functionality. We support two kinds of permissions: typed and ad-hoc permissions. Typed permissions are specified in code, and by definition, their namespace and class name establish a presence in security data space of authorization store. Ad-hoc permissions are not typed and must specify their string name and path.</p>
+<pre><code class="lang-cs">[Glued]
+[AuthenticationSupport]
+public interface ITestingContract
+{
+  [AdHocPermission(&quot;/Testing/CategoryA&quot;, &quot;Echo&quot;, AccessLevel.VIEW_CHANGE)] //adhoc permission
+  string Echo(string text);
+
+  [OneWay] 
+  [NotificationsPermission] //typed permission
+  void Notify(string text);
+
+  object ObjectWork(object dummy);
+}
+</code></pre><p>In most existing systems, permissions are specified as string literals (ASP.MVC) - similar to AdHocPermission in Aum. The advantage of this approach is simplicity for applications that do not need many security-addressable/guarded functions. However, when applications start growing big, it is not fun to keep repeating the same permission name in UI, Web server, App server and maybe 10 other places. Typed permissions solve this by providing a type-safe check at compile time - if you mistype you get an error.</p>
+<p>Another great benefit of typed permissions is their inherent imperative nature.</p>
+<h2 id="imperative-typed-permissions">Imperative Typed Permissions</h2>
+<p>Imperative permissions are typed permissions that specify permission/usecase-specific security conditions in their constructor and may override Check method. Think about it this way - a permission is not a boolean flag anymore, it has a logic of its own. This is a form of refactoring - instead of writing IF statements in every place where we check the permission, we rely on permission to do this work. Ultimately, the act of authorization obtains this boolean flag - PASS/FAIL, but how does it obtain it? Having a boolean flag in your permission store is sometimes not enough as you need to write more IF statements that check more things.</p>
+<p>Lets take a <strong>concrete example</strong>. Suppose we are building a point-of-sale (POS) application for a distribution club (like COSTCO) where every customer is known at the point of checkout. Suppose, we have some club member roles/levels like: SILVER, GOLD, PLATINUM - where every role defines a set of say 100 permissions. &quot;AlcoholCheckout&quot; is one of them. This permission is granted for GOLD level roles and up. What does this mean? This means that an under-aged customer may buy alcoholic beverages if he/she has earned enough membership credits.</p>
+<p>How is this problem addressed? Checking just for permission grant is not enough here, as the final authorization decision is based on customer&#39;s age. In Aum we would do an imperative typed permission check like so:</p>
+<pre><code class="lang-cs">public class CheckoutPerformer
+{
+  [AlcoholCheckoutPermission] //notice: no extra code here
+  void CheckoutAlcohol(CartItem item);
+  ................ 
+}
+
+
+public class AlcoholCheckoutPermission : TypedPermission
+{ 
+  public override bool Check()
+  {
+    return base.Check() &amp;&amp; Session.User.Age &gt; 21;
+  } 
+}
+</code></pre><p>What we could also do here, instead of checking against a constant (21), we could have looked up legal alcohol sale age limit for the user, depending on his/her locality. This approach allows us to use the same simple authorization schemes in the most complicated scenarios. Having moved the Check logic into a typed permission class we are no-longer limited by boolean checks. For example - we can now inject minimum desired AccessLevel at the point of application which is guarded.</p>
+<pre><code class="lang-cs">//In this example we supply security assertion in constructor call
+//Only registered voters can donate if they have enough access level
+[PageTemplatePermission(AccessLevel.VIEW_CHANGE, UserKind.RegisteredVoter)]
+public class MayorReElectionDonationPage : WebTemplate
+{
+  ................ 
+}
+
+//Same permission as above. Check is not user-dependent
+[PageTemplatePermission(AccessLevel.VIEW)]
+public class RallyInvitationPage : WebTemplate
+{
+  ................ 
+
+  //This will not be called if authorization assertion of linked page fails
+  [LinkPagePermission(typeof(MayorReElectionDonationPage)] 
+  private donationSection()
+  {
+    ...... //emit URL link to MayorReElectionDonationPage
+  }  
+}
+</code></pre>
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="106" height="20" style="shape-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd">
+  <linearGradient id="b" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="a">
+    <rect width="106" height="20" rx="3" fill="#fff"/>
+  </mask>
+  <g mask="url(#a)">
+    <path fill="#555" d="M0 0h53v20H0z"/>
+    <path fill="#4c1" d="M53 0h84v20H53z"/>
+    <path fill="url(#b)" d="M0 0h106v20H0z"/>
+  </g>
+  <g transform="matrix(0.045,0,0,0.045,0,1.0227272)">
+    <path fill="#ccc" d="M242 48c86,0 155,69 155,154 0,86 -69,155 -155,155 -85,0 -154,-69 -154,-155 0,-85 69,-154 154,-154zm38 184c-17,22 -48,26 -69,9 -21,-16 -24,-47 -7,-69 18,-21 49,-25 70,-9 21,17 24,48 6,69zm-82 101l59 -57c-22,5 -45,1 -63,-14 -21,-16 -30,-43 -27,-68l-53 58c0,0 -7,-13 -9,-37l93 -73c28,-20 66,-21 93,0 30,24 36,68 14,101l-68 97c-10,0 -30,-3 -39,-7z"/>
+  </g>
+  <g fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+
+    <text x="22" y="15" fill="#010101" fill-opacity=".3">build</text>
+    <text x="22" y="14">build</text>
+
+    <text x="58" y="15" fill="#010101" fill-opacity=".3">passing</text>
+    <text x="58" y="14">passing</text>
+  </g>
+</svg>
