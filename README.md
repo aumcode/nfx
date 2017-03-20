@@ -7,20 +7,32 @@ License: Apache 2.0
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
 
-NFX is written in C# and runs on a CLR machine, however it has very little to do with .NET.
-This framework contains truly unique intellectual assets and allows for unconventional things
-that significantly boost performance and simplify the development (such as stateful web). 
-The majority of the achievements are possible because of two key things:
+NFX is a modern .NET full stack framework designed for cloud. It is written in C# and runs on a CLR machine. 
+NFX supports app containers, configuration, big memory heaps, IPC, and other functions that significantly simplify 
+the development of large distributed systems. It contains truly unique intellectual assets and allows for unconventional
+things that significantly boost performance and simplify the development (such as stateful services/web). 
+The majority of the achievements are possible because of a few key things:
 
 * Unification of design - all components are written in the same way
-* Sophisticated serialization mechanism aka "teleportation"
+* Sophisticated serialization mechanism aka "teleportation" - moves objects between nodes
+* Object Pile - a 100%-managed "Big Memory" approach allowing for utilization of hundreds of gigabytes of ram without GC stalls
 
 promoting:
 
-* Stateful WEB programming (not mandatory)
+* Distributed systems: clusters/hierachices
+* IPC - contract-based object-oriented high performance services
+* Stateful programming (web/service) (not mandatory)
 * Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems 
-* Serving 50,000+ BUSINESS web requests a second (with logic) on a 4 core 3.0 GHz machine 
-  looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache)
+* High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a 4 core 3.0 GHz machine 
+  looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache))
+  
+good for:
+
+* General Scalability and Vendor de-coupling (i.e. hybrid DataStores with virtual queries and CQRS)
+* Distributed Macro/micro/nano services, REST or RPC
+* Actor-model systems with message passing and supervisors
+* In-memory processing, can keep hundreds of millions of business entities in-ram with full GC < 20ms
+* Supercomputer/Cluster/Farm applications (i.e. bulk rendering cluster, social graphs etc.)
 
 The concepts have been well tested and used. In the past 7 years, *teleportation mechanism has 
 moved trillions of various CLR object instances* (including non-trivial CLR cases like: structs with
