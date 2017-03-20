@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>ORM Idiotizm </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="ORM Idiotizm ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../../../../images/NFX.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../../../../index.html">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="orm-idiotizm">ORM Idiotizm</h1>
+              
+<p>For the over 10 past years I have been a strong critic of ORM concept. I feel that majority of people just don&#39;t understand the root of the problem with ORM, don&#39;t understand what ORM is for, and even should it be there in the first place. I truly think that it should not, the whole concept of ORM is wrong and here is why. I&#39;ll be talking in very practical terms. </p>
+<p>What is ORM? ORM allows us to map relational entities (read &quot;tables&quot; with keys and references) into objects in your code. Sounds very cool. Let me ask you a &quot;stupid&quot; question -  <strong>why do you need to have those objects in your code to begin with?</strong> Huh? No, wait, don&#39;t close this page, keep on  reading... why? Ah... because you need to show the grid of customers then change selected customer and save it back to db.</p>
+<p> Ok, let&#39;s start from display grid(or any kind of list, such as a treeview), so grid is object-oriented piece of software that &quot;draws&quot; lines on screen (or HTML)  that mimics a table, also it draws little string values in those &quot;cells&quot;, so grid needs to get some data to draw. OK, but don&#39;t we have data in database? WE DO. Can we read this data? WE CAN. Can we read different column types? WE CAN. Can we know what columns are in there (in database/table). Yes, WE CAN. Can we build grid directly from database. WE CAN. Can we do this automatically relying on database meta-data (data about columns, sizes, requirement etc...)? WE CAN.</p>
+<p> So, why do we need stupid POJO or POCO objects in between to draw grids? We do not. We need a &quot;smart adapter&quot;, - a class that is absolutely universal - it takes &quot;data descriptor&quot; (think of DataTable,DataSet,DataRow in .NET) and build grid columns including their default width, maybe even color to indicate importance, etc... This class (&quot;adapter&quot;) may also take custom style-rule set that will hide certain columns or make them smaller - but this is just  for DISPLAY ONLY purpose.</p>
+<p> Back in 1995 I have used client-server database and I needed to build an application with 200 data-entry screens. What I did, I created a grid-derivative that was &quot;so smart&quot; - in 90% of cases I just wrote a select SQL - formed a dataSource and then grid showed it to me in design time (I used Delphi 1) where I dragged and colored columns to make them look pretty. Thats it!  No Line of code was written in business layer, no line of code in the grid form, just NONE. No strings to configure, and when you add columns to database - they may or may not automatically appear in the grid for corresponding table, depending on &#39;AutoRebuildColumns&#39; boolean property. It also worked much faster than Hibernate (that did not exist back then) because it did not create any redundant copies of data in memory(no POJO/POCO).</p>
+<p>Same approach for displaying detail forms: textboxes, checkmarks, radios etc...  All you need is this: allow developer to place controls on form to satisfy client&#39;s particular layout requirements, wire-up every data-entry control DIRECTLY to database column by name (i&#39;ll explain how) and write NO BOILER PLATE CODE. If column &quot;Sex&quot; is required in table &quot;Customer&quot; then radio-button should automatically be named &quot;SEX&quot; and be required upon &#39;Save&quot;. You don&#39;t need to write any validation code, any &quot;Validators&quot; - this is all extra work and really not needed - everything is already explicitly defined in your database schema. </p>
+<p>How to connect, say textbox directly to TABLE.COLUMN in database? Easy - you need to write some &quot;framework&quot; code that make your textbox &quot;smart&quot; by associating this data-entry field with particular column by STRING NAME, make a property &quot;FieldName&quot;, and then everything should be read from metadata and applied to &quot;object-oriented&quot; properties of a text box, such as: Readonly, MaxSize  etc...   Some properties do not exist in DB, i.e. &quot;text color&quot; but that can be specified by developer in concrete form.</p>
+<p>You feel what I am getting at here? Yes, AUTOMATIC DATABASE REFLECTION, with 100% CUSTOMIZATION ability by developer in every screen, but this is much more rare that just displaying/saving data back and forth in &quot;default way&quot; - without special customization.</p>
+<p>Ok, now another part - working with &quot;BUSINESS&quot; objects. The truth is that in may cases you just don&#39;t need a business object because you are interfacing with table that has limited functionality, column and row count (think US_STATES table). For complex objects such as &quot;Patient Medical Record&quot; Hibernate and the like dont do you much good anyway, reason being - you need to have 100% control over SQL code/stored procedures being sent to database, and yes HQL is a language of Hibernate, but wait, why do I need it, I already know PL/SQL or t-SQL and know it well, and it has operators that Hibernate does not even dream about (think of compilation hints, things like grouping sets, CONNECT BY etc...).  So when I save &#39;Patient Medical Record&quot; I certainly use CRUD-like helpers but definitely not a monster like Hibernate or MS Entity framework.</p>
+<p>One last thought -  when you use LINQ that you all love so much, don&#39;t forget that LINQ knows nothing about your collections in terms of indexes.... binary searches... consequently it is all very slow linear search... some food for thought... LINQ to SQL? I&#39;d rather use SQL to C# (it&#39;s a joke).</p>
+<p>Let&#39;s use excavator to dig swimming pool and spoon to eat cake but not vice-versa.</p>
+<p>Read this link below, it will open you eyes!<br><a href="http://incubator.apache.org/empire-db/empiredb/hibernate.htm">What&#39;s wrong with Hibernate and JPA</a></p>
+<hr>
+<p>Dmitriy Khmaladze<br>January 27, 2010</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

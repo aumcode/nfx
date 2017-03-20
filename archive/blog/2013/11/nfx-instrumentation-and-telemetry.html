@@ -90,45 +90,46 @@ public interface IInstrumentation : ILocalizedTimeProvider
 /// &lt;/summary&gt;
 public abstract class Datum
 {
-      /// &lt;summary&gt;
-      /// Returns UTC time stamp when event happened
-      /// &lt;/summary&gt;
-      public DateTime UTCTime
-      /// &lt;summary&gt;
-      /// Returns UTC time stamp when event happened.
-      /// This property may be gotten only if IsAggregated==true, otherwise UTCTime value is returned
-      /// &lt;/summary&gt;
-      public DateTime UTCEndTime
-      /// &lt;summary&gt;
-      /// Indicates whether this instance represents a roll-up/aggregation of multiple events
-      /// &lt;/summary&gt;
-      public bool IsAggregated
-      /// &lt;summary&gt;
-      /// Returns count of measurements.
-      /// This property may be gotten only if IsAggregated==true, otherwise zero is returned
-      /// &lt;/summary&gt;
-      public int Count
-      /// &lt;summary&gt;
-      /// Returns datum source. Data are rolled-up by type of recorded datum instances and source
-      /// &lt;/summary&gt;
-      public string Source
-      /// &lt;summary&gt;
-      /// Returns rate of occurrence string
-      /// &lt;/summary&gt;
-      public string Rate
-      /// &lt;summary&gt;
-      /// Returns description for data that this datum represents.
-      /// Base implementation returns full type name of this instance
-      /// &lt;/summary&gt;
-      public virtual string Description
-      /// &lt;summary&gt;
-      /// Provides access to value polymorphically
-      /// &lt;/summary&gt;
-      public abstract object ValueAsObject { get;}
-      /// &lt;summary&gt;
-      /// Provides name for units that value is measured in
-      /// &lt;/summary&gt;
-      public abstract string ValueUnitName { get; }
+  /// &lt;summary&gt;
+  /// Returns UTC time stamp when event happened
+  /// &lt;/summary&gt;
+  public DateTime UTCTime
+  /// &lt;summary&gt;
+  /// Returns UTC time stamp when event happened.
+  /// This property may be gotten only if IsAggregated==true, otherwise UTCTime value is returned
+  /// &lt;/summary&gt;
+  public DateTime UTCEndTime
+  /// &lt;summary&gt;
+  /// Indicates whether this instance represents a roll-up/aggregation of multiple events
+  /// &lt;/summary&gt;
+  public bool IsAggregated
+  /// &lt;summary&gt;
+  /// Returns count of measurements.
+  /// This property may be gotten only if IsAggregated==true, otherwise zero is returned
+  /// &lt;/summary&gt;
+  public int Count
+  /// &lt;summary&gt;
+  /// Returns datum source. Data are rolled-up by type of recorded datum instances and source
+  /// &lt;/summary&gt;
+  public string Source
+  /// &lt;summary&gt;
+  /// Returns rate of occurrence string
+  /// &lt;/summary&gt;
+  public string Rate
+  /// &lt;summary&gt;
+  /// Returns description for data that this datum represents.
+  /// Base implementation returns full type name of this instance
+  /// &lt;/summary&gt;
+  public virtual string Description
+  /// &lt;summary&gt;
+  /// Provides access to value polymorphically
+  /// &lt;/summary&gt;
+  public abstract object ValueAsObject { get;}
+  /// &lt;summary&gt;
+  /// Provides name for units that value is measured in
+  /// &lt;/summary&gt;
+  public abstract string ValueUnitName { get; }
+}
 </code></pre><p>Every instance of Datum class represents either a single event/measurement or an aggregation of multiple measurements/events. The instrumentation framework gathers reported data and &quot;reduces&quot; it by keys into summary/aggregation objects once every X seconds. The aggregated data then gets written into NFX.Instrumentation.Provider-implementing class.</p>
 <p>Every instance of Datum class represents either a single event/measurement or an aggregation of multiple measurements/events. The instrumentation framework gathers reported data and &quot;reduces&quot; it by keys into summary/aggregation objects once every X seconds. The aggregated data then gets written into NFX.Instrumentation.Provider-implementing class.</p>
 <p>In contrast to events, a Gauge is a level/meter that signifies an event of measurement of some volatile value and captures the measurement value in it&#39;s Value property (pardon the tautology). Actually, there are LongGauge and DoubleGauge general ancestors for integer and real arithmetic. Just like an event, an instance of Gauge also has a Count property that says how many times a measurement has been performed.</p>
@@ -214,7 +215,7 @@ public interface ITelemetryReceiver
   [OneWay] void Send(string siteName, Datum data);
 }
 </code></pre><p>There is a tool called &quot;TelemetryViewer&quot; that implements the aforementioned interface. If you want to get your app instrumented, just add these lines to your config:</p>
-<pre><code>instrumentation
+<pre><code class="lang-css">instrumentation
  { 
    name=&quot;Instruments&quot;
    interval-ms=&quot;5000&quot;
@@ -238,6 +239,8 @@ public interface ITelemetryReceiver
 <h2 id="conclusion">Conclusion</h2>
 <p>NFX provides instrumentation services built-in. Unlike Windows performance counters, the NFX ones are platform-independent and work on Linux (via Mono) and interoperate with JAVA software (using JFX).</p>
 <p>NFX instrumentation architecture is very simple and scalable in cluster environments. Aum Clusterware is built using NFX and aggregates real-time telemetry data from 1000s of live running cluster nodes.</p>
+<hr>
+<p>Dmitriy Khmaladze<br>November 30, 2013</p>
 
             </article>
           </div>

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>NFX Online Documentation Released </title>
+    <title>Parallel integer summation challenge Erlang vs CLR/C </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="NFX Online Documentation Released ">
+    <meta name="title" content="Parallel integer summation challenge Erlang vs CLR/C ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../../../images/NFX.ico">
@@ -64,13 +64,104 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="nfx-online-documentation-released">NFX Online Documentation Released</h1>
+              <h1 id="parallel-integer-summation-challenge-erlang-vs-clrc">Parallel integer summation challenge Erlang vs CLR/C</h1>
               
-<p>A Beta version of documentation released for .NET Framework Extension Project here: <a href="http://itadapter.com/nfxhelp/#">NFX Library Documentation</a>.</p>
-<p>The name &quot;NFX&quot; stands for &quot;.NET Framework Extension&quot;, there is also &quot;JFX&quot; and &quot;*FX&quot; in works. All of them form a &quot;Unistack&quot;. &quot;Unistack&quot; = &quot;Unified Software Stack&quot;, a conceptually-monolithic library that facilitates whatever service/facilities developers need to create scale-able, solid business/data-driven application systems (not just applications). As such, the unistack support many facilities that traditionally are scattered among myriads of disjoint software frameworks.</p>
-<p>NFX is a application-system development framework that addresses the following concerns in a UNIFIED (as in the &quot;same pattern&quot;) way. Oh, and one more thing. NFX does not use any 3rd party libraries for the services it provides, except for things like database driver (i.e. MongoDB driver). So, NFX is a self-contained library (but for DB drivers) which is less than 2 mb in size compiled that provides: <a href="/archive/blog/2013/08/what-is-nfx-what-is-unistack.html" title="What is NFX? What is Unistack?">these functions</a>.</p>
+<p>Today we have done an interesting benchmark in C# and Erlang. Basically the point was to compare the brevity and performance of two inherently different langs/approaches:</p>
+<p>Erlang r16b:</p>
+<pre><code class="lang-erlang">$ cat t.erl
+
+-module(t).
+-export([t/0, t/1, ct/1, ct/2]).
+
+-define(DEF_CNT, 10000000).
+
+t() -&gt;
+    t(?DEF_CNT).
+t(N) when is_integer(N) -&gt;
+    time_it(fun() -&gt; test(N) end, N).
+
+ct(Threads) -&gt;
+    ct(?DEF_CNT, Threads).
+ct(N, Threads) when is_integer(N), is_integer(Threads) -&gt;
+    time_it(fun() -&gt; ctest(N, Threads) end, N * Threads).
+
+time_it(Fun, Divisor) -&gt;
+    {T, Result} = timer:tc(Fun),
+    {T / (Divisor/1000000) / 1000, Result}.
+
+ctest(N, M) -&gt;
+    Pids = spawner(self(), N, M),
+    lists:foldl(fun(Pid, S) -&gt;
+        receive {Pid, Sum} -&gt; S+Sum end
+    end, 0, Pids).
+
+spawner(_, _, 0) -&gt;
+    [];
+spawner(Owner, N, M) -&gt;
+    [spawn(fun() -&gt; loop(Owner, N) end) | spawner(Owner, N, M-1)].
+
+loop(Pid, N) -&gt;
+    Sum = test(N),
+    Pid ! {self(), Sum}.
+
+test(N) -&gt; test(N, 0).
+
+test(0, M) -&gt; M;
+test(N, M) -&gt; test(N-1, M+1).
+</code></pre><p>C#, NET 4:</p>
+<pre><code class="lang-cs">private void button4_Click(object sender, EventArgs e)
+{
+  const int CNT = 100000000;
+  const int SPLIT = 1000000;
+
+  var tasks = new Task&lt;long&gt;[CNT / SPLIT];
+
+  var w = Stopwatch.StartNew();
+
+  for(int i=0,start=0; i &lt; CNT / SPLIT; i++)
+  { 
+    tasks[i] = new Task&lt;long&gt;( () =&gt;
+                          {
+                            long lsum = 0;
+                            long end = start + SPLIT;
+                            for(int c=start; c&lt;end; c++)
+                              lsum++;
+                            return lsum;
+                          });
+    tasks[i].Start();
+  }
+
+  long sum = tasks.Sum( t =&gt; t.Result);
+
+  w.Stop();
+
+  var rate = CNT / (w.Elapsed.TotalSeconds);
+
+  Text =
+    string.Format(&quot;Total: {0} in {1} ms  at {2}/sec  {3} msec/million &quot;,
+                  CNT, w.Elapsed.TotalMilliseconds, rate, w.Elapsed.TotalMilliseconds / (CNT / 1000000));
+
+  Text += sum.ToString();
+}
+</code></pre><p>Test results are really interesting:</p>
+<ul>
+<li>.NET      0.22 msec per million</li>
+<li>Erlang does this is 1.5 msec per million</li>
+</ul>
+<p><strong>CLR is 6.8 faster for this test.</strong></p>
+<p>Some other facts.  Linear loop single threaded that sums integers (not optimized out of code, I confirmed in disassembler)
+PHP code:</p>
+<pre><code class="lang-php">$CNT = 10000000;
+$sum = 0;
+$w = microtime(true);
+for($i=0; $i&lt;$CNT; $i++) $sum += 1;
+$w = round((microtime(true)-$w)*1000,0);
+echo($w);
+</code></pre><pre><code class="lang-no-highlight">PHP standard runtime:  1040ms 
+C#:                    2ms
+</code></pre><p><strong>CLR is 500 times faster that PHP for this simple test</strong></p>
 <hr>
-<p>Dmitriy Khmaladze<br>September 18, 2013</p>
+<p>Dmitriy Khmaladze<br>May 15, 2013</p>
 
             </article>
           </div>

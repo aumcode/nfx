@@ -68,9 +68,9 @@
               
 <h2 id="json-support-in-nfx">JSON support in NFX</h2>
 <p>There is no life this day and age without JSON support. If you are a seasoned developer you know better - JSON serialization is a pain. There are many options for it but there is always something that either does not work right (i.e. dates are not serialized per ISO standard), or slow, or both.</p>
-<p>As I have already mentioned <a href="/arhcive/blog/2013/08/what-is-nfx-what-is-unistack.htm" title="What is NFX? What is Unistack?">here, NFX is a &quot;Unistack&quot; concept, meaning</a> - it has to have all vital functions natively integrated in it&#39;s core. JSON support is certainly qualified as such. We can not afford to spend time figuring out why some structure does not serialize the way Twitter or some other service expects. It has to be small, and simple. It has to perform very well.</p>
+<p>As I have already mentioned <a href="/archive/blog/2013/08/what-is-nfx-what-is-unistack.html" title="What is NFX? What is Unistack?">here, NFX is a &quot;Unistack&quot; concept, meaning</a> - it has to have all vital functions natively integrated in it&#39;s core. JSON support is certainly qualified as such. We can not afford to spend time figuring out why some structure does not serialize the way Twitter or some other service expects. It has to be small, and simple. It has to perform very well.</p>
 <h2 id="how-is-json-support-implemented-in-nfx">How is JSON Support Implemented in NFX</h2>
-<p>I wrote JSON lexer and parser in less than 8 hrs, that includes Unicode escapes, intricate string escapes and much more. I also managed to write around 50 unit tests the next day. The reason why I was able to write this so fast is because NFX has a nice &quot;CodeAnalysis&quot; concept that provides abstract support for writing language analysis tools/compilers. This certainly deserves it&#39;s own blog post, but I&#39;ll just say that low-level mechanisms of tokenezation, source code management (read from buffer, from file), compiler pipeline contexts(Lexer-&gt;Parser-&gt;Semantics-&gt;Code Generator), warnings/errors, source positioning, and other things are already there, so I just needed to add JSON support.</p>
+<p>I wrote JSON lexer and parser in less than 8 hrs, that includes Unicode escapes, intricate string escapes and much more. I also managed to write around 50 unit tests the next day. The reason why I was able to write this so fast is because NFX has a nice &quot;CodeAnalysis&quot; concept that provides abstract support for writing language analysis tools/compilers. This certainly deserves it&#39;s own blog post, but I&#39;ll just say that low-level mechanisms of tokenezation, source code management (read from buffer, from file), compiler pipeline contexts (Lexer-&gt;Parser-&gt;Semantics-&gt;Code Generator), warnings/errors, source positioning, and other things are already there, so I just needed to add JSON support.</p>
 <p>Here are a few JSON lexer unit tests:</p>
 <pre><code class="lang-cs">[TestCase]
 public void TokenClassifications()
@@ -79,38 +79,38 @@ public void TokenClassifications()
 
   var tokens = new JL(new StringSource(src)).Tokens;
 
-  Assert.IsTrue( tokens[0].IsBOF);
-  Assert.IsTrue( tokens[0].IsNonLanguage);
-  Assert.IsFalse( tokens[0].IsPrimary);
+  Assert.IsTrue(tokens[0].IsBOF);
+  Assert.IsTrue(tokens[0].IsNonLanguage);
+  Assert.IsFalse(tokens[0].IsPrimary);
   Assert.AreEqual(TokenKind.BOF, tokens[0].Kind);
 
-  Assert.AreEqual( JSONTokenType.tIdentifier, tokens[1].Type);
-  Assert.IsFalse( tokens[1].IsNonLanguage);
-  Assert.IsTrue( tokens[1].IsPrimary);
+  Assert.AreEqual(JSONTokenType.tIdentifier, tokens[1].Type);
+  Assert.IsFalse(tokens[1].IsNonLanguage);
+  Assert.IsTrue(tokens[1].IsPrimary);
   Assert.AreEqual(TokenKind.Identifier, tokens[1].Kind);
 
-  Assert.AreEqual( JSONTokenType.tStringLiteral, tokens[2].Type);
-  Assert.IsFalse( tokens[2].IsNonLanguage);
-  Assert.IsTrue( tokens[2].IsPrimary);
-  Assert.IsTrue( tokens[2].IsTextualLiteral);
+  Assert.AreEqual(JSONTokenType.tStringLiteral, tokens[2].Type);
+  Assert.IsFalse(tokens[2].IsNonLanguage);
+  Assert.IsTrue(tokens[2].IsPrimary);
+  Assert.IsTrue(tokens[2].IsTextualLiteral);
   Assert.AreEqual(TokenKind.Literal, tokens[2].Kind);
 
-  Assert.AreEqual( JSONTokenType.tColon, tokens[3].Type);
-  Assert.IsFalse( tokens[3].IsNonLanguage);
-  Assert.IsTrue( tokens[3].IsPrimary);
-  Assert.IsTrue( tokens[3].IsOperator);
+  Assert.AreEqual(JSONTokenType.tColon, tokens[3].Type);
+  Assert.IsFalse(tokens[3].IsNonLanguage);
+  Assert.IsTrue(tokens[3].IsPrimary);
+  Assert.IsTrue(tokens[3].IsOperator);
   Assert.AreEqual(TokenKind.Operator, tokens[3].Kind);
 
-  Assert.AreEqual( JSONTokenType.tIntLiteral, tokens[4].Type);
-  Assert.IsFalse( tokens[4].IsNonLanguage);
-  Assert.IsTrue( tokens[4].IsPrimary);
-  Assert.IsTrue( tokens[4].IsNumericLiteral);
+  Assert.AreEqual(JSONTokenType.tIntLiteral, tokens[4].Type);
+  Assert.IsFalse(tokens[4].IsNonLanguage);
+  Assert.IsTrue(tokens[4].IsPrimary);
+  Assert.IsTrue(tokens[4].IsNumericLiteral);
   Assert.AreEqual(TokenKind.Literal, tokens[4].Kind);
 
-  Assert.AreEqual( JSONTokenType.tComment, tokens[5].Type);
-  Assert.IsFalse( tokens[5].IsNonLanguage);
-  Assert.IsFalse( tokens[5].IsPrimary);
-  Assert.IsTrue( tokens[5].IsComment);
+  Assert.AreEqual(JSONTokenType.tComment, tokens[5].Type);
+  Assert.IsFalse(tokens[5].IsNonLanguage);
+  Assert.IsFalse(tokens[5].IsPrimary);
+  Assert.IsTrue(tokens[5].IsComment);
   Assert.AreEqual(TokenKind.Comment, tokens[5].Kind);
 }
 
@@ -146,10 +146,10 @@ public void BasicTokens2()
 [TestCase]
 public void IntLiterals()
 {
-  Assert.AreEqual(12,  new JL(new StringSource(@&quot;12&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
-  Assert.AreEqual(2,   new JL(new StringSource(@&quot;0b10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
-  Assert.AreEqual(16,  new JL(new StringSource(@&quot;0x10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
-  Assert.AreEqual(8,   new JL(new StringSource(@&quot;0o10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(12, new JL(new StringSource(@&quot;12&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(2,  new JL(new StringSource(@&quot;0b10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(16, new JL(new StringSource(@&quot;0x10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
+  Assert.AreEqual(8,  new JL(new StringSource(@&quot;0o10&quot;)).Tokens.First(t=&gt;t.IsPrimary).Value);
 }
 </code></pre><p>Did you see something weird? YES, this is not JSON, this is <strong>superset of JSON!</strong></p>
 <h2 id="json-is-a-json-on-steroids-or-vodka">JSON+ (is) a JSON on Steroids (or vodka)</h2>
@@ -166,7 +166,8 @@ public void IntLiterals()
 public void ParallelDeserializationOfManyComplexObjects()
 {
   const int TOTAL = 1000000;
-  var src = @&quot;
+  var src =
+@&quot;
  {FirstName: &quot;&quot;Oleg&quot;&quot;,  //comments dont hurt
   &#39;LastName&#39;: &quot;&quot;Ogurtsov&quot;&quot;,
   &quot;&quot;Middle Name&quot;&quot;: &#39;V.&#39;,
@@ -187,7 +188,8 @@ $&#39;This note text
 can span many lines
 and
 this \r\n is not escape&#39;
- }&quot;;
+}&quot;;
+
   var watch = Stopwatch.StartNew();
 
   System.Threading.Tasks.Parallel.For
@@ -490,7 +492,7 @@ public abstract class RowsetBase : IList&lt;row&gt;, IComparer&lt;row&gt;, IJSON
     {
       {&quot;Instance&quot;, m_InstanceGUID.ToString(&quot;D&quot;)},
       {&quot;Type&quot;, tp.FullName},
-      {&quot;IsTable&quot;, typeof(Table).IsAssignableFrom( tp )},
+      {&quot;IsTable&quot;, typeof(Table).IsAssignableFrom(tp )},
       {&quot;Schema&quot;, m_Schema},
       {&quot;Rows&quot;, m_List}
     };
@@ -544,6 +546,8 @@ Serialize.PersonClass
 </code></pre><p>What we see here is that NFX JSON code really beats both Microsoft JavaScript and DataContract serializers, and frankly I had not had a chance yet to optimize JSON lexer in NFX. I guess I can squeeze another good 25% speed boost if I revise string parsing, but this is not important now.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>NFX provides rich support for working with JSON data format. The functionality is built on top of NFX.CodeAnalysis which unifies and simplifies the construction of lexers and parsers and, as a benefit, it allows us to filter/pattern match against JSON data without reading-in the whole JSON content. The library is well tested against edge cases like Unicode escapes, ISO dates, and also supports reading of JSON+ superset that understands comments, hex/bin/octal numeric prefixes that make this format very well suited for config files. The library writes standard JSON with extensive ability to serialize IEnumerable&lt;&gt;, IDictionary&lt;,&gt; and POCO classes specifying indentetion, ASCII vs. Unicode and ISO date options.</p>
+<hr>
+<p>Dmitriy Khmaladze<br>November 24, 2013</p>
 
             </article>
           </div>

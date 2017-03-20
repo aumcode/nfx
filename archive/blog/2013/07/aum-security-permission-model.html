@@ -94,7 +94,7 @@ public interface ITestingContract
 {
   [AlcoholCheckoutPermission] //notice: no extra code here
   void CheckoutAlcohol(CartItem item);
-  ................ 
+  ......
 }
 
 
@@ -111,14 +111,14 @@ public class AlcoholCheckoutPermission : TypedPermission
 [PageTemplatePermission(AccessLevel.VIEW_CHANGE, UserKind.RegisteredVoter)]
 public class MayorReElectionDonationPage : WebTemplate
 {
-  ................ 
+  ......
 }
 
 //Same permission as above. Check is not user-dependent
 [PageTemplatePermission(AccessLevel.VIEW)]
 public class RallyInvitationPage : WebTemplate
 {
-  ................ 
+  ......
 
   //This will not be called if authorization assertion of linked page fails
   [LinkPagePermission(typeof(MayorReElectionDonationPage)] 
@@ -127,7 +127,9 @@ public class RallyInvitationPage : WebTemplate
     ...... //emit URL link to MayorReElectionDonationPage
   }  
 }
-</code></pre>
+</code></pre><hr>
+<p>Dmitriy Khmaladze<br>July 22, 2013</p>
+
             </article>
           </div>
           

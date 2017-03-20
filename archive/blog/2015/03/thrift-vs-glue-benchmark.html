@@ -67,12 +67,7 @@
               <h1 id="apache-thrift-vs-nfxglue-benchmark">Apache Thrift vs NFX.Glue Benchmark</h1>
               
 <h2 id="why-compare">Why Compare?</h2>
-<p>I have blogged about GLUE <a href="/archive/blog/2014/08/glue-interprocess-communication.html" title="NFX.Glue - Interprocess Communication">here</a>. Glue is the sole communication technology that we use in a cluster.
-It is very important to achieve the fastest results possible, yet still retain the feature-rich service that Glue provides (security, headers, exceptions, asynchrony etc..).
-Recently we have invested more time in optimizing the NFX.Serialization.SlimSerializer and NFX.Glue.Native.SyncBinding.
-The results that we achieved after optimization are very promising,
- but someone told me recently that we <a href="https://en.wikipedia.org/wiki/Apache_Thrift" title="Apache Thrift">&quot;can&#39;t compete with Facebook&#39;s Thrift&quot;</a>.
-Is this truly so? We had to test, so here goes..</p>
+<p>I have blogged about GLUE <a href="/archive/blog/2014/08/glue-interprocess-communication.html" title="NFX.Glue - Interprocess Communication">here</a>. Glue is the sole communication technology that we use in a cluster. It is very important to achieve the fastest results possible, yet still retain the feature-rich service that Glue provides (security, headers, exceptions, asynchrony etc..). Recently we have invested more time in optimizing the NFX.Serialization.SlimSerializer and NFX.Glue.Native.SyncBinding. The results that we achieved after optimization are very promising, but someone told me recently that we <a href="https://en.wikipedia.org/wiki/Apache_Thrift" title="Apache Thrift">&quot;can&#39;t compete with Facebook&#39;s Thrift&quot;</a>. Is this truly so? We had to test, so here goes...</p>
 <h2 id="the-test">The Test</h2>
 <p>We have created the following Thrift Contract:</p>
 <pre><code class="lang-thrift">  namespace csharp TestServer.Thrift
@@ -106,7 +101,6 @@ Is this truly so? We had to test, so here goes..</p>
 
     NestedStruct GetNested()  
   }
-&lt;/testinfostruct&gt;
 </code></pre><p>And here is the similar Glue counterpart in C#:</p>
 <pre><code class="lang-cs">[Glued]
 [AuthenticationSupport]
@@ -119,24 +113,19 @@ public interface IJokeContract
   object DBWork(string id, int recCount, int waitMs);
   ...................
 }
-</code></pre><p>What we return in both cases is an array of &quot;TestInfoStruct&quot; filled with data like &quot;Some_Person_&quot;+i.ToString(). This emulates a typical &quot;DB-like&quot; work. 
-For Glue we are using TPL on the client to apportion the work that needs to be done which is expressed as the number of calls. 
-The Thrift test is also using TPL (tasks) to create X parallel workers, where X is entered on a test form. 
-The machine is <strong>4 core i7 gen 4..X at 4Ghz with 32Gb ram</strong>.</p>
+</code></pre><p>What we return in both cases is an array of &quot;TestInfoStruct&quot; filled with data like &quot;Some_Person_&quot;+i.ToString(). This emulates a typical &quot;DB-like&quot; work.<br>For Glue we are using TPL on the client to apportion the work that needs to be done which is expressed as the number of calls.<br>The Thrift test is also using TPL (tasks) to create X parallel workers, where X is entered on a test form.<br>The machine is <strong>4 core i7 gen 4..X at 4Ghz with 32Gb ram</strong>.</p>
 <p>Lets start by trying to return a dataset of 10 records, 10 fields each:
-<img src="../../../../images/archive/Glue64kDbWorks10Rec.png" alt="Glue64kDbWorks10Rec"><br>So this does: <strong>64,000 calls at 32,000 ops/sec</strong> each returning 10 rows.<br>Here is the CPU spike:
+<img src="../../../../images/archive/Glue64kDbWorks10Rec.png" alt="Glue64kDbWorks10Rec"><br>So this does: <strong>64,000 calls at 32,000 ops/sec</strong> each returning 10 rows.  </p>
+<p>Here is the CPU spike:
 <img src="../../../../images/archive/Glue64kDbWorks10Rec_CPU.png" alt="Glue64kDbWorks10Rec_CPU">
 Notice the pretty sharp CPU spike and pay attention to its width.</p>
 <p>Now let&#39;s do the same test using Thrift. Here comes the client app:
-<img src="../../../../images/archive/Thrift64kDbWorks10Rec.png" alt="Thrift64kDbWorks10Rec">
-So this does: <strong>64,000 calls at 980 ops/sec</strong> each returning 10 rows. WHAT? This is <strong>30x times slower than Glue!</strong> Is there anything wrong?<br>Here is the CPU view for Thrift:
+<img src="../../../../images/archive/Thrift64kDbWorks10Rec.png" alt="Thrift64kDbWorks10Rec"></p>
+<p>So this does: <strong>64,000 calls at 980 ops/sec</strong> each returning 10 rows. WHAT? This is <strong>30x times slower than Glue!</strong> Is there anything wrong?<br>Here is the CPU view for Thrift:
 <img src="../../../../images/archive/Thrift64kDbWorks10Rec_CPU.png" alt="Thrift64kDbWorks10Rec_CPU.png">
-As you can see the CPU &quot;spike&quot; does not look like a spike, as it took around 65 seconds and could not even fit entirely in the CPU chart.<br>A note about &quot;64&quot; threads. We experimented with 32 threads doing 2000 calls each, or 16 doing 4000 etc... it is all slower.
-64 threads doing 1000 calls each was the most optimal case on that machine for this Thrift test.</p>
+As you can see the CPU &quot;spike&quot; does not look like a spike, as it took around 65 seconds and could not even fit entirely in the CPU chart.<br>A note about &quot;64&quot; threads. We experimented with 32 threads doing 2000 calls each, or 16 doing 4000 etc... it is all slower. 64 threads doing 1000 calls each was the most optimal case on that machine for this Thrift test.</p>
 <h2 id="results">Results</h2>
-<p>After seeing these results we scratched our heads for a while. There got to be something stupid on our side? We did not use Thrift correctly?
-After doing some digging we found that BinaryProtocol is not the most efficient one in Thrift, so we re-ran with CompactProtocol.
-The results became better in Thrifts favor but still no very stellar.<br>So the results are:</p>
+<p>After seeing these results we scratched our heads for a while. There got to be something stupid on our side? We did not use Thrift correctly? After doing some digging we found that BinaryProtocol is not the most efficient one in Thrift, so we re-ran with CompactProtocol. The results became better in Thrifts favor but still no very stellar.<br>So the results are:</p>
 <pre><code>Each test is:
    64,000 calls each returning a set of 10 rows each having 10 fields
   640,000 total rows pumped
@@ -166,15 +155,10 @@ This definitely makes transmission of things like DateTime way slower</li>
 It may be if one needs to push trees of graphs of complex data. SYNC Glue binding does not have this limitation</li>
 </ul>
 <h2 id="conclusion">Conclusion</h2>
-<p>Thrift is definitely a way lower-level RPC framework than Glue. Glue is much higher level framework that supports: channel throttling, declarative configurations,
- message inspectors, logging, dumping of messages, external control (setting parameters at runtime), 
- instrumentation statistics, declarative security and async messaging model.<br>Thrift does not have these features in its scope as it is just an RPC channel handler.<br>As far as performance is concerned, Thrift is slower at least 20 times for passing non-primitive data than native Glue bindings because 
-Thrift emits extra data into stream and does other conversions that are not necessary in case of native Glue stack.<br>Is it possible to create a cross-language binding in Glue? Absolutely it is, and the performance will probably be somewhere around Thrift, 
-however the benefit of Unistack approach is to not use 10 different languages/libs in the same system, hence native glue is all we need for internal cluster programming.</p>
-<p>P.S&gt; I just realized that we did not build our test Glue rig with [X]Optimize Code checked.
-So our results stated in the blog are like 15-20% worse than what they could have been. 
-In other words NFX.Glue is like 15% faster than this post describes if it is built in release config. I also forgot to capture wire message sizes which I&#39;ll do later. 
-The speed test is enough for me.</p>
+<p>Thrift is definitely a way lower-level RPC framework than Glue. Glue is much higher level framework that supports: channel throttling, declarative configurations, message inspectors, logging, dumping of messages, external control (setting parameters at runtime), instrumentation statistics, declarative security and async messaging model.<br>Thrift does not have these features in its scope as it is just an RPC channel handler.<br>As far as performance is concerned, Thrift is slower at least 20 times for passing non-primitive data than native Glue bindings because Thrift emits extra data into stream and does other conversions that are not necessary in case of native Glue stack.<br>Is it possible to create a cross-language binding in Glue? Absolutely it is, and the performance will probably be somewhere around Thrift, however the benefit of Unistack approach is to not use 10 different languages/libs in the same system, hence native glue is all we need for internal cluster programming.</p>
+<p>P.S&gt; I just realized that we did not build our test Glue rig with [X]Optimize Code checked. So our results stated in the blog are like 15-20% worse than what they could have been. In other words NFX.Glue is like 15% faster than this post describes if it is built in release config. I also forgot to capture wire message sizes which I&#39;ll do later. The speed test is enough for me.</p>
+<hr>
+<p>Dmitriy Khmaladze<br>March 18, 2015</p>
 
             </article>
           </div>

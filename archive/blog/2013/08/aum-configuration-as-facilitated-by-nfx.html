@@ -93,7 +93,7 @@
 <li>Full support for <strong>imperative constructs</strong> (macros) - loops, vars, Ifs, blocks</li>
 <li>Unified model to configure classes,services, properties,fields etc. from configuration</li>
 <li><strong>Aspect injection with configuration Behaviors</strong> - named kits of config values that may be applied to different nodes indirectly. This approach addresses <strong>cross-cutting concerns</strong> on the configuration level</li>
-<li>Multiple getters for different nodes and data types (i.e. ValueAs: String/Date/Enum/Int.....) with defaults</li>
+<li>Multiple getters for different nodes and data types (i.e. ValueAs: String/Date/Enum/Int...) with defaults</li>
 </ul>
 <p>Example of an XML-based configuration:</p>
 <pre><code class="lang-xml">&lt;nfx log-root=&quot;c:\nfx\&quot; log-csv=&quot;NFX.Log.Destinations.CSVFileDestination, NFX&quot; log-debug=&quot;NFX.Log.Destinations.DebugDestination, NFX&quot; debug-default-action=&quot;LogAndThrow&quot; debug-conf-refresh=&quot;false&quot; app-name=&quot;test-client&quot;&gt;
@@ -202,6 +202,8 @@ protected override void DoConfigure(IConfigSectionNode node)
 </code></pre><h2 id="aum-cluster-configuration">Aum Cluster Configuration</h2>
 <p>Aum Clusterware is built on top of NFX (on CLR platform), so it is all based on the NFX.Environment.Configuration classes, however it takes that configuration capabilities to the next level - the <strong>hierarchical configuration tree</strong> that the cluster is configured from. Because of it, we do not need to maintain configuration for 1000s of servers, we project configuration segments down the tree to arrive to final configuration section that is built for particular node/service/end point. We do come all the way down to endpoint level.</p>
 <p>This topic definitely deserves a post of its own that I&#39;ll do in the next month.</p>
+<hr>
+<p>Dmitriy Khmaladze<br>August 14, 2013</p>
 
             </article>
           </div>

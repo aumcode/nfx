@@ -101,10 +101,10 @@ console.Disconnect();
 </code></pre><p>Here, we have connected to machine &quot;quad&quot; using &quot;async&quot; for binding. The calling process has a piece of config that says:</p>
 <pre><code>glue
 {
- bindings
- {
-  binding {name=&quot;async&quot; type=&quot;NFX.Glue.Native.MpxBinding, NFX&quot;}
- }
+  bindings
+  {
+    binding {name=&quot;async&quot; type=&quot;NFX.Glue.Native.MpxBinding, NFX&quot;}
+  }
 }
 </code></pre><p>So now, the Glue runtime knows that &quot;async&quot; is an instance of &quot;NFX.Glue.Native.MpxBinding, NFX&quot; (with about dozen of parameters like TCP buffer windows etc). 
 The original contract for the service is this:</p>
@@ -117,13 +117,13 @@ The original contract for the service is this:</p>
 [LifeCycle(ServerInstanceMode.Stateful, SysConsts.REMOTE_TERMINAL_TIMEOUT_MS)]
 public interface IRemoteTerminal
 {
-    [Constructor]
-    RemoteTerminalInfo Connect(string who);
+  [Constructor]
+  RemoteTerminalInfo Connect(string who);
 
-    string Execute(string command);
+  string Execute(string command);
 
-    [Destructor]
-    string Disconnect();
+  [Destructor]
+  string Disconnect();
 }
 </code></pre><p>It is a state-full contract that initializes server instance (a terminal connection, in our case) with a call to &quot;Connect&quot; and then either times-out 
 after &quot;REMOTE_TERMINAL_TIMEOUT_MS&quot; or gets torn down by a call to &quot;Destructor&quot;. In this semantic, constructor/destructor is just a special kind of method 
@@ -134,12 +134,15 @@ A user must supply a valid token, for this &quot;AuthenticationSupport&quot; is 
 <p>On the server we will include in config:</p>
 <pre><code>glue
 {
- servers
- {
-  server {name=&quot;TerminalAsync&quot;
-          node=&quot;async://*:7700&quot;
-          contract-servers=&quot;ahgov.HGovRemoteTerminal, ahgov&quot;}
- }
+  servers
+  {
+    server
+    {
+      name=&quot;TerminalAsync&quot;
+      node=&quot;async://*:7700&quot;
+      contract-servers=&quot;ahgov.HGovRemoteTerminal, ahgov&quot;
+    }
+  }
 }
 </code></pre><p>And then implement the interface like so:</p>
 <pre><code class="lang-cs">/// &lt;summary&gt;
@@ -150,12 +153,12 @@ public class AppRemoteTerminal : IRemoteTerminal
 {
     public AppRemoteTerminal()
     {                                                            
-    .....
+      .....
     }
 
     protected override void Destructor()
     {
-    .....
+      .....
     }
 
     private int m_ID;
@@ -167,18 +170,18 @@ public class AppRemoteTerminal : IRemoteTerminal
 
     public virtual RemoteTerminalInfo Connect(string who)
     {
-      ..........
+      .....
     }
 
     [AppRemoteTerminalPermission]
     public virtual string Execute(string command)
     {
-       ....... 
+      .....
     }
 
     public virtual string Disconnect()
     {
-        return &quot;Good bye!&quot;;
+      return &quot;Good bye!&quot;;
     }
  }
 </code></pre><p>Notice the use of instance fields.</p>
@@ -218,6 +221,8 @@ because it has no practical value. In NFX, REST services are done much easier wi
 Remember - Glue was never meant to be exposed publicly, although it could via corresponding bindings, 
 but there is no need to create bindings just to support some standards that will never be used.</li>
 </ul>
+<hr>
+<p>Dmitriy Khmaladze<br>August 2, 2014</p>
 
             </article>
           </div>

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>NFX Online Documentation Released </title>
+    <title>C# CLR JIT Optimization - Register allocation for primitives </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="NFX Online Documentation Released ">
+    <meta name="title" content="C# CLR JIT Optimization - Register allocation for primitives ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../../../images/NFX.ico">
@@ -64,13 +64,50 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="nfx-online-documentation-released">NFX Online Documentation Released</h1>
+              <h1 id="c-clr-jit-optimization---register-allocation-for-primitives">C# CLR JIT Optimization - Register allocation for primitives</h1>
               
-<p>A Beta version of documentation released for .NET Framework Extension Project here: <a href="http://itadapter.com/nfxhelp/#">NFX Library Documentation</a>.</p>
-<p>The name &quot;NFX&quot; stands for &quot;.NET Framework Extension&quot;, there is also &quot;JFX&quot; and &quot;*FX&quot; in works. All of them form a &quot;Unistack&quot;. &quot;Unistack&quot; = &quot;Unified Software Stack&quot;, a conceptually-monolithic library that facilitates whatever service/facilities developers need to create scale-able, solid business/data-driven application systems (not just applications). As such, the unistack support many facilities that traditionally are scattered among myriads of disjoint software frameworks.</p>
-<p>NFX is a application-system development framework that addresses the following concerns in a UNIFIED (as in the &quot;same pattern&quot;) way. Oh, and one more thing. NFX does not use any 3rd party libraries for the services it provides, except for things like database driver (i.e. MongoDB driver). So, NFX is a self-contained library (but for DB drivers) which is less than 2 mb in size compiled that provides: <a href="/archive/blog/2013/08/what-is-nfx-what-is-unistack.html" title="What is NFX? What is Unistack?">these functions</a>.</p>
+<p>Today I have come across a strange effect in C#</p>
+<p>This code took 30 ms to run, and C++ version took 5-8msec. How come?</p>
+<pre><code class="lang-cs">void Runtest()
+{
+  const int CNT = 10000000; //ten million
+  long sum = 0;
+
+  var w = Stopwatch.StartNew();
+
+  for(int i=0; i &lt; CNT, i++)
+  {
+    sum += 1;
+  }
+  w.Stop();
+
+  var rate = CNT / (w.Elapsed.TotalSeconds);
+
+  Text = string.Format(&quot;Total: {0} in {1} ms  at {2}/sec &quot;, CNT, 
+                       w.Elapsed.TotalMilliseconds, rate);
+
+  Text += sum.ToString();
+}
+</code></pre><p>The loop body does not do anything, and hopefully CLR JITs it into registers right?</p>
+<p>If yes, why is it so many times slower than C++?</p>
+<p>The answer lies with the last line:  &quot;s.ToString();&quot;.  It treats &quot;sum&quot; as a struct, because structs are not really primitive types, although &quot;long&quot; fits in the register 1:1,
+ the &quot;objecty&quot; nature of the &quot;sum.ToString()&quot; makes JIT generate memory-accessing code.I have confirmed this in WinDBG. The loop control var &quot;i&quot; is stored in the register but &quot;sum&quot; is not.</p>
+<p>Solution:</p>
+<pre><code class="lang-cs">var s = sum;
+Text += s.ToString();
+</code></pre><p>Result: <strong>2 msec per 10,000,000 iterations instead of 30 ms. 15 times faster.</strong></p>
+<p>Here I have put an upper loop bound to Int.MaxValue for the code to run a bit longer so I can manage to ctrl+break in debugger.</p>
+<p>Disassembly (loop body - lines 4-7):</p>
+<pre><code class="lang-no-highlight">1: 000007ff`0014055d 33c0            xor     eax,eax           //i=0
+2: 000007ff`0014055f 33ed            xor     ebp,ebp           //sum=0
+3: LOOP LABEL:
+4: 000007ff`00140561 48ffc5          inc     rbp               //sum++   
+5: 000007ff`00140564 ffc0            inc     eax               //i++   
+6: 000007ff`00140566 3dffffff7f      cmp     eax,7FFFFFFFh     //check int.Max  
+7: 000007ff`0014056b 7cf4            jl      000007ff`00140561 //jmp if less LOOP LABEL can not beat that!
+</code></pre><p>The bottom line is this: JIT does optimize primitives in CPU registers just like C++ does, however because of unified type system it is easy to treat a primitive as struct or object - and that introduces penalty.<br>The truth of the matter is that until the loop exit they (Microsoft) could have kept it in register and then moved to RAM, but there are many edge cases like this and who knows what other issues JIT developers had to solve.</p>
 <hr>
-<p>Dmitriy Khmaladze<br>September 18, 2013</p>
+<p>Dmitriy Khmaladze<br>May 14, 2013</p>
 
             </article>
           </div>
