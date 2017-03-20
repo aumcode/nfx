@@ -25,7 +25,7 @@ promoting:
   
 good for:
 
-* Linux-style porgramming in .NET. Minimalistic, elegant.
+* Linux-style prоgramming in .NET. Minimalistic, elegant.
 * Vendor de-coupling 
 * General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)
 * Distributed Macro/micro/nano services, REST or RPC
