@@ -7,37 +7,34 @@ License: Apache 2.0
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
 
-NFX is a modern .NET full stack framework designed for cloud. It is written in C# and runs on a CLR machine. 
-NFX supports app containers, configuration, big memory heaps, IPC, and other functions that significantly simplify 
-the development of large distributed systems. It contains truly unique intellectual assets and allows for unconventional
-things that significantly boost performance and simplify the development (such as stateful services/web). 
+NFX is a modern .NET full stack framework designed for cloud and for premises. It is written in C# and runs on a CLR machine. 
+NFX supports app containers, configuration, big memory heaps, IPC, and functions that significantly simplify 
+the development of large distributed systems. It boosts performance and simplifies the development (such as services/web). 
 The majority of the achievements are possible because of a few key things:
 
 * Unification of design - all components are written in the same way
-* Sophisticated serialization mechanism aka "teleportation" - moves objects between nodes
-* Object Pile - a 100%-managed "Big Memory" approach allowing for utilization of hundreds of gigabytes of ram without GC stalls
+* Sophisticated serialization mechanism - moves objects between nodes
+* Object Pile - a 100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of ram without GC stalls
 
 promoting:
 
-* Distributed systems: clusters/hierachices
+* Distributed systems: clusters/hierarchies
 * IPC - contract-based object-oriented high performance services
-* Stateful programming (web/service) (not mandatory)
-* Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems 
-* High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a 4 core 3.0 GHz machine 
-  looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache))
+* Stateful/stateless programming (web/service)
+* Full utilization of big RAM capacities in-proc (i.e. 128 Gb resident) without GC stalls 
   
 good for:
 
-* General Scalability and Vendor de-coupling (i.e. hybrid DataStores with virtual queries and CQRS)
+* Linux-style porgramming in .NET
+* Vendor de-coupling 
+* General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)
 * Distributed Macro/micro/nano services, REST or RPC
 * Actor-model systems with message passing and supervisors
-* In-memory processing, can keep hundreds of millions of business entities in-ram with full GC < 20ms
+* In-memory processing, for hundreds of millions of objects in-ram with full GC < 20ms
 * Supercomputer/Cluster/Farm applications (i.e. bulk rendering cluster, social graphs etc.)
-
-The concepts have been well tested and used. In the past 7 years, *teleportation mechanism has 
-moved trillions of various CLR object instances* (including non-trivial CLR cases like: structs with
- read-only fields, arrays of structs of structs, custom streamers like Dictionary<> with comparers etc.)
-
+* High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a general server 
+  looking up data in a 300,000,000 business object cache in-RAM)
+* non-trivial CLR cases like: structs with read-only fields, arrays of structs of structs, custom streamers like Dictionary<> with comparers etc. In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances
 
 
 **GUIDES**:
@@ -111,8 +108,7 @@ NFX Provides:
 
 **IMPORTANT!**
 
-NFX does not use any 3rd party components but for some DB-access (i.e. MySQL and MsSQL).
-NFX uses very Base-Class-Lib:
+NFX uses very Base-Class-Lib of .NET:
 * Basic/primitive types: string, ints, doubles, decimal, dates, +Math
 * Parallel task library: 25% of features - create, run, wait for completion,
   Task, Parallel.For/Each
@@ -122,3 +118,4 @@ NFX uses very Base-Class-Lib:
 * Some ADO references (Reader/SQLStatement) in segregated data-access components
 * Reflection API
 * Drawing 2D (Graphics)
+NFX does not use any 3rd party components.
