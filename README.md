@@ -7,14 +7,15 @@ License: Apache 2.0
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
 
-NFX is a modern .NET full stack framework designed for cloud and for premises. It is written in C# and runs on a CLR machine. 
+NFX is a modern .NET full stack framework designed for building cloud and on-premises apps.
+It is written in C# and runs on a CLR machine. 
 NFX supports app containers, configuration, big memory heaps, IPC, and functions that significantly simplify 
 the development of large distributed systems. It boosts performance and simplifies the development (such as services/web). 
-The majority of the achievements are possible because of a few key things:
+The majority of the achievements are possible because of the following key features:
 
 * Unification of design - all components are written in the same way
-* Sophisticated serialization mechanism - moves objects between nodes
-* Object Pile - a 100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of ram without GC stalls
+* Sophisticated serialization mechanism - moves objects between distributed processes/nodes (aka "teleportation")
+* Object Pile - a 100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of RAM without GC stalls
 
 promoting:
 
@@ -30,7 +31,7 @@ good for:
 * General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)
 * Distributed Macro/micro/nano services, REST or RPC
 * Actor-model systems with message passing and supervisors
-* In-memory processing, for hundreds of millions of objects in-ram with full GC < 20ms
+* In-memory processing, for hundreds of millions of objects in-RAM with full GC < 20ms
 * Supercomputer/Cluster/Farm applications (i.e. bulk rendering cluster, social graphs etc.)
 * High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a general server 
   looking up data in a 300,000,000 business object cache in-RAM)
