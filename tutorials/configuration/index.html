@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Application container </title>
+    <title>Configuration </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Application container ">
+    <meta name="title" content="Configuration ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/NFX.ico">
@@ -64,39 +64,31 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="application-container">Application container</h1>
+              <h1 id="configuration">Configuration</h1>
               
-<p>Although not required, any typical application in <strong>NFX</strong> executes in the application container. 
-It is just a global class that provides root services such as:</p>
-<ul>
-<li><p><strong>Component Model</strong> - keeps track of process components (i.e. logger, business logic etc..)</p>
-</li>
-<li><p><strong>Configuration</strong> - provides root configuration for the instance</p>
-</li>
-<li><p><strong>Logging</strong> - sync/async log queue with injectable destinations/sinks (file, db etc…)</p>
-</li>
-<li><p><strong>Instrumentation</strong> - named gauges and events, real-time source key reduce and telemetry</p>
-</li>
-<li><p><strong>Inter-process/node communication</strong> - contract-based programming akin to WCF</p>
-</li>
-<li><p><strong>DataStore</strong> - access data (i.e. a notepad app may use FileDataStore to store files on disk)</p>
-</li>
-<li><p><strong>TimeSource</strong> - injectable time/zone source</p>
-</li>
-<li><p><strong>EventTimers</strong> - schedule with sync/async event handlers, injectable from config</p>
-</li>
-<li><p><strong>SecurityManager</strong> - handles roles/users/permissions resolution (has nothing to do with MS LDAP but may be used on that as one of the possibilities)</p>
-</li>
-<li><p><strong>Volatile ObjectStore</strong> - check in/out pattern for objects that may need to survive process recycle</p>
-</li>
-<li><p><strong>Session Context</strong> - session a kin to web session - in any app (i.e. console session)</p>
-</li>
-<li><p><strong>Dependency Injection/Starters</strong> - injects components from config. Starters - named components that start along with the app</p>
-</li>
-</ul>
+<p><code>NFX.Environment</code> namespace contains handy instruments that allow configure <strong>NFX</strong> applications and their components with Laconic/XML/JSON-formatted configuration files and correspondent in-memory trees. 
+Here you can find tutorals that demonstrate main features of <strong>NFX</strong> configuration.
+Full demo projects can be found by <a href="https://github.com/aumcode/nfx-demos">link</a>.</p>
 <h2 id="contents">Contents</h2>
 <ul>
-<li><a href="appsetup.html">Setup Entry Point</a></li>
+<li><p><a href="appconfig.html">Application Configuration</a></p>
+</li>
+<li><p><a href="attributes.html">Attributes</a></p>
+</li>
+<li><p><a href="merge.html">Merge</a></p>
+</li>
+<li><p><a href="include.html">Include</a></p>
+</li>
+<li><p><a href="json-laconic.html">JSON-Laconic Convertation</a></p>
+</li>
+<li><p><a href="command-args.html">Command Args Configuration</a></p>
+</li>
+<li><p><a href="navigation.html">Navigation</a></p>
+</li>
+<li><p><a href="variables.html">Evaluation of Variables</a></p>
+</li>
+<li><p><a href="scripts.html">Scripts</a></p>
+</li>
 </ul>
 
             </article>

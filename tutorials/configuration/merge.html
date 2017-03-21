@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Application container </title>
+    <title>Merge </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Application container ">
+    <meta name="title" content="Merge ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/NFX.ico">
@@ -64,41 +64,148 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="application-container">Application container</h1>
+              <h1 id="merge">Merge</h1>
               
-<p>Although not required, any typical application in <strong>NFX</strong> executes in the application container. 
-It is just a global class that provides root services such as:</p>
-<ul>
-<li><p><strong>Component Model</strong> - keeps track of process components (i.e. logger, business logic etc..)</p>
-</li>
-<li><p><strong>Configuration</strong> - provides root configuration for the instance</p>
-</li>
-<li><p><strong>Logging</strong> - sync/async log queue with injectable destinations/sinks (file, db etc…)</p>
-</li>
-<li><p><strong>Instrumentation</strong> - named gauges and events, real-time source key reduce and telemetry</p>
-</li>
-<li><p><strong>Inter-process/node communication</strong> - contract-based programming akin to WCF</p>
-</li>
-<li><p><strong>DataStore</strong> - access data (i.e. a notepad app may use FileDataStore to store files on disk)</p>
-</li>
-<li><p><strong>TimeSource</strong> - injectable time/zone source</p>
-</li>
-<li><p><strong>EventTimers</strong> - schedule with sync/async event handlers, injectable from config</p>
-</li>
-<li><p><strong>SecurityManager</strong> - handles roles/users/permissions resolution (has nothing to do with MS LDAP but may be used on that as one of the possibilities)</p>
-</li>
-<li><p><strong>Volatile ObjectStore</strong> - check in/out pattern for objects that may need to survive process recycle</p>
-</li>
-<li><p><strong>Session Context</strong> - session a kin to web session - in any app (i.e. console session)</p>
-</li>
-<li><p><strong>Dependency Injection/Starters</strong> - injects components from config. Starters - named components that start along with the app</p>
-</li>
-</ul>
-<h2 id="contents">Contents</h2>
-<ul>
-<li><a href="appsetup.html">Setup Entry Point</a></li>
-</ul>
+<p>While working with configurations you can merge them together with <code>NFX.Environment.Configuration.CreateFromMerge()</code>. 
+It creates a new configuration from ordered merge result of two other nodes which can be from different configurations. 
+The first operand is a &quot;base&quot; node that data is defaulted from. 
+And the second one contains overrides/additions of/to data from base node. 
+Also you can influence merging process with <code>_override</code> pragma.</p>
+<p>Suppose we have following two configuration sections:</p>
+<pre><code class="lang-js">root
+{
+  section-a
+  {
+    husband=&quot;John Smith&quot; {}
+    wife=&quot;Helen Black&quot; {}
+    child
+    {
+      name=&quot;James&quot;
+      age=10
+    }
+    child
+    {
+      name=&quot;Ann&quot;
+      age=13
+    }
+  }
 
+  section-b
+  {
+    _override=attributes
+    name=&quot;Mark Johnson&quot; {}
+    age=32
+  }
+
+  //section-c=&quot;Exception will be thrown if uncomment.&quot; { _override=fail }
+
+  section-d=&quot;This can not be overridden but no exception will be thrown.&quot; { _override=stop }
+
+  section-e
+  {
+    _override=replace
+    name=&quot;Henry Gold&quot; {}
+    age=99
+  }
+
+  section-f
+  {
+    _override=&#39;sections&#39;
+    name=&quot;David Crowman&quot; {}
+    age=18
+  }
+}
+</code></pre><pre><code class="lang-js">root
+{
+  section-a
+  {
+    wife=&quot;Olga Smith&quot; {}
+    child
+    {
+      name=&quot;Mary&quot; //try to put &quot;Ann&quot; instead of
+      age=8
+    }
+    city=&quot;New York&quot;
+  }
+
+  section-b
+  {
+    name=&quot;Lisa Stone&quot; {}
+    age=10
+  } 
+
+  section-c=&quot;Could cause failure while merging.&quot; {}
+
+  section-d=&quot;This value will be ignored.&quot; { name=&quot;Peter&quot;{} }
+
+  section-e
+  {
+    name=&quot;Harold Snow&quot; {}
+    age=25
+  }
+
+  section-f
+  {
+    name=&quot;Jane Wood&quot; {}
+    age=50
+  }
+}
+</code></pre><p><br></p>
+<p>After applying following code</p>
+<pre><code class="lang-cs">var confA = LaconicConfiguration.CreateFromString(this.confMergeA.Text);
+var confB = LaconicConfiguration.CreateFromString(this.confMergeB.Text);
+var conf = new MemoryConfiguration();
+conf.CreateFromMerge(confA.Root, confB.Root);
+
+var result = conf.ToLaconicString();
+</code></pre><p>the variable <code>result</code> will contains merged configuration:</p>
+<pre><code class="lang-js">root
+{
+  section-a
+  {
+    city=&quot;New York&quot;
+    husband=&quot;John Smith&quot; {}
+    wife=&quot;Olga Smith&quot; {}
+    child
+    {
+      name=James
+      age=10
+    }
+    child
+    {
+      name=Ann
+      age=13
+    }
+    child
+    {
+      name=Mary
+      age=8
+    }
+  }
+  section-b
+  {
+    _override=attributes
+    age=10
+    name=&quot;Mark Johnson&quot; {}
+  }
+  section-d=&quot;This can not be overridden but no exception will be thrown.&quot;
+  {
+    _override=stop
+  }
+  section-e
+  {
+    age=25
+    name=&quot;Harold Snow&quot; {}
+  }
+  section-f
+  {
+    _override=sections
+    age=18
+    name=&quot;Jane Wood&quot; {}
+  }
+  section-c=&quot;Could cause failure while merging.&quot; {}
+}
+</code></pre>
             </article>
           </div>
           
