@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>JSON-Laconic Convertation </title>
+    <title>JSON-Laconic Conversion </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="JSON-Laconic Convertation ">
+    <meta name="title" content="JSON-Laconic Conversion ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/NFX.ico">
@@ -64,10 +64,49 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="json-laconic-convertation">JSON-Laconic Convertation</h1>
+              <h1 id="json-laconic-conversion">JSON-Laconic Conversion</h1>
               
-<p>You can convert laconic configuration to JSON format and backwards. 
-Use corressponding methods: <code>NFX.Environment.ConfigNode.ToJSONDataMap()</code> and <code>NFX.Serialization.JSON.JSONDataMap.ToConfigNode()</code>.</p>
+<p>JSON and Laconic formats are completely 
+You can easily convert laconic configuration to JSON format and backwards by using methods <code>NFX.Environment.ConfigNode.ToJSONDataMap()</code> and <code>NFX.Serialization.JSON.JSONDataMap.ToConfigNode()</code>.</p>
+<p>Suppose string variable <code>confStr</code> contains the following laconic configuration section:</p>
+<pre><code class="lang-js">root
+{ 
+  name=&quot;David Crocket&quot;
+  contacts
+  { 
+    address
+    {
+      zipcode=10010
+      city=&quot;New York&quot;
+    } 
+    phone { mobile=891245783968 } 
+  }
+}
+</code></pre><p>After applying of the code</p>
+<pre><code class="lang-cs">var node = confStr.AsLaconicConfig();
+var map = node.ToJSONDataMap();
+var result = map.ToJSON(JSONWritingOptions.PrettyPrint);
+</code></pre><p>the <code>result</code> variable will conatin JSON representation of initial laconic configuration:</p>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;David Crocket&quot;, 
+  &quot;contacts&quot;: 
+  {
+    &quot;address&quot;: 
+    {
+      &quot;zipcode&quot;: &quot;10010&quot;, 
+      &quot;city&quot;: &quot;New York&quot;
+    }, 
+    &quot;phone&quot;: 
+    {
+      &quot;mobile&quot;: &quot;891245783968&quot;
+    }
+  }
+}
+</code></pre><p>The code</p>
+<pre><code class="lang-cs">var map = (JSONDataMap)jsonStr.JSONToDataObject();
+var node = map.ToConfigNode();
+var result = node.ToLaconicString();
+</code></pre><p>will do the opposite task.</p>
 
             </article>
           </div>

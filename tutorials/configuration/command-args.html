@@ -72,7 +72,33 @@ If any argument is not prefixed then it is written as an auto-named (<code>?inde
 Any argument may have options. Any option may either consist of name or name value pair delimited by &quot;=&quot;. 
 Argument options are written as attribute nodes of their corresponding sections. 
 If option value specified without name (without &quot;=&quot;) then option is auto-named.</p>
-
+<p>Let <code>argsStr</code> variable contains the following command args string:</p>
+<p><strong>tool.exe c:\input.file d:\output.file -compress level=10 method=zip -shadow fast swap=1024 /large</strong></p>
+<p>The code</p>
+<pre><code class="lang-cs">var args = argsStr.Split(new char[] {&#39; &#39;}, StringSplitOptions.RemoveEmptyEntries);
+var conf = new CommandArgsConfiguration(args);
+var result = conf.ToLaconicString();
+</code></pre><p>will transform it into laconic configuration:</p>
+<pre><code class="lang-js">args
+{
+  ?1=tool.exe
+  ?2=&quot;c:\\input.file&quot;
+  ?3=&quot;d:\\output.file&quot;
+  compress
+  {
+    level=10
+    method=zip
+  }
+  shadow
+  {
+    ?1=fast
+    swap=1024
+  }
+  large
+  {
+  }
+}
+</code></pre>
             </article>
           </div>
           

@@ -85,6 +85,48 @@ indexer <code>[subsection_name]</code> - for access to subsection,
 If path starts from <code>!</code> then exception will be thrown if such node does not exist. 
 In application you can use <code>NFX.Environment.ConfigNode.Navigate(path)</code> which navigates the path and return the appropriate node.
 To return path from the root to the node <code>NFX.Environment.ConfigNode.RootPath()</code> is used.</p>
+<p>Let <code>confStr</code> string variable contains the following configuration:</p>
+<pre><code class="lang-js">root=person
+{
+  name=&quot;Scott Freeman&quot; {}
+  age=43
+
+  contacts
+  {
+    e-mail=sf@mail.net
+    phone=mobile { value=893457218902 }
+  }
+
+  income
+  {
+    type=salary { value=1000 }
+    type=bonus { value=100 }
+  }
+}
+</code></pre><p>The code</p>
+<pre><code class="lang-cs">var root = confStr.AsLaconicConfig();
+var result = root.Navigate(path).Value;
+</code></pre><p>will output navigation result depending on <code>path</code> variable value:</p>
+<ol>
+<li><p>/name - &quot;Scott Freeman&quot;</p>
+</li>
+<li><p>/$age - &quot;43&quot;</p>
+</li>
+<li><p>/contacts/$e-mail - &quot;sf@mail.net&quot;</p>
+</li>
+<li><p>/contacts/phone - &quot;mobile&quot;</p>
+</li>
+<li><p>/contacts/phone/$value - &quot;893457218902&quot;</p>
+</li>
+<li><p>/contacts/[0] - &quot;mobile&quot;</p>
+</li>
+<li><p>/contacts/phone/$[0] - &quot;893457218902&quot;</p>
+</li>
+<li><p>/income/type[salary]/$value - &quot;1000&quot;</p>
+</li>
+<li><p>/income/type[value=100] - &quot;bonus&quot;</p>
+</li>
+</ol>
 
             </article>
           </div>

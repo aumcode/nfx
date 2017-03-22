@@ -70,6 +70,50 @@
 To get the value of some node construction <code>$(path_to_the_node)</code> is used (for more details about paths see <a href="navigation.html">Navigation</a> section). 
 Besides that you can work with environment variables <code>(~name_of_variable)</code> and you can even make your own variables resolver. 
 Also to expand the functionality of variables macro inserts <code>(::macro_name)</code> can be added.</p>
+<p>Let <code>confStr</code> string variable contains the following configuration section:</p>
+<pre><code class="lang-js">root
+{
+  name=&quot;Jake&quot;
+  last_name=&quot;Snowman&quot;
+  full_name=&quot;$(/$name) $(/$last_name)&quot; {}
+  DOB=&quot;1982/05/12&quot;
+
+  details
+  {
+    doc1=c:\documents\
+    doc2=\snowman
+
+    var1=$(../var2) {}
+    var2=$(../var1) {}
+
+    env_var=$(~USERNAME) // &quot;~&quot; - environment variable
+    nowis=$(::now)       // &quot;::&quot; - macro
+  }
+}
+</code></pre><p>The code</p>
+<pre><code class="lang-cs">var conf = LaconicConfiguration.CreateFromString(confStr);
+var result = pattern.EvaluateVarsInConfigScope(conf);
+</code></pre><p>will output navigation result depending on <code>pattern</code> variable value:</p>
+<ol>
+<li><p>$(/$name) - &quot;Jake&quot;</p>
+</li>
+<li><p>$(/full_name) - &quot;Jake Snowman&quot;</p>
+</li>
+<li><p>$(/details/$doc1)$(/details/$doc2) - &quot;c:\documents\snowman&quot;</p>
+</li>
+<li><p>$(/details/var1) - endless loop (throws exception)</p>
+</li>
+<li><p>$(/non-existent|/$name) - &quot;Jake&quot;</p>
+</li>
+<li><p>$(!/non-existent) - nonexisting required (throws exception)</p>
+</li>
+<li><p>$(/details/$env_var) - &quot;User&quot;</p>
+</li>
+<li><p>$(/details/$nowis) - current datetime</p>
+</li>
+<li><p>$(/just_name::as-string dflt=&quot;Anderson&quot;) - &quot;Anderson&quot;</p>
+</li>
+</ol>
 
             </article>
           </div>

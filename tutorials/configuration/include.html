@@ -79,6 +79,56 @@ If no file system specified then local file system is used.
 Note: this method does not process new include pragmas that may have fetched during this call.</p>
 </li>
 </ol>
+<p>Suppose string variable <code>confAStr</code> stores the following configuration section:</p>
+<pre><code class="lang-js">staff
+{
+  employee { name=&quot;Scott Black&quot; }
+  employee { name=&quot;Mark Green&quot; }
+
+  _include
+  {
+    name=NewDepartment
+    file=$&quot;Resources\src_config\incl.laconf&quot;
+  }
+
+  _include
+  {
+    //without name
+    file=$&quot;Resources\src_config\incl.laconf&quot;
+  }
+}
+</code></pre><p>The contents of &quot;Resources\src_config\incl.laconf&quot; file are</p>
+<pre><code class="lang-js">department
+{
+  doctor { name=&quot;Joe Cooper&quot; }
+}
+</code></pre><p>Let us also consider another string variable <code>confBStr</code> with configuration section</p>
+<pre><code class="lang-js">management
+{
+  manager { name=&quot;David Horseman&quot; }
+}
+</code></pre><p><br></p>
+<p>After applying of the following lines of code</p>
+<pre><code class="lang-cs">var confA = LaconicConfiguration.CreateFromString(confAStr);
+var rootConfB = confBStr.AsLaconicConfig();
+confA.Include(confA.Root[0], rootConfB);
+confA.Root.ProcessIncludePragmas(true);
+
+var result = confA.ToLaconicString();
+</code></pre><p>the <code>result</code> variable will contain</p>
+<pre><code class="lang-js">staff
+{
+  manager { name=&quot;David Horseman&quot; }
+  employee { name=&quot;Mark Green&quot; }
+
+  NewDepartment
+  {
+    doctor { name=&quot;Joe Cooper&quot; }
+  }
+
+  doctor { name=&quot;Joe Cooper&quot; }
+}
+</code></pre><p>Note that the first &quot;employee&quot; section is completely replaced by the contents of &quot;management&quot; configuration section.</p>
 
             </article>
           </div>

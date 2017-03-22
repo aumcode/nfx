@@ -71,7 +71,7 @@ It creates a new configuration from ordered merge result of two other nodes whic
 The first operand is a &quot;base&quot; node that data is defaulted from. 
 And the second one contains overrides/additions of/to data from base node. 
 Also you can influence merging process with <code>_override</code> pragma.</p>
-<p>Suppose we have following two configuration sections:</p>
+<p>Suppose <code>confAStr</code> and <code>confBStr</code> string variables store the following two configuration sections correspondingly:</p>
 <pre><code class="lang-js">root
 {
   section-a
@@ -152,8 +152,8 @@ Also you can influence merging process with <code>_override</code> pragma.</p>
 }
 </code></pre><p><br></p>
 <p>After applying following code</p>
-<pre><code class="lang-cs">var confA = LaconicConfiguration.CreateFromString(this.confMergeA.Text);
-var confB = LaconicConfiguration.CreateFromString(this.confMergeB.Text);
+<pre><code class="lang-cs">var confA = LaconicConfiguration.CreateFromString(confAStr);
+var confB = LaconicConfiguration.CreateFromString(confBStr);
 var conf = new MemoryConfiguration();
 conf.CreateFromMerge(confA.Root, confB.Root);
 
