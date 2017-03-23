@@ -150,7 +150,6 @@ namespace NFX.Templatization
 
       public readonly string Content;
 
-
       /// <summary>
       /// Returns null as class name can not be inferred from string
       /// </summary>

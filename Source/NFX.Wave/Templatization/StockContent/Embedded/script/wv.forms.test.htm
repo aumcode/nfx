@@ -8,6 +8,7 @@
   <title>WV Data/RecordModel Unit Test</title>
   <script src="wv.js" ></script>
   <script src="wv.gui.js" ></script>
+  <script src="wv.rmgui.js"></script>
   <script src="jquery-2.1.4.min.js" ></script>
 </head>
 <body>
@@ -117,7 +118,7 @@
                                                                   SEX: "Space explorer"}}}
                                              ]}
                                             );
-         RVIEW = new WAVE.RecordModel.RecordView("V1", REC);
+         RVIEW = new WAVE.RecordModel.RecordView("V1", REC, WAVE.RMGUI);
 
 
 
@@ -153,7 +154,7 @@
                              '<button onclick="showDialog1()">Show Another</button>&nbsp;'+
                              '<button onclick="WAVE.GUI.currentDialog().cancel()">Close This</button>',
                     cls: "dlgGreen"
-                    });
+            });
 
         }
 

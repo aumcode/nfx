@@ -54,8 +54,8 @@ namespace ConsoleTest
 
       //GoogleDrive.GoogleDriveFileSystemTests.Run();
 
-     //Templatization.JS.JSTemplate.Run();
-     Templatization.NHT.NHTTemplate.Run();
+     Templatization.JS.JSTemplate.Run();
+     //Templatization.NHT.NHTTemplate.Run();
 
       Console.WriteLine("done");
       Console.ReadKey();

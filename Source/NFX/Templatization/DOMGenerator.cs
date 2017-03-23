@@ -33,11 +33,20 @@ namespace NFX.Templatization
     #endregion
 
     #region private
-    private string m_LineEnding = "";
+    private string m_LineEnding;
+    private int m_Indent;
     private int m_IndexInSource;
     private string m_JsUseCtxVar;
     private string m_JsRootVar;
     private string m_JsCtxVar;
+    private bool m_Pretty;
+    #endregion
+
+    #region Properties
+    public string LineEnding
+    {
+      get { return m_LineEnding ?? (m_LineEnding = m_Pretty ? "\n" : ""); }
+    }
     #endregion
 
     #region Public
@@ -47,15 +56,13 @@ namespace NFX.Templatization
       if (node == null || !node.Exists) return;
 
       var attr = node.AttrByName(CONFIG_PRETTIFY_ATTR);
-      if (attr != null && attr.Exists && attr.ValueAsBool(false))
-      {
-        m_LineEnding = System.Environment.NewLine;
-      }
+      m_Pretty = attr != null && attr.Exists && attr.ValueAsBool(false);
     }
 
-    public string Generate(IConfigSectionNode node, ref int indexInSource)
+    public string Generate(IConfigSectionNode node, int indent, ref int indexInSource)
     {
       m_IndexInSource = indexInSource;
+      m_Indent = indent;
       m_JsUseCtxVar = JS_USE_CTX_VAR.Args(m_IndexInSource);
       m_JsCtxVar = JS_CTX_VAR.Args(m_IndexInSource);
       m_JsRootVar = JS_ROOT_VAR.Args(m_IndexInSource);
@@ -71,14 +78,14 @@ namespace NFX.Templatization
       var sb = new StringBuilder();
       var elemId = "ljs_{0}_{1}".Args(m_IndexInSource, ++counter);
 
-      if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(arguments[1]);{1}", m_JsUseCtxVar, m_LineEnding);
-      sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, MiscUtils.EscapeJSLiteral(node.Name), m_LineEnding);
+      if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(arguments[1]);{1}", m_JsUseCtxVar, LineEnding, getIndent());
+      sb.AppendFormat("{3}var {0} = document.createElement('{1}');{2}", elemId, MiscUtils.EscapeJSLiteral(node.Name), LineEnding, getIndent());
 
 
       if (node.Value.IsNotNullOrWhiteSpace())
       {
-        var v = makeValueVariable(node.Value, ++counter, ref sb);
-        sb.AppendFormat("{0}.innerText = {1};{2}", elemId, v, m_LineEnding);
+        var v = evalValue(node.Value, ++counter, ref sb);
+        sb.AppendFormat("{3}{0}.innerText = {1};{2}", elemId, v, LineEnding, getIndent());
       }
 
       foreach(var attr in node.Attributes)
@@ -89,10 +96,10 @@ namespace NFX.Templatization
 
         var name = MiscUtils.EscapeJSLiteral(attr.Name);
         if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
-          sb.AppendFormat("{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, m_LineEnding);
+          sb.AppendFormat("{4}{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, LineEnding, getIndent());
         else {
-          var v = makeValueVariable(value, ++counter, ref sb);
-          sb.AppendFormat("{0}.setAttribute('{1}', {2});{3}", elemId, name, v, m_LineEnding);
+          var v = evalValue(value, ++counter, ref sb);
+          sb.AppendFormat("{4}{0}.setAttribute('{1}', {2});{3}", elemId, name, v, LineEnding, getIndent());
         }
       }
       foreach(var child in node.Children)
@@ -101,26 +108,35 @@ namespace NFX.Templatization
       }
       if (isRootNode)
       {
-        sb.AppendFormat("var {0} = arguments[0];{1}", m_JsRootVar, m_LineEnding);
-        sb.AppendFormat("if (typeof({0}) !== 'undefined' && {0} !== null) {{{1}", m_JsRootVar, m_LineEnding);
-        sb.AppendFormat("if (WAVE.isString({0})){1}", m_JsRootVar, m_LineEnding);
-        sb.AppendFormat("{0} = WAVE.id({0});{1}", m_JsRootVar, m_LineEnding);
-        sb.AppendFormat("if (WAVE.isObject({0})){1}", m_JsRootVar, m_LineEnding);
-        sb.AppendFormat("{0}.appendChild({1});{2}", m_JsRootVar, elemId, m_LineEnding);
-        sb.AppendFormat("}}");
+        sb.AppendFormat("{2}var {0} = arguments[0];{1}", m_JsRootVar, LineEnding, getIndent());
+        sb.AppendFormat("{2}if (typeof({0}) !== 'undefined' && {0} !== null) {{{1}", m_JsRootVar, LineEnding, getIndent());
+        sb.AppendFormat("{2}if (WAVE.isString({0})){1}", m_JsRootVar, LineEnding, getIndent(2));
+        sb.AppendFormat("{2}{0} = WAVE.id({0});{1}", m_JsRootVar, LineEnding, getIndent(4));
+        sb.AppendFormat("{2}if (WAVE.isObject({0})){1}", m_JsRootVar, LineEnding, getIndent(2));
+        sb.AppendFormat("{3}{0}.appendChild({1});{2}", m_JsRootVar, elemId, LineEnding, getIndent(4));
+        sb.AppendFormat("{0}}}", getIndent());
       }
       else
-        sb.AppendFormat("{0}.appendChild({1});{2}", root, elemId, m_LineEnding);
+        sb.AppendFormat("{3}{0}.appendChild({1});{2}{2}", root, elemId, LineEnding, getIndent());
 
       return sb.ToString();
     }
 
-    private string makeValueVariable(string value, int seed, ref StringBuilder result)
+    private string evalValue(string value, int seed, ref StringBuilder result)
     {
-      var valueId = "ljsv_{0}_{1}".Args(m_IndexInSource, seed);
-      result.AppendFormat("var {0} = \"{1}\";{2}", valueId, MiscUtils.EscapeJSLiteral(value), m_LineEnding);
-      result.AppendFormat("{1} = {0} ? WAVE.strHTMLTemplate({1}, ctx) : {1};{2}".Args(m_JsUseCtxVar, valueId, m_LineEnding));
-      return valueId;
+      if (value.Length > 15)
+      {
+        var valueId = "ljsv_{0}_{1}".Args(m_IndexInSource, seed);
+        result.AppendFormat("{3}var {0} = \"{1}\";{2}", valueId, MiscUtils.EscapeJSLiteral(value), LineEnding, getIndent());
+        return "{0} ? WAVE.strHTMLTemplate({1}, ctx) : {1}".Args(m_JsUseCtxVar, valueId);
+      }
+
+      return "{0} ? WAVE.strHTMLTemplate(\"{1}\", ctx) : \"{1}\"".Args(m_JsUseCtxVar, MiscUtils.EscapeJSLiteral(value));
+    }
+
+    public string getIndent(int extraSpaces = 0)
+    {
+      return m_Pretty ? new String(' ', m_Indent + extraSpaces) : string.Empty;
     }
   }
 }

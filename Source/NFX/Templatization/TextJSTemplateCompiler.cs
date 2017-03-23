@@ -106,8 +106,22 @@ namespace NFX.Templatization
       var counter = 0;
       unit.CompiledSource = r.Replace(text, (m) => {
         counter++;
+
+        var spacesCount = 0;
+        var idx = m.Index -1;
+        while(true)
+        {
+          var i = idx - spacesCount;
+          if (i < 0) break;
+
+          var c = text[i];
+          if (c != ' ') break;
+          spacesCount++;
+        }
+
+        Console.WriteLine("EEEEEEEEEEEEEEE            " + spacesCount);
         var conf = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-        return DOMGenerator.Generate(conf, ref counter);
+        return DOMGenerator.Generate(conf, spacesCount, ref counter);
       });
     }
 

@@ -2,239 +2,186 @@ function hello(text) {
   alert(WAVE.strDefault(text, "Hello"));
 }
 
-function render(root, ctx){
-var ljs_useCtx_1 = WAVE.isObject(arguments[1]);
-var ljs_1_1 = document.createElement('div');
-ljs_1_1.addEventListener('click', function() { console.log('kaka') }, false);
-var ljs_1_2 = document.createElement('div');
-var ljsv_1_3 = "title";
-ljsv_1_3 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_3, ctx) : ljsv_1_3;
-ljs_1_2.setAttribute('class', ljsv_1_3);
-var ljsv_1_4 = "alert(\x27just data\x27)";
-ljsv_1_4 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_4, ctx) : ljsv_1_4;
-ljs_1_2.setAttribute('data-alert', ljsv_1_4);
-var ljsv_1_5 = "\x3Cscript\x3Ealert(\x22script\x22)\x3C\x2Fscript\x3E";
-ljsv_1_5 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_5, ctx) : ljsv_1_5;
-ljs_1_2.setAttribute('data-alert-script', ljsv_1_5);
-ljs_1_1.appendChild(ljs_1_2);
-var ljs_1_6 = document.createElement('div');
-var ljsv_1_7 = "rate";
-ljsv_1_7 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_7, ctx) : ljsv_1_7;
-ljs_1_6.setAttribute('id', ljsv_1_7);
-ljs_1_1.appendChild(ljs_1_6);
-var ljs_1_8 = document.createElement('div');
-var ljsv_1_9 = "@color@";
-ljsv_1_9 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_9, ctx) : ljsv_1_9;
-ljs_1_8.setAttribute('class', ljsv_1_9);
-ljs_1_1.appendChild(ljs_1_8);
-var ljs_1_10 = document.createElement('div');
-var ljsv_1_11 = "stub @color@";
-ljsv_1_11 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_11, ctx) : ljsv_1_11;
-ljs_1_10.setAttribute('class', ljsv_1_11);
-ljs_1_1.appendChild(ljs_1_10);
-var ljs_1_12 = document.createElement('div');
-var ljsv_1_13 = "\x3Cscript\x3Ealert(\x22\x27\x3Cscript\x3Ealert(\x27@color@\x27);\x3C\x2Fscript\x3E\x27text\x22)\x3C\x2Fscript\x3E";
-ljsv_1_13 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_13, ctx) : ljsv_1_13;
-ljs_1_12.innerText = ljsv_1_13;
-ljs_1_1.appendChild(ljs_1_12);
-var ljs_1_14 = document.createElement('div');
-var ljs_1_15 = document.createElement('div');
-var ljsv_1_16 = "@color@";
-ljsv_1_16 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_16, ctx) : ljsv_1_16;
-ljs_1_15.setAttribute('class', ljsv_1_16);
-var ljs_1_17 = document.createElement('div');
-var ljs_1_18 = document.createElement('div');
-var ljsv_1_19 = "@color@";
-ljsv_1_19 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_19, ctx) : ljsv_1_19;
-ljs_1_18.setAttribute('class', ljsv_1_19);
-var ljs_1_20 = document.createElement('div');
-var ljs_1_21 = document.createElement('div');
-var ljsv_1_22 = "@color@";
-ljsv_1_22 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_22, ctx) : ljsv_1_22;
-ljs_1_21.setAttribute('class', ljsv_1_22);
-var ljs_1_23 = document.createElement('div');
-var ljs_1_24 = document.createElement('div');
-var ljsv_1_25 = "@color@";
-ljsv_1_25 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_25, ctx) : ljsv_1_25;
-ljs_1_24.setAttribute('class', ljsv_1_25);
-var ljs_1_26 = document.createElement('div');
-var ljsv_1_27 = ",.\x2F[\x5C]{}|!@#$%^\x26*()_+=-~`\x27";
-ljsv_1_27 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_27, ctx) : ljsv_1_27;
-ljs_1_26.innerText = ljsv_1_27;
-ljs_1_24.appendChild(ljs_1_26);
-ljs_1_23.appendChild(ljs_1_24);
-ljs_1_21.appendChild(ljs_1_23);
-ljs_1_20.appendChild(ljs_1_21);
-ljs_1_18.appendChild(ljs_1_20);
-ljs_1_17.appendChild(ljs_1_18);
-ljs_1_15.appendChild(ljs_1_17);
-ljs_1_14.appendChild(ljs_1_15);
-ljs_1_1.appendChild(ljs_1_14);
-var ljs_1_28 = document.createElement('div');
-var ljsv_1_29 = "@height@";
-ljsv_1_29 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_29, ctx) : ljsv_1_29;
-ljs_1_28.setAttribute('data-height', ljsv_1_29);
-var ljsv_1_30 = "@color@";
-ljsv_1_30 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_30, ctx) : ljsv_1_30;
-ljs_1_28.setAttribute('class', ljsv_1_30);
-ljs_1_1.appendChild(ljs_1_28);
-var ljs_1_31 = document.createElement('div');
-var ljsv_1_32 = "controls";
-ljsv_1_32 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_32, ctx) : ljsv_1_32;
-ljs_1_31.setAttribute('id', ljsv_1_32);
-var ljs_1_33 = document.createElement('input');
-var ljsv_1_34 = "2013-06-06";
-ljsv_1_34 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_34, ctx) : ljsv_1_34;
-ljs_1_33.setAttribute('value', ljsv_1_34);
-var ljsv_1_35 = "date";
-ljsv_1_35 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_35, ctx) : ljsv_1_35;
-ljs_1_33.setAttribute('type', ljsv_1_35);
-ljs_1_31.appendChild(ljs_1_33);
-var ljs_1_36 = document.createElement('input');
-var ljsv_1_37 = "234.11";
-ljsv_1_37 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_37, ctx) : ljsv_1_37;
-ljs_1_36.setAttribute('value', ljsv_1_37);
-var ljsv_1_38 = "text";
-ljsv_1_38 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_38, ctx) : ljsv_1_38;
-ljs_1_36.setAttribute('type', ljsv_1_38);
-ljs_1_31.appendChild(ljs_1_36);
-var ljs_1_39 = document.createElement('input');
-var ljsv_1_40 = "234.11";
-ljsv_1_40 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_40, ctx) : ljsv_1_40;
-ljs_1_39.setAttribute('value', ljsv_1_40);
-var ljsv_1_41 = "number";
-ljsv_1_41 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_41, ctx) : ljsv_1_41;
-ljs_1_39.setAttribute('type', ljsv_1_41);
-ljs_1_31.appendChild(ljs_1_39);
-ljs_1_1.appendChild(ljs_1_31);
-var ljs_1_42 = document.createElement('div');
-var ljsv_1_43 = "container";
-ljsv_1_43 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_43, ctx) : ljsv_1_43;
-ljs_1_42.setAttribute('id', ljsv_1_43);
-var ljs_1_44 = document.createElement('h1');
-var ljsv_1_45 = "Animation Test";
-ljsv_1_45 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_45, ctx) : ljsv_1_45;
-ljs_1_44.innerText = ljsv_1_45;
-ljs_1_42.appendChild(ljs_1_44);
-var ljs_1_46 = document.createElement('button');
-var ljsv_1_47 = "Highlight";
-ljsv_1_47 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_47, ctx) : ljsv_1_47;
-ljs_1_46.innerText = ljsv_1_47;
-var ljsv_1_48 = "highlight";
-ljsv_1_48 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_48, ctx) : ljsv_1_48;
-ljs_1_46.setAttribute('class', ljsv_1_48);
-ljs_1_46.addEventListener('click', function() { hello('highlight'); }, false);
-ljs_1_42.appendChild(ljs_1_46);
-var ljs_1_49 = document.createElement('button');
-var ljsv_1_50 = "Fade";
-ljsv_1_50 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_50, ctx) : ljsv_1_50;
-ljs_1_49.innerText = ljsv_1_50;
-var ljsv_1_51 = "fade";
-ljsv_1_51 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_51, ctx) : ljsv_1_51;
-ljs_1_49.setAttribute('class', ljsv_1_51);
-ljs_1_49.addEventListener('click', function() { hello('fade'); }, false);
-ljs_1_42.appendChild(ljs_1_49);
-var ljs_1_52 = document.createElement('button');
-var ljsv_1_53 = "Rizzle";
-ljsv_1_53 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_53, ctx) : ljsv_1_53;
-ljs_1_52.innerText = ljsv_1_53;
-var ljsv_1_54 = "rizzle";
-ljsv_1_54 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_54, ctx) : ljsv_1_54;
-ljs_1_52.setAttribute('class', ljsv_1_54);
-ljs_1_52.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_52);
-var ljs_1_55 = document.createElement('button');
-var ljsv_1_56 = "Knit";
-ljsv_1_56 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_56, ctx) : ljsv_1_56;
-ljs_1_55.innerText = ljsv_1_56;
-var ljsv_1_57 = "knit";
-ljsv_1_57 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_57, ctx) : ljsv_1_57;
-ljs_1_55.setAttribute('class', ljsv_1_57);
-ljs_1_55.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_55);
-var ljs_1_58 = document.createElement('button');
-var ljsv_1_59 = "Shrink";
-ljsv_1_59 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_59, ctx) : ljsv_1_59;
-ljs_1_58.innerText = ljsv_1_59;
-var ljsv_1_60 = "shrink";
-ljsv_1_60 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_60, ctx) : ljsv_1_60;
-ljs_1_58.setAttribute('class', ljsv_1_60);
-ljs_1_58.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_58);
-var ljs_1_61 = document.createElement('button');
-var ljsv_1_62 = "Rotate";
-ljsv_1_62 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_62, ctx) : ljsv_1_62;
-ljs_1_61.innerText = ljsv_1_62;
-var ljsv_1_63 = "rotate";
-ljsv_1_63 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_63, ctx) : ljsv_1_63;
-ljs_1_61.setAttribute('class', ljsv_1_63);
-ljs_1_61.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_61);
-var ljs_1_64 = document.createElement('button');
-var ljsv_1_65 = "Boom";
-ljsv_1_65 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_65, ctx) : ljsv_1_65;
-ljs_1_64.innerText = ljsv_1_65;
-var ljsv_1_66 = "boom";
-ljsv_1_66 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_66, ctx) : ljsv_1_66;
-ljs_1_64.setAttribute('class', ljsv_1_66);
-ljs_1_64.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_64);
-var ljs_1_67 = document.createElement('button');
-var ljsv_1_68 = "Squeeze";
-ljsv_1_68 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_68, ctx) : ljsv_1_68;
-ljs_1_67.innerText = ljsv_1_68;
-var ljsv_1_69 = "squeeze";
-ljsv_1_69 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_69, ctx) : ljsv_1_69;
-ljs_1_67.setAttribute('class', ljsv_1_69);
-ljs_1_67.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_67);
-var ljs_1_70 = document.createElement('button');
-var ljsv_1_71 = "Deform";
-ljsv_1_71 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_71, ctx) : ljsv_1_71;
-ljs_1_70.innerText = ljsv_1_71;
-var ljsv_1_72 = "deform";
-ljsv_1_72 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_72, ctx) : ljsv_1_72;
-ljs_1_70.setAttribute('class', ljsv_1_72);
-ljs_1_70.addEventListener('click', hello, false);
-ljs_1_42.appendChild(ljs_1_70);
-ljs_1_1.appendChild(ljs_1_42);
-var ljs_1_73 = document.createElement('h1');
-var ljsv_1_74 = "Compiler output example";
-ljsv_1_74 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_74, ctx) : ljsv_1_74;
-ljs_1_73.innerText = ljsv_1_74;
-ljs_1_1.appendChild(ljs_1_73);
-var ljs_1_75 = document.createElement('code');
-var ljsv_1_76 = "\x0D\x0A        function noRoot() {\x0D\x0A          var ljs_useCtx_2 = WAVE.isObject(arguments[1]);\x0D\x0A          var ljs_2_1 = document.createElement(\x27section\x27);\x0D\x0A          var ljsv_2_2 = \x27Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris, facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...\x27;\x0D\x0A          ljsv_2_2 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_2, ctx) : ljsv_2_2;\x0D\x0A          ljs_2_1.innerText = ljsv_2_2;\x0D\x0A          var ljsv_2_3 = \x27sect\x27;\x0D\x0A          ljsv_2_3 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_3, ctx) : ljsv_2_3;\x0D\x0A          ljs_2_1.setAttribute(\x27id\x27, ljsv_2_3);\x0D\x0A          var ljsv_2_4 = \x27sect\x27;\x0D\x0A          ljsv_2_4 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_4, ctx) : ljsv_2_4;\x0D\x0A          ljs_2_1.setAttribute(\x27class\x27, ljsv_2_4);\x0D\x0A\x0D\x0A          var ljs_r_2 = arguments[0];\x0D\x0A          if (typeof(ljs_r_2) !== \x27undefined\x27 \x26\x26 ljs_r_2 !== null) {\x0D\x0A            if (WAVE.isString(ljs_r_2))\x0D\x0A              ljs_r_2 = WAVE.id(ljs_r_2);\x0D\x0A            if (WAVE.isObject(ljs_r_2))\x0D\x0A              ljs_r_2.appendChild(ljs_2_1);\x0D\x0A          }\x0D\x0A        }\x0D\x0A    ";
-ljsv_1_76 = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_76, ctx) : ljsv_1_76;
-ljs_1_75.innerText = ljsv_1_76;
-ljs_1_1.appendChild(ljs_1_75);
-var ljs_r_1 = arguments[0];
-if (typeof(ljs_r_1) !== 'undefined' && ljs_r_1 !== null) {
-if (WAVE.isString(ljs_r_1))
-ljs_r_1 = WAVE.id(ljs_r_1);
-if (WAVE.isObject(ljs_r_1))
-ljs_r_1.appendChild(ljs_1_1);
-}
+function render(){
+  var ljs_useCtx_1 = WAVE.isObject(arguments[1]);
+  var ljs_1_1 = document.createElement('div');
+  ljs_1_1.addEventListener('click', function() { console.log('kaka') }, false);
+  var ljs_1_2 = document.createElement('div');
+  ljs_1_2.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("title", ctx) : "title");
+  var ljsv_1_4 = "alert(\x27just data\x27)";
+  ljs_1_2.setAttribute('data-alert', ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_4, ctx) : ljsv_1_4);
+  var ljsv_1_5 = "\x3Cscript\x3Ealert(\x22script\x22)\x3C\x2Fscript\x3E";
+  ljs_1_2.setAttribute('data-alert-script', ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_5, ctx) : ljsv_1_5);
+  ljs_1_1.appendChild(ljs_1_2);
+
+  var ljs_1_6 = document.createElement('div');
+  ljs_1_6.setAttribute('id', ljs_useCtx_1 ? WAVE.strHTMLTemplate("rate", ctx) : "rate");
+  ljs_1_1.appendChild(ljs_1_6);
+
+  var ljs_1_8 = document.createElement('div');
+  ljs_1_8.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@color@", ctx) : "@color@");
+  ljs_1_1.appendChild(ljs_1_8);
+
+  var ljs_1_10 = document.createElement('div');
+  ljs_1_10.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("stub @color@", ctx) : "stub @color@");
+  ljs_1_1.appendChild(ljs_1_10);
+
+  var ljs_1_12 = document.createElement('div');
+  var ljsv_1_13 = "\x3Cscript\x3Ealert(\x22\x27\x3Cscript\x3Ealert(\x27@color@\x27);\x3C\x2Fscript\x3E\x27text\x22)\x3C\x2Fscript\x3E";
+  ljs_1_12.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_13, ctx) : ljsv_1_13;
+  ljs_1_1.appendChild(ljs_1_12);
+
+  var ljs_1_14 = document.createElement('div');
+  var ljs_1_15 = document.createElement('div');
+  ljs_1_15.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@color@", ctx) : "@color@");
+  var ljs_1_17 = document.createElement('div');
+  var ljs_1_18 = document.createElement('div');
+  ljs_1_18.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@color@", ctx) : "@color@");
+  var ljs_1_20 = document.createElement('div');
+  var ljs_1_21 = document.createElement('div');
+  ljs_1_21.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@color@", ctx) : "@color@");
+  var ljs_1_23 = document.createElement('div');
+  var ljs_1_24 = document.createElement('div');
+  ljs_1_24.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@color@", ctx) : "@color@");
+  var ljs_1_26 = document.createElement('div');
+  var ljsv_1_27 = ",.\x2F[\x5C]{}|!@#$%^\x26*()_+=-~`\x27";
+  ljs_1_26.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_27, ctx) : ljsv_1_27;
+  ljs_1_24.appendChild(ljs_1_26);
+
+  ljs_1_23.appendChild(ljs_1_24);
+
+  ljs_1_21.appendChild(ljs_1_23);
+
+  ljs_1_20.appendChild(ljs_1_21);
+
+  ljs_1_18.appendChild(ljs_1_20);
+
+  ljs_1_17.appendChild(ljs_1_18);
+
+  ljs_1_15.appendChild(ljs_1_17);
+
+  ljs_1_14.appendChild(ljs_1_15);
+
+  ljs_1_1.appendChild(ljs_1_14);
+
+  var ljs_1_28 = document.createElement('div');
+  ljs_1_28.setAttribute('data-height', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@height@", ctx) : "@height@");
+  ljs_1_28.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@color@", ctx) : "@color@");
+  ljs_1_1.appendChild(ljs_1_28);
+
+  var ljs_1_31 = document.createElement('div');
+  ljs_1_31.setAttribute('id', ljs_useCtx_1 ? WAVE.strHTMLTemplate("controls", ctx) : "controls");
+  var ljs_1_33 = document.createElement('input');
+  ljs_1_33.setAttribute('value', ljs_useCtx_1 ? WAVE.strHTMLTemplate("2013-06-06", ctx) : "2013-06-06");
+  ljs_1_33.setAttribute('type', ljs_useCtx_1 ? WAVE.strHTMLTemplate("date", ctx) : "date");
+  ljs_1_31.appendChild(ljs_1_33);
+
+  var ljs_1_36 = document.createElement('input');
+  ljs_1_36.setAttribute('value', ljs_useCtx_1 ? WAVE.strHTMLTemplate("234.11", ctx) : "234.11");
+  ljs_1_36.setAttribute('type', ljs_useCtx_1 ? WAVE.strHTMLTemplate("text", ctx) : "text");
+  ljs_1_31.appendChild(ljs_1_36);
+
+  var ljs_1_39 = document.createElement('input');
+  ljs_1_39.setAttribute('value', ljs_useCtx_1 ? WAVE.strHTMLTemplate("234.11", ctx) : "234.11");
+  ljs_1_39.setAttribute('type', ljs_useCtx_1 ? WAVE.strHTMLTemplate("number", ctx) : "number");
+  ljs_1_31.appendChild(ljs_1_39);
+
+  ljs_1_1.appendChild(ljs_1_31);
+
+  var ljs_1_42 = document.createElement('div');
+  ljs_1_42.setAttribute('id', ljs_useCtx_1 ? WAVE.strHTMLTemplate("container", ctx) : "container");
+  var ljs_1_44 = document.createElement('h1');
+  ljs_1_44.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Animation Test", ctx) : "Animation Test";
+  ljs_1_42.appendChild(ljs_1_44);
+
+  var ljs_1_46 = document.createElement('button');
+  ljs_1_46.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Highlight", ctx) : "Highlight";
+  ljs_1_46.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("highlight", ctx) : "highlight");
+  ljs_1_46.addEventListener('click', function() { hello('highlight'); }, false);
+  ljs_1_42.appendChild(ljs_1_46);
+
+  var ljs_1_49 = document.createElement('button');
+  ljs_1_49.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Fade", ctx) : "Fade";
+  ljs_1_49.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("fade", ctx) : "fade");
+  ljs_1_49.addEventListener('click', function() { hello('fade'); }, false);
+  ljs_1_42.appendChild(ljs_1_49);
+
+  var ljs_1_52 = document.createElement('button');
+  ljs_1_52.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Rizzle", ctx) : "Rizzle";
+  ljs_1_52.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("rizzle", ctx) : "rizzle");
+  ljs_1_52.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_52);
+
+  var ljs_1_55 = document.createElement('button');
+  ljs_1_55.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Knit", ctx) : "Knit";
+  ljs_1_55.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("knit", ctx) : "knit");
+  ljs_1_55.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_55);
+
+  var ljs_1_58 = document.createElement('button');
+  ljs_1_58.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Shrink", ctx) : "Shrink";
+  ljs_1_58.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("shrink", ctx) : "shrink");
+  ljs_1_58.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_58);
+
+  var ljs_1_61 = document.createElement('button');
+  ljs_1_61.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Rotate", ctx) : "Rotate";
+  ljs_1_61.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("rotate", ctx) : "rotate");
+  ljs_1_61.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_61);
+
+  var ljs_1_64 = document.createElement('button');
+  ljs_1_64.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Boom", ctx) : "Boom";
+  ljs_1_64.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("boom", ctx) : "boom");
+  ljs_1_64.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_64);
+
+  var ljs_1_67 = document.createElement('button');
+  ljs_1_67.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Squeeze", ctx) : "Squeeze";
+  ljs_1_67.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("squeeze", ctx) : "squeeze");
+  ljs_1_67.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_67);
+
+  var ljs_1_70 = document.createElement('button');
+  ljs_1_70.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate("Deform", ctx) : "Deform";
+  ljs_1_70.setAttribute('class', ljs_useCtx_1 ? WAVE.strHTMLTemplate("deform", ctx) : "deform");
+  ljs_1_70.addEventListener('click', hello, false);
+  ljs_1_42.appendChild(ljs_1_70);
+
+  ljs_1_1.appendChild(ljs_1_42);
+
+  var ljs_1_73 = document.createElement('h1');
+  var ljsv_1_74 = "Compiler output example";
+  ljs_1_73.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_74, ctx) : ljsv_1_74;
+  ljs_1_1.appendChild(ljs_1_73);
+
+  var ljs_1_75 = document.createElement('code');
+  var ljsv_1_76 = "\x0D\x0A          function noRoot() {\x0D\x0A            var ljs_useCtx_2 = WAVE.isObject(arguments[1]);\x0D\x0A            var ljs_2_1 = document.createElement(\x27section\x27);\x0D\x0A            var ljsv_2_2 = \x27Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris, facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...\x27;\x0D\x0A            ljsv_2_2 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_2, ctx) : ljsv_2_2;\x0D\x0A            ljs_2_1.innerText = ljsv_2_2;\x0D\x0A            var ljsv_2_3 = \x27sect\x27;\x0D\x0A            ljsv_2_3 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_3, ctx) : ljsv_2_3;\x0D\x0A            ljs_2_1.setAttribute(\x27id\x27, ljsv_2_3);\x0D\x0A            var ljsv_2_4 = \x27sect\x27;\x0D\x0A            ljsv_2_4 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_4, ctx) : ljsv_2_4;\x0D\x0A            ljs_2_1.setAttribute(\x27class\x27, ljsv_2_4);\x0D\x0A\x0D\x0A            var ljs_r_2 = arguments[0];\x0D\x0A            if (typeof(ljs_r_2) !== \x27undefined\x27 \x26\x26 ljs_r_2 !== null) {\x0D\x0A              if (WAVE.isString(ljs_r_2))\x0D\x0A                ljs_r_2 = WAVE.id(ljs_r_2);\x0D\x0A              if (WAVE.isObject(ljs_r_2))\x0D\x0A                ljs_r_2.appendChild(ljs_2_1);\x0D\x0A            }\x0D\x0A          }\x0D\x0A      ";
+  ljs_1_75.innerText = ljs_useCtx_1 ? WAVE.strHTMLTemplate(ljsv_1_76, ctx) : ljsv_1_76;
+  ljs_1_1.appendChild(ljs_1_75);
+
+  var ljs_r_1 = arguments[0];
+  if (typeof(ljs_r_1) !== 'undefined' && ljs_r_1 !== null) {
+    if (WAVE.isString(ljs_r_1))
+      ljs_r_1 = WAVE.id(ljs_r_1);
+    if (WAVE.isObject(ljs_r_1))
+      ljs_r_1.appendChild(ljs_1_1);
+  }
 }
 
 
 function noRoot() {
-var ljs_useCtx_2 = WAVE.isObject(arguments[1]);
-var ljs_2_1 = document.createElement('section');
-var ljsv_2_2 = "\x0D\x0A      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sollicitudin interdum,\x0D\x0A      sollicitudin condimentum montes nulla bibendum aliquam velit? Fermentum mattis aenean nec...\x0D\x0A      Orci proin litora nec ullamcorper?\x0D\x0A    ";
-ljsv_2_2 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_2, ctx) : ljsv_2_2;
-ljs_2_1.innerText = ljsv_2_2;
-var ljsv_2_3 = "sect";
-ljsv_2_3 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_3, ctx) : ljsv_2_3;
-ljs_2_1.setAttribute('id', ljsv_2_3);
-var ljsv_2_4 = "sect";
-ljsv_2_4 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_4, ctx) : ljsv_2_4;
-ljs_2_1.setAttribute('class', ljsv_2_4);
-var ljs_r_2 = arguments[0];
-if (typeof(ljs_r_2) !== 'undefined' && ljs_r_2 !== null) {
-if (WAVE.isString(ljs_r_2))
-ljs_r_2 = WAVE.id(ljs_r_2);
-if (WAVE.isObject(ljs_r_2))
-ljs_r_2.appendChild(ljs_2_1);
-}
+  var ljs_useCtx_2 = WAVE.isObject(arguments[1]);
+  var ljs_2_1 = document.createElement('section');
+  var ljsv_2_2 = "\x0D\x0A        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris,\x0D\x0A        facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...\x0D\x0A      ";
+  ljs_2_1.innerText = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_2, ctx) : ljsv_2_2;
+  ljs_2_1.setAttribute('id', ljs_useCtx_2 ? WAVE.strHTMLTemplate("sect", ctx) : "sect");
+  ljs_2_1.setAttribute('class', ljs_useCtx_2 ? WAVE.strHTMLTemplate("sect", ctx) : "sect");
+  var ljs_r_2 = arguments[0];
+  if (typeof(ljs_r_2) !== 'undefined' && ljs_r_2 !== null) {
+    if (WAVE.isString(ljs_r_2))
+      ljs_r_2 = WAVE.id(ljs_r_2);
+    if (WAVE.isObject(ljs_r_2))
+      ljs_r_2.appendChild(ljs_2_1);
+  }
 }
