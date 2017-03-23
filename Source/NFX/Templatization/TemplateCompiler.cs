@@ -328,6 +328,8 @@ namespace NFX.Templatization
          {
            if (m_Compiled) return;
 
+             DoBeforeCompileTemplateSources();
+
              foreach(var cu in m_Units.Values)
                try
                {
@@ -451,7 +453,13 @@ namespace NFX.Templatization
        #region Protected
 
 
+          /// <summary>
+          /// Override to transform compile units before compilation starts
+          /// </summary>
+         protected virtual void DoBeforeCompileTemplateSources()
+         {
 
+         }
 
          /// <summary>
          /// Override to perform code generation from template source into code
@@ -471,6 +479,7 @@ namespace NFX.Templatization
          {
 
          }
+
 
          /// <summary>
          /// Override to provide default using clauses

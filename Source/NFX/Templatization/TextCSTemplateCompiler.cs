@@ -161,10 +161,16 @@ namespace NFX.Templatization
 
        #region Protected
 
+           protected virtual string GetCompileUnitSourceContent(CompileUnit unit, out string className)
+           {
+             className = unit.TemplateSource.InferClassName();
+             return unit.TemplateSource.GetSourceContent().ToString().Trim();
+           }
+
            protected override void DoCompileTemplateSource(CompileUnit unit)
            {
-             var text = unit.TemplateSource.GetSourceContent().ToString().Trim();
-             var icname = unit.TemplateSource.InferClassName();
+             string icname;
+             var text = GetCompileUnitSourceContent(unit, out icname);
 
 
              Configuration conf = new MemoryConfiguration();

@@ -2,7 +2,7 @@
   alert(WAVE.strDefault(text, "Hello"));
 }
 
-function render(root, ctx){
+function render(){
 /***
 div{
   on-click = "function() { console.log('kaka') }"
@@ -69,21 +69,27 @@ div{
   h1="Compiler output example"{}
 
   code=$"
-      function noRoot() {
-        var ljs_useCtx = WAVE.isObject(ctx);
-        var ljs_1 = document.createElement('section');
-        var ljs_2 = 'sect';
-        ljs_1.setAttribute('id', ljs_useCtx ? WAVE.strHTMLTemplate(ljs_2, ctx) : WAVE.strEscapeHTML(ljs_2));
-        var ljs_3 = 'sect';
-        ljs_1.setAttribute('class', ljs_useCtx ? WAVE.strHTMLTemplate(ljs_3, ctx) : WAVE.strEscapeHTML(ljs_3));
-        var ljs_4 = ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sollicitudin interdum,      sollicitudin condimentum montes nulla bibendum aliquam velit? Fermentum mattis aenean nec...      Orci proin litora nec ullamcorper?    ';
-        ljs_1.innerText = ljs_useCtx ? WAVE.strHTMLTemplate(ljs_4, ctx) : WAVE.strEscapeHTML(ljs_4);
-        if (typeof(root) !== 'undefined' && root !== null) {
-        if (WAVE.isString(root))
-        root = WAVE.id(root);
-        if (WAVE.isObject(root))
-        root.appendChild(ljs_1);
-      }
+        function noRoot() {
+          var ljs_useCtx_2 = WAVE.isObject(arguments[1]);
+          var ljs_2_1 = document.createElement('section');
+          var ljsv_2_2 = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris, facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...';
+          ljsv_2_2 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_2, ctx) : ljsv_2_2;
+          ljs_2_1.innerText = ljsv_2_2;
+          var ljsv_2_3 = 'sect';
+          ljsv_2_3 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_3, ctx) : ljsv_2_3;
+          ljs_2_1.setAttribute('id', ljsv_2_3);
+          var ljsv_2_4 = 'sect';
+          ljsv_2_4 = ljs_useCtx_2 ? WAVE.strHTMLTemplate(ljsv_2_4, ctx) : ljsv_2_4;
+          ljs_2_1.setAttribute('class', ljsv_2_4);
+
+          var ljs_r_2 = arguments[0];
+          if (typeof(ljs_r_2) !== 'undefined' && ljs_r_2 !== null) {
+            if (WAVE.isString(ljs_r_2))
+              ljs_r_2 = WAVE.id(ljs_r_2);
+            if (WAVE.isObject(ljs_r_2))
+              ljs_r_2.appendChild(ljs_2_1);
+          }
+        }
     " {}
 }
 ***/
@@ -93,9 +99,8 @@ div{
 function noRoot() {
 /***
   section= $"
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sollicitudin interdum,
-      sollicitudin condimentum montes nulla bibendum aliquam velit? Fermentum mattis aenean nec...
-      Orci proin litora nec ullamcorper?
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris,
+      facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...
     "
   {
     id=sect

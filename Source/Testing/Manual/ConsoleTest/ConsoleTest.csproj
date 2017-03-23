@@ -87,6 +87,7 @@
     <Compile Include="GlueServer.cs" />
     <Compile Include="S3\S3V4FileSystem.cs" />
     <Compile Include="Social\SocialTest.cs" />
+    <Compile Include="Templatization\NHT\NHTTemplate.cs" />
     <Compile Include="Throttling.cs" />
     <Compile Include="WebDAVTest\WebDAVClientTest.cs" />
   </ItemGroup>
@@ -144,6 +145,7 @@
   <ItemGroup>
     <Content Include="Templatization\JS\jsCompiler.test.html" />
     <Content Include="Templatization\JS\compiled.js" />
+    <EmbeddedResource Include="Templatization\NHT\Template.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

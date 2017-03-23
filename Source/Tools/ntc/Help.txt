@@ -10,24 +10,24 @@
                             [<f color=darkRed>ref<f color=darkCyan>= assembly_name0[;assembly_nameX...]]
                             [<f color=darkRed>ref-path<f color=darkCyan>= path]
               ]
-              
+
               [/r | /recurse]
               [/c | /compiler  fully_qualified_type_name]
-              [/src]   
+              [/src]
               [/ext file_extension]
               [/replace file_segment]
-                                                                  
+
 
  <f color=green>source_path<f color=gray> - path to template source files, may include wildcard
 
 <f color=magenta>
  Options:
 
- <f color=darkCyan>/h | /help | /?<f color=gray> - displays help message 
+ <f color=darkCyan>/h | /help | /?<f color=gray> - displays help message
  <f color=darkCyan>/o | /options<f color=gray> - specifies compiler options.
-                 
+
           <f color=darkRed>asm-file<f color=gray> - creates an assembly file on disk
-          <f color=darkRed>compile-code<f color=gray> - performs code compilation   
+          <f color=darkRed>compile-code<f color=gray> - performs code compilation
 
           <f color=darkRed>base-type<f color=gray> - specifies default base type name which has to
             be fully qualified but without assembly
@@ -35,7 +35,7 @@
           <f color=darkRed>ref<f color=gray> - adds assembly reference, may contain multiple names
             separated by ";" character
           <f color=darkRed>ref-path<f color=gray> - additional path used for referenced assemblies location
-         
+
  <f color=darkCyan>/r | /recurse<f color=gray> - walk subdirectory structure as well
  <f color=darkCyan>/c | /compiler<f color=gray> - uses specified compiler. If omitted then TextCSTemplateCompiler is used
  <f color=darkCyan>/ext<f color=gray> - specifies file extension to use for source files.

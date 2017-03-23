@@ -594,6 +594,7 @@
     <Compile Include="StringValueConversion.cs" />
     <Compile Include="TaskUtils.cs" />
     <Compile Include="Templatization\DOMGenerator.cs" />
+    <Compile Include="Templatization\NHTCompiler.cs" />
     <Compile Include="Templatization\Sources.cs" />
     <Compile Include="Templatization\IRenderingTarget.cs" />
     <Compile Include="Templatization\Exceptions.cs" />

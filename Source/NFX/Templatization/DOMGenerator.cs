@@ -14,7 +14,9 @@ namespace NFX.Templatization
     public const string CONFIG_EVENT_PREFIX_ATTR = "on-";
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
 
-    public const string JS_USE_CTX_VARIABLE = "ljs_useCtx";
+    public const string JS_USE_CTX_VAR = "ljs_useCtx_{0}";
+    public const string JS_ROOT_VAR = "ljs_r_{0}";
+    public const string JS_CTX_VAR = "ljs_ctx_{0}";
     #endregion
 
     #region Static
@@ -32,6 +34,10 @@ namespace NFX.Templatization
 
     #region private
     private string m_LineEnding = "";
+    private int m_IndexInSource;
+    private string m_JsUseCtxVar;
+    private string m_JsRootVar;
+    private string m_JsCtxVar;
     #endregion
 
     #region Public
@@ -47,8 +53,12 @@ namespace NFX.Templatization
       }
     }
 
-    public string Generate(IConfigSectionNode node)
+    public string Generate(IConfigSectionNode node, ref int indexInSource)
     {
+      m_IndexInSource = indexInSource;
+      m_JsUseCtxVar = JS_USE_CTX_VAR.Args(m_IndexInSource);
+      m_JsCtxVar = JS_CTX_VAR.Args(m_IndexInSource);
+      m_JsRootVar = JS_ROOT_VAR.Args(m_IndexInSource);
       int counter = 0;
       return createElement(node, null, ref counter);
     }
@@ -59,13 +69,13 @@ namespace NFX.Templatization
     {
       var isRootNode = root.IsNullOrWhiteSpace();//this means that this is a root node
       var sb = new StringBuilder();
-      var elemId = "ljs_{0}".Args(++counter);
+      var elemId = "ljs_{0}_{1}".Args(m_IndexInSource, ++counter);
 
-      if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(ctx);{1}", JS_USE_CTX_VARIABLE, m_LineEnding);
+      if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(arguments[1]);{1}", m_JsUseCtxVar, m_LineEnding);
       sb.AppendFormat("var {0} = document.createElement('{1}');{2}", elemId, MiscUtils.EscapeJSLiteral(node.Name), m_LineEnding);
 
 
-      if (node.Value.IsNotNullOrWhiteSpace()) 
+      if (node.Value.IsNotNullOrWhiteSpace())
       {
         var v = makeValueVariable(node.Value, ++counter, ref sb);
         sb.AppendFormat("{0}.innerText = {1};{2}", elemId, v, m_LineEnding);
@@ -91,11 +101,12 @@ namespace NFX.Templatization
       }
       if (isRootNode)
       {
-        sb.AppendFormat("if (typeof(root) !== 'undefined' && root !== null) {{{0}", m_LineEnding);
-        sb.AppendFormat("if (WAVE.isString(root)){0}", m_LineEnding);
-        sb.AppendFormat("root = WAVE.id(root);{0}", m_LineEnding);
-        sb.AppendFormat("if (WAVE.isObject(root)){0}", m_LineEnding);
-        sb.AppendFormat("root.appendChild({0});{1}", elemId, m_LineEnding);
+        sb.AppendFormat("var {0} = arguments[0];{1}", m_JsRootVar, m_LineEnding);
+        sb.AppendFormat("if (typeof({0}) !== 'undefined' && {0} !== null) {{{1}", m_JsRootVar, m_LineEnding);
+        sb.AppendFormat("if (WAVE.isString({0})){1}", m_JsRootVar, m_LineEnding);
+        sb.AppendFormat("{0} = WAVE.id({0});{1}", m_JsRootVar, m_LineEnding);
+        sb.AppendFormat("if (WAVE.isObject({0})){1}", m_JsRootVar, m_LineEnding);
+        sb.AppendFormat("{0}.appendChild({1});{2}", m_JsRootVar, elemId, m_LineEnding);
         sb.AppendFormat("}}");
       }
       else
@@ -106,9 +117,9 @@ namespace NFX.Templatization
 
     private string makeValueVariable(string value, int seed, ref StringBuilder result)
     {
-      var valueId = "ljs_{0}".Args(seed);
+      var valueId = "ljsv_{0}_{1}".Args(m_IndexInSource, seed);
       result.AppendFormat("var {0} = \"{1}\";{2}", valueId, MiscUtils.EscapeJSLiteral(value), m_LineEnding);
-      result.AppendFormat("{1} = {0} ? WAVE.strHTMLTemplate({1}, ctx) : {1};{2}".Args(JS_USE_CTX_VARIABLE, valueId, m_LineEnding));
+      result.AppendFormat("{1} = {0} ? WAVE.strHTMLTemplate({1}, ctx) : {1};{2}".Args(m_JsUseCtxVar, valueId, m_LineEnding));
       return valueId;
     }
   }

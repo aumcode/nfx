@@ -1,0 +1,63 @@
+﻿#<laconf>
+  compiler
+  {
+     base-class-name="NFX.Wave.Templatization.WaveTemplate"
+     namespace="NFX.Wave.Templatization.StockContent"
+     abstract="true"
+     summary="Master page for all stock pages"
+  }
+#</laconf>
+#[class]
+    public Master(WorkContext work) : base(work)
+    {
+    }
+
+    public virtual string Title { get {return "NFX.WAVE Framework"; } }
+
+    public const string CONTENT_WIDTH = "90%";
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody();
+    protected virtual void renderFooter() { defaultFooter(); }
+#[render]
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>?[Title]</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ </head>
+ <body>
+   <div id="divTopPanel">
+       <div id="divHeader">@[renderHeader();]</div>
+   </div>
+
+   <div id="divContentPanel">
+       <div id="divContent">@[renderBody();]</div>
+   </div>
+
+   <div id="divBottomPanel">
+       <div id="divBottomContent">
+            @[renderFooter();]
+       </div>
+   </div>
+   <div class="orangeStripe" />
+   <br />
+     <div class="tail">
+         &copy; 2003-2014&nbsp;&nbsp;IT Adapter Corporation / Aum Code
+         <br />
+         This site is served by the <strong>NFX.Wave</strong> framework
+          <br />
+         Generated on ?[DateTime.Now]  for ?[Context.EffectiveCallerIPEndPoint]
+     </div>
+   <script>
+     function template() {
+/***
+  div="for fun"{
+  }
+***/
+     }
+   </script>
+ </body>
+</html>
+
+#[defaultFooter()]

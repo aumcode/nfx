@@ -429,9 +429,9 @@
   <PropertyGroup>
     <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"
 
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src /c "NFX.Templatization.NHTCompiler, NFX"
 
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.ntc.js" -r -ext ".js" -replace ".ntc.js" /src /c "NFX.Templatization.TextJSTemplateCompiler, NFX" 
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.ntc.js" -r -ext ".js" -replace ".ntc.js" /src /c "NFX.Templatization.TextJSTemplateCompiler, NFX" -o dom-gen="cmp{pretty=true}"
 
 
 where /q java

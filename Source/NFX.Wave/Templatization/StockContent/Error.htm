@@ -1,5 +1,5 @@
 ﻿#<laconf>
-  compiler 
+  compiler
   {
      base-class-name="NFX.Wave.Templatization.StockContent.Master"
      namespace="NFX.Wave.Templatization.StockContent"
@@ -8,7 +8,7 @@
   }
 #</laconf>
 #[class]
-    
+
     public readonly Exception ErrorCause;
     public readonly bool ShowDump;
 
@@ -27,16 +27,16 @@
      @[}else{]
        OOPS! An Error Occured
      @[}]
- </h1> 
+ </h1>
 #[override renderBody()]
   <strong>ID:&nbsp;</strong> ?[Context.ID]<br />
     @[if (ShowDump)
-      { 
+      {
         showDumpBody();
         return;
       }]
- <p> An error happened while generating the page. We apologize for inconvenience. </p> 
- <p> The error details may have been logged. Please consult with your web guru! </p> 
+ <p> An error happened while generating the page. We apologize for inconvenience. </p>
+ <p> The error details may have been logged. Please consult with your web guru! </p>
 
 #[showDumpBody()]
 <div>
@@ -49,24 +49,24 @@
 @[if(err==null) return;]
     <strong>Type:</strong> ?[err.GetType().FullName]<br />
     <strong>Message:</strong> ?[err.Message]<br />
-    
+
     @[if(err is HTTPStatusException)
       {
         var se = err as HTTPStatusException;]
      <strong>Http Status Code:</strong> ?[se.StatusCode]<br />
      <strong>Http Status Description:</strong> ?[se.StatusDescription]<br />
-    @[}] 
-     
-    <strong>Stack Trace:</strong><br /> 
+    @[}]
+
+    <strong>Stack Trace:</strong><br />
      <div class="stackTrace">
      ?[: HTMLEncode(err.StackTrace).Replace("\r","<br>")]
-     </div> 
-    
-    
+     </div>
+
+
     @[if (err is FilterPipelineException){]
-      <br />      
+      <br />
       <strong>Root Exception:</strong>
-          
+
       <hr />
       @[showException(((FilterPipelineException)err).RootException);]
     @[}else
@@ -74,9 +74,9 @@
       var inner = err.InnerException;
       if (inner==null) return;
      ]
-    <br />    
-    <strong>Inner Exception:</strong>    
+    <br />
+    <strong>Inner Exception:</strong>
     <hr />
-    @[showException(inner);] 
+    @[showException(inner);]
     @[}]
    &nbsp;

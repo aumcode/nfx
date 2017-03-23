@@ -17,34 +17,47 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
 using NFX.Environment;
-using System.Text.RegularExpressions;
 
 namespace NFX.Templatization
 {
+  /// <summary>
+  /// Compiles templates based of text files that use js language syntax,
+  /// compiles config to inline function
+  /// </summary>
+  /// <example>
+  ///   argument[0] - root container 'id' or 'node'
+  ///   argument[1] - context for variable evaluation
+  ///   <code>
+  ///   function() {
+  ///     /***
+  ///     {
+  ///       tag-name="inner text"
+  ///       property-name="property value"
+  ///       evaluted-property-name="@prop@ evaluated property"
+  ///       on-event="function() { click(); }"
+  ///     }
+  ///     ***/
+  ///   }
+  ///   </code>
+  /// </example>
   public class TextJSTemplateCompiler : TemplateCompiler
   {
     public const string CONFIG_DOM_GENERATOR_SECT = "dom-gen";
 
     #region .ctor
-    public TextJSTemplateCompiler() : base()
-    {
-    }
+    public TextJSTemplateCompiler() : base() { }
 
-    public TextJSTemplateCompiler(params ITemplateSource<string>[] sources) : base(sources)
-    {
-    }
+    public TextJSTemplateCompiler(params ITemplateSource<string>[] sources) : base(sources) { }
 
-    public TextJSTemplateCompiler(IEnumerable<ITemplateSource<string>> sources) : base(sources)
-    {
-    }
+    public TextJSTemplateCompiler(IEnumerable<ITemplateSource<string>> sources) : base(sources) { }
     #endregion
 
     #region Private/Prot Fields
     private DOMGenerator m_DOMGenerator;
+    private string m_DomGenConfig;
     #endregion
 
     #region Properties
@@ -58,6 +71,7 @@ namespace NFX.Templatization
       get { return CoreConsts.JS_EXTENSION; }
     }
 
+    [Config(CONFIG_DOM_GENERATOR_SECT)]
     public DOMGenerator DOMGenerator
     {
       get { return m_DOMGenerator ?? DOMGenerator.Default; }
@@ -67,20 +81,21 @@ namespace NFX.Templatization
         m_DOMGenerator = value;
       }
     }
+
+    [Config("$"+CONFIG_DOM_GENERATOR_SECT)]
+    public string DomGenConfig
+    {
+      get { return m_DomGenConfig; }
+      set
+      {
+        EnsureNotCompiled();
+        m_DomGenConfig = value;
+        m_DOMGenerator = FactoryUtils.MakeAndConfigure<DOMGenerator>(m_DomGenConfig.AsLaconicConfig(),typeof(DOMGenerator));
+      }
+    }
     #endregion
 
     #region Protected
-    protected override void DoConfigure(IConfigSectionNode node)
-    {
-      base.DoConfigure(node);
-      if (node == null || !node.Exists) return;
-
-      var n = node[CONFIG_DOM_GENERATOR_SECT];
-      if (!n.Exists) return;
-
-      m_DOMGenerator = FactoryUtils.MakeAndConfigure<DOMGenerator>(n, typeof(DOMGenerator));
-    }
-
     protected override void DoCompileTemplateSource(CompileUnit unit)
     {
       var text = unit.TemplateSource.GetSourceContent().ToString().Trim();
@@ -88,9 +103,11 @@ namespace NFX.Templatization
 
       var r = new Regex(@"\/\*{3}(.*?)\*{3}\/", RegexOptions.Singleline);
 
+      var counter = 0;
       unit.CompiledSource = r.Replace(text, (m) => {
-        var c = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-        return DOMGenerator.Generate(c);
+        counter++;
+        var conf = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+        return DOMGenerator.Generate(conf, ref counter);
       });
     }
 
