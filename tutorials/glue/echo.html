@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Simple Echo </title>
+    <title>Echo Test Application </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Simple Echo ">
+    <meta name="title" content="Echo Test Application ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/NFX.ico">
@@ -64,9 +64,126 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="simple-echo">Simple Echo</h1>
+              <h1 id="echo-test-application">Echo Test Application</h1>
               
-<p>...</p>
+<p>Any <strong>NFX.Glue</strong> solution naturally includes at least three projects:</p>
+<ul>
+<li>Contracts library - contains contracts shared between server- and client-side such as service contracts and data contracts</li>
+<li>Server host - contains server-side implementation of service contracts and also provides host process for them</li>
+<li>Client app - contains client-side code</li>
+</ul>
+<p><br></p>
+<p>Below is step-by-step guide to create the simplest <strong>NFX.Glue</strong> server application which receives text message and returns echo.</p>
+<p>1.\ Create blank C# solution.</p>
+<p>2. Add new C# Class Library project <code>DemoContracts</code>.</p>
+<p>3. Add reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>).</p>
+<p>4. Add IEchoService.cs file with the following contents:</p>
+<pre><code class="lang-cs">using NFX.Glue;
+
+namespace DemoContracts
+{
+  [Glued]
+  public interface IEchoService
+  {
+    string Echo(string text);
+  }
+}
+</code></pre><p>This is the contract for our simple server (note <code>NFX.Glue.Glued</code> attibute). The server obviously accepts string message and returns some echo.</p>
+<p>5. Create new C# Console Application project <code>DemoServer</code>.</p>
+<p>6. Add references to <strong>NFX</strong> and <code>DemoContracts</code> project.</p>
+<p>7. Add EchoService.cs file with the contents:</p>
+<pre><code class="lang-cs">using DemoContracts;
+
+namespace DemoServer
+{
+  public class EchoService : IEchoService
+  {
+    public string Echo(string text)
+    {
+      return &quot;Your message is: &quot; + text;
+    }
+  }
+}
+</code></pre><p>The <code>DemoServer.EchoService</code> class represents strong typed service and contains all the business logic.</p>
+<p>8. We need properly setup server configuration i.e. service address, binding etc. 
+Add configuration file DemoServer.laconf with the following contents</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+
+    servers
+    {
+      server
+      {
+        node=&quot;sync://localhost:8080&quot;
+        contract-servers=$&quot;DemoServer.EchoService, DemoServer&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
+<p>Thus, we declare that we want <code>NFX.Glue.Native.SyncBinding</code> - synchronous communication pattern between the client and the server, 
+and also expose our servise at the port 8080 (use another one if it is busy).</p>
+<p>9. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  Console.WriteLine(&quot;server is running...&quot;);
+  Console.WriteLine(&quot;Glue servers:&quot;);
+  foreach (var service in App.Glue.Servers)
+    Console.WriteLine(&quot;   &quot; + service);
+
+  Console.ReadLine();
+}
+</code></pre><p>The only neccessary code above is start <code>ServiceBaseApplication</code> and use <code>Console.ReadLine()</code> to prevent the app from immediately shupdown.</p>
+<p>10. Add the last one project <code>DemoClient</code> - a client-side. It can be the project of any type (Console, WinForms, WPF, Web etc.) 
+but for the sake of simplicity we choose C# Console Application for demonstration purposes.</p>
+<p>11. Add references to <strong>NFX</strong> and <code>DemoContracts</code> project.</p>
+<p>12. Add configuration file DemoClient.laconf:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+  }
+}
+</code></pre><p>(the address and binding must coincide with the ones on server-side).</p>
+<p>Again, be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
+<p>13. The last step is to create client proxy classes that will operate with service above.
+One can create this client class directly but it is more suitable to use out-of-the-box utility called <strong>gluec</strong> to generate service contracts automatically.
+The utility accepts the path to DemoContracts.dll, output path and (optionally) autogenerated class suffix.
+It extracts all contracts marked with <code>NFX.Glue.Glued</code> attribute and generates handy client classes one for each service contract.</p>
+<p>It is preferable to automate client classes generation instead of run <strong>gluec</strong> utility every time the contracts were chenged/added.
+For to moment we simpty add th following script to Post-build event of <code>DemoContracts</code> project:</p>
+<p>&quot;$(SolutionDir)packages\NFX.3.1.0.1\tools\gluec&quot; &quot;$(SolutionDir)DemoContracts/bin/Debug/DemoContracts.dll&quot; /o out=&quot;$(SolutionDir)DemoClient&quot; cl-suffix=&quot;AutoClient&quot;</p>
+<p>Rebuild <code>DemoContracts</code> project and add the file EchoServiceAutoClient.cs to the <code>DemoClient</code> project (the file will appear in the root of the project).</p>
+<p>14. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  var message = Console.ReadLine();
+
+  using (var client = new EchoServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  {
+    var responce = client.Echo(message);
+    Console.WriteLine(responce);
+  }
+}
+</code></pre><p>15. Run the <code>DemoServer</code> server host and start the <code>DemoClient</code> client application.</p>
 
             </article>
           </div>

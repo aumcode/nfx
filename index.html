@@ -59,48 +59,52 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="nfx">NFX</h1>
               
-<p><strong>NFX</strong> is a modern .NET full stack framework designed for cloud. 
+<p><strong>NFX</strong> is a modern .NET full stack framework designed for building cloud and on-premises apps.
 It is written in C# and runs on a CLR machine. 
-<strong>NFX</strong> supports app containers, configuration, big memory heaps, IPC, and other functions that significantly simplify the development of large distributed systems. 
-It contains truly unique intellectual assets and allows for unconventional things that significantly boost performance and simplify the development (such as stateful services/web). 
-The majority of the achievements are possible because of a few key things:</p>
+<strong>NFX</strong> supports app containers, configuration, big memory heaps, IPC, and functions that significantly simplify 
+the development of large distributed systems. It boosts performance and simplifies the development (such as services/web). 
+The majority of the achievements are possible because of the following key features:</p>
 <ul>
 <li><p>Unification of design - all components are written in the same way</p>
 </li>
-<li><p>Sophisticated serialization mechanism aka &quot;teleportation&quot; - moves objects between nodes</p>
+<li><p>Sophisticated serialization mechanism - moves objects between distributed processes/nodes (aka &quot;teleportation&quot;)</p>
 </li>
-<li><p>Object Pile - a 100%-managed &quot;Big Memory&quot; approach allowing for utilization of hundreds of gigabytes of ram without GC stalls</p>
+<li><p>Object Pile - a 100%-managed &quot;Big Memory&quot; approach for utilization of hundreds of gigabytes of RAM without GC stalls</p>
 </li>
 </ul>
 <p>promoting:</p>
 <ul>
-<li><p>Distributed systems: clusters/hierachices</p>
+<li><p>Distributed systems: clusters/hierarchies</p>
 </li>
 <li><p>IPC - contract-based object-oriented high performance services</p>
 </li>
-<li><p>Stateful programming (web/service) (not mandatory)</p>
+<li><p>Stateful/stateless programming (web/service)</p>
 </li>
-<li><p>Full utilization of modern RAM capacities in-proc (i.e. 128 Gb resident) without GC problems</p>
-</li>
-<li><p>High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a 4 core 3.0 GHz machine looking up data in a 300,000,000 business object cache in-RAM (no need for 3rd party cache))</p>
+<li><p>Full utilization of big RAM capacities in-proc (i.e. 128 Gb resident) without GC stalls </p>
 </li>
 </ul>
 <p>good for:</p>
 <ul>
-<li><p>General Scalability and Vendor de-coupling (i.e. hybrid DataStores with virtual queries and CQRS)</p>
+<li><p>Linux-style prоgramming in .NET. Minimalistic, elegant</p>
+</li>
+<li><p>Vendor de-coupling </p>
+</li>
+<li><p>General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)</p>
 </li>
 <li><p>Distributed Macro/micro/nano services, REST or RPC</p>
 </li>
 <li><p>Actor-model systems with message passing and supervisors</p>
 </li>
-<li><p>In-memory processing, can keep hundreds of millions of business entities in-ram with full GC &lt; 20ms</p>
+<li><p>In-memory processing, for hundreds of millions of objects in-RAM with full GC &lt; 20ms</p>
 </li>
 <li><p>Supercomputer/Cluster/Farm applications (i.e. bulk rendering cluster, social graphs etc.)</p>
 </li>
+<li><p>High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a general server 
+looking up data in a 300,000,000 business object cache in-RAM)</p>
+</li>
+<li><p>non-trivial CLR cases like: structs with read-only fields, arrays of structs of structs, custom streamers like Dictionary&lt;&gt; with comparers etc. In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances</p>
+</li>
 </ul>
-<p>The concepts have been well tested and used. 
-In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances (including non-trivial CLR cases like: structs with read-only fields, 
-arrays of structs of structs, custom streamers like Dictionary&lt;&gt; with comparers etc.)</p>
 <p>License: Apache 2.0</p>
 <p><br></p>
 <h2 id="img-classimg3rdpartyicon-srcimages3rdpartiesgithubsvghttpsgithubcomaumcodenfx-get-the-code-contribute"><a href="https://github.com/aumcode/nfx"><img class="img3rdpartyIcon" src="images/3rdparties/github.svg"></a> Get The Code, Contribute</h2>
