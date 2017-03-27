@@ -66,7 +66,130 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="stateful-server">Stateful Server</h1>
               
-<p>...</p>
+<p>Stateful server stores its state for each client.
+Below is step-by-step guide to create <strong>NFX.Glue</strong> stateful server application.
+The guide is quite briefly in some places. For details, please check [./echo.md].</p>
+<p>1. Create new blank C# solution and add Class Library project <code>DemoContracts</code> 
+with the reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>)</p>
+<p>2. Add IStatefulService.cs file with the following contents:</p>
+<pre><code class="lang-cs">[Glued]      
+[LifeCycle(ServerInstanceMode.Stateful, TimeoutMs = 1000000)]
+public interface IStatefulService
+{
+  [Constructor]
+  void Init();
+
+  void Add(int value);
+
+  int GetValue();
+
+  [Destructor]
+  void Done();
+}
+</code></pre><p>Note <code>Glued</code> and <code>LifeCycle</code> attributes. The first marks all classes that implement the contract as a <strong>NFX.Glue</strong> services,
+while the second sets up stateful lifetime mode for the service. Also note methods marked as <code>Constructor</code> and <code>Destructor</code>. 
+It may be neccessary to have some &quot;setup&quot; and &quot;teardown&quot; logic for stateful service.
+Client should call method decorated with <code>Constructor</code> attribute before any other.</p>
+<p>3. Add new C# Console Application project <code>DemoServer</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project. Add laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+
+    servers
+    {
+      server
+      {
+        node=&quot;sync://localhost:8080&quot;
+        contract-servers=$&quot;DemoServer.StatefulService, DemoServer&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Be sure to set Build Action : None and Copy to Output Directory: Always in the config file properties.</p>
+<p>4. Add StatefulService.cs file with the contents:</p>
+<pre><code class="lang-cs">[ThreadSafe]
+public class StatefulService : IStatefulService
+{
+  private int m_State;
+
+  public void Init()
+  {
+  }
+
+  public void Add(int value)
+  {
+    // this is our thread-safe addition
+    Interlocked.Add(ref m_State, value);
+  } 
+
+  public int GetValue()
+  {
+    return m_State;
+  }
+
+  public void Done()
+  {
+  }
+}
+</code></pre><p>Notice the use of <code>ThreadSafeAttribute</code> which tells the Glue runtime that this class implements thread-safety internally, 
+so Glue doesn&#39;t need to lock its instance.</p>
+<p>5. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  Console.WriteLine(&quot;server is running...&quot;);
+  Console.WriteLine(&quot;Glue servers:&quot;);
+  foreach (var service in App.Glue.Servers)
+    Console.WriteLine(&quot;   &quot; + service);
+
+  Console.ReadLine();
+}
+</code></pre><p>6.  Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
+Add laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Again, be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
+<p>7. Create client proxy class that will operate with the service above:</p>
+<p>gluec &quot;$(SolutionDir)DemoContracts/bin/Debug/DemoContracts.dll&quot; /o out=&quot;$(SolutionDir)DemoClient&quot; cl-suffix=&quot;AutoClient&quot;</p>
+<p>Rebuild <code>DemoContracts</code> project and add the file StatefulServiceAutoClient.cs to the <code>DemoClient</code> project (the file will appear in the root of the project).</p>
+<p>8. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  var message = Console.ReadLine();
+
+  using (var client = new EchoServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  {
+    var responce = client.Echo(message);
+    Console.WriteLine(responce);
+  }
+}
+</code></pre><p>15. Run the <code>DemoServer</code> server host and start the <code>DemoClient</code> client application.</p>
+<p>TODO
+// Press &#39;Init&#39; button to do it. 
+// Then press &#39;Add&#39; button to change integer state of the server.
+// You can get current state of the server by pressing &#39;Result&#39; button.
+// After you press &#39;Done&#39; button the server will become inavailable for current client. 
+// You can verify it by pressing &#39;Add&#39; or &#39;Result&#39; buttons after &#39;Done&#39;.</p>
 
             </article>
           </div>
