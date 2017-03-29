@@ -66,9 +66,9 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="stateful-server">Stateful Server</h1>
               
-<p>Stateful server stores its state for each client.
+<p>Stateful server stores its state during each client session.
 Below is step-by-step guide to create <strong>NFX.Glue</strong> stateful server application.
-The guide is quite briefly in some places. For details, please check [./echo.md].</p>
+The guide is quite briefly in some places. For details, please check the <a href="echo.html">demo</a>.</p>
 <p>1. Create new blank C# solution and add Class Library project <code>DemoContracts</code> 
 with the reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>)</p>
 <p>2. Add IStatefulService.cs file with the following contents:</p>
@@ -86,13 +86,27 @@ public interface IStatefulService
   [Destructor]
   void Done();
 }
-</code></pre><p>Note <code>Glued</code> and <code>LifeCycle</code> attributes. The first marks all classes that implement the contract as a <strong>NFX.Glue</strong> services,
-while the second sets up stateful lifetime mode for the service. Also note methods marked as <code>Constructor</code> and <code>Destructor</code>. 
+</code></pre><p>Notice <code>Glued</code> and <code>LifeCycle</code> attributes. The former marks all classes that implement the contract as a <strong>NFX.Glue</strong> services,
+while the latter sets up stateful lifetime mode for the service. Also notice methods marked as <code>Constructor</code> and <code>Destructor</code>. 
 It may be neccessary to have some &quot;setup&quot; and &quot;teardown&quot; logic for stateful service.
 Client should call method decorated with <code>Constructor</code> attribute before any other.</p>
-<p>3. Add new C# Console Application project <code>DemoServer</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project. Add laconic configuration file:</p>
+<p>3. Add new C# Console Application project <code>DemoServer</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project. Add DemoServer.laconf laconic configuration file:</p>
 <pre><code class="lang-js">application
 {
+  object-store
+  {
+    name=&quot;Main Object Store&quot;
+    guid=&quot;76F44831-E92A-42BB-9294-E806300405C9&quot;
+    object-life-span-ms=&quot;180000&quot;
+    bucket-count=&quot;1024&quot;
+
+    provider
+    {
+      name=&quot;Disk Object Store Provider&quot;
+      type=&quot;NFX.ApplicationModel.Volatile.NOPObjectStoreProvider&quot;
+    }
+  }
+
   glue
   {
     bindings
@@ -115,6 +129,7 @@ Client should call method decorated with <code>Constructor</code> attribute befo
   }
 }
 </code></pre><p>Be sure to set Build Action : None and Copy to Output Directory: Always in the config file properties.</p>
+<p>Notice <code>object-store</code> configuration section. It is neccessary for stateful services to have this section in configuration file.</p>
 <p>4. Add StatefulService.cs file with the contents:</p>
 <pre><code class="lang-cs">[ThreadSafe]
 public class StatefulService : IStatefulService
@@ -153,7 +168,7 @@ so Glue doesn&#39;t need to lock its instance.</p>
   Console.ReadLine();
 }
 </code></pre><p>6.  Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
-Add laconic configuration file:</p>
+Add DemoClient.laconf laconic configuration file:</p>
 <pre><code class="lang-js">application
 {
   glue
@@ -175,21 +190,52 @@ Add laconic configuration file:</p>
 <p>8. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
 <pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
 {
-  var message = Console.ReadLine();
-
-  using (var client = new EchoServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  using (var client = new StatefulServiceAutoClient(&quot;sync://localhost:8080&quot;))
   {
-    var responce = client.Echo(message);
-    Console.WriteLine(responce);
+    while (true)
+    {
+      var input = Console.ReadLine();
+      var cmd = input.Split(new char[] { &#39; &#39; }, StringSplitOptions.RemoveEmptyEntries);
+      exeCommand(client, cmd);
+    }
   }
 }
-</code></pre><p>15. Run the <code>DemoServer</code> server host and start the <code>DemoClient</code> client application.</p>
-<p>TODO
-// Press &#39;Init&#39; button to do it. 
-// Then press &#39;Add&#39; button to change integer state of the server.
-// You can get current state of the server by pressing &#39;Result&#39; button.
-// After you press &#39;Done&#39; button the server will become inavailable for current client. 
-// You can verify it by pressing &#39;Add&#39; or &#39;Result&#39; buttons after &#39;Done&#39;.</p>
+</code></pre><p>Add the following method:</p>
+<pre><code class="lang-cs">private static void exeCommand(StatefulServiceAutoClient client, string[] cmd)
+{
+  if (cmd[0].Equals(&quot;init&quot;))
+  {
+    client.Init();
+    return;
+  }
+
+  if (cmd[0].Equals(&quot;add&quot;))
+  {
+    var num = cmd[1].AsInt();
+    client.Add(num);
+    return;
+  }
+
+  if (cmd[0].Equals(&quot;result&quot;))
+  {
+    var value = client.GetValue();
+    Console.WriteLine(&quot;Server state: &quot;+value);
+    return;
+  }
+
+  if (cmd[0].Equals(&quot;done&quot;))
+  {
+    client.Done();
+    return;
+  }
+}
+</code></pre><p>You will also need to add usings</p>
+<pre><code class="lang-cs">using DemoContracts.GluedClients;
+using NFX;
+using NFX.ApplicationModel;
+</code></pre><p>15. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application. 
+Execute the following commands sequentially: &quot;init&quot;, &quot;add 1&quot;, &quot;add 3&quot;, &quot;result&quot;, &quot;done&quot;. The output will be 4.</p>
+<p>Execution of any command after &quot;done&quot; will cause an exception.</p>
 
             </article>
           </div>
