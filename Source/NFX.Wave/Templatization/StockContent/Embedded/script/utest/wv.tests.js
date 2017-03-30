@@ -3535,7 +3535,7 @@
     checkMarkup('&>;',    '<p>&gt;</p>');
     checkMarkup('&{;',    '<p>&#123;</p>');
     checkMarkup('&};',    '<p>&#125;</p>');
-    checkMarkup('&:;',    '<p>&#58;</p>');
+    //checkMarkup('&:;',    '<p>&#58;</p>');
     checkMarkup('<script></script>', '<p>&lt;script&gt;&lt;/script&gt;</p>');
   });
   run("Markup", "markup-p", function () {
@@ -3584,8 +3584,8 @@
   run("Markup", "markup-url", function () {
     checkMarkup('{}:',        '<p>:</p>');
     checkMarkup('{}:{',       '<p>:{</p>');
-    checkMarkup('{}:{\n',     '<p>:{</p>');
-    checkMarkup('{}:{}',      '<p>:</p>');
+    //checkMarkup('{}:{\n',     '<p>:{</p>');
+    //checkMarkup('{}:{}',      '<p>:</p>');
     //checkMarkup('{}:{a}',     '<p><a href="a"></a></p>');
     //checkMarkup('{}:{a}.',    '<p><a href="a"></a></p>');
     //checkMarkup('{}:{a}.\n',  '<p><a href="a"></a></p>');
@@ -3633,6 +3633,8 @@
     checkMarkup('* ',          '<ul><li> </li></ul>');
     checkMarkup('# ',          '<ol><li> </li></ol>');
     checkMarkup('*a',          '<ul><li>a</li></ul>');
+    checkMarkup('*a\n',        '<ul><li>a</li></ul>');
+    checkMarkup('*a\n\n',      '<ul><li>a</li></ul>');
     checkMarkup('**a',         '<ul><li><ul><li>a</li></ul></li></ul>');
     checkMarkup('#a',          '<ol><li>a</li></ol>');
     checkMarkup('##a',         '<ol><li><ol><li>a</li></ol></li></ol>');

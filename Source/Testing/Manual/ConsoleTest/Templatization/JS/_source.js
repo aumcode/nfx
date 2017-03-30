@@ -2,28 +2,66 @@
   alert(WAVE.strDefault(text, "Hello"));
 }
 
-function render(){
+
+function ex1(root, ctx) {
+  /***
+    div= $"
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris,
+        facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...
+      "
+    {
+      id=sect
+      class=sect
+      $"?var a = ""pupkin"";"{}
+
+      "?if(ctx.pzd)" {
+        div="?ctx.error" {
+          class="?ctx.ec"
+        }
+      }
+    }
+  ***/
+}
+
+function ex2(root) {
+  /***
+    "?if (1 === 1)" {
+      "?for(var i = 0, l = 10; i < l; i++)" {
+        div="?i" {
+          class=counter
+          id="?i+1"
+        }
+      }
+    }
+  ***/
+}
+
+function ex3(root, ctx){
   /***
   div{
-    on-click = "function() { console.log('kaka') }"
-    div{ class=title data-alert="alert('just data')" data-alert-script='<script>alert("script")</script>' }
+    on-click="function() { console.log('kaka') }"
+    div{
+      class=title
+      data-alert="alert('just data')"
+      data-alert-script='<script>alert("script")</script>'
+    }
     div{ id=rate }
-    div{ class=@color@ }
-    div{ class="stub @color@" }
+    div{ class=?ctx.color }
+    div{ class="?'stub ' + ctx.color" }
 
-    div="<script>alert(\"'<script>alert('@color@');</script>'text\")</script>"{}
+    div="<script>alert(\"'<script>alert('?ctx.color');</script>'text\")</script>"{}
     div{
       div{
-        class=@color@
+        class=?ctx.color
         div{
           div{
-            class=@color@
+            class=?ctx.color
             div{
               div{
-                class=@color@
+                class=?ctx.color
                 div{
                   div{
-                    class=@color@
+                    class=?ctx.color
                     div=",./[\\]{}|!@#$%^&*()_+=-~`'"{}
                   }
                 }
@@ -34,7 +72,10 @@ function render(){
       }
     }
 
-    div{ data-height=@height@ class=@color@ }
+    div{
+      data-height=?ctx.height
+      class=?ctx.color
+    }
 
     div{
       id=controls
@@ -92,19 +133,5 @@ function render(){
           }
       " {}
   }
-  ***/
-}
-
-
-function noRoot() {
-  /***
-    section= $"
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh mauris maecenas ullamcorper faucibus facilisi torquent mauris,
-        facilisis interdum fermentum porta mus non pretium; Erat pretium placerat ut congue per suscipit...
-      "
-    {
-      id=sect
-      class=sect
-    }
   ***/
 }

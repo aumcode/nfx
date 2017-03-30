@@ -12,11 +12,13 @@ namespace NFX.Templatization
   {
     #region CONSTS
     public const string CONFIG_EVENT_PREFIX_ATTR = "on-";
+    public const string CONFIG_ESCAPE_ATTR = "__";
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
+    public const string CONFIG_JS_PREFIX_ATTR = "?";
+    private readonly string[] CONFIG_BOOL_ATTRS = new string[] {"readonly", "disabled", "checked", "required", "selected"};
 
-    public const string JS_USE_CTX_VAR = "ljs_useCtx_{0}";
-    public const string JS_ROOT_VAR = "ljs_r_{0}";
-    public const string JS_CTX_VAR = "ljs_ctx_{0}";
+    public const string JS_ROOT_VAR = "Ør";
+    private readonly string[] JS_CODE_BLOCK_STARTS_WTIH = new string[] {"?for(", "?while(", "?do{", "?if("};
     #endregion
 
     #region Static
@@ -36,9 +38,7 @@ namespace NFX.Templatization
     private string m_LineEnding;
     private int m_Indent;
     private int m_IndexInSource;
-    private string m_JsUseCtxVar;
     private string m_JsRootVar;
-    private string m_JsCtxVar;
     private bool m_Pretty;
     #endregion
 
@@ -46,6 +46,11 @@ namespace NFX.Templatization
     public string LineEnding
     {
       get { return m_LineEnding ?? (m_LineEnding = m_Pretty ? "\n" : ""); }
+    }
+
+    public string Space
+    {
+      get { return m_Pretty ? " " : string.Empty; }
     }
     #endregion
 
@@ -63,75 +68,83 @@ namespace NFX.Templatization
     {
       m_IndexInSource = indexInSource;
       m_Indent = indent;
-      m_JsUseCtxVar = JS_USE_CTX_VAR.Args(m_IndexInSource);
-      m_JsCtxVar = JS_CTX_VAR.Args(m_IndexInSource);
       m_JsRootVar = JS_ROOT_VAR.Args(m_IndexInSource);
-      int counter = 0;
-      return createElement(node, null, ref counter);
+      var counter = 0;
+      string id;
+      return createElement(node, true, null, ref counter, 0, out id);
     }
 
     #endregion
 
-    private string createElement(IConfigSectionNode node, string root, ref int counter)
+    private string createElement(IConfigSectionNode node, bool isRootNode, string container, ref int counter, int extraSpaces, out string elId)
     {
-      var isRootNode = root.IsNullOrWhiteSpace();//this means that this is a root node
       var sb = new StringBuilder();
-      var elemId = "ljs_{0}_{1}".Args(m_IndexInSource, ++counter);
+      var nName = node.Name;
+      var hasChildren = node.HasChildren;
+      var isJsNode = nName.StartsWith(CONFIG_JS_PREFIX_ATTR, StringComparison.Ordinal);
+      var elemId = isJsNode ? container : "Ø{0}".Args(++counter);
 
-      if (isRootNode) sb.AppendFormat("var {0} = WAVE.isObject(arguments[1]);{1}", m_JsUseCtxVar, LineEnding, getIndent());
-      sb.AppendFormat("{3}var {0} = document.createElement('{1}');{2}", elemId, MiscUtils.EscapeJSLiteral(node.Name), LineEnding, getIndent());
-
-
-      if (node.Value.IsNotNullOrWhiteSpace())
-      {
-        var v = evalValue(node.Value, ++counter, ref sb);
-        sb.AppendFormat("{3}{0}.innerText = {1};{2}", elemId, v, LineEnding, getIndent());
-      }
-
-      foreach(var attr in node.Attributes)
-      {
-        var value = attr.Value;
-        if (value.IsNullOrWhiteSpace())
-          continue;
-
-        var name = MiscUtils.EscapeJSLiteral(attr.Name);
-        if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
-          sb.AppendFormat("{4}{0}.addEventListener('{1}', {2}, false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, LineEnding, getIndent());
-        else {
-          var v = evalValue(value, ++counter, ref sb);
-          sb.AppendFormat("{4}{0}.setAttribute('{1}', {2});{3}", elemId, name, v, LineEnding, getIndent());
-        }
-      }
-      foreach(var child in node.Children)
-      {
-        sb.Append(createElement(child, elemId, ref counter));
-      }
       if (isRootNode)
       {
-        sb.AppendFormat("{2}var {0} = arguments[0];{1}", m_JsRootVar, LineEnding, getIndent());
-        sb.AppendFormat("{2}if (typeof({0}) !== 'undefined' && {0} !== null) {{{1}", m_JsRootVar, LineEnding, getIndent());
-        sb.AppendFormat("{2}if (WAVE.isString({0})){1}", m_JsRootVar, LineEnding, getIndent(2));
-        sb.AppendFormat("{2}{0} = WAVE.id({0});{1}", m_JsRootVar, LineEnding, getIndent(4));
-        sb.AppendFormat("{2}if (WAVE.isObject({0})){1}", m_JsRootVar, LineEnding, getIndent(2));
-        sb.AppendFormat("{3}{0}.appendChild({1});{2}", m_JsRootVar, elemId, LineEnding, getIndent(4));
-        sb.AppendFormat("{0}}}", getIndent());
+        sb.AppendFormat("var {0}{2}={2}arguments[0];{1}", m_JsRootVar, LineEnding, Space);
+        sb.AppendFormat("{2}if{3}(WAVE.isString({0})){1}", m_JsRootVar, LineEnding, getIndent(extraSpaces), Space);
+        sb.AppendFormat("{2}{0}{3}={3}WAVE.id({0});{1}", m_JsRootVar, LineEnding, getIndent(2 + extraSpaces), Space);
       }
+
+      if (isJsNode)
+        sb.AppendFormat("{0}{1}{4}{2}{3}", getIndent(extraSpaces), node.Name.Remove(0,1), hasChildren ? "{" : string.Empty, LineEnding, Space);
       else
-        sb.AppendFormat("{3}{0}.appendChild({1});{2}{2}", root, elemId, LineEnding, getIndent());
+      {
+        sb.AppendFormat("{0}var {1}{4}={4}WAVE.ce('{2}');{3}", getIndent(extraSpaces), elemId, MiscUtils.EscapeJSLiteral(nName), LineEnding, Space);
+        if (node.Value.IsNotNullOrWhiteSpace())
+          sb.AppendFormat("{3}{0}.innerText{4}={4}{1};{2}", elemId, wrapValue(node.Value), LineEnding, getIndent(extraSpaces), Space);
+
+        foreach(var attr in node.Attributes)
+        {
+          var value = attr.Value;
+          if (value.IsNullOrWhiteSpace())
+            continue;
+
+          var name = MiscUtils.EscapeJSLiteral(attr.Name);
+          if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
+            sb.AppendFormat("{4}{0}.addEventListener('{1}',{5}{2},{5}false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, LineEnding, getIndent(extraSpaces), Space);
+          else
+          {
+            if (CONFIG_BOOL_ATTRS.Any(s => s.EqualsSenseCase(name)) || name.StartsWith(CONFIG_ESCAPE_ATTR))
+              sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, name, wrapValue(value), LineEnding, Space));
+            else
+              sb.AppendFormat("{4}{0}.setAttribute('{1}',{5}{2});{3}", elemId, name, wrapValue(value), LineEnding, getIndent(extraSpaces), Space);
+          }
+        }
+      }
+
+      var rId = string.Empty;
+      foreach(var child in node.Children)
+      {
+        var pName = nName.Replace(" ", string.Empty).Replace("\n\r", string.Empty).Replace("\n", string.Empty);
+        sb.Append(createElement(child, false, elemId, ref counter, isJsNode && JS_CODE_BLOCK_STARTS_WTIH.Any(s => pName.StartsWith(s, StringComparison.Ordinal)) ? extraSpaces + 2 : 0, out rId));
+      }
+      elId = isJsNode ? rId : elemId;
+
+      if (!isJsNode)
+      {
+        if (container.IsNullOrWhiteSpace())
+          sb.AppendFormat("{0}if{4}(WAVE.isObject({1})){4}{1}.appendChild({2});{3}", getIndent(extraSpaces), m_JsRootVar, elemId, LineEnding, Space);
+        else
+          sb.AppendFormat("{0}{1}.appendChild({2});{3}", getIndent(extraSpaces), container, elemId, LineEnding);
+      }
+      if (isJsNode && hasChildren)
+        sb.AppendFormat("{0}}}{1}", getIndent(extraSpaces), LineEnding);
+
+      if (isRootNode)
+        sb.AppendFormat("{0}return {1};", getIndent(extraSpaces), elId);
 
       return sb.ToString();
     }
 
-    private string evalValue(string value, int seed, ref StringBuilder result)
+    private string wrapValue(string value)
     {
-      if (value.Length > 15)
-      {
-        var valueId = "ljsv_{0}_{1}".Args(m_IndexInSource, seed);
-        result.AppendFormat("{3}var {0} = \"{1}\";{2}", valueId, MiscUtils.EscapeJSLiteral(value), LineEnding, getIndent());
-        return "{0} ? WAVE.strHTMLTemplate({1}, ctx) : {1}".Args(m_JsUseCtxVar, valueId);
-      }
-
-      return "{0} ? WAVE.strHTMLTemplate(\"{1}\", ctx) : \"{1}\"".Args(m_JsUseCtxVar, MiscUtils.EscapeJSLiteral(value));
+      return value.StartsWith("?") ? value.Remove(0,1) : "'{0}'".Args(MiscUtils.EscapeJSLiteral(value));
     }
 
     public string getIndent(int extraSpaces = 0)

@@ -119,7 +119,6 @@ namespace NFX.Templatization
           spacesCount++;
         }
 
-        Console.WriteLine("EEEEEEEEEEEEEEE            " + spacesCount);
         var conf = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
         return DOMGenerator.Generate(conf, spacesCount, ref counter);
       });

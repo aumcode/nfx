@@ -335,6 +335,7 @@ namespace NFX.Templatization
                {
                  DoCompileTemplateSource(cu);
                }
+               
                catch(Exception error)
                {
                  cu.CompilationException = error;

@@ -481,7 +481,7 @@ var WAVE = (function(){
           var c = str.charAt(i);
           var n = str.charAt(i+1);
           switch (c) {
-            case '\r': if (n === '\n') i++;
+            case '\r': if (n === '\n') { i++; n = str.charAt(i+1); }
             case '\n': c = '\n'; break;
             case '<': c = '&lt;'; break;
             case '>': c = '&gt;'; break;
@@ -844,10 +844,14 @@ var WAVE = (function(){
             case /*State.SPAN*/ 3:
             case /*State.SPAN_END*/ 4: out = out_stack.pop() + out; break;
             case /*State.HEADING_BODY*/ 8: out += '</h' + level + '>'; break;
-            case /*State.LIST_ITEM*/ 10: close_list(0); break;
+            case /*State.LIST_ITEM*/ 10:
+            case /*State.LIST_NEXT*/ 11: close_list(0); break;
             case /*State.VALUE_BODY*/ 15:
             case /*State.KEY_NEXT*/ 16: close_kv(false); break;
-            default: throw 'WAVE.markup(last.state)';
+            default:
+              /*State.CLASS*/
+              /*State.CLASS_NEXT*/
+              throw 'WAVE.markup(last.state)';
           }
         }
 
@@ -1002,6 +1006,14 @@ var WAVE = (function(){
         return true;
       }
       return false;
+    };
+
+    published.removeChildren = function(el) {
+      while (true) {
+        var lc = el.lastChild;
+        if (lc) el.removeChild(lc);
+        else break;
+      }
     };
 
     published.addClass = function(elem, className) {
@@ -1464,6 +1476,10 @@ var WAVE = (function(){
 
     published.id = function(id){
       return document.getElementById(id);
+    };
+
+    published.ce = function(tag){
+      return document.createElement(tag);
     };
 
     published.getRadioGroupValue = function(groupName){

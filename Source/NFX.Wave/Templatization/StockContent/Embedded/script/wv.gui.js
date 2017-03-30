@@ -343,6 +343,9 @@ WAVE.GUI = (function(){
             fWidthPct = WAVE.intValidPositive(init.widthpct) ? init.widthpct : 0,
             fHeightPct = WAVE.intValidPositive(init.heightpct) ? init.heightpct : 0,
             fPreventScroll = WAVE.strAsBool(init.preventScroll, true),
+            headCtn = init.header,
+            bodyCtn = init.body,
+            footerCtn = init.footer,
             fdivBase = null,
             fdivContent = null,
             fdivHeader = null,
@@ -353,6 +356,11 @@ WAVE.GUI = (function(){
 
         if (fWidthPct>100) fWidthPct = 100;
         if (fHeightPct>100) fHeightPct = 100;
+
+        function appendContent(el, ctn, dfl) {
+          if (WAVE.isObject(ctn)) el.appendChild(ctn);
+          else el.innerHTML = WAVE.strDefault(ctn, dfl);
+        }
 
         fdivBase = document.createElement("div");
         fdivBase.__DIALOG = this;
@@ -370,17 +378,17 @@ WAVE.GUI = (function(){
 
         fdivHeader = document.createElement("div");
         fdivHeader.className = published.CLS_DIALOG_HEADER;
-        fdivHeader.innerHTML = WAVE.strDefault(init['header'], 'Dialog');
+        appendContent(fdivHeader, headCtn, "Dialog");
         fdivContent.appendChild(fdivHeader);
 
         fdivBody = document.createElement("div");
         fdivBody.className = published.CLS_DIALOG_BODY;
-        fdivBody.innerHTML = WAVE.strDefault(init['body'], '&nbsp;');
+        appendContent(fdivBody, bodyCtn, "&nbsp;");
         fdivContent.appendChild(fdivBody);
 
         fdivFooter = document.createElement("div");
         fdivFooter.className = published.CLS_DIALOG_FOOTER;
-        fdivFooter.innerHTML = WAVE.strDefault(init['footer'], '');
+        appendContent(fdivFooter, footerCtn, "");
         fdivContent.appendChild(fdivFooter);
 
         function __adjustBounds(){

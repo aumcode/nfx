@@ -15,36 +15,446 @@ WAVE.RMGUI = (function(){
         var fErroredInput = null;
 
         function renderTestControl(root, ctx) {
-          var ljs_useCtx_1 = WAVE.isObject(arguments[1]);
-          var ljs_1_1 = document.createElement('div');
-          ljs_1_1.setAttribute('div', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@about@", ctx) : "@about@");
-          var ljs_1_3 = document.createElement('input');
-          ljs_1_3.setAttribute('type', ljs_useCtx_1 ? WAVE.strHTMLTemplate("text", ctx) : "text");
-          ljs_1_3.setAttribute('name', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@fName@", ctx) : "@fName@");
-          ljs_1_3.setAttribute('value', ljs_useCtx_1 ? WAVE.strHTMLTemplate("@fValue@", ctx) : "@fValue@");
-          ljs_1_1.appendChild(ljs_1_3);
-
-          var ljs_r_1 = arguments[0];
-          if (typeof(ljs_r_1) !== 'undefined' && ljs_r_1 !== null) {
-            if (WAVE.isString(ljs_r_1))
-              ljs_r_1 = WAVE.id(ljs_r_1);
-            if (WAVE.isObject(ljs_r_1))
-              ljs_r_1.appendChild(ljs_1_1);
-          }
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          Ø1.setAttribute('div', ctx.about);
+          var Ø2 = WAVE.ce('input');
+          Ø2.setAttribute('type', 'text');
+          Ø2.setAttribute('name', ctx.fName);
+          Ø2.setAttribute('value', ctx.fValue);
+          Ø1.appendChild(Ø2);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
         }
 
         function buildTestControl(fldView){
-          var ctx = {
+          var divRoot = fldView.DIV();
+          WAVE.removeChildren(divRoot);
+          renderTestControl(divRoot, {
             about: fldView.field().about(),
             fName: fldView.field().name(),
             fValue: fldView.field().value()
-          };
-          renderTestControl(fldView.DIV(), ctx);
+          });
         }
 
         function genIDSeed(fldView){
           var id = WAVE.genAutoincKey(AIKEY);
           return "_"+fldView.recView().ID()+"_"+id;
+        }
+
+        function textChangeHandler(e) {
+          var target = e.target,
+              val = target.value,
+              field = target.__fieldView.field();
+
+          try { field.setGUIValue(val); }
+          catch(e)
+          {
+            WAVE.GUI.toast(WAVE.strHTMLTemplate("Wrong value for field '@about@'. Please re-enter or undo", {about: field.about()}), "error");
+          }
+        }
+
+        function renderTextBox(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          var Ø2 = WAVE.ce('label');
+          Ø2.innerText = ctx.about;
+          Ø2.setAttribute('for', ctx.tbid);
+          Ø2.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø2);
+          if(ctx.error) {
+            var Ø3 = WAVE.ce('div');
+            Ø3.innerText = ctx.error;
+            Ø3.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø3);
+          }
+          var Ø4 = WAVE.ce('input');
+          Ø4.setAttribute('id', ctx.id);
+          Ø4.setAttribute('type', ctx.tp);
+          Ø4.setAttribute('name', ctx.name);
+          Ø4.disabled = ctx.disabled;
+          Ø4.readonly = ctx.readonly;
+          Ø4.setAttribute('value', ctx.value);
+          Ø4.setAttribute('placeholder', ctx.placeholder);
+          Ø4.required = ctx.required;
+          Ø4.__fieldView = ctx.fw;
+          Ø4.addEventListener('change', ctx.handler, false);
+          Ø1.appendChild(Ø4);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function buildTextBox(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "tb"+ids,
+              ve = field.validationError(),
+              fk = field.kind(),
+              itp = field.password() ? "password" : fk===WAVE.RecordModel.KIND_SCREENNAME ? "text" : fk;
+
+          WAVE.removeChildren(divRoot);
+          renderTextBox(divRoot, {
+            tbid: idInput,
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            id: idInput,
+            tp: itp,
+            name: field.name(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
+            readonly: field.readonly() ? "readonly" : "",
+            value: field.isNull()? "" : field.displayValue(),
+            placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
+            required: field.required() ? "required" : "",
+            handler: textChangeHandler,
+            fw: fldView
+          });
+        }
+
+        function renderTextArea(root, ctx) {
+        var Ør = arguments[0];
+        if (WAVE.isString(Ør))
+          Ør = WAVE.id(Ør);
+        var Ø1 = WAVE.ce('div');
+        var Ø2 = WAVE.ce('label');
+        Ø2.innerText = ctx.about;
+        Ø2.setAttribute('for', ctx.tbid);
+        Ø2.setAttribute('class', ctx.cls);
+        Ø1.appendChild(Ø2);
+        if (ctx.error!==null) {
+          var Ø3 = WAVE.ce('div');
+          Ø3.innerText = ctx.error;
+          Ø3.setAttribute('class', ctx.ec);
+          Ø1.appendChild(Ø3);
+        }
+        var Ø4 = WAVE.ce('textarea');
+        Ø4.innerText = ctx.value;
+        Ø4.setAttribute('id', ctx.id);
+        Ø4.setAttribute('name', ctx.name);
+        Ø4.disabled = ctx.disabled;
+        Ø4.setAttribute('maxlength', ctx.maxlength);
+        Ø4.readonly = ctx.readonly;
+        Ø4.setAttribute('value', ctx.value);
+        Ø4.setAttribute('placeholder', ctx.placeholder);
+        Ø4.required = ctx.required;
+        Ø4.__fieldView = ctx.fw;
+        Ø4.addEventListener('change', ctx.handler, false);
+        Ø1.appendChild(Ø4);
+        if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+        return Ø1;
+        }
+
+        function buildTextArea(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "tb"+ids,
+              ve = field.validationError();
+
+          WAVE.removeChildren(divRoot);
+
+          renderTextArea(divRoot, {
+            tbid: idInput,
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            id: idInput,
+            name: field.name(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
+            readonly: field.readonly() ? "readonly" : "",
+            value: field.isNull()? "" : field.displayValue(),
+            placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
+            required: field.required() ? "required" : "",
+            fw: fldView,
+            handler: textChangeHandler
+          });
+        }
+
+        function renderRadioGroup(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('fieldset');
+          var Ø2 = WAVE.ce('legend');
+          Ø2.innerText = ctx.about;
+          Ø2.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø2);
+          if (ctx.error) {
+            var Ø3 = WAVE.ce('div');
+            Ø3.innerText = ctx.error;
+            Ø3.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø3);
+          }
+          for(var i in ctx.keys) {
+             var key = ctx.keys[i], keyDesc = ctx.dict[key], idInput = 'rbt'+ctx.ids+'_'+i; 
+            var Ø4 = WAVE.ce('input');
+            Ø4.setAttribute('id', idInput);
+            Ø4.setAttribute('name', ctx.name);
+            Ø4.setAttribute('type', 'radio');
+            Ø4.disabled = ctx.disabled;
+            Ø4.readonly = ctx.readonly;
+            Ø4.setAttribute('value', key);
+            Ø4.required = ctx.required;
+            Ø4.checked = WAVE.strSame(key, ctx.value) ? 'checked' : '';
+            Ø4.__fieldView = ctx.fw;
+            Ø4.addEventListener('change', ctx.onchange, false);
+            Ø1.appendChild(Ø4);
+            var Ø5 = WAVE.ce('label');
+            Ø5.innerText = keyDesc;
+            Ø5.setAttribute('for', idInput);
+            Ø1.appendChild(Ø5);
+          }
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function radioGroupChangeHandler(e) {
+          var target = e.target,
+              val = target.value,
+              fld = target.__fieldView.field();
+
+          if (!fld.readonly()) fld.value(val, true);//from GUI
+          else rebuildControl(target.__fieldView);
+        }
+
+        function buildRadioGroup(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              dict = field.lookupDict(),
+              keys = Object.keys(dict),
+              ve = field.validationError(),
+              ids = genIDSeed(fldView);
+
+          WAVE.removeChildren(divRoot);
+
+          renderRadioGroup(divRoot, {
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            keys: keys,
+            dict: dict,
+            ids: ids,
+            name: field.name(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            readonly: field.readonly() ? "readonly" : "",
+            required: field.required() ? "required" : "",
+            value: field.value(),
+            fw: fldView,
+            onchange: radioGroupChangeHandler
+          });
+        }
+
+        function renderCheck(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          if(ctx.error) {
+            var Ø2 = WAVE.ce('div');
+            Ø2.innerText = ctx.error;
+            Ø2.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø2);
+          }
+          var Ø3 = WAVE.ce('input');
+          Ø3.setAttribute('id', 'h_'+ctx.id);
+          Ø3.setAttribute('type', 'hidden');
+          Ø3.setAttribute('value', ctx.val);
+          Ø3.setAttribute('name', ctx.name);
+          Ø1.appendChild(Ø3);
+          var Ø4 = WAVE.ce('label');
+          Ø4.innerText = ctx.about;
+          Ø4.setAttribute('for', ctx.id);
+          Ø4.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø4);
+          var Ø5 = WAVE.ce('input');
+          Ø5.setAttribute('id', ctx.id);
+          Ø5.setAttribute('type', 'checkbox');
+          Ø5.disabled = ctx.disabled;
+          Ø5.readonly = ctx.readonly;
+          Ø5.required = ctx.required;
+          Ø5.checked = ctx.checked;
+          Ø5.__fieldView = ctx.fw;
+          Ø5.__hiddenId = 'h_'+ctx.id;
+          Ø5.addEventListener('change', ctx.handler, false);
+          Ø1.appendChild(Ø5);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function checkChangedHandler(e) {
+          var target = e.target,
+              val = target.checked,
+              fld = target.__fieldView.field();
+
+          WAVE.id(target.__hiddenId).value = val ? "true" : "false";
+          if (!fld.readonly()) fld.value(val, true);
+          else rebuildControl(target.__fieldView);
+        }
+
+        function buildCheck(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "chk"+ids,
+              ve = field.validationError();
+
+          WAVE.removeChildren(divRoot);
+          renderCheck(divRoot, {
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            id: idInput,
+            name: field.name(),
+            val: WAVE.strAsBool(field.value()) ? "true" : "false",
+
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            disabled: field.isEnabled() ? "" : "disabled",
+            readonly: field.readonly() ? "readonly" : "",
+            required: field.required() ? "required" : "",
+            checked: WAVE.strAsBool(field.value()) ? "checked" : "",
+            fw: fldView,
+            handler: checkChangedHandler
+          });
+        }
+
+        function renderComboBox(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          var Ø2 = WAVE.ce('label');
+          Ø2.innerText = ctx.about;
+          Ø2.setAttribute('for', ctx.id);
+          Ø2.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø2);
+          if (ctx.error) {
+            var Ø3 = WAVE.ce('div');
+            Ø3.innerText = ctx.error;
+            Ø3.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø3);
+          }
+          var Ø4 = WAVE.ce('div');
+          Ø4.setAttribute('class', ctx.wrapCls);
+          var Ø5 = WAVE.ce('select');
+          Ø5.setAttribute('id', ctx.id);
+          Ø5.setAttribute('name', ctx.name);
+          Ø5.disabled = ctx.disabled;
+          Ø5.readonly = ctx.readonly;
+          Ø5.setAttribute('value', ctx.value);
+          Ø5.setAttribute('placeholder', ctx.placeholder);
+          Ø5.required = ctx.required;
+          Ø5.__fieldView = ctx.fw;
+          Ø5.addEventListener('change', ctx.handler, false);
+          var Ø6 = WAVE.ce('option');
+          Ø5.appendChild(Ø6);
+          for(var i in ctx.keys) {
+            var val = ctx.keys[i]; 
+            var Ø7 = WAVE.ce('option');
+            Ø7.innerText = ctx.dict[val];
+            Ø7.setAttribute('value', val);
+            Ø7.selected = WAVE.strSame(val, ctx.value) ? 'selected' : '';
+            Ø5.appendChild(Ø7);
+          }
+          Ø4.appendChild(Ø5);
+          var Ø8 = WAVE.ce('div');
+          Ø8.setAttribute('id', ctx.arId);
+          Ø8.setAttribute('class', ctx.arCls);
+          Ø4.appendChild(Ø8);
+          Ø1.appendChild(Ø4);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function comboChangedHandler(e) {
+          var target = e.target,
+              view = target.__fieldView,
+              field = target.__fieldView.field(),
+              fv = field.value();
+
+          if (field.readonly()) {
+            if (target.value !== fv) target.value = fv;
+            return;
+          }
+
+          var val = target.value;
+          field.value(val, true);//from GUI
+        }
+
+        function buildComboBox(fldView) {
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "cbo" + ids,
+              arrowId = "lbl" + idInput,
+              ve = field.validationError();
+
+          WAVE.removeChildren(divRoot);
+          renderComboBox(divRoot, {
+            id: idInput,
+
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            name: field.name(),
+            value: field.value(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            readonly: field.readonly() ? "readonly" : "",
+            value: field.value(),
+            placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
+            required: field.required() ? "required" : "",
+            wrapCls: published.CLS_COMBO_WRAP,
+            fw: fldView,
+            handler: comboChangedHandler,
+
+            dict: field.lookupDict(),
+            keys: Object.keys(field.lookupDict()),
+
+            arId: arrowId,
+            arCls: published.CLS_COMBO_ARROW
+          });
+        }
+
+        function renderHidden(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('input');
+          Ø1.setAttribute('type', 'hidden');
+          Ø1.setAttribute('name', ctx.name);
+          Ø1.setAttribute('value', ctx.value);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function buildHidden(fldView) {
+          var divRoot = fldView.DIV(),
+              field = fldView.field();
+          WAVE.removeChildren(divRoot);
+          renderHidden(divRoot, {
+            name: field.name(),
+            value: field.displayValue()
+          });
         }
 
         function buildChainSelector(fldView) {
@@ -103,239 +513,6 @@ WAVE.RMGUI = (function(){
                              });
         }
 
-        function buildTextBox(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "tb"+ids;
-
-          var html = WAVE.strHTMLTemplate("<label for='@tbid@' class='@cls@'>@about@</label>",
-                                      {
-                                        tbid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          var itp;
-          var fk = field.kind();
-          if (field.password()) itp = "password";
-          else if (fk===WAVE.RecordModel.KIND_SCREENNAME) itp = "text";
-          else itp = fk;
-
-          html+= WAVE.strHTMLTemplate("<input id='@id@' type='@tp@' name='@name@' @disabled@ @maxlength@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
-                                      {
-                                        id: idInput,
-                                        tp: itp,
-                                        name: field.name(),
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        value: field.isNull()? "" : field.displayValue(),
-                                        placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : ""
-                                      });
-
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-            var val = this.value;
-            try
-            {
-                this.__fieldView.field().setGUIValue(val);
-                fErroredInput = null;
-            }
-            catch(e)
-            {
-                WAVE.GUI.toast("Wrong value for field '"+this.__fieldView.field().about()+"'. Please re-enter or undo", "error");
-                var self = this;
-                if (fErroredInput===self || fErroredInput===null)
-                {
-                    fErroredInput = self;
-                    setTimeout(function()
-                           {
-                             if (!self.ERRORED) $(self).blur(function(){$(self).change();});
-                             self.focus();
-                             self.ERRORED = true;
-                           }, 50);
-                }
-            }
-          });
-        }
-
-
-        function buildTextArea(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "tb"+ids;
-
-          var html = WAVE.strHTMLTemplate("<label for='@tbid@' class='@cls@'>@about@</label>",
-                                      {
-                                        tbid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          html+= WAVE.strHTMLTemplate("<textarea id='@id@' name='@name@' @disabled@ @maxlength@ @readonly@ placeholder='@placeholder@' @required@>@value@</textarea>",
-                                      {
-                                        id: idInput,
-                                        name: field.name(),
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        value: field.isNull()? "" : field.displayValue(),
-                                        placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : ""
-                                      });
-
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-            var val = this.value;
-            try
-            {
-                this.__fieldView.field().setGUIValue(val);
-                fErroredInput = null;
-            }
-            catch(e)
-            {
-                WAVE.GUI.toast("Wrong value for field '"+this.__fieldView.field().about()+"'. Please re-enter or undo", "error");
-                var self = this;
-                if (fErroredInput===self || fErroredInput===null)
-                {
-                    fErroredInput = self;
-                    setTimeout(function()
-                           {
-                             if (!self.ERRORED) $(self).blur(function(){$(self).change();});
-                             self.focus();
-                             self.ERRORED = true;
-                           }, 50);
-                }
-            }
-          });
-        }
-
-
-        function buildRadioGroup(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var dict = field.lookupDict();
-          var keys = Object.keys(dict);
-
-          var html = "<fieldset>";
-          html+= WAVE.strHTMLTemplate("<legend class='@cls@'>@about@</legend>",{about: field.about(),
-                                                                                cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                                                               });
-
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          var ids = genIDSeed(fldView);
-
-          for(var i in Object.keys(dict)){
-             var key = keys[i];
-             var keyDescr = dict[key];
-
-              var idInput = "rbt"+ids+"_"+i;
-
-              html+= WAVE.strHTMLTemplate("<input id='@id@' type='radio' name='@name@' @disabled@ @readonly@ value='@value@' @required@ @checked@>",
-                                          {
-                                            id: idInput,
-                                            name: field.name(),
-                                            disabled: field.isEnabled() ? "" : "disabled",
-                                            readonly: field.readonly() ? "readonly" : "",
-                                            value: key,
-                                            required: field.required() ? "required" : "",
-                                            checked: WAVE.strSame(key, field.value()) ? "checked" : ""
-                                          });
-
-              html+= WAVE.strHTMLTemplate("<label for='@rbtid@'>@about@</label>",
-                                          {
-                                            rbtid: idInput,
-                                            about: keyDescr
-                                          });
-
-
-
-          }//for
-
-          html+= "</fieldset>";
-
-          divRoot.innerHTML = html;
-
-          //bind events
-          function rbtChange(evt){
-            var val = evt.target.value;
-            var fld = evt.target.__fieldView.field();
-            if (!fld.readonly())
-                fld.value(val, true);//from GUI
-            else
-                rebuildControl(evt.target.__fieldView);
-          }
-
-          for(var j in Object.keys(dict)){
-           var idInp = "rbt"+ids+"_"+j;
-           WAVE.id(idInp).__fieldView = fldView;
-
-           $("#"+idInp).change(rbtChange);
-          }
-        }
-
-        function buildCheck(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "chk"+ids;
-
-          var html = "";
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-
-          html+= WAVE.strHTMLTemplate("<input id='h_@id@' type='hidden'  value='@val@' name='@name@'>",
-                                      {
-                                        id: idInput,
-                                        name: field.name(),
-                                        val: WAVE.strAsBool(field.value()) ? "true" : "false"
-                                      });
-
-
-          html+= WAVE.strHTMLTemplate("<label for='@chkid@' class='@cls@'>@about@</label>",
-                                      {
-                                        chkid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-          html+= WAVE.strHTMLTemplate("<input id='@id@' type='checkbox' @disabled@ @readonly@  @required@ @checked@>",
-                                      {
-                                        id: idInput,
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        required: field.required() ? "required" : "",
-                                        checked: WAVE.strAsBool(field.value()) ? "checked" : ""
-                                      });
-
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-               var val = this.checked;
-               $("#h_"+idInput).val( val ? "true" : "false");
-               var fld = this.__fieldView.field();
-               if (!fld.readonly())
-                 fld.value(val, true);//from GUI
-               else
-                 rebuildControl(this.__fieldView);
-          });
-        }
-
         function buildPSEditor(fldView){
           var field = fldView.field();
           var divRoot = fldView.DIV();
@@ -389,79 +566,7 @@ WAVE.RMGUI = (function(){
                                function (e, d){
                                  field.value(d, true);//from GUI
                                });
-         }
-        }
-
-        function buildComboBox(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "cbo"+ids;
-          var arrowId = "lbl"+idInput;
-
-          var html = WAVE.strHTMLTemplate("<label for='@cbid@' class='@cls@'>@about@</label>",
-                                      {
-                                        cbid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          html+= WAVE.strHTMLTemplate("<div class='@comboWrapCls@'><select id='@id@' name='@name@' @disabled@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
-                                      {
-                                        id: idInput,
-                                        name: field.name(),
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        value: field.value(),
-                                        placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : "",
-                                        comboWrapCls: published.CLS_COMBO_WRAP
-                                      });
-
-          var dict = field.lookupDict();
-          var keys = Object.keys(dict);
-          html += "<option value=''></option>";//add Blank
-          for(var i in Object.keys(dict)){
-              html += WAVE.strHTMLTemplate("<option value='@value@' @selected@>@descr@</option>",
-                                          {
-                                            value: keys[i],
-                                            selected: WAVE.strSame(keys[i], field.value()) ? "selected" : "",
-                                            descr: dict[keys[i]]
-                                          });
-          }//for options
-
-          html+=WAVE.strHTMLTemplate("</select><div id='@id@' class='@comboArrowCls@'></div></div>",
-                                          {
-                                            id: arrowId,
-                                            comboArrowCls: published.CLS_COMBO_ARROW
-                                          });
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-
-            var fv = field.value();
-            if (field.readonly())
-            {
-              if (this.value !== fv) this.value = fv;
-              return;
-            }
-
-            var val = this.value;
-            this.__fieldView.field().value(val, true);//from GUI
-          });
-
-          WAVE.id(arrowId).onclick = function() {
-            var element = WAVE.id(idInput);
-            try {
-              var event = new MouseEvent('mousedown');
-              element.dispatchEvent(event);
-            } catch(e) { }
-            return false;
-          };
+          }
         }
 
         function buildPuzzle(fldView){
@@ -502,7 +607,7 @@ WAVE.RMGUI = (function(){
           var hidden = WAVE.id(idHiddenInput);
           hidden.value = JSON.stringify(field.value());
 
-          pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE, function(kpad){
+          pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE, function(kpad) {
                           field.value().Answer = kpad.value();
                           hidden.value = JSON.stringify(field.value());
                        });
@@ -510,38 +615,36 @@ WAVE.RMGUI = (function(){
           fldView.PUZZLE = pk;
         }
 
-
-        function buildHidden(fldView){
-          fldView.DIV().innerHTML = WAVE.strHTMLTemplate("<input type='hidden' name='@fName@' value='@fValue@'>",
-                                                        {fName: fldView.field().name(), fValue: fldView.field().displayValue()});
+        function renderErrorRec(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          Ø1.innerText = ctx.error;
+          Ø1.setAttribute('class', ctx.ec);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
         }
 
-
         function buildErrorRec(fldView, summary){
-          var record = fldView.record();
-          var divRoot = fldView.DIV();
+          var record = fldView.record(),
+              divRoot = fldView.DIV();
 
-
-          var html = "";
           if (summary)
           {
             var allErrors = record.allValidationErrors();
             for(var i in allErrors)
             {
-               var err = allErrors[i];
-               if (err!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: err});
+              var err = allErrors[i];
+              if (err !== null) renderErrorRec(divRoot, { ec: published.CLS_ERROR, error: err });
             }
-
           }
           else
           {
             var rve = record.validationError();
-            if (rve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: rve});
+            if (rve !== null) renderErrorRec(divRoot, { ec: published.CLS_ERROR, error: rve });
           }
-
-          divRoot.innerHTML = html;
         }
-
 
         function rebuildControl(fldView){
           var ct = published.getControlType(fldView);
