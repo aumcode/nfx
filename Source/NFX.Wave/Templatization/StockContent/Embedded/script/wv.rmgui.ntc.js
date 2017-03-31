@@ -431,55 +431,73 @@
           });
         }
 
-        function buildChainSelector(fldView) {
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
+        function renderCustomControlContainer(root, lblDivId, cntDivId) {
+          /***
+            div {
+              div {
+                id=?lblDivId
+              }
+              div {
+                id=?cntDivId
+              }
+            }
+          ***/
+        }
 
-          var genIdKey = "@#$CHAIN_SELECTOR_GEN_ID$#@";
-          var ids = WAVE.get(fldView, genIdKey, null);
+        function renderCustomControlContent(root, ctx) {
+          WAVE.removeChildren(root);
+          /***
+          div=?ctx.error {
+            class=?ctx.ec
+          }
+          label=?ctx.about {
+            class=?ctx.cls
+          }
+          ***/
+        }
+
+        function buildChainSelector(fldView) {
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              genIdKey = "@#$CHAIN_SELECTOR_GEN_ID$#@",
+              ids = WAVE.get(fldView, genIdKey, null);
+
           if (ids === null) {
             ids = genIDSeed(fldView);
             fldView[genIdKey] = ids;
           }
-          var idCSDiv = "divCS_" + ids;
-          var idLabelDiv = "labelCont_" + ids;
 
-          var labelCont = WAVE.id(idLabelDiv);
-          var editorCont = WAVE.id(idCSDiv);
+          var idCSDiv = "divCS_" + ids,
+              idLabelDiv = "labelCont_" + ids,
+              labelCont = WAVE.id(idLabelDiv),
+              editorCont = WAVE.id(idCSDiv),
+              ve = field.validationError();
+
           if (labelCont === null || editorCont === null) {
-            divRoot.innerHTML = WAVE.strHTMLTemplate("<div id='@idLabelDiv@'></div><div id='@idCSDiv@'></div>",
-                                                     {
-                                                       idLabelDiv: idLabelDiv,
-                                                       idCSDiv: idCSDiv
-                                                     });
+            renderCustomControlContainer(divRoot, idLabelDiv, idCSDiv);
             labelCont = WAVE.id(idLabelDiv);
             editorCont = WAVE.id(idCSDiv);
           }
+          renderCustomControlContent(labelCont, {
+            ec: published.CLS_ERROR,
+            error: ve,
 
-          var html = "";
-          var ve = field.validationError();
-          if (ve !== null) html += WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", { ec: published.CLS_ERROR, error: ve });
-          html += WAVE.strHTMLTemplate("<label class='@cls@'>@about@</label>",
-                                      {
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-
-          labelCont.innerHTML = html;
-
-          var dict = field.lookupDict();
-          var values = WAVE.exists(dict) ? dict.values : [];
-          var path = field.isNull() ? "" : field.value();
-
-          var selector = new WAVE.GUI.ChainSelector({
-            DIV: editorCont,
-            outputFormFieldName: field.name(),
-            classes: { divArrowCls: published.CLS_COMBO_ARROW, divComboWrapCls: published.CLS_COMBO_WRAP },
-            path: path,
-            disable: field.isEnabled() ? false : true,
-            readonly: field.readonly(),
-            values: values
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
           });
+
+          var dict = field.lookupDict(),
+              values = WAVE.exists(dict) ? dict.values : [],
+              path = field.isNull() ? "" : field.value(),
+              selector = new WAVE.GUI.ChainSelector({
+                DIV: editorCont,
+                outputFormFieldName: field.name(),
+                classes: { divArrowCls: published.CLS_COMBO_ARROW, divComboWrapCls: published.CLS_COMBO_WRAP },
+                path: path,
+                disable: field.isEnabled() ? false : true,
+                readonly: field.readonly(),
+                values: values
+              });
 
           selector.eventBind(WAVE.GUI.EVT_CHAIN_SELECTOR_UPDATED,
                              function (e, d) {
@@ -488,103 +506,116 @@
         }
 
         function buildPSEditor(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
+          var field = fldView.field(),
+             divRoot = fldView.DIV(),
+             genIdKey = "@#$PS_EDITOR_GEN_ID$#@",
+             ids = WAVE.get(fldView, genIdKey, null);
 
-          var genIdKey = "@#$PS_EDITOR_GEN_ID$#@";
-          var ids = WAVE.get(fldView, genIdKey, null);
           if (ids === null) {
             ids = genIDSeed(fldView);
             fldView[genIdKey] = ids;
           }
-          var idPSDiv = "divps_"+ids;
-          var idLabelDiv =  "labelCont_"+ids;
 
-          var labelCont = WAVE.id(idLabelDiv);
-          var editorCont = WAVE.id(idPSDiv);
+          var idPSDiv = "divps_"+ids,
+              idLabelDiv =  "labelCont_"+ids,
+              labelCont = WAVE.id(idLabelDiv),
+              editorCont = WAVE.id(idPSDiv),
+              ve = field.validationError();
+
           if (labelCont === null || editorCont === null){
-             divRoot.innerHTML = WAVE.strHTMLTemplate("<div id='@idLabelDiv@'></div><div id='@idPSDiv@'></div>", {idLabelDiv:idLabelDiv, idPSDiv:idPSDiv});
-             labelCont = WAVE.id(idLabelDiv);
-             editorCont = WAVE.id(idPSDiv);
+            renderCustomControlContainer(divRoot, idLabelDiv, idPSDiv);
+            labelCont = WAVE.id(idLabelDiv);
+            editorCont = WAVE.id(idPSDiv);
           }
+          renderCustomControlContent(labelCont, {
+            ec: published.CLS_ERROR,
+            error: ve,
 
-          var html = "";
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-          html+= WAVE.strHTMLTemplate("<label class='@cls@'>@about@</label>",
-                                      {
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
+          });
 
-          labelCont.innerHTML = html;
-
-          var json = field.isNull()? "" : field.value();
-          var ekey = "@#$PS_EDITOR$#@";
-          var editor = WAVE.get(fldView, ekey, null);
+          var json = field.isNull()? "" : field.value(),
+              ekey = "@#$PS_EDITOR$#@",
+              editor = WAVE.get(fldView, ekey, null);
           if (editor===null)
           {
-               editor =  new WAVE.GUI.PropSetEditor({
-                                    DIV: editorCont,
-                                    outputFormFieldName: field.name(),
-                                    langs: WAVE.LOCALIZER.allLanguageISOs(),
-                                    content: json,
-                                    disable: field.isEnabled() ? false : true,
-                                    readonly: field.readonly(),
-                                    title: field.about()
-                                });
+            editor =  new WAVE.GUI.PropSetEditor({
+              DIV: editorCont,
+              outputFormFieldName: field.name(),
+              langs: WAVE.LOCALIZER.allLanguageISOs(),
+              content: json,
+              disable: field.isEnabled() ? false : true,
+              readonly: field.readonly(),
+              title: field.about()
+            });
 
-               fldView[ekey] = editor;
+            fldView[ekey] = editor;
 
-               editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED,
-                               function (e, d){
-                                 field.value(d, true);//from GUI
-                               });
+            editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED,
+            function (e, d){
+              field.value(d, true);//from GUI
+            });
           }
         }
 
-        function buildPuzzle(fldView){
+        function renderPuzzleContainer(root, ctx) {
+          /***
+          div {
+            div=?ctx.error {
+              class=?ctx.ec
+            }
+            div {
+              id=?ctx.id
+              class=?ctx.cls
+            }
+            input {
+              id=?ctx.hId
+              type=hidden
+              name=?ctx.name
+              value=''
+            }
+          }
+          ***/
+        }
 
+        function buildPuzzle(fldView){
           if (fldView.PUZZLE) return;
 
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "divPuzzle"+ids,
+              idHiddenInput = "hiddenPuzzle"+ids,
+              ve = field.validationError();
 
-          var ids = genIDSeed(fldView);
-          var idInput = "divPuzzle"+ids;
-          var idHiddenInput = "hiddenPuzzle"+ids;
+          renderPuzzleContainer(divRoot, {
+            ec: published.CLS_ERROR,
+            error: ve,
 
-          var html = "";
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          html+= WAVE.strTemplate("<div id='@id@' class='@cls@'></div>"+
-                                  "<input id='@idh@' type='hidden' name=@fname@ value=''></input>",
-                                      {
-                                        id: idInput,
-                                        idh: idHiddenInput,
-                                        fname: field.name(),
-                                        cls: published.CLS_PUZZLE
-                                      });
-
-          divRoot.innerHTML = html;
+            id: idInput,
+            cls: published.CLS_PUZZLE,
+            hId: idHiddenInput,
+            name: field.name()
+          });
 
           var fv = field.value();
           var pk = new WAVE.GUI.PuzzleKeypad(
-                   {
-                     DIV: WAVE.id(idInput),
-                     Image: WAVE.strDefault(fv.Image, ""),
-                     Help:  WAVE.strDefault(fv.Help, ""),
-                     Question: WAVE.strDefault(fv.Question, "")
-                   });
+            {
+              DIV: WAVE.id(idInput),
+              Image: WAVE.strDefault(fv.Image, ""),
+              Help:  WAVE.strDefault(fv.Help, ""),
+              Question: WAVE.strDefault(fv.Question, "")
+            });
 
           var hidden = WAVE.id(idHiddenInput);
           hidden.value = JSON.stringify(field.value());
 
-          pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE, function(kpad) {
-                          field.value().Answer = kpad.value();
-                          hidden.value = JSON.stringify(field.value());
-                       });
+          pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE,
+            function (kpad) {
+              field.value().Answer = kpad.value();
+              hidden.value = JSON.stringify(field.value());
+            });
 
           fldView.PUZZLE = pk;
         }
@@ -655,7 +686,6 @@
           if (fldView.field()===null)
            throw "The control type '"+ct+"' requires the field binding, but was bound to record";
         }
-
 
 
     //Gets the appropriate(for this GUI lib) control type if the one is specified in field schema, or infers one from field definition
