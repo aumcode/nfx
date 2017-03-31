@@ -102,8 +102,7 @@ namespace NFX.Templatization
         foreach(var attr in node.Attributes)
         {
           var value = attr.Value;
-          if (value.IsNullOrWhiteSpace())
-            continue;
+          value = value ?? string.Empty;
 
           var name = MiscUtils.EscapeJSLiteral(attr.Name);
           if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))

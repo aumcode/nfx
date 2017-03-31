@@ -364,6 +364,7 @@ WAVE.RMGUI = (function(){
           Ø5.__fieldView = ctx.fw;
           Ø5.addEventListener('change', ctx.handler, false);
           var Ø6 = WAVE.ce('option');
+          Ø6.setAttribute('value', '');
           Ø5.appendChild(Ø6);
           for(var i in ctx.keys) {
             var val = ctx.keys[i]; 
@@ -610,6 +611,7 @@ WAVE.RMGUI = (function(){
           Ø4.setAttribute('id', ctx.hId);
           Ø4.setAttribute('type', 'hidden');
           Ø4.setAttribute('name', ctx.name);
+          Ø4.setAttribute('value', '');
           Ø1.appendChild(Ø4);
           if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
           return Ø1;
