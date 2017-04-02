@@ -66,7 +66,181 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="data-contracts">Data Contracts</h1>
               
-<p>...</p>
+<p>The concept of <strong>Glue</strong> technology is very similar to other service-oriented frameworks in terms of data passing. 
+<strong>Glue</strong> is the message oriented framework where you exchange messages between contract-implementing/consuming endpoints.
+The types that you can pass from client to server and back are not limited to elementary .NET types. Any custom type can be transferred between client and server
+via <a href="../../book/serialization/slim.html"><strong>Slim</strong></a> serialization.</p>
+<p>Below is step-by-step guide to create <strong>NFX.Glue</strong> test server application that demonstrates non-elementary types transfer.
+The guide is quite brief in some places. For details, please check the <a href="echo.html">demo</a>.</p>
+<p>1. Create new blank C# solution and add Class Library project <code>DemoContracts</code> 
+with the reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>)</p>
+<p>2. Add the following types:</p>
+<pre><code class="lang-cs">public enum Country
+{
+ Unknown,
+ Argentina,
+ England,
+ Russia,
+ USA
+}
+
+public class Location
+{
+  public Country Country { get; set; }
+  public string City { get; set; }
+}
+
+public class Person
+{
+  public string Name { get; set; }
+  public DateTime DOB { get; set; }
+  public Country Citizenship { get; set; }
+  public List&lt;Location&gt; Locations { get; set; }
+}
+</code></pre><p>3. Add IPersonService.cs file with the following contents:</p>
+<pre><code class="lang-cs">[Glued]
+[LifeCycle(ServerInstanceMode.Singleton)]
+public interface IPersonService
+{
+  void Set(Person person);
+
+  Person FindByName(string pattern); 
+}
+</code></pre><p>Notice the service is declared as singleton.</p>
+<p>4. Add new C# Console Application project <code>DemoServer</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project. Add DemoServer.laconf laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+
+    servers
+    {
+      server
+      {
+        node=&quot;sync://localhost:8080&quot;
+        contract-servers=$&quot;DemoServer.PersonService, DemoServer&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Be sure to set Build Action : None and Copy to Output Directory: Always in the config file properties.</p>
+<p>5. Add PersonService.cs file with the contents:</p>
+<pre><code class="lang-cs">public class PersonService : IPersonService
+{
+  private List&lt;Person&gt; m_Persons;
+
+  public PersonService()
+  {
+    m_Persons = new List&lt;Person&gt;();
+  }
+
+  public Person FindByName(string name)
+  {
+    lock(m_Persons)
+      return m_Persons.Where(p =&gt; p.Name.Equals(name)).FirstOrDefault();
+  }
+
+  public void Set(Person person)
+  {
+    if (person == null) return;
+    lock(m_Persons)
+      m_Persons.Add(person);
+  }
+}
+</code></pre><p>This class is singleton by contract and it maintains global state: <code>m_Persons</code>.</p>
+<p>5. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  Console.WriteLine(&quot;server is running...&quot;);
+  Console.WriteLine(&quot;Glue servers:&quot;);
+  foreach (var service in App.Glue.Servers)
+    Console.WriteLine(&quot;   &quot; + service);
+
+  Console.ReadLine();
+}
+</code></pre><p>6. Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
+Add DemoClient.laconf laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Again, be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
+<p>7. Create client proxy class that will operate with the service above:</p>
+<p>gluec &quot;$(SolutionDir)DemoContracts/bin/Debug/DemoContracts.dll&quot; /o out=&quot;$(SolutionDir)DemoClient&quot; cl-suffix=&quot;AutoClient&quot;</p>
+<p>Rebuild <code>DemoContracts</code> project and add the file PersonServiceAutoClient.cs to the <code>DemoClient</code> project (the file will appear in the root of the project).</p>
+<p>8. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  using (var client = new PersonServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  {
+    while (true)
+    {
+      var input = Console.ReadLine();
+      var cmd = input.Split(new char[] { &#39; &#39; }, StringSplitOptions.RemoveEmptyEntries);
+      exeCommand(client, cmd);
+    }
+  }
+}
+</code></pre><p>Add the following method:</p>
+<pre><code class="lang-cs">private static void exeCommand(PersonServiceAutoClient client, string[] cmd)
+{
+  if (cmd[0].Equals(&quot;add&quot;))
+  {
+    var person = new Person
+    {
+      Name = cmd[1],
+      DOB = DateTime.Now.AddYears(-cmd[2].AsInt()),
+      Citizenship = Country.Argentina,
+      Locations = new List&lt;Location&gt; { new Location { Country = Country.USA, City = &quot;NY&quot; } }
+    };
+
+    client.Set(person);
+    return;
+  }
+
+  if (cmd[0].Equals(&quot;find&quot;))
+  {
+    var name = cmd[1];
+    var result = client.FindByName(name);
+    if (result == null)
+      Console.WriteLine(&quot;Not found&quot;);
+    else
+      Console.WriteLine(&quot;Name: {0}, Age: {1}, Citizenship: {2}, Locations: {3}&quot;,
+                        result.Name,
+                        (int)(DateTime.Now - result.DOB).TotalDays / 366,
+                        result.Citizenship,
+                        result.Locations.Count());
+
+    return;
+  }
+}
+</code></pre><p>You will also need to add usings</p>
+<pre><code class="lang-cs">using NFX;
+using NFX.ApplicationModel;
+using DemoContracts.GluedClients;
+</code></pre><p>15. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application. 
+Execute the following commands sequentially: &quot;add John 12&quot;, &quot;add Anna 23&quot;, &quot;find John&quot;, &quot;find Ivan&quot;. The output will be</p>
+<p>Name: John, Age: 20, Citizenship: Argentina, Locations: 1</p>
+<p>Name: Anna, Age: 23, Citizenship: Argentina, Locations: 1</p>
+<p>Not found</p>
 
             </article>
           </div>

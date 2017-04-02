@@ -68,7 +68,7 @@
               
 <p>Stateful server stores its state during each client session.
 Below is step-by-step guide to create <strong>NFX.Glue</strong> stateful server application.
-The guide is quite briefly in some places. For details, please check the <a href="echo.html">demo</a>.</p>
+The guide is quite brief in some places. For details, please check the <a href="echo.html">demo</a>.</p>
 <p>1. Create new blank C# solution and add Class Library project <code>DemoContracts</code> 
 with the reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>)</p>
 <p>2. Add IStatefulService.cs file with the following contents:</p>
@@ -230,9 +230,9 @@ Add DemoClient.laconf laconic configuration file:</p>
   }
 }
 </code></pre><p>You will also need to add usings</p>
-<pre><code class="lang-cs">using DemoContracts.GluedClients;
-using NFX;
+<pre><code class="lang-cs">using NFX;
 using NFX.ApplicationModel;
+using DemoContracts.GluedClients;
 </code></pre><p>15. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application. 
 Execute the following commands sequentially: &quot;init&quot;, &quot;add 1&quot;, &quot;add 3&quot;, &quot;result&quot;, &quot;done&quot;. The output will be 4.</p>
 <p>Execution of any command after &quot;done&quot; will cause an exception.</p>
